@@ -9,7 +9,19 @@ import {
 import { Checkbox as UICheckbox } from '@components/ui/checkbox'
 import { Progressbar } from '@partials/rto-v2/components'
 import { motion } from 'framer-motion'
-import { Award, Briefcase, Building2, CalendarCheck, CheckCircle2, Clock, FileCheck, FileText, Info, Sparkles, User } from 'lucide-react'
+import {
+    Award,
+    Briefcase,
+    Building2,
+    CalendarCheck,
+    CheckCircle2,
+    Clock,
+    FileCheck,
+    FileText,
+    Info,
+    Sparkles,
+    User,
+} from 'lucide-react'
 
 export const EnhancedStudentPreferencesChecklistCard = ({
     verifiedPreferences,
@@ -27,19 +39,20 @@ export const EnhancedStudentPreferencesChecklistCard = ({
                             <h3 className="font-semibold">
                                 Student Workplace Preferences
                             </h3>
-                            <p className="text-white/80 text-xs mt-0.5">
+                            {/* <p className="text-white/80 text-xs mt-0.5">
                                 Track preference matching progress
-                            </p>
+                            </p> */}
+                            <h3 className="font-semibold">Coming Soon...!</h3>
                         </div>
                     </div>
-                    <div className="text-right">
+                    {/* <div className="text-right">
                         <div className="text-2xl font-bold">
                             {verifiedPreferences.length}/20
                         </div>
                         <div className="text-xs text-white/80">Verified</div>
-                    </div>
+                    </div> */}
                 </div>
-                <div className="mt-3">
+                <div className="mt-3 blur-sm">
                     <Progressbar
                         value={(verifiedPreferences.length / 20) * 100}
                         className="h-2 bg-white/20"
@@ -47,7 +60,7 @@ export const EnhancedStudentPreferencesChecklistCard = ({
                 </div>
             </div>
 
-            <div className="p-6">
+            <div className="p-6 blur-sm">
                 <div className="space-y-3 mb-4">
                     <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg border border-[#044866]/20">
                         <Sparkles className="h-4 w-4 text-[#044866] shrink-0" />
@@ -125,7 +138,7 @@ export const EnhancedStudentPreferencesChecklistCard = ({
                                                         text={`${categoryVerified}/${categoryPrefs.length}`}
                                                         className={
                                                             categoryVerified ===
-                                                                categoryPrefs.length
+                                                            categoryPrefs.length
                                                                 ? 'bg-emerald-100 text-emerald-700 border-emerald-200'
                                                                 : 'bg-slate-100 text-slate-700 border-slate-200'
                                                         }
@@ -157,10 +170,10 @@ export const EnhancedStudentPreferencesChecklistCard = ({
                                                                     x: 0,
                                                                     scale: isRecentlyVerified
                                                                         ? [
-                                                                            1,
-                                                                            1.02,
-                                                                            1,
-                                                                        ]
+                                                                              1,
+                                                                              1.02,
+                                                                              1,
+                                                                          ]
                                                                         : 1,
                                                                 }}
                                                                 transition={{
@@ -171,10 +184,11 @@ export const EnhancedStudentPreferencesChecklistCard = ({
                                                                             : 0,
                                                                     },
                                                                 }}
-                                                                className={`p-4 rounded-lg border-2 transition-all cursor-pointer relative overflow-hidden ${isVerified
-                                                                    ? 'bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-300 shadow-sm'
-                                                                    : 'bg-gradient-to-br from-slate-50 to-slate-100/50 border-slate-200 hover:border-slate-300 hover:shadow-sm'
-                                                                    }`}
+                                                                className={`p-4 rounded-lg border-2 transition-all cursor-pointer relative overflow-hidden ${
+                                                                    isVerified
+                                                                        ? 'bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-300 shadow-sm'
+                                                                        : 'bg-gradient-to-br from-slate-50 to-slate-100/50 border-slate-200 hover:border-slate-300 hover:shadow-sm'
+                                                                }`}
                                                                 onClick={() =>
                                                                     togglePreferenceVerification(
                                                                         pref.id
@@ -250,10 +264,11 @@ export const EnhancedStudentPreferencesChecklistCard = ({
                                                                             )}
                                                                         </div>
                                                                         <p
-                                                                            className={`text-sm ml-0 ${isVerified
-                                                                                ? 'text-emerald-900 font-medium'
-                                                                                : 'text-slate-900'
-                                                                                }`}
+                                                                            className={`text-sm ml-0 ${
+                                                                                isVerified
+                                                                                    ? 'text-emerald-900 font-medium'
+                                                                                    : 'text-slate-900'
+                                                                            }`}
                                                                         >
                                                                             {
                                                                                 pref.answer
@@ -371,7 +386,8 @@ export const EnhancedStudentPreferencesChecklistCard = ({
                         <div className="space-y-2">
                             {studentPreferences
                                 .filter(
-                                    (p: any) => !verifiedPreferences.includes(p.id)
+                                    (p: any) =>
+                                        !verifiedPreferences.includes(p.id)
                                 )
                                 .map((pref: any) => (
                                     <motion.div

@@ -806,7 +806,9 @@ export const PlacementRequestDetail = () => {
     }
 
     const showIndustryDetails = [
-        needsWorkplaceStagesEnum.REQUEST_GENERATED,
+        needsWorkplaceStagesEnum.REQUEST_GENERATED &&
+            placementRequestsDetails?.data?.workplaceApprovaleRequest?.length >
+                0,
         needsWorkplaceStagesEnum.WAITING_FOR_RTO,
         needsWorkplaceStagesEnum.WAITING_FOR_STUDENT,
         providedWorkplaceStagesEnum.INDUSTRY_ELIGIBILITY_PENDING,
@@ -875,7 +877,7 @@ export const PlacementRequestDetail = () => {
                     <CardsSkeleton />
                 </div>
             ) : placementRequestsDetails?.isSuccess &&
-                placementRequestsDetails?.data ? (
+              placementRequestsDetails?.data ? (
                 <>
                     {/* Clean Modern Header */}
                     <CleanHeader
@@ -912,10 +914,11 @@ export const PlacementRequestDetail = () => {
                                         duration: 0.5,
                                         ease: 'easeOut',
                                     }}
-                                    className={`space-y-7 ${leftPanelSticky
-                                        ? 'sticky top-24 self-start'
-                                        : ''
-                                        }`}
+                                    className={`space-y-7 ${
+                                        leftPanelSticky
+                                            ? 'sticky top-24 self-start'
+                                            : ''
+                                    }`}
                                 >
                                     <StudentQuickSummaryCard
                                         appointmentMissed={appointmentMissed}
@@ -974,10 +977,11 @@ export const PlacementRequestDetail = () => {
                                         duration: 0.5,
                                         ease: 'easeOut',
                                     }}
-                                    className={`space-y-7 ${rightPanelSticky
-                                        ? 'sticky top-24 self-start'
-                                        : ''
-                                        }`}
+                                    className={`space-y-7 ${
+                                        rightPanelSticky
+                                            ? 'sticky top-24 self-start'
+                                            : ''
+                                    }`}
                                 >
                                     {/* Industry Match Validation - Shown from workflow start through completion */}
                                     {/* {workplaceType === 'needs' && (
@@ -989,9 +993,9 @@ export const PlacementRequestDetail = () => {
 
                                     {/* Enhanced Industry Details */}
                                     <EnhancedIndustryDetailsCard
-                                        showIndustryDetails={
-                                            showIndustryDetails
-                                        }
+                                        // showIndustryDetails={
+                                        //     showIndustryDetails
+                                        // }
                                         selectedIndustry={selectedIndustry}
                                         workplaceType={workplaceType}
                                         proofSkipped={proofSkipped}
@@ -1050,10 +1054,8 @@ export const PlacementRequestDetail = () => {
                                     {wpCurrentStatus?.stage ===
                                         'Request Generated' &&
                                         placementRequestsDetails?.data
-                                            .workplaceApprovaleRequest?.length >
-                                            0 &&
-                                        !placementRequestsDetails?.data
-                                            ?.industries && (
+                                            ?.workplaceApprovaleRequest
+                                            ?.length === 0 && (
                                             <FindWorkplaceSection
                                                 isExpanded={
                                                     showFindWorkplaceSection

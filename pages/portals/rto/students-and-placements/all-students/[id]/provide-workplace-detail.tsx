@@ -43,7 +43,6 @@ import { checkStudentProfileCompletion, WorkplaceCurrentStatus } from '@utils'
 import { ArrowLeft, CalendarCheck, CheckCircle2, User } from 'lucide-react'
 import { IWorkplaceIndustries } from 'redux/queryTypes'
 
-
 type Props = {}
 
 const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
@@ -68,10 +67,9 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
 
     const { notification } = useNotification()
 
-    const { data } =
-        useGetSubAdminStudentDetailQuery(Number(id), {
-            skip: !id,
-        })
+    const { data } = useGetSubAdminStudentDetailQuery(Number(id), {
+        skip: !id,
+    })
 
     const rtoDetail = SubAdminApi.Student.getStudentRtoDetail(Number(id), {
         skip: !id,
@@ -220,7 +218,8 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                     {/* Header Section */}
                     <div className="mb-8">
                         <Button
-                            className="pl-0 text-slate-500 hover:text-slate-800 mb-4 bg-transparent border-none shadow-none hover:bg-transparent"
+                            variant="primaryNew"
+                            outline
                             onClick={() => router.back()}
                         >
                             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -236,7 +235,8 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                                     </span>
                                 </h1>
                                 <p className="mt-2 text-slate-600">
-                                    Enter the details of your self-sourced placement.
+                                    Enter the details of your self-sourced
+                                    placement.
                                 </p>
                             </div>
                         </div>
@@ -250,22 +250,70 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                         {/* Progress Steps (Visual Only) */}
                         <div className="bg-slate-50/50 border-b border-slate-100 px-8 py-4">
                             <div className="flex items-center gap-4">
-                                <div className={`flex items-center gap-2 ${active === 1 ? 'text-[#044866] font-semibold' : 'text-slate-500'}`}>
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-300 ${active === 1 ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30' : active > 1 ? 'bg-emerald-500 text-white' : 'bg-slate-200'}`}>
-                                        {active > 1 ? <CheckCircle2 className="w-5 h-5" /> : '1'}
+                                <div
+                                    className={`flex items-center gap-2 ${
+                                        active === 1
+                                            ? 'text-[#044866] font-semibold'
+                                            : 'text-slate-500'
+                                    }`}
+                                >
+                                    <div
+                                        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-300 ${
+                                            active === 1
+                                                ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30'
+                                                : active > 1
+                                                ? 'bg-emerald-500 text-white'
+                                                : 'bg-slate-200'
+                                        }`}
+                                    >
+                                        {active > 1 ? (
+                                            <CheckCircle2 className="w-5 h-5" />
+                                        ) : (
+                                            '1'
+                                        )}
                                     </div>
                                     <span>Personal Info</span>
                                 </div>
                                 <div className="w-12 h-0.5 bg-slate-200 rounded-full"></div>
-                                <div className={`flex items-center gap-2 ${active === 2 ? 'text-[#044866] font-semibold' : 'text-slate-500'}`}>
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-300 ${active === 2 ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30' : active > 2 ? 'bg-emerald-500 text-white' : 'bg-slate-200'}`}>
-                                        {active > 2 ? <CheckCircle2 className="w-5 h-5" /> : '2'}
+                                <div
+                                    className={`flex items-center gap-2 ${
+                                        active === 2
+                                            ? 'text-[#044866] font-semibold'
+                                            : 'text-slate-500'
+                                    }`}
+                                >
+                                    <div
+                                        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-300 ${
+                                            active === 2
+                                                ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30'
+                                                : active > 2
+                                                ? 'bg-emerald-500 text-white'
+                                                : 'bg-slate-200'
+                                        }`}
+                                    >
+                                        {active > 2 ? (
+                                            <CheckCircle2 className="w-5 h-5" />
+                                        ) : (
+                                            '2'
+                                        )}
                                     </div>
                                     <span>Industry Details</span>
                                 </div>
                                 <div className="w-12 h-0.5 bg-slate-200 rounded-full"></div>
-                                <div className={`flex items-center gap-2 ${active >= 3 ? 'text-[#044866] font-semibold' : 'text-slate-500'}`}>
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-300 ${active >= 3 ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30' : 'bg-slate-200'}`}>
+                                <div
+                                    className={`flex items-center gap-2 ${
+                                        active >= 3
+                                            ? 'text-[#044866] font-semibold'
+                                            : 'text-slate-500'
+                                    }`}
+                                >
+                                    <div
+                                        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-300 ${
+                                            active >= 3
+                                                ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30'
+                                                : 'bg-slate-200'
+                                        }`}
+                                    >
                                         3
                                     </div>
                                     <span>Confirmation</span>
@@ -281,8 +329,12 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                                             <User className="w-5 h-5" />
                                         </div>
                                         <div>
-                                            <h2 className="text-xl font-semibold text-slate-800">Review Personal Details</h2>
-                                            <p className="text-sm text-slate-500">Confirm your contact information</p>
+                                            <h2 className="text-xl font-semibold text-slate-800">
+                                                Review Personal Details
+                                            </h2>
+                                            <p className="text-sm text-slate-500">
+                                                Confirm your contact information
+                                            </p>
                                         </div>
                                     </div>
                                     <UpdatedPersonalInfo
@@ -294,16 +346,21 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
 
                             {active === 2 &&
                                 (!result?.data &&
-                                    (findIndustryType === 'abn' ||
-                                        !findIndustryType) ? (
+                                (findIndustryType === 'abn' ||
+                                    !findIndustryType) ? (
                                     <div className="animate-in fade-in slide-in-from-right-4 duration-500">
                                         <div className="flex items-center gap-3 mb-6">
                                             <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
                                                 <CalendarCheck className="w-5 h-5" />
                                             </div>
                                             <div>
-                                                <h2 className="text-xl font-semibold text-slate-800">Industry Details</h2>
-                                                <p className="text-sm text-slate-500">Provide the details of your workplace</p>
+                                                <h2 className="text-xl font-semibold text-slate-800">
+                                                    Industry Details
+                                                </h2>
+                                                <p className="text-sm text-slate-500">
+                                                    Provide the details of your
+                                                    workplace
+                                                </p>
                                             </div>
                                         </div>
                                         <AddCustomIndustryForm
@@ -351,7 +408,7 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                             {active === 3 && (
                                 <div className="animate-in fade-in slide-in-from-right-4 duration-500">
                                     {workplaceData?.[0]?.industryStatus ===
-                                        UserStatus.Approved ? (
+                                    UserStatus.Approved ? (
                                         <IndustrySelection
                                             setActive={setActive}
                                             workplace={workplace}
@@ -363,7 +420,7 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                                             isCancelled={isCancelled}
                                         />
                                     ) : workplaceData[0]?.industryStatus ===
-                                        UserStatus.Rejected ? (
+                                      UserStatus.Rejected ? (
                                         <Card>
                                             <div className="px-5 py-16 border-2 border-dashed border-gray-600 flex justify-center">
                                                 <Typography
@@ -417,11 +474,12 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                                                     title={
                                                         'Workplace Request Successfully Added'
                                                     }
-                                                    description={`We have successfully processed your workplace request. A case officer will be assigned to your case promptly to assist you further.<br/> ${answer === 'no'
-                                                        ? '<p class="italic mt-4 font-semibold text-sm">You have been successfully added to the Talent Pool Programme! Industries in your field can now view your profile and contact you with opportunities.</p>'
-                                                        : answer === 'no' &&
-                                                        '<p class="italic mt-4 font-semibold text-sm">You can join the Talent Pool Programme later from your dashboard.</p>'
-                                                        } `}
+                                                    description={`We have successfully processed your workplace request. A case officer will be assigned to your case promptly to assist you further.<br/> ${
+                                                        answer === 'no'
+                                                            ? '<p class="italic mt-4 font-semibold text-sm">You have been successfully added to the Talent Pool Programme! Industries in your field can now view your profile and contact you with opportunities.</p>'
+                                                            : answer === 'no' &&
+                                                              '<p class="italic mt-4 font-semibold text-sm">You can join the Talent Pool Programme later from your dashboard.</p>'
+                                                    } `}
                                                     variant={'primary'}
                                                     redirect
                                                 />
@@ -444,7 +502,6 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                         </div>
                     </div>
                 </div>
-
             </div>
         </>
     )

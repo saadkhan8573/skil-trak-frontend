@@ -128,10 +128,6 @@ export const ApprovedIndustry = () => {
             header: () => <span>ABN Number</span>,
         },
         {
-            accessorKey: 'studentCount',
-            header: () => <span>Students</span>,
-        },
-        {
             accessorKey: 'contactPerson',
             header: () => <span>Contact Person</span>,
             cell: (info) => {

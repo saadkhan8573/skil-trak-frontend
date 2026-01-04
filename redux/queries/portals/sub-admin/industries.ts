@@ -410,6 +410,7 @@ export const subAdminIndustriesEndpoints = (
         {
             partnerIndustries: number
             nonPartnerIndustries: number
+            pendingCourseApprovals: number
             monthlyCalled: number
             snoozedIndustries: number
             blockedIndustries: number

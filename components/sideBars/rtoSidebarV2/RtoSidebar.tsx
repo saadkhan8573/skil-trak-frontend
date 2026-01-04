@@ -412,7 +412,7 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
                                                 }
                                                 onNavigate?.(item.key)
                                             }}
-                                            className={`w-full flex justify-between items-center p-2 rounded-2xl transition ${item.bg} hover:opacity-90 cursor-pointer`}
+                                            className={`w-full flex justify-between items-center p-2 rounded-md transition ${item.bg} hover:opacity-90 cursor-pointer`}
                                         >
                                             <div className="flex items-center gap-x-2">
                                                 <div

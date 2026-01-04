@@ -228,7 +228,17 @@ export const ResolveIssues = () => {
 }
 
 ResolveIssues.getLayout = (page: ReactElement) => {
-    return <RtoLayoutV2>{page}</RtoLayoutV2>
+    return (
+        <RtoLayoutV2
+            titleProps={{
+                Icon: Flag,
+                title: 'Resolve Issues',
+                description: 'Address placement issues',
+            }}
+        >
+            {page}
+        </RtoLayoutV2>
+    )
 }
 
 export default ResolveIssues

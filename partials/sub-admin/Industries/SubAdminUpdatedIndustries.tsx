@@ -82,7 +82,7 @@ export const SubAdminUpdatedIndustries = () => {
             value: 'pending-course-approval',
             label: 'Pending Course Approval',
             icon: Building2,
-            count: count.data?.nonPartnerIndustries,
+            count: count.data?.pendingCourseApprovals,
             component: () => <PedingCourseApprovalIndustries />,
             hidden: () => {
                 const isLocal = process.env.NEXT_PUBLIC_NODE_ENV === 'local'
@@ -165,9 +165,7 @@ export const SubAdminUpdatedIndustries = () => {
                         <div className="mt-4">
                             <ConfigTabs
                                 tabs={tabs}
-                                className="!rounded-none border-none shadow-none"
-                                tabsClasses="!w-ful inline-flex h-10 items-center justify-center rounded-lg  p-1 text-muted-foreground"
-                                tabsTriggerClasses="inline-flex items-center justify-center white-space-nowrap rounded-md px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                                tabsTriggerClasses="!py-1.5"
                             />
                         </div>
                     )}

@@ -108,7 +108,7 @@ const IndustryList: NextPageWithLayout = () => {
                 query: { tab: UserStatus.Pending, page: 1, pageSize: 50 },
             },
             badge: {
-                text: data?.pending,
+                text: data?.pendingCourseApprovals,
                 loading: isLoading,
             },
             element: <PedingCourseApprovalIndustries />,

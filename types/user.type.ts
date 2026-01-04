@@ -66,6 +66,7 @@ export interface UserCount {
     rejected: number | string
     blocked: number | string
     archived: number | string
+    pendingCourseApprovals: number
     snoozed: any
     completed: number
     unAssigned: number

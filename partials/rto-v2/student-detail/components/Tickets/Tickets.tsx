@@ -4,8 +4,10 @@ import {
     TechnicalError,
     TextInput,
 } from '@components'
+import { UserRoles } from '@constants'
 import { CommonApi } from '@queries'
 import { Student } from '@types'
+import { getUserCredentials } from '@utils'
 import { Plus, Sparkles, Ticket } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { TicketCard } from './cards'
@@ -24,10 +26,22 @@ export const Tickets = ({ student }: { student: Student }) => {
     )
 
     const router = useRouter()
+    const { role } = getUserCredentials()
+
     const onAddTicket = () => {
-        router.push(
-            `/portals/rto/students-and-placements/tickets/add-ticket?student=${student?.id}`
-        )
+        if (role === UserRoles.ADMIN) {
+            router.push(
+                `/portals/admin/tickets/add-ticket?student=${student?.id}`
+            )
+        } else if (role === UserRoles.SUBADMIN) {
+            router.push(
+                `/portals/sub-admin/tickets/add-ticket?student=${student?.id}`
+            )
+        } else {
+            router.push(
+                `/portals/rto/students-and-placements/tickets/add-ticket?student=${student?.id}`
+            )
+        }
     }
 
     const delayedSearch = useCallback(

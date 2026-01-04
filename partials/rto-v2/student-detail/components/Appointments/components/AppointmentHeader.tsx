@@ -1,6 +1,8 @@
+import { Button } from '@components'
 import { UserRoles } from '@constants'
 import { ScheduleAppointmentModal } from '@partials/rto-v2/appointments'
 import { useGetSubAdminStudentDetailQuery } from '@queries'
+import { getUserCredentials } from '@utils'
 import { Calendar, Sparkles } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -14,6 +16,33 @@ export const AppointmentHeader = () => {
         skip: !studentId,
         refetchOnMountOrArgChange: 30,
     })
+
+    const { role } = getUserCredentials()
+
+    const getAppointmentLink = () => {
+        if (role === UserRoles.ADMIN) {
+            return {
+                pathname: '/portals/admin/appointment-type/create-appointment',
+                query: { student: profile?.data?.user?.id },
+            }
+        } else if (role === UserRoles.SUBADMIN) {
+            return {
+                pathname:
+                    '/portals/sub-admin/tasks/appointments/create-appointment',
+                query: { student: profile?.data?.user?.id },
+            }
+        }
+        return null
+    }
+
+    const onScheduleClicked = () => {
+        const link = getAppointmentLink()
+        if (link) {
+            router.push(link)
+        } else {
+            setScheduleOpen(true)
+        }
+    }
     return (
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200/60 shadow-xl p-3">
             <div className="flex items-center justify-between">
@@ -39,10 +68,13 @@ export const AppointmentHeader = () => {
                     scheduleOpen={scheduleOpen}
                     setScheduleOpen={setScheduleOpen}
                 />
-                {/* <Button className="flex-shrink-0 bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] shadow-lg hover:shadow-xl hover:scale-105 transition-all">
+                <Button
+                    onClick={onScheduleClicked}
+                    className="flex-shrink-0 bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+                >
                     <Calendar className="w-4 h-4 mr-2" />
                     Schedule New
-                </Button> */}
+                </Button>
             </div>
         </div>
     )

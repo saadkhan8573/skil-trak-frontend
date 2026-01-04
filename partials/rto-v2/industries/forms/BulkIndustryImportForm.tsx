@@ -20,6 +20,7 @@ import { trimText } from '@utils'
 
 interface BulkIndustryImportFormProps {
     onSubmit: (values: any) => void
+    result: any
 }
 
 type ValidationResult = {
@@ -48,6 +49,7 @@ const validationSchema = yup.object({
 
 export const BulkIndustryImportForm = ({
     onSubmit,
+    result,
 }: BulkIndustryImportFormProps) => {
     const { notification } = useNotification()
 
@@ -59,8 +61,6 @@ export const BulkIndustryImportForm = ({
 
     // Get RTO courses
     const rto = RtoApi.Rto.useProfile()
-    const [checkMails, checkMailsResult] =
-        AdminApi.Rtos.useUserExistingEmailCheck()
 
     const rtoCoursesOptions =
         rto.isSuccess && rto?.data?.courses && rto?.data?.courses?.length > 0
@@ -334,8 +334,8 @@ export const BulkIndustryImportForm = ({
                             variant="primaryNew"
                             Icon={Upload}
                             submit
-                            loading={checkMailsResult.isLoading}
-                            disabled={checkMailsResult.isLoading}
+                            loading={result.isLoading}
+                            disabled={result.isLoading}
                         />
                     </div>
                 </div>

@@ -122,10 +122,20 @@ export const ApprontmentCard = ({
                         <p className="text-sm text-slate-600">Attendees:</p>
                         <div className="flex flex-wrap gap-2">
                             <span className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-700 hover:border-[#044866] transition-colors">
-                                {appointment?.appointmentFor?.name}
+                                {appointment?.appointmentFor?.name}{' '}
+                                {appointment?.appointmentFor?.role && (
+                                    <span className="text-slate-400">
+                                        ({appointment?.appointmentFor?.role})
+                                    </span>
+                                )}
                             </span>
                             <span className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-700 hover:border-[#044866] transition-colors">
-                                {appointment?.appointmentBy?.name}
+                                {appointment?.appointmentBy?.name}{' '}
+                                {appointment?.appointmentBy?.role && (
+                                    <span className="text-slate-400">
+                                        ({appointment?.appointmentBy?.role})
+                                    </span>
+                                )}
                             </span>
                         </div>
                     </div>

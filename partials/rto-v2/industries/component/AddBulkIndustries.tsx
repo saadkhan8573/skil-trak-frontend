@@ -220,7 +220,10 @@ export const AddBulkIndustries = ({ onClose }: { onClose: () => void }) => {
                             color="text-muted"
                             className="mb-3"
                         >
-                            These email addresses already exist in the system
+                            Thanks for adding your industry partner(s). These
+                            organisation(s) are already registered with
+                            SkilTrak. One of our team members will verify the
+                            details and get back to you shortly.
                         </Typography>
                         <div className="space-y-2 max-h-64 overflow-y-auto">
                             {importResults.ignored.map((email, idx) => (
@@ -265,7 +268,10 @@ export const AddBulkIndustries = ({ onClose }: { onClose: () => void }) => {
     return (
         <div>
             <ShowErrorNotifications result={resultAddBulkRtoIndustries} />
-            <BulkIndustryImportForm onSubmit={onSubmit} />
+            <BulkIndustryImportForm
+                result={resultAddBulkRtoIndustries}
+                onSubmit={onSubmit}
+            />
         </div>
     )
 }

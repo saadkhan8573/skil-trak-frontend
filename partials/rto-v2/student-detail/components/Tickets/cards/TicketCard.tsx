@@ -1,5 +1,7 @@
 import { Badge, Button, Card } from '@components'
+import { UserRoles } from '@constants'
 import { TicketTypes } from '@types'
+import { getUserCredentials } from '@utils'
 import {
     AlertCircle,
     CheckCircle,
@@ -8,6 +10,7 @@ import {
     Ticket,
 } from 'lucide-react'
 import moment from 'moment'
+import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
 import { AddTicketReplyModal } from '../modal'
 
@@ -74,6 +77,21 @@ export const TicketCard = ({ ticket }: { ticket: TicketTypes }) => {
 
     const onAddTicketReply = () => {
         setModal(<AddTicketReplyModal ticket={ticket} onCancel={onCancel} />)
+    }
+
+    const router = useRouter()
+    const { role } = getUserCredentials()
+
+    const onViewDetails = () => {
+        if (role === UserRoles.ADMIN) {
+            router.push(`/portals/admin/tickets/detail/${ticket.id}`)
+        } else if (role === UserRoles.SUBADMIN) {
+            router.push(`/portals/sub-admin/tickets/detail/${ticket.id}`)
+        } else {
+            router.push(
+                `/portals/rto/tickets/detail/${ticket.id}`
+            )
+        }
     }
     return (
         <Card
@@ -150,6 +168,7 @@ export const TicketCard = ({ ticket }: { ticket: TicketTypes }) => {
                     outline
                     variant="primaryNew"
                     className="text-[#044866] border-[#044866]/30 hover:bg-[#044866]/10"
+                    onClick={onViewDetails}
                 >
                     <MessageSquare className="w-4 h-4 mr-2" />
                     View Details

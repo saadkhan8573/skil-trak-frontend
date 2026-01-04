@@ -7,7 +7,13 @@ import { FiPhoneOff } from 'react-icons/fi'
 import { LuFlagTriangleRight } from 'react-icons/lu'
 import { MdSnooze } from 'react-icons/md'
 
-export const StudentWPCellInfo = ({ student }: { student: Student }) => {
+export const StudentWPCellInfo = ({
+    student,
+    wpId,
+}: {
+    student: Student
+    wpId: number
+}) => {
     const subadmin = useSubadminProfile()
 
     return (
@@ -56,7 +62,8 @@ export const StudentWPCellInfo = ({ student }: { student: Student }) => {
                 subadmin?.isManager ||
                 subadmin?.departmentMember?.isHod) && (
                 <Link
-                    href={`/portals/sub-admin/students/${student?.id}/detail`}
+                    // href={`/portals/sub-admin/students/${student?.id}/detail`}
+                    href={`/portals/sub-admin/tasks/workplace/${wpId}/${student?.id}`}
                     className="text-blue-500 text-xs"
                 >
                     View Details

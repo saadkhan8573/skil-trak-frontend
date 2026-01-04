@@ -9,6 +9,7 @@ import { LoadingAnimation, TechnicalError } from '@components'
 
 import {
     RtoCoordinatorsIndustries,
+    StateWiseIndustries,
     SubadminIndustries,
     SubAdminUpdatedIndustries,
 } from '@partials/sub-admin/Industries'
@@ -30,7 +31,7 @@ const Industries: NextPageWithLayout = (props: Props) => {
                     profile?.data?.isAssociatedWithRto ? (
                         <RtoCoordinatorsIndustries />
                     ) : (
-                        <SubAdminUpdatedIndustries />
+                        <StateWiseIndustries />
                     )
                 ) : null}
             </div>

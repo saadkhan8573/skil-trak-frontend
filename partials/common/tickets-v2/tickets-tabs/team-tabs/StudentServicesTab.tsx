@@ -4,6 +4,8 @@ import { NoData, PageSize, Pagination } from '@components'
 import { useRouter } from 'next/router'
 import { CommonApi } from '@queries'
 import { TicketListSkeleton } from '../../skeleton'
+import { getUserCredentials } from '@utils'
+import { UserRoles } from '@constants'
 
 export const StudentServicesTab = () => {
     const [itemPerPage, setItemPerPage] = useState(10)
@@ -23,6 +25,8 @@ export const StudentServicesTab = () => {
         skip: itemPerPage * page - itemPerPage,
         limit: itemPerPage,
     })
+
+    const role = getUserCredentials()?.role
 
     return (
         <div className="space-y-2">
@@ -49,9 +53,19 @@ export const StudentServicesTab = () => {
                             <TicketCard
                                 ticket={ticket}
                                 onClick={() => {
-                                    router.push(
-                                        `/portals/rto/communications/tickets/${ticket?.id}`
-                                    )
+                                    if (role === UserRoles.RTO) {
+                                        router.push(
+                                            `/portals/rto/communications/tickets/${ticket?.id}`
+                                        )
+                                    } else if (role === UserRoles.SUBADMIN) {
+                                        router.push(
+                                            `/portals/sub-admin/support-tickets/${ticket?.id}`
+                                        )
+                                    } else {
+                                        router.push(
+                                            `/portals/admin/support-tickets/${ticket?.id}`
+                                        )
+                                    }
                                 }}
                                 // onViewStudentProfile={setSelectedStudentId}
                                 // onViewIndustryProfile={setSelectedIndustryId}

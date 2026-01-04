@@ -4,5 +4,6 @@
     "files.autoSave": "afterDelay",
     "prettier.useTabs": true,
     "prettier.tabWidth": 4,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "liveServer.settings.port": 5501
 }

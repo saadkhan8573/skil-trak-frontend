@@ -28,6 +28,7 @@ export const AgreementInitiate = ({
                 }}
                 courseId={courseId}
                 folder={folder}
+                rtoUser={rto?.user}
             />
         )
     }

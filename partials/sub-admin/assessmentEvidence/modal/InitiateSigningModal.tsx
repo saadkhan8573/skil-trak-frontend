@@ -20,20 +20,23 @@ interface PdfViewModalProps {
     onCancel: () => void
     courseId: number
     folder: AssessmentEvidenceDetailType | null
+    rtoUser?: any
 }
 export const InitiateSigningModal = ({
     courseId,
     onCancel,
     folder,
+    rtoUser,
 }: PdfViewModalProps) => {
     const [isPreviewAsSigner, setIsPreviewAsSigner] = useState<boolean>(false)
     const [selectedDocument, setSelectedDocument] = useState<any>(null)
     const [userIds, setUserIds] = useState<any>({})
 
     const { workplaceRto } = useWorkplace()
-
+    console.log('workplaceRto', workplaceRto)
+    const rtoId = rtoUser ? rtoUser?.id : Number(workplaceRto?.user?.id)
     const getTemplate = CommonApi.ESign.useESignTemplateDetail(
-        { folder: Number(folder?.id), userId: Number(workplaceRto?.user?.id) },
+        { folder: Number(folder?.id), userId: rtoId },
         {
             skip: !folder,
             refetchOnMountOrArgChange: true,

@@ -117,10 +117,12 @@ export const IndustryProfileDetail = () => {
                     </div>
                 </div>
             ) : (
-                <EmptyData
-                    title={'No Industry Found'}
-                    description={'No Industry Found on your request'}
-                />
+                industryDetail?.isSuccess && (
+                    <EmptyData
+                        title={'No Industry Found'}
+                        description={'No Industry Found on your request'}
+                    />
+                )
             )}
         </div>
     )

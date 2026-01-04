@@ -1,5 +1,5 @@
 import { Badge } from '@components'
-import { Folder as FolderType } from '@types'
+import { AssessmentEvidenceDetailType, Folder as FolderType, Student } from '@types'
 import { cn } from '@utils'
 import {
     AlertCircle,
@@ -17,25 +17,79 @@ import {
     RejectAllFile,
     UploadDocument,
 } from '../components'
+import { CommonApi, SubAdminApi } from '@queries'
+import { useWorkplace } from '@hooks'
+import { InitiateSigningModal } from '../../../../../sub-admin/assessmentEvidence/modal'
+import { Button } from '@components'
 
 export const FolderCard = ({
     folder,
     config,
+    course,
+    student,
 }: {
     config: any
-    folder: FolderType
+    folder: AssessmentEvidenceDetailType
+    course: any
+    student: Student
 }) => {
+
+    console.log({ student })
     const StatusIcon = config.icon
     const [isOpened, setIsOpened] = useState(false)
+    const [modal, setModal] = useState<any>(null)
+    const { workplaceRto } = useWorkplace()
+
+    const rtoDetail = SubAdminApi.Student.getStudentRtoDetail(Number(student?.id), {
+        skip: !student?.id,
+        refetchOnMountOrArgChange: 300,
+    })
+
+    const getTemplate = CommonApi.ESign.useESignTemplateDetail(
+        {
+            folder: Number(folder?.id),
+            userId: Number(rtoDetail?.data?.user?.id),
+        },
+        {
+            skip: !folder || !rtoDetail?.data,
+            refetchOnMountOrArgChange: 30,
+        }
+    )
+
+    const eSignDocument = CommonApi.ESign.useStudentEsignDocument(
+        {
+            std: Number(student?.user?.id),
+            folder: Number(folder?.id),
+        },
+        {
+            skip: !student?.user?.id || !folder?.id,
+            refetchOnMountOrArgChange: true,
+        }
+    )
 
     const response = folder?.studentResponse?.[0]
 
     const folderStatus = response?.status
 
+    const onInitiateSigning = () => {
+        setModal(
+            <InitiateSigningModal
+                onCancel={() => {
+                    eSignDocument.refetch()
+                    setModal(null)
+                }}
+                rtoUser={rtoDetail?.data?.user}
+                courseId={course?.id}
+                folder={folder}
+            />
+        )
+    }
+
     return (
         <div
             className={`border-2 ${config.border} rounded-lg overflow-hidden hover:shadow-lg transition-all bg-gradient-to-r ${config.bg} to-white`}
         >
+            {modal}
             <div className="p-2.5">
                 <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-4 flex-1">
@@ -77,10 +131,10 @@ export const FolderCard = ({
                                         folderStatus === 'approved'
                                             ? 'success'
                                             : folderStatus === 'pending'
-                                            ? 'warning'
-                                            : folderStatus === 'rejected'
-                                            ? 'error'
-                                            : 'info'
+                                                ? 'warning'
+                                                : folderStatus === 'rejected'
+                                                    ? 'error'
+                                                    : 'info'
                                     }
                                     Icon={StatusIcon}
                                 />
@@ -136,12 +190,31 @@ export const FolderCard = ({
                                 <RejectAllFile folder={response} />
                             </>
                         )}
-                        <UploadDocument folder={folder} />
+                        {getTemplate?.isSuccess &&
+                            getTemplate?.data &&
+                            getTemplate?.data?.length > 0 &&
+                            (!eSignDocument?.data ||
+                                eSignDocument?.data?.length === 0) && (
+                                <Button
+                                    text="Initiate E-Sign"
+                                    onClick={() => onInitiateSigning()}
+                                    variant="primary"
+                                />
+                            )}
+                        <UploadDocument folder={folder} student={student} />
                     </div>
                 </div>
             </div>
 
-            {isOpened && <FolderFiles folder={folder} config={config} />}
+            {isOpened && (
+                <FolderFiles
+                    folder={folder}
+                    config={config}
+                    eSignDocument={eSignDocument}
+                    course={course}
+                    student={student}
+                />
+            )}
         </div>
     )
 }

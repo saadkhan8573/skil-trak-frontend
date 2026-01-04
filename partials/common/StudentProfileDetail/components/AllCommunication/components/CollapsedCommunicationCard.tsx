@@ -18,22 +18,21 @@ export const CollapsedCommunicationCard: React.FC<CommunicationCardProps> = ({
         <div className="bg-white rounded-lg border border-gray-200 mb-2 overflow-hidden">
             {item?.type !== 'workplaceHistory' && (
                 <div
-                    className="px-4 py-2.5 hover:bg-gray-50 transition-colors cursor-pointer"
+                    className="px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer"
                     onClick={() => setIsOpened(!isOpened)}
                 >
                     <div className="flex items-start justify-between">
                         <div className="flex items-start space-x-3 flex-1">
                             <div
-                                className={`text-2xl ${
-                                    getCommunicationIcon(item)?.bg
-                                }`}
+                                className={`text-2xl ${getCommunicationIcon(item)?.bg
+                                    }`}
                             >
                                 {getCommunicationIcon(item)?.icon}
                             </div>
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center justify-between">
                                     <Typography
-                                        variant="small"
+                                        variant="label"
                                         semibold
                                         color="text-gray-900 truncate"
                                     >
@@ -47,16 +46,15 @@ export const CollapsedCommunicationCard: React.FC<CommunicationCardProps> = ({
                                             {getCommunicationDate(item)}
                                         </Typography>
                                         <div
-                                            className={`transform transition-transform text-gray-400 ${
-                                                isOpened ? 'rotate-180' : ''
-                                            }`}
+                                            className={`transform transition-transform text-gray-400 ${isOpened ? 'rotate-180' : ''
+                                                }`}
                                         >
                                             <IoIosArrowDown />
                                         </div>
                                     </div>
                                 </div>
                                 <Typography
-                                    variant="small"
+                                    variant="label"
                                     color="text-gray-600 mt-1"
                                 >
                                     From:{' '}

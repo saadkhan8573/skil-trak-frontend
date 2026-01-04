@@ -28,6 +28,21 @@ export const placementRequestsEndPoints = (
         }),
         invalidatesTags: ['RTO'],
     }),
+    addManualNote: builder.mutation<any, any>({
+        query: ({ id, body }) => ({
+            url: `subadmin/workplace/${id}/custom/status-check-note/add`,
+            method: 'POST',
+            body,
+        }),
+        invalidatesTags: ['RTO'],
+    }),
+    confirmHighlightedTask: builder.mutation<any, any>({
+        query: (id) => ({
+            url: `rtos/course-configuration-detail/${id}/confirm`,
+            method: 'PATCH',
+        }),
+        invalidatesTags: ['RTO'],
+    }),
 
     // Details
     // rtos/student/:id/placement-profile/view
@@ -35,7 +50,7 @@ export const placementRequestsEndPoints = (
         query: (id) => ({
             url: `${PREFIX}placement-request/${id}/view`,
         }),
-        providesTags: ['RTO'],
+        providesTags: ['RTO', 'SubAdminStudents', 'SubAdminWorkplace'],
     }),
     //rtos/placement-request/:id/workplace-view
     getStudentPlacementIndustryDetails: builder.query<any, any>({

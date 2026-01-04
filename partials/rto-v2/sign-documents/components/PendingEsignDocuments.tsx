@@ -105,7 +105,7 @@ export const PendingEsignDocuments = () => {
                     className="bg-gradient-to-r from-red-500 to-red-600"
                     onClick={() =>
                         router.push(
-                            `/portals/rto/tasks/e-sign/${info?.row?.original?.id}`
+                            `/portals/rto/action-required/sign-documents/${info?.row?.original?.id}`
                         )
                     }
                 >

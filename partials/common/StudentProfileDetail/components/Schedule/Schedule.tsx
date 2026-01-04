@@ -4,6 +4,7 @@ import {
     Card,
     EmptyData,
     LoadingAnimation,
+    NoData,
     Select,
     ShowErrorNotifications,
     TechnicalError,
@@ -39,8 +40,8 @@ export const Schedule = ({
     const [addSchedule, setAddSchedule] = useState<boolean>(false)
     const { selectedWorkplace } = useWorkplaceQueries({ student })
     const router = useRouter()
-    const courses = SubAdminApi.Student.useCourses(Number(router.query?.id), {
-        skip: !router.query?.id || !isEntered,
+    const courses = SubAdminApi.Student.useCourses(studentId, {
+        skip: !studentId || !isEntered,
         refetchOnMountOrArgChange: 300,
     })
 
@@ -187,7 +188,7 @@ export const Schedule = ({
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-x-2">
+                                    <div className="flex items-center gap-x-2 mt-4 ml-4">
                                         <AuthorizedUserComponent
                                             excludeRoles={[UserRoles.OBSERVER]}
                                         >
@@ -283,7 +284,7 @@ export const Schedule = ({
                                             />
                                         </>
                                     ) : (
-                                        <EmptyData />
+                                        <NoData text="No schedule found" />
                                     )}
                                 </div>
                             </Card>

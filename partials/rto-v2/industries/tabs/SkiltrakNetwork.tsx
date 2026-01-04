@@ -7,13 +7,7 @@ import { PurchaseCreditsModal } from '../modals/PurchaseCreditsModal'
 import { RtoV2Api } from '@redux'
 import { Badge } from '@components'
 
-interface SkiltrakNetworkProps {
-    baseFilter: any
-}
-
-export const SkiltrakNetwork: React.FC<SkiltrakNetworkProps> = ({
-    baseFilter,
-}) => {
+export const SkiltrakNetwork = () => {
     const [showCreditPurchaseDialog, setShowCreditPurchaseDialog] =
         useState(false)
 
@@ -71,7 +65,7 @@ export const SkiltrakNetwork: React.FC<SkiltrakNetworkProps> = ({
                         <div className="p-5 text-center">
                             <Globe className="h-10 w-10 text-primaryNew mx-auto mb-2" />
                             <p className="text-2xl font-semibold mb-0.5">
-                                {counts?.allIndustries}
+                                {counts?.allPartnerIndustries}
                             </p>
                             <p className="text-sm text-muted-foreground">
                                 Available Industries
@@ -86,9 +80,11 @@ export const SkiltrakNetwork: React.FC<SkiltrakNetworkProps> = ({
                         <div className="p-5 text-center">
                             <Shield className="h-10 w-10 text-primaryNew mx-auto mb-2" />
                             <p className="text-2xl font-semibold mb-0.5">
-                                {((counts?.readyForPlacementIndustries! /
-                                    counts?.allIndustries!) *
-                                    100).toFixed(1)}
+                                {Math.round(
+                                    (counts?.skiltrakIndustriesReadyForPlacement! /
+                                        counts?.allPartnerIndustries!) *
+                                        100
+                                )}
                                 %
                             </p>
                             <p className="text-sm text-muted-foreground">
@@ -104,7 +100,7 @@ export const SkiltrakNetwork: React.FC<SkiltrakNetworkProps> = ({
                         <div className="p-5 text-center">
                             <Target className="h-10 w-10 text-primaryNew mx-auto mb-2" />
                             <p className="text-2xl font-semibold mb-0.5">
-                                {counts?.readyForPlacementIndustries}
+                                {counts?.skiltrakIndustriesReadyForPlacement}
                             </p>
                             <p className="text-sm text-muted-foreground">
                                 Matching Points

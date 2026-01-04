@@ -14,7 +14,7 @@ export function ContactBioButton() {
                 className="!bg-[#10B981] !text-white cursor-pointer hover:shadow-lg transition-all active:scale-95"
                 title="Contact & Bio"
             >
-                Contact & Bio
+                Bio
             </Badge>
 
             <ContactBiographyModal

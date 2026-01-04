@@ -59,9 +59,11 @@ export const IndustryFilterBar = ({
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <TextInput
                         name="search"
-                        placeholder="Search industries by name, location, or ABN..."
+                        placeholder="Search industries by name..."
                         value={searchTerm}
-                        onChange={(e: any) => onFilterChange('searchTerm', e.target.value)}
+                        onChange={(e: any) =>
+                            onFilterChange('searchTerm', e.target.value)
+                        }
                         className="pl-10"
                         showError={false}
                     />
@@ -74,7 +76,12 @@ export const IndustryFilterBar = ({
                             value={coursesOptions.find(
                                 (opt) => opt.value === courseId
                             )}
-                            onChange={(option: any) => onFilterChange('courseId', option?.value || 'all')}
+                            onChange={(option: any) =>
+                                onFilterChange(
+                                    'courseId',
+                                    option?.value || 'all'
+                                )
+                            }
                             placeholder="Course"
                             className="min-w-[160px]"
                             showError={false}
@@ -87,7 +94,12 @@ export const IndustryFilterBar = ({
                             value={stateOptions.find(
                                 (opt) => opt.value === stateFilter
                             )}
-                            onChange={(option: any) => onFilterChange('stateFilter', option?.value || 'all')}
+                            onChange={(option: any) =>
+                                onFilterChange(
+                                    'stateFilter',
+                                    option?.value || 'all'
+                                )
+                            }
                             placeholder="State"
                             showError={false}
                         />
@@ -99,7 +111,12 @@ export const IndustryFilterBar = ({
                             value={readinessOptions.find(
                                 (opt) => opt.value === placementReady
                             )}
-                            onChange={(option: any) => onFilterChange('placementReady', option?.value || 'all')}
+                            onChange={(option: any) =>
+                                onFilterChange(
+                                    'placementReady',
+                                    option?.value || 'all'
+                                )
+                            }
                             placeholder="Readiness"
                             showError={false}
                         />
@@ -112,62 +129,71 @@ export const IndustryFilterBar = ({
                 stateFilter !== 'all' ||
                 placementReady !== 'all' ||
                 filterStatus !== 'all') && (
-                    <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border/10">
-                        <span className="text-xs font-medium text-muted-foreground mr-1">
-                            Active Filters:
-                        </span>
-                        {searchTerm && (
-                            <FilterTag
-                                label={`Search: ${searchTerm}`}
-                                onRemove={() => onFilterChange('searchTerm', '')}
-                            />
-                        )}
-                        {courseId !== 'all' && (
-                            <FilterTag
-                                label={`Course: ${coursesOptions.find((c) => c.value === courseId)
+                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border/10">
+                    <span className="text-xs font-medium text-muted-foreground mr-1">
+                        Active Filters:
+                    </span>
+                    {searchTerm && (
+                        <FilterTag
+                            label={`Search: ${searchTerm}`}
+                            onRemove={() => onFilterChange('searchTerm', '')}
+                        />
+                    )}
+                    {courseId !== 'all' && (
+                        <FilterTag
+                            label={`Course: ${
+                                coursesOptions.find((c) => c.value === courseId)
                                     ?.label || courseId
-                                    }`}
-                                onRemove={() => onFilterChange('courseId', 'all')}
-                            />
-                        )}
-                        {stateFilter !== 'all' && (
-                            <FilterTag
-                                label={`State: ${stateFilter}`}
-                                onRemove={() => onFilterChange('stateFilter', 'all')}
-                            />
-                        )}
-                        {placementReady !== 'all' && (
-                            <FilterTag
-                                label={`Readiness: ${readinessOptions.find(
+                            }`}
+                            onRemove={() => onFilterChange('courseId', 'all')}
+                        />
+                    )}
+                    {stateFilter !== 'all' && (
+                        <FilterTag
+                            label={`State: ${stateFilter}`}
+                            onRemove={() =>
+                                onFilterChange('stateFilter', 'all')
+                            }
+                        />
+                    )}
+                    {placementReady !== 'all' && (
+                        <FilterTag
+                            label={`Readiness: ${
+                                readinessOptions.find(
                                     (r) => r.value === placementReady
                                 )?.label || placementReady
-                                    }`}
-                                onRemove={() => onFilterChange('placementReady', 'all')}
-                            />
-                        )}
-                        {filterStatus !== 'all' && (
-                            <FilterTag
-                                label={`Status: ${statusOptions.find(
+                            }`}
+                            onRemove={() =>
+                                onFilterChange('placementReady', 'all')
+                            }
+                        />
+                    )}
+                    {filterStatus !== 'all' && (
+                        <FilterTag
+                            label={`Status: ${
+                                statusOptions.find(
                                     (s) => s.value === filterStatus
                                 )?.label || filterStatus
-                                    }`}
-                                onRemove={() => onFilterChange('filterStatus', 'all')}
-                            />
-                        )}
-                        <button
-                            onClick={() => {
-                                onFilterChange('searchTerm', '')
-                                onFilterChange('courseId', 'all')
-                                onFilterChange('stateFilter', 'all')
+                            }`}
+                            onRemove={() =>
                                 onFilterChange('filterStatus', 'all')
-                                onFilterChange('placementReady', 'all')
-                            }}
-                            className="text-xs font-medium text-primary hover:underline hover:text-primary/80 transition-colors ml-1"
-                        >
-                            Clear All
-                        </button>
-                    </div>
-                )}
+                            }
+                        />
+                    )}
+                    <button
+                        onClick={() => {
+                            onFilterChange('searchTerm', '')
+                            onFilterChange('courseId', 'all')
+                            onFilterChange('stateFilter', 'all')
+                            onFilterChange('filterStatus', 'all')
+                            onFilterChange('placementReady', 'all')
+                        }}
+                        className="text-xs font-medium text-primary hover:underline hover:text-primary/80 transition-colors ml-1"
+                    >
+                        Clear All
+                    </button>
+                </div>
+            )}
         </div>
     )
 }

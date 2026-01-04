@@ -479,6 +479,7 @@ const {
     useRescheduleAppointmentMutation,
     useGetAppointmentCompletionStatusQuery,
     useGetAppointmentCompletionStatusIndustryQuery,
+    useGetStudentAgreementAndScheduleStatusQuery,
 
     // ------ Notifications ------ //
     useGetNotificationsQuery,
@@ -561,7 +562,9 @@ const {
     useListingAutomationDetailsQuery,
     useUpdateEligibilityListingMutation,
     useGetMapFutureIndustriesInRadiusQuery,
+    useGetFutureIndustryListingByStateQuery,
     useGetFindWorkplacesCountQuery,
+    useGetFindWorkplacesCountByStatesQuery,
     useImportIndustriesListMutation,
     useRemoveFutureIndustryMutation,
     useUpdateFutureIndustryNoteMutation,
@@ -849,6 +852,8 @@ export const CommonApi = {
         useAppointmentCompletionStatus: useGetAppointmentCompletionStatusQuery,
         useAppointmentCompletionStatusIndustry:
             useGetAppointmentCompletionStatusIndustryQuery,
+        useStudentAgreementAndScheduleStatus:
+            useGetStudentAgreementAndScheduleStatusQuery,
     },
     Notifications: {
         useNotifications: useGetNotificationsQuery,
@@ -924,6 +929,7 @@ export const CommonApi = {
         listingAutomationDetails: useListingAutomationDetailsQuery,
         updateEligibilityListing: useUpdateEligibilityListingMutation,
         useMapFutureIndustriesInRadius: useGetMapFutureIndustriesInRadiusQuery,
+        listingByState: useGetFutureIndustryListingByStateQuery,
         importIndustriesList: useImportIndustriesListMutation,
         useGetAllFindWorkplaces: useGetAllFindWorkplacesQuery,
         useGetFindWorkplacesCount: useGetFindWorkplacesCountQuery,
@@ -936,6 +942,7 @@ export const CommonApi = {
         importListWithoutEmail: useImportIndustriesWithoutEmailListMutation,
         useDepartmentFutureIndustriesList:
             useGetDepartmentFutureIndustriesListQuery,
+        findWpCountsByStates: useGetFindWorkplacesCountByStatesQuery,
         useChangePendingIndustryStatus: useChangePendingIndustryStatusMutation,
         useDepartmentApprovedIndustryList:
             useGetDepartmentApprovedIndustryListQuery,

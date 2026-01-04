@@ -6,6 +6,7 @@ interface BadgeProps {
     className?: string
     children?: ReactNode
     text?: string
+    iconPlacement?: 'left' | 'right'
     Icon?: any
     variant?:
         | 'primary'
@@ -46,6 +47,7 @@ export const Badge = ({
     loading,
     outline,
     Icon,
+    iconPlacement = 'left',
     className,
     children,
     title,
@@ -112,8 +114,13 @@ export const Badge = ({
                 />
             ) : (
                 <div className="flex items-center gap-x-1">
-                    {Icon && <Icon className="text-xs" size={12} />}{' '}
+                    {Icon && iconPlacement === 'left' && (
+                        <Icon className="text-xs" size={12} />
+                    )}
                     <span>{text || children}</span>
+                    {Icon && iconPlacement === 'right' && (
+                        <Icon className="text-xs" size={12} />
+                    )}
                 </div>
             )}
         </div>

@@ -18,6 +18,8 @@ import {
     ArchivedIndustry,
     BlockedIndustry,
     FilteredIndustry,
+    NonPartnerIndustries,
+    PartnerIndustries,
     PendingIndustry,
     RejectedIndustry,
     SnoozedIndustry,
@@ -25,6 +27,7 @@ import {
 import { AdminApi } from '@queries'
 import { checkFilteredDataLength } from '@utils'
 import { useRouter } from 'next/router'
+import { PedingCourseApprovalIndustries } from '@partials/common/industries'
 
 const filterKeys = [
     'abn',
@@ -86,6 +89,18 @@ const IndustryList: NextPageWithLayout = () => {
     }, [router])
 
     const tabs: TabProps[] = [
+        // {
+        //     label: 'Pending',
+        //     href: {
+        //         pathname: 'industry',
+        //         query: { tab: UserStatus.Pending, page: 1, pageSize: 50 },
+        //     },
+        //     badge: {
+        //         text: data?.pending,
+        //         loading: isLoading,
+        //     },
+        //     element: <PendingIndustry />,
+        // },
         {
             label: 'Pending',
             href: {
@@ -93,10 +108,10 @@ const IndustryList: NextPageWithLayout = () => {
                 query: { tab: UserStatus.Pending, page: 1, pageSize: 50 },
             },
             badge: {
-                text: data?.pending,
+                text: data?.pendingCourseApprovals,
                 loading: isLoading,
             },
-            element: <PendingIndustry />,
+            element: <PedingCourseApprovalIndustries />,
         },
         {
             label: 'Approved',
@@ -123,6 +138,30 @@ const IndustryList: NextPageWithLayout = () => {
         //     },
         //     element: <EmailVerifiedIndustries />,
         // },
+        {
+            label: 'Partner Industries',
+            href: {
+                pathname: 'industry',
+                query: { tab: 'partner', page: 1, pageSize: 50 },
+            },
+            badge: {
+                text: data?.partnerIndustries,
+                loading: isLoading,
+            },
+            element: <PartnerIndustries />,
+        },
+        {
+            label: 'Non Partner Industries',
+            href: {
+                pathname: 'industry',
+                query: { tab: 'non-partner', page: 1, pageSize: 50 },
+            },
+            badge: {
+                text: data?.nonPartnerIndustries,
+                loading: isLoading,
+            },
+            element: <NonPartnerIndustries />,
+        },
         {
             label: 'Snoozed',
             href: {

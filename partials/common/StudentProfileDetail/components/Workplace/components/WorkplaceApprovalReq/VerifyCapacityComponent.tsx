@@ -73,7 +73,7 @@ export const VerifyCapacityComponent = ({
                                 variant="primaryNew"
                                 text="Confirm through email"
                                 disabled={
-                                    role === UserRoles.RTO ||
+                                    // role === UserRoles.RTO ||
                                     wpReqApproval?.isEmailSent
                                 }
                                 onClick={onWorkplaceConfirmCapacityThroughMail}
@@ -88,13 +88,13 @@ export const VerifyCapacityComponent = ({
                             text="Verify"
                             variant="success"
                             Icon={GiCheckMark}
-                            disabled={role === UserRoles.RTO}
+                            // disabled={role === UserRoles.RTO}
                             onClick={onWorkplaceConfirmCapacity}
                         />
                         <Button
                             text="Skip this workplace"
                             variant="primary"
-                            disabled={role === UserRoles.RTO}
+                            // disabled={role === UserRoles.RTO}
                             onClick={onSkipCurrentWPApplyAnotherWP}
                         />
                     </div>

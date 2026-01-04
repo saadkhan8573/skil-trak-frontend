@@ -113,7 +113,7 @@ export const StudentProvidedWorkplaceTab = () => {
             cell: (info) => (
                 <StudentCellInfo
                     link={`/portals/rto/students-and-placements/placement-requests/${info?.row?.original?.id}/${info?.row?.original?.student?.id}`}
-                    student={info.row.original?.student}
+                    student={info?.row?.original?.student}
                     call
                 />
             ),
@@ -123,17 +123,27 @@ export const StudentProvidedWorkplaceTab = () => {
             accessorKey: 'progress',
             header: () => <span>Status</span>,
             cell: ({ row }) => {
-                const config = statusConfig[row?.original?.currentStatus]
-                const StatusIcon = config?.icon
-                return (
-                    <>
-                        <Badge
-                            className={`${config?.bgColor} ${config?.color} ${config?.borderColor} border-2 whitespace-nowrap px-2.5 py-1 shadow-sm hover:shadow-md transition-all font-semibold text-xs w-fit`}
-                        >
-                            <StatusIcon className="h-3.5 w-3.5 mr-1.5" />
-                            {config?.label}
+                const status = row?.original?.currentStatus
+                const config = statusConfig[status]
+
+                if (!config) {
+                    return (
+                        <Badge className="bg-muted text-muted-foreground border px-2.5 py-1 text-xs">
+                            --
                         </Badge>
-                    </>
+                    )
+                }
+                const StatusIcon = config.icon
+
+                return (
+                    <Badge
+                        className={`${config.bgColor} ${config.color} ${config.borderColor} border-2 whitespace-nowrap px-2.5 py-1 shadow-sm font-semibold text-xs w-fit`}
+                    >
+                        {StatusIcon && (
+                            <StatusIcon className="h-3.5 w-3.5 mr-1.5" />
+                        )}
+                        {config?.label}
+                    </Badge>
                 )
             },
         },

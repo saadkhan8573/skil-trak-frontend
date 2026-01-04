@@ -1,6 +1,6 @@
 import { Badge } from '@components'
 import { Appointment } from '@types'
-import { Calendar, CheckCircle, Clock } from 'lucide-react'
+import { Calendar, CheckCircle, Clock, User, Users, XCircle } from 'lucide-react'
 import moment from 'moment'
 import React from 'react'
 
@@ -33,11 +33,55 @@ export const CompletedAppointmentCard = ({
                             )}
                         </div>
                     </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 pt-3 border-t border-slate-200/50">
+                        <div className="flex items-center gap-2 text-slate-600 text-sm">
+                            <User className="w-4 h-4 text-[#044866]" />
+                            <span className="font-medium text-[12px]">By:</span>
+                            <span className="text-[12px]">
+                                {appointment?.appointmentBy?.name}{' '}
+                                {appointment?.appointmentBy?.role && (
+                                    <span className="text-slate-400">
+                                        ({appointment?.appointmentBy?.role})
+                                    </span>
+                                )}
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-slate-600 text-sm">
+                            <Users className="w-4 h-4 text-[#044866]" />
+                            <span className="font-medium text-[12px]">For:</span>
+                            <span className="text-[12px]">
+                                {appointment?.appointmentFor?.name}{' '}
+                                {appointment?.appointmentFor?.role && (
+                                    <span className="text-slate-400">
+                                        ({appointment?.appointmentFor?.role})
+                                    </span>
+                                )}
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                <Badge
-                    className="bg-emerald-100 text-emerald-700 border border-emerald-200"
-                    text="✓ Completed"
-                />
+                <div className="flex flex-col items-end gap-2">
+                    <Badge
+                        className="bg-emerald-100 text-emerald-700 border border-emerald-200"
+                        text="✓ Completed"
+                    />
+                    {appointment?.isSuccessfull ? (
+                        <Badge
+                            variant="success"
+                            text="Successful"
+                            Icon={CheckCircle}
+                            size="xs"
+                        />
+                    ) : (
+                        <Badge
+                            variant="error"
+                            text="Unsuccessful"
+                            Icon={XCircle}
+                            size="xs"
+                        />
+                    )}
+                </div>
             </div>
         </div>
     )

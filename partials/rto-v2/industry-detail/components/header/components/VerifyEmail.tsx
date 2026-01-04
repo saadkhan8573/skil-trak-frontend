@@ -19,7 +19,7 @@ export function VerifyEmail() {
     }
 
     return (
-        <>
+        <div id={"email-verified"}>
             <Badge
                 onClick={() => setShowModal(true)}
                 title={isEmailVerified ? 'Email verified' : 'Verify email'}
@@ -37,6 +37,6 @@ export function VerifyEmail() {
                 userName={industryUserName}
                 onOpenChange={setShowModal}
             />
-        </>
+        </div>
     )
 }

@@ -1,13 +1,13 @@
-import { ConfigTabs, TabConfig } from '@components'
+import { ConfigTabs, LoadingAnimation, TabConfig } from '@components'
+import { RtoV2Api } from '@redux'
+import { debounce } from 'lodash'
 import { Building2 } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
-import { debounce } from 'lodash'
 import { IndustryCounts, IndustryFilterBar, IndustryHeader } from './component'
 import { AddIndustryModal } from './modals'
 import {
     ArchivedIndustries,
     NonPartnerIndustries,
-    PendingIndustriesTab,
     SkiltrakNetwork,
     YourPartnerIndustries,
 } from './tabs'
@@ -20,6 +20,12 @@ export const RtoUpdatedIndustries = () => {
         filterStatus: 'all',
         stateFilter: 'all',
         placementReady: 'all',
+    })
+
+    const industries = RtoV2Api.Industries.getAllIndustriesList({
+        search: '',
+        skip: 0,
+        limit: 1,
     })
 
     const [debouncedSearch, setDebouncedSearch] = useState(filters.searchTerm)
@@ -43,7 +49,6 @@ export const RtoUpdatedIndustries = () => {
         }))
     }
 
-
     const baseFilter = {
         ...(debouncedSearch && { name: debouncedSearch }),
         ...(filters.courseId !== 'all' && { courseId: filters.courseId }),
@@ -58,16 +63,16 @@ export const RtoUpdatedIndustries = () => {
 
     const tabs: TabConfig[] = [
         {
-            value: 'non-partner-industries',
-            label: 'Non-Partner Industries',
-            icon: Building2,
-            component: () => <NonPartnerIndustries baseFilter={baseFilter} />,
-        },
-        {
             value: 'partner-industries',
             label: 'Your Partner Industries',
             icon: Building2,
             component: () => <YourPartnerIndustries baseFilter={baseFilter} />,
+        },
+        {
+            value: 'non-partner-industries',
+            label: 'Non-Partner Industries',
+            icon: Building2,
+            component: () => <NonPartnerIndustries baseFilter={baseFilter} />,
         },
         // {
         //     value: 'pending-industries',
@@ -79,7 +84,7 @@ export const RtoUpdatedIndustries = () => {
             value: 'skiltrak-network',
             label: 'Skiltrak Network',
             icon: Building2,
-            component: () => <SkiltrakNetwork baseFilter={baseFilter} />,
+            component: () => <SkiltrakNetwork />,
         },
         {
             value: 'archived-industries',
@@ -108,12 +113,21 @@ export const RtoUpdatedIndustries = () => {
                     </div>
                 )}
             </TabNavigation> */}
-            <ConfigTabs
-                tabs={tabs}
-                className="!rounded-none"
-                tabsClasses="!rounded-md !p-1"
-                tabsTriggerClasses="py-1.5 !rounded-md"
-            />
+
+            {industries.isLoading ? (
+                <LoadingAnimation />
+            ) : industries?.data &&
+              industries?.data?.data?.length > 0 &&
+              industries?.isSuccess ? (
+                <ConfigTabs
+                    tabs={tabs}
+                    className="!rounded-none"
+                    tabsClasses="!rounded-md !p-1"
+                    tabsTriggerClasses="py-1.5 !rounded-md"
+                />
+            ) : (
+                <SkiltrakNetwork />
+            )}
 
             {addIndustryOpen && (
                 <AddIndustryModal onClose={() => setAddIndustryOpen(false)} />

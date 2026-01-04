@@ -115,16 +115,6 @@ export function BasicDetails() {
                     <div className="px-2.5 pb-2.5 pt-1.5 border-t border-[#E2E8F0] bg-[#F8FAFB]/50">
                         <div className="space-y-1.5 grid grid-cols-1 lg:grid-cols-2 gap-1.5">
                             <CardItem
-                                Icon={Phone}
-                                label="Phone"
-                                value={industryDetail?.phoneNumber || ''}
-                            />
-                            <CardItem
-                                Icon={Mail}
-                                label="Email"
-                                value={industryDetail?.user?.email || ''}
-                            />
-                            <CardItem
                                 Icon={Globe}
                                 label="Website"
                                 value={industryDetail?.website || ''}

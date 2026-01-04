@@ -139,9 +139,7 @@ export const PendingIndustry = () => {
     const columns: ColumnDef<Industry>[] = [
         {
             accessorKey: 'user.name',
-            cell: (info) => {
-                return <IndustryCell industry={info.row.original} />
-            },
+            cell: (info) => <IndustryCell industry={info.row.original} />,
             header: () => <span>Business Name</span>,
         },
         {
@@ -163,14 +161,13 @@ export const PendingIndustry = () => {
                 )
             },
         },
-        {
-            accessorKey: 'sectors',
-            header: () => <span>Sectors</span>,
-            cell: (info) => {
-                return <SectorCell industry={info.row.original} />
-            },
-        },
-
+        // {
+        //     accessorKey: 'sectors',
+        //     header: () => <span>Sectors</span>,
+        //     cell: (info) => {
+        //         return <SectorCell industry={info.row.original} />
+        //     },
+        // },
         {
             accessorKey: 'channel',
             header: () => <span>Registered By</span>,

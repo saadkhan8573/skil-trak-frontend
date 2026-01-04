@@ -34,11 +34,10 @@ export const FilteredSearchIndustries = ({
                 <Card noPadding>
                     {industries?.isLoading || industries?.isFetching ? (
                         <LoadingAnimation height="h-[60vh]" />
-                    ) : industries?.data &&
-                      industries?.data?.paginatedResults?.data?.length ? (
+                    ) : industries?.data && industries?.data?.data?.length ? (
                         <Table
                             columns={columns as any}
-                            data={industries.data?.paginatedResults?.data}
+                            data={industries.data?.data}
                             quickActions={quickActionsElements}
                             enableRowSelection
                         >
@@ -54,15 +53,12 @@ export const FilteredSearchIndustries = ({
                                             {pageSize(
                                                 itemPerPage,
                                                 setItemPerPage,
-                                                industries.data
-                                                    ?.paginatedResults?.data
-                                                    ?.length
+                                                industries.data?.data?.length
                                             )}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination(
                                                     industries?.data
-                                                        ?.paginatedResults
                                                         ?.pagination,
                                                     setPage
                                                 )}
@@ -71,21 +67,19 @@ export const FilteredSearchIndustries = ({
                                         <div className="px-6 overflow-auto custom-scrollbar">
                                             {table}
                                         </div>
-                                        {industries?.data?.paginatedResults
-                                            ?.data?.length > 10 && (
+                                        {industries?.data?.data?.length >
+                                            10 && (
                                             <div className="px-6 py-2 mb-2 flex justify-between">
                                                 {pageSize(
                                                     itemPerPage,
                                                     setItemPerPage,
-                                                    industries?.data
-                                                        ?.paginatedResults?.data
+                                                    industries?.data?.data
                                                         ?.length
                                                 )}
                                                 <div className="flex gap-x-2">
                                                     {quickActions}
                                                     {pagination(
                                                         industries?.data
-                                                            ?.paginatedResults
                                                             ?.pagination,
                                                         setPage
                                                     )}

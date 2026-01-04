@@ -10,6 +10,7 @@ import { LoadingAnimation, TechnicalError } from '@components'
 import {
     RtoCoordinatorsIndustries,
     SubadminIndustries,
+    SubAdminUpdatedIndustries,
 } from '@partials/sub-admin/Industries'
 //query
 import { SubAdminApi } from '@queries'
@@ -29,7 +30,7 @@ const Industries: NextPageWithLayout = (props: Props) => {
                     profile?.data?.isAssociatedWithRto ? (
                         <RtoCoordinatorsIndustries />
                     ) : (
-                        <SubadminIndustries />
+                        <SubAdminUpdatedIndustries />
                     )
                 ) : null}
             </div>

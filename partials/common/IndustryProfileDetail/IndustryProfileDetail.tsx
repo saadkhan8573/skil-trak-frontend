@@ -21,9 +21,6 @@ import {
     IndustrySectorRequiredDocs,
     IndustryShiftingHours,
     IndustryStudents,
-    InterviewAvailability,
-    MonthlySchedule,
-    WeeklySchedule,
 } from './components'
 import { CourseManagement } from './components/CourseManagement'
 import { StudentSchedule } from './components/StudentSchedule'

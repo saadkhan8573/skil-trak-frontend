@@ -116,7 +116,7 @@ export const statusConfig: any = {
         bgColor: 'bg-rose-50',
         borderColor: 'border-rose-200',
     },
-    agreement_signed: {
+    AgreementSigned: {
         label: 'Agreement & Eligibility (Signed)',
         icon: FileCheck,
         color: 'text-emerald-600',

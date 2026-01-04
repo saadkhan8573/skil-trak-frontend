@@ -21,6 +21,7 @@ import {
 } from '@utils'
 
 import {
+    AddressFieldInput,
     BackButton,
     Button,
     Card,
@@ -333,7 +334,18 @@ export const AddCustomIndustryForm = ({
                                 </div> */}
                                 <div className="grid grid-cols-4 gap-x-8">
                                     <div className="col-span-3">
-                                        <TextInput
+                                        <AddressFieldInput
+                                            placesSuggetions={{
+                                                placesSuggetions:
+                                                    onSuburbClicked,
+                                                setIsPlaceSelected:
+                                                    setOnSuburbClicked,
+                                            }}
+                                            onChange={() => {
+                                                setOnSuburbClicked(false)
+                                            }}
+                                        />
+                                        {/* <TextInput
                                             label={'Primary Address'}
                                             name={'addressLine1'}
                                             placeholder={
@@ -376,7 +388,7 @@ export const AddCustomIndustryForm = ({
                                                 setIsPlaceSelected:
                                                     setOnSuburbClicked,
                                             }}
-                                        />
+                                        /> */}
                                     </div>
                                     <TextInput
                                         label={'Zip Code'}

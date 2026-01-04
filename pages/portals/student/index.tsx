@@ -45,6 +45,7 @@ import { processSubmission } from '@partials/common/StudentProfileDetail/feedbac
 import { FeedbackForm } from '@partials/common/StudentProfileDetail/feedbackForm/FeedbackForm'
 import { IndustryRatingForm } from '@partials/student'
 import { UponAppointmentCompletionModal } from '@partials/common/StudentProfileDetail/components'
+import { StudentWpScheduleModal } from '@partials/student/Schedule/modal'
 
 const StudentDashboard: NextPageWithLayout = () => {
     const [modal, setModal] = useState<any | null>(null)
@@ -64,9 +65,16 @@ const StudentDashboard: NextPageWithLayout = () => {
     const onClose = () => {
         setModal(null)
     }
+    const { data, isLoading } = useGetStudentProfileDetailQuery()
     const appointmentCompletion =
         CommonApi.Appointments.useAppointmentCompletionStatus({})
-
+    const agreementSignedAndSchedule =
+        CommonApi.Appointments.useStudentAgreementAndScheduleStatus()
+    console.log('agreementSignedAndSchedule', agreementSignedAndSchedule?.data)
+    // agreementSignedAndSchedule?.data
+    const uponAgreementSignedAndNoSchedule = () => {
+        setModal(<StudentWpScheduleModal student={data} onClose={onClose} />)
+    }
     const uponCompletionAppointment = () => {
         setModal(
             <UponAppointmentCompletionModal
@@ -85,6 +93,14 @@ const StudentDashboard: NextPageWithLayout = () => {
             uponCompletionAppointment()
         }
     }, [appointmentCompletion?.data])
+    useEffect(() => {
+        if (
+            agreementSignedAndSchedule.isSuccess &&
+            !agreementSignedAndSchedule?.data
+        ) {
+            uponAgreementSignedAndNoSchedule()
+        }
+    }, [agreementSignedAndSchedule?.data])
     const onPlacementFeedback = (courseId: any) => {
         setModal(
             <GlobalModal>
@@ -113,7 +129,6 @@ const StudentDashboard: NextPageWithLayout = () => {
         handleMediaQueryChange
     )
 
-    const { data, isLoading } = useGetStudentProfileDetailQuery()
     const { data: averageRating } =
         CommonApi.Feedback.useUserReviewForCoordinator()
 

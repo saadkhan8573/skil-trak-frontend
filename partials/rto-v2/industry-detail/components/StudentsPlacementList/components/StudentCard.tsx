@@ -46,6 +46,7 @@ export function StudentCard({ student }: StudentCardProps) {
         completedCount,
         totalCount,
         statusArrays,
+        currentStep,
     } = useStatusInfo({
         workplace: student?.workplace?.[0],
         workIndustry: student?.workplace?.[0]
@@ -105,20 +106,20 @@ export function StudentCard({ student }: StudentCardProps) {
                                 </span>
                             </div>
                             <p className="text-[9px] text-[#64748B]">
-                                Workflow Progress
+                                {currentStep?.label}
                             </p>
                         </div>
 
                         {/* Actions Menu */}
                         <div className="relative">
-                            <button
+                            {/* <button
                                 onClick={() =>
                                     setShowActionsMenu(!showActionsMenu)
                                 }
                                 className="w-6 h-6 bg-[#F8FAFB] hover:bg-[#E8F4F8] rounded-md flex items-center justify-center transition-all duration-300"
                             >
                                 <MoreVertical className="w-3 h-3 text-[#64748B]" />
-                            </button>
+                            </button> */}
 
                             {/* Actions Dropdown */}
                             {showActionsMenu && (

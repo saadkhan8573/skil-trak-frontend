@@ -29,7 +29,6 @@ import { RiLockPasswordFill } from 'react-icons/ri'
 import { useActionModals } from './hooks'
 
 export const EmailVerifiedIndustries = () => {
-
     const router = useRouter()
     const [itemPerPage, setItemPerPage] = useState(30)
     const [page, setPage] = useState(1)
@@ -77,10 +76,10 @@ export const EmailVerifiedIndustries = () => {
         {
             ...(role === UserRoles.ADMIN
                 ? {
-                    text: 'View Password',
-                    onClick: (industry: Industry) => onViewPassword(industry),
-                    Icon: RiLockPasswordFill,
-                }
+                      text: 'View Password',
+                      onClick: (industry: Industry) => onViewPassword(industry),
+                      Icon: RiLockPasswordFill,
+                  }
                 : {}),
         },
         {
@@ -152,11 +151,11 @@ export const EmailVerifiedIndustries = () => {
                 )
             },
         },
-        {
-            accessorKey: 'sectors',
-            header: () => <span>Sectors</span>,
-            cell: (info) => <SectorCell industry={info?.row?.original} />,
-        },
+        // {
+        //     accessorKey: 'sectors',
+        //     header: () => <span>Sectors</span>,
+        //     cell: (info) => <SectorCell industry={info?.row?.original} />,
+        // },
         {
             accessorKey: 'suburb',
             header: () => <span>Suburb</span>,
@@ -253,7 +252,7 @@ export const EmailVerifiedIndustries = () => {
             <div className="flex flex-col gap-y-4 mb-32">
                 <PageHeading
                     title={'Approved Industries'}
-                // subtitle={'List of Approved Industries'}
+                    // subtitle={'List of Approved Industries'}
                 >
                     {/* {data && data?.data?.length ? (
                         <Button

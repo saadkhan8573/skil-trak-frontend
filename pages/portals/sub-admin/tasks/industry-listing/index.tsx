@@ -14,6 +14,7 @@ import { useContextBar, useSubadminProfile } from '@hooks'
 import { SubAdminLayout } from '@layouts'
 import {
     ActiveIndustries,
+    ActiveIndustriesByState,
     AddIndustry,
     DepartmentFutureIndustries,
     RunListingAutomation,
@@ -62,7 +63,7 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
             .trim()
     }, [filter])
 
-    const filteredIndustries = commonApi.useGetAllFindWorkplacesQuery(
+    const filteredIndustries = CommonApi.FindWorkplace.listingByState(
         {
             search: searchString,
             skip: itemPerPage * page - itemPerPage,
@@ -74,7 +75,7 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
         }
     )
 
-    const count = CommonApi.FindWorkplace.useGetFindWorkplacesCount()
+    const count = CommonApi.FindWorkplace.findWpCountsByStates()
 
     const onSetIndustryData = useCallback((data: any) => {
         setIndustryData(data)
@@ -93,7 +94,9 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
                     loading: count?.isLoading,
                 },
                 element: (
-                    <ActiveIndustries onSetIndustryData={onSetIndustryData} />
+                    <ActiveIndustriesByState
+                        onSetIndustryData={onSetIndustryData}
+                    />
                 ),
             },
             {
@@ -114,39 +117,39 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
             },
         ]
 
-        if (isHod) {
-            baseTabs.splice(1, 0, {
-                label: 'Department',
-                href: {
-                    pathname: 'industry-listing',
-                    query: { tab: 'department', page: 1, pageSize: 50 },
-                },
-                badge: {
-                    text: count?.data?.department,
-                    loading: count?.isLoading,
-                },
-                element: (
-                    <DepartmentFutureIndustries
-                        onSetIndustryData={onSetIndustryData}
-                    />
-                    // PendingIndustries
-                ),
-            })
-            // baseTabs.push({
-            //     label: 'Pending Industries',
-            //     href: {
-            //         pathname: 'industry-listing',
-            //         query: { tab: 'pending', page: 1, pageSize: 50 },
-            //     },
-            //     badge: {
-            //         text: count?.data?.pending,
-            //         loading: count?.isLoading,
-            //     },
-            //     element: (
-            //         <PendingIndustries  />
-            //     ),
-            // })
-        }
+        // if (isHod) {
+        //     baseTabs.splice(1, 0, {
+        //         label: 'Department',
+        //         href: {
+        //             pathname: 'industry-listing',
+        //             query: { tab: 'department', page: 1, pageSize: 50 },
+        //         },
+        //         badge: {
+        //             text: count?.data?.department,
+        //             loading: count?.isLoading,
+        //         },
+        //         element: (
+        //             <DepartmentFutureIndustries
+        //                 onSetIndustryData={onSetIndustryData}
+        //             />
+        //             // PendingIndustries
+        //         ),
+        //     })
+        //     // baseTabs.push({
+        //     //     label: 'Pending Industries',
+        //     //     href: {
+        //     //         pathname: 'industry-listing',
+        //     //         query: { tab: 'pending', page: 1, pageSize: 50 },
+        //     //     },
+        //     //     badge: {
+        //     //         text: count?.data?.pending,
+        //     //         loading: count?.isLoading,
+        //     //     },
+        //     //     element: (
+        //     //         <PendingIndustries  />
+        //     //     ),
+        //     // })
+        // }
 
         return baseTabs
     }, [count, onSetIndustryData, isHod])
@@ -248,7 +251,7 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
                                         </div>
                                         <div className="flex items-center gap-x-2 mt-3">
                                             <FigureCard
-                                                count={count?.data?.all}
+                                                count={count?.data?.all!}
                                                 loading={count?.isLoading}
                                                 title={'All Industries'}
                                                 imageUrl={
@@ -258,7 +261,7 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
                                             <FigureCard
                                                 count={
                                                     count?.data
-                                                        ?.myAddedIndustries
+                                                        ?.myAddedIndustries!
                                                 }
                                                 loading={count?.isLoading}
                                                 title={'My Added Industries'}
@@ -268,7 +271,7 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
                                                 link="/portals/sub-admin/tasks/industry-listing?tab=all&myListing=true"
                                             />
                                             <FigureCard
-                                                count={count?.data?.signedUp}
+                                                count={count?.data?.signedUp!}
                                                 loading={count?.isLoading}
                                                 title={'Signed Up Industries'}
                                                 imageUrl={
@@ -280,7 +283,7 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
                                             />
                                             <FigureCard
                                                 count={
-                                                    count?.data?.newlyCreated
+                                                    count?.data?.newlyCreated!
                                                 }
                                                 loading={count?.isLoading}
                                                 title={'Today Added Industries'}
@@ -289,7 +292,7 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
                                                 }
                                             />
                                             <FigureCard
-                                                count={count?.data?.favourite}
+                                                count={count?.data?.favourite!}
                                                 loading={count?.isLoading}
                                                 title={'Favourite Industries'}
                                                 imageUrl={
@@ -299,7 +302,7 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
 
                                             <FigureCard
                                                 count={
-                                                    count?.data?.doNotDisturb
+                                                    count?.data?.doNotDisturb!
                                                 }
                                                 loading={count?.isLoading}
                                                 title={'Do Not Disturb'}

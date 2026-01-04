@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { GlobalModal } from '@components/Modal/GlobalModal'
 import { Button } from '@components'
 import { Typography } from '@components/Typography'
@@ -10,22 +10,53 @@ import {
     UserCircle,
 } from 'lucide-react'
 
+import { CommonApi } from '@queries'
+import { InitiateSign } from '@partials/common/StudentProfileDetail/components/Workplace/components/IndustryDetail'
+import { useWorkplace } from '@hooks'
+
 interface AgreementModalProps {
     open: boolean
     onClose: () => void
     onConfirm: () => void
+    workplace: any
+    student: any
 }
 
 export function AgreementModal({
     open,
     onClose,
     onConfirm,
+    workplace,
+    student,
 }: AgreementModalProps) {
     const [selectedDocuments, setSelectedDocuments] = useState<string[]>([
         'placement-agreement',
         'code-of-conduct',
     ])
+    const course = workplace?.courses?.[0]
+    const eSignDocument = CommonApi.ESign.useStudentEsignDocument(
+        {
+            std: student?.user?.id,
+            folder: Number(course?.assessmentEvidence?.[0]?.id),
+        },
+        {
+            skip: !course,
+            refetchOnMountOrArgChange: true,
+        }
+    )
 
+    const { setWorkplaceRto, workplaceRto } = useWorkplace()
+    useEffect(() => {
+        if (!student) return
+
+        const rto = student?.rto
+        if (!rto) return
+
+        // prevent unnecessary updates
+        if (workplaceRto?.id === rto?.id) return
+
+        setWorkplaceRto(rto)
+    }, [student])
     const documents = [
         {
             id: 'placement-agreement',
@@ -87,113 +118,12 @@ export function AgreementModal({
                         Select documents to send for e-signing by all parties
                     </Typography>
                 </div>
-
-                {/* Document Selection */}
-                <div className="space-y-4">
-                    <div>
-                        <div className="flex items-center gap-2 mb-3">
-                            <FileText className="h-4 w-4 text-primaryNew" />
-                            <Typography variant="label">
-                                Documents to Send
-                            </Typography>
-                        </div>
-                        <div className="space-y-2 mt-2">
-                            {documents.map((doc) => (
-                                <div
-                                    key={doc.id}
-                                    onClick={() => toggleDocument(doc.id)}
-                                    className={`
-                    p-4 rounded-lg border-2 transition-all cursor-pointer
-                    ${
-                        selectedDocuments.includes(doc.id)
-                            ? 'border-primaryNew bg-blue-50'
-                            : 'border-gray-200 bg-white hover:border-gray-300'
-                    }
-                    ${doc.required ? 'cursor-not-allowed opacity-75' : ''}
-                  `}
-                                >
-                                    <div className="flex items-start gap-3">
-                                        <div
-                                            className={`
-                      w-5 h-5 rounded border-2 flex items-center justify-center mt-0.5
-                      ${
-                          selectedDocuments.includes(doc.id)
-                              ? 'border-primaryNew bg-primaryNew'
-                              : 'border-gray-300'
-                      }
-                    `}
-                                        >
-                                            {selectedDocuments.includes(
-                                                doc.id
-                                            ) && (
-                                                <CheckCircle2 className="h-3 w-3 text-white" />
-                                            )}
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="flex items-center gap-2">
-                                                <p className="text-sm font-medium text-gray-900">
-                                                    {doc.name}
-                                                </p>
-                                                {doc.required && (
-                                                    <span className="text-xs bg-orange-500 text-white px-2 py-0.5 rounded">
-                                                        Required
-                                                    </span>
-                                                )}
-                                            </div>
-                                            <p className="text-xs text-gray-600 mt-0.5">
-                                                {doc.description}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="p-4 bg-gradient-to-br from-blue-50 to-cyan-50 border border-primaryNew/20 rounded-xl">
-                        <p className="text-sm text-primaryNew font-medium mb-2 flex items-center gap-2">
-                            <UserCircle className="h-4 w-4" />
-                            Documents will be sent to:
-                        </p>
-                        <ul className="space-y-1 text-sm text-primaryNew">
-                            <li className="flex items-center gap-2">
-                                <CheckCircle2 className="h-4 w-4" />
-                                Student: Sarah Johnson
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <CheckCircle2 className="h-4 w-4" />
-                                Industry: St Vincent's Hospital
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <CheckCircle2 className="h-4 w-4" />
-                                RTO: AIBT Global
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div className="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                        <AlertCircle className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
-                        <p className="text-xs text-amber-900">
-                            All selected documents must be signed by all parties
-                            before the placement can proceed.
-                        </p>
-                    </div>
-                </div>
-
-                {/* Footer */}
-                <div className="flex justify-end gap-3 mt-6 pt-4 border-t">
-                    <Button
-                        variant="secondary"
-                        onClick={onClose}
-                        text="Cancel"
-                    />
-                    <Button
-                        variant="primaryNew"
-                        onClick={onConfirm}
-                        Icon={FileSignature}
-                        text={`Generate & Send ${
-                            selectedDocuments.length
-                        } Document${selectedDocuments.length !== 1 ? 's' : ''}`}
+                <div className="flex items-center gap-x-2">
+                    <InitiateSign
+                        student={student}
+                        folder={course?.assessmentEvidence?.[0]}
+                        courseId={course?.id}
+                        eSignDocument={eSignDocument}
                     />
                 </div>
             </div>

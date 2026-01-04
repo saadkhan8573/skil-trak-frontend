@@ -40,7 +40,7 @@ export function SectorCard({ sector, sectorIndex }: SectorCardProps) {
     const [showSupervisorsModal, setShowSupervisorsModal] = useState(false)
     const [showCapacityModal, setShowCapacityModal] = useState(false)
     const [showCancelEsignModal, setShowCancelEsignModal] = useState(false)
-    const [isSectorExpanded, setisSectorExpanded] = useState(false)
+    const [isSectorExpanded, setisSectorExpanded] = useState(true)
 
     const dispatch = useAppDispatch()
 

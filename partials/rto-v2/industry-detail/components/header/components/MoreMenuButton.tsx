@@ -17,6 +17,8 @@ import { MoreVertical, X } from 'lucide-react'
 import { ReactNode, useState } from 'react'
 import { MoreMenuDropdown } from '../dropdowns'
 import { IndustryInfoMessageModal, ServicesOfferedModal, WorkplaceTypeModal } from '@partials/rto-v2/industry-detail/modal'
+import { BranchLocationsDialog, IndustryStatusChangeModal } from '../modals'
+import { UserStatus } from '@types'
 
 export function MoreMenuButton() {
     const [showMenu, setShowMenu] = useState(false)
@@ -25,6 +27,8 @@ export function MoreMenuButton() {
     )
     const { passwordModal, onViewPassword, onUpdatePassword } = useActionModal()
     const [modal, setModal] = useState<ReactNode | null>(null)
+    const [showStatusChangeModal, setShowStatusChangeModal] = useState(false)
+    const [showBranchLocationsDialog, setShowBranchLocationsDialog] = useState(false)
     const role = getUserCredentials()?.role
 
     const onCancelModal = () => {
@@ -142,6 +146,14 @@ export function MoreMenuButton() {
         onSendInfoMessage: onSendInfoMessage,
         onServiceOffered: onServiceOffered,
         onWorkplaceType: onWorkplaceType,
+        onStatusChange: () => {
+            setShowStatusChangeModal(true)
+            setShowMenu(false)
+        },
+        onBranchLocations: () => {
+            setShowBranchLocationsDialog(true)
+            setShowMenu(false)
+        },
     }
 
     return (
@@ -166,6 +178,18 @@ export function MoreMenuButton() {
                     industry={industry}
                 />
             )}
+
+            <IndustryStatusChangeModal
+                industryId={industry?.id!}
+                isBlocked={industry?.user?.status === UserStatus.Blocked}
+                open={showStatusChangeModal}
+                onOpenChange={setShowStatusChangeModal}
+            />
+
+            <BranchLocationsDialog
+                open={showBranchLocationsDialog}
+                onOpenChange={setShowBranchLocationsDialog}
+            />
         </div>
     )
 }

@@ -1,6 +1,8 @@
 import { Button, GlobalModal, LoadingAnimation, NoData } from '@components'
+import { UserRoles } from '@constants'
 import { useNotification } from '@hooks'
 import { SubAdminApi } from '@queries'
+import { getUserCredentials } from '@utils'
 
 import { FaCheckCircle } from 'react-icons/fa'
 import { LiaTimesSolid } from 'react-icons/lia'
@@ -19,7 +21,11 @@ export const WpConfirmCapacity = ({
         courseId: wpReqApproval?.courseId,
         rtoId: wpReqApproval?.student?.rto?.id,
     })
-
+    const role = getUserCredentials()?.role
+    const wpReqId =
+        role === UserRoles.RTO
+            ? wpReqApproval?.workplaceApprovaleRequest?.[0]?.id
+            : wpReqApproval.id
     // Static workplace types data
     const workplaceTypes = [
         'Corporate Office',
@@ -35,7 +41,7 @@ export const WpConfirmCapacity = ({
     ]
 
     const onConfirmUClicked = async (wpReqApproval: any) => {
-        const res: any = await confirmWpCapacity(Number(wpReqApproval.id))
+        const res: any = await confirmWpCapacity(Number(wpReqId))
         if (res?.data) {
             notification.success({
                 title: `Capacity Confirmed`,

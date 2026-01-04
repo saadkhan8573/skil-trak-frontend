@@ -71,7 +71,7 @@ export const Pagination = ({ table, pagination, setPage }: PaginationProps) => {
                 onPageChange={handlePageClick}
                 nextLabel={<FaChevronRight />}
                 previousLabel={<FaChevronLeft />}
-                pageClassName="text-gray-400"
+                pageClassName="text-gray-400 !cursor-pointer"
                 activeClassName="text-gray-700 text-center rounded-full  "
                 containerClassName={` h-8 text-xs text-gray-light flex justify-end items-center gap-x-2 font-semibold`}
             />

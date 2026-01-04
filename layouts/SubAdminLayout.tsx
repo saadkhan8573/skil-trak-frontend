@@ -179,7 +179,7 @@ export const SubAdminLayout = ({
                                     />
                                 </div>
                             )}
-                            <div>{children}</div>
+                            <div id="main-content-scroll">{children}</div>
                         </div>
                         {mounted && (
                             <Joyride

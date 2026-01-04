@@ -12,7 +12,7 @@ import { getUserCredentials } from '@utils'
 import { UserRoles } from '@constants'
 import { Shield, CheckCircle } from 'lucide-react'
 import { useState, ReactNode } from 'react'
-import { PremiumFeatureModal } from '@partials/rto-v2/industry-detail/modal'
+import { ManageFeatureDialog, PremiumFeatureModal } from '@partials/rto-v2/industry-detail/modal'
 
 export function PremiumFeatures() {
     const [modal, setModal] = useState<ReactNode | null>(null)
@@ -140,19 +140,17 @@ export function PremiumFeatures() {
                             variant="secondary"
                             disabled={!isPremium || isLoading}
                             className={`w-full flex items-start gap-2 !px-1.5 p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors cursor-pointer h-auto justify-start border-0
-                                ${
-                                    !isPremium
-                                        ? 'opacity-50 cursor-not-allowed hover:bg-white/10'
-                                        : ''
+                                ${!isPremium
+                                    ? 'opacity-50 cursor-not-allowed hover:bg-white/10'
+                                    : ''
                                 }
                             `}
                         >
                             <CheckCircle
-                                className={`w-5 h-5 flex-shrink-0 mt-0.5 transition-all duration-300 ${
-                                    isActive && isPremium
+                                className={`w-5 h-5 flex-shrink-0 mt-0.5 transition-all duration-300 ${isActive && isPremium
                                         ? 'text-[#10B981]'
                                         : 'text-white/30'
-                                }`}
+                                    }`}
                                 fill={
                                     isActive && isPremium
                                         ? 'currentColor'
@@ -161,21 +159,19 @@ export function PremiumFeatures() {
                             />
                             <div className="flex-1 space-y-1.5 text-left">
                                 <p
-                                    className={`text-sm font-medium transition-colors ${
-                                        isActive && isPremium
+                                    className={`text-sm font-medium transition-colors ${isActive && isPremium
                                             ? 'text-white'
                                             : 'text-white/50'
-                                    }`}
+                                        }`}
                                 >
                                     {feature.title}
                                 </p>
                                 {feature.description && (
                                     <p
-                                        className={`text-xs transition-colors ${
-                                            isActive && isPremium
+                                        className={`text-xs transition-colors ${isActive && isPremium
                                                 ? 'text-white/80'
                                                 : 'text-white/40'
-                                        }`}
+                                            }`}
                                     >
                                         {feature.description}
                                     </p>
@@ -195,20 +191,7 @@ export function PremiumFeatures() {
             </div>
 
             <PremiumFeatureModal />
-            <Button
-                variant="secondary"
-                onClick={onClickManageFeatures}
-                disabled={!isPremium}
-                className={`mt-3 w-full py-1.5 rounded-lg text-xs font-medium transition-all border h-auto border-white/30
-                    ${
-                        isPremium
-                            ? 'bg-white/20 hover:bg-white/30 text-white'
-                            : 'bg-white/5 text-white/30 border-white/10 cursor-not-allowed'
-                    }
-                `}
-            >
-                Manage Features
-            </Button>
+            <ManageFeatureDialog />
         </div>
     )
 }

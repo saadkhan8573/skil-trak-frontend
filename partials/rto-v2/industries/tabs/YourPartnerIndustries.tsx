@@ -6,7 +6,7 @@ import {
     TechnicalError,
 } from '@components'
 import { RtoV2Api } from '@redux'
-import { Industry } from '@types'
+import { Industry, UserStatus } from '@types'
 import { removeEmptyValues } from '@utils'
 import React, { useState } from 'react'
 import { useYourIndustriesColumns } from '../component/columns'
@@ -58,8 +58,8 @@ export const YourPartnerIndustries: React.FC<YourPartnerIndustriesProps> = ({
                 {industries?.isLoading || industries?.isFetching ? (
                     <LoadingAnimation height="h-[60vh]" />
                 ) : industries &&
-                    industries?.data?.data &&
-                    industries?.data?.data?.length ? (
+                  industries?.data?.data &&
+                  industries?.data?.data?.length ? (
                     <Table<Industry>
                         columns={columns}
                         data={industries?.data?.data}

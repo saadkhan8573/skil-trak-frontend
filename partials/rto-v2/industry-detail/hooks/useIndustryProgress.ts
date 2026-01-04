@@ -21,12 +21,8 @@ export const rtoRequiredItems = [
     'Capacity',
 ]
 
-export const getChecklistItems = (
-    data: any,
-) => {
-    const getStatus = (
-        dataKey: boolean,
-    ): 'done' | 'pending' => {
+export const getChecklistItems = (data: any) => {
+    const getStatus = (dataKey: boolean): 'done' | 'pending' => {
         return dataKey ? 'done' : 'pending'
     }
 
@@ -50,7 +46,7 @@ export const getChecklistItems = (
         {
             title: 'Courses Configured',
             description: 'Programs and activities defined',
-            status: getStatus(data?.courseAdded),
+            status: getStatus(data?.hasCourseApproved),
             icon: BookOpen,
             color: '#EC4899',
             targetTab: 'courses',
@@ -94,7 +90,7 @@ export const getChecklistItems = (
             status: getStatus(data?.hasEmailVerified),
             icon: Mail,
             color: '#F59E0B',
-            targetTab: 'email-verified',
+            targetSection: 'email-verified',
         },
     ]
 }
@@ -103,6 +99,9 @@ export const useIndustryProgress = () => {
     const { industryDetail } = useAppSelector((state) => state.industry)
     const isRtoAssociated = !!industryDetail?.isRtoAssociated
 
+    SubAdminApi.Industry.industryProgress(industryDetail?.id!, {
+        skip: !industryDetail?.id,
+    })
     const { data: progressData, isLoading } =
         SubAdminApi.Industry.industryProgress(industryDetail?.id!, {
             skip: !industryDetail?.id,

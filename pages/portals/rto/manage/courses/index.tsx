@@ -36,7 +36,17 @@ export const Courses = () => {
 }
 
 Courses.getLayout = (page: ReactElement) => {
-    return <RtoLayoutV2>{page}</RtoLayoutV2>
+    return (
+        <RtoLayoutV2
+            titleProps={{
+                Icon: GraduationCap,
+                title: 'Courses',
+                description: 'Manage your courses',
+            }}
+        >
+            {page}
+        </RtoLayoutV2>
+    )
 }
 
 export default Courses

@@ -47,7 +47,7 @@ export const PlacementRequests = () => {
                 totalRequests={count?.data?.all || 0}
                 needsWorkplaceCount={count?.data?.requested || 0}
                 providedWorkplaceCount={count?.data?.provided || 0}
-                // activePlacementsCount={10}
+            // activePlacementsCount={10}
             />
 
             <Card
@@ -72,7 +72,17 @@ export const PlacementRequests = () => {
 }
 
 PlacementRequests.getLayout = (page: ReactElement) => {
-    return <RtoLayoutV2>{page}</RtoLayoutV2>
+    return (
+        <RtoLayoutV2
+            titleProps={{
+                Icon: Briefcase,
+                title: 'Student Placement Requests',
+                description: 'Manage student placement requests',
+            }}
+        >
+            {page}
+        </RtoLayoutV2>
+    )
 }
 
 export default PlacementRequests

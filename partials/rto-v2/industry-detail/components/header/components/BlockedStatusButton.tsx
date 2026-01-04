@@ -23,7 +23,7 @@ export function BlockedStatusButton() {
                 )}
                 title={isBlocked ? 'Unblock Industry' : 'Block Industry'}
             >
-                {isBlocked ? 'Unblock' : 'Blocked'}
+                {isBlocked ? 'Unblock' : 'Block'}
             </Badge>
 
             <IndustryStatusChangeModal

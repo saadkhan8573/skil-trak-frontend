@@ -278,11 +278,11 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
                             <div className="text-xs uppercase font-semibold text-muted-foreground">
                                 {section.title}
                             </div>
-                            {section.showCount && section.totalCount && (
+                            {/* {section.showCount && section.totalCount && (
                                 <div className="text-[11px] bg-destructive text-white px-2 rounded">
                                     {section.totalCount}
                                 </div>
-                            )}
+                            )} */}
                         </div>
 
                         <ul className="space-y-1">
@@ -306,13 +306,13 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
                                             </span>
                                         </div>
 
-                                        {item.badge && (
+                                        {/* {item.badge && (
                                             <span
                                                 className={`text-[11px] px-2 py-0.5 rounded-full text-white ${item.badgeBg}`}
                                             >
                                                 {item.badge}
                                             </span>
-                                        )}
+                                        )} */}
                                     </button>
                                 </li>
                             ))}
@@ -387,11 +387,11 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
                                 <div className="text-[10px] uppercase tracking-wide font-medium text-slate-500">
                                     {section.title}
                                 </div>
-                                {section.showCount && section.totalCount && (
+                                {/* {section.showCount && section.totalCount && (
                                     <div className="text-[10px] bg-error text-white flex items-center animate-pulse justify-center text-center rounded-full size-5">
                                         {section.totalCount}
                                     </div>
-                                )}
+                                )} */}
                             </div>
 
                             <ul className="space-y-2">
@@ -412,7 +412,7 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
                                                 }
                                                 onNavigate?.(item.key)
                                             }}
-                                            className={`w-full flex justify-between items-center p-2 rounded-2xl transition ${item.bg} hover:opacity-90 cursor-pointer`}
+                                            className={`w-full flex justify-between items-center p-2 rounded-md transition ${item.bg} hover:opacity-90 cursor-pointer`}
                                         >
                                             <div className="flex items-center gap-x-2">
                                                 <div
@@ -428,13 +428,13 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
                                                 </span>
                                             </div>
 
-                                            {item.badge && (
+                                            {/* {item.badge && (
                                                 <span
                                                     className={`text-[11px] px-2 py-0.5 rounded-full text-white ${item.badgeBg}`}
                                                 >
                                                     {item.badge}
                                                 </span>
-                                            )}
+                                            )} */}
                                         </button>
                                     </li>
                                 ))}

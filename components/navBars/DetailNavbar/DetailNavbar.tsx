@@ -89,14 +89,14 @@ export const DetailNavbar = () => {
             inActiveClasses: 'text-slate-700',
             count: ticketCount?.data,
         },
-        {
-            link: `${subadminLinkPrefix}/support-tickets?tab=active`,
-            text: 'Support Tickets',
-            Icon: BsFillTicketDetailedFill,
-            activeClasses: 'bg-green-100 text-green-700',
-            inActiveClasses: 'text-slate-700',
-            // count: ticketCount?.data,
-        },
+        // {
+        //     link: `${subadminLinkPrefix}/support-tickets?tab=active`,
+        //     text: 'Support Tickets',
+        //     Icon: BsFillTicketDetailedFill,
+        //     activeClasses: 'bg-green-100 text-green-700',
+        //     inActiveClasses: 'text-slate-700',
+        //     // count: ticketCount?.data,
+        // },
     ]
 
     return (

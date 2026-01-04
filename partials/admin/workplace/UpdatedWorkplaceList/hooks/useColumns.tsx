@@ -13,11 +13,15 @@ export const useColumns = () => {
         {
             header: () => 'Student',
             accessorKey: 'student',
-            cell: (info) => (
-                <StudentWorkplaceCellInfo
-                    student={info?.row?.original?.student}
-                />
-            ),
+            cell: (info) => {
+                console.log('info', info.row?.original)
+                return (
+                    <StudentWorkplaceCellInfo
+                        student={info?.row?.original?.student}
+                        wpId={info?.row?.original?.id}
+                    />
+                )
+            },
         },
         {
             header: () => 'Industry Status',

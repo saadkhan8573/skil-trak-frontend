@@ -13,7 +13,10 @@ import {
     Users,
     Utensils,
     Briefcase,
+    Ban,
+    Unlock,
 } from 'lucide-react'
+import { UserStatus } from '@types'
 
 interface MoreMenuDropdownProps {
     onClose: () => void
@@ -30,6 +33,8 @@ interface MoreMenuDropdownProps {
         onSendInfoMessage: () => void
         onServiceOffered: () => void
         onWorkplaceType: () => void
+        onStatusChange: () => void
+        onBranchLocations: () => void
     }
     role: string | undefined
     industry: Industry
@@ -151,6 +156,36 @@ export function MoreMenuDropdown({
             color: 'text-[#10B981]',
             bg: 'bg-[#10B981]/10',
             groupHoverBg: 'group-hover:bg-[#10B981]/20',
+            show: true,
+        },
+        {
+            label: 'Branch Locations',
+            icon: MapPin,
+            action: actions.onBranchLocations,
+            color: 'text-sky-500',
+            bg: 'bg-sky-500/10',
+            groupHoverBg: 'group-hover:bg-sky-500/20',
+            show: true,
+        },
+        {
+            label:
+                industry?.user?.status === UserStatus.Blocked
+                    ? 'Unblock Industry'
+                    : 'Block Industry',
+            icon: industry?.user?.status === UserStatus.Blocked ? Unlock : Ban,
+            action: actions.onStatusChange,
+            color:
+                industry?.user?.status === UserStatus.Blocked
+                    ? 'text-green-500'
+                    : 'text-red-500',
+            bg:
+                industry?.user?.status === UserStatus.Blocked
+                    ? 'bg-green-500/10'
+                    : 'bg-red-500/10',
+            groupHoverBg:
+                industry?.user?.status === UserStatus.Blocked
+                    ? 'group-hover:bg-green-500/20'
+                    : 'group-hover:bg-red-500/20',
             show: true,
             className: 'rounded-b-lg',
         },

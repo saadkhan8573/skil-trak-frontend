@@ -49,6 +49,8 @@ const {
     useGetStudentPlacementComplianceQuery,
     useGetStudentPlacementCourseProgramsQuery,
     useGetStudentPlacementStatusCheckNotesQuery,
+    useAddManualNoteMutation,
+    useConfirmHighlightedTaskMutation,
 
     // Courses
     useRtoCoursesQuery,
@@ -101,7 +103,6 @@ const {
     useGetStudentDocumentsCountQuery,
     useUploadStudentDocumentFileMutation,
 
-   
     // ---- Industries ---- //
     useGetRtoIndustriesQuery,
     useSnoozeIndustryByIdMutation,
@@ -120,6 +121,7 @@ const {
     useCancelIndustryInitiatedESignMutation,
     useIndustryUserStatusChangeMutation,
     useGetIndutryAvailableWorkingHoursQuery,
+    useGetPedingCourseApprovalIndustriesQuery,
     useStatusChangeCourseFacilityChecklistMutation,
     useUploadCourseFacilityChecklistMutation,
     useUpdateInterestedTypeMutation,
@@ -166,6 +168,8 @@ export const RtoV2Api = {
             useGetStudentPlacementCourseProgramsQuery,
         useStudentPlacementStatusCheckNotes:
             useGetStudentPlacementStatusCheckNotesQuery,
+        useAddManualNote: useAddManualNoteMutation,
+        useConfirmHighlightedTask: useConfirmHighlightedTaskMutation,
     },
     Courses: {
         rtoCourses: useRtoCoursesQuery,
@@ -240,6 +244,8 @@ export const RtoV2Api = {
         useGetIndutryAvailableHours: useGetIndutryAvailableWorkingHoursQuery,
         statusChangeCourseFacilityChecklist:
             useStatusChangeCourseFacilityChecklistMutation,
+        getPedingCourseApprovalIndustry:
+            useGetPedingCourseApprovalIndustriesQuery,
         uploadCourseFacilityChecklist: useUploadCourseFacilityChecklistMutation,
         updateInterestedType: useUpdateInterestedTypeMutation,
         getRtoIndustryDataCount: useGetRtoIndustryDataCountQuery,

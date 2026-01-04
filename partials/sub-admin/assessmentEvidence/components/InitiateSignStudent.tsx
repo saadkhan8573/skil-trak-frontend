@@ -106,6 +106,7 @@ export const InitiateSignStudent = ({
 }) => {
     const router = useRouter()
     const { workplaceRto } = useWorkplace()
+    const role = getUserCredentials()?.role
 
     const dispatch = useDispatch()
 
@@ -127,8 +128,18 @@ export const InitiateSignStudent = ({
 
     const { notification } = useNotification()
 
+    const pathName = router.asPath.startsWith(
+        `/portals/${role}/students-and-placements/placement-requests`
+    )
+
+    const stdId = pathName
+        ? Number(router?.query?.studentId)
+        : Number(router.query?.id)
     const student = CommonApi.ESign.useGetESignStudent(
-        { student: Number(router.query?.id), courseId },
+        {
+            student: stdId,
+            courseId,
+        },
         {
             skip: !router.query.id,
             refetchOnMountOrArgChange: true,
@@ -169,22 +180,27 @@ export const InitiateSignStudent = ({
 
     const user = getUserCredentials()
 
-    useEffect(() => {
-        if (
-            student?.data &&
-            student?.isSuccess &&
-            subadmins.isSuccess &&
-            !selectedCoordinator
-        ) {
-            setSelectedCoordinator(
-                student?.data?.subadmin
-                    ? student?.data?.subadmin
-                    : subadmins?.data?.find(
-                          (s: SubAdmin) => s?.user?.id === user?.id
-                      ) || subadmins?.data?.[0]
-            )
-        }
-    }, [student, subadmins])
+    useEffect(
+        () => {
+            if (
+                student?.data &&
+                student?.isSuccess &&
+                subadmins.isSuccess &&
+                !selectedCoordinator
+            ) {
+                setSelectedCoordinator(
+                    student?.data?.subadmin
+                        ? student?.data?.subadmin
+                        : subadmins?.data?.find(
+                              (s: SubAdmin) => s?.user?.id === user?.id
+                          ) || subadmins?.data?.[0]
+                )
+            }
+        },
+        [
+            // student, subadmins
+        ]
+    )
 
     const industryOptions = useMemo(
         () =>
@@ -327,44 +343,47 @@ export const InitiateSignStudent = ({
     //     }
     // }, [userIds(), template?.recipients, secondaryMails])
 
-    useEffect(() => {
-        // Only proceed if userIds is a function and returns a truthy value
-        const userIdsValue = userIds()
+    useEffect(
+        () => {
+            // Only proceed if userIds is a function and returns a truthy value
+            const userIdsValue = userIds()
 
-        if (
-            userIdsValue &&
-            (!secondaryMails ||
-                secondaryMails.filter((s: any) => s?.user)?.length <
-                    (template?.recipients?.length || 0))
-        ) {
-            const newSecondaryMails = Object.entries(userIdsValue).map(
-                ([role, id]: [string, any]) => ({
-                    user: id,
-                    email: null,
-                    role,
+            if (
+                userIdsValue &&
+                (!secondaryMails ||
+                    secondaryMails.filter((s: any) => s?.user)?.length <
+                        (template?.recipients?.length || 0))
+            ) {
+                const newSecondaryMails = Object.entries(userIdsValue).map(
+                    ([role, id]: [string, any]) => ({
+                        user: id,
+                        email: null,
+                        role,
+                    })
+                )
+
+                // Use functional update to ensure we're working with the most recent state
+                setSecondaryMails((prevMails: any) => {
+                    // Avoid unnecessary updates if the new mails are the same as existing ones
+                    const areSame =
+                        newSecondaryMails.length === prevMails.length &&
+                        newSecondaryMails.every(
+                            (mail, index) =>
+                                mail.user === prevMails[index]?.user &&
+                                mail.role === prevMails[index]?.role
+                        )
+
+                    return areSame ? prevMails : newSecondaryMails
                 })
-            )
-
-            // Use functional update to ensure we're working with the most recent state
-            setSecondaryMails((prevMails: any) => {
-                // Avoid unnecessary updates if the new mails are the same as existing ones
-                const areSame =
-                    newSecondaryMails.length === prevMails.length &&
-                    newSecondaryMails.every(
-                        (mail, index) =>
-                            mail.user === prevMails[index]?.user &&
-                            mail.role === prevMails[index]?.role
-                    )
-
-                return areSame ? prevMails : newSecondaryMails
-            })
-        }
-    }, [
-        // Use a stable reference to the userIds object/function
-        userIds,
-        template?.recipients?.length,
-        secondaryMails?.length,
-    ])
+            }
+        },
+        [
+            // Use a stable reference to the userIds object/function
+            userIds,
+            template?.recipients?.length,
+            secondaryMails?.length,
+        ]
+    )
 
     return (
         <>

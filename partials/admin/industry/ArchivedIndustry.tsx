@@ -124,13 +124,13 @@ export const ArchivedIndustry = () => {
                 )
             },
         },
-        {
-            accessorKey: 'sectors',
-            header: () => <span>Sectors</span>,
-            cell: (info) => {
-                return <SectorCell industry={info.row.original} />
-            },
-        },
+        // {
+        //     accessorKey: 'sectors',
+        //     header: () => <span>Sectors</span>,
+        //     cell: (info) => {
+        //         return <SectorCell industry={info.row.original} />
+        //     },
+        // },
         {
             accessorKey: 'addressLine1',
             header: () => <span>Address</span>,

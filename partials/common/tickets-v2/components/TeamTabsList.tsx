@@ -14,6 +14,8 @@ import {
     RtoTeamTab,
     StudentServicesTab,
 } from '../tickets-tabs'
+import { getUserCredentials } from '@utils'
+import { UserRoles } from '@constants'
 
 export enum TAGS {
     STUDENT_SERVICES = 'student services',
@@ -26,6 +28,7 @@ export enum TAGS {
 export const TeamTabsList = () => {
     const router = useRouter()
     const tabName = router.query.tab
+    const role = getUserCredentials()?.role
     const teamTabs = [
         {
             id: 'all',
@@ -58,11 +61,23 @@ export const TeamTabsList = () => {
             element: <QATeamTab />,
         },
     ]
+    const visibleTabs = teamTabs.filter((tab) => {
+        if (role === UserRoles.ADMIN) return true
+        if (role === UserRoles.RTO) return tab.id === 'rto'
+        return false
+    })
+    const defaultTab =
+        role === UserRoles.ADMIN
+            ? 'all'
+            : role === UserRoles.RTO
+            ? 'rto'
+            : visibleTabs[0]?.id
+
     return (
         <>
-            <Tabs defaultValue="all" className="w-full mt-6">
+            <Tabs defaultValue={defaultTab} className="w-full mt-6">
                 <TabsList className="flex flex-wrap gap-3 bg-transparent p-0 shadow-none">
-                    {teamTabs.map((tab) => {
+                    {visibleTabs.map((tab) => {
                         const Icon = tab.icon
                         return (
                             <TabsTrigger
@@ -122,7 +137,7 @@ export const TeamTabsList = () => {
                     })}
                 </TabsList>
 
-                {teamTabs.map((tab) => (
+                {visibleTabs.map((tab) => (
                     <TabsContent key={tab.id} value={tab.id} className="mt-4">
                         <div className="p-4 border rounded-lg bg-white shadow-sm">
                             <h2 className="text-lg capitalize font-semibold text-[#044866]">

@@ -9,6 +9,7 @@ export interface TabConfig {
     icon?: LucideIcon
     component: any
     count?: string | number
+    hidden?: boolean | ((props?: any) => boolean)
 }
 
 export const ConfigTabs = ({
@@ -31,19 +32,43 @@ export const ConfigTabs = ({
     tabsTriggerClasses?: string
 }) => {
     const [width, setWidth] = useState<number | null>(null)
-
-    const ref = useRef<any>(null)
+    const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        if (ref?.current) {
-            setWidth(ref?.current?.offsetWidth)
+        const element = ref.current
+        if (!element) return
+
+        const resizeObserver = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                if (entry.target === element) {
+                    setWidth(element.offsetWidth)
+                }
+            }
+        })
+
+        resizeObserver.observe(element)
+
+        // Set initial width
+        setWidth(element.offsetWidth)
+
+        return () => {
+            resizeObserver.disconnect()
         }
-    }, [ref])
+    }, [])
+
+    const visibleTabs = tabs.filter((tab) => {
+        if (typeof tab.hidden === 'function') {
+            return !tab.hidden(props)
+        }
+        return !tab.hidden
+    })
+
+    if (visibleTabs.length === 0) return null
 
     return (
         <div className="w-full" ref={ref}>
             <Tabs
-                defaultValue={defaultValue || tabs?.[0]?.value}
+                defaultValue={defaultValue || visibleTabs?.[0]?.value}
                 value={value}
                 onValueChange={onValueChange}
                 className={`${className}`}
@@ -55,7 +80,7 @@ export const ConfigTabs = ({
                     }}
                     className={`w-full overflow-x-auto border border-gray-300 shadow mb-2 bg-slate-100 p-1.5 rounded-xl h-auto gap-1 flex justify-start ${tabsClasses}`}
                 >
-                    {tabs.map((tab) => {
+                    {visibleTabs.map((tab) => {
                         const Icon = tab?.icon
                         return (
                             <TabsTrigger
@@ -76,7 +101,7 @@ export const ConfigTabs = ({
                     })}
                 </TabsList>
 
-                {tabs.map((tab) => {
+                {visibleTabs.map((tab) => {
                     const Component = tab.component
                     return (
                         <TabsContent

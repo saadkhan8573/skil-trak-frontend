@@ -52,13 +52,27 @@ export const industriesEndpoints = (
         providesTags: ['RTOIndustries'],
     }),
 
+    getPedingCourseApprovalIndustries: builder.query<
+        PaginatedResponse<Industry>,
+        PaginationWithSearch
+    >({
+        query: (params) => ({
+            url: `${INDUSTRIESPREFIX}course-approval/requests/list`,
+            params,
+        }),
+        providesTags: ['RTOIndustries'],
+    }),
+
     getIndustriesCounts: builder.query<
         {
             active: number
             pending: number
             allIndustries: number
             partnerIndustries: number
+            allPartnerIndustries: number
+            nonPartnerIndustries: number
             readyForPlacementIndustries: number
+            skiltrakIndustriesReadyForPlacement: number
         },
         void
     >({

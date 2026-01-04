@@ -144,7 +144,12 @@ export const appointmentsEndpoints = (
         }),
         providesTags: ['Appointments', 'SubAdminStudents'],
     }),
-
+    getStudentAgreementAndScheduleStatus: builder.query<any, void>({
+        query: () => ({
+            url: `students/get/schedule-validation`,
+        }),
+        providesTags: ['Appointments', 'SubAdminStudents'],
+    }),
     getAppointmentCompletionStatusIndustry: builder.query<any, any>({
         query: (params) => ({
             url: `appointments/get/v2/for-industry`,

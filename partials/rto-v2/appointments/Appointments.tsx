@@ -8,6 +8,7 @@ import {
     RefreshCw,
     Search,
     TrendingUp,
+    Plus,
 } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '../../../components/ui/button'
@@ -16,6 +17,9 @@ import { Card, Select, TextInput } from '@components'
 import { RtoApi } from '@queries'
 import { KPIStatCard } from './KpiStatsCard'
 import { ScheduleAppointmentModal } from './modals'
+import { getUserCredentials } from '@utils'
+import { UserRoles } from '@constants'
+import { useRouter } from 'next/router'
 import {
     CancelledAppointments,
     PastAppointments,
@@ -41,6 +45,7 @@ interface Appointment {
 }
 
 export const Appointments = () => {
+    const router = useRouter()
     const [searchQuery, setSearchQuery] = useState('')
     const [scheduleOpen, setScheduleOpen] = useState(false)
     const [filterCategory, setFilterCategory] = useState<string>('all')
@@ -130,10 +135,32 @@ export const Appointments = () => {
                             <RefreshCw className="h-3.5 w-3.5" />
                             Refresh
                         </Button> */}
-                        <ScheduleAppointmentModal
-                            scheduleOpen={scheduleOpen}
-                            setScheduleOpen={setScheduleOpen}
-                        />
+                        <div className="flex items-center gap-2">
+                            <ScheduleAppointmentModal
+                                scheduleOpen={scheduleOpen}
+                                setScheduleOpen={setScheduleOpen}
+                            />
+                            <Button
+                                onClick={() => {
+                                    const { role } = getUserCredentials()
+                                    if (role === UserRoles.ADMIN) {
+                                        router.push(
+                                            '/portals/admin/appointment-type/create-appointment'
+                                        )
+                                    } else if (role === UserRoles.SUBADMIN) {
+                                        router.push(
+                                            '/portals/sub-admin/tasks/appointments/create-appointment'
+                                        )
+                                    } else {
+                                        setScheduleOpen(true)
+                                    }
+                                }}
+                                className="bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-lg shadow-[#044866]/20 transition-all h-10 px-6 rounded-lg font-medium flex items-center gap-2 border-0"
+                            >
+                                <Plus className="h-4 w-4" />
+                                Schedule New
+                            </Button>
+                        </div>
                     </div>
                 </div>
 

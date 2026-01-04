@@ -7,11 +7,10 @@ import {
 } from '@components'
 import { RtoV2Api } from '@redux'
 import React, { useState } from 'react'
-import { IndustryFilterBar } from '../component'
 import { useYourIndustriesColumns } from '../component/columns'
-import { Industry } from '@types'
 
 import { removeEmptyValues } from '@utils'
+import { UserStatus } from '@types'
 
 interface NonPartnerIndustriesProps {
     baseFilter: any
@@ -59,8 +58,8 @@ export const NonPartnerIndustries: React.FC<NonPartnerIndustriesProps> = ({
                 {industries?.isLoading || industries?.isFetching ? (
                     <LoadingAnimation height="h-[60vh]" />
                 ) : industries &&
-                    industries?.data?.data &&
-                    industries?.data?.data?.length ? (
+                  industries?.data?.data &&
+                  industries?.data?.data?.length ? (
                     <Table columns={columns} data={industries?.data?.data}>
                         {({
                             table,
@@ -84,9 +83,7 @@ export const NonPartnerIndustries: React.FC<NonPartnerIndustriesProps> = ({
                                             )}
                                         </div>
                                     </div>
-                                    <div className="px-6 w-full overflow-x-scroll remove-scrollbar">
-                                        {table}
-                                    </div>
+                                    <div className="px-6 w-full">{table}</div>
                                 </div>
                             )
                         }}

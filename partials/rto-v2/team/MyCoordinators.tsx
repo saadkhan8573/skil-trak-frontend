@@ -16,17 +16,13 @@ import { CoursesCell } from '@partials/rto/coordinators'
 import { RtoApi } from '@queries'
 import { useRouter } from 'next/router'
 import { UserRoles } from '@constants'
-import { AllowAllStudentsAccessModal, DeleteRtoCoordinatorModal } from './modal'
+import { AllowAllStudentsAccessModal, DeleteRtoCoordinatorModal, EditCoordinatorModal } from './modal'
 import { SubAdmin } from '@types'
-import { EditCoordinatorCB } from './contextBar'
-import { useContextBar } from '@hooks'
 
 export const MyCoordinators = () => {
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
     const [modal, setModal] = useState<ReactElement | null>(null)
-
-    const contextBar = useContextBar()
 
     const router = useRouter()
 
@@ -35,13 +31,6 @@ export const MyCoordinators = () => {
         limit: itemPerPage,
     })
 
-    useEffect(() => {
-        return () => {
-            contextBar.hide()
-            contextBar.setContent(null)
-            contextBar.setTitle(null)
-        }
-    }, [])
 
     const onCancelModal = () => setModal(null)
 
@@ -63,9 +52,12 @@ export const MyCoordinators = () => {
     }
 
     const onEditClicked = (coordinator: SubAdmin) => {
-        contextBar.show(false)
-        contextBar.setContent(<EditCoordinatorCB coordinator={coordinator} />)
-        contextBar.setTitle('Edit My Coordinator Detail')
+        setModal(
+            <EditCoordinatorModal
+                onCancel={onCancelModal}
+                coordinator={coordinator}
+            />
+        )
     }
 
     const tableActionOptions = (coordinator: any) => [
@@ -86,13 +78,13 @@ export const MyCoordinators = () => {
         {
             ...(coordinator?.createdBy?.role === UserRoles.RTO
                 ? {
-                      text: 'Delete',
-                      onClick: (coordinator: any) => {
-                          onDeleteCoordinator(coordinator)
-                          //   removeCoordinator(coordinator?.user?.id)
-                      },
-                      Icon: '',
-                  }
+                    text: 'Delete',
+                    onClick: (coordinator: any) => {
+                        onDeleteCoordinator(coordinator)
+                        //   removeCoordinator(coordinator?.user?.id)
+                    },
+                    Icon: '',
+                }
                 : null),
         },
         {

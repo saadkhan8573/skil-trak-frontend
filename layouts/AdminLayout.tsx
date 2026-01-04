@@ -418,6 +418,7 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
                         </div>
                         <div className="flex h-full bg-[#F8FAFC]">
                             <div
+                                id="main-content-scroll"
                                 className={`h-full overflow-scroll remove-scrollbar w-full relative`}
                                 ref={childrenRef}
                             >

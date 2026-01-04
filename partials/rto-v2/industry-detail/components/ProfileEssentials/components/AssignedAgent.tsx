@@ -20,7 +20,7 @@ export function AssignedAgent() {
                         <div className="w-5 h-5 bg-[#044866]/10 rounded-lg flex items-center justify-center">
                             <User className="w-3 h-3 text-[#044866]" />
                         </div>
-                        Assigned SkilTrak Agent
+                        Assigned Agent
                     </h3>
                 </div>
 

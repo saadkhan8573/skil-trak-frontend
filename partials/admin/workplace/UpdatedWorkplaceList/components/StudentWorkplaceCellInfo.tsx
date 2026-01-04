@@ -9,7 +9,13 @@ import { FiPhoneOff } from 'react-icons/fi'
 import { LuFlagTriangleRight } from 'react-icons/lu'
 import { MdSnooze } from 'react-icons/md'
 
-export const StudentWorkplaceCellInfo = ({ student }: { student: Student }) => {
+export const StudentWorkplaceCellInfo = ({
+    student,
+    wpId,
+}: {
+    student: Student
+    wpId?: number
+}) => {
     const router = useRouter()
     return (
         <div>
@@ -61,7 +67,7 @@ export const StudentWorkplaceCellInfo = ({ student }: { student: Student }) => {
             </Typography>
             <Link
                 legacyBehavior
-                href={`/portals/admin/student/${student?.id}/detail`}
+                href={`/portals/admin/workplaces/${wpId}/${student?.id}`}
                 className="text-blue-500 text-xs"
             >
                 <a

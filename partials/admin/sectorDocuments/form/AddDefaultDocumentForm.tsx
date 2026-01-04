@@ -92,12 +92,18 @@ export const AddDefaultDocumentForm = ({
                         placeholder="Provide a detailed description of this check, including what it's for, who needs it, and any important information students should know..."
                         rows={6}
                         className="resize-none"
-                        helpText={`${
-                            description
-                                ?.trim()
-                                ?.split(/\s+/)
-                                ?.filter((w: string) => w.length > 0)?.length
-                        } / 200 words`}
+                        helpText={`${description
+                            ?.trim()
+                            ?.split(/\s+/)
+                            ?.filter((w: string) => w.length > 0)?.length
+                            } / 200 words`}
+                    />
+
+                    <TextInput
+                        label={'Capacity'}
+                        name="capacity"
+                        type="number"
+                        placeholder="e.g., 10"
                     />
 
                     <TextInput

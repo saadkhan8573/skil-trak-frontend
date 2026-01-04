@@ -99,7 +99,7 @@ export const RtoTeam = () => {
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <Users className="h-5 w-5 text-primaryNew" />
-                                Team Members 12
+                                Team Members
                             </div>
                             <div className="flex gap-2">
                                 <Button variant="primaryNew" outline>

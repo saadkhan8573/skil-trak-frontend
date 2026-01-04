@@ -399,9 +399,8 @@ export const StudentSchedulePage = () => {
             <Tooltip>
                 <TooltipTrigger asChild>
                     <div
-                        className={`${
-                            compact || density === 'compact' ? 'p-2' : 'p-3'
-                        } rounded-lg border border-border/50 hover:border-primaryNew/50 transition-all hover:shadow-md cursor-pointer bg-card group`}
+                        className={`${compact || density === 'compact' ? 'p-2' : 'p-3'
+                            } rounded-lg border border-border/50 hover:border-primaryNew/50 transition-all hover:shadow-md cursor-pointer bg-card group`}
                         style={{
                             borderLeftWidth: '3px',
                             borderLeftColor: student.color,
@@ -410,11 +409,10 @@ export const StudentSchedulePage = () => {
                         <div className="space-y-1.5">
                             <div className="flex items-start justify-between gap-2">
                                 <p
-                                    className={`font-semibold ${
-                                        compact || density === 'compact'
+                                    className={`font-semibold ${compact || density === 'compact'
                                             ? 'text-xs'
                                             : 'text-sm'
-                                    } line-clamp-1 group-hover:text-primaryNew transition-colors`}
+                                        } line-clamp-1 group-hover:text-primaryNew transition-colors`}
                                 >
                                     {student.studentName}
                                 </p>
@@ -441,36 +439,32 @@ export const StudentSchedulePage = () => {
                             <div className="space-y-0.5">
                                 <div className="flex items-start gap-1.5">
                                     <Clock
-                                        className={`${
-                                            compact || density === 'compact'
+                                        className={`${compact || density === 'compact'
                                                 ? 'h-2.5 w-2.5'
                                                 : 'h-3 w-3'
-                                        } text-muted-foreground mt-0.5 shrink-0`}
+                                            } text-muted-foreground mt-0.5 shrink-0`}
                                     />
                                     <p
-                                        className={`${
-                                            compact || density === 'compact'
+                                        className={`${compact || density === 'compact'
                                                 ? 'text-[10px]'
                                                 : 'text-xs'
-                                        } text-muted-foreground`}
+                                            } text-muted-foreground`}
                                     >
                                         {student.time}
                                     </p>
                                 </div>
                                 <div className="flex items-start gap-1.5">
                                     <MapPin
-                                        className={`${
-                                            compact || density === 'compact'
+                                        className={`${compact || density === 'compact'
                                                 ? 'h-2.5 w-2.5'
                                                 : 'h-3 w-3'
-                                        } text-muted-foreground mt-0.5 shrink-0`}
+                                            } text-muted-foreground mt-0.5 shrink-0`}
                                     />
                                     <p
-                                        className={`${
-                                            compact || density === 'compact'
+                                        className={`${compact || density === 'compact'
                                                 ? 'text-[10px]'
                                                 : 'text-xs'
-                                        } text-muted-foreground line-clamp-1`}
+                                            } text-muted-foreground line-clamp-1`}
                                     >
                                         {student.location}
                                     </p>
@@ -717,11 +711,10 @@ export const StudentSchedulePage = () => {
                                         setSelectedCoordinator(coord.name)
                                         // toast.success(`Filtered by ${coord.name}`);
                                     }}
-                                    className={`px-2 py-0.5 rounded-md text-xs font-medium transition-all ${
-                                        selectedCoordinator === coord.name
+                                    className={`px-2 py-0.5 rounded-md text-xs font-medium transition-all ${selectedCoordinator === coord.name
                                             ? 'bg-primaryNew text-primary-foreground'
                                             : 'bg-mutedNew hover:bg-mutedNew/80'
-                                    }`}
+                                        }`}
                                 >
                                     {coord.name.split(' ')[0]} ({coord.count})
                                 </button>
@@ -1025,10 +1018,9 @@ export const StudentSchedulePage = () => {
                                             <div className="flex items-center gap-2">
                                                 <Badge
                                                     Icon={Users}
-                                                    text={`${
-                                                        dayData?.students
+                                                    text={`${dayData?.students
                                                             .length || 0
-                                                    }`}
+                                                        }`}
                                                     variant="primaryNew"
                                                     shape="pill"
                                                 />
@@ -1038,7 +1030,7 @@ export const StudentSchedulePage = () => {
                                     <ScrollArea className="h-[500px]">
                                         <div className="p-4">
                                             {!dayData ||
-                                            dayData.students.length === 0 ? (
+                                                dayData.students.length === 0 ? (
                                                 <div className="flex flex-col items-center justify-center h-60 text-center">
                                                     <div className="h-16 w-16 rounded-full bg-mutedNew flex items-center justify-center mb-3">
                                                         <Calendar className="h-8 w-8 text-muted-foreground" />
@@ -1114,7 +1106,17 @@ export const StudentSchedulePage = () => {
 }
 
 StudentSchedulePage.getLayout = (page: ReactElement) => {
-    return <RtoLayoutV2>{page}</RtoLayoutV2>
+    return (
+        <RtoLayoutV2
+            titleProps={{
+                Icon: Calendar,
+                title: 'Student Schedule',
+                description: 'Manage weekly placement schedules',
+            }}
+        >
+            {page}
+        </RtoLayoutV2>
+    )
 }
 
 export default StudentSchedulePage

@@ -1,6 +1,7 @@
 import { Badge, Button, Card } from '@components'
 import { Separator } from '@components/ui/separator'
 import { DocumentsView } from '@hooks'
+import { VerifyCapacityComponent } from '@partials/common/StudentProfileDetail/components/Workplace/components/WorkplaceApprovalReq/VerifyCapacityComponent'
 import { WorkplaceMapBoxView } from '@partials/student'
 import { RtoV2Api } from '@queries'
 import {
@@ -17,11 +18,12 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 export const EnhancedIndustryDetailsCard = ({
-    showIndustryDetails,
+    // showIndustryDetails,
     selectedIndustry,
     workplaceType,
     proofSkipped,
     student,
+    workplace,
 }: any) => {
     const [showMap, setShowMap] = useState(false)
     const router = useRouter()
@@ -46,7 +48,7 @@ export const EnhancedIndustryDetailsCard = ({
     return (
         <>
             {documentsViewModal}
-            {showIndustryDetails && (
+            {data && Object.keys(data)?.length > 0 && (
                 <Card noPadding className="border-0 shadow-xl overflow-hidden">
                     <div className="bg-gradient-to-r from-[#044866] to-[#0D5468] px-5 py-4">
                         <div className="flex items-center gap-2.5 text-white">
@@ -54,6 +56,16 @@ export const EnhancedIndustryDetailsCard = ({
                             <h3 className="font-semibold">Matched Industry</h3>
                         </div>
                     </div>
+
+                    {workplace?.workplaceApprovaleRequest?.[0] &&
+                        !workplace?.workplaceApprovaleRequest?.[0]
+                            ?.hasVerifiedCapacity &&
+                        workplaceType === 'needs' && (
+                            <VerifyCapacityComponent
+                                courseId={workplace?.courses?.[0]?.id}
+                                wpReqApproval={workplace}
+                            />
+                        )}
                     <div className="p-4 m-4 bg-white rounded-xl border border-slate-200 mb-3">
                         <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-2">

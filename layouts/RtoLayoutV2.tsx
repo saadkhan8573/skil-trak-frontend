@@ -6,9 +6,9 @@ import {
     DisplayAlerts,
     DisplayNotifications,
 } from '@components'
-import { RtoSidebar } from '@components/sideBars/rtoSidebarV2'
-import { AccessNewPortalOnPermission } from '@partials'
 import { ReactNode, useState } from 'react'
+import { AccessNewPortalOnPermission } from '@partials'
+import { RtoSidebar } from '@components/sideBars/rtoSidebarV2'
 
 interface RtoLayoutProps {
     children: ReactNode
@@ -55,11 +55,10 @@ export const RtoLayoutV2 = ({
                         id="main-content-scroll"
                         className={`flex-1 overflow-y-auto p-4 md:p-6 mx-auto w-full ${childrenClasses}`}
                     >
-                        <div>{children}</div>
+                        <div>
+                            {children}
+                        </div>
                     </main>
-                    <div className="h-[10px]">
-                        <ContextBar />
-                    </div>
                     <DisplayNotifications />
                     <DisplayAlerts />
                 </div>

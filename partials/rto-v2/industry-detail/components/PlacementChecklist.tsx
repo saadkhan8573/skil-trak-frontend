@@ -176,7 +176,6 @@ export function PlacementChecklist() {
                                     return (
                                         <div
                                             onClick={() =>
-                                                !isDone &&
                                                 dispatch(
                                                     setNavigationTarget({
                                                         tab: (item as any)

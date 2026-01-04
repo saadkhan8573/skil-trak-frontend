@@ -1,7 +1,12 @@
 import { IndustryPlacementStatus } from '@partials/common'
 import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
-import { PaginationWithSearch, UserStatus } from '@types'
+import {
+    Industry,
+    PaginatedResponse,
+    PaginationWithSearch,
+    UserStatus,
+} from '@types'
 
 const PREFIX = 'subadmin'
 export const subAdminIndustriesEndpoints = (
@@ -193,7 +198,7 @@ export const subAdminIndustriesEndpoints = (
     industryProgress: builder.query<any, number>({
         query: (industryId) =>
             `${PREFIX}/industries/${industryId}/profile-completion/progress`,
-        providesTags: ['SubAdminIndustries'],
+        providesTags: ['SubAdminIndustries', 'RTOIndustries'],
     }),
 
     industryAnsweredCall: builder.mutation<any, { id: number; status: string }>(
@@ -388,5 +393,35 @@ export const subAdminIndustriesEndpoints = (
             body,
         }),
         invalidatesTags: ['RequestToAddCourse', 'SubAdminCourses'],
+    }),
+
+    getAllSubAdminIndustriesList: builder.query<
+        PaginatedResponse<Industry>,
+        PaginationWithSearch
+    >({
+        query: (params) => ({
+            url: `${PREFIX}/assigned/industries/list`,
+            params,
+        }),
+        providesTags: ['SubAdminIndustries'],
+    }),
+
+    getAllSubAdminIndustriesCount: builder.query<
+        {
+            partnerIndustries: number
+            nonPartnerIndustries: number
+            pendingCourseApprovals: number
+            monthlyCalled: number
+            snoozedIndustries: number
+            blockedIndustries: number
+            archivedIndustries: number
+            rejectedIndustries: number
+        },
+        void
+    >({
+        query: () => ({
+            url: `${PREFIX}/assigned/industries/count`,
+        }),
+        providesTags: ['SubAdminIndustries'],
     }),
 })

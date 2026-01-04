@@ -1,4 +1,4 @@
-import { LoadingAnimation } from '@components'
+import { EmptyData, LoadingAnimation, TechnicalError } from '@components'
 import { WorkplaceHookProvider } from '@partials/common/StudentProfileDetail/components/Workplace/hooks'
 import { RtoV2Api } from '@queries'
 import { motion } from 'framer-motion'
@@ -39,6 +39,12 @@ import {
     ScheduleModal,
     StatusNotesModal,
 } from './modal'
+import { useWorkplace } from '@hooks'
+import {
+    HeaderSkeleton,
+    WorkflowTrackerSkeleton,
+    CardsSkeleton,
+} from './skeletonLoader'
 
 interface StatusNote {
     status: string
@@ -58,10 +64,10 @@ export const PlacementRequestDetail = () => {
         RtoV2Api.PlacementRequests.useStudentPlacementProfileDetails(wpId, {
             skip: !wpId,
         })
-    const industryAvailability = RtoV2Api.Industries.useIndustryAvailabilityV2(
-        Number(router.query.id),
-        { skip: !router.query.id }
-    )
+    // const industryAvailability = RtoV2Api.Industries.useIndustryAvailabilityV2(
+    //     Number(router.query.id),
+    //     { skip: !router.query.id }
+    // )
     const [currentStatus, setCurrentStatus] =
         useState<string>('Request Generated')
 
@@ -215,26 +221,6 @@ export const PlacementRequestDetail = () => {
             total: 40,
         },
         { id: 'emergency', category: 'Emergency', completed: 0, total: 40 },
-    ]
-
-    const highlightedTasks = [
-        'Conduct initial patient assessments and vital signs monitoring',
-        'Assist with personal care activities including bathing and dressing',
-        'Administer medications under supervision of registered nurse',
-        'Document patient care activities in electronic health records',
-        'Participate in care planning meetings with multidisciplinary team',
-        'Respond to emergency situations following facility protocols',
-        'Maintain infection control standards and hygiene practices',
-        'Communicate effectively with patients, families, and healthcare team',
-    ]
-
-    const rtoExtraRequirements = [
-        'Complete minimum 120 hours of supervised clinical practice',
-        'Submit weekly reflection journals',
-        'Obtain supervisor signature on competency assessment forms',
-        'Attend mid-placement review meeting',
-        'Complete incident reporting training module',
-        'Provide evidence of current first aid certification',
     ]
 
     const studentPreferences = [
@@ -820,6 +806,9 @@ export const PlacementRequestDetail = () => {
     }
 
     const showIndustryDetails = [
+        needsWorkplaceStagesEnum.REQUEST_GENERATED &&
+            placementRequestsDetails?.data?.workplaceApprovaleRequest?.length >
+                0,
         needsWorkplaceStagesEnum.WAITING_FOR_RTO,
         needsWorkplaceStagesEnum.WAITING_FOR_STUDENT,
         providedWorkplaceStagesEnum.INDUSTRY_ELIGIBILITY_PENDING,
@@ -878,14 +867,17 @@ export const PlacementRequestDetail = () => {
             window.removeEventListener('resize', handleScroll)
         }
     }, [workplaceType, currentStatus]) // Re-run when content might change
-    console.log('wpCurrentStatus?.stage', wpCurrentStatus?.stage)
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100/50">
+            {placementRequestsDetails?.isError ? <TechnicalError /> : null}
             {placementRequestsDetails.isLoading ? (
-                <>
-                    <LoadingAnimation />
-                </>
-            ) : (
+                <div className="space-y-0">
+                    <HeaderSkeleton />
+                    <WorkflowTrackerSkeleton />
+                    <CardsSkeleton />
+                </div>
+            ) : placementRequestsDetails?.isSuccess &&
+              placementRequestsDetails?.data ? (
                 <>
                     {/* Clean Modern Header */}
                     <CleanHeader
@@ -1001,9 +993,9 @@ export const PlacementRequestDetail = () => {
 
                                     {/* Enhanced Industry Details */}
                                     <EnhancedIndustryDetailsCard
-                                        showIndustryDetails={
-                                            showIndustryDetails
-                                        }
+                                        // showIndustryDetails={
+                                        //     showIndustryDetails
+                                        // }
                                         selectedIndustry={selectedIndustry}
                                         workplaceType={workplaceType}
                                         proofSkipped={proofSkipped}
@@ -1011,6 +1003,9 @@ export const PlacementRequestDetail = () => {
                                         //     placementRequestsDetails?.data
                                         //         ?.industries?.[0]?.industry
                                         // }
+                                        workplace={
+                                            placementRequestsDetails?.data
+                                        }
                                         student={studentDetails?.data}
                                     />
 
@@ -1052,51 +1047,45 @@ export const PlacementRequestDetail = () => {
                                                 placementRequestsDetails?.data
                                             }
                                             workplaceType={workplaceType}
+                                            student={studentDetails?.data}
                                         />
                                     </WorkplaceHookProvider>
                                     {/* Find Workplace Section - Only shown when Request Generated */}
                                     {wpCurrentStatus?.stage ===
-                                        'Request Generated' && (
-                                        <FindWorkplaceSection
-                                            isExpanded={
-                                                showFindWorkplaceSection
-                                            }
-                                            onToggle={() =>
-                                                setShowFindWorkplaceSection(
-                                                    !showFindWorkplaceSection
-                                                )
-                                            }
-                                            workplace={
-                                                placementRequestsDetails?.data
-                                            }
-                                        />
-                                    )}
+                                        'Request Generated' &&
+                                        placementRequestsDetails?.data
+                                            ?.workplaceApprovaleRequest
+                                            ?.length === 0 && (
+                                            <FindWorkplaceSection
+                                                isExpanded={
+                                                    showFindWorkplaceSection
+                                                }
+                                                onToggle={() =>
+                                                    setShowFindWorkplaceSection(
+                                                        !showFindWorkplaceSection
+                                                    )
+                                                }
+                                                workplace={
+                                                    placementRequestsDetails?.data
+                                                }
+                                            />
+                                        )}
 
                                     {/* Enhanced Highlighted Tasks */}
                                     <EnhancedHighlightedTasksCard
-                                        highlightedTasks={highlightedTasks}
                                         confirmedTasks={confirmedTasks}
                                         confirmTaskWithWorkplace={
                                             confirmTaskWithWorkplace
                                         }
-                                        data={
-                                            highlightedAndRtoReq?.data
-                                                ?.highlightedTasks || []
-                                        }
+                                        data={highlightedAndRtoReq?.data || []}
                                     />
                                     {/* Enhanced RTO Requirements */}
                                     <EnhancedRtoRequirementsCard
-                                        rtoExtraRequirements={
-                                            rtoExtraRequirements
-                                        }
                                         confirmedRtoReqs={confirmedRtoReqs}
                                         confirmRtoReqWithWorkplace={
                                             confirmRtoReqWithWorkplace
                                         }
-                                        data={
-                                            highlightedAndRtoReq?.data
-                                                ?.difference || []
-                                        }
+                                        data={highlightedAndRtoReq?.data || []}
                                     />
 
                                     {/* Enhanced Status Notes */}
@@ -1131,11 +1120,7 @@ export const PlacementRequestDetail = () => {
                     <ScheduleModal
                         open={showScheduleDialog}
                         onClose={() => setShowScheduleDialog(false)}
-                        startDate={scheduleStartDate}
-                        endDate={scheduleEndDate}
-                        onStartDateChange={setScheduleStartDate}
-                        onEndDateChange={setScheduleEndDate}
-                        onConfirm={handleScheduleConfirmed}
+                        student={studentDetails?.data}
                     />
 
                     {/* Rejection Modal */}
@@ -1254,7 +1239,9 @@ export const PlacementRequestDetail = () => {
                         onConfirm={handleSubmitQuickAction}
                     />
                 </>
-            )}
+            ) : placementRequestsDetails?.isSuccess ? (
+                <EmptyData title="No Placement Request Details Found" />
+            ) : null}
         </div>
     )
 }

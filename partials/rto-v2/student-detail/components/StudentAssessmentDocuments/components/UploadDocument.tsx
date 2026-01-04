@@ -1,19 +1,20 @@
 import { Button, ShowErrorNotifications } from '@components'
 import { useNotification } from '@hooks'
 import { RtoV2Api } from '@queries'
-import { Folder } from '@types'
+import { AssessmentEvidenceDetailType, Student } from '@types'
 import { Upload } from 'lucide-react'
 import React, { useRef } from 'react'
-import { useAppSelector } from '@redux/hooks'
 
-export const UploadDocument = ({ folder }: { folder: Folder }) => {
+export const UploadDocument = ({
+    folder,
+    student,
+}: {
+    folder: AssessmentEvidenceDetailType
+    student: Student
+}) => {
     const fileInputRef = useRef<HTMLInputElement>(null)
     const [uploadDocument, uploadDocumentResult] =
         RtoV2Api.StudentDocuments.uploadStudentDocumentFile()
-
-    const studentId = useAppSelector(
-        (state) => state?.student?.studentDetail?.id ?? 0
-    )
 
     const { notification } = useNotification()
 
@@ -29,7 +30,7 @@ export const UploadDocument = ({ folder }: { folder: Folder }) => {
             const formData = new FormData()
             formData.append('file', file)
             const res: any = await uploadDocument({
-                stdId: Number(studentId),
+                stdId: Number(student?.id),
                 folderId: folder?.id ?? 0,
                 body: formData,
             })
@@ -40,8 +41,7 @@ export const UploadDocument = ({ folder }: { folder: Folder }) => {
                     description: 'Document Uploaded Successfully',
                 })
             }
-            // TODO: Call upload API with file
-            // uploadDocument({ file, folderId: folder.id })
+
         }
     }
 

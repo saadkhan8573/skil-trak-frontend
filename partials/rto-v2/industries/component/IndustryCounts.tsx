@@ -2,7 +2,7 @@ import { Card } from '@components/cards'
 import { Progress } from '@components/ui/progress'
 import { cn } from '@utils'
 import { RtoV2Api } from '@redux/queries/portals/rto-v2'
-import { Activity, Briefcase, Clock, Handshake } from 'lucide-react'
+import { Activity, Briefcase, Building2, Clock, Handshake } from 'lucide-react'
 import React from 'react'
 
 export const IndustryCounts = () => {
@@ -19,13 +19,12 @@ export const IndustryCounts = () => {
             progressColor: 'bg-green-600',
         },
         {
-            label: 'Pending Industries',
-            value: counts?.pending || 0,
-            icon: Clock,
+            label: 'Non-Partner Industries',
+            value: counts?.nonPartnerIndustries || 0,
+            icon: Building2,
             color: 'text-orange-600',
             bgColor: 'bg-orange-50',
             borderColor: 'border-orange-200',
-            progressColor: 'bg-orange-600',
         },
         {
             label: 'Partner Industries',

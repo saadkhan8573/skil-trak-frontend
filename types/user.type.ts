@@ -66,12 +66,15 @@ export interface UserCount {
     rejected: number | string
     blocked: number | string
     archived: number | string
+    pendingCourseApprovals: number
     snoozed: any
     completed: number
     unAssigned: number
     placementStarted: number
     schedule: number
     reported: number
+    nonPartnerIndustries: number
+    partnerIndustries: number
 }
 
 export interface SubadminCount extends UserCount {

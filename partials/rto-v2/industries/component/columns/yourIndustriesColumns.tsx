@@ -35,7 +35,6 @@ import {
 import { useNotification } from 'hooks/useNotification'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
-import { IntrustedType } from '../IntrustedType'
 import { Progressbar } from '@partials/rto-v2/components/Progressbar'
 import { PendingIndustryFull } from '../../types'
 import { ComposeEmailModal } from '@partials/rto-v2/student-detail/components/Communications/modal/ComposeEmailModal'
@@ -43,6 +42,8 @@ import { EditProfileModal } from '../../../industry-detail/components/header/mod
 import { useAppDispatch } from '@redux/hooks'
 import { setIndustryDetail } from '@redux/slice/industry.slice'
 import Link from 'next/link'
+import { FaChevronDown } from 'react-icons/fa6'
+import { InterestedStatusModal } from '../../modals'
 
 type ActionKey = 'view' | 'edit'
 
@@ -193,11 +194,68 @@ export const useYourIndustriesColumns = () => {
             header: () => <span>Interest Status</span>,
             cell: ({ row }) => {
                 const industry = row.original
+
+                const getStatusOptions = (
+                    industry: Industry
+                ): TableActionOption<Industry>[] => [
+                    {
+                        text: 'Interested',
+                        Icon: CheckCircle2,
+                        color: industry.isInterested
+                            ? 'text-success'
+                            : 'text-gray-700',
+                        onClick: () => {
+                            setModal(
+                                <InterestedStatusModal
+                                    isOpen={true}
+                                    onClose={onModalCancelClicked}
+                                    industryId={Number(industry.id)}
+                                    status="interested"
+                                    industryName={industry.user?.name}
+                                />
+                            )
+                        },
+                    },
+                    {
+                        text: 'Not Interested',
+                        Icon: XCircle,
+                        color: !industry.isInterested
+                            ? 'text-warning'
+                            : 'text-gray-700',
+                        onClick: () => {
+                            setModal(
+                                <InterestedStatusModal
+                                    isOpen={true}
+                                    onClose={onModalCancelClicked}
+                                    industryId={Number(industry.id)}
+                                    status="notInterested"
+                                    industryName={industry.user?.name}
+                                />
+                            )
+                        },
+                    },
+                ]
+
                 return (
-                    <IntrustedType
-                        industryId={Number(industry?.id)}
-                        initialValue={industry?.isInterested}
-                    />
+                    <div className="flex items-center">
+                        <TableAction
+                            options={getStatusOptions(industry)}
+                            rowItem={industry}
+                        >
+                            <Badge
+                                Icon={FaChevronDown}
+                                iconPlacement="right"
+                                text={
+                                    industry?.isInterested
+                                        ? 'Interested'
+                                        : 'Not Interested'
+                                }
+                                variant={'primaryNew'}
+                                outline={!industry?.isInterested}
+                                className="cursor-pointer hover:opacity-80 transition-opacity"
+                            />
+                        </TableAction>
+                    </div>
                 )
             },
         },

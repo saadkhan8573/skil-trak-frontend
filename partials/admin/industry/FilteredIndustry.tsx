@@ -237,13 +237,13 @@ export const FilteredIndustry = ({
             accessorKey: 'studentCount',
             header: () => <span>Students</span>,
         },
-        {
-            accessorKey: 'sectors',
-            header: () => <span>Sectors</span>,
-            cell: (info) => {
-                return <SectorCell industry={info.row.original} />
-            },
-        },
+        // {
+        //     accessorKey: 'sectors',
+        //     header: () => <span>Sectors</span>,
+        //     cell: (info) => {
+        //         return <SectorCell industry={info.row.original} />
+        //     },
+        // },
         {
             accessorKey: 'user.status',
             header: () => <span>Status</span>,

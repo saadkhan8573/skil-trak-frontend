@@ -1,4 +1,4 @@
-import { Badge, InitialAvatar, NoData, Typography } from '@components'
+import { Badge, Button, InitialAvatar, NoData, Typography } from '@components'
 import { latestWpApprovalRequest } from '@partials/rto-v2'
 import { Supervisor } from '@types'
 import { WorkplaceStatusLabels } from '@utils'
@@ -9,6 +9,7 @@ import {
     Mail,
     MapPin,
     Phone,
+    Plus,
     Star,
 } from 'lucide-react'
 import { useMemo } from 'react'
@@ -16,8 +17,10 @@ import { IWorkplaceIndustries } from 'redux/queryTypes'
 
 export function WorkplaceBio({
     workplace,
+    handleAddNewWorkplace,
 }: {
     workplace: IWorkplaceIndustries
+    handleAddNewWorkplace: () => void
 }) {
     const latestWorkplaceApprovaleRequest = useMemo(() => {
         return latestWpApprovalRequest(
@@ -37,23 +40,31 @@ export function WorkplaceBio({
 
     return (
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-secondary shadow-xl shadow-slate-200/50 p-5 hover:shadow-2xl transition-all">
-            <div className="flex items-start gap-3.5 mb-5">
-                <div className="relative group">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primaryNew to-primaryNew flex items-center justify-center text-white shadow-xl shadow-primaryNew/30 group-hover:scale-110 transition-transform">
-                        <Building2 className="w-6 h-6" />
+            <div className="flex items-center justify-between">
+                <div className="flex items-start gap-3.5 mb-5">
+                    <div className="relative group">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primaryNew to-primaryNew flex items-center justify-center text-white shadow-xl shadow-primaryNew/30 group-hover:scale-110 transition-transform">
+                            <Building2 className="w-6 h-6" />
+                        </div>
+                        <div className="absolute -bottom-1 -right-1 w-4.5 h-4.5 bg-[#F7A619] rounded-lg border-2 border-white flex items-center justify-center shadow-lg">
+                            <Star className="w-2 h-2 text-white fill-white" />
+                        </div>
                     </div>
-                    <div className="absolute -bottom-1 -right-1 w-4.5 h-4.5 bg-[#F7A619] rounded-lg border-2 border-white flex items-center justify-center shadow-lg">
-                        <Star className="w-2 h-2 text-white fill-white" />
+                    <div className="flex-1">
+                        <h2 className="text-slate-900 mb-0.5">
+                            Workplace Bio & Details
+                        </h2>
+                        <p className="text-slate-600 text-sm">
+                            Primary Placement Organization
+                        </p>
                     </div>
                 </div>
-                <div className="flex-1">
-                    <h2 className="text-slate-900 mb-0.5">
-                        Workplace Bio & Details
-                    </h2>
-                    <p className="text-slate-600 text-sm">
-                        Primary Placement Organization
-                    </p>
-                </div>
+
+                {/*  */}
+                <Button variant="primaryNew" onClick={handleAddNewWorkplace}>
+                    <Plus className="w-4 h-4" />
+                    Add New Workplace
+                </Button>
             </div>
 
             {industry ? (

@@ -2,7 +2,6 @@ import {
     Appointments,
     Communications,
     RtoInfo,
-    Schedule,
     StudentAssessmentDocuments,
     StudentHeader,
     StudentInfoMessage,
@@ -10,13 +9,8 @@ import {
     Tickets,
 } from './components'
 
-import {
-    ConfigTabs,
-    EmptyData,
-    LoadingAnimation,
-    TabConfig,
-    TechnicalError,
-} from '@components'
+import { ConfigTabs, EmptyData, TabConfig, TechnicalError } from '@components'
+import { Skeleton } from '@components/ui/skeleton'
 import { useGetSubAdminStudentDetailQuery } from '@queries'
 import { setStudentDetail } from '@redux'
 import { Student } from '@types'
@@ -33,11 +27,11 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { AllWorkplaces } from './components/AllWorkplaces/AllWorkplaces'
 import {
-    StudentTopBarSkeleton,
-    StudentProfileHeaderSkeleton,
     StudentOverviewSkeleton,
+    StudentProfileHeaderSkeleton,
+    StudentTopBarSkeleton,
 } from './skeletonLoader'
-import { Skeleton } from '@components/ui/skeleton'
+import { Schedule } from '@partials/common/StudentProfileDetail/components'
 
 export const RtoStudentDetail = () => {
     const router = useRouter()
@@ -93,10 +87,15 @@ export const RtoStudentDetail = () => {
             value: 'schedule',
             icon: CalendarCheck,
             component: () => (
+                // <Schedule
+                //     selectedCourseId={
+                //         profile?.data?.courses?.[0]?.id?.toString() || ''
+                //     }
+                // />
                 <Schedule
-                    selectedCourseId={
-                        profile?.data?.courses?.[0]?.id?.toString() || ''
-                    }
+                    user={profile?.data?.user!}
+                    studentId={profile?.data?.id!}
+                    student={profile?.data}
                 />
             ),
         },
@@ -142,7 +141,10 @@ export const RtoStudentDetail = () => {
                         <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-100">
                             <div className="flex gap-4 border-b border-slate-50 pb-4 mb-6">
                                 {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-                                    <Skeleton key={i} className="h-10 w-32 rounded-lg" />
+                                    <Skeleton
+                                        key={i}
+                                        className="h-10 w-32 rounded-lg"
+                                    />
                                 ))}
                             </div>
                             <StudentOverviewSkeleton />

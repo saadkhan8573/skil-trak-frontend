@@ -8,9 +8,11 @@ import { WorkplaceCurrentStatus, WorkplaceStatusLabels } from '@utils'
 import {
     AlertCircle,
     Award,
+    BookOpen,
     Building2,
     Calendar,
     CheckCircle2,
+    Clock,
     Hourglass,
     Mail,
     MapPin,
@@ -135,13 +137,24 @@ export const WorkplaceCard = ({
                         <Building2 className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                        <h4 className="text-white">{industry?.user?.name}</h4>
+                        <h4 className="text-white">
+                            {industry?.user?.name || 'Industry Not Provided'}
+                        </h4>
                         <p className="text-white/80 text-sm">
-                            {workplaceType?.name}
+                            {workplaceType?.name || 'Not Assigned'}
                         </p>
                     </div>
                 </div>
-                {getStatusBadge(status)}
+                <div className="flex flex-col items-end gap-1.5">
+                    {getStatusBadge(status)}
+                    <Badge
+                        variant="warning"
+                        text={WorkplaceStatusLabels[workplace?.currentStatus]}
+                        Icon={Clock}
+                        size="xs"
+                        className="!bg-white/20 !text-white border-white/30"
+                    />
+                </div>
             </div>
 
             {/* Content */}
@@ -157,7 +170,7 @@ export const WorkplaceCard = ({
                                 Address
                             </p>
                             <p className="text-sm text-slate-900">
-                                {industry?.addressLine1}
+                                {industry?.addressLine1 || 'Not Specified'}
                             </p>
                         </div>
                     </div>
@@ -171,7 +184,7 @@ export const WorkplaceCard = ({
                                 Workplace Type
                             </p>
                             <p className="text-sm text-slate-900">
-                                {workplaceType?.name}
+                                {workplaceType?.name || 'Not Assigned'}
                             </p>
                         </div>
                     </div>
@@ -196,6 +209,43 @@ export const WorkplaceCard = ({
                     </div>
                 </div>
 
+                {/* Course Information Section */}
+                {workplace?.courses && workplace?.courses?.length > 0 && (
+                    <div className="bg-gradient-to-br from-[#044866]/5 to-[#0D5468]/5 border border-slate-200/60 rounded-xl p-4 mb-4">
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="w-8 h-8 rounded-lg bg-[#044866] flex items-center justify-center">
+                                <BookOpen className="w-4 h-4 text-white" />
+                            </div>
+                            <p className="text-sm font-semibold text-slate-900">
+                                Assigned Course
+                            </p>
+                        </div>
+                        <div className="space-y-3">
+                            {workplace?.courses?.map((course) => (
+                                <div
+                                    key={course.id}
+                                    className="flex items-center justify-between p-2 rounded-lg bg-white/50 border border-slate-100"
+                                >
+                                    <div className="flex flex-col">
+                                        <span className="text-sm text-slate-900 font-medium">
+                                            {course.title}
+                                        </span>
+                                        <span className="text-[11px] text-slate-500 uppercase tracking-wider">
+                                            Code: {course.id}
+                                        </span>
+                                    </div>
+                                    <Badge
+                                        variant="primaryNew"
+                                        outline
+                                        text={`${course.hours} Hours`}
+                                        Icon={Award}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 {/* Supervisor Info */}
                 <div className="bg-gradient-to-br from-slate-50 to-blue-50/30 rounded-xl p-4 mb-4">
                     <div className="flex items-center gap-3">
@@ -204,10 +254,10 @@ export const WorkplaceCard = ({
                         )}
                         <div className="flex-1">
                             <p className="text-sm text-slate-900 mb-0.5">
-                                {supervisor?.name}
+                                {supervisor?.name || 'No Supervisor Assigned'}
                             </p>
                             <p className="text-xs text-slate-600">
-                                {supervisor?.qualification}
+                                {supervisor?.qualification || 'Pending Confirmation'}
                             </p>
                         </div>
                         <div className="flex gap-2">
@@ -276,7 +326,7 @@ export const WorkplaceCard = ({
                                 <span className="font-medium">Status:</span>{' '}
                                 {
                                     WorkplaceStatusLabels[
-                                        workplace?.currentStatus
+                                    workplace?.currentStatus
                                     ]
                                 }
                             </p>
@@ -290,19 +340,19 @@ export const WorkplaceCard = ({
 
                 {workplace?.currentStatus ===
                     WorkplaceCurrentStatus.AwaitingRtoResponse && (
-                    <Button
-                        outline
-                        fullWidth
-                        variant="primaryNew"
-                        text="View Details"
-                        className="mt-3"
-                        onClick={() =>
-                            router.push(
-                                `/portals/rto/action-required/approve-placement/${latestWorkplaceApprovaleRequest?.id}`
-                            )
-                        }
-                    />
-                )}
+                        <Button
+                            outline
+                            fullWidth
+                            variant="primaryNew"
+                            text="View Details"
+                            className="mt-3"
+                            onClick={() =>
+                                router.push(
+                                    `/portals/rto/action-required/approve-placement/${latestWorkplaceApprovaleRequest?.id}`
+                                )
+                            }
+                        />
+                    )}
 
                 {/* Actions */}
                 {/* <div className="flex items-center gap-2 mt-4">

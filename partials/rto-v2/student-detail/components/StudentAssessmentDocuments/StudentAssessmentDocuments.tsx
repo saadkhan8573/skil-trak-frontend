@@ -119,6 +119,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                                 sectionType={section.type}
                                 filterKey={section.filterKey}
                                 documents={section?.documents ?? []}
+                                student={student}
                             />
                         )
                     )

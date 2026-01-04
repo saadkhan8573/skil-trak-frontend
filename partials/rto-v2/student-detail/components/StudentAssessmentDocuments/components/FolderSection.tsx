@@ -1,5 +1,5 @@
 import { NoData } from '@components'
-import { Course, Folder } from '@types'
+import { AssessmentEvidenceDetailType, Course, Folder } from '@types'
 import { FolderCard, FolderHeaderCard } from '../cards'
 import { getStatusConfig } from '../utils/getStatusConfig'
 
@@ -8,10 +8,11 @@ interface FolderSectionProps {
     description: string
     stats: any
     sectionType: 'industry' | 'course'
+    student: any
 
     course: Course
     filterKey: string
-    documents: Folder[]
+    documents: AssessmentEvidenceDetailType[]
 }
 
 export const FolderSection = ({
@@ -22,6 +23,7 @@ export const FolderSection = ({
     documents,
     sectionType,
     description,
+    student,
 }: FolderSectionProps) => {
     // const documents = RtoV2Api.StudentDocuments.getStudentDocumentsList(
     //     {
@@ -44,11 +46,10 @@ export const FolderSection = ({
 
             {documents && documents?.length > 0 ? (
                 <div
-                    className={`p-3 space-y-${
-                        sectionType === 'industry' ? '3' : '2'
-                    }`}
+                    className={`p-3 space-y-${sectionType === 'industry' ? '3' : '2'
+                        }`}
                 >
-                    {documents?.map((folder: Folder) => {
+                    {documents?.map((folder: AssessmentEvidenceDetailType) => {
                         const config = getStatusConfig(
                             folder?.studentResponse?.[0]?.status
                         )
@@ -58,6 +59,8 @@ export const FolderSection = ({
                                 key={folder.id}
                                 folder={folder}
                                 config={config}
+                                course={course}
+                                student={student}
                             />
                         )
                     })}

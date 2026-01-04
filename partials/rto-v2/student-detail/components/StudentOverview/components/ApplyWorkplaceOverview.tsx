@@ -1,6 +1,8 @@
-import { Button } from '@components'
+import { BackButton, Button } from '@components'
 import { useAppSelector } from '@redux/hooks'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 import {
+    ArrowLeft,
     ArrowRight,
     Briefcase,
     Building2,
@@ -13,7 +15,13 @@ import {
 // ... imports
 import { useRouter } from 'next/router'
 
-export function ApplyWorkplaceOverview() {
+export function ApplyWorkplaceOverview({
+    handleAddNewWorkplace,
+    firstWorkplace,
+}: {
+    firstWorkplace: IWorkplaceIndustries
+    handleAddNewWorkplace: () => void
+}) {
     const router = useRouter()
     const { selectedCourse: course } = useAppSelector((state) => state.student)
 
@@ -29,6 +37,7 @@ export function ApplyWorkplaceOverview() {
         } else {
             router.push(`${basePath}/provide-workplace-detail`)
         }
+        handleAddNewWorkplace()
     }
 
     const pathwayOptions = [
@@ -94,8 +103,17 @@ export function ApplyWorkplaceOverview() {
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#044866]/5 to-[#F7A619]/5 rounded-full blur-3xl -z-10"></div>
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-purple-500/5 to-blue-500/5 rounded-full blur-3xl -z-10"></div>
 
+            {firstWorkplace && (
+                <Button
+                    variant="primaryNew"
+                    outline
+                    onClick={() => handleAddNewWorkplace()}
+                    text="Back to Workplace"
+                    Icon={ArrowLeft}
+                />
+            )}
             {/* Header Section */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between my-3">
                 <div className="flex items-start gap-4">
                     <div className="relative group">
                         <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#044866] to-[#0D5468] flex items-center justify-center text-white shadow-2xl shadow-[#044866]/40 group-hover:scale-110 transition-transform duration-300">
@@ -116,7 +134,6 @@ export function ApplyWorkplaceOverview() {
                     </div>
                 </div>
             </div>
-
             {/* Progress Alert Banner */}
             <div className="relative mb-5 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-emerald-400/10 to-emerald-500/10 animate-pulse"></div>
@@ -152,7 +169,6 @@ export function ApplyWorkplaceOverview() {
                     </div>
                 </div>
             </div>
-
             {/* Main Call to Action */}
             <div className="text-center mb-6">
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#044866]/10 to-[#0D5468]/10 rounded-xl border border-[#044866]/20 mb-3">
@@ -162,7 +178,6 @@ export function ApplyWorkplaceOverview() {
                     </span>
                 </div>
             </div>
-
             {/* Pathway Options - Side by Side */}
             <div className="grid md:grid-cols-2 gap-4 mb-6">
                 {pathwayOptions.map((pathway) => {
@@ -234,7 +249,6 @@ export function ApplyWorkplaceOverview() {
                     )
                 })}
             </div>
-
             {/* Help Section - Enhanced */}
             {/* <div className="relative overflow-hidden rounded-2xl border border-[#F7A619]/30 bg-gradient-to-br from-amber-50/50 via-white to-orange-50/50 p-5 hover:shadow-lg transition-all">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#F7A619]/10 rounded-full blur-3xl"></div>

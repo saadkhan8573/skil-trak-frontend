@@ -9,6 +9,8 @@ import { RtoV2Api } from '@queries'
 import { Building2 } from 'lucide-react'
 import { WorkplaceCard } from './cards'
 import { WorkplaceCounts } from './components'
+import { useMemo } from 'react'
+import { WorkplaceCurrentStatus } from '@utils'
 
 import { WorkplaceTabSkeleton } from '../../skeletonLoader'
 
@@ -20,6 +22,23 @@ export function AllWorkplaces({ studentId }: { studentId: number }) {
             refetchOnMountOrArgChange: 30,
         }
     )
+
+    const sortedWorkplaces = useMemo(() => {
+        if (!workplaces?.data) return []
+        return [...workplaces.data].sort((a, b) => {
+            if (
+                a.currentStatus === WorkplaceCurrentStatus.Cancelled &&
+                b.currentStatus !== WorkplaceCurrentStatus.Cancelled
+            )
+                return 1
+            if (
+                a.currentStatus !== WorkplaceCurrentStatus.Cancelled &&
+                b.currentStatus === WorkplaceCurrentStatus.Cancelled
+            )
+                return -1
+            return 0
+        })
+    }, [workplaces.data])
 
     return (
         <>
@@ -66,7 +85,7 @@ export function AllWorkplaces({ studentId }: { studentId: number }) {
 
                     {/* Workplace Cards */}
                     <div className="space-y-4">
-                        {workplaces?.data?.map((workplace) => (
+                        {sortedWorkplaces?.map((workplace) => (
                             <WorkplaceCard
                                 key={workplace.id}
                                 workplace={workplace}

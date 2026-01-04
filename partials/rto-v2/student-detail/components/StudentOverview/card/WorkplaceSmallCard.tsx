@@ -8,8 +8,10 @@ import {
 } from 'redux/queryTypes'
 import { useStatusInfo } from '../hooks/useStatusInfo'
 import { useMemo } from 'react'
-import { WorkplaceStatusLabels } from '@utils'
+import { WorkplaceStatusLabels, getUserCredentials } from '@utils'
 import { latestWpApprovalRequest } from '@partials/rto-v2'
+import { useRouter } from 'next/router'
+import { UserRoles } from '@constants'
 export const WorkplaceSmallCard = ({
     request,
     index,
@@ -28,8 +30,23 @@ export const WorkplaceSmallCard = ({
     const industry =
         workIndustry?.industry || latestWorkplaceApprovaleRequest?.industry
 
+    const role = getUserCredentials()?.role
+    const router = useRouter()
+
     const onSelectWorkplace = () => {
-        dispatch(setSelectedWorkplace(request))
+        if (role === UserRoles.RTO) {
+            router.push(
+                `/portals/rto/students-and-placements/placement-requests/${request.id}/${request.student?.id}`
+            )
+        } else if (role === UserRoles.ADMIN) {
+            router.push(
+                `/portals/admin/workplaces/${request.id}/${request.student?.id}`
+            )
+        } else if (role === UserRoles.SUBADMIN) {
+            router.push(
+                `/portals/sub-admin/wp-approval-request/${request.id}/detail`
+            )
+        }
     }
 
     const { progressPercent } = useStatusInfo({

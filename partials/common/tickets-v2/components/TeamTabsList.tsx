@@ -63,6 +63,7 @@ export const TeamTabsList = () => {
     ]
     const visibleTabs = teamTabs.filter((tab) => {
         if (role === UserRoles.ADMIN) return true
+        if (role === UserRoles.SUBADMIN) return true
         if (role === UserRoles.RTO) return tab.id === 'rto'
         return false
     })

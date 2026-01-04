@@ -524,6 +524,7 @@ export const {
     useConfirmCourseDescriptionMutation,
     useGenerateDescriptionMutation,
     useGetAllSubAdminIndustriesListQuery,
+    useGetAllStateWiseSubAdminIndustriesListQuery,
     useGetAllSubAdminIndustriesCountQuery,
 
     useAddHodNoteMutation,
@@ -729,6 +730,8 @@ export const SubAdminApi = {
     Industry: {
         getAllSubAdminIndustriesCount: useGetAllSubAdminIndustriesCountQuery,
         useGetAllSubAdminIndustriesList: useGetAllSubAdminIndustriesListQuery,
+        getAllStateWiseSubAdminIndustries:
+            useGetAllStateWiseSubAdminIndustriesListQuery,
         useAddToPartner: useAddToPartnerMutation,
         useIndustryCallLog: useIndustryCallLogMutation,
         useGetIndustryCallLog: useGetIndustryCallLogQuery,

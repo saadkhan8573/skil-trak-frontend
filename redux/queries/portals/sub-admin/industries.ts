@@ -406,6 +406,17 @@ export const subAdminIndustriesEndpoints = (
         providesTags: ['SubAdminIndustries'],
     }),
 
+    getAllStateWiseSubAdminIndustriesList: builder.query<
+        PaginatedResponse<Industry>,
+        PaginationWithSearch
+    >({
+        query: (params) => ({
+            url: `${PREFIX}/assigned/industries/list/by-state`,
+            params,
+        }),
+        providesTags: ['SubAdminIndustries'],
+    }),
+
     getAllSubAdminIndustriesCount: builder.query<
         {
             partnerIndustries: number

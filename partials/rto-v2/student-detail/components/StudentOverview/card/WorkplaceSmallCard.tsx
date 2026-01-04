@@ -44,7 +44,7 @@ export const WorkplaceSmallCard = ({
             )
         } else if (role === UserRoles.SUBADMIN) {
             router.push(
-                `/portals/sub-admin/wp-approval-request/${request.id}/detail`
+                `/portals/sub-admin/tasks/workplace/${request.id}/${request.student?.id}`
             )
         }
     }

@@ -31,7 +31,7 @@ const Tickets: NextPageWithLayout = () => {
     const tabs: TabProps[] = useMemo(() => {
         const baseTabs = [
             {
-                label: 'My Tickets',
+                label: 'Custom My Tickets',
                 href: {
                     pathname: 'tickets',
                     query: { tab: TicketType.AllTickets },

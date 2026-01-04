@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import { CommonApi } from '@queries'
 import { NoData, PageSize, Pagination } from '@components'
 import { TicketListSkeleton } from '../../skeleton'
+import { UserRoles } from '@constants'
+import { getUserCredentials } from '@utils'
 
 export const QATeamTab = () => {
     const [itemPerPage, setItemPerPage] = useState(10)
@@ -23,6 +25,9 @@ export const QATeamTab = () => {
         skip: itemPerPage * page - itemPerPage,
         limit: itemPerPage,
     })
+
+    const role = getUserCredentials()?.role
+
     return (
         <div className="space-y-2">
             {isError && <NoData isError />}
@@ -48,9 +53,19 @@ export const QATeamTab = () => {
                             <TicketCard
                                 ticket={ticket}
                                 onClick={() => {
-                                    router.push(
-                                        `/portals/rto/communications/tickets/${ticket?.id}`
-                                    )
+                                    if (role === UserRoles.RTO) {
+                                        router.push(
+                                            `/portals/rto/communications/tickets/${ticket?.id}`
+                                        )
+                                    } else if (role === UserRoles.ADMIN) {
+                                        router.push(
+                                            `/portals/admin/support-tickets/${ticket?.id}`
+                                        )
+                                    } else if (role === UserRoles.SUBADMIN) {
+                                        router.push(
+                                            `/portals/sub-admin/support-tickets/${ticket?.id}`
+                                        )
+                                    }
                                 }}
                                 // onViewStudentProfile={setSelectedStudentId}
                                 // onViewIndustryProfile={setSelectedIndustryId}

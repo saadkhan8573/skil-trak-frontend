@@ -46,7 +46,10 @@ export const UpdatedCancelledWorkplaces = () => {
             header: () => 'Student',
             accessorKey: 'student',
             cell: (info) => (
-                <StudentWPCellInfo student={info.row.original?.student} />
+                <StudentWPCellInfo
+                    wpId={info.row.original?.id}
+                    student={info.row.original?.student}
+                />
             ),
         },
         {

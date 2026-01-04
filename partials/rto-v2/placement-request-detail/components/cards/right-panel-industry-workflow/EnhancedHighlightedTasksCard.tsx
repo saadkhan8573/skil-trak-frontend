@@ -26,29 +26,35 @@ export const EnhancedHighlightedTasksCard = ({
             <div className="p-6 max-h-96 overflow-auto space-y-3">
                 {/* SINGLE CONFIRM BUTTON */}
                 {isConfirmed ? (
-                    <div className="flex flex-wrap items-center justify-center gap-2 text-sm bg-emerald-50 text-emerald-800 px-4 py-3 rounded-lg border border-emerald-200">
-                        <CheckCheck className="h-4 w-4 text-emerald-600" />
+                    <div className="text-sm bg-emerald-50 text-emerald-800 px-4 py-3 rounded-lg border border-emerald-200">
+                        <div className="flex items-center gap-2">
+                            <CheckCheck className="h-4 w-4 text-emerald-600" />
 
-                        <span className="font-medium">
-                            Confirmed with Workplace
-                        </span>
+                            <span className="font-medium">
+                                Confirmed with Workplace
+                            </span>
+                        </div>
 
-                        <span className="text-slate-400">•</span>
-
-                        <span className="text-slate-600">
-                            {new Date(
-                                highlightedTaskConfig.updatedAt
-                            ).toLocaleDateString()}
-                        </span>
-
-                        {highlightedTaskConfig.confirmedBy?.name && (
-                            <>
-                                <span className="text-slate-400">•</span>
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1">
+                                <p className="text-slate-500 font-medium">
+                                    Confirmed by:
+                                </p>
                                 <span className="text-slate-600">
-                                    {highlightedTaskConfig?.confirmedBy?.name}
+                                    {highlightedTaskConfig?.confirmedBy?.name ??
+                                        '---'}
                                 </span>
-                            </>
-                        )}
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <span className="text-slate-500">Date:</span>
+
+                                <p className="text-slate-600">
+                                    {new Date(
+                                        highlightedTaskConfig.updatedAt
+                                    ).toLocaleDateString()}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 ) : (
                     <Button

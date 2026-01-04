@@ -268,7 +268,7 @@ export const PremiumCurrentActionsCard = ({
                         className="space-y-3"
                     >
                         {/* useWorkplaceHook() */}
-                        {!workplace?.industries ? (
+                        {workplace?.workplaceApprovaleRequest?.length === 0 ? (
                             <>
                                 {autoApplyLoader ? (
                                     <WPProcessMatchingLoader />

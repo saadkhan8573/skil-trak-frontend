@@ -18,7 +18,7 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 export const EnhancedIndustryDetailsCard = ({
-    showIndustryDetails,
+    // showIndustryDetails,
     selectedIndustry,
     workplaceType,
     proofSkipped,
@@ -48,7 +48,7 @@ export const EnhancedIndustryDetailsCard = ({
     return (
         <>
             {documentsViewModal}
-            {showIndustryDetails && (
+            {data && Object.keys(data)?.length > 0 && (
                 <Card noPadding className="border-0 shadow-xl overflow-hidden">
                     <div className="bg-gradient-to-r from-[#044866] to-[#0D5468] px-5 py-4">
                         <div className="flex items-center gap-2.5 text-white">

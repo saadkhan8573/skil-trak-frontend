@@ -36,6 +36,13 @@ export const placementRequestsEndPoints = (
         }),
         invalidatesTags: ['RTO'],
     }),
+    confirmHighlightedTask: builder.mutation<any, any>({
+        query: (id) => ({
+            url: `rtos/course-configuration-detail/${id}/confirm`,
+            method: 'PATCH',
+        }),
+        invalidatesTags: ['RTO'],
+    }),
 
     // Details
     // rtos/student/:id/placement-profile/view

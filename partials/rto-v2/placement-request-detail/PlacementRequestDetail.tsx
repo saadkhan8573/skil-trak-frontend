@@ -64,10 +64,10 @@ export const PlacementRequestDetail = () => {
         RtoV2Api.PlacementRequests.useStudentPlacementProfileDetails(wpId, {
             skip: !wpId,
         })
-    const industryAvailability = RtoV2Api.Industries.useIndustryAvailabilityV2(
-        Number(router.query.id),
-        { skip: !router.query.id }
-    )
+    // const industryAvailability = RtoV2Api.Industries.useIndustryAvailabilityV2(
+    //     Number(router.query.id),
+    //     { skip: !router.query.id }
+    // )
     const [currentStatus, setCurrentStatus] =
         useState<string>('Request Generated')
 
@@ -806,6 +806,7 @@ export const PlacementRequestDetail = () => {
     }
 
     const showIndustryDetails = [
+        needsWorkplaceStagesEnum.REQUEST_GENERATED,
         needsWorkplaceStagesEnum.WAITING_FOR_RTO,
         needsWorkplaceStagesEnum.WAITING_FOR_STUDENT,
         providedWorkplaceStagesEnum.INDUSTRY_ELIGIBILITY_PENDING,
@@ -1047,7 +1048,12 @@ export const PlacementRequestDetail = () => {
                                     </WorkplaceHookProvider>
                                     {/* Find Workplace Section - Only shown when Request Generated */}
                                     {wpCurrentStatus?.stage ===
-                                        'Request Generated' && (
+                                        'Request Generated' &&
+                                        placementRequestsDetails?.data
+                                            .workplaceApprovaleRequest?.length >
+                                            0 &&
+                                        !placementRequestsDetails?.data
+                                            ?.industries && (
                                             <FindWorkplaceSection
                                                 isExpanded={
                                                     showFindWorkplaceSection
@@ -1069,10 +1075,7 @@ export const PlacementRequestDetail = () => {
                                         confirmTaskWithWorkplace={
                                             confirmTaskWithWorkplace
                                         }
-                                        data={
-                                            highlightedAndRtoReq?.data
-                                                ?.highlightedTasks || []
-                                        }
+                                        data={highlightedAndRtoReq?.data || []}
                                     />
                                     {/* Enhanced RTO Requirements */}
                                     <EnhancedRtoRequirementsCard
@@ -1080,10 +1083,7 @@ export const PlacementRequestDetail = () => {
                                         confirmRtoReqWithWorkplace={
                                             confirmRtoReqWithWorkplace
                                         }
-                                        data={
-                                            highlightedAndRtoReq?.data
-                                                ?.difference || []
-                                        }
+                                        data={highlightedAndRtoReq?.data || []}
                                     />
 
                                     {/* Enhanced Status Notes */}

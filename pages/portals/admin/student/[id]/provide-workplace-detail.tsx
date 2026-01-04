@@ -449,7 +449,7 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                         </div>
                     </div>
                 </div>
-                )}
+
             </div>
         </>
     )

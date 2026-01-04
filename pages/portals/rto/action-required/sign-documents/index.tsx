@@ -1,5 +1,6 @@
 import { RtoLayoutV2 } from '@layouts'
 import { SignDocuments } from '@partials'
+import { FileSignature } from 'lucide-react'
 import React, { ReactElement } from 'react'
 
 const SignDocumentsPage = () => {
@@ -7,7 +8,17 @@ const SignDocumentsPage = () => {
 }
 
 SignDocumentsPage.getLayout = (page: ReactElement) => {
-    return <RtoLayoutV2>{page}</RtoLayoutV2>
+    return (
+        <RtoLayoutV2
+            titleProps={{
+                Icon: FileSignature,
+                title: 'Sign Documents',
+                description: 'Sign pending documents',
+            }}
+        >
+            {page}
+        </RtoLayoutV2>
+    )
 }
 
 export default SignDocumentsPage

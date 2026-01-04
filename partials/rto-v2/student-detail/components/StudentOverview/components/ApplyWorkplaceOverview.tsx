@@ -10,10 +10,26 @@ import {
     Target,
 } from 'lucide-react'
 
+// ... imports
+import { useRouter } from 'next/router'
+
 export function ApplyWorkplaceOverview() {
+    const router = useRouter()
     const { selectedCourse: course } = useAppSelector((state) => state.student)
 
     if (!course) return null
+
+    const handleNavigation = (type: 'request' | 'provide') => {
+        const currentPath = router.asPath
+        // Remove /detail if it exists to get the base path
+        const basePath = currentPath.replace(/\/detail$/, '')
+
+        if (type === 'request') {
+            router.push(`${basePath}/request-workplace-detail`)
+        } else {
+            router.push(`${basePath}/provide-workplace-detail`)
+        }
+    }
 
     const pathwayOptions = [
         {
@@ -41,6 +57,7 @@ export function ApplyWorkplaceOverview() {
             ],
             buttonText: 'Find Workplace with SkilTrak',
             buttonIcon: Search,
+            action: () => handleNavigation('request'),
         },
         {
             id: 2,
@@ -67,6 +84,7 @@ export function ApplyWorkplaceOverview() {
             ],
             buttonText: 'Add Own Workplace Details',
             buttonIcon: Briefcase,
+            action: () => handleNavigation('provide'),
         },
     ]
 
@@ -205,6 +223,7 @@ export function ApplyWorkplaceOverview() {
                                 <Button
                                     variant={pathway.variant}
                                     className="w-full"
+                                    onClick={pathway.action}
                                 >
                                     <ButtonIcon className="w-4 h-4 mr-2" />
                                     {pathway.buttonText}

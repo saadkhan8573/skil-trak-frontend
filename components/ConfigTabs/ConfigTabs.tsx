@@ -32,14 +32,29 @@ export const ConfigTabs = ({
     tabsTriggerClasses?: string
 }) => {
     const [width, setWidth] = useState<number | null>(null)
-
-    const ref = useRef<any>(null)
+    const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        if (ref?.current) {
-            setWidth(ref?.current?.offsetWidth)
+        const element = ref.current
+        if (!element) return
+
+        const resizeObserver = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                if (entry.target === element) {
+                    setWidth(element.offsetWidth)
+                }
+            }
+        })
+
+        resizeObserver.observe(element)
+
+        // Set initial width
+        setWidth(element.offsetWidth)
+
+        return () => {
+            resizeObserver.disconnect()
         }
-    }, [ref])
+    }, [])
 
     const visibleTabs = tabs.filter((tab) => {
         if (typeof tab.hidden === 'function') {

@@ -56,7 +56,7 @@ export const RtoLayoutV2 = ({
                         className={`flex-1 overflow-y-auto p-4 md:p-6 mx-auto w-full ${childrenClasses}`}
                     >
                         <div>
-                            {children} <ContextBar />
+                            {children}
                         </div>
                     </main>
                     <DisplayNotifications />

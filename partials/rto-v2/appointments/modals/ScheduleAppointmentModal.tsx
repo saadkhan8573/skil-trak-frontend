@@ -69,9 +69,9 @@ export const ScheduleAppointmentModal = ({
     const appointmentTypesOptions =
         appointmentTypes?.data && appointmentTypes?.data?.length > 0
             ? appointmentTypes?.data?.map((type: any) => ({
-                  label: type.title,
-                  value: type.id,
-              }))
+                label: type.title,
+                value: type.id,
+            }))
             : []
 
     const methods = useForm({
@@ -98,12 +98,7 @@ export const ScheduleAppointmentModal = ({
         <>
             <ShowErrorNotifications result={createAppointmentResult} />
             <Dialog open={scheduleOpen} onOpenChange={setScheduleOpen}>
-                <DialogTrigger asChild>
-                    <Button variant="primaryNew">
-                        <Plus className="h-4 w-4" />
-                        Schedule Appointment
-                    </Button>
-                </DialogTrigger>
+
                 <DialogContent className="min-w-3xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>Schedule New Appointment</DialogTitle>

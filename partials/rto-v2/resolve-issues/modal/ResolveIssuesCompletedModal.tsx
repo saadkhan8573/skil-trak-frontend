@@ -80,6 +80,8 @@ export const ResolveIssuesCompletedModal = ({
     const onClickResolve = () => {
         resolveIssue({ id: student.id, body: { note: resolution } })
     }
+
+    console.log({ student })
     return (
         <>
             <ShowErrorNotifications result={resolveIssueResult} />

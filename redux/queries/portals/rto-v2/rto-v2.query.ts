@@ -50,6 +50,7 @@ const {
     useGetStudentPlacementCourseProgramsQuery,
     useGetStudentPlacementStatusCheckNotesQuery,
     useAddManualNoteMutation,
+    useConfirmHighlightedTaskMutation,
 
     // Courses
     useRtoCoursesQuery,
@@ -168,6 +169,7 @@ export const RtoV2Api = {
         useStudentPlacementStatusCheckNotes:
             useGetStudentPlacementStatusCheckNotesQuery,
         useAddManualNote: useAddManualNoteMutation,
+        useConfirmHighlightedTask: useConfirmHighlightedTaskMutation,
     },
     Courses: {
         rtoCourses: useRtoCoursesQuery,

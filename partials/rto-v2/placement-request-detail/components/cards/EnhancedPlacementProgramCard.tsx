@@ -36,12 +36,13 @@ export const EnhancedPlacementProgramCard = ({
             <div className="p-6 space-y-4">
                 <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg border border-blue-100">
                     <Info className="h-4 w-4 text-blue-600" />
-                    <p className="text-blue-900 text-sm">
+                    {/* <p className="text-blue-900 text-sm">
                         Select one or multiple requirements for this request
-                    </p>
+                    </p> */}
+                    <p className="text-blue-900 text-sm">Coming soon...!</p>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-3 blur-xs">
                     {data?.map((req: any) => {
                         const progress = (0 / req?.hours) * 100
                         return (

@@ -45,10 +45,6 @@ export const EnhancedIndustryDetailsCard = ({
 
     const fileName = fileUrl.split('/').pop() ?? ''
     const extension = fileName.split('.').pop()?.toLowerCase()
-    console.log(
-        'workplace?.workplaceApprovaleRequest?.[0]',
-        workplace?.workplaceApprovaleRequest
-    )
     return (
         <>
             {documentsViewModal}

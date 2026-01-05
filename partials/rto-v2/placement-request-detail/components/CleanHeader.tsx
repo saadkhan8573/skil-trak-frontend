@@ -3,6 +3,7 @@ import { Select } from '@components/inputs/Select'
 import { GlobalModal } from '@components/Modal/GlobalModal'
 import { ScrollArea } from '@components/ui/scroll-area'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
+import { ViewQuestionsModal } from '@partials/common/StudentProfileDetail/components'
 import { motion } from 'framer-motion'
 import {
     ArrowLeft,
@@ -16,14 +17,14 @@ import {
     Target,
     XCircle,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { ReactElement, useState } from 'react'
 
 interface CleanHeaderProps {
     isCancelled: boolean
     isPlacementStarted: boolean
     workplaceType: 'needs' | 'provided' | null
     canCancelRequest: () => boolean
-    handleQuickAction: (value: string) => void
     setShowCancelDialog: (show: boolean) => void
     setShowManualNoteDialog: (show: boolean) => void
     workflowStages: any[]
@@ -36,21 +37,32 @@ export function CleanHeader({
     isPlacementStarted,
     workplaceType,
     canCancelRequest,
-    handleQuickAction,
     setShowCancelDialog,
     setShowManualNoteDialog,
     workflowStages,
     currentStatus,
     getCurrentStageIndex,
 }: CleanHeaderProps) {
+    const [modal, setModal] = useState<ReactElement | null>(null)
     const [isWorkflowOpen, setIsWorkflowOpen] = useState(false)
-
+    const router = useRouter()
+    const wpId = router.query.id
     const lastTrueIndex = workflowStages
         ?.map((stage) => stage.completed)
         .lastIndexOf(true)
 
+    const onViewAnswers = () => {
+        setModal(
+            <ViewQuestionsModal
+                onCancel={() => setModal(null)}
+                wpId={Number(wpId)}
+            />
+        )
+    }
+
     return (
         <>
+            {modal && modal}
             <motion.div
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -69,21 +81,6 @@ export function CleanHeader({
                                 >
                                     Placement Management
                                 </Typography>
-                                <div className="flex items-center gap-2">
-                                    <Typography
-                                        variant="small"
-                                        className="font-semibold text-gray-900"
-                                    >
-                                        STU-2024-1089
-                                    </Typography>
-                                    <span className="text-gray-300">•</span>
-                                    <Typography
-                                        variant="small"
-                                        className="text-gray-500 text-xs"
-                                    >
-                                        Updated 7 Nov 2025
-                                    </Typography>
-                                </div>
                             </div>
                         </div>
 
@@ -120,6 +117,14 @@ export function CleanHeader({
                                             variant="primaryNew"
                                             Icon={Briefcase}
                                             className="py-2"
+                                        />
+                                        <Button
+                                            variant={'info'}
+                                            text="View Answers"
+                                            disabled={
+                                                workplaceType === 'provided'
+                                            }
+                                            onClick={onViewAnswers}
                                         />
 
                                         {/* Quick Actions */}

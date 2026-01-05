@@ -63,17 +63,12 @@ export const PlacementRequestDetail = () => {
 
     const [showScheduleDialog, setShowScheduleDialog] = useState(false)
     const [showRejectionDialog, setShowRejectionDialog] = useState(false)
-    const [showPlacementReqDialog, setShowPlacementReqDialog] = useState(false)
     const [showFindWorkplaceSection, setShowFindWorkplaceSection] =
         useState(false)
-    const [showProvidedWorkplaceDialog, setShowProvidedWorkplaceDialog] =
-        useState(false)
-    const [showProofUploadDialog, setShowProofUploadDialog] = useState(false)
+
     const [appointmentDate, setAppointmentDate] = useState('')
     const [rejectionReason, setRejectionReason] = useState('')
-    const [selectedIndustry, setSelectedIndustry] = useState(
-        "St Vincent's Hospital"
-    )
+
     const [pendingStatus, setPendingStatus] = useState<string>('')
     const [statusNote, setStatusNote] = useState('')
     const [statusNotes, setStatusNotes] = useState<StatusNote[]>([
@@ -89,10 +84,6 @@ export const PlacementRequestDetail = () => {
     ])
     const [showStudentDetails, setShowStudentDetails] = useState(false)
     const [verifiedPreferences, setVerifiedPreferences] = useState<number[]>([])
-    const [recentlyVerified, setRecentlyVerified] = useState<number[]>([])
-    const [industryFound, setIndustryFound] = useState<boolean | null>(null)
-    const [proofFile, setProofFile] = useState<File | null>(null)
-    const [proofSkipped, setProofSkipped] = useState(false)
 
     const [isCancelled, setIsCancelled] = useState(false)
     const [isPlacementStarted, setIsPlacementStarted] = useState(false)
@@ -102,9 +93,6 @@ export const PlacementRequestDetail = () => {
     // Manual Notes & Quick Actions
     const [showManualNoteDialog, setShowManualNoteDialog] = useState(false)
     const [requestCreatedTime] = useState(new Date('2025-11-19T10:00:00')) // Simulated creation time
-    const [showQuickActionsDialog, setShowQuickActionsDialog] = useState(false)
-    const [selectedQuickAction, setSelectedQuickAction] = useState<string>('')
-    const [quickActionReason, setQuickActionReason] = useState('')
 
     // Sticky scroll state
     const leftPanelRef = useRef<HTMLDivElement>(null)
@@ -153,16 +141,6 @@ export const PlacementRequestDetail = () => {
         return index !== -1 ? index : 0
     }
 
-    const placementRequirements = [
-        { id: 'acute-care', category: 'Acute Care', completed: 28, total: 40 },
-        {
-            id: 'community',
-            category: 'Community Health',
-            completed: 15,
-            total: 40,
-        },
-        { id: 'emergency', category: 'Emergency', completed: 0, total: 40 },
-    ]
 
     const studentPreferences = [
         {
@@ -305,12 +283,6 @@ export const PlacementRequestDetail = () => {
         return hoursSinceCreation <= 48
     }
 
-    // Quick Actions Handler
-    const handleQuickAction = (action: string) => {
-        setSelectedQuickAction(action)
-        setShowQuickActionsDialog(true)
-    }
-
     const toggleRequirement = (id: string) => {
         setSelectedRequirements((prev) =>
             prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]
@@ -418,7 +390,6 @@ export const PlacementRequestDetail = () => {
                         isPlacementStarted={isPlacementStarted}
                         workplaceType={workplaceType}
                         canCancelRequest={canCancelRequest}
-                        handleQuickAction={handleQuickAction}
                         setShowCancelDialog={setShowCancelDialog}
                         setShowManualNoteDialog={setShowManualNoteDialog}
                         workflowStages={progress}
@@ -465,16 +436,7 @@ export const PlacementRequestDetail = () => {
                                     />
                                     <EnhancedComplianceChecks />
                                     <EnhancedPlacementProgramCard
-                                        selectedRequirements={
-                                            selectedRequirements
-                                        }
-                                        placementRequirements={
-                                            placementRequirements
-                                        }
                                         toggleRequirement={toggleRequirement}
-                                        setShowPlacementReqDialog={
-                                            setShowPlacementReqDialog
-                                        }
                                     />
                                     {workplaceType === 'needs' && (
                                         <EnhancedStudentPreferencesChecklistCard
@@ -487,7 +449,6 @@ export const PlacementRequestDetail = () => {
                                             togglePreferenceVerification={
                                                 togglePreferenceVerification
                                             }
-                                            recentlyVerified={recentlyVerified}
                                         />
                                     )}
                                 </motion.div>
@@ -520,9 +481,7 @@ export const PlacementRequestDetail = () => {
                                         // showIndustryDetails={
                                         //     showIndustryDetails
                                         // }
-                                        selectedIndustry={selectedIndustry}
                                         workplaceType={workplaceType}
-                                        proofSkipped={proofSkipped}
                                         // industry={
                                         //     placementRequestsDetails?.data
                                         //         ?.industries?.[0]?.industry
@@ -547,20 +506,12 @@ export const PlacementRequestDetail = () => {
                                             }
                                             currentStatus={wpCurrentStatus}
                                             setStatusNote={setStatusNote}
-                                            selectedIndustry={selectedIndustry}
-                                            proofSkipped={proofSkipped}
-                                            setShowProofUploadDialog={
-                                                setShowProofUploadDialog
-                                            }
                                             setShowRejectionDialog={
                                                 setShowRejectionDialog
                                             }
                                             appointmentDate={appointmentDate}
                                             setShowScheduleDialog={
                                                 setShowScheduleDialog
-                                            }
-                                            setShowProvidedWorkplaceDialog={
-                                                setShowProvidedWorkplaceDialog
                                             }
                                             setPendingStatus={setPendingStatus}
                                             setCurrentStatus={setCurrentStatus}

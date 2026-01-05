@@ -9,10 +9,12 @@ export const AddIndustryProgramModal = ({
     approval,
     industry,
     onCancel,
+    onSuccess,
 }: {
     approval: any
     industry: Industry
     onCancel: () => void
+    onSuccess?: () => void
 }) => {
     const [addProgram, setAddProgram] = useState(false)
 
@@ -46,9 +48,9 @@ export const AddIndustryProgramModal = ({
                     {industryProgram.isLoading ? (
                         <LoadingAnimation size={70} />
                     ) : industryProgram?.isSuccess &&
-                      industryProgram?.data &&
-                      industryProgram?.data?.length &&
-                      !addProgram ? (
+                        industryProgram?.data &&
+                        industryProgram?.data?.length &&
+                        !addProgram ? (
                         <div className="space-y-2">
                             <div className="flex justify-end">
                                 <Button
@@ -76,6 +78,7 @@ export const AddIndustryProgramModal = ({
                                 }}
                                 industry={industry}
                                 course={approval?.course}
+                                onSuccess={onSuccess}
                             />
                         )
                     )}

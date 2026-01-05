@@ -4,6 +4,7 @@ import { useAppSelector } from '@redux'
 import { Student } from '@types'
 import { Mail } from 'lucide-react'
 import { ReactElement, useState } from 'react'
+import { BiEnvelope } from 'react-icons/bi'
 
 export const SendIndustryMail = () => {
     const [modal, setModal] = useState<ReactElement | null>(null)
@@ -25,8 +26,8 @@ export const SendIndustryMail = () => {
             {modal}
             <Badge
                 variant="primaryNew"
-                text="Message"
-                Icon={Mail}
+                text="Email"
+                Icon={BiEnvelope}
                 onClick={onComposeMailClicked}
             />
         </div>

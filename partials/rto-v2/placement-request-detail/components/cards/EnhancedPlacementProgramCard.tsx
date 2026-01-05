@@ -5,10 +5,7 @@ import { motion } from 'framer-motion'
 import { Eye, GraduationCap, Info } from 'lucide-react'
 import { useRouter } from 'next/router'
 export const EnhancedPlacementProgramCard = ({
-    selectedRequirements,
-    placementRequirements,
     toggleRequirement,
-    setShowPlacementReqDialog,
 }: any) => {
     const router = useRouter()
     const wpId = router.query.id

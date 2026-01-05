@@ -7,15 +7,17 @@ import {
     DialogTitle,
 } from '@components/ui/dialog'
 import { useNotification } from '@hooks'
-import { RtoV2Api } from '@redux'
+import { RtoV2Api } from '@queries'
 import { IndustryCourseApproval } from '@types'
 import { AlertCircle, CheckCircle, FileCheck } from 'lucide-react'
 import moment from 'moment'
 import { FacilityChecklistActions } from '../FacilityChecklistActions'
 import { AddSupervisorDialog } from './AddSupervisorDialog'
+import { AddIndustryProgramModal } from '@partials/common/IndustryProfileDetail/components/CourseManagement/modal'
 import { useState } from 'react'
 import { useAppSelector } from '@redux/hooks'
 import { ViewDocumentModal } from './ViewDocumentModal'
+import { AdminApi, IndustryApi } from '@queries'
 
 interface ApproveFacilityChecklistDialogProps {
     open: boolean
@@ -29,13 +31,19 @@ export function ApproveFacilityChecklistDialog({
     onOpenChange,
 }: ApproveFacilityChecklistDialogProps) {
     const [addingSupervisorFor, setAddingSupervisorFor] = useState(false)
+    const [addingStreamFor, setAddingStreamFor] = useState(false)
 
     const { notification } = useNotification()
 
-    const industrySupervisors = useAppSelector(
-        (state) =>
-            state.industry.industrySupervisors?.[approval?.course?.sector?.id]
-    )?.length
+    const industryDetail = useAppSelector(
+        (state) => state.industry.industryDetail
+    )
+
+    const [triggerGetSupervisors, getSupervisorsResult] =
+        IndustryApi.Supervisor.useLazyGetSupervisorBySectorQuery()
+
+    const [triggerGetPrograms, getProgramsResult] =
+        AdminApi.Industries.useLazyIndustryCourseProgramsListQuery()
 
     const [changeCourseApprovalStatus, changeCourseApprovalStatusResult] =
         RtoV2Api.Industries.statusChangeCourseFacilityChecklist()
@@ -47,20 +55,55 @@ export function ApproveFacilityChecklistDialog({
         })
         if (res?.data) {
             notification.success({
-                title: 'Status Changed',
-                description: 'Status Changed Successfully!',
+                title: 'Course Approved',
+                description: 'Course Approved Successfully!',
             })
             onOpenChange(false)
         }
     }
 
+    const checkStreams = async () => {
+        const programsRes: any = await triggerGetPrograms({
+            courseId: approval?.course?.id,
+            industryId: approval?.industry?.id || industryDetail?.id!,
+        })
+
+        if (!programsRes?.data?.length) {
+            notification.info({
+                title: 'Stream Required',
+                description:
+                    'Please add at least one course stream/program before approving the course.',
+                dissmissTimer: 8888,
+                position: 'topright',
+            })
+            setAddingStreamFor(true)
+            onOpenChange(false)
+            return
+        }
+
+        await approveCourse()
+    }
+
     const handleApprove = async () => {
-        if (!industrySupervisors) {
+        const supervisorRes: any = await triggerGetSupervisors({
+            indId: approval?.industry?.id || industryDetail?.id!,
+            sectorId: approval?.course?.sector?.id,
+        })
+
+        if (!supervisorRes?.data?.length) {
+            notification.info({
+                title: 'Supervisor Required',
+                description:
+                    'Please add at least one supervisor before approving the course.',
+                dissmissTimer: 8888,
+                position: 'topright',
+            })
             setAddingSupervisorFor(true)
             onOpenChange(false)
             return
         }
-        await approveCourse()
+
+        await checkStreams()
     }
 
     const handleReject = async () => {
@@ -157,6 +200,18 @@ export function ApproveFacilityChecklistDialog({
                         <div className="flex items-center gap-3 pt-2">
                             <Button
                                 onClick={handleApprove}
+                                loading={
+                                    changeCourseApprovalStatusResult.isLoading ||
+                                    getSupervisorsResult.isLoading ||
+                                    getProgramsResult.isLoading
+                                }
+                                disabled={
+                                    changeCourseApprovalStatusResult.isLoading ||
+                                    getSupervisorsResult.isLoading ||
+                                    getProgramsResult.isLoading ||
+                                    getSupervisorsResult.isFetching ||
+                                    getProgramsResult.isFetching
+                                }
                                 className="flex-1 bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#059669] hover:to-[#047857] text-white gap-2 h-10"
                             >
                                 <CheckCircle className="w-4 h-4" />
@@ -176,16 +231,30 @@ export function ApproveFacilityChecklistDialog({
             </Dialog>
 
             {!open && (
-                <AddSupervisorDialog
-                    course={approval?.course}
-                    open={addingSupervisorFor}
-                    onOpenChange={setAddingSupervisorFor}
-                    onSuccess={() => {
-                        approveCourse()
-                        setAddingSupervisorFor(false)
-                    }}
-                    sectorId={approval?.course?.sector?.id || null}
-                />
+                <>
+                    <AddSupervisorDialog
+                        course={approval?.course}
+                        open={addingSupervisorFor}
+                        onOpenChange={setAddingSupervisorFor}
+                        onSuccess={() => {
+                            setAddingSupervisorFor(false)
+                            onOpenChange(true)
+                        }}
+                        sectorId={approval?.course?.sector?.id || null}
+                    />
+
+                    {addingStreamFor && (
+                        <AddIndustryProgramModal
+                            approval={approval}
+                            industry={(approval?.industry || industryDetail) as any}
+                            onCancel={() => setAddingStreamFor(false)}
+                            onSuccess={() => {
+                                setAddingStreamFor(false)
+                                onOpenChange(true)
+                            }}
+                        />
+                    )}
+                </>
             )}
         </>
     )

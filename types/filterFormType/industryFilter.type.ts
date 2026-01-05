@@ -4,6 +4,7 @@ export interface AdminIndustryFormFilter {
     name: string
     email: string
     phone: string
+    placementReady: string
     abn: string
     status: UserStatus
     address: string

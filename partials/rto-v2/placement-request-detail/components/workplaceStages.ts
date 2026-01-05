@@ -84,7 +84,7 @@ export const providedWorkplaceStages = [
     },
     {
         id: 6,
-        name: 'Agreement and Eligibility Signed',
+        name: 'Agreement Signed',
         icon: FileCheck,
         color: '#0D5468',
     },

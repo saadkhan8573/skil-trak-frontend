@@ -410,6 +410,7 @@ export interface Industry extends BaseResponse {
     contactPerson: string
     snoozedAt: Date
     snoozedDate: Date
+    snoozedBy: any
     isSnoozed: boolean
     missingAttributes: string[]
     contactPersonNumber: string

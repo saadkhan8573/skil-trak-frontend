@@ -8,6 +8,7 @@ export interface TableActionOption<T> {
     onClick?: (rowItem: T) => void
     Icon?: React.ElementType
     color?: string
+    hidden?: boolean | ((rowItem: T) => boolean)
 }
 
 interface TableActionProps<Type> {
@@ -72,8 +73,14 @@ export const TableAction = <Type,>({
     }
 
     const validOptions = options.filter(
-        (option): option is TableActionOption<Type> =>
-            Object.keys(option).length > 0
+        (option): option is TableActionOption<Type> => {
+            if (Object.keys(option).length === 0) return false
+            const opt = option as TableActionOption<Type>
+            if (typeof opt.hidden === 'function') {
+                return !opt.hidden(rowItem)
+            }
+            return !opt.hidden
+        }
     )
 
     return (
@@ -102,17 +109,14 @@ export const TableAction = <Type,>({
                     {validOptions.map((option, idx) => (
                         <li
                             key={idx}
-                            className={`${
-                                option?.color
-                                    ? option?.color
-                                    : 'text-gray-700 hover:bg-gray-100'
-                            } text-xs cursor-pointer px-4 py-2 font-medium border-b whitespace-nowrap ${
-                                idx === 0 ? 'rounded-t-xl' : ''
-                            } ${
-                                idx === validOptions.length - 1
+                            className={`${option?.color
+                                ? option?.color
+                                : 'text-gray-700 hover:bg-gray-100'
+                                } text-xs cursor-pointer px-4 py-2 font-medium border-b whitespace-nowrap ${idx === 0 ? 'rounded-t-xl' : ''
+                                } ${idx === validOptions.length - 1
                                     ? 'rounded-b-xl border-none'
                                     : ''
-                            } flex items-center gap-x-1`}
+                                } flex items-center gap-x-1`}
                             onClick={() => {
                                 setShowPopper(false)
                                 if (option?.onClick) {
@@ -122,11 +126,10 @@ export const TableAction = <Type,>({
                         >
                             {option?.Icon && (
                                 <span
-                                    className={`${
-                                        option?.color
-                                            ? option?.color
-                                            : 'text-gray-400'
-                                    }`}
+                                    className={`${option?.color
+                                        ? option?.color
+                                        : 'text-gray-400'
+                                        }`}
                                 >
                                     <option.Icon />
                                 </span>

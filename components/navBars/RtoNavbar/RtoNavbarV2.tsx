@@ -104,30 +104,6 @@ export const RtoNavbarV2 = ({ onOpenSidebar, titleProps }: any) => {
                 </button>
             </div>
             <div className="flex items-center gap-3">
-                <Dropdown>
-                    <DropdownTrigger>
-                        <div className="gap-2 bg-gradient-to-r from-[#044866] to-[#0D5468] hover:opacity-90 flex items-center text-white px-3 py-2 text-sm font-medium rounded-md">
-                            <Sparkles className="h-4 w-4" />
-                            Quick Actions
-                            <ChevronDown className="h-3.5 w-3.5" />
-                        </div>
-                    </DropdownTrigger>
-                    <DropdownContent align="end">
-                        <DropdownItem>
-                            <Plus className="h-4 w-4 mr-2" />
-                            Add Student
-                        </DropdownItem>
-                        <DropdownItem>
-                            <Plus className="h-4 w-4 mr-2" />
-                            Send Enquiry
-                        </DropdownItem>
-                        <DropdownItem>
-                            <Plus className="h-4 w-4 mr-2" />
-                            Upload Documents
-                        </DropdownItem>
-                    </DropdownContent>
-                </Dropdown>
-
                 <OutsideClickHandler
                     onOutsideClick={() => {
                         setNotificationsExpanded(false)

@@ -76,15 +76,17 @@ export const useSubAdminIndustryColumns = () => {
                 Icon: FaEye,
             },
             {
-                text: `${industry?.favoriteBy &&
+                text: `${
+                    industry?.favoriteBy &&
                     industry?.favoriteBy?.user?.id === subadminId
-                    ? 'Un Favourite'
-                    : 'Add Favourite'
-                    }`,
-                color: `${industry?.subAdmin && industry?.subAdmin?.length > 0
-                    ? 'text-error'
-                    : 'text-primary'
-                    }`,
+                        ? 'Un Favourite'
+                        : 'Add Favourite'
+                }`,
+                color: `${
+                    industry?.subAdmin && industry?.subAdmin?.length > 0
+                        ? 'text-error'
+                        : 'text-primary'
+                }`,
                 onClick: (industry: Industry) =>
                     onAddToFavoriteClicked(industry),
                 Icon: subAdmin ? MdFavorite : MdFavoriteBorder,
@@ -109,132 +111,138 @@ export const useSubAdminIndustryColumns = () => {
     }: {
         columnKeys: IndustryColumnKey[]
     }) => {
-        const allColumns: (ColumnDef<Industry> & { id: IndustryColumnKey })[] = [
-            {
-                id: 'name',
-                header: () => 'Business Name',
-                accessorKey: 'name',
-                cell: ({ row }) => (
-                    <SubadminProgressIndustryCell industry={row.original} />
-                ),
-            },
-            {
-                id: 'abn',
-                accessorKey: 'abn',
-                header: () => <span>ABN Number</span>,
-            },
-            {
-                id: 'students',
-                header: () => 'Students',
-                accessorKey: 'students',
-                cell: ({ row }) => {
-                    const { enrolledStudents } = row.original
-                    return (
-                        <Typography variant={'muted'} color={'gray'} center>
-                            {enrolledStudents}
-                        </Typography>
-                    )
+        const allColumns: (ColumnDef<Industry> & { id: IndustryColumnKey })[] =
+            [
+                {
+                    id: 'name',
+                    header: () => 'Business Name',
+                    accessorKey: 'name',
+                    cell: ({ row }) => (
+                        <SubadminProgressIndustryCell industry={row.original} />
+                    ),
                 },
-            },
-            {
-                id: 'contactPerson',
-                header: () => 'Contact Person',
-                accessorKey: 'contactPerson',
-                cell: ({ row }) => {
-                    const { contactPersonNumber, contactPerson } = row.original
-                    return (
+                {
+                    id: 'abn',
+                    accessorKey: 'abn',
+                    header: () => <span>ABN Number</span>,
+                },
+                {
+                    id: 'students',
+                    header: () => 'Students',
+                    accessorKey: 'students',
+                    cell: ({ row }) => {
+                        const { enrolledStudents } = row.original
+                        return (
+                            <Typography variant={'muted'} color={'gray'} center>
+                                {enrolledStudents}
+                            </Typography>
+                        )
+                    },
+                },
+                {
+                    id: 'contactPerson',
+                    header: () => 'Contact Person',
+                    accessorKey: 'contactPerson',
+                    cell: ({ row }) => {
+                        const { contactPersonNumber, contactPerson } =
+                            row.original
+                        return (
+                            <Typography variant={'muted'} color={'gray'}>
+                                {contactPersonNumber} {contactPerson}
+                            </Typography>
+                        )
+                    },
+                },
+                {
+                    id: 'favouriteBy',
+                    accessorKey: 'favouriteBy',
+                    header: () => <span>Favorite By</span>,
+                    cell: ({ row }) => {
+                        const userName = row?.original?.favoriteBy?.user?.name
+                        return (
+                            <div className="flex items-center">
+                                {userName ? (
+                                    <div className="relative px-3 py-1 bg-orange-100 text-orange-600  rounded-tl-lg rounded-br-lg clip-path-bookmark">
+                                        {userName}
+                                    </div>
+                                ) : (
+                                    <span className="text-gray-400">—</span>
+                                )}
+                            </div>
+                        )
+                    },
+                },
+                {
+                    id: 'profileCompletionPercentage',
+                    accessorKey: 'profileCompletionPercentage',
+                    header: () => <span>Placement Status</span>,
+                    cell: ({ row }) => (
                         <Typography variant={'muted'} color={'gray'}>
-                            {contactPersonNumber} {contactPerson}
+                            {Number(
+                                row?.original?.profileCompletionPercentage
+                            ) === 100 &&
+                            row?.original?.user?.status ===
+                                UserStatus.Approved ? (
+                                <Badge
+                                    variant={'primaryNew'}
+                                    text={'Placement Ready'}
+                                    Icon={FaCheck}
+                                />
+                            ) : (
+                                <Badge
+                                    Icon={FaTimes}
+                                    variant={'error'}
+                                    text={'Placement Not Ready'}
+                                />
+                            )}
                         </Typography>
-                    )
+                    ),
                 },
-            },
-            {
-                id: 'favouriteBy',
-                accessorKey: 'favouriteBy',
-                header: () => <span>Favorite By</span>,
-                cell: ({ row }) => {
-                    const userName = row?.original?.favoriteBy?.user?.name
-                    return (
-                        <div className="flex items-center">
-                            {userName ? (
-                                <div className="relative px-3 py-1 bg-orange-100 text-orange-600  rounded-tl-lg rounded-br-lg clip-path-bookmark">
-                                    {userName}
+                {
+                    id: 'createdAt',
+                    accessorKey: 'createdAt',
+                    header: () => <span>Registered At</span>,
+                    cell: ({ row }) => (
+                        <div>
+                            {row?.original?.createdBy !== null ? (
+                                <div className="bg-emerald-100 text-emerald-600 rounded-md px-2 py-0.5 flex items-center gap-x-1">
+                                    <p className="text-xs whitespace-nowrap">
+                                        {ellipsisText(
+                                            row.original?.createdBy?.name,
+                                            10
+                                        )}
+                                    </p>
                                 </div>
                             ) : (
-                                <span className="text-gray-400">—</span>
+                                <div className="flex items-center gap-x-1 bg-blue-100 text-blue-600 rounded-md px-2 py-0.5">
+                                    <p className="text-xs">
+                                        {row?.original?.channel}
+                                    </p>
+                                </div>
                             )}
+                            <UserCreatedAt
+                                createdAt={row?.original?.createdAt}
+                            />
                         </div>
-                    )
+                    ),
                 },
-            },
-            {
-                id: 'profileCompletionPercentage',
-                accessorKey: 'profileCompletionPercentage',
-                header: () => <span>Placement Status</span>,
-                cell: ({ row }) => (
-                    <Typography variant={'muted'} color={'gray'}>
-                        {Number(row?.original?.profileCompletionPercentage) ===
-                            100 &&
-                            row?.original?.user?.status === UserStatus.Approved ? (
-                            <Badge
-                                variant={'primaryNew'}
-                                text={'Placement Ready'}
-                                Icon={FaCheck}
+                {
+                    id: 'action',
+                    header: () => 'Manage',
+                    accessorKey: 'Action',
+                    cell: ({ row }) => {
+                        const actions = tableActionOptions(row.original)
+                        return (
+                            <TableAction
+                                options={actions}
+                                rowItem={row.original}
                             />
-                        ) : (
-                            <Badge
-                                outline
-                                Icon={FaTimes}
-                                variant={'primaryNew'}
-                                text={'Placement Not Ready'}
-                            />
-                        )}
-                    </Typography>
-                ),
-            },
-            {
-                id: 'createdAt',
-                accessorKey: 'createdAt',
-                header: () => <span>Registered At</span>,
-                cell: ({ row }) => (
-                    <div>
-                        {row?.original?.createdBy !== null ? (
-                            <div className="bg-emerald-100 text-emerald-600 rounded-md px-2 py-0.5 flex items-center gap-x-1">
-                                <p className="text-xs whitespace-nowrap">
-                                    {ellipsisText(
-                                        row.original?.createdBy?.name,
-                                        10
-                                    )}
-                                </p>
-                            </div>
-                        ) : (
-                            <div className="flex items-center gap-x-1 bg-blue-100 text-blue-600 rounded-md px-2 py-0.5">
-                                <p className="text-xs">
-                                    {row?.original?.channel}
-                                </p>
-                            </div>
-                        )}
-                        <UserCreatedAt createdAt={row?.original?.createdAt} />
-                    </div>
-                ),
-            },
-            {
-                id: 'action',
-                header: () => 'Manage',
-                accessorKey: 'Action',
-                cell: ({ row }) => {
-                    const actions = tableActionOptions(row.original)
-                    return (
-                        <TableAction options={actions} rowItem={row.original} />
-                    )
+                        )
+                    },
                 },
-            },
-        ]
+            ]
 
-        const columns = allColumns.filter((col) =>
-            columnKeys.includes(col.id)
-        )
+        const columns = allColumns.filter((col) => columnKeys.includes(col.id))
 
         return { columns }
     }

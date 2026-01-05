@@ -43,16 +43,6 @@ export const IndustryFilters = ({
         value: sector.id,
     }))
 
-    const isPartnerOptions = [
-        {
-            label: 'Is Partner',
-            value: true,
-        },
-        // {
-        //     label: 'Not Partner',
-        //     value: false,
-        // },
-    ]
     const isPremiumOptions = getPremiumFeaturesList?.data?.map(
         (premium: any) => ({
             label: premium?.title,
@@ -64,6 +54,11 @@ export const IndustryFilters = ({
         value: state?.name,
         label: state?.name,
     }))
+
+    const readinessOptions = [
+        { value: 'ready', label: 'Ready' },
+        { value: 'notReady', label: 'Not Ready' },
+    ]
 
     return (
         <>
@@ -109,15 +104,6 @@ export const IndustryFilters = ({
                     onChange={(e: any) => {
                         onFilterChange({ ...filter, abn: e.target.value })
                     }}
-                    showError={false}
-                />
-                <Select
-                    label={'Is Partner'}
-                    name={'isPartner'}
-                    options={isPartnerOptions}
-                    onChange={(e: any) =>
-                        onFilterChange({ ...filter, isPartner: e?.value })
-                    }
                     showError={false}
                 />
 
@@ -216,6 +202,23 @@ export const IndustryFilters = ({
                         Option: CourseSelectOption,
                     }}
                     formatOptionLabel={formatOptionLabel}
+                    showError={false}
+                />
+
+                <Select
+                    name="placementReady"
+                    label="Placement Readiness"
+                    options={readinessOptions}
+                    value={readinessOptions.find(
+                        (opt) => opt.value === filter?.placementReady
+                    )}
+                    onChange={(option: any) =>
+                        onFilterChange({
+                            ...filter,
+                            placementReady: option?.value,
+                        })
+                    }
+                    placeholder="Readiness"
                     showError={false}
                 />
 

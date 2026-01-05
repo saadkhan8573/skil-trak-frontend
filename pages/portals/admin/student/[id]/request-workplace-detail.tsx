@@ -1,24 +1,14 @@
 import { ReactElement, useEffect, useState } from 'react'
 
-import {
-    LoadingAnimation,
-    TechnicalError,
-    Button,
-} from '@components'
+import { LoadingAnimation, TechnicalError, Button } from '@components'
 
 import { AdminLayout } from '@layouts'
 import { NextPageWithLayout } from '@types'
 
 // query
 import { CompleteProfileBeforeWpModal } from '@partials/common/StudentProfileDetail/components'
-import {
-    Availability,
-    PersonalInfo,
-} from '@partials/sub-admin/students'
-import {
-    SubAdminApi,
-    useGetSubAdminStudentDetailQuery,
-} from '@queries'
+import { Availability, PersonalInfo } from '@partials/sub-admin/students'
+import { SubAdminApi, useGetSubAdminStudentDetailQuery } from '@queries'
 import { checkStudentProfileCompletion } from '@utils'
 import { useRouter } from 'next/router'
 import { ArrowLeft, User, CalendarCheck, CheckCircle2 } from 'lucide-react'
@@ -40,7 +30,6 @@ const RequestWorkplaceDetail: NextPageWithLayout = () => {
         skip: !id,
         refetchOnMountOrArgChange: true,
     })
-
 
     const courses = SubAdminApi.Student.useCourses(Number(id), {
         skip: !id,
@@ -80,7 +69,8 @@ const RequestWorkplaceDetail: NextPageWithLayout = () => {
                     {/* Header Section */}
                     <div className="mb-8">
                         <Button
-                            className="pl-0 text-slate-500 hover:text-slate-800 mb-4 bg-transparent border-none shadow-none hover:bg-transparent"
+                            outline
+                            variant="primaryNew"
                             onClick={() => router.back()}
                         >
                             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -96,7 +86,8 @@ const RequestWorkplaceDetail: NextPageWithLayout = () => {
                                     </span>
                                 </h1>
                                 <p className="mt-2 text-slate-600">
-                                    Complete the details below to start your placement journey.
+                                    Complete the details below to start your
+                                    placement journey.
                                 </p>
                             </div>
                         </div>
@@ -110,15 +101,45 @@ const RequestWorkplaceDetail: NextPageWithLayout = () => {
                         {/* Progress Steps (Visual Only) */}
                         <div className="bg-slate-50/50 border-b border-slate-100 px-8 py-4">
                             <div className="flex items-center gap-4">
-                                <div className={`flex items-center gap-2 ${active === 1 ? 'text-[#044866] font-semibold' : 'text-slate-500'}`}>
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-300 ${active === 1 ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30' : active > 1 ? 'bg-emerald-500 text-white' : 'bg-slate-200'}`}>
-                                        {active > 1 ? <CheckCircle2 className="w-5 h-5" /> : '1'}
+                                <div
+                                    className={`flex items-center gap-2 ${
+                                        active === 1
+                                            ? 'text-[#044866] font-semibold'
+                                            : 'text-slate-500'
+                                    }`}
+                                >
+                                    <div
+                                        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-300 ${
+                                            active === 1
+                                                ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30'
+                                                : active > 1
+                                                ? 'bg-emerald-500 text-white'
+                                                : 'bg-slate-200'
+                                        }`}
+                                    >
+                                        {active > 1 ? (
+                                            <CheckCircle2 className="w-5 h-5" />
+                                        ) : (
+                                            '1'
+                                        )}
                                     </div>
                                     <span>Personal Info</span>
                                 </div>
                                 <div className="w-12 h-0.5 bg-slate-200 rounded-full"></div>
-                                <div className={`flex items-center gap-2 ${active === 2 ? 'text-[#044866] font-semibold' : 'text-slate-500'}`}>
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-300 ${active === 2 ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30' : 'bg-slate-200'}`}>
+                                <div
+                                    className={`flex items-center gap-2 ${
+                                        active === 2
+                                            ? 'text-[#044866] font-semibold'
+                                            : 'text-slate-500'
+                                    }`}
+                                >
+                                    <div
+                                        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-300 ${
+                                            active === 2
+                                                ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30'
+                                                : 'bg-slate-200'
+                                        }`}
+                                    >
                                         2
                                     </div>
                                     <span>Availability</span>
@@ -134,8 +155,13 @@ const RequestWorkplaceDetail: NextPageWithLayout = () => {
                                             <User className="w-5 h-5" />
                                         </div>
                                         <div>
-                                            <h2 className="text-xl font-semibold text-slate-800">Review Personal Details</h2>
-                                            <p className="text-sm text-slate-500">Confirm your contact information and preferences</p>
+                                            <h2 className="text-xl font-semibold text-slate-800">
+                                                Review Personal Details
+                                            </h2>
+                                            <p className="text-sm text-slate-500">
+                                                Confirm your contact information
+                                                and preferences
+                                            </p>
                                         </div>
                                     </div>
                                     <PersonalInfo
@@ -157,8 +183,13 @@ const RequestWorkplaceDetail: NextPageWithLayout = () => {
                                             <CalendarCheck className="w-5 h-5" />
                                         </div>
                                         <div>
-                                            <h2 className="text-xl font-semibold text-slate-800">Set Availability</h2>
-                                            <p className="text-sm text-slate-500">When are you available for placement?</p>
+                                            <h2 className="text-xl font-semibold text-slate-800">
+                                                Set Availability
+                                            </h2>
+                                            <p className="text-sm text-slate-500">
+                                                When are you available for
+                                                placement?
+                                            </p>
                                         </div>
                                     </div>
                                     <Availability
@@ -173,7 +204,6 @@ const RequestWorkplaceDetail: NextPageWithLayout = () => {
                         </div>
                     </div>
                 </div>
-
             </div>
         </>
     )

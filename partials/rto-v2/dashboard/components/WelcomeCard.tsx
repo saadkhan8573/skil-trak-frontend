@@ -26,13 +26,6 @@ export const WelcomeCard = () => {
                             {moment().format('dddd, MMM DD, YYYY')}
                         </span>
                     </div>
-
-                    <Badge
-                        variant="warning"
-                        Icon={() => <AlertCircle size={13} />}
-                        text="40 Critical Tasks"
-                        className="bg-gradient-to-r from-red-500 to-red-600 text-white"
-                    />
                 </div>
 
                 <div>

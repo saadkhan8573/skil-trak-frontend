@@ -16,18 +16,9 @@ import { useNotification } from '@hooks'
 interface ManualNoteModalProps {
     open: boolean
     onClose: () => void
-    note: string
-    onNoteChange: (note: string) => void
-    onConfirm: () => void
 }
 
-export function ManualNoteModal({
-    open,
-    onClose,
-    note,
-    onNoteChange,
-    onConfirm,
-}: ManualNoteModalProps) {
+export function ManualNoteModal({ open, onClose }: ManualNoteModalProps) {
     if (!open) return null
     const [manualNote, setManualNote] = useState({
         title: '',
@@ -100,7 +91,7 @@ export function ManualNoteModal({
                                 placeholder="Enter your note here..."
                                 className="mt-2"
                                 rows={6}
-                                value={note}
+                                value={manualNote.note}
                                 onChange={(e: any) =>
                                     setManualNote({
                                         ...manualNote,
@@ -114,9 +105,7 @@ export function ManualNoteModal({
                     <div className="flex justify-end gap-3 pt-4 border-t mt-4">
                         <Button
                             variant="secondary"
-                            onClick={() => {
-                                onNoteChange('')
-                            }}
+                            onClick={onClose}
                             text="Cancel"
                         />
                         <Button

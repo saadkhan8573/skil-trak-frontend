@@ -30,6 +30,7 @@ const {
     // Dashboard
     useAutoWpCountQuery,
     useAdminMessageQuery,
+    useNavBarCountsQuery,
     useLast24HoursWpQuery,
     useRtoDashboardCountsQuery,
 
@@ -142,6 +143,7 @@ export const RtoV2Api = {
     Dashboard: {
         autoWpCount: useAutoWpCountQuery,
         adminMessage: useAdminMessageQuery,
+        navBarCounts: useNavBarCountsQuery,
         last24HoursWp: useLast24HoursWpQuery,
         rtoDashboardCounts: useRtoDashboardCountsQuery,
     },

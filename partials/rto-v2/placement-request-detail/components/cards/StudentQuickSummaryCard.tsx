@@ -1,26 +1,22 @@
 import { Badge, Card } from '@components'
 import { RtoV2Api } from '@queries'
-import { maskText } from '@utils'
-import { motion } from 'framer-motion'
+import { ellipsisText, maskText } from '@utils'
 import {
     Briefcase,
     Calendar,
     CheckCircle2,
-    Flag,
     GraduationCap,
     ListChecks,
     Phone,
     User,
 } from 'lucide-react'
-import { marked } from 'marked'
 import { useRouter } from 'next/router'
 
 export const StudentQuickSummaryCard = ({
-    appointmentMissed,
-    selectedRequirements,
-    placementRequirements,
     studentDetails,
-}: any) => {
+}: {
+    studentDetails: any
+}) => {
     const router = useRouter()
     const wpId = router.query.id
     const { data } = RtoV2Api.PlacementRequests.useStudentPlacementCourse(
@@ -77,7 +73,13 @@ export const StudentQuickSummaryCard = ({
                         </div>
                         <div>
                             <h3 className="text-[#044866] text-xl font-bold">
-                                {studentDetails?.user?.name ?? '___'}
+                                {studentDetails?.user?.name ?? '___'}{' '}
+                                {studentDetails?.familyName ?? '___'} (
+                                {ellipsisText(
+                                    studentDetails?.rto?.user?.name,
+                                    30
+                                ) ?? '___'}
+                                )
                             </h3>
                             <p className="text-slate-500 text-sm mt-0.5 flex items-center gap-1.5">
                                 <span className="w-1 h-1 rounded-full bg-slate-400"></span>
@@ -91,24 +93,6 @@ export const StudentQuickSummaryCard = ({
                                 text="Active"
                                 className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 shadow-lg shadow-emerald-500/30 px-3 py-1.5"
                             />
-                        )}
-                        {appointmentMissed && (
-                            <motion.div
-                                initial={{
-                                    opacity: 0,
-                                    scale: 0.9,
-                                }}
-                                animate={{
-                                    opacity: 1,
-                                    scale: 1,
-                                }}
-                                className="flex items-center gap-1.5 px-2 py-1 bg-red-100 border border-red-300 rounded-lg"
-                            >
-                                <Flag className="h-3 w-3 text-red-600" />
-                                <span className="text-xs font-medium text-red-700">
-                                    Appointment Missed
-                                </span>
-                            </motion.div>
                         )}
                     </div>
                 </div>

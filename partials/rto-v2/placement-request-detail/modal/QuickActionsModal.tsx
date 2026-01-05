@@ -1,12 +1,7 @@
 import { GlobalModal } from '@components/Modal/GlobalModal'
 import { Button, Typography } from '@components'
 import { TextArea } from '@components/inputs/TextArea'
-import {
-    Pause,
-    Ban,
-    StopCircle,
-    AlertCircle,
-} from 'lucide-react'
+import { Pause, Ban, StopCircle, AlertCircle } from 'lucide-react'
 import { MdCancel } from 'react-icons/md'
 
 interface QuickActionsModalProps {
@@ -15,7 +10,6 @@ interface QuickActionsModalProps {
     selectedAction: string
     reason: string
     onReasonChange: (reason: string) => void
-    onConfirm: () => void
 }
 
 export function QuickActionsModal({
@@ -24,7 +18,6 @@ export function QuickActionsModal({
     selectedAction,
     reason,
     onReasonChange,
-    onConfirm,
 }: QuickActionsModalProps) {
     if (!open) return null
 
@@ -63,11 +56,17 @@ export function QuickActionsModal({
             <div className="p-6">
                 <div className="flex items-center justify-between mb-4 pb-4 border-b">
                     <div>
-                        <Typography variant="h3" className="text-amber-600 text-xl flex items-center gap-2">
+                        <Typography
+                            variant="h3"
+                            className="text-amber-600 text-xl flex items-center gap-2"
+                        >
                             <Icon className="h-5 w-5" />
                             {selectedAction} Placement
                         </Typography>
-                        <Typography variant="small" className="text-gray-600 mt-1">
+                        <Typography
+                            variant="small"
+                            className="text-gray-600 mt-1"
+                        >
                             {getDescription()}
                         </Typography>
                     </div>
@@ -120,7 +119,10 @@ export function QuickActionsModal({
                         </div>
                     </div>
                     <div>
-                        <Typography variant="label" className="text-sm font-medium">
+                        <Typography
+                            variant="label"
+                            className="text-sm font-medium"
+                        >
                             Reason *
                         </Typography>
                         <TextArea
@@ -147,7 +149,7 @@ export function QuickActionsModal({
                     />
                     <Button
                         variant={isWarning ? 'error' : 'primaryNew'}
-                        onClick={onConfirm}
+                        // onClick={onConfirm}
                         Icon={Icon}
                         text={`Confirm ${selectedAction}`}
                     />
@@ -156,4 +158,3 @@ export function QuickActionsModal({
         </GlobalModal>
     )
 }
-

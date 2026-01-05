@@ -27,7 +27,6 @@ export const EnhancedStudentPreferencesChecklistCard = ({
     verifiedPreferences,
     studentPreferences,
     togglePreferenceVerification,
-    recentlyVerified,
 }: any) => {
     return (
         <Card noPadding className="border-0 shadow-xl overflow-hidden">
@@ -155,9 +154,7 @@ export const EnhancedStudentPreferencesChecklistCard = ({
                                                                 pref.id
                                                             )
                                                         const isRecentlyVerified =
-                                                            recentlyVerified.includes(
-                                                                pref.id
-                                                            )
+                                                            false
                                                         return (
                                                             <motion.div
                                                                 key={pref.id}

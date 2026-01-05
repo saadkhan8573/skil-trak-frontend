@@ -16,10 +16,12 @@ export const AddIndustryCourseProgramForm = ({
     course,
     industry,
     onCancel,
+    onSuccess,
 }: {
     course: Course
     industry: Industry
     onCancel: () => void
+    onSuccess?: () => void
 }) => {
     const coursePrograms = AdminApi.Courses.courseProgramList({
         id: course?.id,
@@ -70,6 +72,7 @@ export const AddIndustryCourseProgramForm = ({
                 description: 'Keywords Added Successfully',
             })
             onCancel()
+            onSuccess?.()
             return
         }
         return

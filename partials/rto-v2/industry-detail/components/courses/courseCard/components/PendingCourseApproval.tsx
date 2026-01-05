@@ -59,7 +59,7 @@ export const PendingCourseApproval = ({
                                     : 'Please upload the facility checklist to proceed with approval.'}
                             </p>
                         </div>
-                    </div>
+                </div>
                     {showActionButtons &&
                         (hasFile ? (
                             <Button

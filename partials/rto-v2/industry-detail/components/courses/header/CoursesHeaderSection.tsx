@@ -1,14 +1,19 @@
-import { Button, TextInput } from '@components'
+import { AuthorizedUserComponent, Button, TextInput } from '@components'
+import { UserRoles } from '@constants'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
     AlertCircle,
     BookOpen,
     Filter,
+    Plus,
     Search,
     Sparkles,
     TrendingUp,
     Users,
 } from 'lucide-react'
+import { useState } from 'react'
+import { AddCourseRequestDialog } from '../modals'
+import { getUserCredentials } from '@utils'
 
 interface CoursesHeaderSectionProps {
     showSearch: boolean
@@ -21,6 +26,7 @@ interface CoursesHeaderSectionProps {
     onSearchChange: (value: string) => void
     pendingActionsCount: number
     approvedCount: number
+    existingCourses?: any[]
 }
 
 export function CoursesHeaderSection({
@@ -34,7 +40,15 @@ export function CoursesHeaderSection({
     onSearchChange,
     pendingActionsCount,
     approvedCount,
+    existingCourses = [],
 }: CoursesHeaderSectionProps) {
+    const [isAddCourseOpen, setIsAddCourseOpen] = useState(false)
+
+    const user = getUserCredentials()
+    const isLocal = process.env.NEXT_PUBLIC_NODE_ENV === 'local'
+    const isAllowedUser = [4453, 78, 5714].includes(user?.id)
+    const isAdmin = user?.role === UserRoles.ADMIN
+    const showActionButtons = isLocal || isAllowedUser || isAdmin
 
     const courseCounts = [
         {
@@ -61,8 +75,7 @@ export function CoursesHeaderSection({
                 'bg-[#044866]/10 text-[#044866] group-hover:bg-[#044866]/20',
             titleClass: 'text-[#64748B]',
             valueClass: 'text-[#1A2332]',
-            decorClass:
-                'bg-[#044866]/5 group-hover:bg-[#044866]/10',
+            decorClass: 'bg-[#044866]/5 group-hover:bg-[#044866]/10',
         },
         {
             title: 'Utilization Rate',
@@ -140,7 +153,22 @@ export function CoursesHeaderSection({
                         Filters
                     </Button>
                 </div> */}
+                {showActionButtons && <div className="flex items-center gap-2">
+                    <Button
+                        onClick={() => setIsAddCourseOpen(true)}
+                        className="bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white gap-2 h-10 shadow-md shadow-[#044866]/10"
+                    >
+                        <Plus className="w-4 h-4" />
+                        Add Course
+                    </Button>
+                </div>}
             </div>
+
+            <AddCourseRequestDialog
+                open={isAddCourseOpen}
+                onOpenChange={setIsAddCourseOpen}
+                existingCourses={existingCourses}
+            />
 
             {/* Search Bar */}
             <AnimatePresence>
@@ -223,7 +251,9 @@ export function CoursesHeaderSection({
                                 <div className="mt-2 bg-[#E2E8F0] rounded-full h-1 overflow-hidden">
                                     <motion.div
                                         initial={{ width: 0 }}
-                                        animate={{ width: `${overallCapacity}%` }}
+                                        animate={{
+                                            width: `${overallCapacity}%`,
+                                        }}
                                         transition={{ duration: 1, delay: 0.5 }}
                                         className={`h-full rounded-full ${overallCapacity >= 80
                                             ? 'bg-gradient-to-r from-[#10B981] to-[#059669]'

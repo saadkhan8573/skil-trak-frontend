@@ -74,6 +74,10 @@ export function AddSupervisorDialog({
         IndustryApi.Supervisor.addSupervisor()
 
     const handleSubmit = async (values: any) => {
+        console.log({
+            sectorId,
+            industryDetail
+        })
         if (!sectorId || !industryDetail?.id) return
 
         const res: any = await addSupervisor({
@@ -278,7 +282,7 @@ export function AddSupervisorDialog({
                                 className="flex-1 bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white gap-2 h-10"
                             >
                                 <UserCheck className="w-4 h-4" />
-                                Add Supervisor &Complete Setup
+                                Add Supervisor & Complete Setup
                             </Button>
                         </div>
                     </form>

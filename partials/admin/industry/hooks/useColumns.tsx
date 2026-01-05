@@ -69,10 +69,10 @@ interface GetTableConfigOptions {
 
 type ValidateTableConfigOptions<T extends GetTableConfigOptions> =
     T['columnKeys'] extends any[]
-    ? T['removeColumnKeys'] extends any[]
-    ? never
-    : T
-    : T
+        ? T['removeColumnKeys'] extends any[]
+            ? never
+            : T
+        : T
 
 interface TableConfig {
     columns: ColumnDef<Industry>[]
@@ -128,8 +128,8 @@ export const useColumns = () => {
                                     </p>
                                     <p className="text-xs font-semibold text-gray-400 text-center">
                                         {
-                                            info?.row?.original?.headQuarter?.user
-                                                ?.name
+                                            info?.row?.original?.headQuarter
+                                                ?.user?.name
                                         }
                                     </p>
                                 </div>
@@ -186,7 +186,7 @@ export const useColumns = () => {
             {
                 accessorKey: 'favouriteBy',
                 id: 'favoriteBy',
-                header: () => <span>Favorite By</span>,
+                header: () => <span>Assigned To</span>,
                 cell: (info) => {
                     const userName = info?.row?.original?.favoriteBy?.user?.name
 
@@ -216,17 +216,21 @@ export const useColumns = () => {
                 cell: ({ row }) => (
                     <div>
                         {Number(row?.original?.profileCompletionPercentage) ===
-                            100 && row?.original?.user?.status === UserStatus.Approved ? (
+                            100 &&
+                        row?.original?.user?.status === UserStatus.Approved &&
+                        !row?.original?.isSnoozed ? (
                             <Badge
                                 variant={'primaryNew'}
                                 text={'Placement Ready'}
                                 Icon={FaCheck}
+                                className="!whitespace-pre"
                             />
                         ) : (
                             <Badge
                                 Icon={FaTimes}
                                 variant={'error'}
                                 text={'Placement Not Ready'}
+                                className="!whitespace-pre"
                             />
                         )}
                     </div>
@@ -341,21 +345,24 @@ export const useColumns = () => {
             onClick: (industry) => onArchiveClicked(industry),
             Icon: MdBlock,
             color: 'text-primary',
-            hidden: (industry) => industry?.user?.status !== UserStatus.Approved,
+            hidden: (industry) =>
+                industry?.user?.status !== UserStatus.Approved,
         },
         unarchive: {
             text: 'Unarchive',
             onClick: (industry) => onUnArchiveClicked(industry),
             Icon: MdBlock,
             color: 'text-primary',
-            hidden: (industry) => industry?.user?.status !== UserStatus.Archived,
+            hidden: (industry) =>
+                industry?.user?.status !== UserStatus.Archived,
         },
         block: {
             text: 'Block',
             onClick: (industry) => onBlockClicked(industry),
             Icon: MdBlock,
             color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
-            hidden: (industry) => industry?.user?.status !== UserStatus.Approved,
+            hidden: (industry) =>
+                industry?.user?.status !== UserStatus.Approved,
         },
         unblock: {
             text: 'Unblock',
@@ -419,7 +426,8 @@ export const useColumns = () => {
     const getTableConfig = <T extends GetTableConfigOptions>(
         options?: ValidateTableConfigOptions<T>
     ): TableConfig => {
-        const { columnKeys, removeColumnKeys, actionKeys, useDynamicActions } = options || {}
+        const { columnKeys, removeColumnKeys, actionKeys, useDynamicActions } =
+            options || {}
 
         if (
             columnKeys &&

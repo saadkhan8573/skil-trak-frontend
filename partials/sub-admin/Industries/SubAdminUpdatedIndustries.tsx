@@ -13,7 +13,7 @@ import {
     ShieldAlert,
     UserMinus,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { IndustryCounts, IndustryHeader } from './components'
 import {
     ArchivedIndustries,
@@ -59,9 +59,9 @@ export const SubAdminUpdatedIndustries = () => {
 
     const count = SubAdminApi.Industry.getAllSubAdminIndustriesCount()
 
-    const baseFilter = {
+    const baseFilter = useMemo(() => ({
         ...filter,
-    }
+    }), [filter])
 
     const isFiltering = Object.keys(removeEmptyValues(filter)).length > 0
 
@@ -71,69 +71,34 @@ export const SubAdminUpdatedIndustries = () => {
             label: 'State Wise Industries',
             icon: Building2,
             // count: count.data?.partnerIndustries,
-            component: () => <StateWiseIndustries baseFilter={baseFilter} />,
+            component: StateWiseIndustries,
         },
         // {
         //     value: 'partner-industries',
         //     label: 'Partners',
         //     icon: Building2,
         //     count: count.data?.partnerIndustries,
-        //     component: () => <YourPartnerIndustries baseFilter={baseFilter} />,
+        //     component: YourPartnerIndustries,
         // },
         // {
         //     value: 'non-partner-industries',
         //     label: 'Non-Partners',
         //     icon: Building2,
         //     count: count.data?.nonPartnerIndustries,
-        //     component: () => <NonPartnerIndustries baseFilter={baseFilter} />,
+        //     component: NonPartnerIndustries,
         // },
         {
             value: 'pending-course-approval',
             label: 'Pending Course Approval',
             icon: Building2,
             count: count.data?.pendingCourseApprovals,
-            component: () => <PedingCourseApprovalIndustries />,
+            component: PedingCourseApprovalIndustries,
             hidden: () => {
                 const isLocal = process.env.NEXT_PUBLIC_NODE_ENV === 'local'
                 const isAllowedUser = [4453, 78, 5714].includes(user?.id)
                 return !(isLocal || isAllowedUser)
             },
         },
-        // {
-        //     value: 'monthly-calls',
-        //     label: 'Monthly Calls',
-        //     icon: CalendarClock,
-        //     count: count.data?.monthlyCalled,
-        //     component: () => <MonthlyCallsIndustries baseFilter={baseFilter} />,
-        // },
-        // {
-        //     value: 'snoozed-industries',
-        //     label: 'Snoozed',
-        //     icon: Moon,
-        //     count: count.data?.snoozedIndustries,
-        //     component: () => <SnoozedIndustries baseFilter={baseFilter} />,
-        // },
-        // {
-        //     value: 'blocked-industries',
-        //     label: 'Blocked',
-        //     icon: ShieldAlert,
-        //     count: count.data?.blockedIndustries,
-        //     component: () => <BlockedIndustries baseFilter={baseFilter} />,
-        // },
-        // {
-        //     value: 'rejected-industries',
-        //     label: 'Rejected',
-        //     icon: UserMinus,
-        //     count: count.data?.rejectedIndustries,
-        //     component: () => <RejectedIndustries baseFilter={baseFilter} />,
-        // },
-        // {
-        //     value: 'archived-industries',
-        //     label: 'Archived',
-        //     icon: Archive,
-        //     count: count.data?.archivedIndustries,
-        //     component: () => <ArchivedIndustries baseFilter={baseFilter} />,
-        // },
     ]
 
     return (
@@ -174,6 +139,7 @@ export const SubAdminUpdatedIndustries = () => {
                         <div className="mt-4">
                             <ConfigTabs
                                 tabs={tabs}
+                                props={{ baseFilter }}
                                 tabsTriggerClasses="!py-1.5"
                             />
                         </div>

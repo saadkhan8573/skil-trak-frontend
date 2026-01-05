@@ -92,6 +92,7 @@ export function IndustryCoursesSection() {
                 approvedCount={approvedCount}
                 onToggleSearch={() => setShowSearch(!showSearch)}
                 onSearchChange={setSearchQuery}
+                existingCourses={coursesDetails?.data}
             />
 
             {/* Sector Cards - Enhanced Design */}

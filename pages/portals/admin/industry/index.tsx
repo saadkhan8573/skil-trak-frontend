@@ -103,7 +103,7 @@ const IndustryList: NextPageWithLayout = () => {
         //     element: <PendingIndustry />,
         // },
         {
-            label: 'Pending',
+            label: 'Pending Course Approval',
             href: {
                 pathname: 'industry',
                 query: { tab: UserStatus.Pending, page: 1, pageSize: 50 },

@@ -1,7 +1,7 @@
 import { AssessmentEvidenceFolder } from './assessment-evidence.type'
 import { BaseResponse } from './base.type'
 import { Folder } from './folder.type'
-import { IndustryCourseApprovals, User } from './user.type'
+import { Industry, User } from './user.type'
 
 export interface CourseExtraHours extends BaseResponse {
     id: number
@@ -58,6 +58,7 @@ export interface IndustryCourseApproval extends BaseResponse {
     addedBy: User
     actionBy: User
     course: Course
+    industry?: Industry
 }
 
 export interface Course extends BaseResponse {

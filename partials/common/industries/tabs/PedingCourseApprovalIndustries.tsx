@@ -27,6 +27,7 @@ import {
     UploadFacilityChecklistDialog,
     ViewDocumentModal,
 } from '../modal'
+import { setIndustryDetail, useAppDispatch } from '@redux'
 
 export const PedingCourseApprovalIndustries = () => {
     const router = useRouter()
@@ -43,11 +44,11 @@ export const PedingCourseApprovalIndustries = () => {
     const [actionModal, setActionModal] = useState<{
         isOpen: boolean
         action: 'approved' | 'rejected'
-        id: number | null
+        approval: any | null
     }>({
         isOpen: false,
         action: 'approved',
-        id: null,
+        approval: null,
     })
 
     const [viewFileModal, setViewFileModal] = useState<{
@@ -66,8 +67,10 @@ export const PedingCourseApprovalIndustries = () => {
         approval: null,
     })
 
-    const onActionClick = (id: number, action: 'approved' | 'rejected') => {
-        setActionModal({ isOpen: true, action, id })
+    const dispatch = useAppDispatch()
+
+    const onActionClick = (approval: any, action: 'approved' | 'rejected') => {
+        setActionModal({ isOpen: true, action, approval })
     }
 
     const onViewFile = (fileUrl: string) => {
@@ -116,7 +119,7 @@ export const PedingCourseApprovalIndustries = () => {
                         router.push(`/portals/admin/industry/${industryId}`)
                     } else if (role === UserRoles.SUBADMIN) {
                         router.push(
-                            `/portals/sub-admin/users/industries/${industryId}/detail`
+                            `/portals/sub-admin/users/industries/${industryId}`
                         )
                     }
                 }
@@ -213,12 +216,14 @@ export const PedingCourseApprovalIndustries = () => {
                             <Button
                                 variant="success"
                                 className="!px-3 !py-1 text-[10px] 2xl:text-xs min-w-[60px]"
-                                onClick={() =>
-                                    onActionClick(
-                                        info.row.original.id,
-                                        'approved'
+                                onClick={() => {
+                                    dispatch(
+                                        setIndustryDetail(
+                                            info.row.original?.industry
+                                        )
                                     )
-                                }
+                                    onActionClick(info.row.original, 'approved')
+                                }}
                             >
                                 Approve
                             </Button>
@@ -226,10 +231,7 @@ export const PedingCourseApprovalIndustries = () => {
                                 variant="error"
                                 className="!px-3 !py-1 text-[10px] 2xl:text-xs min-w-[60px]"
                                 onClick={() =>
-                                    onActionClick(
-                                        info.row.original.id,
-                                        'rejected'
-                                    )
+                                    onActionClick(info.row.original, 'rejected')
                                 }
                             >
                                 Reject
@@ -258,14 +260,14 @@ export const PedingCourseApprovalIndustries = () => {
 
     return (
         <>
-            {actionModal.isOpen && actionModal.id && (
+            {actionModal.approval && (
                 <ApproveRejectConfirmationModal
                     open={actionModal.isOpen}
                     onOpenChange={(open) =>
                         setActionModal((prev) => ({ ...prev, isOpen: open }))
                     }
                     action={actionModal.action}
-                    id={actionModal.id}
+                    approval={actionModal.approval}
                 />
             )}
             {uploadModal.isOpen && uploadModal.approval && (

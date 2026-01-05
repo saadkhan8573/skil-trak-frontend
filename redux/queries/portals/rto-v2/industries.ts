@@ -172,7 +172,7 @@ export const industriesEndpoints = (
             url: `${INDUSTRIESPREFIX}courses-details`,
             params,
         }),
-        providesTags: ['RTOIndustries'],
+        providesTags: ['RTOIndustries', 'RequestToAddCourse'],
     }),
 
     industryRtoChecklistList: builder.query<

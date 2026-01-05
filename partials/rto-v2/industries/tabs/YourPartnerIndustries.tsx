@@ -6,7 +6,7 @@ import {
     TechnicalError,
 } from '@components'
 import { RtoV2Api } from '@redux'
-import { Industry, UserStatus } from '@types'
+import { Industry } from '@types'
 import { removeEmptyValues } from '@utils'
 import React, { useState } from 'react'
 import { useYourIndustriesColumns } from '../component/columns'

@@ -267,6 +267,7 @@ const {
     useSaveIndustryQuestionsMutation,
     useGetIndutryAvailableHoursQuery,
     useIndustryCourseProgramsListQuery,
+    useLazyIndustryCourseProgramsListQuery,
     useAddIndustryCourseProgramMutation,
     useAddIndustryServiceOfferedMutation,
     useDeleteIndustryProfileCourseMutation,
@@ -732,6 +733,8 @@ export const AdminApi = {
         useAddIndustryHours: useAddIndutryAvailableHoursMutation,
         useIndustryAvailableHours: useGetIndutryAvailableHoursQuery,
         industryCourseProgramsList: useIndustryCourseProgramsListQuery,
+        useLazyIndustryCourseProgramsListQuery:
+            useLazyIndustryCourseProgramsListQuery,
         addIndustryCourseProgram: useAddIndustryCourseProgramMutation,
         addIndustryServiceOffered: useAddIndustryServiceOfferedMutation,
         useDeleteIndustryProfileCourse: useDeleteIndustryProfileCourseMutation,

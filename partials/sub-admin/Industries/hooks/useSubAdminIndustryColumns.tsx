@@ -156,7 +156,7 @@ export const useSubAdminIndustryColumns = () => {
                 {
                     id: 'favouriteBy',
                     accessorKey: 'favouriteBy',
-                    header: () => <span>Favorite By</span>,
+                    header: () => <span>Assigned To</span>,
                     cell: ({ row }) => {
                         const userName = row?.original?.favoriteBy?.user?.name
                         return (
@@ -182,7 +182,8 @@ export const useSubAdminIndustryColumns = () => {
                                 row?.original?.profileCompletionPercentage
                             ) === 100 &&
                             row?.original?.user?.status ===
-                                UserStatus.Approved ? (
+                                UserStatus.Approved &&
+                            !row?.original?.isSnoozed ? (
                                 <Badge
                                     variant={'primaryNew'}
                                     text={'Placement Ready'}

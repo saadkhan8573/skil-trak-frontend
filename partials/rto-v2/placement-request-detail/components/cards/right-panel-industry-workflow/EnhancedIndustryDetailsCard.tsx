@@ -46,11 +46,9 @@ export const EnhancedIndustryDetailsCard = ({
     const fileName = fileUrl.split('/').pop() ?? ''
     const extension = fileName.split('.').pop()?.toLowerCase()
     const shouldRenderIndustryCard =
-        !!data &&
-        typeof data.distance === 'number' &&
-        data?.distance > 0 &&
-        typeof data?.employmentDocument === 'string' &&
-        data?.employmentDocument?.trim()?.length > 0
+        (!!data && typeof data.distance === 'number' && data?.distance > 0) ||
+        (typeof data?.employmentDocument === 'string' &&
+            data?.employmentDocument?.trim()?.length > 0)
 
     return (
         <>

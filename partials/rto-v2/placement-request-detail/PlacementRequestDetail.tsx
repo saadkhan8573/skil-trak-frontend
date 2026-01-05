@@ -14,6 +14,7 @@ import {
     EnhancedStatusNotesCard,
     EnhancedStudentPreferencesChecklistCard,
     PremiumCurrentActionsCard,
+    PremiumCurrentActionsCardV2,
     StudentQuickSummaryCard,
 } from './components/cards'
 import { CleanHeader } from './components/CleanHeader'

@@ -1,7 +1,7 @@
 import { InitialAvatar } from '@components'
 import { RtoApi, SubAdminApi } from '@queries'
-import { useAppSelector } from '@redux'
-import React from 'react'
+import { setRtoDetail, useAppDispatch, useAppSelector } from '@redux'
+import React, { useEffect } from 'react'
 
 export const RtoInfo = () => {
     const studentId = useAppSelector((state) => state.student.studentDetail?.id)
@@ -10,6 +10,12 @@ export const RtoInfo = () => {
         skip: !studentId,
         refetchOnMountOrArgChange: 300,
     })
+    const dispatch = useAppDispatch()
+    useEffect(()=>{
+        if(rtoProfile.isSuccess && rtoProfile?.data){
+            dispatch(setRtoDetail(rtoProfile?.data))
+        }
+    }, [rtoProfile])
 
     const rtoCoordinator = rtoProfile?.data?.contactPersons?.[0]
 

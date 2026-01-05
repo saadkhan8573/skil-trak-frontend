@@ -1,7 +1,10 @@
-import React, { ReactElement, useState } from 'react'
-import { Badge, Button, Card, NoData, Typography } from '@components'
+import { Badge, Button, Card, NoData } from '@components'
+import { ReRunWPAutomation } from '@partials/common/StudentProfileDetail/components'
+import { WPProcessMatchingLoader } from '@partials/common/StudentProfileDetail/components/Workplace/components/IndustryDetail/components/WPProcessMatchingLoader'
+import { useWorkplaceHook } from '@partials/common/StudentProfileDetail/components/Workplace/hooks'
+import { AgreementModal } from '@partials/rto-v2/placement-request-detail/modal'
+import { motion } from 'framer-motion'
 import {
-    AlertCircle,
     Award,
     Briefcase,
     Building2,
@@ -10,7 +13,6 @@ import {
     CheckCircle2,
     CheckSquare,
     Clock,
-    Download,
     FileCheck,
     FileSignature,
     FileText,
@@ -18,27 +20,14 @@ import {
     Shield,
     Sparkles,
     Target,
-    ThumbsDown,
-    ThumbsUp,
-    TrendingUp,
-    Upload,
     User,
     XCircle,
 } from 'lucide-react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { Progressbar } from '@partials/rto-v2/components'
+import { ReactElement, useState } from 'react'
 import {
     needsWorkplaceStagesEnum,
     providedWorkplaceStagesEnum,
 } from '../../workplaceStages'
-import { ReRunWPAutomation } from '@partials/common/StudentProfileDetail/components'
-import {
-    AgreementModal,
-    AppointmentBookingModal,
-} from '@partials/rto-v2/placement-request-detail/modal'
-import { WPProcessMatchingLoader } from '@partials/common/StudentProfileDetail/components/Workplace/components/IndustryDetail/components/WPProcessMatchingLoader'
-import { useWorkplace } from '@hooks'
-import { useWorkplaceHook } from '@partials/common/StudentProfileDetail/components/Workplace/hooks'
 
 export const PremiumCurrentActionsCard = ({
     isCancelled,
@@ -46,13 +35,9 @@ export const PremiumCurrentActionsCard = ({
     cancellationReason,
     currentStatus,
     setStatusNote,
-    selectedIndustry,
-    proofSkipped,
-    setShowProofUploadDialog,
     appointmentDate,
 
     setShowScheduleDialog,
-    setShowProvidedWorkplaceDialog,
     setPendingStatus,
     workplaceType,
     workplace,
@@ -435,7 +420,7 @@ export const PremiumCurrentActionsCard = ({
                                 </div>
                             </div>
                         </div>
-                        {proofSkipped && workplaceType === 'provided' && (
+                        {/* {workplaceType === 'provided' && (
                             <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
                                 <div className="flex items-start gap-2">
                                     <AlertCircle className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
@@ -460,7 +445,7 @@ export const PremiumCurrentActionsCard = ({
                                     />
                                 </div>
                             </div>
-                        )}
+                        )} */}
                         {/* <Button
                             className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white shadow-lg shadow-emerald-600/20 h-11"
                             onClick={handleIndustryApprove}
@@ -786,20 +771,20 @@ export const PremiumCurrentActionsCard = ({
                                     <p className="text-[#044866] font-medium">
                                         Provided Workplace Request Created
                                     </p>
-                                    <p className="text-[#0D5468] text-sm mt-1">
+                                    {/* <p className="text-[#0D5468] text-sm mt-1">
                                         Search for industry and upload proof of
                                         employment.
-                                    </p>
+                                    </p> */}
                                 </div>
                             </div>
                         </div>
-                        <Button
+                        {/* <Button
                             className="w-full bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-lg shadow-[#044866]/20 h-11"
                             onClick={() => setShowProvidedWorkplaceDialog(true)}
                         >
                             <Building2 className="mr-2 h-4 w-4" /> Search for
                             Industry
-                        </Button>
+                        </Button> */}
                     </motion.div>
                 )
 
@@ -910,7 +895,7 @@ export const PremiumCurrentActionsCard = ({
                                 </div>
                             </div>
                         </div>
-                        {proofSkipped && workplaceType === 'provided' && (
+                        {/* {proofSkipped && workplaceType === 'provided' && (
                             <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
                                 <div className="flex items-start gap-2">
                                     <AlertCircle className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
@@ -934,7 +919,7 @@ export const PremiumCurrentActionsCard = ({
                                     </Button>
                                 </div>
                             </div>
-                        )}
+                        )} */}
                         <Button
                             className="w-full bg-gradient-to-r from-[#044866] via-[#0D5468] to-[#044866] hover:from-[#0D5468] hover:via-[#044866] hover:to-[#0D5468] text-white shadow-xl shadow-[#044866]/30 h-12 font-semibold transition-all duration-500 hover:shadow-2xl hover:shadow-[#044866]/40 hover:-translate-y-0.5"
                             onClick={() => setShowScheduleDialog(true)}

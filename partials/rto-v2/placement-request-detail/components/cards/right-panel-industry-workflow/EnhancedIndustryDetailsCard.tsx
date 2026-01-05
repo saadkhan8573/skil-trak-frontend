@@ -19,9 +19,7 @@ import React, { useState } from 'react'
 
 export const EnhancedIndustryDetailsCard = ({
     // showIndustryDetails,
-    selectedIndustry,
     workplaceType,
-    proofSkipped,
     student,
     workplace,
 }: any) => {
@@ -130,7 +128,7 @@ export const EnhancedIndustryDetailsCard = ({
                             </div>
                             {workplaceType === 'provided' && (
                                 <div className="flex items-center gap-x-2">
-                                    {proofSkipped ? (
+                                    {/* {proofSkipped ? (
                                         <Badge
                                             text="Proof Pending"
                                             Icon={AlertCircle}
@@ -143,7 +141,7 @@ export const EnhancedIndustryDetailsCard = ({
                                             Icon={FileCheck}
                                             className="bg-emerald-100 text-emerald-700 border-emerald-200"
                                         />
-                                    )}
+                                    )} */}
                                     <BadgeInfo
                                         className="cursor-pointer text-primary size-5"
                                         onClick={() =>

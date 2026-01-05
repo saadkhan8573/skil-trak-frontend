@@ -852,55 +852,38 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-xl">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-200/30 rounded-full -mr-16 -mt-16" />
+                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-indigo-50 to-purple-50 border border-[#0D5468]/20 rounded-xl">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-[#0D5468]/5 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
-                                    <FileText className="h-5 w-5 text-purple-600" />
+                                    <FileSignature className="h-5 w-5 text-purple-600" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-purple-900 font-medium">
+                                    <p className="text-purple-600 font-medium">
                                         Agreement & Eligibility Pending
                                     </p>
-                                    <p className="text-purple-700 text-sm mt-1">
-                                        Generate and review placement agreement
+                                    <p className="text-purple-600 text-sm mt-1">
+                                        Generate or upload placement agreement
                                     </p>
                                 </div>
                             </div>
                         </div>
-                        {proofSkipped && workplaceType === 'provided' && (
-                            <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                                <div className="flex items-start gap-2">
-                                    <AlertCircle className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
-                                    <div className="flex-1">
-                                        <p className="text-amber-900 font-medium text-sm">
-                                            Proof of Employment Pending
-                                        </p>
-                                        <p className="text-amber-700 text-xs mt-1">
-                                            Upload required before final
-                                            approval
-                                        </p>
-                                    </div>
-                                    <Button
-                                        outline
-                                        className="h-7 text-xs border-amber-300 text-amber-700 hover:bg-amber-100"
-                                        onClick={() => {
-                                            setShowProofUploadDialog(true)
-                                        }}
-                                    >
-                                        <Upload className="h-3 w-3 mr-1" />{' '}
-                                        Upload
-                                    </Button>
-                                </div>
-                            </div>
-                        )}
                         <Button
-                            className="w-full bg-gradient-to-r from-[#044866] via-[#0D5468] to-[#044866] hover:from-[#0D5468] hover:via-[#044866] hover:to-[#0D5468] text-white shadow-xl shadow-[#044866]/30 h-12 font-semibold transition-all duration-500 hover:shadow-2xl hover:shadow-[#044866]/40 hover:-translate-y-0.5"
+                            className="w-full bg-gradient-to-r from-[#0D5468] to-[#044866] hover:from-[#044866] hover:to-[#0D5468] text-white shadow-lg shadow-[#0D5468]/20 h-11"
                             onClick={() => setShowAgreementDialog(true)}
                         >
-                            <FileSignature className="mr-2 h-5 w-5" /> Generate
+                            <FileSignature className="mr-2 h-4 w-4" /> Generate
                             Agreement
                         </Button>
+                        {showAgreementDialog && (
+                            <AgreementModal
+                                open={showAgreementDialog}
+                                onClose={() => setShowAgreementDialog(false)}
+                                onConfirm={handleAgreementSigned}
+                                workplace={workplace}
+                                student={student}
+                            />
+                        )}
                     </motion.div>
                 )
 

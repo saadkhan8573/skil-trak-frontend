@@ -141,7 +141,7 @@ export const WPProcessMatchingLoader = () => {
                     Workplace Matching in Progress
                 </h2>
 
-                <p className="text-[#044866] text-base font-medium animate-fade-in-delayed">
+                <p className="text-[#044866] font-medium animate-fade-in-delayed">
                     Our advanced algorithm is finding your perfect workplace
                     matches
                 </p>
@@ -240,7 +240,7 @@ export const WPProcessMatchingLoader = () => {
                                 </div>
 
                                 <div className="text-left">
-                                    <h3 className="text-base font-bold text-[#0D5468] mb-1 transition-all duration-500 animate-fade-in">
+                                    <h3 className="font-bold text-[#0D5468] mb-1 transition-all duration-500 animate-fade-in">
                                         {currentMessage}
                                     </h3>
                                     <div className="text-[#044866] text-sm animate-slide-in">
@@ -254,7 +254,7 @@ export const WPProcessMatchingLoader = () => {
                         {/* Enhanced Progress Section */}
                         <div className="space-y-3">
                             <div className="flex items-center justify-between mb-3">
-                                <span className="text-base text-[#044866] font-semibold animate-pulse">
+                                <span className=" text-[#044866] font-semibold animate-pulse">
                                     Processing
                                 </span>
                                 <div className="animate-bounce-subtle">

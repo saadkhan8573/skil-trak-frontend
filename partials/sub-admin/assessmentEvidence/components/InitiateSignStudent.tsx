@@ -19,6 +19,7 @@ import { MdEmail } from 'react-icons/md'
 import { useDispatch } from 'react-redux'
 import { apiSlice } from '@queries/portals/empty.query'
 import { PuffLoader } from 'react-spinners'
+import { useAppSelector } from '@redux'
 
 const UserCellInfo = ({
     profile,
@@ -105,7 +106,11 @@ export const InitiateSignStudent = ({
     setIsPreviewAsSigner: (userIds: any) => void
 }) => {
     const router = useRouter()
-    const { workplaceRto } = useWorkplace()
+    const { workplaceRto: rto } = useWorkplace()
+    const rtoDetail = useAppSelector((state) => state.rto.rtoDetail)
+
+    const workplaceRto = rtoDetail || rto
+
     const role = getUserCredentials()?.role
 
     const dispatch = useDispatch()
@@ -343,47 +348,44 @@ export const InitiateSignStudent = ({
     //     }
     // }, [userIds(), template?.recipients, secondaryMails])
 
-    useEffect(
-        () => {
-            // Only proceed if userIds is a function and returns a truthy value
-            const userIdsValue = userIds()
+    useEffect(() => {
+        // Only proceed if userIds is a function and returns a truthy value
+        const userIdsValue = userIds()
 
-            if (
-                userIdsValue &&
-                (!secondaryMails ||
-                    secondaryMails.filter((s: any) => s?.user)?.length <
-                        (template?.recipients?.length || 0))
-            ) {
-                const newSecondaryMails = Object.entries(userIdsValue).map(
-                    ([role, id]: [string, any]) => ({
-                        user: id,
-                        email: null,
-                        role,
-                    })
-                )
-
-                // Use functional update to ensure we're working with the most recent state
-                setSecondaryMails((prevMails: any) => {
-                    // Avoid unnecessary updates if the new mails are the same as existing ones
-                    const areSame =
-                        newSecondaryMails.length === prevMails.length &&
-                        newSecondaryMails.every(
-                            (mail, index) =>
-                                mail.user === prevMails[index]?.user &&
-                                mail.role === prevMails[index]?.role
-                        )
-
-                    return areSame ? prevMails : newSecondaryMails
+        if (
+            userIdsValue &&
+            (!secondaryMails ||
+                secondaryMails.filter((s: any) => s?.user)?.length <
+                    (template?.recipients?.length || 0))
+        ) {
+            const newSecondaryMails = Object.entries(userIdsValue).map(
+                ([role, id]: [string, any]) => ({
+                    user: id,
+                    email: null,
+                    role,
                 })
-            }
-        },
-        [
-            // Use a stable reference to the userIds object/function
-            userIds,
-            template?.recipients?.length,
-            secondaryMails?.length,
-        ]
-    )
+            )
+
+            // Use functional update to ensure we're working with the most recent state
+            setSecondaryMails((prevMails: any) => {
+                // Avoid unnecessary updates if the new mails are the same as existing ones
+                const areSame =
+                    newSecondaryMails.length === prevMails.length &&
+                    newSecondaryMails.every(
+                        (mail, index) =>
+                            mail.user === prevMails[index]?.user &&
+                            mail.role === prevMails[index]?.role
+                    )
+
+                return areSame ? prevMails : newSecondaryMails
+            })
+        }
+    }, [
+        // Use a stable reference to the userIds object/function
+        userIds,
+        template?.recipients?.length,
+        secondaryMails?.length,
+    ])
 
     return (
         <>

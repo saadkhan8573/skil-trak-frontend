@@ -37,7 +37,10 @@ import {
     RejectModal,
     UnblockModal,
 } from './modals'
-import { StatusTableActionOption } from '../industry'
+
+interface StatusTableActionOption<T> extends TableActionOption<T> {
+    status: UserStatus[]
+}
 
 export const FilteredStudents = ({
     filter,

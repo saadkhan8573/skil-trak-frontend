@@ -175,15 +175,15 @@ export const ProblematicStudent = () => {
         ),
     }
     const stats = [
-        // {
-        //     label: 'Open Issues',
-        //     value: count?.data?.openIssues || 0,
-        //     icon: Flag,
-        //     iconColor: 'text-[#ef4444]',
-        //     iconBgColor: 'bg-gradient-to-br from-[#ef4444]/10 to-[#ef4444]/5',
-        //     valueColor: 'text-[#ef4444]',
-        //     highlight: true,
-        // },
+        {
+            label: 'Open Issues',
+            value: count?.data?.openIssues || 0,
+            icon: Flag,
+            iconColor: 'text-[#ef4444]',
+            iconBgColor: 'bg-gradient-to-br from-[#ef4444]/10 to-[#ef4444]/5',
+            valueColor: 'text-[#ef4444]',
+            highlight: true,
+        },
         {
             label: 'Critical Priority',
             value: count?.data?.criticalPriority || 0,

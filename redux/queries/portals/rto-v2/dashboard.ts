@@ -9,6 +9,21 @@ export const dashboardEndpoints = (
         query: () => `${PREFIX}automatic/count`,
         providesTags: ['RTO'],
     }),
+
+    navBarCounts: builder.query<
+        {
+            waitingForRto: number
+            openIssues: number
+            pendingSubmissions: number
+            pendingSign: number
+            allStudents: number
+        },
+        void
+    >({
+        query: () => `${PREFIX}navbar/counts`,
+        providesTags: ['RTO'],
+    }),
+
     last24HoursWp: builder.query<any, void>({
         query: () => `${PREFIX}yesterday-automatic/list`,
         providesTags: ['RTO'],

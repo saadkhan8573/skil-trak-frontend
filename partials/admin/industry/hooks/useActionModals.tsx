@@ -81,5 +81,7 @@ export const useActionModals = () => {
         onArchiveClicked,
         onUnArchiveClicked,
         onMultiBlockClicked,
+        setModal,
+        onModalCancelClicked,
     }
 }

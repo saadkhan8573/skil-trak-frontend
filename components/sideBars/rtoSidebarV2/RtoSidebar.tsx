@@ -21,8 +21,15 @@ import {
 } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { ImportStudentsModal } from '@partials'
+import { RtoV2Api } from '@redux'
 
-const menuSections = [
+const menuSections = (navBarCounts: {
+    waitingForRto: number
+    openIssues: number
+    pendingSubmissions: number
+    pendingSign: number
+    allStudents: number
+}) => [
     {
         title: 'Dashboard',
         items: [
@@ -31,7 +38,7 @@ const menuSections = [
                 label: 'Dashboard',
                 key: 'Dashboard',
                 path: '/portals/rto/dashboard',
-                badge: '9',
+                // badge: '9',
                 bg: 'bg-gradient-to-r from-[#044866]/10 to-[#0D5468]/10 border border-[#044866]/30 shadow-sm',
                 iconBg: 'bg-gradient-to-br from-[#044866] to-[#0D5468]',
                 badgeBg: 'bg-[#044866]',
@@ -48,7 +55,7 @@ const menuSections = [
                 icon: FileSignature,
                 label: 'Sign Documents',
                 key: 'Sign Documents',
-                badge: '5',
+                badge: navBarCounts?.pendingSign,
                 bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
                 iconBg: 'bg-red-200 !text-red-500',
                 badgeBg: 'bg-red-500',
@@ -59,7 +66,7 @@ const menuSections = [
                 icon: CheckSquare,
                 label: 'Approve Placements',
                 key: 'Approve Placements',
-                badge: '3',
+                badge: navBarCounts?.waitingForRto,
                 bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
                 iconBg: 'bg-red-200 !text-red-500',
                 badgeBg: 'bg-red-500',
@@ -70,7 +77,7 @@ const menuSections = [
                 icon: Send,
                 label: 'Submissions',
                 key: 'Submissions',
-                badge: '2',
+                badge: navBarCounts?.pendingSubmissions,
                 path: '/portals/rto/action-required/submissions?tab=submissions-requiring-review',
                 bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
                 iconBg: 'bg-red-200 !text-red-500',
@@ -82,7 +89,7 @@ const menuSections = [
                 label: 'Resolve Issues',
                 key: 'Resolve Issues',
                 path: '/portals/rto/action-required/resolve-issues?tab=open-issues',
-                badge: '30',
+                badge: navBarCounts?.openIssues,
                 bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
                 iconBg: 'bg-red-200 !text-red-500',
                 badgeBg: 'bg-red-500',
@@ -97,7 +104,7 @@ const menuSections = [
                 icon: Users,
                 label: 'All Students',
                 key: 'All Students',
-                badge: '11',
+                badge: navBarCounts?.allStudents,
                 path: '/portals/rto/students-and-placements/all-students?tab=active',
                 bg: 'hover:bg-gray-100 border border-gray-200',
                 iconBg: 'bg-gray-200 !text-slate-700',
@@ -108,7 +115,7 @@ const menuSections = [
                 icon: Briefcase,
                 label: 'Placement Requests',
                 key: 'Placement Requests',
-                badge: '11',
+                // badge: '11',
                 path: '/portals/rto/students-and-placements/placement-requests?tab=student-need-wp',
                 bg: 'hover:bg-gray-100 border border-gray-200',
                 iconBg: 'bg-gray-200 !text-slate-700',
@@ -144,7 +151,7 @@ const menuSections = [
                 label: 'Emails',
                 key: 'Emails',
                 path: '/portals/rto/communications/e-mails',
-                badge: '8',
+                // badge: '8',
                 bg: 'hover:bg-gray-100 border border-gray-200',
                 iconBg: 'bg-gray-200 !text-slate-700',
                 badgeBg: 'bg-gray-200 !text-slate-700',
@@ -155,7 +162,7 @@ const menuSections = [
                 label: 'Appointments',
                 path: '/portals/rto/communications/appointments',
                 key: 'Appointments',
-                badge: '7',
+                // badge: '7',
                 bg: 'hover:bg-gray-100 border border-gray-200',
                 iconBg: 'bg-gray-200 !text-slate-700',
                 badgeBg: 'bg-gray-200 !text-slate-700',
@@ -165,7 +172,7 @@ const menuSections = [
                 icon: BellIcon,
                 label: 'Notifications',
                 key: 'Notifications',
-                badge: '3',
+                // badge: '3',
                 path: '/portals/rto/communications/notifications',
                 bg: 'hover:bg-gray-100 border border-gray-200',
                 iconBg: 'bg-gray-200 !text-slate-700',
@@ -176,7 +183,7 @@ const menuSections = [
                 icon: Tickets,
                 label: 'Tickets',
                 key: 'Tickets',
-                badge: '3',
+                // badge: '3',
                 path: '/portals/rto/communications/tickets?tab=active',
                 bg: 'hover:bg-gray-100 border border-gray-200',
                 iconBg: 'bg-gray-200 !text-slate-700',
@@ -233,6 +240,8 @@ const menuSections = [
 ]
 
 export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
+    const { data: navBarCounts } = RtoV2Api.Dashboard.navBarCounts()
+
     const [modal, setModal] = useState<ReactElement | null>(null)
     const router = useRouter()
     const onCancel = () => setModal(null)
@@ -269,7 +278,7 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
 
             {/* ============================= SCROLLABLE CONTENT ============================= */}
             <nav className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                {menuSections.map((section) => (
+                {menuSections(navBarCounts!).map((section) => (
                     <div
                         key={section.title}
                         className="hover:shadow-premium-lg"
@@ -374,7 +383,7 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
 
                 {/* ======================= SCROLLABLE MENU SECTION ========================= */}
                 <div className="flex-1 overflow-y-auto px-4 py-3 remove-scrollbar scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                    {menuSections.map((section, idx) => (
+                    {menuSections(navBarCounts!).map((section, idx) => (
                         <div key={section.title}>
                             <div
                                 className={`${
@@ -428,13 +437,13 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
                                                 </span>
                                             </div>
 
-                                            {/* {item.badge && (
+                                            {item.badge && (
                                                 <span
                                                     className={`text-[11px] px-2 py-0.5 rounded-full text-white ${item.badgeBg}`}
                                                 >
                                                     {item.badge}
                                                 </span>
-                                            )} */}
+                                            )}
                                         </button>
                                     </li>
                                 ))}

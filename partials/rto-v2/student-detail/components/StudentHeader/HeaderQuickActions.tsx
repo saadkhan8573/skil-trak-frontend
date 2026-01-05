@@ -26,6 +26,18 @@ export const HeaderQuickActions = ({ student }: { student: Student }) => {
     }
 
     const onMakeCallClicked = () => {
+        if (!student?.id || !student?.phone) {
+            notification.error({
+                title: 'Action Failed',
+                description: 'Student phone number is not available.',
+            })
+            return
+        }
+        navigator.clipboard.writeText(student?.phone)
+        notification.success({
+            title: 'Copied',
+            description: `Phone number copied`,
+        })
         callLog({
             student: student?.id,
         }).then((res: any) => {

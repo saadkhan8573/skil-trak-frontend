@@ -3,7 +3,7 @@ import { RtoV2Api } from '@queries'
 import { motion } from 'framer-motion'
 import { Shield } from 'lucide-react'
 import { useRouter } from 'next/router'
-export const EnhancedComplianceChecks = ({ complianceChecks }: any) => {
+export const EnhancedComplianceChecks = () => {
     const router = useRouter()
     const wpId = router.query.id as string
     const { data } = RtoV2Api.PlacementRequests.useStudentPlacementCompliance(
@@ -23,26 +23,28 @@ export const EnhancedComplianceChecks = ({ complianceChecks }: any) => {
 
             <div className="p-6">
                 <div className="space-y-3">
-                    {data?.map((check: any, index: any) => {
-                        const Icon = check.icon
-                        return (
-                            <motion.div
-                                key={index}
-                                initial={{
-                                    opacity: 0,
-                                    x: -20,
-                                }}
-                                animate={{
-                                    opacity: 1,
-                                    x: 0,
-                                }}
-                                transition={{
-                                    delay: index * 0.1,
-                                }}
-                                className="flex items-center justify-between p-4 bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-xl border border-slate-200 hover:shadow-md transition-all"
-                            >
-                                <div className="flex items-center gap-3">
-                                    {/* <div
+                    {data
+                        ?.filter((check: any) => check?.isRequired)
+                        ?.map((check: any, index: any) => {
+                            const Icon = check.icon
+                            return (
+                                <motion.div
+                                    key={index}
+                                    initial={{
+                                        opacity: 0,
+                                        x: -20,
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        x: 0,
+                                    }}
+                                    transition={{
+                                        delay: index * 0.1,
+                                    }}
+                                    className="flex items-center justify-between p-4 bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-xl border border-slate-200 hover:shadow-md transition-all"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        {/* <div
                                         className={`p-2 rounded-lg ${
                                             check.status === 'verified'
                                                 ? 'bg-emerald-100'
@@ -53,16 +55,16 @@ export const EnhancedComplianceChecks = ({ complianceChecks }: any) => {
                                             className={`h-5 w-5 ${check.color}`}
                                         />
                                     </div> */}
-                                    <div>
-                                        <p className="text-slate-900 font-medium">
-                                            {check?.name}
-                                        </p>
-                                        {/* <p className="text-slate-600 text-xs mt-0.5">
+                                        <div>
+                                            <p className="text-slate-900 font-medium">
+                                                {check?.name}
+                                            </p>
+                                            {/* <p className="text-slate-600 text-xs mt-0.5">
                                             Expiry: {check.expiry}
                                         </p> */}
+                                        </div>
                                     </div>
-                                </div>
-                                {/* <Badge
+                                    {/* <Badge
                                     text={
                                         check.status === 'verified'
                                             ? 'Verified'
@@ -74,9 +76,9 @@ export const EnhancedComplianceChecks = ({ complianceChecks }: any) => {
                                             : 'bg-amber-100 text-amber-700 border-amber-200'
                                     }
                                 /> */}
-                            </motion.div>
-                        )
-                    })}
+                                </motion.div>
+                            )
+                        })}
                 </div>
             </div>
         </Card>

@@ -44,11 +44,7 @@ export function CleanHeader({
     getCurrentStageIndex,
 }: CleanHeaderProps) {
     const [isWorkflowOpen, setIsWorkflowOpen] = useState(false)
-    const quickActionOptions = [
-        { label: 'On Hold', value: 'On Hold' },
-        { label: 'Cancelled', value: 'Cancelled' },
-        { label: 'Terminated', value: 'Terminated' },
-    ]
+
     const lastTrueIndex = workflowStages
         ?.map((stage) => stage.completed)
         .lastIndexOf(true)
@@ -64,14 +60,6 @@ export function CleanHeader({
                     <div className="flex items-center justify-between max-w-[1900px] mx-auto">
                         {/* Left Section */}
                         <div className="flex items-center gap-6">
-                            <Button
-                                variant="secondary"
-                                onClick={() => {}}
-                                Icon={ArrowLeft}
-                                text="Back"
-                                className="text-gray-600 hover:text-primaryNew"
-                            />
-
                             <div className="h-8 w-px bg-gray-200"></div>
 
                             <div>

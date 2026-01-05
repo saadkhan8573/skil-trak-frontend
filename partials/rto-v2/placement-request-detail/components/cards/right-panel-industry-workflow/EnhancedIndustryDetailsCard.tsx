@@ -45,10 +45,17 @@ export const EnhancedIndustryDetailsCard = ({
 
     const fileName = fileUrl.split('/').pop() ?? ''
     const extension = fileName.split('.').pop()?.toLowerCase()
+    const shouldRenderIndustryCard =
+        !!data &&
+        typeof data.distance === 'number' &&
+        data?.distance > 0 &&
+        typeof data?.employmentDocument === 'string' &&
+        data?.employmentDocument?.trim()?.length > 0
+
     return (
         <>
             {documentsViewModal}
-            {data && Object.keys(data)?.length > 0 && (
+            {shouldRenderIndustryCard && (
                 <Card noPadding className="border-0 shadow-xl overflow-hidden">
                     <div className="bg-gradient-to-r from-[#044866] to-[#0D5468] px-5 py-4">
                         <div className="flex items-center gap-2.5 text-white">

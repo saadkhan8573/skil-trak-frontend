@@ -5,17 +5,13 @@ import {
     LoadingAnimation,
     Table,
     TechnicalError,
-    UserCreatedAt,
 } from '@components'
 import { AdminApi } from '@queries'
 import { Industry, UserStatus } from '@types'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
 import { useColumns } from './hooks'
-import {
-    MultiAcceptModal,
-    MultiRejectModal,
-} from './modals'
+import { MultiAcceptModal, MultiRejectModal } from './modals'
 
 export const PendingIndustry = () => {
     const [modal, setModal] = useState<ReactElement | null>(null)
@@ -89,10 +85,10 @@ export const PendingIndustry = () => {
         id: 'id',
         individual: (id: Industry) => (
             <div className="flex gap-x-2">
-                <ActionButton variant="success" onClick={() => { }}>
+                <ActionButton variant="success" onClick={() => {}}>
                     Accept
                 </ActionButton>
-                <ActionButton variant="error" onClick={() => { }}>
+                <ActionButton variant="error" onClick={() => {}}>
                     Reject
                 </ActionButton>
             </div>

@@ -43,16 +43,6 @@ export const IndustryFilters = ({
         value: sector.id,
     }))
 
-    const isPartnerOptions = [
-        {
-            label: 'Is Partner',
-            value: true,
-        },
-        // {
-        //     label: 'Not Partner',
-        //     value: false,
-        // },
-    ]
     const isPremiumOptions = getPremiumFeaturesList?.data?.map(
         (premium: any) => ({
             label: premium?.title,
@@ -114,15 +104,6 @@ export const IndustryFilters = ({
                     onChange={(e: any) => {
                         onFilterChange({ ...filter, abn: e.target.value })
                     }}
-                    showError={false}
-                />
-                <Select
-                    label={'Is Partner'}
-                    name={'isPartner'}
-                    options={isPartnerOptions}
-                    onChange={(e: any) =>
-                        onFilterChange({ ...filter, isPartner: e?.value })
-                    }
                     showError={false}
                 />
 

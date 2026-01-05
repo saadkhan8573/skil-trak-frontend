@@ -1,32 +1,21 @@
 import {
     ActionButton,
-    Badge,
     Card,
     EmptyData,
     LoadingAnimation,
     Table,
-    TableAction,
-    TableActionOption,
     TableChildrenProps,
     TechnicalError,
-    UserCreatedAt,
 } from '@components'
-import { ColumnDef } from '@tanstack/react-table'
-import { FaCheck, FaEdit, FaEye, FaTimes } from 'react-icons/fa'
+import { FaEdit } from 'react-icons/fa'
 
 import { AdminApi } from '@queries'
 import { Industry, UserStatus } from '@types'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { MdBlock } from 'react-icons/md'
-import { SectorCell } from './components'
 
 // hooks
-import { UserRoles } from '@constants'
-import { useActionModal } from '@hooks'
-import { ellipsisText, getUserCredentials } from '@utils'
-import { RiLockPasswordFill } from 'react-icons/ri'
-import { ProgressIndustryCell } from './components'
 import { useColumns } from './hooks'
 
 export const ApprovedIndustry = () => {
@@ -36,12 +25,8 @@ export const ApprovedIndustry = () => {
     const [isRouting, setIsRouting] = useState(true)
 
     // hooks
-    const {
-        getTableConfig,
-        modal,
-        passwordModal,
-        onMultiBlockClicked,
-    } = useColumns()
+    const { getTableConfig, modal, passwordModal, onMultiBlockClicked } =
+        useColumns()
 
     const { columns } = getTableConfig({
         columnKeys: [
@@ -92,7 +77,6 @@ export const ApprovedIndustry = () => {
                 item.hasOwnProperty(item?.hasCourseApproved) &&
                 !item?.hasCourseApproved
         )
-
 
     const quickActionsElements = {
         id: 'id',

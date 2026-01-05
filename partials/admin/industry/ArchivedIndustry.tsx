@@ -29,16 +29,28 @@ export const ArchivedIndustry = () => {
     const { getTableConfig, modal, passwordModal } = useColumns()
 
     const { columns } = getTableConfig({
-        columnKeys: ['businessName', 'abn', 'contactPerson', 'address', 'createdBy'],
-        actionKeys: ['view', 'viewOldProfile', 'edit', 'viewPassword', 'unarchive', 'delete'],
+        columnKeys: [
+            'businessName',
+            'abn',
+            'contactPerson',
+            'address',
+            'createdBy',
+        ],
+        actionKeys: [
+            'view',
+            'viewOldProfile',
+            'edit',
+            'viewPassword',
+            'unarchive',
+            'delete',
+        ],
     })
 
-    const { isLoading, data, isError } =
-        AdminApi.Industries.useListQuery({
-            search: `status:archived`,
-            skip: itemPerPage * page - itemPerPage,
-            limit: itemPerPage,
-        })
+    const { isLoading, data, isError } = AdminApi.Industries.useListQuery({
+        search: `status:archived`,
+        skip: itemPerPage * page - itemPerPage,
+        limit: itemPerPage,
+    })
     const [bulkAction] = commonApi.useBulkStatusMutation()
 
     const quickActionsElements = {

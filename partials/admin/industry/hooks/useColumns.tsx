@@ -334,48 +334,71 @@ export const useColumns = () => {
             text: 'View Password',
             onClick: (industry) => onViewPassword(industry),
             Icon: RiLockPasswordFill,
+            hidden: () => role !== UserRoles.ADMIN,
         },
         archive: {
             text: 'Archive',
             onClick: (industry) => onArchiveClicked(industry),
             Icon: MdBlock,
             color: 'text-primary',
+            hidden: (industry) => industry?.user?.status !== UserStatus.Approved,
         },
         unarchive: {
             text: 'Unarchive',
             onClick: (industry) => onUnArchiveClicked(industry),
             Icon: MdBlock,
             color: 'text-primary',
+            hidden: (industry) => industry?.user?.status !== UserStatus.Archived,
         },
         block: {
             text: 'Block',
             onClick: (industry) => onBlockClicked(industry),
             Icon: MdBlock,
             color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
+            hidden: (industry) => industry?.user?.status !== UserStatus.Approved,
         },
         unblock: {
             text: 'Unblock',
             onClick: (industry) => onUnblockClicked(industry),
             Icon: CgUnblock,
             color: 'text-orange-500 hover:bg-orange-100 hover:border-orange-200',
+            hidden: (industry) => industry?.user?.status !== UserStatus.Blocked,
         },
         delete: {
             text: 'Delete',
             onClick: (industry) => onDeleteClicked(industry),
             Icon: FaTrash,
             color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
+            hidden: (industry) => {
+                if (role !== UserRoles.ADMIN) return true
+                const status = industry?.user?.status
+                return ![
+                    UserStatus.Blocked,
+                    UserStatus.Rejected,
+                    UserStatus.Archived,
+                ].includes(status as UserStatus)
+            },
         },
         accept: {
             text: 'Accept',
             onClick: (industry) => onAcceptClicked(industry),
             Icon: FaEdit,
             color: 'text-green-500 hover:bg-green-100 hover:border-green-200',
+            hidden: (industry) => {
+                const status = industry?.user?.status
+                return ![
+                    UserStatus.Pending,
+                    UserStatus.Rejected,
+                    UserStatus.Archived,
+                ].includes(status as UserStatus)
+            },
         },
         reject: {
             text: 'Reject',
             onClick: (industry) => onRejectClicked(industry),
             Icon: FaEdit,
             color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
+            hidden: (industry) => industry?.user?.status !== UserStatus.Pending,
         },
         unsnooze: {
             text: 'Unsnooze',
@@ -389,6 +412,7 @@ export const useColumns = () => {
             },
             Icon: MdSnooze,
             color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
+            // Typically only for snoozed logic, but added hidden check just in case
         },
     })
 
@@ -426,78 +450,43 @@ export const useColumns = () => {
             industry: Industry
         ): TableActionOption<Industry>[] => {
             const allOptionalActions = getAllOptionalActions(industry)
-            let filteredActions: TableActionOption<Industry>[] = []
+            let actionList: TableActionOption<Industry>[] = []
 
             if (useDynamicActions) {
-                const status = industry?.user?.status
-                const dynamicActions: TableActionOption<Industry>[] = []
-
-                if (actionKeys?.includes('view'))
-                    dynamicActions.push(allOptionalActions.view)
-                if (actionKeys?.includes('viewOldProfile'))
-                    dynamicActions.push(allOptionalActions.viewOldProfile)
-                if (actionKeys?.includes('edit'))
-                    dynamicActions.push(allOptionalActions.edit)
-                if (
-                    actionKeys?.includes('viewPassword') &&
-                    role === UserRoles.ADMIN
-                ) {
-                    dynamicActions.push(allOptionalActions.viewPassword)
-                }
-
-                if (status === UserStatus.Approved) {
-                    dynamicActions.push(allOptionalActions.block)
-                    dynamicActions.push(allOptionalActions.archive)
-                } else if (status === UserStatus.Blocked) {
-                    dynamicActions.push(allOptionalActions.unblock)
-                    if (role === UserRoles.ADMIN)
-                        dynamicActions.push(allOptionalActions.delete)
-                } else if (
-                    status === UserStatus.Pending ||
-                    status === UserStatus.Rejected
-                ) {
-                    dynamicActions.push(allOptionalActions.accept)
-                }
-
-                if (status === UserStatus.Archived) {
-                    dynamicActions.push(allOptionalActions.accept) // Matches existing "Un Archive" logic
-                }
-
-                if (status === UserStatus.Pending) {
-                    dynamicActions.push(allOptionalActions.reject)
-                }
-
-                if (
-                    (status === UserStatus.Rejected ||
-                        status === UserStatus.Archived) &&
-                    role === UserRoles.ADMIN
-                ) {
-                    dynamicActions.push(allOptionalActions.delete)
-                }
-
-                return dynamicActions
-            }
-
-            if (actionKeys && actionKeys.length > 0) {
-                filteredActions = actionKeys
-                    .map((key) => {
-                        if (key === 'viewPassword' && role !== UserRoles.ADMIN)
-                            return null
-                        if (key === 'delete' && role !== UserRoles.ADMIN)
-                            return null
-                        return allOptionalActions[key]
-                    })
-                    .filter((action): action is TableActionOption<Industry> =>
-                        Boolean(action)
-                    )
-            } else {
-                filteredActions = [
-                    allOptionalActions.view,
-                    allOptionalActions.edit,
+                // If dynamic actions requested, we include all relevant base actions
+                // and let the 'hidden' property filter them based on industry status
+                const dynamicBaseKeys: ActionKey[] = [
+                    'view',
+                    'viewOldProfile',
+                    'edit',
+                    'viewPassword',
+                    'block',
+                    'unblock',
+                    'archive',
+                    'unarchive',
+                    'accept',
+                    'reject',
+                    'delete',
                 ]
+
+                // If user provided specific actionKeys, only use those
+                const keysToUse =
+                    actionKeys && actionKeys.length > 0
+                        ? actionKeys
+                        : dynamicBaseKeys
+
+                actionList = keysToUse
+                    .map((key) => allOptionalActions[key])
+                    .filter(Boolean)
+            } else if (actionKeys && actionKeys.length > 0) {
+                actionList = actionKeys
+                    .map((key) => allOptionalActions[key])
+                    .filter(Boolean)
+            } else {
+                actionList = [allOptionalActions.view, allOptionalActions.edit]
             }
 
-            return filteredActions
+            return actionList
         }
 
         if (columns.findIndex((col) => col.id === 'action') === -1) {

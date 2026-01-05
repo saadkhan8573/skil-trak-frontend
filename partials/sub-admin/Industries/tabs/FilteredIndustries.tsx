@@ -20,7 +20,7 @@ export const FilteredIndustries: React.FC<FilteredIndustriesProps> = ({
     const [page, setPage] = useState(1)
     const [itemPerPage, setItemPerPage] = useState(30)
 
-    const industries = SubAdminApi.Industry.useGetAllSubAdminIndustriesList({
+    const industries = SubAdminApi.Industry.getAllStateWiseSubAdminIndustries({
         search: JSON.stringify(removeEmptyValues(baseFilter))
             .replaceAll('{', '')
             .replaceAll('}', '')
@@ -32,7 +32,14 @@ export const FilteredIndustries: React.FC<FilteredIndustriesProps> = ({
 
     const { getTableConfig, modal } = useSubAdminIndustryColumns()
     const { columns } = getTableConfig({
-        columnKeys: ['name', 'abn', 'students', 'contactPerson', 'favouriteBy', 'createdAt', 'action'],
+        columnKeys: [
+            'name',
+            'contactPerson',
+            'favouriteBy',
+            'profileCompletionPercentage',
+            'createdAt',
+            'action',
+        ],
     })
 
     return (
@@ -85,7 +92,9 @@ export const FilteredIndustries: React.FC<FilteredIndustriesProps> = ({
                     !industries?.isError && (
                         <EmptyData
                             title={'No Results Found!'}
-                            description={'Try adjusting your filters to find what you are looking for.'}
+                            description={
+                                'Try adjusting your filters to find what you are looking for.'
+                            }
                             height={'50vh'}
                         />
                     )

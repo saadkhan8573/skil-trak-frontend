@@ -24,6 +24,7 @@ import {
     PendingIndustries,
     RejectedIndustries,
     SnoozedIndustries,
+    StateWiseIndustries,
     YourPartnerIndustries,
 } from './tabs'
 //Layouts
@@ -45,6 +46,7 @@ const filterKeys = [
     'isPartner',
     'subAdminId',
     'feature',
+    'placementReady',
 ]
 
 export const SubAdminUpdatedIndustries = () => {
@@ -65,19 +67,26 @@ export const SubAdminUpdatedIndustries = () => {
 
     const tabs: TabConfig[] = [
         {
-            value: 'partner-industries',
-            label: 'Partners',
+            value: 'state-wise-industries',
+            label: 'State Wise Industries',
             icon: Building2,
-            count: count.data?.partnerIndustries,
-            component: () => <YourPartnerIndustries baseFilter={baseFilter} />,
+            // count: count.data?.partnerIndustries,
+            component: () => <StateWiseIndustries baseFilter={baseFilter} />,
         },
-        {
-            value: 'non-partner-industries',
-            label: 'Non-Partners',
-            icon: Building2,
-            count: count.data?.nonPartnerIndustries,
-            component: () => <NonPartnerIndustries baseFilter={baseFilter} />,
-        },
+        // {
+        //     value: 'partner-industries',
+        //     label: 'Partners',
+        //     icon: Building2,
+        //     count: count.data?.partnerIndustries,
+        //     component: () => <YourPartnerIndustries baseFilter={baseFilter} />,
+        // },
+        // {
+        //     value: 'non-partner-industries',
+        //     label: 'Non-Partners',
+        //     icon: Building2,
+        //     count: count.data?.nonPartnerIndustries,
+        //     component: () => <NonPartnerIndustries baseFilter={baseFilter} />,
+        // },
         {
             value: 'pending-course-approval',
             label: 'Pending Course Approval',
@@ -86,45 +95,45 @@ export const SubAdminUpdatedIndustries = () => {
             component: () => <PedingCourseApprovalIndustries />,
             hidden: () => {
                 const isLocal = process.env.NEXT_PUBLIC_NODE_ENV === 'local'
-                const isAllowedUser = [4453, 78].includes(user?.id)
+                const isAllowedUser = [4453, 78, 5714].includes(user?.id)
                 return !(isLocal || isAllowedUser)
             },
         },
-        {
-            value: 'monthly-calls',
-            label: 'Monthly Calls',
-            icon: CalendarClock,
-            count: count.data?.monthlyCalled,
-            component: () => <MonthlyCallsIndustries baseFilter={baseFilter} />,
-        },
-        {
-            value: 'snoozed-industries',
-            label: 'Snoozed',
-            icon: Moon,
-            count: count.data?.snoozedIndustries,
-            component: () => <SnoozedIndustries baseFilter={baseFilter} />,
-        },
-        {
-            value: 'blocked-industries',
-            label: 'Blocked',
-            icon: ShieldAlert,
-            count: count.data?.blockedIndustries,
-            component: () => <BlockedIndustries baseFilter={baseFilter} />,
-        },
-        {
-            value: 'rejected-industries',
-            label: 'Rejected',
-            icon: UserMinus,
-            count: count.data?.rejectedIndustries,
-            component: () => <RejectedIndustries baseFilter={baseFilter} />,
-        },
-        {
-            value: 'archived-industries',
-            label: 'Archived',
-            icon: Archive,
-            count: count.data?.archivedIndustries,
-            component: () => <ArchivedIndustries baseFilter={baseFilter} />,
-        },
+        // {
+        //     value: 'monthly-calls',
+        //     label: 'Monthly Calls',
+        //     icon: CalendarClock,
+        //     count: count.data?.monthlyCalled,
+        //     component: () => <MonthlyCallsIndustries baseFilter={baseFilter} />,
+        // },
+        // {
+        //     value: 'snoozed-industries',
+        //     label: 'Snoozed',
+        //     icon: Moon,
+        //     count: count.data?.snoozedIndustries,
+        //     component: () => <SnoozedIndustries baseFilter={baseFilter} />,
+        // },
+        // {
+        //     value: 'blocked-industries',
+        //     label: 'Blocked',
+        //     icon: ShieldAlert,
+        //     count: count.data?.blockedIndustries,
+        //     component: () => <BlockedIndustries baseFilter={baseFilter} />,
+        // },
+        // {
+        //     value: 'rejected-industries',
+        //     label: 'Rejected',
+        //     icon: UserMinus,
+        //     count: count.data?.rejectedIndustries,
+        //     component: () => <RejectedIndustries baseFilter={baseFilter} />,
+        // },
+        // {
+        //     value: 'archived-industries',
+        //     label: 'Archived',
+        //     icon: Archive,
+        //     count: count.data?.archivedIndustries,
+        //     component: () => <ArchivedIndustries baseFilter={baseFilter} />,
+        // },
     ]
 
     return (

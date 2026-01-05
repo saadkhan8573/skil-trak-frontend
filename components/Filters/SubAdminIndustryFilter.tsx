@@ -23,6 +23,11 @@ export const SubAdminIndustryFilter = ({
         value: course?.id,
         label: course?.title,
     }))
+    const { isLoading, data, isError } = CommonApi.Countries.useStatesList({
+        skip: 0,
+        limit: 20,
+    })
+
     const isPartnerOptions = [
         {
             label: 'Is Partner',
@@ -33,6 +38,12 @@ export const SubAdminIndustryFilter = ({
             value: false,
         },
     ]
+
+    const stateOptions = data?.data?.map((state: any) => ({
+        value: state?.id,
+        label: state?.name,
+    }))
+
     const coordinators = AdminApi.SubAdmins.useSubAdminsFilterList()
     const coordinatorsOptions = coordinators.data?.map((coordinator: any) => ({
         value: coordinator?.id,
@@ -50,6 +61,11 @@ export const SubAdminIndustryFilter = ({
         value: state?.name,
         label: state?.name,
     }))
+
+    const readinessOptions = [
+        { value: 'ready', label: 'Ready' },
+        { value: 'notReady', label: 'Not Ready' },
+    ]
 
     return (
         <>
@@ -97,7 +113,7 @@ export const SubAdminIndustryFilter = ({
                     }}
                     showError={false}
                 />
-                <Select
+                {/* <Select
                     label={'Is Partner'}
                     name={'isPartner'}
                     options={isPartnerOptions}
@@ -105,7 +121,7 @@ export const SubAdminIndustryFilter = ({
                         onFilterChange({ ...filter, isPartner: e?.value })
                     }
                     showError={false}
-                />
+                /> */}
                 <Select
                     label={'Premium Features'}
                     name={'feature'}
@@ -122,7 +138,7 @@ export const SubAdminIndustryFilter = ({
                     }}
                     showError={false}
                 />
-                <Select
+                {/* <Select
                     label={'Is Hiring'}
                     name={'isHiring'}
                     options={[
@@ -135,7 +151,7 @@ export const SubAdminIndustryFilter = ({
                         onFilterChange({ ...filter, isHiring: e?.value })
                     }
                     showError={false}
-                />
+                /> */}
                 <TextInput
                     label={'Address'}
                     name={'address'}
@@ -150,7 +166,7 @@ export const SubAdminIndustryFilter = ({
                 <Select
                     label={'State'}
                     name={'state'}
-                    options={stateCodes}
+                    options={stateOptions}
                     onlyValue
                     value={filter?.state}
                     placeholder={'Select State...'}
@@ -183,6 +199,22 @@ export const SubAdminIndustryFilter = ({
                     showError={false}
                 />
                 <Select
+                    name="placementReady"
+                    label="Placement Readiness"
+                    options={readinessOptions}
+                    value={readinessOptions.find(
+                        (opt) => opt.value === filter?.placementReady
+                    )}
+                    onChange={(option: any) =>
+                        onFilterChange({
+                            ...filter,
+                            placementReady: option?.value,
+                        })
+                    }
+                    placeholder="Readiness"
+                    showError={false}
+                />
+                {/* <Select
                     label={'Filter by Coordinator'}
                     name={'coordinator'}
                     options={coordinatorsOptions}
@@ -195,7 +227,7 @@ export const SubAdminIndustryFilter = ({
                     onChange={(e: any) =>
                         onFilterChange({ ...filter, subAdminId: e?.value })
                     }
-                />
+                /> */}
             </div>
         </>
     )

@@ -9,22 +9,20 @@ import { SubAdminApi } from '@queries'
 import { removeEmptyValues } from '@utils'
 import React, { useState } from 'react'
 import { UserStatus } from '@types'
-import { useSubAdminIndustryColumns } from './hooks/useSubAdminIndustryColumns'
+import { useSubAdminIndustryColumns } from '../hooks/useSubAdminIndustryColumns'
 
 interface YourPartnerIndustriesProps {
     baseFilter: any
 }
 
-export const StateWiseIndustries = () => {
+export const StateWiseIndustries = ({
+    baseFilter,
+}: YourPartnerIndustriesProps) => {
     const [page, setPage] = useState(1)
     const [itemPerPage, setItemPerPage] = useState(30)
 
     const industries = SubAdminApi.Industry.getAllStateWiseSubAdminIndustries({
-        search: JSON.stringify(
-            removeEmptyValues({
-                isPartner: true,
-            })
-        )
+        search: JSON.stringify(removeEmptyValues({ ...baseFilter }))
             .replaceAll('{', '')
             .replaceAll('}', '')
             .replaceAll('"', '')

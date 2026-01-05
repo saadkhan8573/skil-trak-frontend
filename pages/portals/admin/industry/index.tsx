@@ -46,6 +46,7 @@ const filterKeys = [
     'isSnoozed',
     'industryId',
     'feature',
+    'placementReady',
 ]
 
 const removeFilterKeysToUrl: any = []

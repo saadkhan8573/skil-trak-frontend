@@ -65,6 +65,11 @@ export const IndustryFilters = ({
         label: state?.name,
     }))
 
+    const readinessOptions = [
+        { value: 'ready', label: 'Ready' },
+        { value: 'notReady', label: 'Not Ready' },
+    ]
+
     return (
         <>
             <SetQueryFilters<AdminIndustryFormFilter> filter={updatedFilter} />
@@ -216,6 +221,23 @@ export const IndustryFilters = ({
                         Option: CourseSelectOption,
                     }}
                     formatOptionLabel={formatOptionLabel}
+                    showError={false}
+                />
+
+                <Select
+                    name="placementReady"
+                    label="Placement Readiness"
+                    options={readinessOptions}
+                    value={readinessOptions.find(
+                        (opt) => opt.value === filter?.placementReady
+                    )}
+                    onChange={(option: any) =>
+                        onFilterChange({
+                            ...filter,
+                            placementReady: option?.value,
+                        })
+                    }
+                    placeholder="Readiness"
                     showError={false}
                 />
 

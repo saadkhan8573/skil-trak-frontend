@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { EmptyTicket, TicketCard } from '../../components'
 import { CommonApi } from '@queries'
 import { useRouter } from 'next/router'
@@ -6,9 +6,12 @@ import { NoData, PageSize, Pagination } from '@components'
 import { TicketListSkeleton } from '../../skeleton'
 import { getUserCredentials } from '@utils'
 import { UserRoles } from '@constants'
+import { useSelectableList } from '../../hooks'
+import { useNotification } from '@hooks'
+import { SelectAllTicketsCheckbox } from './SelectAllTicketsCheckbox'
 
 export const AllTeamsTabs = () => {
-    const [itemPerPage, setItemPerPage] = useState(10)
+    const [itemPerPage, setItemPerPage] = useState(30)
     const [page, setPage] = useState(1)
     const router = useRouter()
     const tab = router.query.tab
@@ -18,6 +21,13 @@ export const AllTeamsTabs = () => {
         skip: itemPerPage * page - itemPerPage,
         limit: itemPerPage,
     })
+    const {
+        selectedIds: selectedTicketIds,
+        isAllSelected,
+        toggleSelectAll,
+        toggleSelectOne,
+        clearSelection,
+    } = useSelectableList(data?.data || [])
 
     const role = getUserCredentials()?.role
 
@@ -39,6 +49,13 @@ export const AllTeamsTabs = () => {
                             setPage={setPage}
                         />
                     </div>
+                    <SelectAllTicketsCheckbox
+                        isAllSelected={isAllSelected}
+                        toggleSelectAll={toggleSelectAll}
+                        selectedTicketIds={selectedTicketIds}
+                        data={data?.data}
+                        clearSelection={clearSelection}
+                    />
                     {data?.data?.map((ticket: any, index: number) => (
                         <div
                             key={ticket.id}
@@ -62,6 +79,10 @@ export const AllTeamsTabs = () => {
                                         )
                                     }
                                 }}
+                                isSelected={selectedTicketIds.includes(
+                                    ticket.id
+                                )}
+                                onSelect={toggleSelectOne}
                                 // onViewStudentProfile={setSelectedStudentId}
                                 // onViewIndustryProfile={setSelectedIndustryId}
                             />

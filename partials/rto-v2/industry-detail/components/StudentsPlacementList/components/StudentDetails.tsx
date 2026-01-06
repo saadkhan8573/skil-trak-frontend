@@ -91,31 +91,6 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
                     </div>
                 ))}
             </div>
-
-            {/* Quick Actions */}
-            <div className="mt-3 pt-3 border-t border-[#E2E8F0]">
-                <p className="text-[9px] font-medium text-[#64748B] mb-2 uppercase tracking-wide">
-                    Quick Actions Available:
-                </p>
-                <div className="flex items-center gap-1 flex-wrap">
-                    <button className="px-2 py-1 bg-white hover:bg-[#F8FAFB] border border-[#E2E8F0] text-[#64748B] rounded-md text-[10px] font-medium transition-all duration-300 flex items-center gap-1">
-                        <Pause className="w-2.5 h-2.5" />
-                        On Hold
-                    </button>
-                    <button className="px-2 py-1 bg-white hover:bg-[#FEE2E2] border border-[#E2E8F0] hover:border-[#DC2626]/20 text-[#DC2626] rounded-md text-[10px] font-medium transition-all duration-300 flex items-center gap-1">
-                        <XCircle className="w-2.5 h-2.5" />
-                        Cancelled
-                    </button>
-                    <button className="px-2 py-1 bg-white hover:bg-[#FEE2E2] border border-[#E2E8F0] hover:border-[#DC2626]/20 text-[#DC2626] rounded-md text-[10px] font-medium transition-all duration-300 flex items-center gap-1">
-                        <AlertTriangle className="w-2.5 h-2.5" />
-                        Terminated
-                    </button>
-                    <button className="px-2 py-1 bg-gradient-to-br from-[#044866] to-[#0D5468] hover:shadow-lg text-white rounded-md text-[10px] font-medium transition-all duration-300 flex items-center gap-1">
-                        <Calendar className="w-2.5 h-2.5" />
-                        Extension
-                    </button>
-                </div>
-            </div>
         </div>
     )
 }

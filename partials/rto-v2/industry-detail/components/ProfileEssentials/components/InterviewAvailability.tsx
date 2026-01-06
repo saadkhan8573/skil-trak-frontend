@@ -14,6 +14,7 @@ import { useNotification } from '@hooks/useNotification'
 import { useAppSelector } from '@redux/hooks'
 import { AdminApi } from '@queries'
 import { UserStatus } from '@types'
+import moment from 'moment'
 
 export function InterviewAvailability() {
     const [createAvailability, createAvailabilityResult] =
@@ -87,6 +88,10 @@ export function InterviewAvailability() {
             // )
 
             if (type === 'weekly' && slots) {
+                setMonthlyData({
+                    dates: [],
+                    slots: [{ startTime: '09:00', endTime: '17:00' }],
+                })
                 setWeeklySchedule((prev) =>
                     prev.map((day) => {
                         const daySlots = slots.filter((s) => s.day === day.day)
@@ -107,8 +112,39 @@ export function InterviewAvailability() {
                     })
                 )
             } else if (type === 'monthly' && dates) {
+                setWeeklySchedule([
+                    {
+                        day: 'monday',
+                        isActive: false,
+                        slots: [{ startTime: '09:00', endTime: '17:00' }],
+                    },
+                    {
+                        day: 'tuesday',
+                        isActive: false,
+                        slots: [{ startTime: '09:00', endTime: '17:00' }],
+                    },
+                    {
+                        day: 'wednesday',
+                        isActive: false,
+                        slots: [{ startTime: '09:00', endTime: '17:00' }],
+                    },
+                    {
+                        day: 'thursday',
+                        isActive: false,
+                        slots: [{ startTime: '09:00', endTime: '17:00' }],
+                    },
+                    {
+                        day: 'friday',
+                        isActive: false,
+                        slots: [{ startTime: '09:00', endTime: '17:00' }],
+                    },
+                    { day: 'saturday', isActive: false, slots: [] },
+                    { day: 'sunday', isActive: false, slots: [] },
+                ])
                 setMonthlyData((prev) => ({
-                    dates: dates.map((d: any) => ({ date: d.date })),
+                    dates: dates.map((d: any) => ({
+                        date: moment(d.date).format('YYYY-MM-DD'),
+                    })),
                     slots:
                         slots && slots.length > 0
                             ? slots.map((s: any) => ({

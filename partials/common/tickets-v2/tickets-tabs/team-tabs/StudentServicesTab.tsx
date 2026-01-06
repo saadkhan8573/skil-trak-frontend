@@ -6,6 +6,8 @@ import { CommonApi } from '@queries'
 import { TicketListSkeleton } from '../../skeleton'
 import { getUserCredentials } from '@utils'
 import { UserRoles } from '@constants'
+import { useSelectableList } from '../../hooks'
+import { SelectAllTicketsCheckbox } from './SelectAllTicketsCheckbox'
 
 export const StudentServicesTab = () => {
     const [itemPerPage, setItemPerPage] = useState(10)
@@ -25,6 +27,13 @@ export const StudentServicesTab = () => {
         skip: itemPerPage * page - itemPerPage,
         limit: itemPerPage,
     })
+    const {
+        selectedIds: selectedTicketIds,
+        isAllSelected,
+        toggleSelectAll,
+        toggleSelectOne,
+        clearSelection,
+    } = useSelectableList(data?.data || [])
 
     const role = getUserCredentials()?.role
 
@@ -35,14 +44,23 @@ export const StudentServicesTab = () => {
                 <TicketListSkeleton />
             ) : data?.data?.length > 0 ? (
                 <>
-                    <PageSize
-                        itemPerPage={itemPerPage}
-                        setItemPerPage={setItemPerPage}
-                        records={data?.data?.length}
-                    />
-                    <Pagination
-                        pagination={data?.pagination}
-                        setPage={setPage}
+                    <div className="flex justify-between items-center">
+                        <PageSize
+                            itemPerPage={itemPerPage}
+                            setItemPerPage={setItemPerPage}
+                            records={data?.data?.length}
+                        />
+                        <Pagination
+                            pagination={data?.pagination}
+                            setPage={setPage}
+                        />
+                    </div>
+                    <SelectAllTicketsCheckbox
+                        isAllSelected={isAllSelected}
+                        toggleSelectAll={toggleSelectAll}
+                        selectedTicketIds={selectedTicketIds}
+                        data={data?.data}
+                        clearSelection={clearSelection}
                     />
                     {data?.data?.map((ticket: any, index: number) => (
                         <div
@@ -67,8 +85,10 @@ export const StudentServicesTab = () => {
                                         )
                                     }
                                 }}
-                                // onViewStudentProfile={setSelectedStudentId}
-                                // onViewIndustryProfile={setSelectedIndustryId}
+                                isSelected={selectedTicketIds.includes(
+                                    ticket.id
+                                )}
+                                onSelect={toggleSelectOne}
                             />
                         </div>
                     ))}

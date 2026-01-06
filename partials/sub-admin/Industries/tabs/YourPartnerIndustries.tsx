@@ -21,10 +21,11 @@ export const YourPartnerIndustries: React.FC<YourPartnerIndustriesProps> = ({
     const [page, setPage] = useState(1)
     const [itemPerPage, setItemPerPage] = useState(30)
 
-    const industries = SubAdminApi.Industry.useGetAllSubAdminIndustriesList({
+    const industries = SubAdminApi.Industry.getAllStateWiseSubAdminIndustries({
         search: JSON.stringify(
             removeEmptyValues({
                 ...baseFilter,
+                status: UserStatus.Approved,
                 isPartner: true,
             })
         )
@@ -40,11 +41,10 @@ export const YourPartnerIndustries: React.FC<YourPartnerIndustriesProps> = ({
     const { columns } = getTableConfig({
         columnKeys: [
             'name',
-            'abn',
-            'students',
             'contactPerson',
             'profileCompletionPercentage',
             'createdAt',
+            'favouriteBy',
             'action',
         ],
     })

@@ -21,8 +21,10 @@ export const RejectedIndustries: React.FC<RejectedIndustriesProps> = ({
     const [page, setPage] = useState(1)
     const [itemPerPage, setItemPerPage] = useState(30)
 
-    const industries = SubAdminApi.Industry.useGetAllSubAdminIndustriesList({
-        search: JSON.stringify(removeEmptyValues({ ...baseFilter, status: UserStatus.Rejected }))
+    const industries = SubAdminApi.Industry.getAllStateWiseSubAdminIndustries({
+        search: JSON.stringify(
+            removeEmptyValues({ ...baseFilter, status: UserStatus.Rejected })
+        )
             .replaceAll('{', '')
             .replaceAll('}', '')
             .replaceAll('"', '')
@@ -33,7 +35,13 @@ export const RejectedIndustries: React.FC<RejectedIndustriesProps> = ({
 
     const { getTableConfig, modal } = useSubAdminIndustryColumns()
     const { columns } = getTableConfig({
-        columnKeys: ['name', 'abn', 'students', 'contactPerson', 'favouriteBy', 'createdAt', 'action'],
+        columnKeys: [
+            'name',
+            'contactPerson',
+            'favouriteBy',
+            'createdAt',
+            'action',
+        ],
     })
 
     return (

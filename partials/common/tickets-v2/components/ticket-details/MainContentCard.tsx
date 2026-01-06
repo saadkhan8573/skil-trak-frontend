@@ -34,32 +34,35 @@ export const MainContentCard = ({ ticket }: any) => {
             })
         }
     }, [addNoteResult.isSuccess])
+
     return (
         <>
             <ShowErrorNotifications result={addNoteResult} />
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="">
                 {/* Left Column - Main Content */}
-                <div className="lg:col-span-2 space-y-4">
+                <div className=" space-y-4">
                     {/* resolution */}
-                    <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-5">
-                        <h3 className="text-[#044866] mb-3 flex items-center gap-2">
-                            <MessageSquare className="w-4 h-4 text-[#F7A619]" />
-                            Resolution Note
-                        </h3>
-                        <div className="bg-gradient-to-br from-[#044866]/5 via-[#0D5468]/5 to-[#F7A619]/5 rounded-lg p-4 border border-[#044866]/10">
-                            <p className="text-[#044866] leading-relaxed">
-                                {ticket?.resolution ?? 'NA'}
-                            </p>
+                    {ticket?.resolution && (
+                        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-5">
+                            <h3 className="text-[#044866] text-sm mb-3 flex items-center gap-2">
+                                <MessageSquare className="size-4 text-[#F7A619]" />
+                                Resolution Note
+                            </h3>
+                            <div className="bg-gradient-to-br from-[#044866]/5 via-[#0D5468]/5 to-[#F7A619]/5 rounded-lg p-4 border border-[#044866]/10">
+                                <p className="text-[#044866] text-xs leading-relaxed">
+                                    {ticket?.resolution ?? 'NA'}
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    )}
                     {/* Description Card */}
                     <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-5">
-                        <h3 className="text-[#044866] mb-3 flex items-center gap-2">
-                            <MessageSquare className="w-4 h-4 text-[#F7A619]" />
+                        <h3 className="text-[#044866] text-sm mb-3 flex items-center gap-2">
+                            <MessageSquare className="size-3 text-[#F7A619]" />
                             Description
                         </h3>
                         <div className="bg-gradient-to-br from-[#044866]/5 via-[#0D5468]/5 to-[#F7A619]/5 rounded-lg p-4 border border-[#044866]/10">
-                            <p className="text-[#044866] leading-relaxed">
+                            <p className="text-[#044866] leading-relaxed text-xs">
                                 {ticket?.description}
                             </p>
                         </div>
@@ -110,7 +113,8 @@ export const MainContentCard = ({ ticket }: any) => {
                                                     <User className="w-3 h-3 text-white" />
                                                 </div>
                                                 <span className="text-xs text-[#044866]">
-                                                    {note?.createdBy}
+                                                    {note?.addedBy?.name ??
+                                                        '---'}
                                                 </span>
                                             </div>
                                             <span className="text-xs text-[#0D5468]/60">
@@ -119,7 +123,7 @@ export const MainContentCard = ({ ticket }: any) => {
                                                 ).toLocaleString()}
                                             </span>
                                         </div>
-                                        <p className="text-sm text-[#0D5468] leading-relaxed">
+                                        <p className="text-xs text-[#0D5468] leading-relaxed">
                                             {note?.note}
                                         </p>
                                     </div>

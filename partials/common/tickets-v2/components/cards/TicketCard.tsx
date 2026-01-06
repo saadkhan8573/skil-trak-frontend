@@ -1,12 +1,20 @@
 import { Clock, User, ArrowRight, Building2, ExternalLink } from 'lucide-react'
 import { memo } from 'react'
 import { Ticket } from './types'
+import { Select } from '@components'
+import { getDetailedTimeStuck, getProfileUrl } from '../ticket-details/helper'
+import { TicketAssigneeSelector } from '../TicketAssigneeSelector'
+import { getUserCredentials } from '@utils'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 interface TicketCardProps {
     ticket: Ticket
     onClick: () => void
     onViewStudentProfile?: (studentId: string) => void
     onViewIndustryProfile?: (industryId: string) => void
+    isSelected: boolean
+    onSelect: (ticketId: number, checked: boolean) => void
 }
 
 const priorityStyles: any = {
@@ -49,6 +57,8 @@ const TicketCardComponent = ({
     onClick,
     onViewStudentProfile,
     onViewIndustryProfile,
+    onSelect,
+    isSelected,
 }: TicketCardProps) => {
     const timeAgo = getTimeAgo(ticket?.createdAt)
 
@@ -85,6 +95,18 @@ const TicketCardComponent = ({
             console.log('profile view')
         }
     }
+    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.stopPropagation()
+        onSelect(ticket.id, e.target.checked)
+    }
+    const router = useRouter()
+    const role = getUserCredentials().role
+    const profileUrl = getProfileUrl({
+        role,
+        origin: ticket?.origin,
+        studentId: ticket?.user?.student?.id,
+        industryId: ticket?.user?.industry?.id,
+    })
 
     return (
         <div
@@ -119,6 +141,20 @@ const TicketCardComponent = ({
 
             {/* Single Line Layout */}
             <div className="relative z-10 flex items-center gap-4">
+                <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={handleCheckboxChange}
+                    onClick={(e) => e.stopPropagation()}
+                    className="h-4 w-4 accent-[#044866]"
+                />
+
+                {/* Status Dot */}
+                <div
+                    className={`w-2 h-2 rounded-full ${
+                        statusColors[ticket.status]
+                    }`}
+                />
                 {/* Status Dot */}
                 <div className="relative flex-shrink-0">
                     <div
@@ -133,14 +169,14 @@ const TicketCardComponent = ({
 
                 {/* Ticket ID */}
                 <span className="text-[#044866] text-xs w-20 flex-shrink-0">
-                    {ticket?.id}
+                    TKT-{ticket?.id}
                 </span>
 
                 {/* Badges */}
                 <div className="flex items-center gap-1.5 flex-shrink-0">
                     {isOverTwoDays && (
                         <span className="px-2 py-0.5 bg-red-500 text-white rounded text-[10px] animate-pulse">
-                            !2+ Days
+                            {getDetailedTimeStuck(ticket?.createdAt)}
                         </span>
                     )}
                     <span
@@ -163,8 +199,9 @@ const TicketCardComponent = ({
 
                 {/* Student/Industry Info - conditionally render based on team */}
                 {ticket?.origin === 'INDUSTRY' ? (
-                    <button
-                        onClick={handleProfileClick}
+                    <Link
+                        href={profileUrl}
+                        onClick={(e) => e.stopPropagation()}
                         className="flex items-center gap-2 w-36 flex-shrink-0 hover:bg-[#F7A619]/5 rounded px-1 -mx-1 py-0.5 transition-colors group/profile"
                         title="View industry profile"
                     >
@@ -180,12 +217,13 @@ const TicketCardComponent = ({
                                 {ticket.industryType || ticket.studentId}
                             </div>
                         </div>
-                    </button>
+                    </Link>
                 ) : (
-                    <button
-                        onClick={handleProfileClick}
+                    <Link
+                        href={profileUrl}
                         className="flex items-center gap-2 w-36 flex-shrink-0 hover:bg-[#044866]/5 rounded px-1 -mx-1 py-0.5 transition-colors group/profile"
                         title="View student profile"
+                        onClick={(e) => e.stopPropagation()}
                     >
                         <div className="w-5 h-5 bg-[#044866] rounded-full flex items-center justify-center">
                             <User className="w-2.5 h-2.5 text-white" />
@@ -199,13 +237,13 @@ const TicketCardComponent = ({
                                 {ticket.studentId}
                             </div> */}
                         </div>
-                    </button>
+                    </Link>
                 )}
 
                 {/* Time */}
                 <div className="flex items-center gap-1 text-[10px] text-[#0D5468]/70 w-16 flex-shrink-0">
                     <Clock className="w-3 h-3" />
-                    <span>{timeAgo}</span>
+                    <span>{getDetailedTimeStuck(ticket?.createdAt)}</span>
                 </div>
 
                 {/* Team */}

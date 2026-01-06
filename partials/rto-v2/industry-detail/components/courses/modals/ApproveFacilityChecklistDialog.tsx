@@ -1,4 +1,8 @@
-import { Button, ShowErrorNotifications } from '@components'
+import {
+    Button,
+    ShowErrorNotifications,
+    useShowErrorNotification,
+} from '@components'
 import {
     Dialog,
     DialogContent,
@@ -35,6 +39,8 @@ export function ApproveFacilityChecklistDialog({
 
     const { notification } = useNotification()
 
+    const showErrorNotifications = useShowErrorNotification()
+
     const industryDetail = useAppSelector(
         (state) => state.industry.industryDetail
     )
@@ -45,24 +51,54 @@ export function ApproveFacilityChecklistDialog({
     const [triggerGetPrograms, getProgramsResult] =
         AdminApi.Industries.useLazyIndustryCourseProgramsListQuery()
 
+    const [triggerGetCoursePrograms, getCourseProgramsResult] =
+        AdminApi.Courses.useLazyCourseProgramListQuery()
+
     const [changeCourseApprovalStatus, changeCourseApprovalStatusResult] =
         RtoV2Api.Industries.statusChangeCourseFacilityChecklist()
 
     const approveCourse = async () => {
-        const res: any = await changeCourseApprovalStatus({
-            id: approval.id,
-            status: 'approved',
-        })
-        if (res?.data) {
+        try {
+            const res: any = await changeCourseApprovalStatus({
+                id: approval.id,
+                status: 'approved',
+            })
+            if (res?.error) {
+                showErrorNotifications({ isError: true, ...res })
+                return
+            }
+            if (res?.data) {
+                notification.success({
+                    title: 'Course Approved',
+                    description: 'Course Approved Successfully!',
+                })
+                onOpenChange(false)
+            }
+        } catch (error) {
+            console.log({ error })
             notification.success({
                 title: 'Course Approved',
                 description: 'Course Approved Successfully!',
             })
-            onOpenChange(false)
+            console.error('Approval Error:', error)
         }
     }
 
     const checkStreams = async () => {
+        // First check if the course has any programs defined globally
+        const courseRes: any = await triggerGetCoursePrograms({
+            id: approval?.course?.id,
+            limit: 100,
+            skip: 0,
+        })
+
+        // If course has no programs defined, skip the industry program check
+        if (!courseRes?.data?.data?.length) {
+            await approveCourse()
+            return
+        }
+
+        // If course has programs, check if industry has added at least one
         const programsRes: any = await triggerGetPrograms({
             courseId: approval?.course?.id,
             industryId: approval?.industry?.id || industryDetail?.id!,
@@ -107,16 +143,20 @@ export function ApproveFacilityChecklistDialog({
     }
 
     const handleReject = async () => {
-        const res: any = await changeCourseApprovalStatus({
-            id: approval.id,
-            status: 'rejected',
-        })
-        if (res?.data) {
-            notification.success({
-                title: 'Status Changed',
-                description: 'Status Changed Successfully to Rejected!',
+        try {
+            const res: any = await changeCourseApprovalStatus({
+                id: approval.id,
+                status: 'rejected',
             })
-            onOpenChange(false)
+            if (res?.data) {
+                notification.success({
+                    title: 'Status Changed',
+                    description: 'Status Changed Successfully to Rejected!',
+                })
+                onOpenChange(false)
+            }
+        } catch (error) {
+            console.error('Rejection Error:', error)
         }
     }
 
@@ -203,14 +243,17 @@ export function ApproveFacilityChecklistDialog({
                                 loading={
                                     changeCourseApprovalStatusResult.isLoading ||
                                     getSupervisorsResult.isLoading ||
-                                    getProgramsResult.isLoading
+                                    getProgramsResult.isLoading ||
+                                    getCourseProgramsResult.isLoading
                                 }
                                 disabled={
                                     changeCourseApprovalStatusResult.isLoading ||
                                     getSupervisorsResult.isLoading ||
                                     getProgramsResult.isLoading ||
+                                    getCourseProgramsResult.isLoading ||
                                     getSupervisorsResult.isFetching ||
-                                    getProgramsResult.isFetching
+                                    getProgramsResult.isFetching ||
+                                    getCourseProgramsResult.isFetching
                                 }
                                 className="flex-1 bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#059669] hover:to-[#047857] text-white gap-2 h-10"
                             >
@@ -246,7 +289,9 @@ export function ApproveFacilityChecklistDialog({
                     {addingStreamFor && (
                         <AddIndustryProgramModal
                             approval={approval}
-                            industry={(approval?.industry || industryDetail) as any}
+                            industry={
+                                (approval?.industry || industryDetail) as any
+                            }
                             onCancel={() => setAddingStreamFor(false)}
                             onSuccess={() => {
                                 setAddingStreamFor(false)

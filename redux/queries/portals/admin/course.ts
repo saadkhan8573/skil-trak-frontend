@@ -125,4 +125,14 @@ export const courseEndpoints = (
         }),
         providesTags: ['Courses'],
     }),
+
+    
+
+    deleteHighlightedTask: builder.mutation<Course, number>({
+        query: (id) => ({
+            url: `${PREFIX}/course/task/${id}/remove`,
+            method: 'DELETE',
+        }),
+        invalidatesTags: ['Courses'],
+    }),
 })

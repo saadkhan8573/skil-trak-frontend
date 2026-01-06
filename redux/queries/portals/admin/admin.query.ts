@@ -298,11 +298,13 @@ const {
     useCourseRemoveMutation,
     useSelectedWpTypesQuery,
     useCourseProgramListQuery,
+    useLazyCourseProgramListQuery,
     useAddCourseProgramMutation,
     useAddWpTypesToCourseMutation,
     useUpdateCourseProgramMutation,
     useRemoveWpTypesFromCourseMutation,
     useCourseToggleSupersedeMutation,
+    useDeleteHighlightedTaskMutation,
 
     // ------ WP-TYPES ------ //
     useWpTypesQuery,
@@ -771,11 +773,13 @@ export const AdminApi = {
         useUpdateMutation: useCourseUpdateMutation,
         useRemoveMutation: useCourseRemoveMutation,
         courseProgramList: useCourseProgramListQuery,
+        useLazyCourseProgramListQuery: useLazyCourseProgramListQuery,
         addCourseProgram: useAddCourseProgramMutation,
         addWpTypesToCourse: useAddWpTypesToCourseMutation,
         updateCourseProgram: useUpdateCourseProgramMutation,
         removeWpTypesFromCourse: useRemoveWpTypesFromCourseMutation,
         useCourseToggleSupersede: useCourseToggleSupersedeMutation,
+        useDeleteHighlightedTask: useDeleteHighlightedTaskMutation,
     },
 
     WpTypes: {

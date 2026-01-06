@@ -3,6 +3,7 @@ import { useNotification } from '@hooks'
 import { CommonApi } from '@queries'
 import { Activity, AlertTriangle, CheckCircle, Clock } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { TicketAssigneeSelector } from '../TicketAssigneeSelector'
 const statusOptions = [
     { value: 'open', label: 'Open', color: 'bg-red-500', icon: AlertTriangle },
     {
@@ -81,12 +82,11 @@ export const QuickActionsBar = ({ ticket }: any) => {
                     </span>
 
                     {/* Status Dropdown */}
-                    {/* <Select
-                        name="status"
-                        options={statusOptions}
-                        placeholder="Select status"
-                        showError={false}
-                    /> */}
+                    <TicketAssigneeSelector
+                        taskId={ticket?.id}
+                        teamId={ticket?.supportTeam?.id}
+                        member={ticket?.assignedTo}
+                    />
                     {/* Priority Dropdown */}
                     <Select
                         name="priority"
@@ -101,7 +101,7 @@ export const QuickActionsBar = ({ ticket }: any) => {
                         loading={updatePriorityResult.isLoading}
                     />
                     {/* Resolve Button */}
-                    {ticket?.status !== 'resolved' && (
+                    {!ticket?.resolution && (
                         <button
                             onClick={() => {
                                 setShowResolveForm(!showResolveForm)

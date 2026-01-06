@@ -6,6 +6,8 @@ import { NoData, PageSize, Pagination } from '@components'
 import { TicketListSkeleton } from '../../skeleton'
 import { getUserCredentials } from '@utils'
 import { UserRoles } from '@constants'
+import { useSelectableList } from '../../hooks'
+import { SelectAllTicketsCheckbox } from './SelectAllTicketsCheckbox'
 
 export const RtoTeamTab = () => {
     const [itemPerPage, setItemPerPage] = useState(10)
@@ -25,7 +27,13 @@ export const RtoTeamTab = () => {
         skip: itemPerPage * page - itemPerPage,
         limit: itemPerPage,
     })
-
+    const {
+        selectedIds: selectedTicketIds,
+        isAllSelected,
+        toggleSelectAll,
+        toggleSelectOne,
+        clearSelection,
+    } = useSelectableList(data?.data || [])
     const role = getUserCredentials()?.role
 
     return (
@@ -43,6 +51,13 @@ export const RtoTeamTab = () => {
                     <Pagination
                         pagination={data?.pagination}
                         setPage={setPage}
+                    />
+                    <SelectAllTicketsCheckbox
+                        isAllSelected={isAllSelected}
+                        toggleSelectAll={toggleSelectAll}
+                        selectedTicketIds={selectedTicketIds}
+                        data={data?.data}
+                        clearSelection={clearSelection}
                     />
                     {data?.data?.map((ticket: any, index: number) => (
                         <div
@@ -67,6 +82,10 @@ export const RtoTeamTab = () => {
                                         )
                                     }
                                 }}
+                                isSelected={selectedTicketIds.includes(
+                                    ticket.id
+                                )}
+                                onSelect={toggleSelectOne}
                                 // onViewStudentProfile={setSelectedStudentId}
                                 // onViewIndustryProfile={setSelectedIndustryId}
                             />

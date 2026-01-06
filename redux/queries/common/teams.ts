@@ -27,6 +27,12 @@ export const teamsEndpoints = (
         }),
         providesTags: ['Team'],
     }),
+    getSupportTeamMembersByTeam: builder.query<any, any>({
+        query: (id) => ({
+            url: `${PREFIX}-team/${id}/list-members`,
+        }),
+        providesTags: ['Team'],
+    }),
     // support-team/members/filter-options
     getSupportTeamMemberList: builder.query<any, void>({
         query: () => ({
@@ -71,6 +77,23 @@ export const teamsEndpoints = (
         query: (body) => ({
             url: `${PREFIX}-team`,
             method: 'POST',
+            body,
+        }),
+        invalidatesTags: ['Team'],
+    }),
+    // support-task/id/coordinator/id/update
+    changeSupportTicketAssignee: builder.mutation<any, any>({
+        query: ({ coordId, taskId }) => ({
+            url: `${PREFIX}-task/${taskId}/coordinator/${coordId}/update`,
+            method: 'PATCH',
+        }),
+        invalidatesTags: ['Team'],
+    }),
+    // support-task/delete-multiple/by-ids
+    bulkDeleteSupportTickets: builder.mutation<any, any>({
+        query: (body) => ({
+            url: `${PREFIX}-task/delete-multiple/by-ids`,
+            method: 'DELETE',
             body,
         }),
         invalidatesTags: ['Team'],

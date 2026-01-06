@@ -6,6 +6,8 @@ import { NoData, PageSize, Pagination } from '@components'
 import { TicketListSkeleton } from '../../skeleton'
 import { UserRoles } from '@constants'
 import { getUserCredentials } from '@utils'
+import { useSelectableList } from '../../hooks'
+import { SelectAllTicketsCheckbox } from './SelectAllTicketsCheckbox'
 
 export const QATeamTab = () => {
     const [itemPerPage, setItemPerPage] = useState(10)
@@ -25,6 +27,13 @@ export const QATeamTab = () => {
         skip: itemPerPage * page - itemPerPage,
         limit: itemPerPage,
     })
+    const {
+        selectedIds: selectedTicketIds,
+        isAllSelected,
+        toggleSelectAll,
+        toggleSelectOne,
+        clearSelection,
+    } = useSelectableList(data?.data || [])
 
     const role = getUserCredentials()?.role
 
@@ -35,14 +44,23 @@ export const QATeamTab = () => {
                 <TicketListSkeleton />
             ) : data?.data?.length > 0 ? (
                 <>
-                    <PageSize
-                        itemPerPage={itemPerPage}
-                        setItemPerPage={setItemPerPage}
-                        records={data?.data?.length}
-                    />
-                    <Pagination
-                        pagination={data?.pagination}
-                        setPage={setPage}
+                    <div className="flex justify-between">
+                        <PageSize
+                            itemPerPage={itemPerPage}
+                            setItemPerPage={setItemPerPage}
+                            records={data?.data?.length}
+                        />
+                        <Pagination
+                            pagination={data?.pagination}
+                            setPage={setPage}
+                        />
+                    </div>
+                    <SelectAllTicketsCheckbox
+                        isAllSelected={isAllSelected}
+                        toggleSelectAll={toggleSelectAll}
+                        selectedTicketIds={selectedTicketIds}
+                        data={data?.data}
+                        clearSelection={clearSelection}
                     />
                     {data?.data?.map((ticket: any, index: number) => (
                         <div
@@ -67,6 +85,10 @@ export const QATeamTab = () => {
                                         )
                                     }
                                 }}
+                                isSelected={selectedTicketIds.includes(
+                                    ticket.id
+                                )}
+                                onSelect={toggleSelectOne}
                                 // onViewStudentProfile={setSelectedStudentId}
                                 // onViewIndustryProfile={setSelectedIndustryId}
                             />

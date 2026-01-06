@@ -166,7 +166,7 @@ export const useSubAdminIndustryColumns = () => {
                                         {userName}
                                     </div>
                                 ) : (
-                                    <span className="text-gray-400">—</span>
+                                    <span className="text-gray-800">---</span>
                                 )}
                             </div>
                         )

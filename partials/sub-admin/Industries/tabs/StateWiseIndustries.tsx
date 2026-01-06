@@ -41,6 +41,7 @@ export const StateWiseIndustries = ({
             'contactPerson',
             'profileCompletionPercentage',
             'createdAt',
+            'favouriteBy',
             'action',
         ],
     })

@@ -28,7 +28,6 @@ const sectorStatusColorMap: Record<string, string> = {
 import { setIndustrySupervisors } from '@redux'
 import { useAppDispatch, useAppSelector } from '@redux/hooks'
 import { cn } from '@utils'
-import { CourseViewModel } from './courseCard/CourseCard'
 import { IndustrySectorGroup } from './hooks'
 
 interface SectorCardProps {

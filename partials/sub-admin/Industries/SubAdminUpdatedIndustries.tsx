@@ -102,11 +102,11 @@ export const SubAdminUpdatedIndustries = () => {
             component: BlockedIndustries,
         },
         {
-            value: 'rejected-industries',
-            label: 'Rejected Industries',
+            value: 'snoozed-industries',
+            label: 'Snoozed Industries',
             icon: Building2,
             // count: count.data?.nonPartnerIndustries,
-            component: RejectedIndustries,
+            component: SnoozedIndustries,
         },
         {
             value: 'pending-course-approval',

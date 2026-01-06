@@ -13,8 +13,10 @@ import { AdminApi } from '@queries'
 import { Course, OptionType, Sector } from '@types'
 import { isBrowser } from '@utils'
 import React, { useEffect, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm, useFieldArray } from 'react-hook-form'
 import * as yup from 'yup'
+import { MdAdd, MdDelete } from 'react-icons/md'
+import { HighlightedTasksField } from './components/HighlightedTasksField'
 
 interface CourseFormProps {
     result: any
@@ -42,8 +44,26 @@ export const CourseForm = ({
     const [level, setLevel] = useState<number | null>(null)
 
     useEffect(() => {
-        if (initialValues?.level && !level) {
-            setLevel(initialValues?.level)
+        if (initialValues) {
+            if (!level) {
+                setLevel(initialValues?.level)
+            }
+            methods.reset({
+                ...initialValues,
+                requirements: htmlToDraftText(
+                    initialValues?.requirements as string
+                ),
+                sector: initialValues?.sector?.id,
+                highlightedTasks:
+                    initialValues?.highlightedTasks &&
+                    initialValues.highlightedTasks.length > 0
+                        ? initialValues.highlightedTasks?.map((task: any) => ({
+                              id: task.id,
+                              statement: task.statement,
+                              taskId: task.id,
+                          }))
+                        : [{ statement: '' }],
+            })
         }
     }, [initialValues])
 
@@ -53,6 +73,11 @@ export const CourseForm = ({
         hours: yup.number().required('Hours are required'),
         level: yup.number().required('Level is required'),
         sector: yup.number().required('Sector are required'),
+        highlightedTasks: yup.array().of(
+            yup.object({
+                statement: yup.string().required('Task statement is required'),
+            })
+        ),
     })
 
     const methods = useForm({
@@ -63,6 +88,9 @@ export const CourseForm = ({
                 initialValues?.requirements as string
             ),
             sector: initialValues?.sector?.id,
+            highlightedTasks: initialValues?.highlightedTasks || [
+                { statement: '' },
+            ],
         },
         mode: 'all',
     })
@@ -228,6 +256,8 @@ export const CourseForm = ({
                             rows={6}
                         />
                     </div>
+
+                    <HighlightedTasksField />
 
                     <div>
                         <Button

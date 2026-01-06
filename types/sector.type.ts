@@ -43,6 +43,11 @@ export interface CourseInfo extends BaseResponse {
     info: string
 }
 
+export interface IndustryHighlightedTasks extends BaseResponse {
+    id: number
+    isConfirmed: boolean
+}
+
 export interface IndustryCourseApproval extends BaseResponse {
     id: number
     status: 'pending' | 'approved' | 'rejected'
@@ -83,6 +88,8 @@ export interface Course extends BaseResponse {
     workplaceTypes: WorkplaceTypes[]
     courseInfo: CourseInfo[]
     approvals: IndustryCourseApproval[]
+    highlightedTasks?: { id?: number; statement: string }[]
+    industryHighlightedTasks: IndustryHighlightedTasks[]
 }
 
 export interface Sector extends BaseResponse {

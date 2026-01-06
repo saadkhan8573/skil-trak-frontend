@@ -43,24 +43,44 @@ export function ApproveRejectConfirmationModal({
     const [triggerGetPrograms, getProgramsResult] =
         AdminApi.Industries.useLazyIndustryCourseProgramsListQuery()
 
+    const [triggerGetCoursePrograms, getCourseProgramsResult] =
+        AdminApi.Courses.useLazyCourseProgramListQuery()
+
     const [changeCourseApprovalStatus, changeCourseApprovalStatusResult] =
         RtoV2Api.Industries.statusChangeCourseFacilityChecklist()
 
     const approveCourse = async () => {
-        const res: any = await changeCourseApprovalStatus({
-            id: approval.id,
-            status: 'approved',
-        })
-        if (res?.data) {
-            notification.success({
-                title: 'Status Changed',
-                description: 'Status Changed Successfully to Approved!',
+        try {
+            const res: any = await changeCourseApprovalStatus({
+                id: approval.id,
+                status: 'approved',
             })
-            onOpenChange(false)
+            if (res?.data) {
+                notification.success({
+                    title: 'Status Changed',
+                    description: 'Status Changed Successfully to Approved!',
+                })
+                onOpenChange(false)
+            }
+        } catch (error) {
+            console.error('Approval Error:', error)
         }
     }
 
     const checkStreams = async () => {
+        // First check if the course has any programs defined globally
+        const courseRes: any = await triggerGetCoursePrograms({
+            id: approval?.course?.id,
+            limit: 100,
+            skip: 0,
+        })
+
+        // If course has no programs defined, skip the industry program check
+        if (!courseRes?.data?.data?.length) {
+            await approveCourse()
+            return
+        }
+
         const programsRes: any = await triggerGetPrograms({
             courseId: approval?.course?.id,
             industryId: approval?.industry?.id || industryDetail?.id!,
@@ -84,16 +104,20 @@ export function ApproveRejectConfirmationModal({
 
     const handleConfirm = async () => {
         if (action === 'rejected') {
-            const res: any = await changeCourseApprovalStatus({
-                id: approval.id,
-                status: 'rejected',
-            })
-            if (res?.data) {
-                notification.success({
-                    title: 'Status Changed',
-                    description: 'Status Changed Successfully to Rejected!',
+            try {
+                const res: any = await changeCourseApprovalStatus({
+                    id: approval.id,
+                    status: 'rejected',
                 })
-                onOpenChange(false)
+                if (res?.data) {
+                    notification.success({
+                        title: 'Status Changed',
+                        description: 'Status Changed Successfully to Rejected!',
+                    })
+                    onOpenChange(false)
+                }
+            } catch (error) {
+                console.error('Rejection Error:', error)
             }
             return
         }
@@ -155,15 +179,18 @@ export function ApproveRejectConfirmationModal({
                                 changeCourseApprovalStatusResult.isLoading ||
                                 (action === 'approved' &&
                                     (getSupervisorsResult.isLoading ||
-                                        getProgramsResult.isLoading))
+                                        getProgramsResult.isLoading ||
+                                        getCourseProgramsResult.isLoading))
                             }
                             disabled={
                                 changeCourseApprovalStatusResult.isLoading ||
                                 (action === 'approved' &&
                                     (getSupervisorsResult.isLoading ||
                                         getProgramsResult.isLoading ||
+                                        getCourseProgramsResult.isLoading ||
                                         getSupervisorsResult.isFetching ||
-                                        getProgramsResult.isFetching))
+                                        getProgramsResult.isFetching ||
+                                        getCourseProgramsResult.isFetching))
                             }
                         >
                             Confirm {action === 'approved' ? 'Approve' : 'Reject'}

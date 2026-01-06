@@ -2,7 +2,7 @@ import { Select } from '@components'
 import { Clock, Calendar as CalendarIcon } from 'lucide-react'
 import Calendar from 'react-calendar'
 import { CalendarStyles } from '@components/Calendar/style'
-import { format } from 'date-fns'
+import moment from 'moment'
 import { OptionType } from '@types'
 
 export interface MonthlyScheduleData {
@@ -22,6 +22,7 @@ const timeSlotPresets: OptionType[] = [
 ]
 
 export function MonthlySchedule({ data, onChange }: MonthlyScheduleProps) {
+    console.log({ data })
     const detectPreset = (start: string, end: string): string => {
         if (start === '09:00' && end === '12:00') return 'morning'
         if (start === '13:00' && end === '17:00') return 'afternoon'
@@ -55,8 +56,10 @@ export function MonthlySchedule({ data, onChange }: MonthlyScheduleProps) {
     }
 
     const handleDateClick = (date: Date) => {
-        const formattedDate = format(date, 'yyyy-MM-dd')
-        const isSelected = data.dates.some((d) => d.date === formattedDate)
+        const formattedDate = moment(date).format('YYYY-MM-DD')
+        const isSelected = data.dates.some(
+            (d) => moment(d.date).format('YYYY-MM-DD') === formattedDate
+        )
 
         let newDates
         if (isSelected) {
@@ -102,9 +105,11 @@ export function MonthlySchedule({ data, onChange }: MonthlyScheduleProps) {
                         <Calendar
                             onClickDay={handleDateClick}
                             tileClassName={({ date }) => {
-                                const formattedDate = format(date, 'yyyy-MM-dd')
+                                const formattedDate = moment(date).format('YYYY-MM-DD')
                                 return data.dates.some(
-                                    (d) => d.date === formattedDate
+                                    (d) =>
+                                        moment(d.date).format('YYYY-MM-DD') ===
+                                        formattedDate
                                 )
                                     ? 'react-calendar__tile--active-custom'
                                     : ''
@@ -130,7 +135,7 @@ export function MonthlySchedule({ data, onChange }: MonthlyScheduleProps) {
                                         key={d.date}
                                         className="bg-white border border-slate-200 px-2 py-0.5 rounded-md shadow-sm"
                                     >
-                                        {format(new Date(d.date), 'MMM dd')}
+                                        {moment(d.date).format('MMM DD')}
                                     </span>
                                 ))
                         ) : (

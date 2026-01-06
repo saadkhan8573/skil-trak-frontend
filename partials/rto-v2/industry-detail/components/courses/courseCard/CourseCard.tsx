@@ -7,10 +7,18 @@ import {
     IndustryCourseApproval,
 } from '@types'
 import { AnimatePresence, motion } from 'framer-motion'
-import { AlertCircle, AlertTriangle, CheckCircle2, ChevronDown, FileCheck, Trash2, UploadCloud } from 'lucide-react'
+import {
+    AlertCircle,
+    AlertTriangle,
+    CheckCircle2,
+    ChevronDown,
+    FileCheck,
+    Trash2,
+    UploadCloud,
+} from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { FacilityChecklistActions } from '../FacilityChecklistActions'
-import { PendingCourseApproval } from './components'
+import { HighlightedTasks, PendingCourseApproval } from './components'
 import { useAppSelector } from '@redux/hooks'
 import { UploadFacilityChecklistDialog } from '../modals/UploadFacilityChecklistDialog'
 import { DeleteCourseDialog } from '../modals'
@@ -35,40 +43,6 @@ export interface HighlightedTask {
     confirmedAt?: string
 }
 
-// View Model extending Global Course to include UI-specific fields
-export interface CourseViewModel extends GlobalCourse {
-    programs?: string[]
-    deliveryModes?: string[]
-    status?: string
-    students?: number
-    capacity?: number
-    duration?: string
-    rating?: number
-    courseHours?: number
-    streams?: string[]
-    placementWorkflow?: PlacementWorkflow
-    programsAndServices?: string
-    branchesAndLocations?: string
-    activities?: string[]
-    eligibilityNotes?: string
-    agentNote?: string
-    requestedBy?: string
-    referenceUrl?: string
-    facilityChecklistStatus?:
-    | 'pending'
-    | 'approved'
-    | 'rejected'
-    | 'signed'
-    | 'awaiting-approval'
-    facilityChecklistSignedDate?: string
-    facilityChecklistApprovedDate?: string
-    facilityChecklistApprovedBy?: string
-    supervisorAdded?: boolean
-    courseApprovalStatus?: 'pending' | 'approved' | 'rejected'
-    highlightedTasks?: HighlightedTask[]
-    approval?: any
-}
-
 interface CourseCardProps {
     approval: IndustryCourseApproval
     courseIndex: number
@@ -88,13 +62,14 @@ export function CourseCard({
     const [isDeleteOpen, setIsDeleteOpen] = useState(false)
 
     const userCredentials = useMemo(() => getUserCredentials(), [])
-    const canDelete = [UserRoles.ADMIN, UserRoles.SUBADMIN].includes(
-        userCredentials?.role
-    )
 
     const isApproved = approval?.status === 'approved'
     const isPending = approval?.status === 'pending'
     const isRejected = approval?.status === 'rejected'
+
+    const canDelete =
+        [UserRoles.ADMIN, UserRoles.SUBADMIN].includes(userCredentials?.role) &&
+        isPending
 
     // Facility checklist logic: by default wont be approve if file url exist
     const hasFacilityFile = !!approval?.file
@@ -105,14 +80,15 @@ export function CourseCard({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: courseIndex * 0.05 }}
-            className={`rounded-xl overflow-hidden transition-all duration-300 ${isApproved
-                ? 'bg-gradient-to-br from-[#10B981]/10 via-white to-[#059669]/10 border-2 border-[#10B981]/30 shadow-lg'
-                : needsApproval
+            className={`rounded-xl overflow-hidden transition-all duration-300 ${
+                isApproved
+                    ? 'bg-gradient-to-br from-[#10B981]/10 via-white to-[#059669]/10 border-2 border-[#10B981]/30 shadow-lg'
+                    : needsApproval
                     ? 'bg-gradient-to-br from-[#F7A619]/10 via-white to-[#EA580C]/10 border-2 border-[#F7A619]/40 shadow-lg animate-pulse-slow'
                     : isRejected
-                        ? 'bg-gradient-to-br from-[#EF4444]/5 via-white to-[#DC2626]/5 border-2 border-[#EF4444]/30'
-                        : 'bg-white border border-[#E2E8F0] hover:shadow-md hover:border-[#044866]/20'
-                }`}
+                    ? 'bg-gradient-to-br from-[#EF4444]/5 via-white to-[#DC2626]/5 border-2 border-[#EF4444]/30'
+                    : 'bg-white border border-[#E2E8F0] hover:shadow-md hover:border-[#044866]/20'
+            }`}
         >
             {/* Course Header */}
             <div className="p-4">
@@ -121,10 +97,11 @@ export function CourseCard({
                         {/* Course Title & Code */}
                         <div className="flex items-center gap-2 mb-2">
                             <div
-                                className={`px-2 py-1 rounded-md text-[10px] font-bold ${isApproved
-                                    ? 'bg-[#10B981]/20 text-[#10B981]'
-                                    : 'bg-[#044866]/10 text-[#044866]'
-                                    }`}
+                                className={`px-2 py-1 rounded-md text-[10px] font-bold ${
+                                    isApproved
+                                        ? 'bg-[#10B981]/20 text-[#10B981]'
+                                        : 'bg-[#044866]/10 text-[#044866]'
+                                }`}
                             >
                                 {approval?.course.code}
                             </div>
@@ -162,14 +139,15 @@ export function CourseCard({
                         <div className="flex items-center gap-2 flex-wrap">
                             {/* Facility Checklist Status */}
                             <div
-                                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-medium ${isApproved
-                                    ? 'bg-[#10B981]/10 text-[#10B981]'
-                                    : needsApproval
+                                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-medium ${
+                                    isApproved
+                                        ? 'bg-[#10B981]/10 text-[#10B981]'
+                                        : needsApproval
                                         ? 'bg-[#F7A619]/20 text-[#F7A619]'
                                         : isRejected
-                                            ? 'bg-[#EF4444]/10 text-[#EF4444]'
-                                            : 'bg-[#64748B]/10 text-[#64748B]'
-                                    }`}
+                                        ? 'bg-[#EF4444]/10 text-[#EF4444]'
+                                        : 'bg-[#64748B]/10 text-[#64748B]'
+                                }`}
                             >
                                 <FileCheck className="w-3 h-3" />
                                 {isApproved && 'Checklist Approved'}
@@ -205,15 +183,18 @@ export function CourseCard({
                             </button>
                         )}
                         <motion.button
-                            onClick={() => setIsCourseExpanded(!isCourseExpanded)}
+                            onClick={() =>
+                                setIsCourseExpanded(!isCourseExpanded)
+                            }
                             animate={{ rotate: isCourseExpanded ? 180 : 0 }}
                             transition={{ duration: 0.3 }}
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isApproved
-                                ? 'bg-[#10B981]/10 hover:bg-[#10B981]/20 text-[#10B981]'
-                                : needsApproval
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                                isApproved
+                                    ? 'bg-[#10B981]/10 hover:bg-[#10B981]/20 text-[#10B981]'
+                                    : needsApproval
                                     ? 'bg-[#F7A619]/10 hover:bg-[#F7A619]/20 text-[#F7A619]'
                                     : 'bg-[#F8FAFB] hover:bg-[#E8F4F8] text-[#044866]'
-                                }`}
+                            }`}
                         >
                             <ChevronDown className="w-4 h-4" />
                         </motion.button>
@@ -312,6 +293,19 @@ export function CourseCard({
                                     }}
                                 />
                             </div>
+
+                            {/* Highlighted Tasks */}
+                            {approval?.course?.highlightedTasks &&
+                                approval.course.highlightedTasks.length > 0 && (
+                                    <HighlightedTasks
+                                        tasks={approval.course.highlightedTasks}
+                                        title="Course Highlighted Tasks"
+                                        courseId={approval.course.id}
+                                        isConfirmed={approval.course?.industryHighlightedTasks.some(
+                                            (task) => task.isConfirmed
+                                        )}
+                                    />
+                                )}
 
                             {/* Document Actions (if signed or approved) */}
                             {approval?.file && (

@@ -1,6 +1,7 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
 import {
+    Course,
     Industry,
     IndustryCourseApproval,
     IndustryInterviewAvailability,
@@ -287,5 +288,16 @@ export const industriesEndpoints = (
             method: 'PATCH',
         }),
         invalidatesTags: ['RTOIndustries', 'Industry'],
+    }),
+
+    confirmHighlightedTasks: builder.mutation<
+        Course,
+        { id: number; courseId: number }
+    >({
+        query: ({ id, courseId }) => ({
+            url: `${INDUSTRIESPREFIX}${id}/course/${courseId}/tasks/confirm`,
+            method: 'POST',
+        }),
+        invalidatesTags: ['RTOIndustries'],
     }),
 })

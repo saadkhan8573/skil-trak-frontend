@@ -6,10 +6,11 @@ import {
     DialogTitle,
 } from '@components/ui/dialog'
 import { motion } from 'framer-motion'
-import { Award, Mail, Phone, UserCheck, UserPlus } from 'lucide-react'
+import { Award, Mail, Phone, UserCheck, UserPlus, Pencil, Trash2 } from 'lucide-react'
 import { Supervisor } from '@types'
 import { useState } from 'react'
 import { AddSupervisorDialog } from './AddSupervisorDialog'
+import { DeleteSupervisorDialog } from './DeleteSupervisorDialog'
 
 interface SupervisorsModalProps {
     isOpen: boolean
@@ -27,6 +28,9 @@ export function SupervisorsModal({
     sectorId,
 }: SupervisorsModalProps) {
     const [addSupervisor, setAddSupervisor] = useState(false)
+    const [editingSupervisor, setEditingSupervisor] = useState<any>(null)
+    const [deletingSupervisor, setDeletingSupervisor] = useState<any>(null)
+
     return (
         <>
             <Dialog open={isOpen} onOpenChange={onClose}>
@@ -73,7 +77,7 @@ export function SupervisorsModal({
                     </div>
 
                     {/* Content */}
-                    <div className="flex-1 overflow-y-auto p-6 w-full max-h-[calc(90vh-200px)]">
+                    <div className="flex-1 overflow-y-auto p-6 w-full max-h-[calc(90vh-140px)]">
                         {supervisors.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-16">
                                 <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#E8F4F8] to-[#F8FAFB] flex items-center justify-center mb-4 shadow-sm">
@@ -83,16 +87,15 @@ export function SupervisorsModal({
                                     No Supervisors Added
                                 </p>
                                 <p className="text-sm text-[#64748B]">
-                                    There are no supervisors assigned to this
-                                    sector yet.
+                                    There are no supervisors assigned to this sector yet.
                                 </p>
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 {supervisors.map((supervisor, index) => (
                                     <motion.div
                                         key={index}
-                                        initial={{ opacity: 0, y: 20 }}
+                                        initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{
                                             delay: index * 0.1,
@@ -115,9 +118,25 @@ export function SupervisorsModal({
 
                                             {/* Name & Details */}
                                             <div className="flex-1 min-w-0">
-                                                <h3 className="font-bold text-[#1A2332] mb-1 leading-tight">
-                                                    {supervisor.name}
-                                                </h3>
+                                                <div className="flex items-center justify-between gap-2 mb-1">
+                                                    <h3 className="font-bold text-[#1A2332] leading-tight truncate">
+                                                        {supervisor.name}
+                                                    </h3>
+                                                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                                                        <button
+                                                            onClick={() => setEditingSupervisor(supervisor)}
+                                                            className="p-1.5 rounded-lg hover:bg-[#044866]/5 text-[#64748B] hover:text-[#044866] transition-all"
+                                                        >
+                                                            <Pencil className="w-3.5 h-3.5" />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => setDeletingSupervisor(supervisor)}
+                                                            className="p-1.5 rounded-lg hover:bg-red-50 text-[#64748B] hover:text-red-600 transition-all"
+                                                        >
+                                                            <Trash2 className="w-3.5 h-3.5" />
+                                                        </button>
+                                                    </div>
+                                                </div>
                                                 <p className="text-xs text-[#044866] font-semibold mb-2 leading-relaxed">
                                                     {supervisor.title}
                                                 </p>
@@ -190,6 +209,12 @@ export function SupervisorsModal({
                                                     </a>
                                                 </div>
                                             </div>
+
+                                            {/* Footer Email */}
+                                            <div className="flex items-center gap-2 pt-3">
+                                                <Mail className="w-3.5 h-3.5 text-[#64748B]" />
+                                                <span className="text-xs text-[#64748B] truncate">{supervisor.email}</span>
+                                            </div>
                                         </div>
                                     </motion.div>
                                 ))}
@@ -198,20 +223,16 @@ export function SupervisorsModal({
                     </div>
 
                     {/* Footer */}
-                    <div className="border-t border-[#E2E8F0] bg-gradient-to-br from-[#FAFBFC] to-white px-6 py-4">
+                    <div className="border-t border-[#E2E8F0] bg-gray-50 px-6 py-4">
                         <div className="flex items-center justify-between">
                             <p className="text-xs text-[#64748B]">
                                 {supervisors.length > 0
-                                    ? `Managing ${
-                                          supervisors.length
-                                      } supervisor${
-                                          supervisors.length === 1 ? '' : 's'
-                                      } for this sector`
+                                    ? `Managing ${supervisors.length} supervisor${supervisors.length === 1 ? '' : 's'} for this sector`
                                     : 'No supervisors assigned yet'}
                             </p>
                             <button
                                 onClick={onClose}
-                                className="px-4 py-2 bg-gradient-to-br from-[#044866] to-[#0D5468] text-white rounded-lg font-medium text-sm hover:shadow-lg hover:scale-105 transition-all"
+                                className="px-6 py-2 bg-[#044866] text-white rounded-lg font-bold text-sm hover:bg-[#033a52] transition-colors"
                             >
                                 Close
                             </button>
@@ -221,10 +242,25 @@ export function SupervisorsModal({
             </Dialog>
 
             <AddSupervisorDialog
-                open={addSupervisor}
-                onOpenChange={() => setAddSupervisor(false)}
+                open={addSupervisor || !!editingSupervisor}
+                onOpenChange={(open) => {
+                    if (!open) {
+                        setAddSupervisor(false)
+                        setEditingSupervisor(null)
+                    }
+                }}
+                edit={!!editingSupervisor}
+                initialData={editingSupervisor}
                 sectorId={sectorId!}
             />
+
+            {deletingSupervisor && (
+                <DeleteSupervisorDialog
+                    open={!!deletingSupervisor}
+                    onOpenChange={(open) => !open && setDeletingSupervisor(null)}
+                    supervisor={deletingSupervisor}
+                />
+            )}
         </>
     )
 }

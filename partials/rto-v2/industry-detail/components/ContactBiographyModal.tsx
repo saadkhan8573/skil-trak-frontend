@@ -14,6 +14,9 @@ import {
 import { Button } from '@components'
 import { useAppSelector } from '@redux/hooks'
 import { GenerateBioDialog } from '../modal'
+import { WorkplaceTypeModal } from '../modal/WorkplaceTypeModal'
+import { IndustryBioEditor } from './IndustryBioEditor'
+import { PrimaryContactEditor } from './PrimaryContactEditor'
 
 interface ContactBiographyModalProps {
     isOpen: boolean
@@ -28,6 +31,7 @@ export function ContactBiographyModal({
         (state) => state.industry
     )
     const [showGenerateBio, setShowGenerateBio] = useState(false)
+    const [showWorkplaceModal, setShowWorkplaceModal] = useState(false)
 
     if (!industry) return null
 
@@ -87,56 +91,34 @@ export function ContactBiographyModal({
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                     {/* Left Column - Contact & Workplace */}
                                     <div className="space-y-4">
-                                        {/* Primary Contact Information */}
-                                        <div className="bg-white rounded-xl shadow-sm border border-[#E2E8F0] overflow-hidden hover:shadow-md transition-all">
-                                            <div className="bg-[#F8FAFB] border-b border-[#E2E8F0] p-3">
-                                                <h3 className="text-[#1A2332] flex items-center gap-2 text-sm font-medium">
-                                                    <User className="w-4 h-4 text-[#64748B]" />
-                                                    Primary Contact
-                                                </h3>
-                                            </div>
-
-                                            <div className="p-3 space-y-2">
-                                                <div className="flex items-start gap-2 p-2 rounded-lg bg-[#F8FAFB] hover:bg-[#F1F5F9] transition-colors">
-                                                    <div className="w-8 h-8 bg-[#E2E8F0] rounded-lg flex items-center justify-center flex-shrink-0">
-                                                        <User className="w-4 h-4 text-[#64748B]" />
-                                                    </div>
-                                                    <div className="flex-1">
-                                                        <p className="text-[#1A2332] text-sm font-medium">
-                                                            {industry.contactPerson ||
-                                                                'Not provided'}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div className="flex items-center gap-2 p-2 rounded-lg bg-[#F8FAFB] hover:bg-[#F1F5F9] transition-colors">
-                                                    <div className="w-8 h-8 bg-[#E2E8F0] rounded-lg flex items-center justify-center flex-shrink-0">
-                                                        <Mail className="w-4 h-4 text-[#64748B]" />
-                                                    </div>
-                                                    <p className="text-[#1A2332] text-sm font-medium">
-                                                        {industry.user?.email ||
-                                                            'Not provided'}
-                                                    </p>
-                                                </div>
-                                                <div className="flex items-center gap-2 p-2 rounded-lg bg-[#F8FAFB] hover:bg-[#F1F5F9] transition-colors">
-                                                    <div className="w-8 h-8 bg-[#E2E8F0] rounded-lg flex items-center justify-center flex-shrink-0">
-                                                        <Phone className="w-4 h-4 text-[#64748B]" />
-                                                    </div>
-                                                    <p className="text-[#1A2332] text-sm font-medium">
-                                                        {industry.contactPersonNumber ||
-                                                            industry.phoneNumber ||
-                                                            'Not provided'}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <PrimaryContactEditor
+                                            industryUserId={Number(industry?.user?.id)}
+                                            initialData={{
+                                                contactPerson: industry.contactPerson || '',
+                                                email: industry.user?.email || '',
+                                                phone: industry.contactPersonNumber || industry.phoneNumber || '',
+                                            }}
+                                        />
 
                                         {/* Workplace Type */}
                                         <div className="bg-white rounded-xl shadow-sm border border-[#E2E8F0] overflow-hidden hover:shadow-md transition-all">
-                                            <div className="bg-[#F8FAFB] border-b border-[#E2E8F0] p-3">
+                                            <div className="bg-[#F8FAFB] border-b border-[#E2E8F0] p-3 flex items-center justify-between">
                                                 <h3 className="text-[#1A2332] flex items-center gap-2 text-sm font-medium">
                                                     <Briefcase className="w-4 h-4 text-[#64748B]" />
                                                     Workplace Type
                                                 </h3>
+                                                <Button
+                                                    onClick={() =>
+                                                        setShowWorkplaceModal(
+                                                            true
+                                                        )
+                                                    }
+                                                    variant="secondary"
+                                                    className="w-6 h-6 bg-white hover:bg-white text-[#64748B] hover:text-[#044866] border border-[#E2E8F0] hover:border-[#044866]/30 p-0 flex items-center justify-center rounded-md transition-all shadow-sm"
+                                                    title="Edit Workplace Type"
+                                                >
+                                                    <Edit2 className="w-3 h-3" />
+                                                </Button>
                                             </div>
 
                                             <div className="p-3">
@@ -163,55 +145,13 @@ export function ContactBiographyModal({
 
                                     {/* Right Column - Biography */}
                                     <div>
-                                        <div className="bg-white rounded-xl shadow-sm border border-[#E2E8F0] overflow-hidden hover:shadow-md transition-all h-full">
-                                            <div className="bg-[#F8FAFB] border-b border-[#E2E8F0] p-3 flex items-center justify-between">
-                                                <h3 className="text-[#1A2332] flex items-center gap-2 text-sm font-medium">
-                                                    <FileText className="w-4 h-4 text-[#64748B]" />
-                                                    Industry Biography
-                                                </h3>
-                                                {/* <div className="flex items-center gap-2">
-                                                    <Button
-                                                        onClick={() => setShowGenerateBio(true)}
-                                                        variant="secondary"
-                                                        className="text-[#64748B] hover:text-[#044866] transition-colors p-1 h-auto"
-                                                    >
-                                                        <Edit2 className="w-4 h-4" />
-                                                    </Button>
-                                                </div> */}
-                                            </div>
-
-                                            <div className="p-3">
-                                                <div className="flex items-start gap-3 p-3 rounded-lg bg-[#F8FAFB] border border-[#E2E8F0]">
-                                                    <div className="w-10 h-10 bg-[#E2E8F0] rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                                                        <Building className="w-5 h-5 text-[#64748B]" />
-                                                    </div>
-                                                    <div className="flex-1">
-                                                        <p className="text-sm leading-relaxed text-[#1A2332]">
-                                                            {industry.bio ||
-                                                                'No biography provided yet.'}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                {industry.updatedAt && (
-                                                    <div className="mt-3 flex items-center gap-2 text-xs text-[#64748B]">
-                                                        <FileText className="w-3 h-3" />
-                                                        <span>
-                                                            Last updated:{' '}
-                                                            {new Date(
-                                                                industry.updatedAt
-                                                            ).toLocaleDateString(
-                                                                'en-AU',
-                                                                {
-                                                                    month: 'short',
-                                                                    day: 'numeric',
-                                                                    year: 'numeric',
-                                                                }
-                                                            )}
-                                                        </span>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
+                                        <IndustryBioEditor
+                                            industryUserId={Number(
+                                                industry?.user?.id
+                                            )}
+                                            initialBio={industry.bio || ''}
+                                            updatedAt={industry.updatedAt + ""}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -225,10 +165,19 @@ export function ContactBiographyModal({
                                     Done
                                 </Button>
                             </div>
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                        </motion.div >
+                    </motion.div >
+                )
+                }
+            </AnimatePresence >
+
+            {industry?.user && (
+                <WorkplaceTypeModal
+                    open={showWorkplaceModal}
+                    onOpenChange={setShowWorkplaceModal}
+                    industryUserId={industry.user.id}
+                />
+            )}
         </>
     )
 }

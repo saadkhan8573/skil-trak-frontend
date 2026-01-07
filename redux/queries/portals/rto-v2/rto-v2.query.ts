@@ -116,7 +116,7 @@ const {
     useCreateAvailabilityMutation,
     useAddSingleRtoIndustryMutation,
     useIndustryRtoChecklistListQuery,
-    useConfirmHighlightedTasksMutation,
+    useConfirmIndustryHighlightedTaskMutation,
     useAddBulkRtoIndustriesMutation,
     useGetIndustryAvailabilityV2Query,
     useGetIndustryInitiatedESignQuery,
@@ -132,6 +132,7 @@ const {
     useIndustryInfoMessageMutation,
     useGetIndustryInfoMessagesQuery,
     useAssignIndustryToCoordinatorMutation,
+    useGetHighlightedTasksQuery,
 
     // ---- RTO Credits ---- //
     useGetRtoCreditsQuery,
@@ -240,7 +241,7 @@ export const RtoV2Api = {
         addBulkRtoIndustries: useAddBulkRtoIndustriesMutation,
         industryCoursesDetails: useIndustryCoursesDetailsQuery,
         industryRtoChecklistList: useIndustryRtoChecklistListQuery,
-        useConfirmHighlightedTasks: useConfirmHighlightedTasksMutation,
+        useConfirmHighlightedTask: useConfirmIndustryHighlightedTaskMutation,
         useIndustryAvailabilityV2: useGetIndustryAvailabilityV2Query,
         industryUserStatusChange: useIndustryUserStatusChangeMutation,
         getIndustryInitiatedESign: useGetIndustryInitiatedESignQuery,
@@ -257,6 +258,7 @@ export const RtoV2Api = {
         industryInfoMessage: useIndustryInfoMessageMutation,
         getIndustryInfoMessages: useGetIndustryInfoMessagesQuery,
         assignIndustryToCoordinator: useAssignIndustryToCoordinatorMutation,
+        useGetHighlightedTasks: useGetHighlightedTasksQuery,
     },
     RtoCredits: {
         getRtoCredits: useGetRtoCreditsQuery,

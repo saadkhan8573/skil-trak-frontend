@@ -1,4 +1,5 @@
 import {
+    AddressFieldInput,
     Button,
     Select,
     ShowErrorNotifications,
@@ -14,8 +15,9 @@ import {
     DialogTitle,
 } from '@components/ui/dialog'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useUpdateIndustryProfileMutation } from '@queries'
+import { useUpdateIndustryProfileMutation, CommonApi } from '@queries'
 import { useAppSelector } from '@redux/hooks'
+import { OptionType } from '@types'
 import {
     Building2,
     Calendar,
@@ -46,10 +48,13 @@ const validationSchema = yup.object({
     website: yup.string().nullable(),
     phoneNumber: yup.string().required('Phone is required'),
     email: yup.string().email('Invalid email').required('Email is required'),
+    // country: yup.number().required('Country is required'),
 })
 
 export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
     const [isEditing, setIsEditing] = useState(false)
+    const [onSuburbClicked, setOnSuburbClicked] = useState<boolean>(true)
+
 
     // Get industry detail from Redux instead of API
     const industryDetail = useAppSelector(
@@ -59,10 +64,22 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
     const [updateProfile, updateProfileResult] =
         useUpdateIndustryProfileMutation()
 
+    const [countryId, setCountryId] = useState<number | null>(null)
+    const [onStateSelect, setOnStateSelect] = useState<number | null>(null)
+
+    const country = CommonApi.Countries.useCountriesList()
+
+    const { data: states, isLoading: statesLoading } =
+        CommonApi.Countries.useCountryStatesList(countryId, {
+            skip: !countryId,
+        })
+
     const methods = useForm({
         resolver: yupResolver(validationSchema),
         mode: 'all',
     })
+
+    console.log({ methods })
 
     const { handleSubmit, reset, watch } = methods
     const formValues = watch()
@@ -81,16 +98,33 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                 website: industryDetail?.website || '',
                 phoneNumber: industryDetail?.phoneNumber || '',
                 email: industryDetail?.user?.email || '',
+                country: industryDetail?.country || null,
             })
+
+            if (industryDetail?.country) {
+                setCountryId(industryDetail.country)
+            }
+            // If the state is stored as a name, we might need to find its ID to set onStateSelect
+            // But usually, if it's dynamic, we might store IDs.
+            // For now, let's just ensure countryId is set so states can load.
         }
     }, [industryDetail, reset])
 
     useEffect(() => {
-        if (updateProfileResult.isSuccess) {
+        if (isOpen && updateProfileResult.isSuccess) {
             setIsEditing(false)
             onClose()
+            updateProfileResult.reset()
         }
-    }, [updateProfileResult, onClose])
+    }, [updateProfileResult.isSuccess, onClose, updateProfileResult, isOpen])
+
+    // Reset mutation state and editing mode when modal is closed
+    useEffect(() => {
+        if (!isOpen) {
+            setIsEditing(false)
+            updateProfileResult.reset()
+        }
+    }, [isOpen, updateProfileResult])
 
     const handleSave = (data: any) => {
         if (!industryDetail?.user?.id) return
@@ -112,16 +146,6 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
         setIsEditing(false)
     }
 
-    const stateOptions = [
-        { label: 'NSW', value: 'NSW' },
-        { label: 'VIC', value: 'VIC' },
-        { label: 'QLD', value: 'QLD' },
-        { label: 'WA', value: 'WA' },
-        { label: 'SA', value: 'SA' },
-        { label: 'TAS', value: 'TAS' },
-        { label: 'ACT', value: 'ACT' },
-        { label: 'NT', value: 'NT' },
-    ]
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
@@ -281,12 +305,18 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                                         {/* Street Address */}
                                         <div className="md:col-span-2">
                                             {isEditing ? (
-                                                <TextInput
-                                                    name="addressLine1"
-                                                    label="Street Address"
-                                                    placeholder="Street Address"
-                                                    required
-                                                    validationIcons
+                                                <AddressFieldInput
+                                                    placesSuggetions={{
+                                                        placesSuggetions:
+                                                            onSuburbClicked,
+                                                        setIsPlaceSelected:
+                                                            setOnSuburbClicked,
+                                                    }}
+                                                    onChange={() => {
+                                                        setOnSuburbClicked(
+                                                            false
+                                                        )
+                                                    }}
                                                 />
                                             ) : (
                                                 <ViewField
@@ -316,25 +346,6 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                                             )}
                                         </div>
 
-                                        {/* State */}
-                                        <div>
-                                            {isEditing ? (
-                                                <Select
-                                                    name="state"
-                                                    label="State"
-                                                    options={stateOptions}
-                                                    onlyValue
-                                                    required
-                                                    validationIcons
-                                                />
-                                            ) : (
-                                                <ViewField
-                                                    label="State"
-                                                    value={formValues.state}
-                                                />
-                                            )}
-                                        </div>
-
                                         {/* Postcode */}
                                         <div>
                                             {isEditing ? (
@@ -349,6 +360,95 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                                                 <ViewField
                                                     label="Postcode"
                                                     value={formValues.zipCode}
+                                                />
+                                            )}
+                                        </div>
+
+                                        {/* Country */}
+                                        <div>
+                                            {isEditing ? (
+                                                <Select
+                                                    name="country"
+                                                    label="Country"
+                                                    options={
+                                                        country?.data?.map(
+                                                            (country: any) => ({
+                                                                label: country.name,
+                                                                value: country.id,
+                                                            })
+                                                        ) || []
+                                                    }
+                                                    loading={country.isLoading}
+                                                    onChange={(e: any) => {
+                                                        setCountryId(e?.value)
+                                                        methods.setValue(
+                                                            'country',
+                                                            e?.value
+                                                        )
+                                                    }}
+                                                    value={country?.data
+                                                        ?.map(
+                                                            (country: any) => ({
+                                                                label: country.name,
+                                                                value: country.id,
+                                                            })
+                                                        )
+                                                        ?.find(
+                                                            (c: OptionType) =>
+                                                                c?.value ===
+                                                                countryId
+                                                        )}
+                                                    validationIcons
+                                                    menuPlacement='top'
+                                                />
+                                            ) : (
+                                                <ViewField
+                                                    label="Country"
+                                                    value={
+                                                        country?.data?.find(
+                                                            (c: any) =>
+                                                                c?.id ===
+                                                                countryId
+                                                        )?.name || '-'
+                                                    }
+                                                />
+                                            )}
+                                        </div>
+
+                                        {/* State */}
+                                        <div>
+                                            {isEditing ? (
+                                                <Select
+                                                    name="region"
+                                                    onlyValue
+                                                    label="State"
+                                                    options={states?.map(
+                                                        (state: any) => ({
+                                                            label: state.name,
+                                                            value: state.id,
+                                                        })
+                                                    )}
+                                                    placeholder="Select State"
+                                                    required
+                                                    validationIcons
+                                                    disabled={!countryId}
+                                                    loading={statesLoading}
+                                                    value={states
+                                                        ?.map((s: any) => ({
+                                                            label: s.name,
+                                                            value: s.id,
+                                                        }))
+                                                        ?.find(
+                                                            (s: OptionType) =>
+                                                                s?.label ===
+                                                                formValues.region
+                                                        )}
+                                                    menuPlacement='top'
+                                                />
+                                            ) : (
+                                                <ViewField
+                                                    label="State"
+                                                    value={formValues.state}
                                                 />
                                             )}
                                         </div>

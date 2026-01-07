@@ -61,6 +61,7 @@ export const Supervisor = ({ industry }: { industry?: Industry }) => {
                 initialValues={supervisor}
                 industry={industry}
                 edit
+                onCloseModal={contextBar.hide}
             />
         )
     }
@@ -126,6 +127,7 @@ export const Supervisor = ({ industry }: { industry?: Industry }) => {
                                             contextBar.setContent(
                                                 <AddSupervisor
                                                     industry={industry}
+                                                    onCloseModal={contextBar.hide}
                                                 />
                                             )
                                         }}
@@ -139,20 +141,18 @@ export const Supervisor = ({ industry }: { industry?: Industry }) => {
                                     className="border rounded-md p-1 cursor-pointer"
                                 >
                                     <MdKeyboardArrowDown
-                                        className={`transition-all duration-300 ${
-                                            showSupervisorList
-                                                ? 'rotate-180'
-                                                : 'rotate-0'
-                                        }`}
+                                        className={`transition-all duration-300 ${showSupervisorList
+                                            ? 'rotate-180'
+                                            : 'rotate-0'
+                                            }`}
                                     />
                                 </div>
                             </div>
                         </div>
 
                         <div
-                            className={`${
-                                showSupervisorList ? 'block' : 'hidden'
-                            }  top-11 z-40 left-0 transition-all max-h-60 overflow-auto custom-scrollbar duration-300 bg-white border rounded-md px-4 py-2 w-full`}
+                            className={`${showSupervisorList ? 'block' : 'hidden'
+                                }  top-11 z-40 left-0 transition-all max-h-60 overflow-auto custom-scrollbar duration-300 bg-white border rounded-md px-4 py-2 w-full`}
                         >
                             <div className="">
                                 {supervisors.isError ? (
@@ -165,7 +165,7 @@ export const Supervisor = ({ industry }: { industry?: Industry }) => {
                                 {supervisors.isLoading ? (
                                     <PulseLoader size={6} />
                                 ) : supervisors?.data &&
-                                  supervisors?.data?.data?.length ? (
+                                    supervisors?.data?.data?.length ? (
                                     <div className="space-y-2">
                                         {supervisors?.data?.data?.map(
                                             (supervisor: any) => (

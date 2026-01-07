@@ -1,5 +1,6 @@
 import { AssessmentEvidenceFolder } from './assessment-evidence.type'
 import { BaseResponse } from './base.type'
+import { ConfirmationSource } from './confirmation.type'
 import { Folder } from './folder.type'
 import { Industry, User } from './user.type'
 
@@ -46,6 +47,8 @@ export interface CourseInfo extends BaseResponse {
 export interface IndustryHighlightedTasks extends BaseResponse {
     id: number
     isConfirmed: boolean
+    confirmedBy: User
+    confirmationSource:ConfirmationSource
 }
 
 export interface IndustryCourseApproval extends BaseResponse {
@@ -90,6 +93,7 @@ export interface Course extends BaseResponse {
     approvals: IndustryCourseApproval[]
     highlightedTasks?: { id?: number; statement: string }[]
     industryHighlightedTasks: IndustryHighlightedTasks[]
+    changedHighlightedTaskIds?: number[]
 }
 
 export interface Sector extends BaseResponse {

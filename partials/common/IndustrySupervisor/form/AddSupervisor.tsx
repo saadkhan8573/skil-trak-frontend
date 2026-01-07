@@ -59,29 +59,41 @@ export const AddSupervisor = ({
 
     const validationSchema = Yup.object({
         name: Yup.string().required('Name is required!'),
-        // email: Yup.string().required('Email is required!'),
+        position: Yup.string().required('Role is required!'),
         level: Yup.number().required('Qualification is required!'),
         title: Yup.string().required('Course Title is required!'),
         experience: Yup.string().required('Experience is required!'),
+        phone: Yup.string().required('Phone is required!'),
+        email: Yup.string().email('Invalid email').required('Email is required!'),
     })
 
     const methods = useForm({
         mode: 'all',
-        defaultValues: initialValues,
+        defaultValues: initialValues || {
+            name: '',
+            position: '',
+            level: null,
+            title: '',
+            experience: '',
+            phone: '',
+            email: '',
+        },
         resolver: yupResolver(validationSchema),
     })
 
     const onSubmit = async (values: any) => {
+        const payload = {
+            ...values,
+            industry: industry?.id,
+            sector: sector?.id,
+        }
+
         edit
             ? editSupervisor({
-                  ...values,
-                  industry: industry?.id,
-              })
-            : addSupervisor({
-                  ...values,
-                  industry: industry?.id,
-                  sector: sector?.id,
-              })
+                ...payload,
+                id: initialValues?.id,
+            })
+            : addSupervisor(payload)
     }
 
     const isLoading = edit
@@ -92,20 +104,43 @@ export const AddSupervisor = ({
         <div className="w-full md:w-[600px]">
             <ShowErrorNotifications result={addSupervisorResult} />
             <ShowErrorNotifications result={editSupervisorResult} />
-            <Typography variant={'small'} color={'text-gray-500'}>
-                {edit ? 'Edit' : 'Add'} Supervisor:
-            </Typography>
+            <div className="mb-4">
+                <Typography variant={'small'} color={'text-gray-500'} semibold>
+                    {edit ? 'Edit' : 'Add'} Supervisor Details
+                </Typography>
+                <p className="text-[11px] text-gray-400">
+                    Please provide the professional details for the supervisor.
+                </p>
+            </div>
 
             <FormProvider {...methods}>
                 <form
-                    className="mt-2 w-full"
+                    className="space-y-3"
                     onSubmit={methods.handleSubmit(onSubmit)}
                 >
-                    <div className="">
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                        <div className="col-span-2">
+                            <TextInput
+                                label={'Full Name'}
+                                name={'name'}
+                                placeholder={'e.g., Sarah Johnson'}
+                                validationIcons
+                                required
+                            />
+                        </div>
+
                         <TextInput
-                            label={'Name'}
-                            name={'name'}
-                            placeholder={'Your Name Here...'}
+                            label={'Role/Position'}
+                            name={'position'}
+                            placeholder={'e.g., Senior Manager'}
+                            validationIcons
+                            required
+                        />
+
+                        <TextInput
+                            label={'Years of Experience'}
+                            name={'experience'}
+                            placeholder={'e.g., 12'}
                             validationIcons
                             required
                         />
@@ -123,48 +158,48 @@ export const AddSupervisor = ({
                                     (l: OptionType) =>
                                         l.value === selectedQualification
                                 )}
-                                // menuPlacement="top"
                             />
                         </div>
 
                         <TextInput
-                            label={'Course Title'}
+                            label={'Qualification Title'}
                             name={'title'}
-                            placeholder={'Your Course Title Here...'}
+                            placeholder={'e.g., Bachelor of Nursing'}
                             validationIcons
                             required
                         />
+
                         <TextInput
-                            label={'Experience'}
-                            name={'experience'}
-                            placeholder={'Your Experience Here...'}
-                            validationIcons
-                            required
-                        />
-                        <TextInput
-                            label={'Phone'}
+                            label={'Phone Number'}
                             name={'phone'}
-                            placeholder={'Your Phone Here...'}
+                            placeholder={'+61 ...'}
                             validationIcons
                             required
                         />
                         <TextInput
-                            label={'Email'}
+                            label={'Email Address'}
                             name={'email'}
-                            placeholder={'Your Email Here...'}
+                            placeholder={'supervisor@company.com'}
                             validationIcons
                             required
                         />
                     </div>
 
-                    <div className="mt-4 flex items-center justify-between">
+                    <div className="mt-6 flex items-center justify-end gap-x-3">
+                        <Button
+                            variant="secondary"
+                            onClick={onCloseModal}
+                        >
+                            Cancel
+                        </Button>
                         <Button
                             submit
                             loading={isLoading}
                             disabled={isLoading}
                             variant={edit ? 'secondary' : 'primary'}
+                            className="px-8"
                         >
-                            {edit ? 'Update' : 'Add'}
+                            {edit ? 'Update Supervisor' : 'Add Supervisor'}
                         </Button>
                     </div>
                 </form>

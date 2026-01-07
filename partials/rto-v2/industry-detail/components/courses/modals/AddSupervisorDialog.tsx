@@ -13,6 +13,7 @@ import {
     DialogTitle,
 } from '@components/ui/dialog'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 
@@ -29,6 +30,8 @@ interface AddSupervisorDialogProps {
     sectorId: number | null
     onOpenChange: (open: boolean) => void
     onSuccess?: () => void
+    edit?: boolean
+    initialData?: any
 }
 
 export function AddSupervisorDialog({
@@ -37,6 +40,8 @@ export function AddSupervisorDialog({
     sectorId,
     onOpenChange,
     onSuccess,
+    edit,
+    initialData,
 }: AddSupervisorDialogProps) {
     const { notification } = useNotification()
 
@@ -58,39 +63,63 @@ export function AddSupervisorDialog({
 
     const methods = useForm({
         mode: 'all',
-        defaultValues: {
+        defaultValues: initialData || {
             name: '',
             title: '',
+            position: '',
             role: '',
             experience: '',
             description: '',
             phone: '',
             email: '',
+            level: null,
         },
         resolver: yupResolver(validationSchema),
     })
 
+    useEffect(() => {
+        if (open && initialData) {
+            methods.reset(initialData)
+        } else if (open && !edit) {
+            methods.reset({
+                name: '',
+                title: '',
+                position: '',
+                role: '',
+                experience: '',
+                description: '',
+                phone: '',
+                email: '',
+                level: null,
+            })
+        }
+    }, [open, initialData, edit])
+
     const [addSupervisor, addSupervisorResult] =
         IndustryApi.Supervisor.addSupervisor()
+    const [editSupervisor, editSupervisorResult] =
+        IndustryApi.Supervisor.editSupervisor()
 
     const handleSubmit = async (values: any) => {
-        console.log({
-            sectorId,
-            industryDetail
-        })
         if (!sectorId || !industryDetail?.id) return
 
-        const res: any = await addSupervisor({
+        const payload = {
             ...values,
             experience: parseInt(values.experience) || 0,
             industry: industryDetail?.id,
             sector: sectorId,
-        })
+        }
+
+        const res: any = edit
+            ? await editSupervisor({ ...payload, id: initialData?.id })
+            : await addSupervisor(payload)
 
         if (res?.data) {
             notification.success({
-                title: 'Supervisor Added',
-                description: 'Supervisor Added Successfully',
+                title: edit ? 'Supervisor Updated' : 'Supervisor Added',
+                description: edit
+                    ? 'Supervisor Updated Successfully'
+                    : 'Supervisor Added Successfully',
             })
             methods.reset()
             onSuccess && onSuccess()
@@ -98,11 +127,15 @@ export function AddSupervisorDialog({
         }
     }
 
-    const isLoading = addSupervisorResult.isLoading
+    const isLoading = edit
+        ? editSupervisorResult.isLoading
+        : addSupervisorResult.isLoading
+
+    const errorResult = edit ? editSupervisorResult : addSupervisorResult
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <ShowErrorNotifications result={addSupervisorResult} />
+            <ShowErrorNotifications result={errorResult} />
             <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <div className="flex items-center gap-3 mb-2">
@@ -114,7 +147,7 @@ export function AddSupervisorDialog({
                         </div>
                         <div>
                             <DialogTitle className="text-lg">
-                                Add Supervisor Details
+                                {edit ? 'Edit' : 'Add'} Supervisor Details
                             </DialogTitle>
                             {course && (
                                 <DialogDescription className="text-xs">
@@ -125,24 +158,27 @@ export function AddSupervisorDialog({
                     </div>
                 </DialogHeader>
 
-                {/* Success Banner */}
-                <div className="bg-gradient-to-r from-[#10B981]/10 to-[#059669]/10 border border-[#10B981]/20 rounded-lg p-4">
-                    <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-[#10B981] to-[#059669] rounded-lg flex items-center justify-center flex-shrink-0">
-                            <Sparkles className="w-5 h-5 text-white" />
-                        </div>
-                        <div className="flex-1">
-                            <h4 className="text-sm font-bold text-[#10B981] mb-1">
-                                🎉 Facility Checklist Approved!
-                            </h4>
-                            <p className="text-xs text-[#059669]">
-                                Great job! The facility checklist has been
-                                approved. Now let's add a supervisor to complete
-                                the course setup and turn it green.
-                            </p>
+                {/* Success Banner - only show when adding, not editing maybe? Or keep it? */}
+                {/* The user didn't specify, but usually edit doesn't need the 'Just Approved' banner */}
+                {!edit && (
+                    <div className="bg-gradient-to-r from-[#10B981]/10 to-[#059669]/10 border border-[#10B981]/20 rounded-lg p-4">
+                        <div className="flex items-start gap-3">
+                            <div className="w-10 h-10 bg-gradient-to-br from-[#10B981] to-[#059669] rounded-lg flex items-center justify-center flex-shrink-0">
+                                <Sparkles className="w-5 h-5 text-white" />
+                            </div>
+                            <div className="flex-1">
+                                <h4 className="text-sm font-bold text-[#10B981] mb-1">
+                                    🎉 Facility Checklist Approved!
+                                </h4>
+                                <p className="text-xs text-[#059669]">
+                                    Great job! The facility checklist has been
+                                    approved. Now let's add a supervisor to complete
+                                    the course setup and turn it green.
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
 
                 <FormProvider {...methods}>
                     <form
@@ -268,13 +304,23 @@ export function AddSupervisorDialog({
 
                         {/* Action Buttons */}
                         <div className="flex items-center gap-3 pt-2">
-                            <Button
-                                variant="secondary"
-                                onClick={() => onOpenChange(false)}
-                                className="flex-1 h-10"
-                            >
-                                Skip for Now
-                            </Button>
+                            {edit ? (
+                                <Button
+                                    variant="secondary"
+                                    onClick={() => onOpenChange(false)}
+                                    className="flex-1 h-10"
+                                >
+                                    Cancel
+                                </Button>
+                            ) : (
+                                <Button
+                                    variant="secondary"
+                                    onClick={() => onOpenChange(false)}
+                                    className="flex-1 h-10"
+                                >
+                                    Skip for Now
+                                </Button>
+                            )}
                             <Button
                                 submit
                                 loading={isLoading}
@@ -282,7 +328,7 @@ export function AddSupervisorDialog({
                                 className="flex-1 bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white gap-2 h-10"
                             >
                                 <UserCheck className="w-4 h-4" />
-                                Add Supervisor & Complete Setup
+                                {edit ? 'Update Supervisor' : 'Add Supervisor & Complete Setup'}
                             </Button>
                         </div>
                     </form>

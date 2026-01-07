@@ -17,6 +17,7 @@ import { FormProvider, useForm, useFieldArray } from 'react-hook-form'
 import * as yup from 'yup'
 import { MdAdd, MdDelete } from 'react-icons/md'
 import { HighlightedTasksField } from './components/HighlightedTasksField'
+import { ConfirmCourseUpdateModal } from './components/ConfirmCourseUpdateModal'
 
 interface CourseFormProps {
     result: any
@@ -42,6 +43,8 @@ export const CourseForm = ({
     })
 
     const [level, setLevel] = useState<number | null>(null)
+    const [showConfirmModal, setShowConfirmModal] = useState(false)
+    const [pendingData, setPendingData] = useState<any>(null)
 
     useEffect(() => {
         if (initialValues) {
@@ -56,12 +59,12 @@ export const CourseForm = ({
                 sector: initialValues?.sector?.id,
                 highlightedTasks:
                     initialValues?.highlightedTasks &&
-                    initialValues.highlightedTasks.length > 0
+                        initialValues.highlightedTasks.length > 0
                         ? initialValues.highlightedTasks?.map((task: any) => ({
-                              id: task.id,
-                              statement: task.statement,
-                              taskId: task.id,
-                          }))
+                            id: task.id,
+                            statement: task.statement,
+                            taskId: task.id,
+                        }))
                         : [{ statement: '' }],
             })
         }
@@ -94,6 +97,56 @@ export const CourseForm = ({
         },
         mode: 'all',
     })
+
+    const handleFormSubmit = (values: any) => {
+        if (!edit) {
+            onSubmit(values)
+            return
+        }
+
+        // Detect if highlighted tasks have changed
+        const initialTasks = initialValues?.highlightedTasks || []
+        const currentTasks = values.highlightedTasks || []
+
+        // Extract IDs of existing tasks that were modified
+        const changedHighlightedTaskIds = currentTasks
+            .filter((task: any) => {
+                const initial = initialTasks.find(
+                    (it: any) => (it.id || it.taskId) === (task.id || task.taskId)
+                )
+                // Mark as changed if: statement differs from initial
+                return initial && task.statement !== initial.statement
+            })
+            .map((task: any) => task.id || task.taskId)
+            .filter(Boolean)
+
+        // Determine if any changes occurred (statement, add, or remove)
+        const hasStatementChange = changedHighlightedTaskIds.length > 0
+        const hasNewTasks = currentTasks.some((t: any) => !(t.id || t.taskId))
+        const hasRemovedTasks = currentTasks.length < initialTasks.length
+
+        const hasChanges = hasStatementChange || hasNewTasks || hasRemovedTasks
+
+        if (hasChanges) {
+            setPendingData({
+                ...values,
+                changedHighlightedTaskIds,
+            })
+            setShowConfirmModal(true)
+        } else {
+            onSubmit({
+                ...values,
+                changedHighlightedTaskIds: [],
+            })
+        }
+    }
+
+    const handleConfirmUpdate = () => {
+        if (pendingData) {
+            onSubmit(pendingData)
+            setShowConfirmModal(false)
+        }
+    }
 
     const LevelsOptions = [
         {
@@ -142,7 +195,7 @@ export const CourseForm = ({
         <FormProvider {...methods}>
             <form
                 className="mt-2 w-full"
-                onSubmit={methods.handleSubmit(onSubmit)}
+                onSubmit={methods.handleSubmit(handleFormSubmit)}
             >
                 <div className="">
                     <div className="mb-4">
@@ -229,7 +282,7 @@ export const CourseForm = ({
                                 value={LevelsOptions?.find(
                                     (l: OptionType) => l.value === Number(level)
                                 )}
-                                // menuPlacement="top"
+                            // menuPlacement="top"
                             />
                         </div>
                     </div>
@@ -246,23 +299,11 @@ export const CourseForm = ({
                         />
                     </div>
 
-                    <div className="grid grid-cols-1 gap-x-8">
-                        <TextArea
-                            label={'Description'}
-                            name={'description'}
-                            placeholder={'Course Description...'}
-                            required
-                            validationIcons
-                            rows={6}
-                        />
-                    </div>
-
                     <HighlightedTasksField />
 
                     <div>
                         <Button
                             submit
-                            // disabled={!(isValid && dirty)}
                             disabled={result.isLoading}
                             loading={result.isLoading}
                         >
@@ -271,6 +312,14 @@ export const CourseForm = ({
                     </div>
                 </div>
             </form>
+            {showConfirmModal && (
+                <ConfirmCourseUpdateModal
+                    isOpen={showConfirmModal}
+                    onClose={() => setShowConfirmModal(false)}
+                    onConfirm={handleConfirmUpdate}
+                    loading={result.isLoading}
+                />
+            )}
         </FormProvider>
     )
 }

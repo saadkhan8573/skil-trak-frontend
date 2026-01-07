@@ -4,6 +4,7 @@ import {
     Calendar,
     Clock,
     FileText,
+    FileSignature,
     Image,
     MessageSquare,
     Shield,
@@ -11,6 +12,7 @@ import {
 } from 'lucide-react'
 import { GalleryModule } from './modules/GalleryModule'
 import { DocumentsModule } from './modules/DocumentsModule'
+import { ESignModule } from './modules/ESignModule'
 import { CommunicationLog } from './modules/CommunicationLog'
 import { StudentsPlacementList } from './StudentsPlacementList'
 import { TradingHoursModule } from './modules/TradingHoursModule'
@@ -69,6 +71,12 @@ export function OperationalModules() {
             label: 'Required Documents',
             icon: FileText,
             component: DocumentsModule,
+        },
+        {
+            value: 'esign',
+            label: 'E-Sign Documents',
+            icon: FileSignature,
+            component: ESignModule,
         },
         {
             value: 'communication',

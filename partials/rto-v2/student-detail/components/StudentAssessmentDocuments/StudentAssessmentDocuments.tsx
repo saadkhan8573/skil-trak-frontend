@@ -126,23 +126,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                 })
             )}
 
-            {/* Dynamic Sections */}
 
-            {/* Approval Dialog */}
-            {/* <ApproveFileModal
-                isOpen={approvalDialogOpen}
-                setIsOpen={setApprovalDialogOpen}
-                selectedItem={selectedItem}
-                handleApprove={handleApprove}
-            /> */}
-
-            {/* Rejection Dialog */}
-            {/* <RejectFileModal
-                isOpen={rejectionDialogOpen}
-                setIsOpen={setRejectionDialogOpen}
-                selectedItem={selectedItem}
-                handleReject={handleReject}
-            /> */}
         </div>
     )
 }

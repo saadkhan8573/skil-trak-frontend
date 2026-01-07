@@ -84,57 +84,18 @@ export function BasicDetails() {
                             industryDetail?.enrolledStudents?.toString() || ''
                         }
                     />
+                    <CardItem
+                        Icon={Globe}
+                        label="Website"
+                        value={industryDetail?.website || ''}
+                    />
+                    <CardItem
+                        Icon={MapPin}
+                        label="Address"
+                        value={industryDetail?.addressLine1 || ''}
+                    />
                 </div>
             </div>
-
-            <Collapsible
-                open={showContactInfo}
-                onOpenChange={setShowContactInfo}
-                className="w-full"
-            >
-                <CollapsibleTrigger className="w-full">
-                    <Button
-                        variant="secondary"
-                        className="w-full px-2.5 py-1.5 border-t border-[#E2E8F0] text-[9px] font-medium text-[#044866] hover:bg-[#F8FAFB] transition-all flex items-center justify-center gap-1 h-auto rounded-none"
-                    >
-                        <Phone className="w-2.5 h-2.5" />
-                        {showContactInfo
-                            ? 'Hide Contact Information'
-                            : 'Show Contact Information'}
-                        <span
-                            className={`text-[10px] transition-transform ${
-                                showContactInfo ? 'rotate-180' : ''
-                            }`}
-                        >
-                            ▼
-                        </span>
-                    </Button>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                    {' '}
-                    <div className="px-2.5 pb-2.5 pt-1.5 border-t border-[#E2E8F0] bg-[#F8FAFB]/50">
-                        <div className="space-y-1.5 grid grid-cols-1 lg:grid-cols-2 gap-1.5">
-                            <CardItem
-                                Icon={Globe}
-                                label="Website"
-                                value={industryDetail?.website || ''}
-                            />
-                            <CardItem
-                                Icon={MapPin}
-                                label="Address"
-                                value={industryDetail?.addressLine1 || ''}
-                            />
-                        </div>
-                    </div>
-                </CollapsibleContent>
-            </Collapsible>
-
-            {/* Toggle Contact Information Button */}
-
-            {/* Contact Information - Collapsible */}
-            {/* {showContactInfo && (
-               
-            )} */}
         </div>
     )
 }

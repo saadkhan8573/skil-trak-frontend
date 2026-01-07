@@ -198,8 +198,7 @@ export const FolderCard = ({
                         {getTemplate?.isSuccess &&
                             getTemplate?.data &&
                             getTemplate?.data?.length > 0 &&
-                            (!eSignDocument?.data ||
-                                eSignDocument?.data?.length === 0) && (
+                            (
                                 <Button
                                     text="Initiate E-Sign"
                                     onClick={() => onInitiateSigning()}

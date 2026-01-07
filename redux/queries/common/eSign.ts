@@ -96,6 +96,13 @@ export const eSignEndpoints = (
         query: (id) => `${PREFIX}/industry/${id}/docs`,
         providesTags: ['E-Sign'],
     }),
+    getIndustryESignDocuments: builder.query<any, { userId: number }>({
+        query: ({ userId }) => ({
+            url: `industries/facility-checklist/pending/list`,
+            params: { userId },
+        }),
+        providesTags: ['E-Sign'],
+    }),
 
     getIndustryEsignDetail: builder.query<any, number>({
         query: (id) => `${PREFIX}/facility-checklist/template/${id}/view`,

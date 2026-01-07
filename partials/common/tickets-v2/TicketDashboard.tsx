@@ -7,10 +7,11 @@ import { Header, TeamTabsList } from './components'
 import { ActiveTicketsTab, ResolvedTicketsTab } from './tickets-tabs'
 import { CommonApi } from '@queries'
 
+
 export const TicketDashboard = () => {
     const searchParams = useSearchParams()
     const router = useRouter()
-
+   
     // Read query param: ?tab=active
     const currentTab = searchParams.get('tab') || 'active'
 

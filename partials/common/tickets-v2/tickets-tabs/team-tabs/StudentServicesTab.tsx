@@ -10,7 +10,7 @@ import { useSelectableList } from '../../hooks'
 import { SelectAllTicketsCheckbox } from './SelectAllTicketsCheckbox'
 
 export const StudentServicesTab = () => {
-    const [itemPerPage, setItemPerPage] = useState(10)
+    const [itemPerPage, setItemPerPage] = useState(30)
     const [page, setPage] = useState(1)
     const router = useRouter()
     const tab = router.query.tab

@@ -15,9 +15,9 @@ export const Header = () => {
                             <h1 className="text-[#044866] text-xl mb-0">
                                 SkilTrak Auto-Escalation Tickets
                             </h1>
-                            <p className="text-[#0D5468]/70 text-xs">
+                            {/* <p className="text-[#0D5468]/70 text-xs">
                                 Automated 4-hour escalation engine
-                            </p>
+                            </p> */}
                         </div>
                     </div>
                 </div>

@@ -333,6 +333,7 @@ export interface SubAdmin extends BaseResponse {
     hasAllStudentAccess: boolean
 
     studentsCount: number
+    supportTeam: any
 }
 
 export interface PartnerRemovalRequests extends BaseResponse {

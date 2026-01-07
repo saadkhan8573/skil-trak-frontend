@@ -23,7 +23,6 @@ interface CallDetailModalProps {
 
 export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
     const [activeForm, setActiveForm] = useState<'find' | 'own' | null>(null)
-    console.log('call', call)
     return (
         <div className="fixed inset-0 z-50 overflow-y-auto">
             {/* Backdrop */}

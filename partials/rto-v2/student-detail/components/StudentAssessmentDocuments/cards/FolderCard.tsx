@@ -1,5 +1,9 @@
 import { Badge } from '@components'
-import { AssessmentEvidenceDetailType, Folder as FolderType, Student } from '@types'
+import {
+    AssessmentEvidenceDetailType,
+    Folder as FolderType,
+    Student,
+} from '@types'
 import { cn } from '@utils'
 import {
     AlertCircle,
@@ -33,17 +37,18 @@ export const FolderCard = ({
     course: any
     student: Student
 }) => {
-
-    console.log({ student })
     const StatusIcon = config.icon
     const [isOpened, setIsOpened] = useState(false)
     const [modal, setModal] = useState<any>(null)
     const { workplaceRto } = useWorkplace()
 
-    const rtoDetail = SubAdminApi.Student.getStudentRtoDetail(Number(student?.id), {
-        skip: !student?.id,
-        refetchOnMountOrArgChange: 300,
-    })
+    const rtoDetail = SubAdminApi.Student.getStudentRtoDetail(
+        Number(student?.id),
+        {
+            skip: !student?.id,
+            refetchOnMountOrArgChange: 300,
+        }
+    )
 
     const getTemplate = CommonApi.ESign.useESignTemplateDetail(
         {
@@ -131,10 +136,10 @@ export const FolderCard = ({
                                         folderStatus === 'approved'
                                             ? 'success'
                                             : folderStatus === 'pending'
-                                                ? 'warning'
-                                                : folderStatus === 'rejected'
-                                                    ? 'error'
-                                                    : 'info'
+                                            ? 'warning'
+                                            : folderStatus === 'rejected'
+                                            ? 'error'
+                                            : 'info'
                                     }
                                     Icon={StatusIcon}
                                 />

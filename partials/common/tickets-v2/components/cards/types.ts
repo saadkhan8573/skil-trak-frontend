@@ -1,7 +1,12 @@
 export type Team = 'student-services' | 'industry-sourcing' | 'qa' | 'rto'
 export type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' | null | undefined
 
-export type TicketStatus = 'open' | 'in-progress' | 'pending' | 'resolved'
+export type TicketStatus =
+    | 'open'
+    | 'in-progress'
+    | 'pending'
+    | 'resolved'
+    | 'assigned'
 export type EscalationType = 'auto' | 'manual'
 
 export type Phase =

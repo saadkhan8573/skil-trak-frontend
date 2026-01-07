@@ -6,7 +6,8 @@ import {
 import { UserRoles } from '@constants'
 import { useNotification } from '@hooks'
 import { CommonApi } from '@queries'
-import React, { useEffect } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
+import { DeleteSupportTicketModal } from '../../components'
 
 export const SelectAllTicketsCheckbox = ({
     isAllSelected,
@@ -16,20 +17,23 @@ export const SelectAllTicketsCheckbox = ({
     clearSelection,
 }: any) => {
     const { notification } = useNotification()
-    const [deleteBulk, deleteBulkResult] =
-        CommonApi.Teams.useBulkDeleteSupportTickets()
-    useEffect(() => {
-        if (deleteBulkResult.isSuccess) {
-            notification.success({
-                title: 'Tickets Deleted',
-                description: 'Tickets deleted successfully',
-            })
-            clearSelection()
-        }
-    }, [deleteBulkResult.isSuccess])
+    const [modal, setModal] = useState<ReactElement | null>(null)
+    const onCancel = () => {
+        setModal(null)
+    }
+    const onClickDelete = () => {
+        setModal(
+            <DeleteSupportTicketModal
+                onCancel={onCancel}
+                ticketIds={selectedTicketIds}
+                clearSelection={clearSelection}
+            />
+        )
+    }
+
     return (
         <>
-            <ShowErrorNotifications result={deleteBulkResult} />
+            {modal && modal}
             <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
                 <div className="flex items-center justify-between gap-2 mb-2 ml-3.5">
                     <div className="flex items-center gap-2">
@@ -53,11 +57,7 @@ export const SelectAllTicketsCheckbox = ({
                         <Button
                             text="Delete Selected item"
                             variant="error"
-                            onClick={() =>
-                                deleteBulk({ ids: selectedTicketIds })
-                            }
-                            loading={deleteBulkResult.isLoading}
-                            disabled={deleteBulkResult.isLoading}
+                            onClick={onClickDelete}
                         />
                     )}
                 </div>

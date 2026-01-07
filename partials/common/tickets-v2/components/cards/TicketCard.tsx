@@ -1,4 +1,11 @@
-import { Clock, User, ArrowRight, Building2, ExternalLink } from 'lucide-react'
+import {
+    Clock,
+    User,
+    ArrowRight,
+    Building2,
+    ExternalLink,
+    RefreshCw,
+} from 'lucide-react'
 import { memo } from 'react'
 import { Ticket } from './types'
 import { Select } from '@components'
@@ -7,6 +14,7 @@ import { TicketAssigneeSelector } from '../TicketAssigneeSelector'
 import { getUserCredentials } from '@utils'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import moment from 'moment'
 
 interface TicketCardProps {
     ticket: Ticket
@@ -29,6 +37,7 @@ const statusColors = {
     'in-progress': 'bg-[#0D5468]',
     pending: 'bg-[#F7A619]',
     resolved: 'bg-green-500',
+    assigned: 'bg-red-500',
 }
 
 const statusLabels = {
@@ -36,6 +45,7 @@ const statusLabels = {
     'in-progress': 'In Progress',
     pending: 'Pending',
     resolved: 'Resolved',
+    assigned: 'Assigned',
 }
 
 const teamStyles = {
@@ -132,6 +142,12 @@ const TicketCardComponent = ({
                         ? 'bg-red-500 animate-pulse'
                         : ticket?.severity === 'CRITICAL'
                         ? 'bg-red-400'
+                        : ticket?.severity === 'HIGH'
+                        ? 'bg-[#F7A619]'
+                        : ticket?.severity === 'MEDIUM'
+                        ? 'bg-blue-600'
+                        : ticket?.severity === 'LOW'
+                        ? 'bg-green-600'
                         : 'bg-[#044866]'
                 }`}
             ></div>
@@ -150,11 +166,11 @@ const TicketCardComponent = ({
                 />
 
                 {/* Status Dot */}
-                <div
+                {/* <div
                     className={`w-2 h-2 rounded-full ${
                         statusColors[ticket.status]
                     }`}
-                />
+                /> */}
                 {/* Status Dot */}
                 <div className="relative flex-shrink-0">
                     <div
@@ -162,7 +178,7 @@ const TicketCardComponent = ({
                             statusColors[ticket.status]
                         }`}
                     />
-                    {ticket.status === 'open' && (
+                    {ticket?.status === 'assigned' && (
                         <div className="absolute inset-0 w-2 h-2 rounded-full bg-red-500 animate-ping opacity-75"></div>
                     )}
                 </div>
@@ -233,9 +249,9 @@ const TicketCardComponent = ({
                                 <span>{ticket?.user?.name}</span>
                                 <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover/profile:opacity-100 transition-opacity" />
                             </div>
-                            {/* <div className="text-[#0D5468]/60 text-[9px] truncate">
-                                {ticket.studentId}
-                            </div> */}
+                            <div className="text-[#0D5468]/60 text-[9px] truncate">
+                                {ticket?.user?.student?.studentId}
+                            </div>
                         </div>
                     </Link>
                 )}
@@ -245,6 +261,12 @@ const TicketCardComponent = ({
                     <Clock className="w-3 h-3" />
                     <span>{getDetailedTimeStuck(ticket?.createdAt)}</span>
                 </div>
+                {router.query.tab === 'resolved' && (
+                    <div className="flex items-center gap-1 text-[10px] text-[#0D5468]/70 w-16 flex-shrink-0">
+                        <RefreshCw className="w-3 h-3" />
+                        <span>{moment(ticket?.updatedAt).fromNow()}</span>
+                    </div>
+                )}
 
                 {/* Team */}
                 <div className="flex gap-1 flex-wrap">

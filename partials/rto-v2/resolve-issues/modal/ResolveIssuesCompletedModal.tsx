@@ -81,7 +81,6 @@ export const ResolveIssuesCompletedModal = ({
         resolveIssue({ id: student.id, body: { note: resolution } })
     }
 
-    console.log({ student })
     return (
         <>
             <ShowErrorNotifications result={resolveIssueResult} />

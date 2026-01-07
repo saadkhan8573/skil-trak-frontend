@@ -49,7 +49,6 @@ export const PremiumCurrentActionsCard = ({
     const { autoApplyLoader } = useWorkplaceHook()
     const onCancelClicked = () => setModal(null)
     // const [refresh, refreshResult] = SubAdminApi.Student.rerunAutomation()
-    console.log('student', workplace)
     const onReRunAutomation = () => {
         setModal(
             <ReRunWPAutomation
@@ -801,14 +800,14 @@ export const PremiumCurrentActionsCard = ({
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
                                     <Shield className="h-5 w-5 text-amber-600" />
                                 </div>
-                                <div className="flex-1">
+                                {/* <div className="flex-1">
                                     <p className="text-amber-900 font-medium">
                                         HOD Review Required
                                     </p>
                                     <p className="text-amber-700 text-sm mt-1">
                                         Awaiting HOD approval for new industry
                                     </p>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         {/* <div className="grid grid-cols-2 gap-2">

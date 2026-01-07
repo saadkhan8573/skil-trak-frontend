@@ -16,6 +16,12 @@ import {
 } from '../tickets-tabs'
 import { getUserCredentials } from '@utils'
 import { UserRoles } from '@constants'
+import { useSubadminProfile } from '@hooks'
+
+const ROLE_TAG_MAP: Record<string, string[]> = {
+    subadmin: ['sourcing team', 'quality assurance', 'admin'],
+    // rto is intentionally excluded
+}
 
 export enum TAGS {
     STUDENT_SERVICES = 'student services',
@@ -24,11 +30,47 @@ export enum TAGS {
     SOURCING_TEAM = 'sourcing team',
     RTO_TEAM = 'rto team',
 }
+const TAG_TO_TAB_ID_MAP: Record<TAGS, string> = {
+    [TAGS.STUDENT_SERVICES]: 'student-services',
+    [TAGS.SOURCING_TEAM]: 'industry-sourcing',
+    [TAGS.QUALITY_ASSURANCE]: 'qa',
+    [TAGS.ADMIN]: 'all',
+    [TAGS.RTO_TEAM]: 'rto',
+}
 
 export const TeamTabsList = () => {
     const router = useRouter()
     const tabName = router.query.tab
     const role = getUserCredentials()?.role
+
+    const subadmin = useSubadminProfile()
+    console.log('subadmin', subadmin)
+    const getAllowedTabIdsForSubadmin = (supportTeam: any[] = []) => {
+        const tabIds = new Set<string>()
+
+        supportTeam.forEach((team) => {
+            team.tags?.forEach((tag: string) => {
+                const normalizedTag = tag.toLowerCase() as TAGS
+                const tabId = TAG_TO_TAB_ID_MAP[normalizedTag]
+                if (tabId) {
+                    tabIds.add(tabId)
+                }
+            })
+        })
+
+        return Array.from(tabIds)
+    }
+
+    // const visibleTeams = getVisibleSupportTeams({
+    //     supportTeam,
+    //     role: user?.role,
+    // })
+
+    const allowedSubadminTabIds =
+        role === UserRoles.SUBADMIN
+            ? getAllowedTabIdsForSubadmin(subadmin?.supportTeam)
+            : []
+
     const teamTabs = [
         {
             id: 'all',
@@ -63,10 +105,23 @@ export const TeamTabsList = () => {
     ]
     const visibleTabs = teamTabs.filter((tab) => {
         if (role === UserRoles.ADMIN) return true
-        if (role === UserRoles.SUBADMIN) return true
-        if (role === UserRoles.RTO) return tab.id === 'rto'
+
+        if (role === UserRoles.RTO) {
+            return tab.id === 'rto'
+        }
+
+        if (role === UserRoles.SUBADMIN) {
+            return allowedSubadminTabIds.includes(tab.id)
+        }
+
         return false
     })
+    // const visibleTabs = teamTabs.filter((tab) => {
+    //     if (role === UserRoles.ADMIN) return true
+    //     if (role === UserRoles.SUBADMIN) return true
+    //     if (role === UserRoles.RTO) return tab.id === 'rto'
+    //     return false
+    // })
     const defaultTab =
         role === UserRoles.ADMIN
             ? 'all'

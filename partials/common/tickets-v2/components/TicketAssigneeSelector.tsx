@@ -19,7 +19,6 @@ export const TicketAssigneeSelector = ({ taskId, teamId, member }: any) => {
     const selectedAssignee = memberOptions?.find(
         (member: any) => member?.value === member?.id
     )
-    console.log('selectedAssignee', selectedAssignee)
     return (
         <>
             <ShowErrorNotifications result={changeAssigneeResult} />

@@ -32,7 +32,7 @@ export const TicketDetails = () => {
             {isLoading ? (
                 <TicketDetailsSkeleton />
             ) : (
-                <div className="w-full max-w-5xl mx-auto px-4 sm:px-6">
+                <div className="w-full mx-auto px-4 sm:px-6">
                     {/* Top Bar */}
                     <div className="mb-4">
                         {/* <button

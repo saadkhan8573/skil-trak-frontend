@@ -42,3 +42,4 @@ export * from './noteTemplate.type'
 
 export * from './kpi.types'
 export * from './meal-types.enum'
+export * from './confirmation.type'

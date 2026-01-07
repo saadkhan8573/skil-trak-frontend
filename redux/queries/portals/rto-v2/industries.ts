@@ -1,6 +1,7 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
 import {
+    ConfirmationSource,
     Course,
     Industry,
     IndustryCourseApproval,
@@ -290,14 +291,29 @@ export const industriesEndpoints = (
         invalidatesTags: ['RTOIndustries', 'Industry'],
     }),
 
-    confirmHighlightedTasks: builder.mutation<
-        Course,
-        { id: number; courseId: number }
+    confirmIndustryHighlightedTask: builder.mutation<
+        any,
+        {
+            industryId: number
+            taskId: number
+            confirmationSource?: ConfirmationSource
+            isConfirmed: boolean,
+            confirmationDetailId?: number
+        }
     >({
-        query: ({ id, courseId }) => ({
-            url: `${INDUSTRIESPREFIX}${id}/course/${courseId}/tasks/confirm`,
+        query: ({ industryId, taskId, confirmationSource, isConfirmed, confirmationDetailId }) => ({
+            url: `${INDUSTRIESPREFIX}${industryId}/task/${taskId}/confirm`,
             method: 'POST',
+            params: { industryTaskId:confirmationDetailId },
+            body: { confirmationSource, isConfirmed },
         }),
-        invalidatesTags: ['RTOIndustries'],
+        invalidatesTags: ['RTOIndustries', 'Industry'],
+    }),
+    getHighlightedTasks: builder.query<any, {industryId:number; courseId: number }>({
+        query: ({ courseId,...params }) => ({
+            url: `${INDUSTRIESPREFIX}course/${courseId}/tasks`,
+            params
+        }),
+        providesTags: ['RTOIndustries', 'Industry'],
     }),
 })

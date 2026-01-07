@@ -1,5 +1,6 @@
 import {
     CheckCircle,
+    Clock,
     MessageSquare,
     Plus,
     StickyNote,
@@ -11,6 +12,7 @@ import { TicketNote } from '../cards/types'
 import { CommonApi } from '@queries'
 import { Button, ShowErrorNotifications } from '@components'
 import { useNotification } from '@hooks'
+import moment from 'moment'
 
 export const MainContentCard = ({ ticket }: any) => {
     const [newNote, setNewNote] = useState('')
@@ -26,6 +28,7 @@ export const MainContentCard = ({ ticket }: any) => {
             setNewNote('')
         }
     }
+
     useEffect(() => {
         if (addNoteResult.isSuccess) {
             notification.success({
@@ -41,20 +44,6 @@ export const MainContentCard = ({ ticket }: any) => {
             <div className="">
                 {/* Left Column - Main Content */}
                 <div className=" space-y-4">
-                    {/* resolution */}
-                    {ticket?.resolution && (
-                        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-5">
-                            <h3 className="text-[#044866] text-sm mb-3 flex items-center gap-2">
-                                <MessageSquare className="size-4 text-[#F7A619]" />
-                                Resolution Note
-                            </h3>
-                            <div className="bg-gradient-to-br from-[#044866]/5 via-[#0D5468]/5 to-[#F7A619]/5 rounded-lg p-4 border border-[#044866]/10">
-                                <p className="text-[#044866] text-xs leading-relaxed">
-                                    {ticket?.resolution ?? 'NA'}
-                                </p>
-                            </div>
-                        </div>
-                    )}
                     {/* Description Card */}
                     <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-5">
                         <h3 className="text-[#044866] text-sm mb-3 flex items-center gap-2">
@@ -160,29 +149,27 @@ export const MainContentCard = ({ ticket }: any) => {
                         )}
 
                     {/* Resolution (if resolved) */}
-                    {/* {ticket?.status === 'resolved' && ticket?.resolution && (
-                    <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-5 text-white shadow-xl border-2 border-green-400">
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                                <CheckCircle className="w-6 h-6" />
+                    {ticket?.status === 'resolved' && ticket?.resolution && (
+                        <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-5 text-white shadow-xl border-2 border-green-400">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                                    <CheckCircle className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h3 className="">Ticket Resolved</h3>
+                                    <p className="text-white/80 text-sm">
+                                        Updated{' '}
+                                        {moment(ticket?.updatedAt).fromNow()}
+                                    </p>
+                                </div>
                             </div>
-                            <div>
-                                <h3 className="">Ticket Resolved</h3>
-                                <p className="text-white/80 text-sm">
-                                    {ticket.resolvedAt &&
-                                        new Date(
-                                            ticket.resolvedAt
-                                        ).toLocaleString()}
+                            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm border border-white/20">
+                                <p className="text-white/95 leading-relaxed">
+                                    {ticket?.resolution}
                                 </p>
                             </div>
                         </div>
-                        <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm border border-white/20">
-                            <p className="text-white/95 leading-relaxed">
-                                {ticket.resolution}
-                            </p>
-                        </div>
-                    </div>
-                )} */}
+                    )}
                 </div>
 
                 {/* Right Column - Nothing here for now, can be used for other features */}

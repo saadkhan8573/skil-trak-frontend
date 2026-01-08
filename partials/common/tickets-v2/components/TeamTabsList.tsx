@@ -9,6 +9,7 @@ import {
 import { useRouter } from 'next/router'
 import {
     AllTeamsTabs,
+    FilteredSupportTickets,
     IndustrySourcingTab,
     QATeamTab,
     RtoTeamTab,
@@ -17,11 +18,9 @@ import {
 import { getUserCredentials } from '@utils'
 import { UserRoles } from '@constants'
 import { useSubadminProfile } from '@hooks'
-
-const ROLE_TAG_MAP: Record<string, string[]> = {
-    subadmin: ['sourcing team', 'quality assurance', 'admin'],
-    // rto is intentionally excluded
-}
+import { SupportTicketFilter } from './filters'
+import { useEffect, useState } from 'react'
+import { CommonApi } from '@queries'
 
 export enum TAGS {
     STUDENT_SERVICES = 'student services',
@@ -39,12 +38,41 @@ const TAG_TO_TAB_ID_MAP: Record<TAGS, string> = {
 }
 
 export const TeamTabsList = () => {
+    const [filters, setFilters] = useState<any>()
+    const [itemPerPage, setItemPerPage] = useState(30)
+    const [page, setPage] = useState(1)
     const router = useRouter()
     const tabName = router.query.tab
+    const teamTabQuery = router.query.teamTab as string
     const role = getUserCredentials()?.role
 
+    const buildSearchParams = (filter: any) => {
+        if (!filter || typeof filter !== 'object') {
+            return {}
+        }
+
+        return Object.fromEntries(
+            Object.entries(filter).filter(
+                ([_, value]) =>
+                    value !== '' && value !== null && value !== undefined
+            )
+        )
+    }
+
+    const searchParams = buildSearchParams(filters ?? {})
+
+    // Build search string with : instead of =
+    const searchString = Object.entries(searchParams)
+        .map(([key, value]) => `${key}:${value}`)
+        .join(',')
+
+    const { data, isLoading, isError } = CommonApi.Teams.useAutomatedTickets({
+        search: searchString || undefined,
+        skip: itemPerPage * page - itemPerPage,
+        limit: itemPerPage,
+    })
+
     const subadmin = useSubadminProfile()
-    console.log('subadmin', subadmin)
     const getAllowedTabIdsForSubadmin = (supportTeam: any[] = []) => {
         const tabIds = new Set<string>()
 
@@ -60,12 +88,6 @@ export const TeamTabsList = () => {
 
         return Array.from(tabIds)
     }
-
-    // const visibleTeams = getVisibleSupportTeams({
-    //     supportTeam,
-    //     role: user?.role,
-    // })
-
     const allowedSubadminTabIds =
         role === UserRoles.SUBADMIN
             ? getAllowedTabIdsForSubadmin(subadmin?.supportTeam)
@@ -103,6 +125,7 @@ export const TeamTabsList = () => {
             element: <QATeamTab />,
         },
     ]
+
     const visibleTabs = teamTabs.filter((tab) => {
         if (role === UserRoles.ADMIN) return true
 
@@ -116,12 +139,7 @@ export const TeamTabsList = () => {
 
         return false
     })
-    // const visibleTabs = teamTabs.filter((tab) => {
-    //     if (role === UserRoles.ADMIN) return true
-    //     if (role === UserRoles.SUBADMIN) return true
-    //     if (role === UserRoles.RTO) return tab.id === 'rto'
-    //     return false
-    // })
+
     const defaultTab =
         role === UserRoles.ADMIN
             ? 'all'
@@ -129,26 +147,84 @@ export const TeamTabsList = () => {
             ? 'rto'
             : visibleTabs[0]?.id
 
+    // Use teamTab from URL query if exists, otherwise use defaultTab
+    const [activeTeamTab, setActiveTeamTab] = useState(
+        teamTabQuery || defaultTab
+    )
+
+    // Update activeTeamTab when query changes
+    useEffect(() => {
+        if (teamTabQuery) {
+            setActiveTeamTab(teamTabQuery)
+        }
+    }, [teamTabQuery])
+
+    const handleTeamTabChange = (value: string) => {
+        setActiveTeamTab(value)
+        // Reset page to 1 when switching team tabs and update URL
+        router.push(
+            {
+                pathname: router.pathname,
+                query: { ...router.query, teamTab: value, page: 1 }, // ✅ Reset page to 1
+            },
+            undefined,
+            { shallow: true }
+        )
+    }
+
+    const hasActiveFilters = (filters?: Record<string, any>) => {
+        if (!filters) return false
+
+        return Object.values(filters).some(
+            (value) =>
+                value !== '' &&
+                value !== null &&
+                value !== undefined &&
+                value !== 'all'
+        )
+    }
+
     return (
         <>
-            <Tabs defaultValue={defaultTab} className="w-full mt-6">
-                <TabsList className="flex flex-wrap gap-3 bg-transparent p-0 shadow-none">
-                    {visibleTabs.map((tab) => {
-                        const Icon = tab.icon
-                        return (
-                            <TabsTrigger
-                                key={tab.id}
-                                value={tab.id}
-                                className={`
-                                            group relative flex items-center gap-2 px-3 py-5 rounded-xl text-sm transition-all duration-300
-        
+            <Tabs
+                value={activeTeamTab}
+                onValueChange={handleTeamTabChange}
+                className="w-full mt-6"
+            >
+                <SupportTicketFilter
+                    activeFilters={filters}
+                    onFilterChange={setFilters}
+                />
+                {hasActiveFilters(filters) ? (
+                    <>
+                        <FilteredSupportTickets
+                            isLoading={isLoading}
+                            data={data}
+                            isError={isError}
+                            setPage={setPage}
+                            itemPerPage={itemPerPage}
+                            setItemPerPage={setItemPerPage}
+                        />
+                    </>
+                ) : (
+                    <>
+                        <TabsList className="flex flex-wrap gap-3 bg-transparent p-0 shadow-none">
+                            {visibleTabs.map((tab) => {
+                                const Icon = tab.icon
+                                return (
+                                    <TabsTrigger
+                                        key={tab.id}
+                                        value={tab.id}
+                                        className={`
+                                            group relative z-30 flex items-center gap-2 px-3 py-5 rounded-xl text-sm transition-all duration-300
+
                                             /* ACTIVE */
                                             data-[state=active]:bg-primary 
                                             data-[state=active]:text-white 
                                             data-[state=active]:shadow-lg 
                                             data-[state=active]:shadow-primary/20 
                                             data-[state=active]:scale-105
-        
+
                                             /* INACTIVE */
                                             data-[state=inactive]:bg-white 
                                             data-[state=inactive]:text-primaryNew
@@ -156,53 +232,57 @@ export const TeamTabsList = () => {
                                             data-[state=inactive]:border 
                                             data-[state=inactive]:border-gray-200
                                             data-[state=inactive]:hover:bg-gray-50
-                                `}
-                            >
-                                {/* Glow effect */}
-                                <div
-                                    className={`
+                                        `}
+                                    >
+                                        <div
+                                            className={`
                                                 absolute inset-0 rounded-lg blur opacity-30 
                                                 bg-[#F7A619] 
                                                 hidden
                                                 data-[state=active]:block
                                             `}
-                                ></div>
+                                        ></div>
 
-                                <div className="relative z-10 flex items-center gap-2">
-                                    <Icon
-                                        className={`
+                                        <div className="relative z-10 flex items-center gap-2">
+                                            <Icon
+                                                className={`
                                                     w-4 h-4 transition-transform duration-300
                                                     data-[state=active]:scale-110
                                                     group-hover:scale-110
                                                 `}
-                                    />
-                                    <span>{tab.label}</span>
-                                </div>
+                                            />
+                                            <span>{tab.label}</span>
+                                        </div>
 
-                                {/* Hover underline (only inactive) */}
-                                <div
-                                    className={`
+                                        <div
+                                            className={`
                                                 absolute bottom-0 left-0 right-0 h-0.5 bg-[#044866] rounded-full 
                                                 transform scale-x-0 transition-transform duration-300
                                                 group-hover:scale-x-100
                                                 data-[state=active]:hidden
                                             `}
-                                ></div>
-                            </TabsTrigger>
-                        )
-                    })}
-                </TabsList>
+                                        ></div>
+                                    </TabsTrigger>
+                                )
+                            })}
+                        </TabsList>
 
-                {visibleTabs.map((tab) => (
-                    <TabsContent key={tab.id} value={tab.id} className="mt-4">
-                        <div className="p-4 border rounded-lg bg-white shadow-sm">
-                            <h2 className="text-lg capitalize font-semibold text-[#044866]">
-                                {tab.label} - {tabName}
-                            </h2>
-                            <div className="py-4">{tab.element}</div>
-                        </div>
-                    </TabsContent>
-                ))}
+                        {visibleTabs.map((tab) => (
+                            <TabsContent
+                                key={tab.id}
+                                value={tab.id}
+                                className="mt-4"
+                            >
+                                <div className="p-4 border rounded-lg bg-white shadow-sm">
+                                    <h2 className="text-lg capitalize font-semibold text-[#044866]">
+                                        {tab.label} - {tabName}
+                                    </h2>
+                                    <div className="py-4">{tab.element}</div>
+                                </div>
+                            </TabsContent>
+                        ))}
+                    </>
+                )}
             </Tabs>
         </>
     )

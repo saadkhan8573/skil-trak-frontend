@@ -19,6 +19,7 @@ const timeSlotPresets: OptionType[] = [
     { label: 'Morning (9:00 AM - 12:00 PM)', value: 'morning' },
     { label: 'Afternoon (1:00 PM - 5:00 PM)', value: 'afternoon' },
     { label: 'All Day (9:00 AM - 5:00 PM)', value: 'allday' },
+    { label: 'Custom', value: 'custom' },
 ]
 
 export function MonthlySchedule({ data, onChange }: MonthlyScheduleProps) {
@@ -44,15 +45,22 @@ export function MonthlySchedule({ data, onChange }: MonthlyScheduleProps) {
             newStart = '09:00'
             newEnd = '17:00'
         } else {
-            // Keep existing time or default for custom
-            const current = data.slots[0]
-            if (current) {
-                newStart = current.startTime
-                newEnd = current.endTime
-            }
+            // Default to a non-preset time to ensure custom inputs are shown
+            // 09:00 - 18:00 does not match any preset
+            newStart = '09:00'
+            newEnd = '18:00'
         }
 
         onChange({ ...data, slots: [{ startTime: newStart, endTime: newEnd }] })
+    }
+
+    const handleTimeChange = (field: 'startTime' | 'endTime', value: string) => {
+        const currentSlot = data.slots[0] || {
+            startTime: '09:00',
+            endTime: '12:00',
+        }
+        const newSlot = { ...currentSlot, [field]: value }
+        onChange({ ...data, slots: [newSlot] })
     }
 
     const handleDateClick = (date: Date) => {
@@ -167,9 +175,38 @@ export function MonthlySchedule({ data, onChange }: MonthlyScheduleProps) {
                             />
                         </div>
 
-                        <div className="flex-1 flex justify-center sm:justify-end items-center px-3 py-1.5 bg-[#044866]/5 rounded border border-[#044866]/10 text-[#044866] font-bold text-xs animate-in zoom-in-95 fade-in duration-300 shadow-sm">
-                            <Clock className="w-3.5 h-3.5 mr-2 opacity-60" />
-                            {currentSlot.startTime} - {currentSlot.endTime}
+                        <div className="flex-1 flex justify-center sm:justify-end items-center">
+                            {currentPreset === 'custom' ? (
+                                <div className="flex items-center gap-2 animate-in fade-in zoom-in-95 duration-200">
+                                    <Clock className="w-3.5 h-3.5 text-slate-400" />
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            type="time"
+                                            value={currentSlot.startTime}
+                                            onChange={(e) =>
+                                                handleTimeChange('startTime', e.target.value)
+                                            }
+                                            className="bg-white border border-slate-200 rounded px-2 py-1 text-xs font-medium text-slate-700 focus:outline-none focus:border-emerald-500 cursor-pointer transition-colors hover:border-emerald-300"
+                                        />
+                                        <span className="text-slate-400 font-light text-[10px] uppercase">
+                                            to
+                                        </span>
+                                        <input
+                                            type="time"
+                                            value={currentSlot.endTime}
+                                            onChange={(e) =>
+                                                handleTimeChange('endTime', e.target.value)
+                                            }
+                                            className="bg-white border border-slate-200 rounded px-2 py-1 text-xs font-medium text-slate-700 focus:outline-none focus:border-emerald-500 text-right cursor-pointer transition-colors hover:border-emerald-300"
+                                        />
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="px-3 py-1.5 bg-[#044866]/5 rounded border border-[#044866]/10 text-[#044866] font-bold text-xs animate-in zoom-in-95 fade-in duration-300 shadow-sm flex items-center">
+                                    <Clock className="w-3.5 h-3.5 mr-2 opacity-60" />
+                                    {currentSlot.startTime} - {currentSlot.endTime}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -69,6 +69,14 @@ export const industryApi = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Industries', 'RTOIndustries'],
         }),
+        updateIndustryData: build.mutation<any, any>({
+            query: ({ id, body }) => ({
+                url: `industries/${id}/update/data`,
+                method: 'PATCH',
+                body,
+            }),
+            invalidatesTags: ['Industries', 'RTOIndustries'],
+        }),
         // get industry fav by coordinator
 
         ...mouEndpoints(build),
@@ -100,6 +108,7 @@ export const {
     useIndustryProfileQuery,
     useGetIndustryFavByCoordinatorQuery,
     useUpdateIndustryProfileMutation,
+    useUpdateIndustryDataMutation,
 
     // ------ AVAILABLE SHIFTS ------ //
     useGetShiftsQuery,
@@ -261,6 +270,7 @@ export const IndustryApi = {
     Profile: {
         useIndustryProfileQuery,
         useUpdateIndustryProfileMutation,
+        useUpdateIndustryDataMutation,
         useIndustryFavByCoordinator: useGetIndustryFavByCoordinatorQuery,
     },
     AvailableShifts: {

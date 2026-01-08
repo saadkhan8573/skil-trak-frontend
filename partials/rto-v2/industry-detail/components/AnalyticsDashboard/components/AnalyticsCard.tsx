@@ -70,14 +70,6 @@ export function AnalyticsCard({ card, index }: AnalyticsCardProps) {
                             </Typography>
                         </div>
 
-                        {/* Trend Badge */}
-                        {card.trend === 'up' && (
-                            <div className="flex items-center gap-0.5 bg-emerald-50 text-emerald-600 px-1.5 py-0.5 rounded-full text-[8px] font-bold border border-emerald-100/50 shadow-sm">
-                                <ArrowUp className="w-2 h-2" strokeWidth={3} />
-                                <span>{card.percentage}%</span>
-                            </div>
-                        )}
-
                         {/* Urgent Badge */}
                         {card.trend === 'urgent' && (
                             <div className="flex items-center gap-0.5 bg-rose-50 text-rose-600 px-1.5 py-0.5 rounded-full text-[8px] font-bold border border-rose-100/50 animate-pulse">

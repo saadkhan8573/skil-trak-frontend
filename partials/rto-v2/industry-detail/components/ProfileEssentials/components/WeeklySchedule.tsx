@@ -27,6 +27,7 @@ const timeSlotPresets: OptionType[] = [
     { label: 'Morning (9:00 AM - 12:00 PM)', value: 'morning' },
     { label: 'Afternoon (1:00 PM - 5:00 PM)', value: 'afternoon' },
     { label: 'All Day (9:00 AM - 5:00 PM)', value: 'allday' },
+    { label: 'Custom', value: 'custom' },
 ]
 
 export function WeeklySchedule({ schedule, onChange }: WeeklyScheduleProps) {
@@ -68,12 +69,10 @@ export function WeeklySchedule({ schedule, onChange }: WeeklyScheduleProps) {
             newStart = '09:00'
             newEnd = '17:00'
         } else {
-            // Keep existing time or default for custom
-            const current = schedule.find((d) => d.day === dayKey)?.slots[0]
-            if (current) {
-                newStart = current.startTime
-                newEnd = current.endTime
-            }
+            // Default to a non-preset time to ensure custom inputs are shown
+            // 09:00 - 18:00 does not match any preset
+            newStart = '09:00'
+            newEnd = '18:00'
         }
 
         const newSchedule = schedule.map((day) => {
@@ -177,7 +176,7 @@ export function WeeklySchedule({ schedule, onChange }: WeeklyScheduleProps) {
                                     </div>
 
                                     <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-3">
-                                        <div className="w-full sm:w-1/2 min-w-[260px]">
+                                        <div className="w-full sm:w-1/2">
                                             <Select
                                                 name={`preset-${day.day}`}
                                                 options={timeSlotPresets}

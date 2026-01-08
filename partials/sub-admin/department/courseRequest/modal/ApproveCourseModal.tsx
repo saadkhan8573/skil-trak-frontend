@@ -47,15 +47,6 @@ export const ApproveCourseModal = ({ onCloseModal, request }: any) => {
         }
     }, [courseRequestResult.isSuccess])
 
-    const validateForm = () => {
-        if (request?.description === null && !description.trim()) {
-            setValidationError('Description is required')
-            return false
-        }
-        setValidationError('')
-        return true
-    }
-
     const handleTagEnter = (name: string, newTag: string) => {
         setTags((prevTags: any) => ({
             ...prevTags,

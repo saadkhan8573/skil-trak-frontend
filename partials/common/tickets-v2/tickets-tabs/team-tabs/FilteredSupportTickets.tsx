@@ -1,27 +1,23 @@
-import { NoData, PageSize, Pagination } from '@components'
 import { CommonApi } from '@queries'
+import React, { useState } from 'react'
+import { TicketListSkeleton } from '../../skeleton'
+import { NoData, PageSize, Pagination } from '@components'
+import { SelectAllTicketsCheckbox } from './SelectAllTicketsCheckbox'
+import { useSelectableList } from '../../hooks'
+import { EmptyTicket, TicketCard } from '../../components'
 import { getUserCredentials } from '@utils'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
-import { EmptyTicket, TicketCard } from '../../components'
-import { useSelectableList, useTicketListNavigation } from '../../hooks'
-import { TicketListSkeleton } from '../../skeleton'
-import { SelectAllTicketsCheckbox } from './SelectAllTicketsCheckbox'
+import { UserRoles } from '@constants'
 
-export const AllTeamsTabs = () => {
-    const router = useRouter()
-    const tab = router.query.tab
-    const [itemPerPage, setItemPerPage] = useState(30)
-    const { page, setPage, handleTicketClick } = useTicketListNavigation({
-        defaultTeamTab: 'all',
-    })
-
-    const { data, isLoading, isError } = CommonApi.Teams.useAutomatedTickets({
-        search: `status:${tab === 'active' ? 'assigned' : 'resolved'}`,
-        skip: itemPerPage * page - itemPerPage,
-        limit: itemPerPage,
-    })
-
+export const FilteredSupportTickets = ({
+    isLoading,
+    isError,
+    data,
+    itemPerPage,
+    setItemPerPage,
+    setPage,
+    page,
+}: any) => {
     const {
         selectedIds: selectedTicketIds,
         isAllSelected,
@@ -29,9 +25,11 @@ export const AllTeamsTabs = () => {
         toggleSelectOne,
         clearSelection,
     } = useSelectableList(data?.data || [])
-
+    const router = useRouter()
+    const tab = router.query.tab
+    const role = getUserCredentials()?.role
     return (
-        <div className="space-y-2">
+        <>
             {isError && <NoData isError />}
             {isLoading ? (
                 <TicketListSkeleton />
@@ -67,11 +65,27 @@ export const AllTeamsTabs = () => {
                         >
                             <TicketCard
                                 ticket={ticket}
-                                onClick={() => handleTicketClick(ticket?.id)}
+                                onClick={() => {
+                                    if (role === UserRoles.RTO) {
+                                        router.push(
+                                            `/portals/rto/communications/tickets/${ticket?.id}`
+                                        )
+                                    } else if (role === UserRoles.ADMIN) {
+                                        router.push(
+                                            `/portals/admin/support-tickets/${ticket?.id}`
+                                        )
+                                    } else if (role === UserRoles.SUBADMIN) {
+                                        router.push(
+                                            `/portals/sub-admin/support-tickets/${ticket?.id}`
+                                        )
+                                    }
+                                }}
                                 isSelected={selectedTicketIds.includes(
                                     ticket.id
                                 )}
                                 onSelect={toggleSelectOne}
+                                // onViewStudentProfile={setSelectedStudentId}
+                                // onViewIndustryProfile={setSelectedIndustryId}
                             />
                         </div>
                     ))}
@@ -79,6 +93,6 @@ export const AllTeamsTabs = () => {
             ) : (
                 !isError && <EmptyTicket />
             )}
-        </div>
+        </>
     )
 }

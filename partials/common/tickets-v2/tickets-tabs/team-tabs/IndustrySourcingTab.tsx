@@ -1,41 +1,30 @@
-import {
-    Button,
-    NoData,
-    PageSize,
-    Pagination,
-    ShowErrorNotifications,
-} from '@components'
+import { NoData, PageSize, Pagination } from '@components'
 import { CommonApi } from '@queries'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { EmptyTicket, TAGS } from '../../components'
-import { TicketCard } from '../../components/cards/TicketCard'
-import { TicketListSkeleton } from '../../skeleton'
-import { UserRoles } from '@constants'
 import { getUserCredentials } from '@utils'
-import { useNotification } from '@hooks'
-import { useSelectableList } from '../../hooks'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { EmptyTicket, TAGS, TicketCard } from '../../components'
+import { useSelectableList, useTicketListNavigation } from '../../hooks'
+import { TicketListSkeleton } from '../../skeleton'
 import { SelectAllTicketsCheckbox } from './SelectAllTicketsCheckbox'
 
 export const IndustrySourcingTab = () => {
-    const [itemPerPage, setItemPerPage] = useState(30)
-    const [page, setPage] = useState(1)
-
     const router = useRouter()
     const tab = router.query.tab
-    // useAutomatedTickets
+    const [itemPerPage, setItemPerPage] = useState(30)
+
+    const { page, setPage, handleTicketClick } = useTicketListNavigation({
+        defaultTeamTab: 'industry-sourcing',
+    })
+
     const { data, isLoading, isError } = CommonApi.Teams.useAutomatedTickets({
-        search: `${JSON.stringify({
-            status: tab === 'active' ? 'assigned' : 'resolved',
-            tag: TAGS.SOURCING_TEAM,
-        })
-            .replaceAll('{', '')
-            .replaceAll('}', '')
-            .replaceAll('"', '')
-            .trim()}`,
+        search: `status:${tab === 'active' ? 'assigned' : 'resolved'},tag:${
+            TAGS.SOURCING_TEAM
+        }`,
         skip: itemPerPage * page - itemPerPage,
         limit: itemPerPage,
     })
+
     const {
         selectedIds: selectedTicketIds,
         isAllSelected,
@@ -43,9 +32,6 @@ export const IndustrySourcingTab = () => {
         toggleSelectOne,
         clearSelection,
     } = useSelectableList(data?.data || [])
-
-    const role = getUserCredentials()?.role
-
     return (
         <>
             <div className="space-y-2">
@@ -62,7 +48,20 @@ export const IndustrySourcingTab = () => {
                             />
                             <Pagination
                                 pagination={data?.pagination}
-                                setPage={setPage}
+                                setPage={(newPage: any) => {
+                                    setPage(newPage)
+                                    router.push(
+                                        {
+                                            pathname: router.pathname,
+                                            query: {
+                                                ...router.query,
+                                                page: newPage,
+                                            },
+                                        },
+                                        undefined,
+                                        { shallow: true }
+                                    )
+                                }}
                             />
                         </div>
                         <SelectAllTicketsCheckbox
@@ -81,23 +80,9 @@ export const IndustrySourcingTab = () => {
                             >
                                 <TicketCard
                                     ticket={ticket}
-                                    onClick={() => {
-                                        if (role === UserRoles.RTO) {
-                                            router.push(
-                                                `/portals/rto/communications/tickets/${ticket?.id}`
-                                            )
-                                        } else if (role === UserRoles.ADMIN) {
-                                            router.push(
-                                                `/portals/admin/support-tickets/${ticket?.id}`
-                                            )
-                                        } else if (
-                                            role === UserRoles.SUBADMIN
-                                        ) {
-                                            router.push(
-                                                `/portals/sub-admin/support-tickets/${ticket?.id}`
-                                            )
-                                        }
-                                    }}
+                                    onClick={() =>
+                                        handleTicketClick(ticket?.id)
+                                    }
                                     isSelected={selectedTicketIds.includes(
                                         ticket.id
                                     )}

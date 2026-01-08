@@ -73,6 +73,8 @@ export const useCourseSelection = () => {
         }
     }, [sectors, selectedSector])
 
+    console.log({ selectedSector, studentCourses })
+
     // Auto-select first course when courses load
     useEffect(() => {
         if (courses && courses?.length > 0) {
@@ -85,10 +87,13 @@ export const useCourseSelection = () => {
                     selectedSector && course
                         ? course
                         : !selectedCourse
-                        ? courses?.[0]
-                        : selectedCourse
+                            ? courses?.[0]
+                            : selectedCourse
                 )
             )
+        }
+        return () => {
+            dispatch(setSelectedCourse(null as unknown as Course))
         }
     }, [courses, selectedSector])
 

@@ -450,9 +450,10 @@ export interface Industry extends BaseResponse {
     partnerRemovalRequests: PartnerRemovalRequests[]
     industryCourseApprovals: IndustryCourseApprovals[]
     profileCompletionPercentage: string
-    totalEnrolled: number
-    totalCapacity: number
     isRtoAssociated: boolean
+    secondaryContactPersonPhone?: string;
+    secondaryContactName?: string;
+    secondaryContactEmail?: string;
 }
 
 export interface PendingIndustry extends Industry {

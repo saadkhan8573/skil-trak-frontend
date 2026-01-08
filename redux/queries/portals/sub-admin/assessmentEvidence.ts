@@ -167,6 +167,7 @@ export const assessmentEvidenceEndpoints = (
     }),
     studentAssessmentCourses: builder.query<AssessmentCourseType[], number>({
         query: (id) => `${PREFIX}/student/course/${id}`,
+        keepUnusedDataFor: 0,
         providesTags: [
             'AssessmentEvidence',
             'SubAdminStudents',

@@ -17,6 +17,7 @@ import { GenerateBioDialog } from '../modal'
 import { WorkplaceTypeModal } from '../modal/WorkplaceTypeModal'
 import { IndustryBioEditor } from './IndustryBioEditor'
 import { PrimaryContactEditor } from './PrimaryContactEditor'
+import { SecondaryContactEditor } from './SecondaryContactEditor'
 
 interface ContactBiographyModalProps {
     isOpen: boolean
@@ -92,11 +93,23 @@ export function ContactBiographyModal({
                                     {/* Left Column - Contact & Workplace */}
                                     <div className="space-y-4">
                                         <PrimaryContactEditor
-                                            industryUserId={Number(industry?.user?.id)}
+                                            industryId={Number(industry?.id)}
                                             initialData={{
                                                 contactPerson: industry.contactPerson || '',
                                                 email: industry.user?.email || '',
-                                                phone: industry.contactPersonNumber || industry.phoneNumber || '',
+                                                contactPersonNumber: industry.contactPersonNumber || industry.phoneNumber || '',
+                                            }}
+                                        />
+
+                                        <SecondaryContactEditor
+                                            industryId={Number(industry?.id)}
+                                            initialData={{
+                                                secondaryContactName:
+                                                    industry.secondaryContactName || '',
+                                                secondaryContactEmail:
+                                                    industry.secondaryContactEmail || '',
+                                                secondaryContactPersonPhone:
+                                                    industry.secondaryContactPersonPhone || '',
                                             }}
                                         />
 
@@ -146,8 +159,8 @@ export function ContactBiographyModal({
                                     {/* Right Column - Biography */}
                                     <div>
                                         <IndustryBioEditor
-                                            industryUserId={Number(
-                                                industry?.user?.id
+                                            industryId={Number(
+                                                industry?.id
                                             )}
                                             initialBio={industry.bio || ''}
                                             updatedAt={industry.updatedAt + ""}

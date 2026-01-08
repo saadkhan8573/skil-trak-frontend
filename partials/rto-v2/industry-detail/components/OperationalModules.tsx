@@ -74,7 +74,7 @@ export function OperationalModules() {
         },
         {
             value: 'esign',
-            label: 'E-Sign Documents',
+            label: 'Pending E-Sign Documents',
             icon: FileSignature,
             component: ESignModule,
         },

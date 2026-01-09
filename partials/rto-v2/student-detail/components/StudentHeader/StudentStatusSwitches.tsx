@@ -6,13 +6,19 @@ import { UserRoles } from '@constants'
 import { useNotification } from '@hooks'
 import { AlertCircle, Flag, Moon, Star, HelpCircle } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import { FlagStudentDialog, NotContactableStudentDialog, UnflagStudentDialog } from './modals'
+import {
+    FlagStudentDialog,
+    NotContactableStudentDialog,
+    UnflagStudentDialog,
+} from './modals'
 import { IndustryRequestsActions } from '@partials/sub-admin/ManagerApprovalList/enum'
 
 export const StudentStatusSwitches = ({ student }: { student: Student }) => {
     const role = getUserCredentials()?.role
     const { notification } = useNotification()
-    const [activeModal, setActiveModal] = useState<'contactable' | 'flag' | 'unflag' | null>(null)
+    const [activeModal, setActiveModal] = useState<
+        'contactable' | 'flag' | 'unflag' | null
+    >(null)
 
     // 1. Profile Priority Logic
     const [makeAsHighPriority, makeAsHighPriorityResult] =
@@ -38,8 +44,12 @@ export const StudentStatusSwitches = ({ student }: { student: Student }) => {
     useEffect(() => {
         if (notContactableResult.isSuccess) {
             notification.success({
-                title: student?.nonContactable ? 'Contactable' : 'Not Contactable',
-                description: student?.nonContactable ? 'Student is now contactable.' : 'Student marked as not contactable.',
+                title: student?.nonContactable
+                    ? 'Contactable'
+                    : 'Not Contactable',
+                description: student?.nonContactable
+                    ? 'Student is now contactable.'
+                    : 'Student marked as not contactable.',
             })
         }
     }, [notContactableResult.isSuccess])
@@ -85,22 +95,36 @@ export const StudentStatusSwitches = ({ student }: { student: Student }) => {
         loading,
         disabled,
         request,
-        tooltipText
+        tooltipText,
     }: any) => (
         <div className="flex items-center gap-2.5 px-3 py-1.5 bg-white/40 backdrop-blur-md rounded-xl border border-slate-200/50 shadow-sm hover:shadow-md transition-all group min-w-[145px]">
-            <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300 ${isActive
-                    ? 'bg-amber-100 text-amber-600 shadow-inner'
-                    : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200 group-hover:text-slate-500'
-                }`}>
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'fill-amber-600/20' : ''}`} />
+            <div
+                className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300 ${isActive
+                        ? 'bg-amber-100 text-amber-600 shadow-inner'
+                        : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200 group-hover:text-slate-500'
+                    }`}
+            >
+                <Icon
+                    className={`w-3.5 h-3.5 ${isActive ? 'fill-amber-600/20' : ''
+                        }`}
+                />
             </div>
 
             <div className="flex flex-col flex-1">
                 <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest leading-none mb-0.5">
                     {label}
                 </span>
-                <span className={`text-[11px] font-bold leading-none ${isActive ? 'text-amber-600' : 'text-slate-600'}`}>
-                    {isActive ? (label === 'Priority' ? 'High' : 'Active') : (label === 'Priority' ? 'Normal' : 'Neutral')}
+                <span
+                    className={`text-[11px] font-bold leading-none ${isActive ? 'text-amber-600' : 'text-slate-600'
+                        }`}
+                >
+                    {isActive
+                        ? label === 'Priority'
+                            ? 'High'
+                            : 'Active'
+                        : label === 'Priority'
+                            ? 'Normal'
+                            : 'Neutral'}
                 </span>
             </div>
 
@@ -114,7 +138,8 @@ export const StudentStatusSwitches = ({ student }: { student: Student }) => {
                     </div>
                 )}
                 <Switch
-                    customStyleClass="scale-[0.7] origin-right"
+                    name={`${label.toLowerCase()}-switch`}
+                    customStyleClass="profileSwitch"
                     onChange={onChange}
                     isChecked={isActive}
                     defaultChecked={isActive}
@@ -126,7 +151,7 @@ export const StudentStatusSwitches = ({ student }: { student: Student }) => {
     )
 
     return (
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center justify-center xl:justify-start gap-2">
             <SwitchItem
                 icon={Star}
                 label="Priority"
@@ -154,7 +179,11 @@ export const StudentStatusSwitches = ({ student }: { student: Student }) => {
                 onChange={handleFlagChange}
                 disabled={role === UserRoles.OBSERVER}
                 request={flagRequest || unflagRequest}
-                tooltipText={flagRequest ? "Flag request pending approval" : "Unflag request pending approval"}
+                tooltipText={
+                    flagRequest
+                        ? 'Flag request pending approval'
+                        : 'Unflag request pending approval'
+                }
             />
 
             <NotContactableStudentDialog

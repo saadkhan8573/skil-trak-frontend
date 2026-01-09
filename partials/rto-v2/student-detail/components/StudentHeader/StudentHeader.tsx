@@ -89,10 +89,10 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                     <StudentStatusBanner />
 
                     {/* Top Section - Profile & Contact */}
-                    <div className="relative bg-gradient-to-br from-slate-50 via-white to-blue-50/30 p-3">
-                        <div className="flex items-center justify-between">
+                    <div className="relative bg-gradient-to-br from-slate-50 via-white to-blue-50/30 p-3 lg:p-4">
+                        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6 xl:gap-2">
                             {/* Left: Avatar + Name + Badges */}
-                            <div className="flex items-center gap-4">
+                            <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4">
                                 {/* Avatar */}
                                 <div className="relative">
                                     <div className="absolute -inset-2 bg-gradient-to-br from-[#F7A619] via-[#F7A619]/50 to-transparent rounded-full blur-2xl opacity-60"></div>
@@ -126,7 +126,7 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                         {student?.user?.name}{' '}
                                         {student?.familyName}
                                     </h2>
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                                         {studentBadges.map((badge) => (
                                             <div
                                                 key={badge.id}
@@ -165,16 +165,18 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                             </div>
 
                             {/* Center/Right: Status Switches */}
-                            <div className="flex-1 flex justify-center px-4">
+                            <div className="flex justify-center xl:flex-1">
                                 <StudentStatusSwitches student={student} />
                             </div>
 
                             {/* Right: Action Buttons */}
-                            <HeaderQuickActions student={student} />
+                            <div className="flex justify-center xl:justify-end">
+                                <HeaderQuickActions student={student} />
+                            </div>
                         </div>
 
                         {/* Contact Info Pills */}
-                        <div className="flex items-center gap-2 mt-2 ml-[87px]">
+                        <div className="flex flex-wrap items-center justify-center xl:justify-start gap-2 mt-4 xl:mt-2 xl:ml-[87px]">
                             {studentContactInfo.map((contact) => (
                                 <div
                                     key={contact.id}

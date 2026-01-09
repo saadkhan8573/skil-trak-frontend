@@ -38,7 +38,7 @@ export const HeaderQuickActions = ({ student }: { student: Student }) => {
         )
     }
     return (
-        <div className="flex items-center gap-2.5">
+        <div className="flex flex-wrap items-center justify-center xl:justify-end gap-2.5">
             {modal}
             <Button
                 onClick={onMakeCallClicked}

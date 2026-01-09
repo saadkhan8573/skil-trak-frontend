@@ -536,6 +536,7 @@ export const {
     useGetPendingDepartmentIndustryCountQuery,
     useGetPreviousIndustryCoursesQuery,
     useUploadCourseDocForIndustryMutation,
+    useAssignChecklistToCourseApprovalMutation,
     useGetSectorBasedCapacityQuery,
     useUpdateSectorBaseCapacityMutation,
     useUpdateOldCapacityToSectorBaseMutation,
@@ -768,6 +769,7 @@ export const SubAdminApi = {
         usePreviousIndustryCourses: useGetPreviousIndustryCoursesQuery,
         useSectorBasedCapacity: useGetSectorBasedCapacityQuery,
         uploadCourseDocForIndustry: useUploadCourseDocForIndustryMutation,
+        assignChecklistToCourseApproval: useAssignChecklistToCourseApprovalMutation,
         useSectorBaseCapacity: useUpdateSectorBaseCapacityMutation,
         useUpdateOldCapacityToSectorBase:
             useUpdateOldCapacityToSectorBaseMutation,

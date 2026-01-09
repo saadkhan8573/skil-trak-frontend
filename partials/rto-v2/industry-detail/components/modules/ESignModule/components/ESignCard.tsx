@@ -1,18 +1,34 @@
 import { Badge, Card, Typography } from '@components'
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import { EsignDocumentStatus, maskText } from '@utils'
-import { FileSignature, Send, User, Clock, CheckCircle2, Eye, PenTool } from 'lucide-react'
+import {
+    FileSignature,
+    Send,
+    User,
+    Clock,
+    CheckCircle2,
+    Eye,
+    PenTool,
+} from 'lucide-react'
 import moment from 'moment'
 import { useState } from 'react'
-import { ResendMailModal, RequestResign } from '@partials/sub-admin/assessmentEvidence/modal'
+import {
+    ResendMailModal,
+    RequestResign,
+} from '@partials/sub-admin/assessmentEvidence/modal'
 import { ViewDocumentModal } from '@partials/common/industries/modal'
-import { FillEsignFieldsModal, SubmitDocumentModal } from '@partials/common/StudentProfileDetail/modals'
+import {
+    FillEsignFieldsModal,
+    SubmitDocumentModal,
+} from '@partials/common/StudentProfileDetail/modals'
 
-export function ESignCard({ document, onRefetch }: { document: any, onRefetch: () => void }) {
+export function ESignCard({
+    document,
+    onRefetch,
+}: {
+    document: any
+    onRefetch: () => void
+}) {
     const [modal, setModal] = useState<any>(null)
     const [showUsers, setShowUsers] = useState(false)
     const [previewUrl, setPreviewUrl] = useState<string | null>(null)
@@ -74,6 +90,8 @@ export function ESignCard({ document, onRefetch }: { document: any, onRefetch: (
         )
     }
 
+    console.log({ document })
+
     return (
         <>
             {modal}
@@ -87,10 +105,13 @@ export function ESignCard({ document, onRefetch }: { document: any, onRefetch: (
             <Card className="p-0 border-[#E2E8F0] hover:shadow-lg transition-all duration-300 overflow-hidden bg-white">
                 <div className="p-4 flex items-center gap-4">
                     {/* Left: Icon */}
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm ${document.status === EsignDocumentStatus.SIGNED
-                        ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
-                        : 'bg-gradient-to-br from-[#044866] to-[#0D5468]'
-                        }`}>
+                    <div
+                        className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm ${
+                            document.status === EsignDocumentStatus.SIGNED
+                                ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
+                                : 'bg-gradient-to-br from-[#044866] to-[#0D5468]'
+                        }`}
+                    >
                         <FileSignature className="w-5 h-5 text-white" />
                     </div>
 
@@ -98,14 +119,20 @@ export function ESignCard({ document, onRefetch }: { document: any, onRefetch: (
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                             <h4 className="font-semibold text-sm text-[#1A2332] truncate">
-                                {document.template?.name || "E-Sign Document"}
+                                {document.template?.name || 'E-Sign Document'}
                             </h4>
                             {document.status === EsignDocumentStatus.SIGNED ? (
-                                <Badge variant="success" className="text-[10px] px-1.5 py-0 h-4 uppercase">
+                                <Badge
+                                    variant="success"
+                                    className="text-[10px] px-1.5 py-0 h-4 uppercase"
+                                >
                                     Signed
                                 </Badge>
                             ) : (
-                                <Badge variant="warning" className="text-[10px] px-1.5 py-0 h-4 uppercase">
+                                <Badge
+                                    variant="warning"
+                                    className="text-[10px] px-1.5 py-0 h-4 uppercase"
+                                >
                                     {document.status || 'Pending'}
                                 </Badge>
                             )}
@@ -113,12 +140,16 @@ export function ESignCard({ document, onRefetch }: { document: any, onRefetch: (
                         <div className="flex items-center gap-3">
                             <div className="flex items-center gap-1 text-[11px] text-[#64748B]">
                                 <Clock className="w-3.5 h-3.5" />
-                                {moment(document.createdAt).format('DD MMM, YYYY')}
+                                {moment(document.createdAt).format(
+                                    'DD MMM, YYYY'
+                                )}
                             </div>
                             {document.initiatedBy && (
                                 <div className="flex items-center gap-1.5 text-[11px] text-[#64748B] border-l border-[#E2E8F0] pl-3">
                                     <User className="w-3.5 h-3.5" />
-                                    <span className="font-semibold text-gray-400">Initiated By:</span>
+                                    <span className="font-semibold text-gray-400">
+                                        Initiated By:
+                                    </span>
                                     <span className="truncate max-w-[120px] font-medium text-[#1A2332]">
                                         {document.initiatedBy.name}
                                     </span>
@@ -138,7 +169,12 @@ export function ESignCard({ document, onRefetch }: { document: any, onRefetch: (
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <button
-                                    onClick={() => setPreviewUrl(document.file || 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf')}
+                                    onClick={() =>
+                                        setPreviewUrl(
+                                            document.file ||
+                                                'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
+                                        )
+                                    }
                                     className="p-2.5 rounded-lg hover:bg-gray-100 text-[#64748B] hover:text-[#044866] transition-all duration-200"
                                 >
                                     <Eye className="w-5 h-5" />
@@ -149,10 +185,11 @@ export function ESignCard({ document, onRefetch }: { document: any, onRefetch: (
                         {document.signers?.length > 0 && (
                             <button
                                 onClick={() => setShowUsers(!showUsers)}
-                                className={`px-4 py-2 rounded-lg text-xs font-bold shadow-sm transition-all duration-200 ${showUsers
-                                    ? 'bg-[#044866] text-white'
-                                    : 'bg-[#044866]/5 text-[#044866] hover:bg-[#044866]/10'
-                                    }`}
+                                className={`px-4 py-2 rounded-lg text-xs font-bold shadow-sm transition-all duration-200 ${
+                                    showUsers
+                                        ? 'bg-[#044866] text-white'
+                                        : 'bg-[#044866]/5 text-[#044866] hover:bg-[#044866]/10'
+                                }`}
                             >
                                 {showUsers ? 'Hide Signers' : 'View Signers'}
                             </button>
@@ -169,7 +206,10 @@ export function ESignCard({ document, onRefetch }: { document: any, onRefetch: (
                                     {/* Signer Identity */}
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2 mb-1">
-                                            <Badge variant="info" className="text-[9px] uppercase font-bold py-0 h-3.5">
+                                            <Badge
+                                                variant="info"
+                                                className="text-[9px] uppercase font-bold py-0 h-3.5"
+                                            >
                                                 {signer.user?.role || 'Signer'}
                                             </Badge>
                                             <h5 className="font-bold text-xs text-[#1A2332]">
@@ -177,13 +217,17 @@ export function ESignCard({ document, onRefetch }: { document: any, onRefetch: (
                                             </h5>
                                         </div>
                                         <p className="text-[10px] text-[#64748B]">
-                                            {maskText(signer.user?.email || '') || 'No Email'}
+                                            {maskText(
+                                                signer.user?.email || ''
+                                            ) || 'No Email'}
                                         </p>
                                     </div>
 
                                     {/* Signer Status */}
                                     <div className="flex flex-col items-center min-w-[80px]">
-                                        <span className="text-[9px] text-gray-400 uppercase font-bold mb-1">Status</span>
+                                        <span className="text-[9px] text-gray-400 uppercase font-bold mb-1">
+                                            Status
+                                        </span>
                                         <div className="flex items-center gap-1">
                                             {signer.status === 'SIGNED' ? (
                                                 <div className="flex items-center gap-1 text-[#10B981] font-bold text-[10px]">
@@ -201,10 +245,14 @@ export function ESignCard({ document, onRefetch }: { document: any, onRefetch: (
 
                                     {/* Sign Date */}
                                     <div className="flex flex-col items-center min-w-[100px] border-l border-[#E2E8F0] pl-4">
-                                        <span className="text-[9px] text-gray-400 uppercase font-bold mb-1">Sign Date</span>
+                                        <span className="text-[9px] text-gray-400 uppercase font-bold mb-1">
+                                            Sign Date
+                                        </span>
                                         <span className="text-[10px] font-semibold text-[#1A2332]">
                                             {signer.status === 'SIGNED'
-                                                ? moment(signer.updatedAt).format('DD MMM, YYYY')
+                                                ? moment(
+                                                      signer.updatedAt
+                                                  ).format('DD MMM, YYYY')
                                                 : '---'}
                                         </span>
                                     </div>
@@ -215,37 +263,57 @@ export function ESignCard({ document, onRefetch }: { document: any, onRefetch: (
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <button
-                                                        onClick={() => onRequestResign(signer)}
+                                                        onClick={() =>
+                                                            onRequestResign(
+                                                                signer
+                                                            )
+                                                        }
                                                         className="p-2 rounded-md hover:bg-red-50 text-[#64748B] hover:text-red-500 transition-all border border-transparent hover:border-red-100"
                                                     >
                                                         <FileSignature className="w-4 h-4" />
                                                     </button>
                                                 </TooltipTrigger>
-                                                <TooltipContent>Request Re-sign</TooltipContent>
+                                                <TooltipContent>
+                                                    Request Re-sign
+                                                </TooltipContent>
                                             </Tooltip>
                                         ) : (
                                             <div className="flex items-center gap-2">
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <button
-                                                            onClick={() => onResendMailClicked(signer.user?.id)}
+                                                            onClick={() =>
+                                                                onResendMailClicked(
+                                                                    signer.user
+                                                                        ?.id
+                                                                )
+                                                            }
                                                             className="p-2 rounded-md hover:bg-blue-50 text-[#64748B] hover:text-[#044866] transition-all border border-transparent hover:border-blue-100"
                                                         >
                                                             <Send className="w-4 h-4" />
                                                         </button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>Resend Mail</TooltipContent>
+                                                    <TooltipContent>
+                                                        Resend Mail
+                                                    </TooltipContent>
                                                 </Tooltip>
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <button
-                                                            onClick={() => onSubmitDocClicked(signer.user?.id)}
+                                                            onClick={() =>
+                                                                onSubmitDocClicked(
+                                                                    signer.user
+                                                                        ?.id
+                                                                )
+                                                            }
                                                             className="p-2 rounded-md hover:bg-blue-50 text-[#64748B] hover:text-[#044866] transition-all border border-transparent hover:border-blue-100"
                                                         >
                                                             <PenTool className="w-4 h-4" />
                                                         </button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>Edit/Submit Document</TooltipContent>
+                                                    <TooltipContent>
+                                                        Edit/Submit Document
+                                                    </TooltipContent>
                                                 </Tooltip>
                                             </div>
                                         )}

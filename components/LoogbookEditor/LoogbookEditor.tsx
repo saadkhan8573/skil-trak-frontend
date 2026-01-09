@@ -18,9 +18,11 @@ import {
 export const LoogbookEditor = ({
     file,
     onCancel,
+    hideCancelButton = false,
 }: {
     file: any
     onCancel?: () => void
+    hideCancelButton?: boolean
 }) => {
     const { notification } = useNotification()
 
@@ -185,14 +187,14 @@ export const LoogbookEditor = ({
                             existingItem?.location?.x < 0
                                 ? 1
                                 : existingItem?.location?.x > Number(width)
-                                ? Number(width) - existingItem?.size?.width
-                                : existingItem?.location?.x,
+                                    ? Number(width) - existingItem?.size?.width
+                                    : existingItem?.location?.x,
                         y:
                             existingItem?.location?.y < 0
                                 ? 1
                                 : existingItem?.location?.y > Number(height)
-                                ? Number(height) - existingItem?.size?.height
-                                : existingItem?.location?.y,
+                                    ? Number(height) - existingItem?.size?.height
+                                    : existingItem?.location?.y,
                     },
                 })
 
@@ -256,14 +258,14 @@ export const LoogbookEditor = ({
                         existingItem?.location?.x < 0
                             ? 1
                             : existingItem?.location?.x > Number(width)
-                            ? Number(width) - existingItem?.size?.width
-                            : existingItem?.location?.x,
+                                ? Number(width) - existingItem?.size?.width
+                                : existingItem?.location?.x,
                     y:
                         existingItem?.location?.y < 0
                             ? 1
                             : existingItem?.location?.y > Number(height)
-                            ? Number(height) - existingItem?.size?.height
-                            : existingItem?.location?.y,
+                                ? Number(height) - existingItem?.size?.height
+                                : existingItem?.location?.y,
                 },
             })
 
@@ -416,12 +418,12 @@ export const LoogbookEditor = ({
     return (
         <>
             <ShowErrorNotifications result={saveLogbookResult} />
-            <div className="bg-white flex justify-center items-center flex-col w-full min-w-full lg:min-w-[700px] xl:min-w-[1024px] max-w-7xl border rounded-md">
+            <div className="!w-full bg-white flex justify-center items-center flex-col w-full min-w-full lg:min-w-[700px] xl:min-w-[1024px] max-w-7xl border rounded-md">
                 <div className="w-full py-3.5 px-4 flex justify-between items-center">
                     <Typography variant="h4" capitalize>
                         {pagesCount?.data?.filename || null}
                     </Typography>
-                    {onCancel && (
+                    {onCancel && !hideCancelButton && (
                         <MdCancel
                             onClick={onCancelButtonClick}
                             className="transition-all duration-500 text-gray-400 hover:text-black text-3xl cursor-pointer hover:rotate-90"

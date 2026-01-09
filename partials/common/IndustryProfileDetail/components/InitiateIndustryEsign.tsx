@@ -26,7 +26,7 @@ export const InitiateIndustryEsign = ({
     const [selectedEsign, setSelectedEsign] = useState<any>(null)
 
     const sectors = IndustryApi.Courses.useGetIndustrySectorsQuery(
-        industryUserId,
+        { userId: Number(industryUserId) },
         {
             refetchOnMountOrArgChange: true,
         }

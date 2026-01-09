@@ -12,6 +12,9 @@ import {
 } from 'lucide-react'
 import moment from 'moment'
 import { ApproveFile, RejectFile } from '../components'
+import { EditDocumentModal } from '../modal'
+import { useState } from 'react'
+import { Edit3 } from 'lucide-react'
 
 export const FolderDocumentCard = ({
     doc,
@@ -23,6 +26,7 @@ export const FolderDocumentCard = ({
     config: any
 }) => {
     const DocStatusIcon = config.icon
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
     const { documentsViewModal, onFileClicked } = DocumentsView()
 
@@ -60,11 +64,10 @@ export const FolderDocumentCard = ({
                         </div>
                         {doc?.comment && (
                             <div
-                                className={`flex items-start gap-2 mt-2 p-2 ${
-                                    doc?.status === 'rejected'
-                                        ? 'bg-red-50 border border-red-200'
-                                        : 'bg-green-50 border border-green-200'
-                                } rounded-lg`}
+                                className={`flex items-start gap-2 mt-2 p-2 ${doc?.status === 'rejected'
+                                    ? 'bg-red-50 border border-red-200'
+                                    : 'bg-green-50 border border-green-200'
+                                    } rounded-lg`}
                             >
                                 {doc?.status === 'rejected' ? (
                                     <AlertCircle className="w-3 h-3 text-red-600 mt-0.5 flex-shrink-0" />
@@ -72,11 +75,10 @@ export const FolderDocumentCard = ({
                                     <CheckCircle className="w-3 h-3 text-green-600 mt-0.5 flex-shrink-0" />
                                 )}
                                 <p
-                                    className={`text-xs ${
-                                        doc?.status === 'rejected'
-                                            ? 'text-red-700'
-                                            : 'text-green-700'
-                                    }`}
+                                    className={`text-xs ${doc?.status === 'rejected'
+                                        ? 'text-red-700'
+                                        : 'text-green-700'
+                                        }`}
                                 >
                                     {doc?.comment}
                                 </p>
@@ -95,10 +97,10 @@ export const FolderDocumentCard = ({
                             doc.status === 'approved'
                                 ? 'success'
                                 : doc.status === 'pending'
-                                ? 'warning'
-                                : doc.status === 'rejected'
-                                ? 'error'
-                                : 'info'
+                                    ? 'warning'
+                                    : doc.status === 'rejected'
+                                        ? 'error'
+                                        : 'info'
                         }
                         Icon={DocStatusIcon}
                     />
@@ -117,6 +119,12 @@ export const FolderDocumentCard = ({
                     />
                     <Button
                         mini
+                        Icon={Edit3}
+                        variant="action"
+                        onClick={() => setIsEditModalOpen(true)}
+                    />
+                    <Button
+                        mini
                         Icon={Download}
                         onClick={() => {
                             window.open(doc?.file, '_blank')
@@ -126,13 +134,18 @@ export const FolderDocumentCard = ({
 
                     {(doc.status === 'uploaded' ||
                         doc.status === 'pending') && (
-                        <>
-                            <ApproveFile file={doc} studentId={studentId} />
-                            <RejectFile file={doc} studentId={studentId} />
-                        </>
-                    )}
+                            <>
+                                <ApproveFile file={doc} studentId={studentId} />
+                                <RejectFile file={doc} studentId={studentId} />
+                            </>
+                        )}
                 </div>
             </div>
+            <EditDocumentModal
+                open={isEditModalOpen}
+                onOpenChange={setIsEditModalOpen}
+                file={doc}
+            />
         </>
     )
 }

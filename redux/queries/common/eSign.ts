@@ -92,8 +92,11 @@ export const eSignEndpoints = (
         providesTags: ['E-Sign'],
     }),
 
-    getIndustryAllEsignList: builder.query<any, number>({
-        query: (id) => `${PREFIX}/industry/${id}/docs`,
+    getIndustryAllEsignList: builder.query<any, {id:number,sectorId?:number}>({
+        query: ({id,...params}) => ({
+            url : `${PREFIX}/industry/${id}/docs`,
+            params 
+        }),
         providesTags: ['E-Sign'],
     }),
     getIndustryESignDocuments: builder.query<any, { userId: number }>({
@@ -218,6 +221,20 @@ export const eSignEndpoints = (
         query: ({ industryUserId, templateId }) => ({
             url: `${PREFIX}/industry/${industryUserId}/check-list-template/${templateId}/document/initiate`,
             method: 'POST',
+        }),
+        invalidatesTags: ['E-Sign'],
+    }),
+    bulkInitiateIndustryESign: builder.mutation<
+        any,
+        {
+            industryUserId: number
+            templateIds: number[]
+        }
+    >({
+        query: ({ industryUserId, templateIds }) => ({
+            url: `${PREFIX}/industry/${industryUserId}/check-list/documents/initiate`,
+            method: 'POST',
+            body: { templateIds },
         }),
         invalidatesTags: ['E-Sign'],
     }),

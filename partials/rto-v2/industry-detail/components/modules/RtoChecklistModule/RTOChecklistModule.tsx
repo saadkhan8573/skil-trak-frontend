@@ -29,7 +29,7 @@ export function RTOChecklistModule() {
     // 1. Fetch Sectors
     const { data: sectorsData, isLoading: isLoadingSectors } =
         IndustryApi.Courses.useGetIndustrySectorsQuery(
-            Number(industryDetail?.user?.id),
+            { userId: Number(industryDetail?.user?.id) },
             {
                 skip: !industryDetail?.user?.id,
             }

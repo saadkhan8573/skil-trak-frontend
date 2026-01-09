@@ -1,9 +1,12 @@
 import {
     Button,
+    LoadingAnimation,
+    NoData,
     Select,
     ShowErrorNotifications,
     Typography,
     UploadFile,
+    useShowErrorNotification,
 } from '@components'
 import {
     Dialog,
@@ -17,9 +20,17 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useNotification } from '@hooks'
 import { AuthApi, CommonApi, SubAdminApi } from '@queries'
 import { useAppSelector } from '@redux/hooks'
-import { getSectors, getUserCredentials } from '@utils'
+import { getSectors, getUserCredentials, removeEmptyValues } from '@utils'
 import { UserRoles } from '@constants'
-import { BookPlus, CheckCircle2, GraduationCap, Sparkles } from 'lucide-react'
+import {
+    BookPlus,
+    CheckCircle2,
+    GraduationCap,
+    Sparkles,
+    FileText,
+    Download,
+    FileCheck2,
+} from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
@@ -41,6 +52,8 @@ export function AddCourseRequestDialog({
     const { notification } = useNotification()
     const router = useRouter()
 
+    const showErrorNotifications = useShowErrorNotification()
+
     const userCredentials = useMemo(() => getUserCredentials(), [])
     const isAdminRole = userCredentials?.role === UserRoles.ADMIN
 
@@ -54,7 +67,7 @@ export function AddCourseRequestDialog({
     const validationSchema = yup.object().shape({
         sector: yup.number().required('Sector is required'),
         course: yup.number().required('Course is required'),
-        file: yup.mixed().required('Template file is required'),
+        // selectedDocumentUrl: yup.string().required('Template selection is required'),
     })
 
     const methods = useForm({
@@ -133,22 +146,19 @@ export function AddCourseRequestDialog({
     ])
 
     const onSubmit = async (values: any) => {
-        const formData = new FormData()
-
         const data = {
             course: values.course,
-            file: values?.file?.[0],
+            file: values.selectedDocumentUrl,
             industry: industryDetail?.id || router.query.id,
             // description and reference omitted as per the commented out section in reference
         }
 
-        Object.entries(data).forEach(([key, value]: any) => {
-            if (value !== undefined) {
-                formData.append(key, value)
-            }
-        })
+        const res: any = await addCourse(data)
 
-        const res: any = await addCourse(formData)
+        if (res?.error) {
+            showErrorNotifications({ isError: true, ...res })
+            return
+        }
 
         if (res?.data) {
             notification.success({
@@ -161,6 +171,25 @@ export function AddCourseRequestDialog({
             setSelectedSector(null)
         }
     }
+
+    const getPendingEsign = CommonApi.ESign.getIndustryEsignDocs(
+        {
+            userId: industryDetail?.user?.id!,
+            search: `${JSON.stringify(
+                removeEmptyValues({
+                    sectorId: selectedSector, // Directly filter by this sector
+                })
+            )
+                .replaceAll('{', '')
+                .replaceAll('}', '')
+                .replaceAll('"', '')
+                .trim()}`,
+        },
+        {
+            skip: !industryDetail?.user?.id || !selectedSector,
+            refetchOnMountOrArgChange: true,
+        }
+    )
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -254,26 +283,171 @@ export function AddCourseRequestDialog({
                                 </div>
                             </div>
 
-                            <div className="bg-[#F8FAFB] border border-[#E2E8F0] rounded-xl px-5 py-2 space-y-2">
+                            <div className="bg-[#F8FAFB] border border-[#E2E8F0] rounded-xl px-5 py-4 space-y-4">
                                 <div className="flex items-center justify-between">
-                                    <h4 className="text-sm font-bold text-[#1A2332]">
-                                        Required Checklist
-                                    </h4>
-                                    <div className="flex items-center gap-1.5 px-2 py-1 bg-amber-50 rounded-md border border-amber-100">
-                                        <Sparkles className="w-3 h-3 text-amber-600" />
-                                        <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider">
-                                            Mandatory
-                                        </span>
+                                    <div className="space-y-0.5">
+                                        <h4 className="text-sm font-bold text-[#1A2332]">
+                                            Facility Checklist
+                                        </h4>
+                                        <p className="text-[10px] text-slate-500 font-medium">
+                                            Select an approved checklist for
+                                            this course request
+                                        </p>
                                     </div>
                                 </div>
 
-                                <FileUpload
-                                    component={UploadFile}
-                                    name={'file'}
-                                />
+                                {!selectedSector ? (
+                                    <div className="flex flex-col items-center justify-center py-6 px-4 bg-white border border-dashed border-slate-200 rounded-xl gap-2">
+                                        <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+                                            <Sparkles className="w-5 h-5 text-blue-400" />
+                                        </div>
+                                        <div className="text-center">
+                                            <p className="text-xs font-bold text-slate-700">
+                                                Select a Sector
+                                            </p>
+                                            <p className="text-[10px] text-slate-500">
+                                                Choose a target sector above to
+                                                view its available checklists
+                                            </p>
+                                        </div>
+                                    </div>
+                                ) : getPendingEsign?.isLoading ||
+                                  getPendingEsign?.isFetching ? (
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {[1, 2, 3, 4].map((i) => (
+                                            <div
+                                                key={i}
+                                                className="bg-white border border-slate-200 rounded-xl p-3 animate-pulse"
+                                            >
+                                                <div className="flex items-start gap-3">
+                                                    <div className="w-8 h-8 rounded-lg bg-slate-100"></div>
+                                                    <div className="flex-1 space-y-2">
+                                                        <div className="h-2 bg-slate-100 rounded w-3/4"></div>
+                                                        <div className="h-2 bg-slate-100 rounded w-1/2"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : getPendingEsign?.data?.data?.length > 0 ? (
+                                    <div className="space-y-4">
+                                        <div className="grid grid-cols-2 gap-3 max-h-[250px] overflow-y-auto pr-1 custom-scrollbar">
+                                            {getPendingEsign?.data?.data?.map(
+                                                (document: any) => {
+                                                    const fileUrl =
+                                                        document?.file
+                                                            ?.replaceAll(
+                                                                '{"',
+                                                                ''
+                                                            )
+                                                            .replaceAll(
+                                                                '"}',
+                                                                ''
+                                                            )
 
-                                <p className="text-[11px] text-[#64748B] text-center italic">
-                                    Support for PDF, DOCX or Images up to 10MB
+                                                    const isSelected =
+                                                        methods.watch(
+                                                            'selectedDocumentUrl'
+                                                        ) === fileUrl
+
+                                                    return (
+                                                        <div
+                                                            key={document?.id}
+                                                            className={`relative group bg-white border rounded-xl p-3 hover:shadow-md transition-all duration-300 cursor-pointer overflow-hidden ${
+                                                                isSelected
+                                                                    ? 'border-blue-600 ring-1 ring-blue-600/20 bg-blue-50/30'
+                                                                    : 'border-slate-200 hover:border-blue-300'
+                                                            }`}
+                                                            onClick={() => {
+                                                                methods.setValue(
+                                                                    'selectedDocumentUrl',
+                                                                    isSelected
+                                                                        ? ''
+                                                                        : fileUrl,
+                                                                    {
+                                                                        shouldValidate:
+                                                                            true,
+                                                                    }
+                                                                )
+                                                            }}
+                                                        >
+                                                            <div className="flex items-start gap-3">
+                                                                <div
+                                                                    className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                                                                        isSelected
+                                                                            ? 'bg-blue-600 text-white'
+                                                                            : 'bg-blue-50 text-blue-600'
+                                                                    }`}
+                                                                >
+                                                                    <FileText className="w-4 h-4" />
+                                                                </div>
+                                                                <div className="flex-1 min-w-0 pr-4">
+                                                                    <p
+                                                                        className={`text-[10px] font-bold truncate ${
+                                                                            isSelected
+                                                                                ? 'text-blue-700'
+                                                                                : 'text-slate-700'
+                                                                        }`}
+                                                                        title={
+                                                                            document?.file
+                                                                        }
+                                                                    >
+                                                                        {document?.file
+                                                                            ?.split(
+                                                                                '/'
+                                                                            )
+                                                                            ?.pop()
+                                                                            ?.split(
+                                                                                '\\'
+                                                                            )
+                                                                            ?.pop()
+                                                                            ?.replaceAll(
+                                                                                '{"',
+                                                                                ''
+                                                                            )
+                                                                            ?.replaceAll(
+                                                                                '"}',
+                                                                                ''
+                                                                            ) ||
+                                                                            'Document'}
+                                                                    </p>
+                                                                    <p className="text-[9px] text-slate-500 mt-0.5">
+                                                                        Existing
+                                                                        Template
+                                                                    </p>
+                                                                </div>
+                                                                {isSelected && (
+                                                                    <div className="absolute top-2 right-2">
+                                                                        <FileCheck2 className="w-3 h-3 text-blue-600" />
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+                                            )}
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center py-6 px-4 bg-white border border-dashed border-slate-200 rounded-xl gap-2">
+                                        <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center">
+                                            <FileText className="w-5 h-5 text-slate-400" />
+                                        </div>
+                                        <div className="text-center">
+                                            <p className="text-xs font-bold text-slate-700">
+                                                No Checklists Found
+                                            </p>
+                                            <p className="text-[10px] text-slate-500">
+                                                There are no approved checklists
+                                                available for this sector.
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <p className="text-[11px] text-[#64748B] text-center italic mt-2">
+                                    Approved checklists are required for course
+                                    requests
                                 </p>
                             </div>
                         </div>

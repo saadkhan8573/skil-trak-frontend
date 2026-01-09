@@ -315,6 +315,18 @@ export const subAdminIndustriesEndpoints = (
         invalidatesTags: ['SubAdminIndustries', 'Industries'],
     }),
 
+    assignChecklistToCourseApproval: builder.mutation<
+        any,
+        { approvalId: number; body: { file: string } }
+    >({
+        query: ({ approvalId, body }) => ({
+            url: `${PREFIX}/course-approval/${approvalId}/file/update`,
+            method: 'PATCH',
+            body,
+        }),
+        invalidatesTags: ['RequestToAddCourse', 'SubAdminIndustries', 'Industries'],
+    }),
+
     getRejectedDepartmentIndustry: builder.query<any, any>({
         query: (params) => ({
             url: `department/rejected-list`,

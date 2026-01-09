@@ -51,9 +51,11 @@ export const coursesEndpoints = (
         },
         providesTags: ['Course'],
     }),
-    getIndustrySectors: builder.query<any, number | null>({
-        query: (userId) => {
-            const params = userId ? { userId } : null
+    getIndustrySectors: builder.query<
+        any,
+        { userId?: number;  } | null
+    >({
+        query: (params) => {
             return {
                 url: 'industries/sectors/list',
                 params,

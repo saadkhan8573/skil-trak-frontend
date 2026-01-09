@@ -20,7 +20,7 @@ export function CategoryFilters() {
     const industry = useAppSelector((state) => state.industry.industryDetail)
 
     const { data, isLoading } = IndustryApi.Courses.useGetIndustrySectorsQuery(
-        Number(industry?.user?.id),
+        { userId: Number(industry?.user?.id) },
         {
             skip: !industry,
         }

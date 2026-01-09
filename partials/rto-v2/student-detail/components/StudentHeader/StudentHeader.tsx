@@ -5,6 +5,7 @@ import { HeaderQuickActions } from './HeaderQuickActions'
 import { StudentQuickInfo } from './StudentQuickInfo'
 import { StudentTimeline } from './StudentTimeline'
 import { StudentStatusBanner } from './components/StudentStatusBanner'
+import { StudentStatusSwitches } from './StudentStatusSwitches'
 
 export const StudentHeader = ({ student }: { student: Student }) => {
     const studentContactInfo = [
@@ -161,6 +162,11 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                         ))}
                                     </div>
                                 </div>
+                            </div>
+
+                            {/* Center/Right: Status Switches */}
+                            <div className="flex-1 flex justify-center px-4">
+                                <StudentStatusSwitches student={student} />
                             </div>
 
                             {/* Right: Action Buttons */}

@@ -134,8 +134,6 @@ export function CourseDocumentsModal({
         (t: any) => !t?.documents?.[0]
     ).length
 
-    console.log({ esignList })
-
     // --- DOCUMENTS LIST LOGIC ---
     const getPendingEsign = CommonApi.ESign.getIndustryEsignDocs(
         {
@@ -195,18 +193,15 @@ export function CourseDocumentsModal({
                                     {allTemplates.length} Templates
                                 </span>
                             </div>
-                            {allTemplates &&
-                                allTemplates?.length > 0 && (
-                                    <Button
-                                        variant="primaryNew"
-                                        className="h-8 text-xs font-bold"
-                                        onClick={() =>
-                                            setIsConfirmModalOpen(true)
-                                        }
-                                    >
-                                        Send All
-                                    </Button>
-                                )}
+                            {allTemplates && allTemplates?.length > 0 && (
+                                <Button
+                                    variant="primaryNew"
+                                    className="h-8 text-xs font-bold"
+                                    onClick={() => setIsConfirmModalOpen(true)}
+                                >
+                                    Send All
+                                </Button>
+                            )}
                         </div>
 
                         {esignList.isLoading ? (
@@ -224,11 +219,12 @@ export function CourseDocumentsModal({
                                         return (
                                             <div
                                                 key={template.id}
-                                                className={`relative group rounded-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 bg-white border-2 overflow-hidden cursor-pointer ${selectedTemplate?.id ===
+                                                className={`relative group rounded-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 bg-white border-2 overflow-hidden cursor-pointer ${
+                                                    selectedTemplate?.id ===
                                                     template.id
-                                                    ? 'ring-2 ring-offset-2'
-                                                    : 'border-slate-300'
-                                                    }`}
+                                                        ? 'ring-2 ring-offset-2'
+                                                        : 'border-slate-300'
+                                                }`}
                                                 onClick={() =>
                                                     setSelectedTemplate(
                                                         template
@@ -237,30 +233,33 @@ export function CourseDocumentsModal({
                                             >
                                                 {/* Status Glow Overlay */}
                                                 <div
-                                                    className={`absolute inset-0 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-300 pointer-events-none ${isSigned
-                                                        ? 'bg-emerald-500'
-                                                        : isSent
+                                                    className={`absolute inset-0 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-300 pointer-events-none ${
+                                                        isSigned
+                                                            ? 'bg-emerald-500'
+                                                            : isSent
                                                             ? 'bg-blue-500'
                                                             : 'bg-amber-500'
-                                                        }`}
+                                                    }`}
                                                 ></div>
 
                                                 {/* Colorful Background Blob */}
                                                 <div
-                                                    className={`absolute top-0 right-0 w-20 h-20 rounded-full blur-2xl -mr-10 -mt-10 transition-all opacity-40 ${isSigned
-                                                        ? 'bg-emerald-200'
-                                                        : isSent
+                                                    className={`absolute top-0 right-0 w-20 h-20 rounded-full blur-2xl -mr-10 -mt-10 transition-all opacity-40 ${
+                                                        isSigned
+                                                            ? 'bg-emerald-200'
+                                                            : isSent
                                                             ? 'bg-blue-200'
                                                             : 'bg-amber-200'
-                                                        }`}
+                                                    }`}
                                                 ></div>
 
                                                 {/* Card Content */}
                                                 <div
-                                                    className={`relative p-3 h-full flex flex-col transition-all duration-300 ${isSent || isSigned
-                                                        ? 'border-2 border-primaryNew bg-primaryNew-light'
-                                                        : 'border-2 border-primary bg-[#F7910F08]'
-                                                        }`}
+                                                    className={`relative p-3 h-full flex flex-col transition-all duration-300 ${
+                                                        isSent || isSigned
+                                                            ? 'border-2 border-primaryNew bg-primaryNew-light'
+                                                            : 'border-2 border-primary bg-[#F7910F08]'
+                                                    }`}
                                                     style={{
                                                         ...(selectedTemplate?.id ===
                                                             template.id &&
@@ -269,8 +268,8 @@ export function CourseDocumentsModal({
                                                                     isSent
                                                                         ? '#044866'
                                                                         : isSigned
-                                                                            ? '#0D5468'
-                                                                            : '#F7A619',
+                                                                        ? '#0D5468'
+                                                                        : '#F7A619',
                                                             } as any)),
                                                     }}
                                                 >
@@ -282,16 +281,15 @@ export function CourseDocumentsModal({
                                                     {/* Icon & Title */}
                                                     <div className="flex items-start gap-3 mb-3">
                                                         <div
-                                                            className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md transition-transform duration-300 shrink-0 ${isSigned
-                                                                ? 'bg-emerald-600 shadow-emerald-200'
-                                                                : isSent
+                                                            className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md transition-transform duration-300 shrink-0 ${
+                                                                isSigned
+                                                                    ? 'bg-emerald-600 shadow-emerald-200'
+                                                                    : isSent
                                                                     ? 'bg-blue-600 shadow-blue-200'
                                                                     : 'bg-primaryNew shadow-primaryNew'
-                                                                } group-hover:scale-110`}
+                                                            } group-hover:scale-110`}
                                                         >
-                                                            {getStatusIcon(
-                                                                doc
-                                                            )}
+                                                            {getStatusIcon(doc)}
                                                         </div>
                                                         <div className="pr-14 min-w-0">
                                                             <h4
@@ -300,9 +298,7 @@ export function CourseDocumentsModal({
                                                                     template.name
                                                                 }
                                                             >
-                                                                {
-                                                                    template.name
-                                                                }
+                                                                {template.name}
                                                             </h4>
                                                             {doc?.initiatedBy && (
                                                                 <span className="text-[11px] whitespace-pre text-gray-500">
@@ -312,11 +308,11 @@ export function CourseDocumentsModal({
                                                             )}
                                                             {doc?.status ===
                                                                 'signed' && (
-                                                                    <span className="text-[11px] text-gray-500 whitespace-pre">
-                                                                        Process
-                                                                        complete
-                                                                    </span>
-                                                                )}
+                                                                <span className="text-[11px] text-gray-500 whitespace-pre">
+                                                                    Process
+                                                                    complete
+                                                                </span>
+                                                            )}
                                                         </div>
                                                     </div>
 
@@ -332,7 +328,7 @@ export function CourseDocumentsModal({
                                                                         e.stopPropagation()
                                                                         setViewDocUrl(
                                                                             template.file ||
-                                                                            ''
+                                                                                ''
                                                                         )
                                                                         setIsViewModalOpen(
                                                                             true
@@ -428,7 +424,7 @@ export function CourseDocumentsModal({
                         </div>
 
                         {getPendingEsign?.isLoading ||
-                            getPendingEsign?.isFetching ? (
+                        getPendingEsign?.isFetching ? (
                             <LoadingAnimation />
                         ) : getPendingEsign?.isError ? (
                             <NoData
@@ -436,7 +432,7 @@ export function CourseDocumentsModal({
                                 text="There is some Technical issue!"
                             />
                         ) : getPendingEsign?.data?.data &&
-                            getPendingEsign?.data?.data?.length > 0 ? (
+                          getPendingEsign?.data?.data?.length > 0 ? (
                             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                                 {getPendingEsign?.data?.data?.map(
                                     (document: any) => (

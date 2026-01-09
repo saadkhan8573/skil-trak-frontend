@@ -189,6 +189,17 @@ export const FilteredStudents = ({
                 Icon: FaEye,
             },
             {
+                text: 'View Old Profile',
+                onClick: (student) => {
+                    router.push(
+                        `/portals/sub-admin/students/${student?.id}/old-updated-profile`
+                    )
+
+                    setLink('subadmin-student', router)
+                },
+                Icon: FaEye,
+            },
+            {
                 text: student?.subadmin ? 'Un Assign' : 'Assign to me',
                 onClick: (student) => onAssignStudentClicked(student),
                 Icon: MdBlock,

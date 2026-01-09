@@ -4,7 +4,7 @@ import { Mail, MapPin, Phone, Smartphone } from 'lucide-react'
 import { HeaderQuickActions } from './HeaderQuickActions'
 import { StudentQuickInfo } from './StudentQuickInfo'
 import { StudentTimeline } from './StudentTimeline'
-import { StudentSnoozeAlert } from './StudentSnoozeAlert'
+import { StudentStatusBanner } from './components/StudentStatusBanner'
 
 export const StudentHeader = ({ student }: { student: Student }) => {
     const studentContactInfo = [
@@ -84,9 +84,11 @@ export const StudentHeader = ({ student }: { student: Student }) => {
         <div className="relative">
             {/* Main Card with Gradient Border Effect */}
             <div className="relative bg-gradient-to-r from-[#044866] via-[#0D5468] to-[#044866] p-0.5 rounded-xl shadow-2xl">
-                <div className="bg-white rounded-xl overflow-hidden space-y-4 p-3">
+                <div className="bg-white rounded-xl overflow-hidden space-y-4">
+                    <StudentStatusBanner />
+
                     {/* Top Section - Profile & Contact */}
-                    <div className="relative bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+                    <div className="relative bg-gradient-to-br from-slate-50 via-white to-blue-50/30 p-3">
                         <div className="flex items-center justify-between">
                             {/* Left: Avatar + Name + Badges */}
                             <div className="flex items-center gap-4">
@@ -101,14 +103,12 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                     {avatarBadges.map((badge) => (
                                         <div
                                             key={badge.id}
-                                            className={`absolute ${
-                                                badge.position ===
+                                            className={`absolute ${badge.position ===
                                                 'bottom-right'
-                                                    ? 'bottom-0 right-0'
-                                                    : 'bottom-0 left-0'
-                                            } w-5.5 h-5.5 ${
-                                                badge.className
-                                            } rounded-full border-3 border-white shadow-lg flex items-center justify-center`}
+                                                ? 'bottom-0 right-0'
+                                                : 'bottom-0 left-0'
+                                                } w-5.5 h-5.5 ${badge.className
+                                                } rounded-full border-3 border-white shadow-lg flex items-center justify-center`}
                                         >
                                             {badge.content === 'dot' ? (
                                                 <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
@@ -129,17 +129,14 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                         {studentBadges.map((badge) => (
                                             <div
                                                 key={badge.id}
-                                                className={`inline-flex items-center gap-${
-                                                    badge.icon || badge.emoji
-                                                        ? '1.5'
-                                                        : '2'
-                                                } px-${
-                                                    badge.icon || badge.emoji
+                                                className={`inline-flex items-center gap-${badge.icon || badge.emoji
+                                                    ? '1.5'
+                                                    : '2'
+                                                    } px-${badge.icon || badge.emoji
                                                         ? '2.5'
                                                         : '3'
-                                                } py-1.5 rounded-full ${
-                                                    badge.className
-                                                }`}
+                                                    } py-1.5 rounded-full ${badge.className
+                                                    }`}
                                             >
                                                 {badge.hasIndicator && (
                                                     <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
@@ -153,11 +150,10 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                                     </span>
                                                 )}
                                                 <span
-                                                    className={`text-sm ${
-                                                        badge.uppercase
-                                                            ? 'uppercase'
-                                                            : ''
-                                                    }`}
+                                                    className={`text-sm ${badge.uppercase
+                                                        ? 'uppercase'
+                                                        : ''
+                                                        }`}
                                                 >
                                                     {badge.label}
                                                 </span>
@@ -176,20 +172,17 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                             {studentContactInfo.map((contact) => (
                                 <div
                                     key={contact.id}
-                                    className={`inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-slate-200 px-3 py-1.5 rounded-full shadow-sm ${
-                                        contact.hasHover
-                                            ? 'hover:shadow-md transition-all group cursor-pointer'
-                                            : ''
-                                    }`}
+                                    className={`inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-slate-200 px-3 py-1.5 rounded-full shadow-sm ${contact.hasHover
+                                        ? 'hover:shadow-md transition-all group cursor-pointer'
+                                        : ''
+                                        }`}
                                 >
                                     <div
-                                        className={`w-4.5 h-4.5 rounded-full bg-gradient-to-br ${
-                                            contact.bgGradient
-                                        } flex items-center justify-center ${
-                                            contact.hasHover
+                                        className={`w-4.5 h-4.5 rounded-full bg-gradient-to-br ${contact.bgGradient
+                                            } flex items-center justify-center ${contact.hasHover
                                                 ? 'group-hover:scale-110 transition-transform'
                                                 : ''
-                                        }`}
+                                            }`}
                                     >
                                         <contact.icon
                                             className={`w-2.5 h-2.5 ${contact.iconColor}`}
@@ -204,10 +197,7 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                     </div>
 
                     {/* Bottom Section - Info Cards */}
-                    <div className="bg-white space-y-4">
-                        {student?.isSnoozed && (
-                            <StudentSnoozeAlert student={student} />
-                        )}
+                    <div className="bg-white space-y-4 px-3 pb-3">
                         <StudentQuickInfo />
 
                         {/* Timeline Banner */}

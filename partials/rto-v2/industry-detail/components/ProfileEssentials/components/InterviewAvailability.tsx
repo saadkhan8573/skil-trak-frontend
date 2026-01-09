@@ -1,20 +1,17 @@
-import { Calendar, CheckCircle } from 'lucide-react'
 import {
     Button,
     ConfigTabs,
     ShowErrorNotifications,
     TabConfig,
-    Select,
 } from '@components'
-import { useEffect, useState } from 'react'
-import { WeeklySchedule, DaySchedule } from './WeeklySchedule'
-import { MonthlySchedule, MonthlyScheduleData } from './MonthlySchedule'
-import { RtoV2Api } from '@queries/portals/rto-v2/rto-v2.query'
 import { useNotification } from '@hooks/useNotification'
+import { RtoV2Api } from '@queries/portals/rto-v2/rto-v2.query'
 import { useAppSelector } from '@redux/hooks'
-import { AdminApi } from '@queries'
-import { UserStatus } from '@types'
+import { Calendar, CheckCircle } from 'lucide-react'
 import moment from 'moment'
+import { useEffect, useState } from 'react'
+import { MonthlySchedule, MonthlyScheduleData } from './MonthlySchedule'
+import { DaySchedule, WeeklySchedule } from './WeeklySchedule'
 
 export function InterviewAvailability() {
     const [createAvailability, createAvailabilityResult] =

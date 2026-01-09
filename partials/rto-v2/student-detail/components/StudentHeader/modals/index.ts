@@ -1,2 +1,5 @@
 export * from './ExtendStudentExpiryDialog'
 export * from './StudentCallLogModal'
+export * from './NotContactableStudentDialog'
+export * from './FlagStudentDialog'
+export * from './UnflagStudentDialog'

@@ -1,4 +1,5 @@
 export * from './ViewDocumentModal'
+export * from './ConfirmBulkInitiateModal'
 export * from './UploadFacilityChecklistDialog'
 export * from './CancelInitiatedEsignModal'
 export * from './SectorCapacityModal'
@@ -6,3 +7,6 @@ export * from './SupervisorsModal'
 export * from './AddCourseRequestDialog'
 export * from './DeleteCourseDialog'
 export * from './ConfirmHighlightedTasksModal'
+export * from './CourseDocumentsModal'
+export * from './AssignCourseModal'
+

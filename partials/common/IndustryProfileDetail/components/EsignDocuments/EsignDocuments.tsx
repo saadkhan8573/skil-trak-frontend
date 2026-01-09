@@ -19,7 +19,7 @@ export const EsignDocuments = ({
     const [selectedSector, setSelectedSector] = useState<number | null>(null)
 
     const sectors = IndustryApi.Courses.useGetIndustrySectorsQuery(
-        industryUserId,
+        { userId: industryUserId },
         {
             refetchOnMountOrArgChange: true,
         }

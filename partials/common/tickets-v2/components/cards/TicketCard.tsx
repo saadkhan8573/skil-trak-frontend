@@ -15,6 +15,12 @@ import { getUserCredentials } from '@utils'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import moment from 'moment'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@components/ui/tooltip'
 
 interface TicketCardProps {
     ticket: Ticket
@@ -164,24 +170,25 @@ const TicketCardComponent = ({
                     onClick={(e) => e.stopPropagation()}
                     className="h-4 w-4 accent-[#044866]"
                 />
-
-                {/* Status Dot */}
-                {/* <div
-                    className={`w-2 h-2 rounded-full ${
-                        statusColors[ticket.status]
-                    }`}
-                /> */}
-                {/* Status Dot */}
-                <div className="relative flex-shrink-0">
-                    <div
-                        className={`w-2 h-2 rounded-full ${
-                            statusColors[ticket.status]
-                        }`}
-                    />
-                    {ticket?.status === 'assigned' && (
-                        <div className="absolute inset-0 w-2 h-2 rounded-full bg-red-500 animate-ping opacity-75"></div>
-                    )}
-                </div>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <div className="relative flex-shrink-0">
+                                <div
+                                    className={`w-2 h-2 rounded-full ${
+                                        statusColors[ticket.status]
+                                    }`}
+                                />
+                                {ticket?.status === 'assigned' && (
+                                    <div className="absolute inset-0 w-2 h-2 rounded-full bg-red-500 animate-ping opacity-75"></div>
+                                )}
+                            </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {ticket?.status ?? 'Status of the ticket here'}
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
 
                 {/* Ticket ID */}
                 <span className="text-[#044866] text-xs w-20 flex-shrink-0">

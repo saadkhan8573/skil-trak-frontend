@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Course, Industry, Student, Supervisor } from '@types'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { Industry, Supervisor } from '@types'
 
 type initialStateType = {
     industryDetail: Industry | null
@@ -13,6 +12,7 @@ type initialStateType = {
         tab?: string
         section?: string
     } | null
+    pendingCourses: any[] | null
 }
 
 const initialState: initialStateType = {
@@ -21,6 +21,7 @@ const initialState: initialStateType = {
     industrySupervisors: null,
     industrySectorCapacity: null,
     navigationTarget: null,
+    pendingCourses: null,
 }
 
 export const industrySlice = createSlice({
@@ -53,6 +54,9 @@ export const industrySlice = createSlice({
         ) => {
             state.navigationTarget = action.payload
         },
+        setPendingCourses: (state, action: PayloadAction<any[]>) => {
+            state.pendingCourses = action.payload
+        },
     },
 })
 
@@ -62,5 +66,6 @@ export const {
     setIndustrySupervisors,
     setIndustrySectorCapacity,
     setNavigationTarget,
+    setPendingCourses,
 } = industrySlice.actions
 export default industrySlice.reducer

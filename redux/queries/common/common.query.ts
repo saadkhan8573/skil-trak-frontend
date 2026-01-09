@@ -618,6 +618,7 @@ const {
     useGetIndustryEsignDocsQuery,
     useGetIndustryPendingDocsQuery,
     useInitiateIndustryESignMutation,
+    useBulkInitiateIndustryESignMutation,
     useGetTemplatePagesCountQuery,
     useUpdateIndustryEsignMutation,
     useSignDocumentByUserMutation,
@@ -701,6 +702,7 @@ const {
     useBulkDeleteSupportTicketsMutation,
     useChangeSupportTicketAssigneeMutation,
     useGetSupportTeamMembersByTeamQuery,
+    useGetStudentSupportTicketsListQuery,
     // --------- Call Management ----------- //
     useGetAllAiCallListQuery,
 } = commonApi
@@ -982,7 +984,7 @@ export const CommonApi = {
         useRemoveTemplate: useRemoveTemplateMutation,
         useRemoveTabs: useRemoveTemplateTabsMutation,
         industryAllEsigns: useGetIndustryAllEsignListQuery,
-        getIndustryESignDocuments:useGetIndustryESignDocumentsQuery,
+        getIndustryESignDocuments: useGetIndustryESignDocumentsQuery,
         useSaveTemplate: useSaveEsignTemplateMutation,
         useChangeStatus: useChangeEsignStatusMutation,
         saveIndustryEsign: useSaveIndustryEsignMutation,
@@ -998,6 +1000,7 @@ export const CommonApi = {
         getIndustryEsignDetail: useGetIndustryEsignDetailQuery,
         getIndustryEsignDocs: useGetIndustryEsignDocsQuery,
         initiateIndustryESign: useInitiateIndustryESignMutation,
+        bulkInitiateIndustryESign: useBulkInitiateIndustryESignMutation,
         getIndustryPendingDocs: useGetIndustryPendingDocsQuery,
         useTamplatePagesCount: useGetTemplatePagesCountQuery,
         updateIndustryEsign: useUpdateIndustryEsignMutation,
@@ -1077,6 +1080,7 @@ export const CommonApi = {
         useBulkDeleteSupportTickets: useBulkDeleteSupportTicketsMutation,
         useChangeSupportTicketAssignee: useChangeSupportTicketAssigneeMutation,
         useSupportTeamMembersByTeam: useGetSupportTeamMembersByTeamQuery,
+        useStudentSupportTicketsList: useGetStudentSupportTicketsListQuery,
     },
     CallManagement: {
         useAllAiCallList: useGetAllAiCallListQuery,

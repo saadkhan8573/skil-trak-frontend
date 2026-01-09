@@ -72,6 +72,8 @@ export const IndustryLayout = ({
     const pendingDocuments = CommonApi.ESign.usePendingDocumentsList(
         {
             status: [EsignDocumentStatus.PENDING, EsignDocumentStatus.ReSign],
+            skip: 0,
+            limit: 50,
         },
         {
             refetchOnMountOrArgChange: true,

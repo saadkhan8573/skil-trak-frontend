@@ -1,4 +1,9 @@
-import { Badge, Button, InitialAvatar } from '@components'
+import {
+    AuthorizedUserComponent,
+    Badge,
+    Button,
+    InitialAvatar,
+} from '@components'
 import { Progressbar } from '@partials/rto-v2/components/Progressbar'
 import {
     getStatusCategory,
@@ -24,6 +29,11 @@ import { ReactElement, useMemo, useState } from 'react'
 import { IWorkplaceIndustries } from 'redux/queryTypes'
 import { ComposeEmailModal } from '../../Communications'
 import { useRouter } from 'next/router'
+import { CancelWpRequest } from '../components/CancelWpRequest'
+import { CancelWorkplaceModal, CancelWorkplaceRequestModal } from '../modals'
+import { UserRoles } from '@constants'
+import { getUserCredentials } from '@utils'
+import { ChevronRight } from 'lucide-react'
 
 export const WorkplaceCard = ({
     workplace,
@@ -120,6 +130,43 @@ export const WorkplaceCard = ({
                 onCancel={onCancelClicked}
             />
         )
+    }
+
+    const onCancelWPClicked = () => {
+        setModal(
+            <CancelWorkplaceModal
+                open={true}
+                onOpenChange={onCancelClicked}
+                workplaceId={Number(workplace?.id)}
+            />
+        )
+    }
+
+    const onCancelWPRequestClicked = () => {
+        setModal(
+            <CancelWorkplaceRequestModal
+                open={true}
+                onOpenChange={onCancelClicked}
+                workplaceId={Number(workplace?.id)}
+            />
+        )
+    }
+
+    const onViewDetailedClicked = () => {
+        const role = getUserCredentials()?.role
+        if (role === UserRoles.RTO) {
+            router.push(
+                `/portals/rto/students-and-placements/placement-requests/${workplace.id}/${workplace.student?.id}`
+            )
+        } else if (role === UserRoles.ADMIN) {
+            router.push(
+                `/portals/admin/workplaces/${workplace.id}/${workplace.student?.id}`
+            )
+        } else if (role === UserRoles.SUBADMIN) {
+            router.push(
+                `/portals/sub-admin/tasks/workplace/${workplace.id}/${workplace.student?.id}`
+            )
+        }
     }
 
     return (
@@ -257,7 +304,8 @@ export const WorkplaceCard = ({
                                 {supervisor?.name || 'No Supervisor Assigned'}
                             </p>
                             <p className="text-xs text-slate-600">
-                                {supervisor?.qualification || 'Pending Confirmation'}
+                                {supervisor?.qualification ||
+                                    'Pending Confirmation'}
                             </p>
                         </div>
                         <div className="flex gap-2">
@@ -326,7 +374,7 @@ export const WorkplaceCard = ({
                                 <span className="font-medium">Status:</span>{' '}
                                 {
                                     WorkplaceStatusLabels[
-                                    workplace?.currentStatus
+                                        workplace?.currentStatus
                                     ]
                                 }
                             </p>
@@ -340,6 +388,7 @@ export const WorkplaceCard = ({
 
                 {workplace?.currentStatus ===
                     WorkplaceCurrentStatus.AwaitingRtoResponse && (
+                    <AuthorizedUserComponent roles={[UserRoles.RTO]}>
                         <Button
                             outline
                             fullWidth
@@ -352,37 +401,41 @@ export const WorkplaceCard = ({
                                 )
                             }
                         />
-                    )}
+                    </AuthorizedUserComponent>
+                )}
 
-                {/* Actions */}
-                {/* <div className="flex items-center gap-2 mt-4">
+                {/* Cancel Section */}
+                <div className="mt-4 border-t border-slate-100">
+                    {!workplace?.cancelledRequests?.length ? (
+                        <CancelWpRequest
+                            onCancelWPClicked={onCancelWPClicked}
+                            onCancelWPRequestClicked={onCancelWPRequestClicked}
+                        />
+                    ) : (
+                        <div className="bg-amber-50 rounded-xl p-3 border border-amber-100 flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center shrink-0">
+                                <Clock className="w-4 h-4 text-amber-600" />
+                            </div>
+                            <p className="text-[11px] text-amber-800 leading-normal">
+                                <span className="font-bold block">
+                                    Cancellation Pending
+                                </span>
+                                Sent to Admin for approval.
+                            </p>
+                        </div>
+                    )}
+                </div>
+
+                <div className="flex items-center gap-2 pt-4 border-t border-slate-100">
                     <Button
-                        variant="secondary"
-                        outline
-                        className="flex-1 border-slate-300 hover:border-[#044866] hover:text-[#044866] hover:bg-[#044866]/5 px-[7.2px] py-[1.8px] text-[9.9px]"
-                        text="View Details"
-                    />
-                    {workplace.status === 'active' && (
-                        <Button
-                            variant="primaryNew"
-                            className="flex-1 bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white px-[7.2px] py-[1.8px] text-[9.9px]"
-                            text="Log Hours"
-                        />
-                    )}
-                    {workplace.status === 'pending' && (
-                        <Button
-                            className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-[7.2px] py-[1.8px] text-[9.9px]"
-                            text="Check Status"
-                        />
-                    )}
-                    {workplace.status === 'completed' && (
-                        <Button
-                            variant="info"
-                            className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-[7.2px] py-[1.8px] text-[9.9px]"
-                            text="View Certificate"
-                        />
-                    )}
-                </div> */}
+                        variant="primaryNew"
+                        className="flex-1 bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-lg shadow-[#044866]/30 h-10 text-xs font-semibold"
+                        onClick={onViewDetailedClicked}
+                    >
+                        View Detailed Workplace
+                        <ChevronRight className="w-4 h-4 ml-2" />
+                    </Button>
+                </div>
             </div>
         </div>
     )

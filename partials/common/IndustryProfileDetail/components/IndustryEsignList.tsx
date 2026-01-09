@@ -42,13 +42,13 @@ export const IndustryEsignList = ({
     const { notification } = useNotification()
 
     const sectors = IndustryApi.Courses.useGetIndustrySectorsQuery(
-        industryUserId,
+        { userId: Number(industryUserId) },
         {
             refetchOnMountOrArgChange: true,
         }
     )
 
-    const esignList = CommonApi.ESign.industryAllEsigns(Number(industryId), {
+    const esignList = CommonApi.ESign.industryAllEsigns({ id: Number(industryId) }, {
         skip: !industryId,
     })
 
@@ -142,37 +142,34 @@ export const IndustryEsignList = ({
                                             {sector?.templates?.map(
                                                 (eSign: any) =>
                                                     sector?.id ===
-                                                        eSign?.sector?.id && (
+                                                    eSign?.sector?.id && (
                                                         <div
                                                             key={eSign.id}
-                                                            className={`group border rounded-lg p-4 cursor-pointer hover:shadow-md ${
-                                                                selectedTemplate?.id ===
-                                                                eSign?.id
+                                                            className={`group border rounded-lg p-4 cursor-pointer hover:shadow-md ${selectedTemplate?.id ===
+                                                                    eSign?.id
                                                                     ? 'ring-2 ring-offset-2'
                                                                     : 'hover:border-gray-300'
-                                                            } ${
-                                                                eSign?.status ===
-                                                                'sent'
+                                                                } ${eSign?.status ===
+                                                                    'sent'
                                                                     ? 'border-2'
                                                                     : eSign?.status ===
-                                                                      'signed'
-                                                                    ? 'border-2'
-                                                                    : 'border-2'
-                                                            } ${
-                                                                eSign
+                                                                        'signed'
+                                                                        ? 'border-2'
+                                                                        : 'border-2'
+                                                                } ${eSign
                                                                     ?.documents?.[0]
                                                                     ?.initiatedBy
                                                                     ? 'border-2 border-primaryNew bg-primaryNew-light '
                                                                     : eSign
-                                                                          ?.documents?.[0]
-                                                                          ?.status ===
-                                                                          'signed' &&
-                                                                      !eSign
-                                                                          ?.documents?.[0]
-                                                                          ?.initiatedBy
-                                                                    ? 'border-2 border-primaryNew bg-primaryNew-light'
-                                                                    : 'border-2 border-primary bg-[#F7910F08]'
-                                                            }`}
+                                                                        ?.documents?.[0]
+                                                                        ?.status ===
+                                                                        'signed' &&
+                                                                        !eSign
+                                                                            ?.documents?.[0]
+                                                                            ?.initiatedBy
+                                                                        ? 'border-2 border-primaryNew bg-primaryNew-light'
+                                                                        : 'border-2 border-primary bg-[#F7910F08]'
+                                                                }`}
                                                             style={{
                                                                 alignContent:
                                                                     '',
@@ -180,12 +177,12 @@ export const IndustryEsignList = ({
                                                                     eSign?.id && {
                                                                     ringColor:
                                                                         eSign?.status ===
-                                                                        'sent'
+                                                                            'sent'
                                                                             ? '#044866'
                                                                             : eSign?.status ===
-                                                                              'signed'
-                                                                            ? '#0D5468'
-                                                                            : '#F7A619',
+                                                                                'signed'
+                                                                                ? '#0D5468'
+                                                                                : '#F7A619',
                                                                 }),
                                                             }}
                                                             onClick={() =>
@@ -215,41 +212,41 @@ export const IndustryEsignList = ({
                                                                         {eSign
                                                                             ?.documents?.[0]
                                                                             ?.initiatedBy && (
-                                                                            <span className="text-[11px] whitespace-pre text-gray-500">
-                                                                                Ready
-                                                                                to
-                                                                                resend
-                                                                            </span>
-                                                                        )}
+                                                                                <span className="text-[11px] whitespace-pre text-gray-500">
+                                                                                    Ready
+                                                                                    to
+                                                                                    resend
+                                                                                </span>
+                                                                            )}
                                                                         {eSign
                                                                             ?.documents?.[0]
                                                                             ?.status ===
                                                                             'signed' && (
-                                                                            <span className="text-[11px] text-gray-500 whitespace-pre">
-                                                                                Process
-                                                                                complete
-                                                                            </span>
-                                                                        )}
+                                                                                <span className="text-[11px] text-gray-500 whitespace-pre">
+                                                                                    Process
+                                                                                    complete
+                                                                                </span>
+                                                                            )}
                                                                     </div>
                                                                 </div>
                                                                 <div className="flex items-center gap-2 flex-shrink-0 ml-3">
                                                                     {!eSign
                                                                         ?.documents
                                                                         ?.length && (
-                                                                        <Button variant="primaryNew">
-                                                                            Initiate
-                                                                        </Button>
-                                                                    )}
+                                                                            <Button variant="primaryNew">
+                                                                                Initiate
+                                                                            </Button>
+                                                                        )}
                                                                     {eSign
                                                                         ?.documents?.[0]
                                                                         ?.initiatedBy && (
-                                                                        <Button
-                                                                            variant="primaryNew"
-                                                                            outline
-                                                                        >
-                                                                            Resend
-                                                                        </Button>
-                                                                    )}
+                                                                            <Button
+                                                                                variant="primaryNew"
+                                                                                outline
+                                                                            >
+                                                                                Resend
+                                                                            </Button>
+                                                                        )}
                                                                 </div>
                                                             </div>
                                                         </div>

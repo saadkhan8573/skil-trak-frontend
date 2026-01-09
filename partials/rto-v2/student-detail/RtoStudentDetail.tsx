@@ -6,6 +6,7 @@ import {
     StudentHeader,
     StudentInfoMessage,
     StudentOverview,
+    StudentSupportTickets,
     Tickets,
 } from './components'
 
@@ -124,6 +125,16 @@ export const RtoStudentDetail = () => {
             component: () => (
                 <div>
                     <Tickets student={profile?.data as Student} />
+                </div>
+            ),
+        },
+        {
+            value: 'support-tickets',
+            label: 'Support Tickets',
+            icon: Ticket,
+            component: () => (
+                <div>
+                    <StudentSupportTickets userId={profile?.data?.user?.id} />
                 </div>
             ),
         },

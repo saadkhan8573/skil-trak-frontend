@@ -10,11 +10,13 @@ import {
     Trash2,
     UserCheck,
     Users,
+    FileText,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { CourseCard } from './courseCard/CourseCard'
 import {
     CancelInitiatedEsignModal,
+    CourseDocumentsModal,
     SectorCapacityModal,
     SupervisorsModal,
 } from './modals'
@@ -25,7 +27,7 @@ const sectorStatusColorMap: Record<string, string> = {
     pending: 'bg-gradient-to-r from-[#F7A619] to-[#EA580C]',
 }
 
-import { setIndustrySupervisors } from '@redux'
+import { setIndustrySupervisors, setPendingCourses } from '@redux'
 import { useAppDispatch, useAppSelector } from '@redux/hooks'
 import { cn } from '@utils'
 import { IndustrySectorGroup } from './hooks'
@@ -39,6 +41,7 @@ export function SectorCard({ sector, sectorIndex }: SectorCardProps) {
     const [showSupervisorsModal, setShowSupervisorsModal] = useState(false)
     const [showCapacityModal, setShowCapacityModal] = useState(false)
     const [showCancelEsignModal, setShowCancelEsignModal] = useState(false)
+    const [showDocumentsModal, setShowDocumentsModal] = useState(false)
     const [isSectorExpanded, setisSectorExpanded] = useState(true)
 
     const dispatch = useAppDispatch()
@@ -176,8 +179,36 @@ export function SectorCard({ sector, sectorIndex }: SectorCardProps) {
                                         )}
                                     >
                                         <CheckCircle2 className="w-3 h-3" />
+                                        <CheckCircle2 className="w-3 h-3" />
                                         {industryApproval?.status}
                                     </div>
+
+                                    {/* Documents Button - New */}
+                                    <motion.button
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            setShowDocumentsModal(true)
+                                            dispatch(
+                                                setPendingCourses(
+                                                    sector.approvalCourses.filter(
+                                                        (
+                                                            approval: IndustryCourseApproval
+                                                        ) =>
+                                                            approval.status ===
+                                                            'pending'
+                                                    )
+                                                )
+                                            )
+                                        }}
+                                        className="px-2.5 py-1.5 bg-white text-[#044866] border border-[#044866]/20 rounded-full text-[10px] font-bold flex items-center gap-1.5 shadow-sm hover:shadow-md hover:bg-[#F8FAFB] transition-all"
+                                        title="View Documents"
+                                    >
+                                        <FileText className="w-3.5 h-3.5" />
+                                        DOCUMENTS
+                                    </motion.button>
+
                                     {/* View Supervisors Button */}
                                     <motion.button
                                         whileHover={{ scale: 1.05 }}
@@ -423,6 +454,18 @@ export function SectorCard({ sector, sectorIndex }: SectorCardProps) {
                 sectorName={sector.sector.name}
                 esignData={initiatedESign}
             />
+
+            {/* Course Documents Modal */}
+            {showDocumentsModal && (
+                <CourseDocumentsModal
+                    open={showDocumentsModal}
+                    onOpenChange={setShowDocumentsModal}
+                    industryId={industry?.id || 0}
+                    industryUserId={industry?.user?.id || 0}
+                    sectorId={sector.sector.id}
+                    sectorName={sector.sector.name}
+                />
+            )}
         </motion.div>
     )
 }

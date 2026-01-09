@@ -6,13 +6,13 @@ import { Mail, Phone } from 'lucide-react'
 import { ReactElement, useState } from 'react'
 import { ComposeEmailModal } from '../Communications/modal'
 import { ProfileLinks } from '../ProfileLinks'
+import { StudentCallLogModal } from './modals'
 
 export const HeaderQuickActions = ({ student }: { student: Student }) => {
     const [modal, setModal] = useState<ReactElement | null>(null)
 
     const { notification } = useNotification()
 
-    const [callLog, callLogResult] = SubAdminApi.Student.useStudentCallLog()
 
     const onCancelClicked = () => setModal(null)
 
@@ -26,36 +26,22 @@ export const HeaderQuickActions = ({ student }: { student: Student }) => {
     }
 
     const onMakeCallClicked = () => {
-        if (!student?.id || !student?.phone) {
-            notification.error({
-                title: 'Action Failed',
-                description: 'Student phone number is not available.',
-            })
-            return
-        }
-        navigator.clipboard.writeText(student?.phone)
-        notification.success({
-            title: 'Copied',
-            description: `Phone number copied`,
-        })
-        callLog({
-            student: student?.id,
-        }).then((res: any) => {
-            if (res?.data) {
-                notification.success({
-                    title: 'Called Student',
-                    description: `Called Student with Id: ${student?.studentId}`,
-                })
-            }
-        })
+        setModal(
+            <StudentCallLogModal
+                open={true}
+                onOpenChange={(val) => !val && setModal(null)}
+                studentId={student?.id}
+                studentDisplayId={student?.studentId}
+                phoneNumber={student?.phone}
+                studentName={student?.user?.name}
+            />
+        )
     }
     return (
-        <div className="flex items-center gap-2.5">
+        <div className="flex flex-wrap items-center justify-center xl:justify-end gap-2.5">
             {modal}
             <Button
                 onClick={onMakeCallClicked}
-                loading={callLogResult.isLoading}
-                disabled={callLogResult.isLoading}
                 className="bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-xl shadow-[#044866]/25 hover:shadow-2xl hover:scale-105 transition-all px-5 py-2"
             >
                 <Phone className="w-3.5 h-3.5 mr-2" />

@@ -26,9 +26,12 @@ export function DocumentsModule() {
 
     // 1. Fetch Sectors
     const { data: sectorsData, isLoading: isLoadingSectors } =
-        IndustryApi.Courses.useGetIndustrySectorsQuery(Number(industryUserId), {
-            skip: !industryUserId,
-        })
+        IndustryApi.Courses.useGetIndustrySectorsQuery(
+            { userId: Number(industryUserId) },
+            {
+                skip: !industryUserId,
+            }
+        )
 
     const sectorOptions: Sector[] = useMemo(
         () =>

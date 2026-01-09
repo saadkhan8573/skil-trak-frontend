@@ -69,6 +69,14 @@ export const teamsEndpoints = (
         }),
         providesTags: ['Team'],
     }),
+    // student/:userId/list
+    getStudentSupportTicketsList: builder.query<any, any>({
+        query: ({ params, id }) => ({
+            url: `${PREFIX}-task/student/${id}/list`,
+            params,
+        }),
+        providesTags: ['Team'],
+    }),
     // ==============================================================
     //   ---------------------- MUTATIONS -------------------------
     // ==============================================================

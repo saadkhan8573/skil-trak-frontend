@@ -5,12 +5,12 @@ import {
     ShowErrorNotifications,
     Button
 } from '@components'
-import { CallLogDetail } from '@partials/sub-admin/Students/components'
 import { SubAdminApi } from '@queries'
 import { CallLog } from '@types'
 import { maskText } from '@utils'
 import { Copy, PhoneCall } from 'lucide-react'
 import { useNotification } from '@hooks'
+import { CallLogDetail } from '@partials/sub-admin/students'
 
 interface StudentCallLogModalProps {
     open: boolean

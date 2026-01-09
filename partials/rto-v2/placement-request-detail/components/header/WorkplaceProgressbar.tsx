@@ -80,7 +80,13 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
             </div>
 
             {/* Stages */}
-            <div className="grid grid-cols-6 lg:grid-cols-12 gap-2 mt-4">
+            <div
+                className={`${
+                    workplaceType === 'provided'
+                        ? 'grid-cols-6 lg:grid-cols-9'
+                        : 'grid-cols-6 lg:grid-cols-11'
+                } grid  gap-2 mt-4`}
+            >
                 {workflowStages?.map((stage, index) => {
                     const isActive = index === getCurrentStageIndex()
                     const isCompleted = index < getCurrentStageIndex()
@@ -132,10 +138,7 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
                                                     : 'text-slate-500'
                                             }`}
                                         >
-                                            {stage.name
-                                                .split(' ')
-                                                .slice(0, 2)
-                                                .join(' ')}
+                                            {stage?.name}
                                         </span>
                                     </div>
                                 </TooltipTrigger>

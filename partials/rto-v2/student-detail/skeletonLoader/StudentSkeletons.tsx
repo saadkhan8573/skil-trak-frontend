@@ -29,31 +29,63 @@ export function StudentProfileHeaderSkeleton() {
     return (
         <div className="relative">
             <div className="relative bg-slate-100 p-0.5 rounded-xl shadow-2xl">
-                <div className="bg-white rounded-xl overflow-hidden space-y-4 p-3">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                            <Skeleton className="w-18 h-18 rounded-full" />
-                            <div className="space-y-3">
-                                <Skeleton className="h-8 w-64" />
-                                <div className="flex gap-2">
-                                    <Skeleton className="h-8 w-24 rounded-full" />
-                                    <Skeleton className="h-8 w-32 rounded-full" />
-                                    <Skeleton className="h-8 w-28 rounded-full" />
+                <div className="bg-white rounded-xl overflow-hidden space-y-2.5">
+                    {/* Status Banner Skeleton */}
+                    <Skeleton className="h-1.5 w-full" />
+
+                    {/* Top Section */}
+                    <div className="bg-slate-50/50 px-3 py-2">
+                        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6 xl:gap-2">
+                            {/* Left: Avatar + Name + Badges */}
+                            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2.5">
+                                {/* Avatar */}
+                                <Skeleton className="w-14 h-14 rounded-full flex-shrink-0 ring-4 ring-white shadow-md order-1 mb-2 sm:mb-0 sm:order-none" />
+
+                                {/* Name & Badges */}
+                                <div className="space-y-2 text-center sm:text-left order-2 sm:order-none w-full sm:w-auto flex flex-col items-center sm:items-start">
+                                    {/* Name */}
+                                    <Skeleton className="h-7 w-48 rounded-md" />
+
+                                    {/* Badges */}
+                                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
+                                        {[1, 2, 3].map((i) => (
+                                            <Skeleton
+                                                key={i}
+                                                className="h-6 w-24 rounded-full"
+                                            />
+                                        ))}
+                                    </div>
+
+                                    {/* Address Pill */}
+                                    <div className="flex justify-center sm:justify-start pt-1">
+                                        <Skeleton className="h-6 w-64 rounded-full" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Right: Actions */}
+                            <div className="flex flex-col items-center xl:items-end gap-2.5 mt-4 xl:mt-0 w-full xl:w-auto order-3">
+                                {/* Quick Actions */}
+                                <div className="flex gap-2.5 w-full sm:w-auto justify-center xl:justify-end">
+                                    <Skeleton className="h-10 w-24 rounded-lg" />
+                                    <Skeleton className="h-10 w-24 rounded-lg" />
+                                </div>
+
+                                {/* Status Switches (Priority, Contact, Flagged) */}
+                                <div className="flex flex-wrap justify-center xl:justify-end gap-2 w-full sm:w-auto">
+                                    {[1, 2, 3].map((i) => (
+                                        <Skeleton
+                                            key={i}
+                                            className="h-[46px] w-[145px] rounded-xl"
+                                        />
+                                    ))}
                                 </div>
                             </div>
                         </div>
-                        <div className="flex gap-2">
-                            <Skeleton className="h-10 w-10 rounded-lg" />
-                            <Skeleton className="h-10 w-10 rounded-lg" />
-                            <Skeleton className="h-10 w-32 rounded-lg" />
-                        </div>
                     </div>
-                    <div className="flex items-center gap-2 mt-2 ml-[87px]">
-                        {[1, 2, 3].map((i) => (
-                            <Skeleton key={i} className="h-8 w-40 rounded-full" />
-                        ))}
-                    </div>
-                    <div className="space-y-4 pt-4">
+
+                    {/* Bottom Section */}
+                    <div className="space-y-4 px-3 pb-3 pt-2">
                         <StudentQuickInfoSkeleton />
                         <StudentTimelineSkeleton />
                     </div>

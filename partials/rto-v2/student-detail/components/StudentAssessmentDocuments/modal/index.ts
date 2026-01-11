@@ -1,3 +1,5 @@
 export * from './ApproveFileModal'
 export * from './RejectFileModal'
 export * from './EditDocumentModal'
+export * from './ArchiveDocumentModal'
+export * from './CancelESignModal'

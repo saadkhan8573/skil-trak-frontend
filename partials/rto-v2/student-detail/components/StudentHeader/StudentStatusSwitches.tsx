@@ -100,8 +100,8 @@ export const StudentStatusSwitches = ({ student }: { student: Student }) => {
         <div className="flex items-center gap-2.5 px-3 py-1.5 bg-white/40 backdrop-blur-md rounded-xl border border-slate-200/50 shadow-sm hover:shadow-md transition-all group min-w-[145px]">
             <div
                 className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300 ${isActive
-                        ? 'bg-amber-100 text-amber-600 shadow-inner'
-                        : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200 group-hover:text-slate-500'
+                    ? 'bg-amber-100 text-amber-600 shadow-inner'
+                    : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200 group-hover:text-slate-500'
                     }`}
             >
                 <Icon
@@ -124,7 +124,7 @@ export const StudentStatusSwitches = ({ student }: { student: Student }) => {
                             : 'Active'
                         : label === 'Priority'
                             ? 'Normal'
-                            : 'Neutral'}
+                            : 'Standard'}
                 </span>
             </div>
 

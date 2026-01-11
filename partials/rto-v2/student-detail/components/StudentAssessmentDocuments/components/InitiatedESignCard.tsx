@@ -15,10 +15,10 @@ import {
 import { useState, useEffect, useMemo } from 'react'
 import {
     InitiateSigningModal,
-    CancelInitiateSign,
     RequestResign,
     ResendMailModal,
 } from '../../../../../sub-admin/assessmentEvidence/modal'
+import { CancelESignModal } from '../modal'
 import {
     FillEsignFieldsModal,
     SubmitDocumentModal,
@@ -40,6 +40,7 @@ export const InitiatedESignCard = ({
     folder: AssessmentEvidenceDetailType | null
 }) => {
     const [modal, setModal] = useState<any>(null)
+    const [isCancelModalOpen, setIsCancelModalOpen] = useState(false)
     const [currentDocIndex, setCurrentDocIndex] = useState(0)
     const [toggleReminderEmail] = CommonApi.ESign.useToggleReminderEmail()
 
@@ -138,7 +139,7 @@ export const InitiatedESignCard = ({
                         <Typography variant="small" className="text-gray-500">
                             Document {currentDocIndex + 1} of {document.length}
                         </Typography>
-                        <div className="flex gap-x-2">
+                        <div className="flex gap-x-2 items-center">
                             <Badge
                                 text="Previous"
                                 variant="primaryNew"
@@ -151,6 +152,33 @@ export const InitiatedESignCard = ({
                                 onClick={currentDocIndex === document.length - 1 ? undefined : handleNext}
                                 disabled={currentDocIndex === document.length - 1}
                             />
+                            <div className="relative group">
+                                <Button
+                                    mini
+                                    Icon={XCircle}
+                                    variant="error"
+                                    className="ml-2 !w-8 !h-8"
+                                    iconSize={18}
+                                    onClick={() => setIsCancelModalOpen(true)}
+                                />
+                                <Tooltip>Cancel E-Sign</Tooltip>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {(!document || document.length <= 1) && (
+                    <div className="flex justify-end mb-2">
+                        <div className="relative group">
+                            <Button
+                                mini
+                                Icon={XCircle}
+                                variant="error"
+                                className="!w-8 !h-8"
+                                iconSize={18}
+                                onClick={() => setIsCancelModalOpen(true)}
+                            />
+                            <Tooltip>Cancel E-Sign</Tooltip>
                         </div>
                     </div>
                 )}
@@ -347,6 +375,14 @@ export const InitiatedESignCard = ({
                     })}
                 </div>
             </div>
+            <CancelESignModal
+                open={isCancelModalOpen}
+                onOpenChange={(open) => {
+                    setIsCancelModalOpen(open)
+                    if (!open) onEsignRefetch()
+                }}
+                eSign={selectedDocument}
+            />
         </>
     )
 }

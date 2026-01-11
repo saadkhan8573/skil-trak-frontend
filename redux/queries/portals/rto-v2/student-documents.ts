@@ -42,7 +42,7 @@ export const studentDocumentsEndpoints = (
     getStudentDocumentFiles: builder.query<any, number>({
         query: (studentResponseId) =>
             `${PREFIX}folder/${studentResponseId}/files/list`,
-        providesTags: ['RTO-Documents','Logbook'],
+        providesTags: ['RTO-Documents','Logbook','AssessmentEvidence'],
     }),
 
     uploadStudentDocumentFile: builder.mutation<

@@ -11,10 +11,10 @@ import {
     User,
 } from 'lucide-react'
 import moment from 'moment'
-import { ApproveFile, RejectFile } from '../components'
-import { EditDocumentModal } from '../modal'
 import { useState } from 'react'
-import { Edit3 } from 'lucide-react'
+import { ApproveFile, RejectFile } from '../components'
+import { Edit3, RotateCcw, Trash2 } from 'lucide-react'
+import { ArchiveDocumentModal, EditDocumentModal } from '../modal'
 
 export const FolderDocumentCard = ({
     doc,
@@ -27,6 +27,7 @@ export const FolderDocumentCard = ({
 }) => {
     const DocStatusIcon = config.icon
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+    const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false)
 
     const { documentsViewModal, onFileClicked } = DocumentsView()
 
@@ -131,6 +132,17 @@ export const FolderDocumentCard = ({
                         }}
                         variant="action"
                     />
+                    <Button
+                        mini
+                        Icon={doc?.isArchived ? RotateCcw : Trash2}
+                        variant="action"
+                        className={
+                            doc?.isArchived
+                                ? 'text-blue-600 hover:text-blue-700 hover:bg-blue-50'
+                                : 'text-red-600 hover:text-red-700 hover:bg-red-50'
+                        }
+                        onClick={() => setIsArchiveModalOpen(true)}
+                    />
 
                     {(doc.status === 'uploaded' ||
                         doc.status === 'pending') && (
@@ -144,6 +156,11 @@ export const FolderDocumentCard = ({
             <EditDocumentModal
                 open={isEditModalOpen}
                 onOpenChange={setIsEditModalOpen}
+                file={doc}
+            />
+            <ArchiveDocumentModal
+                open={isArchiveModalOpen}
+                onOpenChange={setIsArchiveModalOpen}
                 file={doc}
             />
         </>

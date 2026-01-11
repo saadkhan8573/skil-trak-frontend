@@ -64,7 +64,7 @@ export const StudentQuickInfo = () => {
                     <div className="absolute bottom-0 left-0 w-10 h-10 bg-white/5 rounded-full -ml-5 -mb-5"></div>
 
                     <div className="relative">
-                        <div className="w-8 h-8 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center mb-2.5 group-hover:scale-110 group-hover:rotate-3 transition-all">
+                        <div className="absolute top-0 right-0 w-8 h-8 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center mb-2.5 group-hover:scale-110 group-hover:rotate-3 transition-all">
                             {card.iconType === 'lucide' ? (
                                 <card.icon className="w-4 h-4 text-white" />
                             ) : (

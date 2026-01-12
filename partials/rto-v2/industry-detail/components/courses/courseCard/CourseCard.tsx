@@ -67,9 +67,9 @@ export function CourseCard({
     const isPending = approval?.status === 'pending'
     const isRejected = approval?.status === 'rejected'
 
-    const canDelete =
-        [UserRoles.ADMIN, UserRoles.SUBADMIN].includes(userCredentials?.role) &&
-        isPending
+    const canDelete = [UserRoles.ADMIN, UserRoles.SUBADMIN].includes(
+        userCredentials?.role
+    )
 
     // Facility checklist logic: by default wont be approve if file url exist
     const hasFacilityFile = !!approval?.file
@@ -135,37 +135,38 @@ export function CourseCard({
                             {approval?.course?.title}
                         </h4>
 
-                        {/* Workflow Status Indicators */}
-                        <div className="flex items-center gap-2 flex-wrap">
-                            {/* Facility Checklist Status */}
-                            <div
-                                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-medium ${
-                                    isApproved
-                                        ? 'bg-[#10B981]/10 text-[#10B981]'
-                                        : needsApproval
-                                        ? 'bg-[#F7A619]/20 text-[#F7A619]'
-                                        : isRejected
-                                        ? 'bg-[#EF4444]/10 text-[#EF4444]'
-                                        : 'bg-[#64748B]/10 text-[#64748B]'
-                                }`}
-                            >
-                                <FileCheck className="w-3 h-3" />
-                                {isApproved && 'Checklist Approved'}
-                                {needsApproval && 'Pending Your Approval'}
-                                {isRejected && 'Checklist Rejected'}
-                                {isPending && 'Awaiting E-Signature'}
-                            </div>
-
-                            {/* Programs / Streams Integration */}
-                            {industry && approval && (
-                                <div onClick={(e) => e.stopPropagation()}>
-                                    <AddCourseProgramIndustry
-                                        industry={industry}
-                                        approval={approval}
-                                    />
+                        <div className="flex items-center justify-between">
+                            {/* Workflow Status Indicators */}
+                            <div className="flex items-center gap-2 flex-wrap">
+                                {/* Facility Checklist Status */}
+                                <div
+                                    className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-medium ${
+                                        isApproved
+                                            ? 'bg-[#10B981]/10 text-[#10B981]'
+                                            : needsApproval
+                                            ? 'bg-[#F7A619]/20 text-[#F7A619]'
+                                            : isRejected
+                                            ? 'bg-[#EF4444]/10 text-[#EF4444]'
+                                            : 'bg-[#64748B]/10 text-[#64748B]'
+                                    }`}
+                                >
+                                    <FileCheck className="w-3 h-3" />
+                                    {isApproved && 'Checklist Approved'}
+                                    {needsApproval && 'Pending Your Approval'}
+                                    {isRejected && 'Checklist Rejected'}
+                                    {isPending && 'Awaiting E-Signature'}
                                 </div>
-                            )}
 
+                                {/* Programs / Streams Integration */}
+                                {industry && approval && (
+                                    <div onClick={(e) => e.stopPropagation()}>
+                                        <AddCourseProgramIndustry
+                                            industry={industry}
+                                            approval={approval}
+                                        />
+                                    </div>
+                                )}
+                            </div>
                             {/* Document Actions (if signed or approved) */}
                             {approval?.file && (
                                 <FacilityChecklistActions

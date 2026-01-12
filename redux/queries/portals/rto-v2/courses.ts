@@ -20,10 +20,14 @@ export const coursesEndPoints = (
         invalidatesTags: ['RTOCourses', 'RTO'],
     }),
 
-    createRtoWpType: builder.mutation<any, { id: number; name: string }>({
-        query: ({ id, ...body }) => ({
+    createRtoWpType: builder.mutation<
+        any,
+        { id: number; name: string; workplaceTypeId?: number }
+    >({
+        query: ({ id, workplaceTypeId, ...body }) => ({
             url: `${PREFIX}course/${id}/workplace-type/create`,
             method: 'POST',
+            params: { workplaceTypeId },
             body,
         }),
         invalidatesTags: ['RTOCourses', 'RTO'],

@@ -1,7 +1,10 @@
-import { Button } from '@components'
+import { Button, Badge } from '@components'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import { ReactElement, useState } from 'react'
 import { AddIndustryProgramModal } from '../modal'
 import { Industry } from '@types'
+import { AdminApi } from '@queries'
+import { Plus } from 'lucide-react'
 
 export const AddCourseProgramIndustry = ({
     industry,
@@ -12,7 +15,26 @@ export const AddCourseProgramIndustry = ({
 }) => {
     const [modal, setModal] = useState<ReactElement | null>(null)
 
-    const onCancel = () => setModal(null)
+    const industryProgram = AdminApi.Industries.industryCourseProgramsList(
+        {
+            courseId: approval?.course?.id,
+            industryId: industry?.id,
+        },
+        {
+            skip: !approval?.course?.id || !industry?.id,
+        }
+    )
+
+    const coursePrograms = AdminApi.Courses.courseProgramList({
+        id: approval?.course?.id,
+        limit: 100,
+        skip: 0,
+    })
+
+    const onCancel = () => {
+        setModal(null)
+        industryProgram.refetch()
+    }
 
     const onAddIndustryCourseProgram = () => {
         setModal(
@@ -25,14 +47,33 @@ export const AddCourseProgramIndustry = ({
     }
 
     return (
-        <div>
+        <div className="flex items-center gap-2">
             {modal}
-            <Button
-                onClick={onAddIndustryCourseProgram}
-                text="Streams"
-                variant="info"
-                className="!py-1 !rounded-sm"
-            />
+            {industryProgram?.data?.map((program: any) => (
+                <Badge
+                    key={program?.id}
+                    variant="primaryNew"
+                    outline
+                    text={program?.courseProgram?.title}
+                    className="!py-0.5 !bg-gray-100"
+                />
+            ))}
+            {coursePrograms?.data?.data && coursePrograms?.data?.data?.length > 0 && (
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <span>
+                            <Button
+                                onClick={onAddIndustryCourseProgram}
+                                Icon={Plus} mini
+                                iconSize={14}
+                                variant="info"
+                                className="!py-1 !rounded-sm"
+                            />
+                        </span>
+                    </TooltipTrigger>
+                    <TooltipContent>Add Streams</TooltipContent>
+                </Tooltip>
+            )}
         </div>
     )
 }

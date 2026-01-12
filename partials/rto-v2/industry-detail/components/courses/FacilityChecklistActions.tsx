@@ -1,8 +1,7 @@
 import { Button } from '@components'
-import { DocumentsView } from '@hooks/useDocumentsView'
 import { Download, Eye } from 'lucide-react'
-import { ViewDocumentModal } from './modals'
 import { useState } from 'react'
+import { ViewDocumentModal } from './modals'
 
 interface FacilityChecklistActionsProps {
     fileUrl: string
@@ -11,7 +10,6 @@ interface FacilityChecklistActionsProps {
 export function FacilityChecklistActions({
     fileUrl,
 }: FacilityChecklistActionsProps) {
-    const { onFileClicked, documentsViewModal } = DocumentsView()
 
     const [open, setOpen] = useState(false)
 
@@ -48,7 +46,6 @@ export function FacilityChecklistActions({
                     Download PDF
                 </Button>
             </div>
-            {documentsViewModal}
             <ViewDocumentModal
                 open={open}
                 fileUrl={fileUrl}

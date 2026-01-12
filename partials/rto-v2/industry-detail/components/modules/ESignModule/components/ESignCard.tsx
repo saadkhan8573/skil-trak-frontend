@@ -9,6 +9,7 @@ import {
     CheckCircle2,
     Eye,
     PenTool,
+    XCircle,
 } from 'lucide-react'
 import moment from 'moment'
 import { useState } from 'react'
@@ -21,6 +22,7 @@ import {
     FillEsignFieldsModal,
     SubmitDocumentModal,
 } from '@partials/common/StudentProfileDetail/modals'
+import { CancelESignModal } from '@partials/rto-v2/student-detail/components/StudentAssessmentDocuments/modal'
 
 export function ESignCard({
     document,
@@ -32,6 +34,7 @@ export function ESignCard({
     const [modal, setModal] = useState<any>(null)
     const [showUsers, setShowUsers] = useState(false)
     const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+    const [isCancelModalOpen, setIsCancelModalOpen] = useState(false)
 
     const onRequestResign = (signer: any) => {
         setModal(
@@ -90,8 +93,6 @@ export function ESignCard({
         )
     }
 
-    console.log({ document })
-
     return (
         <>
             {modal}
@@ -106,11 +107,10 @@ export function ESignCard({
                 <div className="p-4 flex items-center gap-4">
                     {/* Left: Icon */}
                     <div
-                        className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm ${
-                            document.status === EsignDocumentStatus.SIGNED
-                                ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
-                                : 'bg-gradient-to-br from-[#044866] to-[#0D5468]'
-                        }`}
+                        className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm ${document.status === EsignDocumentStatus.SIGNED
+                            ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
+                            : 'bg-gradient-to-br from-[#044866] to-[#0D5468]'
+                            }`}
                     >
                         <FileSignature className="w-5 h-5 text-white" />
                     </div>
@@ -166,30 +166,43 @@ export function ESignCard({
 
                     {/* Actions & Toggle */}
                     <div className="flex items-center gap-3">
+                        {document?.template?.file && (
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button
+                                        onClick={() =>
+                                            setPreviewUrl(
+                                                document?.template?.file
+                                            )
+                                        }
+                                        className="p-2.5 rounded-lg hover:bg-gray-100 text-[#64748B] hover:text-[#044866] transition-all duration-200"
+                                    >
+                                        <Eye className="w-5 h-5" />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    Preview Document
+                                </TooltipContent>
+                            </Tooltip>
+                        )}
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <button
-                                    onClick={() =>
-                                        setPreviewUrl(
-                                            document.file ||
-                                                'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
-                                        )
-                                    }
-                                    className="p-2.5 rounded-lg hover:bg-gray-100 text-[#64748B] hover:text-[#044866] transition-all duration-200"
+                                    onClick={() => setIsCancelModalOpen(true)}
+                                    className="p-2.5 rounded-lg hover:bg-red-50 text-[#64748B] hover:text-red-600 transition-all duration-200"
                                 >
-                                    <Eye className="w-5 h-5" />
+                                    <XCircle className="w-5 h-5" />
                                 </button>
                             </TooltipTrigger>
-                            <TooltipContent>Preview Document</TooltipContent>
+                            <TooltipContent>Cancel E-Sign</TooltipContent>
                         </Tooltip>
                         {document.signers?.length > 0 && (
                             <button
                                 onClick={() => setShowUsers(!showUsers)}
-                                className={`px-4 py-2 rounded-lg text-xs font-bold shadow-sm transition-all duration-200 ${
-                                    showUsers
-                                        ? 'bg-[#044866] text-white'
-                                        : 'bg-[#044866]/5 text-[#044866] hover:bg-[#044866]/10'
-                                }`}
+                                className={`px-4 py-2 rounded-lg text-xs font-bold shadow-sm transition-all duration-200 ${showUsers
+                                    ? 'bg-[#044866] text-white'
+                                    : 'bg-[#044866]/5 text-[#044866] hover:bg-[#044866]/10'
+                                    }`}
                             >
                                 {showUsers ? 'Hide Signers' : 'View Signers'}
                             </button>
@@ -251,8 +264,8 @@ export function ESignCard({
                                         <span className="text-[10px] font-semibold text-[#1A2332]">
                                             {signer.status === 'SIGNED'
                                                 ? moment(
-                                                      signer.updatedAt
-                                                  ).format('DD MMM, YYYY')
+                                                    signer.updatedAt
+                                                ).format('DD MMM, YYYY')
                                                 : '---'}
                                         </span>
                                     </div>
@@ -324,6 +337,14 @@ export function ESignCard({
                     </div>
                 )}
             </Card>
+            <CancelESignModal
+                open={isCancelModalOpen}
+                onOpenChange={(open) => {
+                    setIsCancelModalOpen(open)
+                    if (!open) onRefetch()
+                }}
+                eSign={document}
+            />
         </>
     )
 }

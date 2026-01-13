@@ -67,7 +67,7 @@ export const teamsEndpoints = (
         query: (id) => ({
             url: `${PREFIX}-task/${id}/notes/get-all`,
         }),
-        providesTags: ['Team'],
+        providesTags: ['Team', 'Tickets', 'SubAdminStudents'],
     }),
     // student/:userId/list
     getStudentSupportTicketsList: builder.query<any, any>({

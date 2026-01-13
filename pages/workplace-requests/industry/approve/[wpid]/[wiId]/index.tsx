@@ -74,7 +74,10 @@ const ApproveRequestPage = () => {
 
     const industryResponsed =
         checkIsIndustryPerformedAction?.data?.industries[0]?.industryResponse
-
+    console.log(
+        'checkIsIndustryPerformedAction',
+        checkIsIndustryPerformedAction?.data
+    )
     const isRejected =
         checkIsIndustryPerformedAction?.data?.industries[0]
             ?.industryResponse === 'rejected'

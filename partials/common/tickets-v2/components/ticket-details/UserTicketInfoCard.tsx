@@ -21,7 +21,7 @@ export const UserTicketInfoCard = ({ ticket }: any) => {
         studentId: ticket?.user?.student?.id,
         industryId: ticket?.user?.industry?.id,
     })
-    // students-and-placements/all-students/471/detail
+
     return (
         <div className="bg-white rounded-2xl shadow-xl mb-4 overflow-hidden border border-gray-200">
             <div className="h-2 bg-gradient-to-r from-[#044866] via-[#F7A619] to-[#0D5468]"></div>
@@ -161,50 +161,52 @@ export const UserTicketInfoCard = ({ ticket }: any) => {
                 </div>
 
                 {/* Industry Info (if available) */}
-                {(ticket?.industryName || ticket?.industryType) && (
+                {ticket?.relatedUser && (
                     <div className="mt-3 grid grid-cols-2 gap-2">
-                        {ticket.industryName && (
-                            <button
-                                // onClick={() => {
-                                //     const industryId = getIndustryId(
-                                //         ticket.industryName
-                                //     )
-                                //     if (industryId && onViewIndustryProfile) {
-                                //         onViewIndustryProfile(industryId)
-                                //     }
-                                // }}
-                                className="bg-[#F7A619]/10 rounded-lg p-2.5 border border-[#F7A619]/20 hover:bg-[#F7A619]/20 transition-colors group/industry"
-                                title="View industry profile"
-                            >
-                                <div className="flex items-center gap-2 text-[#F7A619]">
-                                    <Building2 className="w-4 h-4" />
-                                    <div className="text-left flex-1">
-                                        <div className="text-xs text-[#F7A619]/70 flex items-center gap-1">
-                                            Industry
-                                            <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover/industry:opacity-100 transition-opacity" />
-                                        </div>
-                                        <div className="text-xs text-[#044866]">
-                                            {ticket.industryName}
-                                        </div>
+                        {/* {ticket.industryName && ( */}
+                        <Link
+                            href={`${profileUrl}`}
+                            // onClick={() => {
+                            //     const industryId = getIndustryId(
+                            //         ticket.industryName
+                            //     )
+                            //     if (industryId && onViewIndustryProfile) {
+                            //         onViewIndustryProfile(industryId)
+                            //     }
+                            // }}
+                            className="bg-[#F7A619]/10 rounded-lg p-2.5 border border-[#F7A619]/20 hover:bg-[#F7A619]/20 transition-colors group/industry"
+                            title="View industry profile"
+                        >
+                            <div className="flex items-center gap-2 text-[#F7A619]">
+                                <Building2 className="w-4 h-4" />
+                                <div className="text-left flex-1">
+                                    <div className="text-xs text-[#F7A619]/70 flex items-center gap-1">
+                                        Industry
+                                        <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover/industry:opacity-100 transition-opacity" />
                                     </div>
-                                </div>
-                            </button>
-                        )}
-                        {ticket.industryType && (
-                            <div className="bg-purple-500/10 rounded-lg p-2.5 border border-purple-500/20">
-                                <div className="flex items-center gap-2 text-purple-700">
-                                    <FileText className="w-4 h-4" />
-                                    <div>
-                                        <div className="text-xs text-purple-700/70">
-                                            Type
-                                        </div>
-                                        <div className="text-xs text-[#044866]">
-                                            {ticket.industryType}
-                                        </div>
+                                    <div className="text-xs text-[#044866]">
+                                        {ticket?.relatedUser?.user?.name ??
+                                            'NA'}
                                     </div>
                                 </div>
                             </div>
-                        )}
+                        </Link>
+                        {/* )} */}
+                        {/* {ticket.industryType && ( */}
+                        <div className="bg-purple-500/10 rounded-lg p-2.5 border border-purple-500/20">
+                            <div className="flex items-center gap-2 text-purple-700">
+                                <FileText className="w-4 h-4" />
+                                <div>
+                                    <div className="text-xs text-purple-700/70">
+                                        Type
+                                    </div>
+                                    <div className="text-xs text-[#044866]">
+                                        {ticket?.industryType ?? 'NA'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/*  )} */}
                     </div>
                 )}
             </div>

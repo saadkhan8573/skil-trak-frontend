@@ -40,7 +40,7 @@ const priorityStyles: any = {
 
 const statusColors = {
     open: 'bg-red-500',
-    'in-progress': 'bg-[#0D5468]',
+    inProgress: 'bg-[#0D5468]',
     pending: 'bg-[#F7A619]',
     resolved: 'bg-green-500',
     assigned: 'bg-red-500',
@@ -48,7 +48,7 @@ const statusColors = {
 
 const statusLabels = {
     open: 'Open',
-    'in-progress': 'In Progress',
+    inProgress: 'In Progress',
     pending: 'Pending',
     resolved: 'Resolved',
     assigned: 'Assigned',
@@ -176,7 +176,7 @@ const TicketCardComponent = ({
                             <div className="relative flex-shrink-0">
                                 <div
                                     className={`w-2 h-2 rounded-full ${
-                                        statusColors[ticket.status]
+                                        statusColors[ticket?.status]
                                     }`}
                                 />
                                 {ticket?.status === 'assigned' && (
@@ -193,6 +193,17 @@ const TicketCardComponent = ({
                 {/* Ticket ID */}
                 <span className="text-[#044866] text-xs w-20 flex-shrink-0">
                     TKT-{ticket?.id}
+                </span>
+                <span
+                    className={`px-2 py-0.5  ${
+                        statusColors[ticket?.status]
+                    } text-white rounded text-[10px]`}
+                >
+                    {ticket?.status === 'assigned'
+                        ? 'Open'
+                        : ticket?.status === 'inProgress'
+                        ? 'In Progress'
+                        : 'Resolved'}
                 </span>
 
                 {/* Badges */}

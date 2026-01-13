@@ -1,4 +1,9 @@
-import { Select, ShowErrorNotifications } from '@components'
+import {
+    AuthorizedUserComponent,
+    Select,
+    ShowErrorNotifications,
+} from '@components'
+import { UserRoles } from '@constants'
 import { CommonApi } from '@queries'
 import React, { useState } from 'react'
 
@@ -22,29 +27,33 @@ export const TicketAssigneeSelector = ({ taskId, teamId, member }: any) => {
     return (
         <>
             <ShowErrorNotifications result={changeAssigneeResult} />
-            <div className="overflow-visible relative z-50">
-                <Select
-                    name="assignee"
-                    placeholder="Change assignee"
-                    options={memberOptions}
-                    loading={
-                        membersList.isLoading || changeAssigneeResult.isLoading
-                    }
-                    value={member?.id}
-                    defaultValue={selectedAssignee ?? {}}
-                    onChange={(e: any) => {
-                        if (!e) return // ⛔ ignore clear
+            <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+                <div className="overflow-visible relative z-50">
+                    <Select
+                        name="assignee"
+                        placeholder="Change assignee"
+                        options={memberOptions}
+                        label={'Assignee'}
+                        loading={
+                            membersList.isLoading ||
+                            changeAssigneeResult.isLoading
+                        }
+                        value={member?.id}
+                        defaultValue={selectedAssignee ?? null}
+                        onChange={(e: any) => {
+                            if (!e) return // ⛔ ignore clear
 
-                        changeAssignee({
-                            coordId: e,
-                            taskId,
-                        })
-                    }}
-                    disabled={changeAssigneeResult.isLoading}
-                    onlyValue
-                    showError={false}
-                />
-            </div>
+                            changeAssignee({
+                                coordId: e,
+                                taskId,
+                            })
+                        }}
+                        disabled={changeAssigneeResult.isLoading}
+                        onlyValue
+                        showError={false}
+                    />
+                </div>
+            </AuthorizedUserComponent>
         </>
     )
 }

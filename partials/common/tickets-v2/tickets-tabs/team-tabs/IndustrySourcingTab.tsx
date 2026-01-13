@@ -18,9 +18,13 @@ export const IndustrySourcingTab = () => {
     })
 
     const { data, isLoading, isError } = CommonApi.Teams.useAutomatedTickets({
-        search: `status:${tab === 'active' ? 'assigned' : 'resolved'},tag:${
-            TAGS.SOURCING_TEAM
-        }`,
+        search: `status:${
+            tab === 'active'
+                ? 'assigned'
+                : tab === 'inProgress'
+                ? 'inProgress'
+                : 'resolved'
+        },tag:${TAGS.SOURCING_TEAM}`,
         skip: itemPerPage * page - itemPerPage,
         limit: itemPerPage,
     })

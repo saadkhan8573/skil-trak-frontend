@@ -70,7 +70,6 @@ const StudentDashboard: NextPageWithLayout = () => {
         CommonApi.Appointments.useAppointmentCompletionStatus({})
     const agreementSignedAndSchedule =
         CommonApi.Appointments.useStudentAgreementAndScheduleStatus()
-    console.log('agreementSignedAndSchedule', agreementSignedAndSchedule?.data)
     // agreementSignedAndSchedule?.data
     const uponAgreementSignedAndNoSchedule = () => {
         setModal(<StudentWpScheduleModal student={data} onClose={onClose} />)
@@ -215,16 +214,16 @@ const StudentDashboard: NextPageWithLayout = () => {
             </div>
         </Modal>
     )
-    const onClickFeedbackCoordinator = () => {
-        setModal(
-            <GlobalModal>
-                <RateCoordinatorModal
-                    userId={data?.subadmin?.user?.id}
-                    onCloseModal={onCancel}
-                />
-            </GlobalModal>
-        )
-    }
+    // const onClickFeedbackCoordinator = () => {
+    //     setModal(
+    //         <GlobalModal>
+    //             <RateCoordinatorModal
+    //                 userId={data?.subadmin?.user?.id}
+    //                 onCloseModal={onCancel}
+    //             />
+    //         </GlobalModal>
+    //     )
+    // }
 
     return (
         <>
@@ -510,7 +509,7 @@ const StudentDashboard: NextPageWithLayout = () => {
                                         {data?.subadmin?.user?.email ?? 'NA'}
                                     </p> */}
                                 </div>
-                                <div className="">
+                                {/* <div className="">
                                     {data && data?.subadmin && (
                                         <>
                                             {averageRating &&
@@ -533,7 +532,7 @@ const StudentDashboard: NextPageWithLayout = () => {
                                             )}
                                         </>
                                     )}
-                                </div>
+                                </div> */}
                             </div>
 
                             {/* Action */}

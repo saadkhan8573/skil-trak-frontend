@@ -16,7 +16,12 @@ export const StudentServicesTab = () => {
     })
     const { data, isLoading, isError } = CommonApi.Teams.useAutomatedTickets({
         search: `${JSON.stringify({
-            status: tab === 'active' ? 'assigned' : 'resolved',
+            status:
+                tab === 'active'
+                    ? 'assigned'
+                    : tab === 'inProgress'
+                    ? 'inProgress'
+                    : 'resolved',
             tag: TAGS.STUDENT_SERVICES,
         })
             .replaceAll('{', '')

@@ -1,7 +1,7 @@
-import { CheckCircle2 } from 'lucide-react'
+import React from 'react'
+import { Activity } from 'lucide-react'
 import { StatsCard } from '../components'
-
-export const ResolvedTicketsTab = ({ count }: any) => {
+export const InProgressTicketsTab = ({ count }: any) => {
     return (
         <>
             <div
@@ -10,11 +10,11 @@ export const ResolvedTicketsTab = ({ count }: any) => {
             >
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <StatsCard
-                        icon={<CheckCircle2 className="w-4 h-4" />}
-                        label="Total Resolved"
-                        value={count?.data?.CLOSE ?? 0}
-                        color="green"
-                        gradient="from-green-500 to-emerald-600"
+                        icon={<Activity className="w-4 h-4" />}
+                        label="In-progress"
+                        value={count?.data?.IN_PROGRESS ?? 0}
+                        color="indigo"
+                        gradient="from-indigo-500 to-sky-600"
                     />
                     {/* <StatsCard
                         icon={<TrendingUp className="w-4 h-4" />}

@@ -76,6 +76,7 @@ export const IndustrySelection = ({
             setActive(1)
         }
     }, [cancelRequestResult.isSuccess])
+    console.log('appliedIndustry', workplace?.data)
 
     const workplaceCancelRequest = (simple: boolean = false) => {
         const workplaceStatus = [

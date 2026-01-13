@@ -3,7 +3,7 @@ export type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' | null | undefined
 
 export type TicketStatus =
     | 'open'
-    | 'in-progress'
+    | 'inProgress'
     | 'pending'
     | 'resolved'
     | 'assigned'

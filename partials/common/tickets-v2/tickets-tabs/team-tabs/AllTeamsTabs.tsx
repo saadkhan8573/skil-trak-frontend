@@ -17,7 +17,13 @@ export const AllTeamsTabs = () => {
     })
 
     const { data, isLoading, isError } = CommonApi.Teams.useAutomatedTickets({
-        search: `status:${tab === 'active' ? 'assigned' : 'resolved'}`,
+        search: `status:${
+            tab === 'active'
+                ? 'assigned'
+                : tab === 'inProgress'
+                ? 'inProgress'
+                : 'resolved'
+        }`,
         skip: itemPerPage * page - itemPerPage,
         limit: itemPerPage,
     })

@@ -1,11 +1,12 @@
 import { AuthorizedUserComponent, Button, Select } from '@components'
-import { CommonApi } from '@queries'
+import { CommonApi, AdminApi } from '@queries'
 import { Search, Filter, X, Calendar, UserCheck } from 'lucide-react'
 import { useState, useCallback } from 'react'
 import { FilterSection } from './FilterSection'
 import { FilterToggleButton } from './FilterToggleButton'
 import { debounce } from 'lodash'
 import { UserRoles } from '@constants'
+import { SubAdmin, UserStatus } from '@types'
 
 interface TicketFiltersProps {
     onFilterChange: (filters: FilterState) => void
@@ -98,7 +99,7 @@ export function SupportTicketFilter({
                         type="text"
                         defaultValue={activeFilters?.title}
                         onChange={(e) => onTitleChange(e?.target?.value)}
-                        placeholder="Search by ticket ID, student name, or description..."
+                        placeholder="Search by ticket ID, student name..."
                         className="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#F7A619]"
                     />
                 </div>

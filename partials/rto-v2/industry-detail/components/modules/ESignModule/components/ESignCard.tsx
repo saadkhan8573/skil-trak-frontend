@@ -107,10 +107,11 @@ export function ESignCard({
                 <div className="p-4 flex items-center gap-4">
                     {/* Left: Icon */}
                     <div
-                        className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm ${document.status === EsignDocumentStatus.SIGNED
-                            ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
-                            : 'bg-gradient-to-br from-[#044866] to-[#0D5468]'
-                            }`}
+                        className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm ${
+                            document.status === EsignDocumentStatus.SIGNED
+                                ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
+                                : 'bg-gradient-to-br from-[#044866] to-[#0D5468]'
+                        }`}
                     >
                         <FileSignature className="w-5 h-5 text-white" />
                     </div>
@@ -199,10 +200,11 @@ export function ESignCard({
                         {document.signers?.length > 0 && (
                             <button
                                 onClick={() => setShowUsers(!showUsers)}
-                                className={`px-4 py-2 rounded-lg text-xs font-bold shadow-sm transition-all duration-200 ${showUsers
-                                    ? 'bg-[#044866] text-white'
-                                    : 'bg-[#044866]/5 text-[#044866] hover:bg-[#044866]/10'
-                                    }`}
+                                className={`px-4 py-2 rounded-lg text-xs font-bold shadow-sm transition-all duration-200 ${
+                                    showUsers
+                                        ? 'bg-[#044866] text-white'
+                                        : 'bg-[#044866]/5 text-[#044866] hover:bg-[#044866]/10'
+                                }`}
                             >
                                 {showUsers ? 'Hide Signers' : 'View Signers'}
                             </button>
@@ -242,10 +244,11 @@ export function ESignCard({
                                             Status
                                         </span>
                                         <div className="flex items-center gap-1">
-                                            {signer.status === 'SIGNED' ? (
+                                            {signer.status ===
+                                            EsignDocumentStatus.SIGNED ? (
                                                 <div className="flex items-center gap-1 text-[#10B981] font-bold text-[10px]">
                                                     <CheckCircle2 className="w-3.5 h-3.5" />
-                                                    SIGNED
+                                                    {EsignDocumentStatus.SIGNED}
                                                 </div>
                                             ) : (
                                                 <div className="flex items-center gap-1 text-orange-500 font-bold text-[10px]">
@@ -262,17 +265,19 @@ export function ESignCard({
                                             Sign Date
                                         </span>
                                         <span className="text-[10px] font-semibold text-[#1A2332]">
-                                            {signer.status === 'SIGNED'
+                                            {signer.status ===
+                                            EsignDocumentStatus.SIGNED
                                                 ? moment(
-                                                    signer.updatedAt
-                                                ).format('DD MMM, YYYY')
+                                                      signer.updatedAt
+                                                  ).format('DD MMM, YYYY')
                                                 : '---'}
                                         </span>
                                     </div>
 
                                     {/* Individual Actions */}
                                     <div className="flex items-center gap-2 border-l border-[#E2E8F0] pl-4">
-                                        {signer.status === 'SIGNED' ? (
+                                        {signer.status ===
+                                        EsignDocumentStatus.SIGNED ? (
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <button

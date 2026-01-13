@@ -11,17 +11,15 @@ import {
     DialogTitle,
 } from '@components/ui/dialog'
 import { useNotification } from '@hooks'
-import { RtoV2Api } from '@queries'
+import { AddIndustryProgramModal } from '@partials/common/IndustryProfileDetail/components/CourseManagement/modal'
+import { AdminApi, IndustryApi, RtoV2Api } from '@queries'
+import { useAppSelector } from '@redux/hooks'
 import { IndustryCourseApproval } from '@types'
 import { AlertCircle, CheckCircle, FileCheck } from 'lucide-react'
 import moment from 'moment'
+import { useState } from 'react'
 import { FacilityChecklistActions } from '../FacilityChecklistActions'
 import { AddSupervisorDialog } from './AddSupervisorDialog'
-import { AddIndustryProgramModal } from '@partials/common/IndustryProfileDetail/components/CourseManagement/modal'
-import { useState } from 'react'
-import { useAppSelector } from '@redux/hooks'
-import { ViewDocumentModal } from './ViewDocumentModal'
-import { AdminApi, IndustryApi } from '@queries'
 
 interface ApproveFacilityChecklistDialogProps {
     open: boolean

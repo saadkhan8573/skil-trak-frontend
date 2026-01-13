@@ -1,21 +1,9 @@
-import {
-    Badge,
-    Button,
-    ShowErrorNotifications,
-    Typography,
-} from '@components'
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@components/ui/dialog'
+import { Button, ShowErrorNotifications, Typography } from '@components'
+import { Dialog, DialogContent } from '@components/ui/dialog'
 import { useNotification } from '@hooks'
 import { AdminApi } from '@queries'
 import { IndustryCourseApproval } from '@types'
-import { AlertTriangle, Trash2, XCircle } from 'lucide-react'
+import { AlertTriangle, XCircle } from 'lucide-react'
 import { useEffect } from 'react'
 
 interface DeleteCourseDialogProps {
@@ -41,7 +29,12 @@ export function DeleteCourseDialog({
             })
             onOpenChange(false)
         }
-    }, [deleteCourseResult.isSuccess, approval?.course?.title, notification, onOpenChange])
+    }, [
+        deleteCourseResult.isSuccess,
+        approval?.course?.title,
+        notification,
+        onOpenChange,
+    ])
 
     const handleDelete = async () => {
         if (approval?.id) {
@@ -51,69 +44,68 @@ export function DeleteCourseDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-sm p-0 overflow-hidden border-none shadow-2xl [&>button]:text-white">
+            <DialogContent className="max-w-md p-6 overflow-hidden border-none shadow-2xl">
                 <ShowErrorNotifications result={deleteCourseResult} />
 
-                {/* Danger Header */}
-                <div className="bg-gradient-to-r from-red-600 to-red-500 p-5 flex flex-row items-center gap-4 text-white relative">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30 shrink-0">
-                        <Trash2 className="w-6 h-6 text-white" />
+                <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center border border-red-100 mb-2">
+                        <AlertTriangle className="w-8 h-8 text-red-500 animate-pulse" />
                     </div>
-                    <DialogHeader className="text-left !space-y-0.5">
-                        <DialogTitle className="text-lg font-bold text-white">
-                            Remove Course
-                        </DialogTitle>
-                        <DialogDescription className="text-red-100 text-sm">
-                            This action will permanently remove the course association.
-                        </DialogDescription>
-                    </DialogHeader>
 
-                    {/* Decorative Elements */}
-                    <div className="absolute top-2 right-2 opacity-10">
-                        <XCircle className="w-16 h-16" />
+                    <div className="space-y-1">
+                        <Typography
+                            variant="h4"
+                            className="font-bold text-slate-800"
+                        >
+                            Delete Course Connection?
+                        </Typography>
+                        <Typography
+                            variant="label"
+                            className="text-slate-500 leading-relaxed px-4"
+                        >
+                            You are about to remove{' '}
+                            <span className="font-bold text-slate-800">
+                                {approval?.course?.title}
+                            </span>
+                            . If you proceed,{' '}
+                            <span className="font-bold text-red-600 underline">
+                                all related student workplaces will be
+                                automatically cancelled
+                            </span>
+                            .
+                        </Typography>
+                    </div>
+
+                    <div className="w-full bg-slate-50 rounded-xl px-4 py-2 border border-slate-100 flex items-center gap-3">
+                        <XCircle className="w-5 h-5 text-red-500 shrink-0" />
+                        <Typography
+                            variant="label"
+                            className="text-left text-slate-600 text-xs"
+                        >
+                            This action cannot be undone and will impact student
+                            placement records.
+                        </Typography>
                     </div>
                 </div>
 
-                <div className="px-5 py-2 space-y-4">
-                    <div className="space-y-2">
-                        <div className="flex items-center justify-between text-sm text-[#64748B]">
-                            <span>Course</span>
-                            <span className="font-bold text-[#1A2332]">{approval?.course?.title}</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm text-[#64748B]">
-                            <span>Status</span>
-                            <Badge
-                                variant={
-                                    approval?.status === 'approved'
-                                        ? 'success'
-                                        : 'warning'
-                                }
-                                size="xs"
-                                text={approval?.status}
-                                className="font-bold tracking-wider"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <DialogFooter className="p-4 bg-gray-50 border-t flex flex-row gap-2 sm:justify-center">
+                <div className="flex flex-row gap-3 mt-2">
                     <Button
                         variant="secondary"
+                        className="flex-1"
                         onClick={() => onOpenChange(false)}
-                        className="flex-1 h-9 text-xs font-bold"
                     >
-                        Keep Course
+                        Go Back
                     </Button>
                     <Button
                         variant="error"
                         onClick={handleDelete}
                         loading={deleteCourseResult.isLoading}
                         disabled={deleteCourseResult.isLoading}
-                        className="flex-1 h-9 bg-red-600 hover:bg-red-700 text-white text-xs font-bold shadow-lg shadow-red-200"
+                        className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 h-auto rounded-xl shadow-lg shadow-red-200 border-none px-6 transition-all active:scale-95"
                     >
                         Confirm Delete
                     </Button>
-                </DialogFooter>
+                </div>
             </DialogContent>
         </Dialog>
     )

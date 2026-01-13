@@ -134,15 +134,15 @@ export const Courses: React.FC<CoursesProps> = ({
                             manualReOpen)) ||
                         editAssessment ||
                         subadmin?.isAssociatedWithRto) && (
-                        <div className="p-4">
-                            <SubmitFinalResult
-                                course={selectedCourse as Course}
-                                result={result}
-                                setEditAssessment={() => {}}
-                                studentId={student?.id}
-                            />
-                        </div>
-                    )}
+                            <div className="p-4">
+                                <SubmitFinalResult
+                                    course={selectedCourse as Course}
+                                    result={result}
+                                    setEditAssessment={() => { }}
+                                    studentId={student?.id}
+                                />
+                            </div>
+                        )}
                 </AuthorizedUserComponent>
                 {selectedCourse?.results?.length > 0 && (
                     <div className="px-4 pb-3">

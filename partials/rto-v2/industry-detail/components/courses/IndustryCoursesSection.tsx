@@ -1,4 +1,4 @@
-import { RtoV2Api, setIndustrySectorCapacity, SubAdminApi } from '@redux'
+import { RtoV2Api, setDeletedCourses, setIndustrySectorCapacity, SubAdminApi } from '@redux'
 import { useAppDispatch, useAppSelector } from '@redux/hooks'
 import { useEffect, useState } from 'react'
 
@@ -7,10 +7,14 @@ import { CoursesHeaderSection } from '../courses/header/CoursesHeaderSection'
 import { SectorCard } from '../courses/SectorCard'
 import { useCoursesData } from './hooks'
 import { CoursesTabSkeleton } from '../../skeletonLoader'
+import { CheckCircle2, Trash2 } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { cn, removeEmptyValues } from '@utils'
 
 export function IndustryCoursesSection() {
     const [searchQuery, setSearchQuery] = useState('')
     const [showSearch, setShowSearch] = useState(false)
+    const [isDeletedView, setIsDeletedView] = useState(false)
 
     const { industryDetail: industry } = useAppSelector(
         (state) => state.industry
@@ -30,13 +34,20 @@ export function IndustryCoursesSection() {
     }, [sectorCapacityData, dispatch])
 
     const coursesDetails = RtoV2Api.Industries.industryCoursesDetails(
-        {
+        removeEmptyValues({
             userId: industry?.user?.id,
-        },
+            isDeleted: isDeletedView,
+        }),
         {
             skip: !industry?.user?.id,
         }
     )
+
+    useEffect(() => {
+        if (isDeletedView && coursesDetails?.data) {
+            dispatch(setDeletedCourses(coursesDetails.data))
+        }
+    }, [isDeletedView, coursesDetails?.data, dispatch])
 
     // Use API data directly without transformation
     const coursesData = coursesDetails?.data
@@ -95,6 +106,61 @@ export function IndustryCoursesSection() {
                 existingCourses={coursesDetails?.data}
             />
 
+            {/* View Toggle Tabs - High Fidelity Switcher */}
+            <div className="flex items-center justify-center pt-2">
+                <div className="bg-slate-100/80 p-1 rounded-xl flex items-center gap-1 border border-slate-200 shadow-sm overflow-hidden relative">
+                    {[
+                        {
+                            id: false,
+                            label: 'Active Courses',
+                            icon: CheckCircle2,
+                            color: 'text-emerald-600',
+                        },
+                        {
+                            id: true,
+                            label: 'Removed History',
+                            icon: Trash2,
+                            color: 'text-rose-600',
+                        },
+                    ].map((tab) => {
+                        const isActive = isDeletedView === tab.id
+                        return (
+                            <button
+                                key={String(tab.id)}
+                                onClick={() => setIsDeletedView(tab.id)}
+                                className={cn(
+                                    'relative px-6 py-2.5 rounded-lg flex items-center gap-2.5 transition-all duration-300 z-10',
+                                    isActive
+                                        ? 'text-slate-900 shadow-sm'
+                                        : 'text-slate-500 hover:text-slate-700'
+                                )}
+                            >
+                                <tab.icon
+                                    className={cn(
+                                        'w-4 h-4 transition-colors',
+                                        isActive ? tab.color : 'text-slate-400'
+                                    )}
+                                />
+                                <span className="text-[13px] font-bold whitespace-nowrap">
+                                    {tab.label}
+                                </span>
+
+                                {isActive && (
+                                    <motion.div
+                                        layoutId="active-pill"
+                                        className="absolute inset-0 bg-white rounded-lg shadow-sm -z-10"
+                                        transition={{
+                                            type: 'spring',
+                                            bounce: 0.2,
+                                            duration: 0.6,
+                                        }}
+                                    />
+                                )}
+                            </button>
+                        )
+                    })}
+                </div>
+            </div>
             {/* Sector Cards - Enhanced Design */}
             <div id="capacity" className="space-y-3">
                 {coursesDetails?.isError && <TechnicalError />}
@@ -106,6 +172,7 @@ export function IndustryCoursesSection() {
                             key={group.sector.id}
                             sector={group}
                             sectorIndex={sectorIndex}
+                            isDeleted={isDeletedView}
                         />
                     ))
                 ) : (

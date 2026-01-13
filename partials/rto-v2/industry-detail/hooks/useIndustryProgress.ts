@@ -58,7 +58,6 @@ export const getChecklistItems = (data: any) => {
             icon: Users,
             color: '#0D5468',
             targetTab: 'courses',
-            targetSection: 'capacity',
         },
         {
             title: 'Interview Availability',
@@ -74,7 +73,7 @@ export const getChecklistItems = (data: any) => {
             status: getStatus(data?.contactPerson),
             icon: UserCheck,
             color: '#10B981',
-            targetSection: 'contact-details',
+            targetTab: 'students',
         },
         {
             title: 'Workplace Type',

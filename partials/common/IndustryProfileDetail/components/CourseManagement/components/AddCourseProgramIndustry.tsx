@@ -1,4 +1,4 @@
-import { Button, Badge } from '@components'
+import { Button, Badge, Typography } from '@components'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import { ReactElement, useState } from 'react'
 import { AddIndustryProgramModal } from '../modal'
@@ -31,6 +31,8 @@ export const AddCourseProgramIndustry = ({
         skip: 0,
     })
 
+    const isDeletedInternal = !!approval?.deletedAt
+
     const onCancel = () => {
         setModal(null)
         industryProgram.refetch()
@@ -49,6 +51,12 @@ export const AddCourseProgramIndustry = ({
     return (
         <div className="flex items-center gap-2">
             {modal}
+            {coursePrograms?.data?.data &&
+                coursePrograms?.data?.data?.length > 0 && (
+                    <Typography variant="label" semibold>
+                        Streams:
+                    </Typography>
+                )}
             {industryProgram?.data?.map((program: any) => (
                 <Badge
                     key={program?.id}
@@ -58,22 +66,25 @@ export const AddCourseProgramIndustry = ({
                     className="!py-0.5 !bg-gray-100"
                 />
             ))}
-            {coursePrograms?.data?.data && coursePrograms?.data?.data?.length > 0 && (
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <span>
-                            <Button
-                                onClick={onAddIndustryCourseProgram}
-                                Icon={Plus} mini
-                                iconSize={14}
-                                variant="info"
-                                className="!py-1 !rounded-sm"
-                            />
-                        </span>
-                    </TooltipTrigger>
-                    <TooltipContent>Add Streams</TooltipContent>
-                </Tooltip>
-            )}
+            {coursePrograms?.data?.data &&
+                coursePrograms?.data?.data?.length > 0 &&
+                !isDeletedInternal && (
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span>
+                                <Button
+                                    onClick={onAddIndustryCourseProgram}
+                                    Icon={Plus}
+                                    mini
+                                    iconSize={14}
+                                    variant="info"
+                                    className="!py-1 !rounded-sm"
+                                />
+                            </span>
+                        </TooltipTrigger>
+                        <TooltipContent>Add Streams</TooltipContent>
+                    </Tooltip>
+                )}
         </div>
     )
 }

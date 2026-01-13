@@ -156,7 +156,7 @@ export const InputContentEditor = ({
     }
 
     return (
-        <div>
+        <div className='relative z-10'>
             <Typography variant={'label'}>{label}</Typography>
             <Controller
                 name={name}
@@ -185,11 +185,9 @@ export const InputContentEditor = ({
                                 history: { inDropdown: true },
                             }}
                             editorState={field?.value}
-                            wrapperClassName={`border ${
-                                error ? 'border-error' : ''
-                            } rounded-md ${
-                                height ? height : 'h-64'
-                            } overflow-auto`}
+                            wrapperClassName={`border ${error ? 'border-error' : ''
+                                } rounded-md ${height ? height : 'h-64'
+                                } overflow-auto`}
                             editorClassName="!overflow-auto custom-scrollbar !h-[calc(100%-60px)]"
                             onEditorStateChange={(e: any) => {
                                 field.onChange(e)

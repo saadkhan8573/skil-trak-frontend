@@ -25,6 +25,7 @@ const sectorStatusColorMap: Record<string, string> = {
     approved: 'bg-gradient-to-r from-[#10B981] to-[#059669]',
     rejected: 'bg-gradient-to-r from-red-500 to-red-700',
     pending: 'bg-gradient-to-r from-[#F7A619] to-[#EA580C]',
+    removed: 'bg-gradient-to-r from-slate-500 to-slate-700',
 }
 
 import { setIndustrySupervisors, setPendingCourses } from '@redux'
@@ -35,9 +36,10 @@ import { IndustrySectorGroup } from './hooks'
 interface SectorCardProps {
     sector: IndustrySectorGroup
     sectorIndex: number
+    isDeleted?: boolean
 }
 
-export function SectorCard({ sector, sectorIndex }: SectorCardProps) {
+export function SectorCard({ sector, sectorIndex, isDeleted }: SectorCardProps) {
     const [showSupervisorsModal, setShowSupervisorsModal] = useState(false)
     const [showCapacityModal, setShowCapacityModal] = useState(false)
     const [showCancelEsignModal, setShowCancelEsignModal] = useState(false)
@@ -108,18 +110,19 @@ export function SectorCard({ sector, sectorIndex }: SectorCardProps) {
     const hasPendingActions = pendingApprovalCourses > 0
     const sectorApproved = approvedCourses > 0
 
+    const isDeletedInternal = isDeleted || !!sector.sector.deletedAt || !!industryApproval?.deletedAt
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: sectorIndex * 0.1 }}
-            className={`rounded-2xl border-2 overflow-hidden transition-all duration-300 ${
-                sectorApproved
-                    ? 'bg-gradient-to-br from-[#10B981]/5 via-white to-[#059669]/5 border-[#10B981]/30 shadow-lg shadow-[#10B981]/10'
-                    : hasPendingActions
+            className={`rounded-2xl border-2 overflow-hidden transition-all duration-300 ${sectorApproved
+                ? 'bg-gradient-to-br from-[#10B981]/5 via-white to-[#059669]/5 border-[#10B981]/30 shadow-lg shadow-[#10B981]/10'
+                : hasPendingActions
                     ? 'bg-gradient-to-br from-[#F7A619]/5 via-white to-[#EA580C]/5 border-[#F7A619]/40 shadow-lg shadow-[#F7A619]/10'
                     : 'bg-white border-[#E2E8F0] hover:shadow-xl hover:border-[#044866]/20'
-            }`}
+                }`}
         >
             {/* Sector Header */}
             <div
@@ -128,26 +131,24 @@ export function SectorCard({ sector, sectorIndex }: SectorCardProps) {
             >
                 {/* Status Indicator Strip */}
                 <div
-                    className={`absolute top-0 left-0 right-0 h-1 ${
-                        sectorApproved
-                            ? 'bg-gradient-to-r from-[#10B981] via-[#059669] to-[#10B981]'
-                            : hasPendingActions
+                    className={`absolute top-0 left-0 right-0 h-1 ${sectorApproved
+                        ? 'bg-gradient-to-r from-[#10B981] via-[#059669] to-[#10B981]'
+                        : hasPendingActions
                             ? 'bg-gradient-to-r from-[#F7A619] via-[#EA580C] to-[#F7A619]'
                             : 'bg-gradient-to-r from-[#044866] via-[#0D5468] to-[#044866]'
-                    }`}
+                        }`}
                 />
 
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 flex-1">
                         {/* Sector Icon */}
                         <div
-                            className={`w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-lg relative ${
-                                sectorApproved
-                                    ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
-                                    : hasPendingActions
+                            className={`w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-lg relative ${sectorApproved
+                                ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
+                                : hasPendingActions
                                     ? 'bg-gradient-to-br from-[#F7A619] to-[#EA580C]'
                                     : `bg-gradient-to-br from-blue-500 to-blue-600`
-                            }`}
+                                }`}
                         >
                             <span className="drop-shadow-lg">📚</span>
                             {sectorApproved && (
@@ -172,74 +173,88 @@ export function SectorCard({ sector, sectorIndex }: SectorCardProps) {
                                     <div
                                         className={cn(
                                             'px-2.5 py-1 text-white rounded-full text-[10px] font-bold flex items-center gap-1 shadow-md uppercase',
-                                            sectorStatusColorMap[
+                                            isDeletedInternal
+                                                ? sectorStatusColorMap.removed
+                                                : sectorStatusColorMap[
                                                 industryApproval?.status ||
-                                                    'pending'
-                                            ] || sectorStatusColorMap.pending
+                                                'pending'
+                                                ] || sectorStatusColorMap.pending
                                         )}
                                     >
-                                        <CheckCircle2 className="w-3 h-3" />
-                                        <CheckCircle2 className="w-3 h-3" />
-                                        {industryApproval?.status}
+                                        {isDeletedInternal ? (
+                                            <>
+                                                <Trash2 className="w-3 h-3" />
+                                                REMOVED
+                                            </>
+                                        ) : (
+                                            <>
+                                                <CheckCircle2 className="w-3 h-3" />
+                                                {industryApproval?.status}
+                                            </>
+                                        )}
                                     </div>
 
-                                    {/* Documents Button - New */}
-                                    <motion.button
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            setShowDocumentsModal(true)
-                                            dispatch(
-                                                setPendingCourses(
-                                                    sector.approvalCourses.filter(
-                                                        (
-                                                            approval: IndustryCourseApproval
-                                                        ) =>
-                                                            approval.status ===
-                                                            'pending'
+                                    {!isDeletedInternal && (
+                                        <>
+                                            {/* Documents Button - New */}
+                                            <motion.button
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    setShowDocumentsModal(true)
+                                                    dispatch(
+                                                        setPendingCourses(
+                                                            sector.approvalCourses.filter(
+                                                                (
+                                                                    approval: IndustryCourseApproval
+                                                                ) =>
+                                                                    approval.status ===
+                                                                    'pending'
+                                                            )
+                                                        )
                                                     )
-                                                )
-                                            )
-                                        }}
-                                        className="px-2.5 py-1.5 bg-white text-[#044866] border border-[#044866]/20 rounded-full text-[10px] font-bold flex items-center gap-1.5 shadow-sm hover:shadow-md hover:bg-[#F8FAFB] transition-all"
-                                        title="View Documents"
-                                    >
-                                        <FileText className="w-3.5 h-3.5" />
-                                        DOCUMENTS
-                                    </motion.button>
+                                                }}
+                                                className="px-2.5 py-1.5 bg-white text-[#044866] border border-[#044866]/20 rounded-full text-[10px] font-bold flex items-center gap-1.5 shadow-sm hover:shadow-md hover:bg-[#F8FAFB] transition-all"
+                                                title="View Documents"
+                                            >
+                                                <FileText className="w-3.5 h-3.5" />
+                                                DOCUMENTS
+                                            </motion.button>
 
-                                    {/* View Supervisors Button */}
-                                    <motion.button
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            setShowSupervisorsModal(true)
-                                        }}
-                                        className="px-2.5 py-1.5 bg-gradient-to-br from-[#044866] to-[#0D5468] text-white rounded-full text-[10px] font-bold flex items-center gap-1.5 shadow-md hover:shadow-lg transition-all"
-                                        title="View Supervisors"
-                                    >
-                                        <UserCheck className="w-3.5 h-3.5" />
-                                        {supervisorsData?.length || 0}{' '}
-                                        {(supervisorsData?.length || 0) === 1
-                                            ? 'Supervisor'
-                                            : 'Supervisors'}
-                                    </motion.button>
-                                    {initiatedESign && !hasPendingActions && (
-                                        <motion.button
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                setShowCancelEsignModal(true)
-                                            }}
-                                            className="px-3 py-1.5 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full text-[10px] font-bold flex items-center gap-1.5 shadow-lg shadow-red-500/20 hover:shadow-red-500/40 transition-all border border-red-400/30"
-                                            title="Cancel E-sign"
-                                        >
-                                            <Trash2 className="w-3.5 h-3.5" />
-                                            CANCEL E-SIGN
-                                        </motion.button>
+                                            {/* View Supervisors Button */}
+                                            <motion.button
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    setShowSupervisorsModal(true)
+                                                }}
+                                                className="px-2.5 py-1.5 bg-gradient-to-br from-[#044866] to-[#0D5468] text-white rounded-full text-[10px] font-bold flex items-center gap-1.5 shadow-md hover:shadow-lg transition-all"
+                                                title="View Supervisors"
+                                            >
+                                                <UserCheck className="w-3.5 h-3.5" />
+                                                {supervisorsData?.length || 0}{' '}
+                                                {(supervisorsData?.length || 0) === 1
+                                                    ? 'Supervisor'
+                                                    : 'Supervisors'}
+                                            </motion.button>
+                                            {initiatedESign && !hasPendingActions && (
+                                                <motion.button
+                                                    whileHover={{ scale: 1.05 }}
+                                                    whileTap={{ scale: 0.95 }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        setShowCancelEsignModal(true)
+                                                    }}
+                                                    className="px-3 py-1.5 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full text-[10px] font-bold flex items-center gap-1.5 shadow-lg shadow-red-500/20 hover:shadow-red-500/40 transition-all border border-red-400/30"
+                                                    title="Cancel E-sign"
+                                                >
+                                                    <Trash2 className="w-3.5 h-3.5" />
+                                                    CANCEL E-SIGN
+                                                </motion.button>
+                                            )}
+                                        </>
                                     )}
                                 </>
 
@@ -256,18 +271,16 @@ export function SectorCard({ sector, sectorIndex }: SectorCardProps) {
                             <div className="flex items-center gap-6">
                                 <div className="flex items-center gap-1.5">
                                     <div
-                                        className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                                            sectorApproved
-                                                ? 'bg-[#10B981]/10'
-                                                : 'bg-[#044866]/10'
-                                        }`}
+                                        className={`w-8 h-8 rounded-lg flex items-center justify-center ${sectorApproved
+                                            ? 'bg-[#10B981]/10'
+                                            : 'bg-[#044866]/10'
+                                            }`}
                                     >
                                         <BookOpen
-                                            className={`w-4 h-4 ${
-                                                sectorApproved
-                                                    ? 'text-[#10B981]'
-                                                    : 'text-[#044866]'
-                                            }`}
+                                            className={`w-4 h-4 ${sectorApproved
+                                                ? 'text-[#10B981]'
+                                                : 'text-[#044866]'
+                                                }`}
                                         />
                                     </div>
                                     <div>
@@ -282,18 +295,16 @@ export function SectorCard({ sector, sectorIndex }: SectorCardProps) {
 
                                 <div className="flex items-center gap-1.5">
                                     <div
-                                        className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                                            sectorApproved
-                                                ? 'bg-[#10B981]/10'
-                                                : 'bg-[#044866]/10'
-                                        }`}
+                                        className={`w-8 h-8 rounded-lg flex items-center justify-center ${sectorApproved
+                                            ? 'bg-[#10B981]/10'
+                                            : 'bg-[#044866]/10'
+                                            }`}
                                     >
                                         <Users
-                                            className={`w-4 h-4 ${
-                                                sectorApproved
-                                                    ? 'text-[#10B981]'
-                                                    : 'text-[#044866]'
-                                            }`}
+                                            className={`w-4 h-4 ${sectorApproved
+                                                ? 'text-[#10B981]'
+                                                : 'text-[#044866]'
+                                                }`}
                                         />
                                     </div>
                                     <div>
@@ -304,53 +315,53 @@ export function SectorCard({ sector, sectorIndex }: SectorCardProps) {
                                             <p className="text-sm font-bold text-[#1A2332]">
                                                 {totalStudents}/{totalCapacity}
                                             </p>
-                                            <motion.button
-                                                whileHover={{ scale: 1.1 }}
-                                                whileTap={{ scale: 0.9 }}
-                                                onClick={(e) => {
-                                                    e.stopPropagation()
-                                                    setShowCapacityModal(true)
-                                                }}
-                                                className="w-5 h-5 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-[#044866] transition-colors"
-                                                title="Manage Capacity"
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="12"
-                                                    height="12"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
+                                            {!isDeletedInternal && (
+                                                <motion.button
+                                                    whileHover={{ scale: 1.1 }}
+                                                    whileTap={{ scale: 0.9 }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        setShowCapacityModal(true)
+                                                    }}
+                                                    className="w-5 h-5 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-[#044866] transition-colors"
+                                                    title="Manage Capacity"
                                                 >
-                                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                                                </svg>
-                                            </motion.button>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="12"
+                                                        height="12"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    >
+                                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                                    </svg>
+                                                </motion.button>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="flex items-center gap-1.5">
                                     <div
-                                        className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                                            utilizationRate >= 80
-                                                ? 'bg-[#10B981]/10'
-                                                : utilizationRate >= 50
+                                        className={`w-8 h-8 rounded-lg flex items-center justify-center ${utilizationRate >= 80
+                                            ? 'bg-[#10B981]/10'
+                                            : utilizationRate >= 50
                                                 ? 'bg-[#F7A619]/10'
                                                 : 'bg-[#64748B]/10'
-                                        }`}
+                                            }`}
                                     >
                                         <Sparkles
-                                            className={`w-4 h-4 ${
-                                                utilizationRate >= 80
-                                                    ? 'text-[#10B981]'
-                                                    : utilizationRate >= 50
+                                            className={`w-4 h-4 ${utilizationRate >= 80
+                                                ? 'text-[#10B981]'
+                                                : utilizationRate >= 50
                                                     ? 'text-[#F7A619]'
                                                     : 'text-[#64748B]'
-                                            }`}
+                                                }`}
                                         />
                                     </div>
                                     <div>
@@ -383,19 +394,20 @@ export function SectorCard({ sector, sectorIndex }: SectorCardProps) {
                         </div>
 
                         {/* Expand Button */}
-                        <motion.button
-                            animate={{ rotate: isSectorExpanded ? 180 : 0 }}
-                            transition={{ duration: 0.3 }}
-                            className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
-                                sectorApproved
+                        {!isDeletedInternal && (
+                            <motion.button
+                                animate={{ rotate: isSectorExpanded ? 180 : 0 }}
+                                transition={{ duration: 0.3 }}
+                                className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${sectorApproved
                                     ? 'bg-[#10B981]/10 hover:bg-[#10B981]/20 text-[#10B981]'
                                     : hasPendingActions
-                                    ? 'bg-[#F7A619]/10 hover:bg-[#F7A619]/20 text-[#F7A619]'
-                                    : 'bg-[#F8FAFB] hover:bg-[#E8F4F8] text-[#044866]'
-                            }`}
-                        >
-                            <ChevronDown className="w-5 h-5" />
-                        </motion.button>
+                                        ? 'bg-[#F7A619]/10 hover:bg-[#F7A619]/20 text-[#F7A619]'
+                                        : 'bg-[#F8FAFB] hover:bg-[#E8F4F8] text-[#044866]'
+                                    }`}
+                            >
+                                <ChevronDown className="w-5 h-5" />
+                            </motion.button>
+                        )}
                     </div>
                 </div>
             </div>

@@ -4,6 +4,7 @@ import { User, UserPlus } from 'lucide-react'
 import { useState } from 'react'
 import { ReassignAgentModal } from './ReassignAgentModal'
 import { UserRoles } from '@constants'
+import { getUserCredentials } from '@utils'
 
 export function AssignedAgent() {
     const [showAssignModal, setShowAssignModal] = useState(false)
@@ -11,6 +12,8 @@ export function AssignedAgent() {
         assignedAgent: state.industry.industryDetail?.favoriteBy?.user,
         industryId: state.industry.industryDetail?.id,
     }))
+
+    const user = getUserCredentials()
 
     return (
         <>
@@ -50,7 +53,8 @@ export function AssignedAgent() {
                     </div>
                 </div>
 
-                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+                {(user?.role === UserRoles.ADMIN ||
+                    [78].includes(user?.id)) && (
                     <div className="flex items-center gap-2">
                         <Button
                             fullWidth
@@ -61,7 +65,7 @@ export function AssignedAgent() {
                             {assignedAgent ? 'Reassign' : 'Assign'}
                         </Button>
                     </div>
-                </AuthorizedUserComponent>
+                )}
             </div>
 
             {showAssignModal && industryId && (

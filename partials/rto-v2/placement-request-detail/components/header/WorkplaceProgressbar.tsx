@@ -144,7 +144,7 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p className="font-semibold">
-                                        {stage.name}
+                                        {stage?.name}
                                     </p>
                                 </TooltipContent>
                             </Tooltip>

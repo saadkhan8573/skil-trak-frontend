@@ -13,7 +13,13 @@ import { useEffect, useState } from 'react'
 import { MonthlySchedule, MonthlyScheduleData } from './MonthlySchedule'
 import { DaySchedule, WeeklySchedule } from './WeeklySchedule'
 
-export function InterviewAvailability() {
+interface InterviewAvailabilityProps {
+    onSuccess?: () => void
+}
+
+export function InterviewAvailability({
+    onSuccess,
+}: InterviewAvailabilityProps = {}) {
     const [createAvailability, createAvailabilityResult] =
         RtoV2Api.Industries.createAvailability()
 
@@ -98,12 +104,12 @@ export function InterviewAvailability() {
                             slots:
                                 daySlots.length > 0
                                     ? daySlots.map((s) => ({
-                                          startTime: s.startTime.substring(
-                                              0,
-                                              5
-                                          ),
-                                          endTime: s.endTime.substring(0, 5),
-                                      }))
+                                        startTime: s.startTime.substring(
+                                            0,
+                                            5
+                                        ),
+                                        endTime: s.endTime.substring(0, 5),
+                                    }))
                                     : day.slots,
                         }
                     })
@@ -145,9 +151,9 @@ export function InterviewAvailability() {
                     slots:
                         slots && slots.length > 0
                             ? slots.map((s: any) => ({
-                                  startTime: s.startTime.substring(0, 5),
-                                  endTime: s.endTime.substring(0, 5),
-                              }))
+                                startTime: s.startTime.substring(0, 5),
+                                endTime: s.endTime.substring(0, 5),
+                            }))
                             : prev.slots,
                 }))
             }
@@ -224,6 +230,9 @@ export function InterviewAvailability() {
                 title: 'Success',
                 description: 'Availability updated successfully!',
             })
+            if (onSuccess) {
+                onSuccess()
+            }
         } catch (error) {
             console.error('Failed to save availability', error)
         }

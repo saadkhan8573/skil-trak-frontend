@@ -38,11 +38,10 @@ export const AssessmentSection: React.FC<AssessmentSectionProps> = ({
 }) => {
     return (
         <div
-            className={`border-y border-secondary-dark h-auto ${
-                eSignDocument?.data && eSignDocument?.data?.length > 0
+            className={`border-y border-secondary-dark h-auto ${eSignDocument?.data && eSignDocument?.data?.length > 0
                     ? 'lg:h-[520px]'
                     : 'lg:h-[400px]'
-            } overflow-hidden`}
+                } overflow-hidden`}
         >
             <div className="grid grid-cols-1 lg:grid-cols-3 h-[inherit]">
                 <div className="py-4 border-r h-[inherit]">
@@ -143,14 +142,14 @@ export const AssessmentSection: React.FC<AssessmentSectionProps> = ({
                                 />
                             )}
                         {getAssessmentResponse?.isSuccess &&
-                        getAssessmentResponse?.data &&
-                        (result?.result === Result.Pending ||
-                            result?.result === Result.NotCompetent ||
-                            result?.result === Result.ReOpened) &&
-                        !getAssessmentResponse?.data?.assessmentFolder
-                            ?.isAgreement &&
-                        !getAssessmentResponse?.data?.assessmentFolder
-                            ?.isFacilityCheckList ? (
+                            getAssessmentResponse?.data &&
+                            (result?.result === Result.Pending ||
+                                result?.result === Result.NotCompetent ||
+                                result?.result === Result.ReOpened) &&
+                            !getAssessmentResponse?.data?.assessmentFolder
+                                ?.isAgreement &&
+                            !getAssessmentResponse?.data?.assessmentFolder
+                                ?.isFacilityCheckList ? (
                             <AddComment
                                 resultId={result?.id}
                                 studentId={student?.id}

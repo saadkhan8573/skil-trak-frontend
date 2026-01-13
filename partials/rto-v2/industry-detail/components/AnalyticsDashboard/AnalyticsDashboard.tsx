@@ -1,5 +1,5 @@
-import { RtoV2Api, CommonApi } from '@redux'
-import { useAppSelector } from '@redux/hooks'
+import { RtoV2Api, CommonApi, setNavigationTarget } from '@redux'
+import { useAppDispatch, useAppSelector } from '@redux/hooks'
 import { AnalyticsCard, AnalyticsHeader } from './components'
 import { Calendar, Clock, Layers, Star, Users } from 'lucide-react'
 import { AnalyticsSkeleton } from '../../skeletonLoader'
@@ -35,6 +35,7 @@ export function AnalyticsDashboard() {
             trend: 'up',
             percentage: 0,
             color: '#044866',
+            targetTab: 'students',
         },
         {
             title: 'Pending',
@@ -43,6 +44,7 @@ export function AnalyticsDashboard() {
             gradient: 'from-[#F7A619] to-[#EA580C]',
             trend: 'neutral',
             color: '#F7A619',
+            targetTab: 'students',
         },
         {
             title: 'Interviews',
@@ -51,24 +53,25 @@ export function AnalyticsDashboard() {
             gradient: 'from-[#8B5CF6] to-[#7C3AED]',
             trend: 'neutral',
             color: '#8B5CF6',
+            targetTab: 'students',
         },
         {
             title: 'Capacity',
-            value: `${counts?.totalEnrolledStudents || 0}/${
-                counts?.totalSectorCapacity || 0
-            }`,
+            value: `${counts?.totalEnrolledStudents || 0}/${counts?.totalSectorCapacity || 0
+                }`,
             icon: Layers,
             gradient: 'from-[#0D5468] to-[#044866]',
             trend: 'neutral',
             showBar: true,
             percentage: counts?.totalSectorCapacity
                 ? Math.round(
-                      (counts.totalEnrolledStudents /
-                          counts.totalSectorCapacity) *
-                          100
-                  )
+                    (counts.totalEnrolledStudents /
+                        counts.totalSectorCapacity) *
+                    100
+                )
                 : 0,
             color: '#0D5468',
+            targetTab: 'courses',
         },
         // {
         //     title: 'Response Time',
@@ -85,9 +88,8 @@ export function AnalyticsDashboard() {
             title: 'Rating',
             value: overAllRating?.data?.averageRating || 0,
             change: overAllRating?.data?.totalFeedbacks || '0',
-            changeText: `${
-                (Number(overAllRating?.data?.averageRating) / 5) * 100
-            }% positive`,
+            changeText: `${(Number(overAllRating?.data?.averageRating) / 5) * 100
+                }% positive`,
             icon: Star,
             gradient: 'from-[#F7A619] to-[#F59E0B]',
             trend: 'up',
@@ -95,6 +97,8 @@ export function AnalyticsDashboard() {
             color: '#F7A619',
         },
     ]
+
+    const dispatch = useAppDispatch()
 
     return (
         <div className="space-y-6">
@@ -104,7 +108,24 @@ export function AnalyticsDashboard() {
             {/* Stats Grid - Enhanced Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
                 {analyticsCards.map((card, index) => (
-                    <AnalyticsCard key={index} card={card} index={index} />
+                    <div
+                        key={index}
+                        onClick={() => {
+                            if (
+                                (card as any).targetTab ||
+                                (card as any).targetSection
+                            ) {
+                                dispatch(
+                                    setNavigationTarget({
+                                        tab: (card as any).targetTab,
+                                        section: (card as any).targetSection,
+                                    })
+                                )
+                            }
+                        }}
+                    >
+                        <AnalyticsCard card={card as any} index={index} />
+                    </div>
                 ))}
             </div>
         </div>

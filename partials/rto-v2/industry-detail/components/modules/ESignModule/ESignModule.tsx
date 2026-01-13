@@ -14,6 +14,8 @@ export function ESignModule() {
         data: esignDocs,
         isLoading,
         refetch,
+        isSuccess,
+        isError,
     } = CommonApi.ESign.getIndustryESignDocuments(
         { userId: Number(userId) },
         {
@@ -40,19 +42,24 @@ export function ESignModule() {
             </div>
 
             <div className="grid gap-3">
-                {esignDocs && esignDocs.length > 0 ? (
-                    esignDocs.map((doc: any) => (
-                        <ESignCard
-                            key={doc.id}
-                            document={doc}
-                            onRefetch={refetch}
-                        />
-                    ))
-                ) : (
+                {isError && (
                     <div className="py-8">
-                        <NoData text="No e-sign documents found" />
+                        <NoData text="There is some technical issue!" isError />
                     </div>
                 )}
+                {esignDocs && esignDocs.length > 0 && isSuccess
+                    ? esignDocs.map((doc: any) => (
+                          <ESignCard
+                              key={doc.id}
+                              document={doc}
+                              onRefetch={refetch}
+                          />
+                      ))
+                    : isSuccess && (
+                          <div className="py-8">
+                              <NoData text="No e-sign documents found" />
+                          </div>
+                      )}
             </div>
         </div>
     )

@@ -1,21 +1,26 @@
+import { AuthorizedUserComponent, NoData } from '@components'
 import { RtoV2Api } from '@queries'
+import { useAppSelector } from '@redux/hooks'
 import { Course, Student } from '@types'
 import { useMemo, useState } from 'react'
 import { CourseOverview } from '../StudentOverview'
-import { DocumentFilter, DocumentHeader } from './components'
 import { FolderSection } from './components/FolderSection'
-import { useAppSelector } from '@redux/hooks'
-import { LoadingAnimation, NoData } from '@components'
+import { DocumentFilter, DocumentHeader } from './components'
 
 interface DocumentsProps {
     student: Student
 }
 
 import { StudentDocumentsTabSkeleton } from '../../skeletonLoader'
+import { Result, UserRoles } from '@constants'
+import { useSubadminProfile } from '@hooks'
+import { getCourseResult } from '@utils'
+import { CourseResultModule, SubmitAssessmentSubmission } from './components'
 
 export function StudentAssessmentDocuments({ student }: DocumentsProps) {
     const [searchQuery, setSearchQuery] = useState('')
     const [statusFilter, setStatusFilter] = useState('all')
+    const subadmin = useSubadminProfile()
     const [selectedView, setSelectedView] = useState<
         'all' | 'industry' | 'course'
     >('all')
@@ -63,6 +68,125 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
     const industryDocuments = getIndustryDocuments(true)
     const courseDocuments = getIndustryDocuments(false)
 
+    const result = useMemo(
+        () => getCourseResult(selectedCourse?.results),
+        [selectedCourse?.results]
+    )
+
+    const allCommentsAdded = useMemo(
+        () =>
+            documents?.data
+                ?.filter((folder: any) => !folder?.isIndustryCheck)
+                ?.every((f: any) => f?.studentResponse[0]?.comment),
+        [documents?.data]
+    )
+
+    const isFilesUploaded = useMemo(
+        () =>
+            !documents.isLoading &&
+            !documents.isFetching &&
+            documents.isSuccess &&
+            courseDocuments?.length > 0 &&
+            courseDocuments?.every(
+                (f: any) => f?.studentResponse[0]?.files?.length > 0
+            ),
+        [documents, courseDocuments]
+    )
+
+    const files = useMemo(
+        () =>
+            courseDocuments
+                ?.map((f: any) => f?.studentResponse?.[0]?.files?.length > 0)
+                ?.filter((f: any) => f)?.length,
+        [courseDocuments]
+    )
+
+    const rejectedFolders = useMemo(
+        () =>
+            courseDocuments?.filter(
+                (f: any) =>
+                    f?.studentResponse?.[0]?.status === 'rejected' &&
+                    f?.studentResponse?.[0]?.files?.length > 0
+            )?.length,
+        [courseDocuments]
+    )
+
+    const allFiles = useMemo(
+        () =>
+            courseDocuments
+                ?.filter(
+                    (f: any) => f?.studentResponse?.[0]?.status === 'rejected'
+                )
+                ?.every((f: any) => f?.studentResponse?.[0]?.files?.length > 0),
+        [courseDocuments]
+    )
+
+    const resubmitFiles = useMemo(
+        () =>
+            courseDocuments?.filter(
+                (f: any) =>
+                    f?.studentResponse?.[0]?.reSubmitted &&
+                    f?.studentResponse?.[0]?.files?.length > 0
+            )?.length,
+        [courseDocuments]
+    )
+
+    const isAllApproved = useMemo(
+        () =>
+            courseDocuments?.length > 0 &&
+            courseDocuments?.every(
+                (f: any) => f?.studentResponse[0]?.status === 'approved'
+            ),
+        [courseDocuments]
+    )
+
+    const isResubmittedFiles = useMemo(
+        () =>
+            (!documents.isLoading &&
+                !documents.isFetching &&
+                documents.isSuccess &&
+                rejectedFolders &&
+                allFiles &&
+                resubmitFiles &&
+                rejectedFolders === resubmitFiles &&
+                Number(files) > 0) as boolean,
+        [documents, rejectedFolders, allFiles, resubmitFiles, files]
+    )
+
+    const shouldShowSubmitButton = useMemo(() => {
+        if (!documents.isSuccess || !selectedCourse) return false
+
+        if (selectedCourse?.results?.length > 0) {
+            if (result?.totalSubmission < 3) {
+                return (
+                    (result?.result === Result.ReOpened ||
+                        result?.result === Result.NotCompetent ||
+                        allCommentsAdded) &&
+                    result?.result !== Result.Competent
+                )
+            } else {
+                return (
+                    !documents.isLoading &&
+                    !documents.isFetching &&
+                    documents.isSuccess &&
+                    result?.isManualSubmission &&
+                    allCommentsAdded &&
+                    result?.result !== Result.Competent
+                )
+            }
+        } else {
+            return (
+                !documents.isLoading &&
+                !documents.isFetching &&
+                documents.isSuccess &&
+                allCommentsAdded &&
+                result?.result !== Result.Competent
+            )
+        }
+    }, [documents, selectedCourse, result])
+
+    console.log({ shouldShowSubmitButton })
+
     // Section configuration array
     const sections = [
         {
@@ -88,7 +212,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
             {/* Hero Section with Quick Stats */}
             <CourseOverview />
 
-            <DocumentHeader count={count} />
+            <DocumentHeader count={count} result={result} />
 
             {/* Search and Filter Bar */}
             <DocumentFilter
@@ -126,7 +250,28 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                 })
             )}
 
-
+            <div className="pt-8 space-y-4">
+                {shouldShowSubmitButton && (
+                    <div className="flex justify-center items-center">
+                        <SubmitAssessmentSubmission
+                            results={selectedCourse?.results}
+                            selectedCourseId={Number(selectedCourse?.id)}
+                            student={student}
+                            isFilesUploaded={isFilesUploaded}
+                            isResubmittedFiles={isResubmittedFiles}
+                            isAllApproved={isAllApproved}
+                        />
+                    </div>
+                )}
+                <CourseResultModule
+                    student={student}
+                    selectedCourse={selectedCourse}
+                    result={result}
+                    allCommentsAdded={allCommentsAdded}
+                    subadmin={subadmin}
+                    getFolders={documents}
+                />
+            </div>
         </div>
     )
 }

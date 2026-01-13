@@ -1,8 +1,6 @@
 import { Button } from '@components'
 import { AddCourseProgramIndustry } from '@partials/common/IndustryProfileDetail/components/CourseManagement/components/AddCourseProgramIndustry'
 import {
-    Course,
-    Course as GlobalCourse,
     Industry,
     IndustryCourseApproval,
 } from '@types'
@@ -19,11 +17,11 @@ import {
 import { useMemo, useState } from 'react'
 import { FacilityChecklistActions } from '../FacilityChecklistActions'
 import { HighlightedTasks, PendingCourseApproval } from './components'
-import { useAppSelector } from '@redux/hooks'
 import { UploadFacilityChecklistDialog } from '../modals/UploadFacilityChecklistDialog'
 import { DeleteCourseDialog } from '../modals'
 import { getUserCredentials } from '@utils'
 import { UserRoles } from '@constants'
+import moment from 'moment'
 
 export interface PlacementWorkflow {
     currentStep: number
@@ -63,6 +61,8 @@ export function CourseCard({
 
     const userCredentials = useMemo(() => getUserCredentials(), [])
 
+    const isDeletedInternal = !!approval?.deletedAt
+
     const isApproved = approval?.status === 'approved'
     const isPending = approval?.status === 'pending'
     const isRejected = approval?.status === 'rejected'
@@ -80,15 +80,14 @@ export function CourseCard({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: courseIndex * 0.05 }}
-            className={`rounded-xl overflow-hidden transition-all duration-300 ${
-                isApproved
+            className={`rounded-xl overflow-hidden transition-all duration-300 ${isApproved
                     ? 'bg-gradient-to-br from-[#10B981]/10 via-white to-[#059669]/10 border-2 border-[#10B981]/30 shadow-lg'
                     : needsApproval
-                    ? 'bg-gradient-to-br from-[#F7A619]/10 via-white to-[#EA580C]/10 border-2 border-[#F7A619]/40 shadow-lg animate-pulse-slow'
-                    : isRejected
-                    ? 'bg-gradient-to-br from-[#EF4444]/5 via-white to-[#DC2626]/5 border-2 border-[#EF4444]/30'
-                    : 'bg-white border border-[#E2E8F0] hover:shadow-md hover:border-[#044866]/20'
-            }`}
+                        ? 'bg-gradient-to-br from-[#F7A619]/10 via-white to-[#EA580C]/10 border-2 border-[#F7A619]/40 shadow-lg animate-pulse-slow'
+                        : isRejected
+                            ? 'bg-gradient-to-br from-[#EF4444]/5 via-white to-[#DC2626]/5 border-2 border-[#EF4444]/30'
+                            : 'bg-white border border-[#E2E8F0] hover:shadow-md hover:border-[#044866]/20'
+                }`}
         >
             {/* Course Header */}
             <div className="p-4">
@@ -97,37 +96,45 @@ export function CourseCard({
                         {/* Course Title & Code */}
                         <div className="flex items-center gap-2 mb-2">
                             <div
-                                className={`px-2 py-1 rounded-md text-[10px] font-bold ${
-                                    isApproved
+                                className={`px-2 py-1 rounded-md text-[10px] font-bold ${isApproved
                                         ? 'bg-[#10B981]/20 text-[#10B981]'
                                         : 'bg-[#044866]/10 text-[#044866]'
-                                }`}
+                                    }`}
                             >
                                 {approval?.course.code}
                             </div>
-                            {isApproved && (
-                                <div className="px-2 py-1 bg-gradient-to-r from-[#10B981] to-[#059669] text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md">
-                                    <CheckCircle2 className="w-3 h-3" />
-                                    FULLY APPROVED
+                            {isDeletedInternal ? (
+                                <div className="px-2 py-1 bg-gradient-to-r from-slate-500 to-slate-700 text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md">
+                                    <Trash2 className="w-3 h-3" />
+                                    REMOVED
                                 </div>
-                            )}
-                            {isPending && approval?.file && (
-                                <div className="px-2 py-1 bg-gradient-to-r from-[#F7A619] to-[#EA580C] text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md animate-pulse">
-                                    <AlertCircle className="w-3 h-3" />
-                                    ACTION REQUIRED
-                                </div>
-                            )}
-                            {isPending && !approval?.file && (
-                                <div className="px-2 py-1 bg-gradient-to-r from-[#F7A619] to-[#EA580C] text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md animate-pulse">
-                                    <AlertCircle className="w-3 h-3" />
-                                    PENDING
-                                </div>
-                            )}
-                            {isRejected && (
-                                <div className="px-2 py-1 bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white rounded-md text-[10px] font-bold flex items-center gap-1">
-                                    <AlertTriangle className="w-3 h-3" />
-                                    CHANGES REQUESTED
-                                </div>
+                            ) : (
+                                <>
+                                    {isApproved && (
+                                        <div className="px-2 py-1 bg-gradient-to-r from-[#10B981] to-[#059669] text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md">
+                                            <CheckCircle2 className="w-3 h-3" />
+                                            FULLY APPROVED
+                                        </div>
+                                    )}
+                                    {isPending && approval?.file && (
+                                        <div className="px-2 py-1 bg-gradient-to-r from-[#F7A619] to-[#EA580C] text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md animate-pulse">
+                                            <AlertCircle className="w-3 h-3" />
+                                            ACTION REQUIRED
+                                        </div>
+                                    )}
+                                    {isPending && !approval?.file && (
+                                        <div className="px-2 py-1 bg-gradient-to-r from-[#F7A619] to-[#EA580C] text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md animate-pulse">
+                                            <AlertCircle className="w-3 h-3" />
+                                            PENDING
+                                        </div>
+                                    )}
+                                    {isRejected && (
+                                        <div className="px-2 py-1 bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white rounded-md text-[10px] font-bold flex items-center gap-1">
+                                            <AlertTriangle className="w-3 h-3" />
+                                            CHANGES REQUESTED
+                                        </div>
+                                    )}
+                                </>
                             )}
                         </div>
 
@@ -139,23 +146,25 @@ export function CourseCard({
                             {/* Workflow Status Indicators */}
                             <div className="flex items-center gap-2 flex-wrap">
                                 {/* Facility Checklist Status */}
-                                <div
-                                    className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-medium ${
-                                        isApproved
-                                            ? 'bg-[#10B981]/10 text-[#10B981]'
-                                            : needsApproval
-                                            ? 'bg-[#F7A619]/20 text-[#F7A619]'
-                                            : isRejected
-                                            ? 'bg-[#EF4444]/10 text-[#EF4444]'
-                                            : 'bg-[#64748B]/10 text-[#64748B]'
-                                    }`}
-                                >
-                                    <FileCheck className="w-3 h-3" />
-                                    {isApproved && 'Checklist Approved'}
-                                    {needsApproval && 'Pending Your Approval'}
-                                    {isRejected && 'Checklist Rejected'}
-                                    {isPending && 'Awaiting E-Signature'}
-                                </div>
+                                {!isDeletedInternal && (
+                                    <div
+                                        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-medium ${isApproved
+                                                ? 'bg-[#10B981]/10 text-[#10B981]'
+                                                : needsApproval
+                                                    ? 'bg-[#F7A619]/20 text-[#F7A619]'
+                                                    : isRejected
+                                                        ? 'bg-[#EF4444]/10 text-[#EF4444]'
+                                                        : 'bg-[#64748B]/10 text-[#64748B]'
+                                            }`}
+                                    >
+                                        <FileCheck className="w-3 h-3" />
+                                        {isApproved && 'Checklist Approved'}
+                                        {needsApproval &&
+                                            'Pending Your Approval'}
+                                        {isRejected && 'Checklist Rejected'}
+                                        {isPending && 'Awaiting E-Signature'}
+                                    </div>
+                                )}
 
                                 {/* Programs / Streams Integration */}
                                 {industry && approval && (
@@ -178,7 +187,7 @@ export function CourseCard({
 
                     {/* Action Buttons */}
                     <div className="flex items-center gap-2 flex-shrink-0">
-                        {canDelete && (
+                        {canDelete && !isDeletedInternal && (
                             <button
                                 onClick={(e) => {
                                     e.stopPropagation()
@@ -196,21 +205,41 @@ export function CourseCard({
                             }
                             animate={{ rotate: isCourseExpanded ? 180 : 0 }}
                             transition={{ duration: 0.3 }}
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                                isApproved
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isApproved
                                     ? 'bg-[#10B981]/10 hover:bg-[#10B981]/20 text-[#10B981]'
                                     : needsApproval
-                                    ? 'bg-[#F7A619]/10 hover:bg-[#F7A619]/20 text-[#F7A619]'
-                                    : 'bg-[#F8FAFB] hover:bg-[#E8F4F8] text-[#044866]'
-                            }`}
+                                        ? 'bg-[#F7A619]/10 hover:bg-[#F7A619]/20 text-[#F7A619]'
+                                        : 'bg-[#F8FAFB] hover:bg-[#E8F4F8] text-[#044866]'
+                                }`}
                         >
                             <ChevronDown className="w-4 h-4" />
                         </motion.button>
                     </div>
                 </div>
 
+                {/* Audit Info for Deleted Courses */}
+                {isDeletedInternal && approval.deletedBy && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="bg-slate-50 border border-slate-200 rounded-lg p-3 flex items-center gap-3 mt-3"
+                    >
+                        <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center">
+                            <Trash2 className="w-4 h-4 text-slate-600" />
+                        </div>
+                        <div className="flex-1">
+                            <p className="text-xs font-bold text-slate-700">
+                                Removed By: {approval.deletedBy.name}
+                            </p>
+                            <p className="text-[10px] text-slate-500">
+                                On {moment(approval.deletedAt).format('MMMM Do YYYY, h:mm a')}
+                            </p>
+                        </div>
+                    </motion.div>
+                )}
+
                 {/* Action Button for Approval */}
-                {isPending && (
+                {isPending && !isDeletedInternal && (
                     <PendingCourseApproval
                         approval={approval}
                         hasInitiatedESign={hasInitiatedESign}
@@ -218,7 +247,7 @@ export function CourseCard({
                 )}
 
                 {/* Success Banner for Approved Courses */}
-                {isApproved && (
+                {isApproved && !isDeletedInternal && (
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -232,7 +261,7 @@ export function CourseCard({
                                 Course Fully Approved & Active
                             </p>
                         </div>
-                        {!approval?.file && (
+                        {!approval?.file && !isDeletedInternal && (
                             <Button
                                 onClick={() => setUploadFacilityChecklist(true)}
                                 className="bg-gradient-to-r from-[#044866] to-[#0D5468] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#044866]/30"
@@ -245,7 +274,7 @@ export function CourseCard({
                 )}
 
                 {/* Rejected Status */}
-                {isRejected && (
+                {isRejected && !isDeletedInternal && (
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -261,8 +290,7 @@ export function CourseCard({
                                         Changes Requested
                                     </p>
                                     <p className="text-[10px] text-[#DC2626]">
-                                        Facility checklist requires
-                                        modifications
+                                        Facility checklist requires modifications
                                     </p>
                                 </div>
                             </div>
@@ -303,23 +331,23 @@ export function CourseCard({
                             </div>
 
                             {/* Highlighted Tasks */}
-
                             <HighlightedTasks
                                 title="Course Highlighted Tasks"
                                 courseId={approval.course.id}
+                                isDeleted={isDeletedInternal}
                             />
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
-            {/* Modal for manual upload */}
+
+            {/* Modals */}
             <UploadFacilityChecklistDialog
                 open={uploadFacilityChecklist}
                 approval={approval}
                 onOpenChange={setUploadFacilityChecklist}
             />
 
-            {/* Modal for course deletion */}
             <DeleteCourseDialog
                 open={isDeleteOpen}
                 approval={approval}

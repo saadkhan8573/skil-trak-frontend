@@ -12,6 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { NotesTemplateType } from '../enum'
+import { NotesTemplateTrigger } from '@types'
 import { useEffect, useState } from 'react'
 import { OptionType } from '@types'
 type Props = {
@@ -31,6 +32,7 @@ export const NoteTemplateForm = ({
 
     const validationSchema = yup.object().shape({
         type: yup.string().required('Type is required'),
+        trigger: yup.string().required('Trigger is required'),
         subject: yup.string().required('Subject is required'),
         successContent: yup
             .mixed()
@@ -50,6 +52,7 @@ export const NoteTemplateForm = ({
         defaultValues: {
             subject: initialValues?.subject,
             type: initialValues?.type,
+            trigger: initialValues?.trigger,
             successContent: htmlToDraftText(initialValues?.successContent),
             failureContent: htmlToDraftText(initialValues?.failureContent),
         },
@@ -65,6 +68,18 @@ export const NoteTemplateForm = ({
         ([label, value]) => ({ label, value })
     )
 
+    const triggerOptions = Object.entries(NotesTemplateTrigger).map(
+        ([label, value]) => ({
+            label: label
+                .replace(/_/g, ' ')
+                .toLowerCase()
+                .split(' ')
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' '),
+            value,
+        })
+    )
+
     return (
         <>
             <Card>
@@ -77,20 +92,32 @@ export const NoteTemplateForm = ({
                         className="flex flex-col"
                         onSubmit={formMethods.handleSubmit(onSubmit)}
                     >
-                        <Select
-                            name="type"
-                            options={typeOptions}
-                            label={'Select Type'}
-                            placeholder="Select Type"
-                            onlyValue
-                            value={typeOptions?.find(
-                                (type: OptionType) =>
-                                    type?.value === selectedType
-                            )}
-                            onChange={(e: string) => {
-                                setSelectedType(e)
-                            }}
-                        />
+                        <div className='relative z-30'>
+                            <Select
+                                name="type"
+                                options={typeOptions}
+                                label={'Select Type'}
+                                placeholder="Select Type"
+                                onlyValue
+                                value={typeOptions?.find(
+                                    (type: OptionType) =>
+                                        type?.value === selectedType
+                                )}
+                                onChange={(e: string) => {
+                                    setSelectedType(e)
+                                }}
+                            // menuPlacement='top'
+                            />
+                        </div>
+                        <div className='relative z-20'>
+                            <Select
+                                name="trigger"
+                                options={triggerOptions}
+                                label={'Select Trigger'}
+                                placeholder="Select Trigger"
+                                onlyValue
+                            />
+                        </div>
                         <TextInput
                             label={'Subject'}
                             name={'subject'}

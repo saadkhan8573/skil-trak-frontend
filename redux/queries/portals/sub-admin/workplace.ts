@@ -233,7 +233,11 @@ export const workplaceEndpoints = (
             body: { comment },
             method: 'POST',
         }),
-        invalidatesTags: ['SubAdminWorkplace', 'SubAdminStudents'],
+        invalidatesTags: [
+            'SubAdminWorkplace',
+            'SubAdminStudents',
+            'IndustryWorkplace',
+        ],
     }),
 
     updateWpAppliedIndustry: builder.mutation<any, number>({

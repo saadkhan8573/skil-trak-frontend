@@ -3,7 +3,7 @@ import { Skeleton } from '@components/ui/skeleton'
 export const TicketDetailsSkeleton = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 py-6">
-            <div className="w-full mx-auto max-w-5xl px-4 sm:px-6">
+            <div className="w-full mx-auto px-4 sm:px-6">
                 {/* Back Button Skeleton */}
                 <div className="bg-white border rounded-xl p-4 mb-4 flex items-center justify-between">
                     <div className="flex items-center gap-x-2">

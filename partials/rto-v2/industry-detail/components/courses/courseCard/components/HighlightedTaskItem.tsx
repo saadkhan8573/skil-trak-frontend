@@ -1,24 +1,24 @@
-import { CheckCircle2, Circle, Mail, Phone } from 'lucide-react'
+import { Badge, Button } from '@components'
+import { RtoV2Api } from '@queries'
+import { useAppSelector } from '@redux'
 import { ConfirmationSource } from '@types'
 import { motion } from 'framer-motion'
-import { Badge, Button } from '@components'
-import { CheckSquare } from 'lucide-react'
+import { CheckCircle2, CheckSquare, Circle, Mail, Phone } from 'lucide-react'
 import { useState } from 'react'
 import { ConfirmHighlightedTasksModal } from '../../modals/ConfirmHighlightedTasksModal'
-import { useAppSelector } from '@redux'
-import { IndustryHighlightedTasks } from '@types'
-import { RtoV2Api } from '@queries'
 
 interface HighlightedTaskItemProps {
     task: any
     index: number
     onRefresh: () => void
+    isDeleted?: boolean
 }
 
 export function HighlightedTaskItem({
     task,
     index,
     onRefresh,
+    isDeleted,
 }: HighlightedTaskItemProps) {
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
 
@@ -29,7 +29,7 @@ export function HighlightedTaskItem({
         (state) => state.industry.industryDetail?.id
     )
 
-     const confirmationDetail = task.industryHighlightedTasks?.[0]
+    const confirmationDetail = task.industryHighlightedTasks?.[0]
 
 
     return (
@@ -69,7 +69,7 @@ export function HighlightedTaskItem({
 
                 {/* Bottom Section: Actions/Details */}
                 <div className="flex flex-col gap-3 border-t border-gray-50">
-                    {!confirmationDetail || !confirmationDetail.isConfirmed ? (
+                    {(!confirmationDetail || !confirmationDetail.isConfirmed) && !task.deletedAt && !isDeleted ? (
                         <div className="flex flex-col gap-2 pt-3">
                             <Button
                                 onClick={() => setIsConfirmModalOpen(true)}

@@ -7,12 +7,12 @@ import { TicketAssigneeSelector } from '../TicketAssigneeSelector'
 const statusOptions = [
     { value: 'open', label: 'Open', color: 'bg-red-500', icon: AlertTriangle },
     {
-        value: 'in-progress',
+        value: 'inProgress',
         label: 'In Progress',
         color: 'bg-[#0D5468]',
         icon: Activity,
     },
-    { value: 'pending', label: 'Pending', color: 'bg-[#F7A619]', icon: Clock },
+    // { value: 'pending', label: 'Pending', color: 'bg-[#F7A619]', icon: Clock },
 ]
 
 const priorityOptions = [
@@ -48,11 +48,8 @@ export const QuickActionsBar = ({ ticket }: any) => {
         }
     }, [updateStatusResult.isSuccess])
     //
-    // const currentStatus = statusOptions.find((s) => s.value === ticket.status)
-    // const StatusIcon = currentStatus?.icon || Activity
-    const currentPriority = priorityOptions.find(
-        (p) => p?.value === ticket?.severity
-    )
+    const currentStatus = statusOptions.find((s) => s?.value === ticket?.status)
+
     const selectedPriority = priorityOptions.find(
         (opt) => opt?.value === ticket?.severity
     )
@@ -69,7 +66,6 @@ export const QuickActionsBar = ({ ticket }: any) => {
     const onResolveTicket = () => {
         updateStatus({ id: ticket?.id, body: { resolution: resolution } })
     }
-
     return (
         <>
             <ShowErrorNotifications
@@ -80,6 +76,15 @@ export const QuickActionsBar = ({ ticket }: any) => {
                     <span className="text-sm text-[#0D5468]/70 uppercase tracking-wider">
                         Quick Actions:
                     </span>
+                    <Select
+                        name="status"
+                        options={statusOptions}
+                        label={'Ticket Status'}
+                        placeholder="Change status"
+                        showError={false}
+                        defaultValue={currentStatus ?? statusOptions?.[0]}
+                        disabled={true}
+                    />
 
                     {/* Status Dropdown */}
                     <TicketAssigneeSelector
@@ -92,9 +97,10 @@ export const QuickActionsBar = ({ ticket }: any) => {
                         name="priority"
                         options={priorityOptions}
                         placeholder="Select priority"
+                        label={'Priority'}
                         showError={false}
-                        value={ticket?.severity}
-                        defaultValue={selectedPriority ?? {}}
+                        // value={ticket?.severity}
+                        defaultValue={selectedPriority ?? null}
                         onChange={(e: any) => {
                             onChangePriority(e)
                         }}

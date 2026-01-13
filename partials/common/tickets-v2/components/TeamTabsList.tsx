@@ -66,11 +66,12 @@ export const TeamTabsList = () => {
         .map(([key, value]) => `${key}:${value}`)
         .join(',')
 
-    const { data, isLoading, isError } = CommonApi.Teams.useAutomatedTickets({
-        search: searchString || undefined,
-        skip: itemPerPage * page - itemPerPage,
-        limit: itemPerPage,
-    })
+    const { data, isLoading, isFetching, isError } =
+        CommonApi.Teams.useAutomatedTickets({
+            search: searchString || undefined,
+            skip: itemPerPage * page - itemPerPage,
+            limit: itemPerPage,
+        })
 
     const subadmin = useSubadminProfile()
     const getAllowedTabIdsForSubadmin = (supportTeam: any[] = []) => {
@@ -198,7 +199,7 @@ export const TeamTabsList = () => {
                 {hasActiveFilters(filters) ? (
                     <>
                         <FilteredSupportTickets
-                            isLoading={isLoading}
+                            isLoading={isLoading || isFetching}
                             data={data}
                             isError={isError}
                             setPage={setPage}

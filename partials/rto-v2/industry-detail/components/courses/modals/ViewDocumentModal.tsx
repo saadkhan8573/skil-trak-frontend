@@ -1,3 +1,5 @@
+'use client'
+
 import { Typography } from '@components'
 import {
     Dialog,
@@ -6,9 +8,8 @@ import {
     DialogTitle,
 } from '@components/ui/dialog'
 import { FileCheck } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
-import { Document, Page } from 'react-pdf'
 
 interface ViewDocumentModalProps {
     open: boolean
@@ -23,11 +24,83 @@ export function ViewDocumentModal({
 }: ViewDocumentModalProps) {
     const [totalPages, setTotalPages] = useState(0)
     const [currentPage, setCurrentPage] = useState(1)
+    const [pdfDoc, setPdfDoc] = useState<any>(null)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const canvasRef = useRef<HTMLCanvasElement>(null)
+    const renderTaskRef = useRef<any>(null)
     const [mounted, setMounted] = useState<boolean>(false)
 
     useEffect(() => {
         setMounted(true)
     }, [])
+
+    useEffect(() => {
+        if (open && fileUrl) {
+            loadPdf()
+        } else {
+            setPdfDoc(null)
+            setTotalPages(0)
+            setCurrentPage(1)
+        }
+    }, [open, fileUrl])
+
+    const loadPdf = async () => {
+        setLoading(true)
+        setError(null)
+        try {
+            const pdfjsLib = await import('pdfjs-dist')
+            pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`
+
+            const loadingTask = pdfjsLib.getDocument(fileUrl)
+            const pdf = await loadingTask.promise
+            setPdfDoc(pdf)
+            setTotalPages(pdf.numPages)
+            setCurrentPage(1)
+        } catch (err: any) {
+            console.error('Error loading PDF', err)
+            setError(err.message || 'Failed to load PDF')
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        if (!pdfDoc || !canvasRef.current) return
+
+        const renderPage = async () => {
+            if (renderTaskRef.current) {
+                renderTaskRef.current.cancel()
+            }
+
+            try {
+                const page = await pdfDoc.getPage(currentPage)
+                const viewport = page.getViewport({ scale: 1.5 })
+                const canvas = canvasRef.current!
+                const context = canvas.getContext('2d')
+
+                if (!context) return
+
+                canvas.height = viewport.height
+                canvas.width = viewport.width
+
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport,
+                }
+
+                const renderTask = page.render(renderContext)
+                renderTaskRef.current = renderTask
+                await renderTask.promise
+            } catch (error: any) {
+                if (error.name !== 'RenderingCancelledException') {
+                    console.error('Render error:', error)
+                }
+            }
+        }
+
+        renderPage()
+    }, [pdfDoc, currentPage])
 
     const nextPage = () => {
         if (currentPage < totalPages) {
@@ -118,34 +191,40 @@ export function ViewDocumentModal({
 
                 <div className="min-w-[595px] h-auto relative z-[9999]">
                     <div>
-                        <div className="max-h-[55vh] overflow-auto custom-scrollbar">
-                            {mounted ? (
-                                <Document
-                                    file={fileUrl}
-                                    onLoadSuccess={({ numPages }) => {
-                                        setTotalPages(numPages)
-                                    }}
-                                    loading={
-                                        <div className="min-w-[595px] min-h-[842px]">
-                                            <p className="text-center font-semibold text-gray-500 mt-16">
+                        <div className="max-h-[55vh] overflow-auto custom-scrollbar flex justify-center">
+                            {mounted && !error ? (
+                                <div>
+                                    {loading && (
+                                        <div className="min-w-[595px] min-h-[842px] flex items-center justify-center">
+                                            <p className="text-gray-500 font-semibold">
                                                 Loading PDF...
                                             </p>
                                         </div>
-                                    }
-                                >
-                                    <Page pageNumber={currentPage} />
-                                </Document>
+                                    )}
+                                    <canvas
+                                        ref={canvasRef}
+                                        className={loading ? 'hidden' : 'block'}
+                                    />
+                                </div>
                             ) : (
                                 <div className="p-2">
                                     <Typography>
-                                        The document you provided is not in PDF
-                                        format. Please download the file and
-                                        view it in the appropriate application.
-                                        <br /> If you need any help please
-                                        contact us at:{' '}
-                                        <span className="font-bold text-red-500 underline">
-                                            tech@skiltrak.com.au
-                                        </span>
+                                        {error ? (
+                                            <span className="text-red-500 font-bold">
+                                                {error}
+                                            </span>
+                                        ) : (
+                                            <>
+                                                The document you provided is not in PDF
+                                                format. Please download the file and
+                                                view it in the appropriate application.
+                                                <br /> If you need any help please
+                                                contact us at:{' '}
+                                                <span className="font-bold text-red-500 underline">
+                                                    tech@skiltrak.com.au
+                                                </span>
+                                            </>
+                                        )}
                                     </Typography>
                                 </div>
                             )}

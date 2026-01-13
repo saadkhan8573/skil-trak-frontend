@@ -12,6 +12,8 @@ import {
 } from '@components'
 import { ReactElement, useEffect, useState } from 'react'
 import { IndustryDetail, StudentCellInfo } from './components'
+import { useAppDispatch } from '@redux/hooks'
+import { setIndustryDetail } from '@redux'
 
 // query
 import { LoadingAnimation } from '@components/LoadingAnimation'
@@ -39,6 +41,7 @@ export const Approved = () => {
     const [page, setPage] = useState(1)
     const [itemPerPage, setItemPerPage] = useState(50)
     const [modal, setModal] = useState<ReactElement | null>(null)
+    const dispatch = useAppDispatch()
 
     const router = useRouter()
 
@@ -55,8 +58,6 @@ export const Approved = () => {
         },
         { refetchOnMountOrArgChange: true }
     )
-    const [workplaceActions, workplaceActionsResult] =
-        useWorkplaceActionsMutation()
 
     const tableActionOptions: TableActionOption<any>[] = [
         {
@@ -82,7 +83,10 @@ export const Approved = () => {
 
     const onModalCancelClicked = () => setModal(null)
 
-    const onApproveClicked = (wpId: number) => {
+    const onApproveClicked = (wpId: number, industryData?: any) => {
+        if (industryData) {
+            dispatch(setIndustryDetail(industryData))
+        }
         setModal(
             <ApproveRequestModal
                 workplaceId={wpId}
@@ -264,14 +268,21 @@ export const Approved = () => {
                 return (
                     <div className="flex gap-x-1 items-center">
                         {[
-                            WorkplaceCurrentStatus.AppointmentBooked,
                             WorkplaceCurrentStatus.AwaitingWorkplaceResponse,
                         ]?.includes(currentStatus) ? (
                             <>
                                 <ActionButton
                                     variant="success"
                                     onClick={() => {
-                                        onApproveClicked(info.row.original?.id)
+                                        console.log(
+                                            'info.row.original BEBEBE',
+                                            info.row.original
+                                        )
+
+                                        onApproveClicked(
+                                            info.row.original?.id,
+                                            appliedIndustry?.industry
+                                        )
                                     }}
                                 >
                                     Accept

@@ -168,7 +168,7 @@ export const industriesEndpoints = (
 
     industryCoursesDetails: builder.query<
         IndustryCourseApproval[],
-        { userId?: number }
+        { userId?: number; isDeleted?: boolean }
     >({
         query: (params) => ({
             url: `${INDUSTRIESPREFIX}courses-details`,

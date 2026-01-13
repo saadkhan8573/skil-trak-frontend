@@ -98,24 +98,27 @@ export const useAssessmentLogic = (
             if (result?.totalSubmission < 3) {
                 return (
                     result?.result === Result.ReOpened ||
-                    result?.result === Result.NotCompetent
+                    result?.result === Result.NotCompetent ||
+                    allCommentsAdded
                 )
             } else {
                 return (
                     !getAssessmentResponse.isLoading &&
                     !getAssessmentResponse.isFetching &&
                     getAssessmentResponse.isSuccess &&
-                    result?.isManualSubmission
+                    result?.isManualSubmission &&
+                    allCommentsAdded
                 )
             }
         } else {
             return (
                 !getAssessmentResponse.isLoading &&
                 !getAssessmentResponse.isFetching &&
-                getAssessmentResponse.isSuccess
+                getAssessmentResponse.isSuccess &&
+                allCommentsAdded
             )
         }
-    }, [getAssessmentResponse, selectedCourse, result])
+    }, [getAssessmentResponse, selectedCourse, result, allCommentsAdded])
 
     return {
         result,

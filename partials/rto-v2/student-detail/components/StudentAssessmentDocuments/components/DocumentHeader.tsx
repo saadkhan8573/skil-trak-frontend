@@ -1,5 +1,4 @@
 import { Button, Typography } from '@components'
-import { RtoV2Api } from '@queries'
 import {
     AlertCircle,
     CheckCircle,
@@ -12,8 +11,9 @@ import {
     TrendingUp,
     Upload,
 } from 'lucide-react'
+import { AssessmentResultBadge } from './AssessmentResultBadge';
 
-export const DocumentHeader = ({ count }: { count: any }) => {
+export const DocumentHeader = ({ count, result }: { count: any; result: any }) => {
     const statsData = [
         {
             id: 1,
@@ -66,25 +66,31 @@ export const DocumentHeader = ({ count }: { count: any }) => {
             <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl"></div>
 
             <div className="relative space-y-4">
-                <div className="flex items-start justify-between">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex gap-x-2">
-                        <div className="w-9 h-9 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                            <FileCheck className="w-5 h-5 text-white" />
+                        <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                            <FileCheck className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                            <Typography className="text-white">
+                            <Typography className="text-white font-bold text-lg">
                                 Document Center
                             </Typography>
                             <Typography
-                                variant="label"
-                                color="text-white"
+                                variant="small"
+                                color="text-white/80"
                                 normal
                             >
-                                Manage all your compliance and course documents
-                                in one place
+                                Track compliance and assessment milestones
                             </Typography>
                         </div>
                     </div>
+
+                    {result?.result && (
+                        <AssessmentResultBadge
+                            result={result}
+                            className="bg-white/10 text-white border-white/20"
+                        />
+                    )}
                 </div>
 
                 {/* Quick Stats Grid */}

@@ -61,14 +61,15 @@ export const WorkplaceApprovalDeclaration = ({
                 title: 'Status Changed',
                 description: 'Status Changed Successfully',
             })
-            setModal(
-                <GlobalModal>
-                    <RateCoordinatorModal
-                        userId={subAdminUserId}
-                        onCloseModal={onCancel}
-                    />
-                </GlobalModal>
-            )
+            onCancel()
+            // setModal(
+            //     <GlobalModal>
+            //         <RateCoordinatorModal
+            //             userId={subAdminUserId}
+            //             onCloseModal={onCancel}
+            //         />
+            //     </GlobalModal>
+            // )
             // if (onCancel) {
             //     onCancel(true)
             // }

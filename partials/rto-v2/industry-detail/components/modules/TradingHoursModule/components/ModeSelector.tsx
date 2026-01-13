@@ -23,7 +23,7 @@ export function ModeSelector({ mode, onModeChange }: ModeSelectorProps) {
                 outline={mode !== 'free-shifts'}
             >
                 <Plus className="w-2.5 h-2.5 mr-1" />
-                Free Shifts
+                Placement Shifts
             </Button>
         </div>
     )

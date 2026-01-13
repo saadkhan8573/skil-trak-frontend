@@ -48,7 +48,7 @@ export interface IndustryHighlightedTasks extends BaseResponse {
     id: number
     isConfirmed: boolean
     confirmedBy: User
-    confirmationSource:ConfirmationSource
+    confirmationSource: ConfirmationSource
 }
 
 export interface IndustryCourseApproval extends BaseResponse {
@@ -57,6 +57,7 @@ export interface IndustryCourseApproval extends BaseResponse {
     description: string
     hodComment: string
     isVerifiedByHod: boolean
+    deletedBy: User
     isContentVerified: boolean
     note: string
     file: string

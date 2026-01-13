@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { AlertCircle, Clock, FileCheck, UploadCloud } from 'lucide-react'
-import { IndustryCourseApproval } from '@types'
-import moment from 'moment'
 import { Button } from '@components'
-import { cn, getUserCredentials } from '@utils'
+import { UserRoles } from '@constants'
+import { IndustryCourseApproval } from '@types'
+import { getUserCredentials } from '@utils'
+import { motion } from 'framer-motion'
+import { AlertCircle, FileCheck, UploadCloud } from 'lucide-react'
+import moment from 'moment'
+import { useState } from 'react'
 import { ApproveFacilityChecklistDialog } from '../../modals/ApproveFacilityChecklistDialog'
 import { UploadFacilityChecklistDialog } from '../../modals/UploadFacilityChecklistDialog'
-import { UserRoles } from '@constants'
 
 export const PendingCourseApproval = ({
     approval,
@@ -25,7 +25,7 @@ export const PendingCourseApproval = ({
     const isLocal = process.env.NEXT_PUBLIC_NODE_ENV === 'local'
     const isAllowedUser = [4453, 78, 5714].includes(user?.id)
     const isAdmin = user?.role === UserRoles.ADMIN
-    const showActionButtons = isLocal || isAllowedUser || isAdmin
+    const showActionButtons = (isLocal || isAllowedUser || isAdmin) && !approval?.deletedAt
 
     const hasFile = !!approval?.file
 
@@ -46,20 +46,20 @@ export const PendingCourseApproval = ({
                                 {hasFile
                                     ? 'Facility Checklist Ready for Review'
                                     : hasInitiatedESign
-                                    ? 'E-sign in Progress'
-                                    : 'Facility Checklist Missing'}
+                                        ? 'E-sign in Progress'
+                                        : 'Facility Checklist Missing'}
                             </p>
                             <p className="text-[10px] text-[#64748B]">
                                 {hasFile
                                     ? `Industry partner signed on ${moment(
-                                          approval?.createdAt
-                                      ).fromNow()}`
+                                        approval?.createdAt
+                                    ).fromNow()}`
                                     : hasInitiatedESign
-                                    ? 'Waiting for industry partner to sign the document.'
-                                    : 'Please upload the facility checklist to proceed with approval.'}
+                                        ? 'Waiting for industry partner to sign the document.'
+                                        : 'Please upload the facility checklist to proceed with approval.'}
                             </p>
                         </div>
-                </div>
+                    </div>
                     {showActionButtons &&
                         (hasFile ? (
                             <Button

@@ -9,6 +9,7 @@ import {
     CheckCircle2,
     Eye,
     PenTool,
+    XCircle,
 } from 'lucide-react'
 import moment from 'moment'
 import { useState } from 'react'
@@ -21,6 +22,7 @@ import {
     FillEsignFieldsModal,
     SubmitDocumentModal,
 } from '@partials/common/StudentProfileDetail/modals'
+import { CancelESignModal } from '@partials/rto-v2/student-detail/components/StudentAssessmentDocuments/modal'
 
 export function ESignCard({
     document,
@@ -32,6 +34,7 @@ export function ESignCard({
     const [modal, setModal] = useState<any>(null)
     const [showUsers, setShowUsers] = useState(false)
     const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+    const [isCancelModalOpen, setIsCancelModalOpen] = useState(false)
 
     const onRequestResign = (signer: any) => {
         setModal(
@@ -89,8 +92,6 @@ export function ESignCard({
             />
         )
     }
-
-    console.log({ document })
 
     return (
         <>
@@ -166,21 +167,35 @@ export function ESignCard({
 
                     {/* Actions & Toggle */}
                     <div className="flex items-center gap-3">
+                        {document?.template?.file && (
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button
+                                        onClick={() =>
+                                            setPreviewUrl(
+                                                document?.template?.file
+                                            )
+                                        }
+                                        className="p-2.5 rounded-lg hover:bg-gray-100 text-[#64748B] hover:text-[#044866] transition-all duration-200"
+                                    >
+                                        <Eye className="w-5 h-5" />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    Preview Document
+                                </TooltipContent>
+                            </Tooltip>
+                        )}
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <button
-                                    onClick={() =>
-                                        setPreviewUrl(
-                                            document.file ||
-                                                'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
-                                        )
-                                    }
-                                    className="p-2.5 rounded-lg hover:bg-gray-100 text-[#64748B] hover:text-[#044866] transition-all duration-200"
+                                    onClick={() => setIsCancelModalOpen(true)}
+                                    className="p-2.5 rounded-lg hover:bg-red-50 text-[#64748B] hover:text-red-600 transition-all duration-200"
                                 >
-                                    <Eye className="w-5 h-5" />
+                                    <XCircle className="w-5 h-5" />
                                 </button>
                             </TooltipTrigger>
-                            <TooltipContent>Preview Document</TooltipContent>
+                            <TooltipContent>Cancel E-Sign</TooltipContent>
                         </Tooltip>
                         {document.signers?.length > 0 && (
                             <button
@@ -229,10 +244,11 @@ export function ESignCard({
                                             Status
                                         </span>
                                         <div className="flex items-center gap-1">
-                                            {signer.status === 'SIGNED' ? (
+                                            {signer.status ===
+                                            EsignDocumentStatus.SIGNED ? (
                                                 <div className="flex items-center gap-1 text-[#10B981] font-bold text-[10px]">
                                                     <CheckCircle2 className="w-3.5 h-3.5" />
-                                                    SIGNED
+                                                    {EsignDocumentStatus.SIGNED}
                                                 </div>
                                             ) : (
                                                 <div className="flex items-center gap-1 text-orange-500 font-bold text-[10px]">
@@ -249,7 +265,8 @@ export function ESignCard({
                                             Sign Date
                                         </span>
                                         <span className="text-[10px] font-semibold text-[#1A2332]">
-                                            {signer.status === 'SIGNED'
+                                            {signer.status ===
+                                            EsignDocumentStatus.SIGNED
                                                 ? moment(
                                                       signer.updatedAt
                                                   ).format('DD MMM, YYYY')
@@ -259,7 +276,8 @@ export function ESignCard({
 
                                     {/* Individual Actions */}
                                     <div className="flex items-center gap-2 border-l border-[#E2E8F0] pl-4">
-                                        {signer.status === 'SIGNED' ? (
+                                        {signer.status ===
+                                        EsignDocumentStatus.SIGNED ? (
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <button
@@ -324,6 +342,14 @@ export function ESignCard({
                     </div>
                 )}
             </Card>
+            <CancelESignModal
+                open={isCancelModalOpen}
+                onOpenChange={(open) => {
+                    setIsCancelModalOpen(open)
+                    if (!open) onRefetch()
+                }}
+                eSign={document}
+            />
         </>
     )
 }

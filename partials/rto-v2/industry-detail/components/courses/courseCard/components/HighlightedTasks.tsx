@@ -1,19 +1,19 @@
-import { Loader2 } from 'lucide-react'
 import { Card } from '@components'
-import { useState } from 'react'
-import { ConfirmHighlightedTasksModal } from '../../modals/ConfirmHighlightedTasksModal'
-import { useAppSelector } from '@redux'
 import { RtoV2Api } from '@queries'
+import { useAppSelector } from '@redux'
+import { Loader2 } from 'lucide-react'
 import { HighlightedTaskItem } from './HighlightedTaskItem'
 
 interface HighlightedTasksProps {
     title?: string
     courseId?: number
+    isDeleted?: boolean
 }
 
 export function HighlightedTasks({
     title = 'Course Highlights',
     courseId,
+    isDeleted,
 }: HighlightedTasksProps) {
     const industryId = useAppSelector(
         (state) => state.industry.industryDetail?.id
@@ -48,16 +48,15 @@ export function HighlightedTasks({
                     {title}
                 </h5>
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {fetchedTasks?.map((task: any, index: number) => {
-                   
-
                     return (
                         <HighlightedTaskItem
                             key={task.id || index}
                             task={task}
                             index={index}
                             onRefresh={() => refetch()}
+                            isDeleted={isDeleted}
                         />
                     )
                 })}

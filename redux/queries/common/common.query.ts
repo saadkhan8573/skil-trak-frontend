@@ -703,6 +703,7 @@ const {
     useChangeSupportTicketAssigneeMutation,
     useGetSupportTeamMembersByTeamQuery,
     useGetStudentSupportTicketsListQuery,
+    useUpdateTicketStatusMutation,
     // --------- Call Management ----------- //
     useGetAllAiCallListQuery,
 } = commonApi
@@ -1081,6 +1082,7 @@ export const CommonApi = {
         useChangeSupportTicketAssignee: useChangeSupportTicketAssigneeMutation,
         useSupportTeamMembersByTeam: useGetSupportTeamMembersByTeamQuery,
         useStudentSupportTicketsList: useGetStudentSupportTicketsListQuery,
+        useUpdateTicketStatus: useUpdateTicketStatusMutation,
     },
     CallManagement: {
         useAllAiCallList: useGetAllAiCallListQuery,

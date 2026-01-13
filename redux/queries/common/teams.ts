@@ -36,7 +36,7 @@ export const teamsEndpoints = (
     // support-team/members/filter-options
     getSupportTeamMemberList: builder.query<any, void>({
         query: () => ({
-            url: `${PREFIX}-team/members/filter-options`,
+            url: `${PREFIX}-team/members/filter-options/list`,
         }),
         providesTags: ['Team'],
     }),
@@ -67,7 +67,7 @@ export const teamsEndpoints = (
         query: (id) => ({
             url: `${PREFIX}-task/${id}/notes/get-all`,
         }),
-        providesTags: ['Team'],
+        providesTags: ['Team', 'Tickets', 'SubAdminStudents'],
     }),
     // student/:userId/list
     getStudentSupportTicketsList: builder.query<any, any>({

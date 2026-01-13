@@ -4,7 +4,7 @@ interface StatsCardProps {
     icon: ReactNode
     label: string
     value: number | string
-    color: 'orange' | 'teal' | 'dark' | 'green' | 'red'
+    color: 'orange' | 'teal' | 'dark' | 'green' | 'red' | 'indigo'
     gradient: string
 }
 

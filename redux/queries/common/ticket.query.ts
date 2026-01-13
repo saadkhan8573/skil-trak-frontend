@@ -104,4 +104,12 @@ export const ticketEndpoints = (
         query: (id) => `tickets/list/by-user/${id}`,
         providesTags: ['SubAdminStudents'],
     }),
+    // support-task/:id/open-ticket - update status
+    updateTicketStatus: builder.mutation<any, number>({
+        query: (id) => ({
+            url: `support-task/${id}/open-ticket`,
+            method: 'PATCH',
+        }),
+        invalidatesTags: ['Tickets', 'SubAdminStudents', 'Team'],
+    }),
 })

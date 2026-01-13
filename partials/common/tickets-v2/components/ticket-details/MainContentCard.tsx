@@ -22,19 +22,33 @@ export const MainContentCard = ({ ticket }: any) => {
         CommonApi.Teams.useAutomatedTicketNotes(ticket?.id, {
             skip: !ticket?.id,
         })
+
+    const [updateTicketStatus, updateTicketStatusResult] =
+        CommonApi.Teams.useUpdateTicketStatus()
     const handleAddNote = () => {
         if (newNote.trim()) {
             addNote({ id: ticket.id, body: { note: newNote } })
             setNewNote('')
         }
     }
-
+    useEffect(() => {
+        if (updateTicketStatusResult.isSuccess) {
+            notification.success({
+                title: 'Status updated in-progress',
+                description:
+                    'Ticket status updated to in-progress successfully',
+            })
+        }
+    }, [updateTicketStatusResult.isSuccess])
     useEffect(() => {
         if (addNoteResult.isSuccess) {
             notification.success({
                 title: 'Note added',
                 description: 'Note added successfully',
             })
+            if (data?.length === 0) {
+                updateTicketStatus(ticket?.id)
+            }
         }
     }, [addNoteResult.isSuccess])
 

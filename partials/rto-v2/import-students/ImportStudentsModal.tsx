@@ -12,7 +12,7 @@ export const ImportStudentsModal = ({ onCancel }: any) => {
             label: 'Import List',
             icon: FileSpreadsheet,
             color: 'from-[#044866] to-[#0C648A]',
-            content: <ImportStudentsTab />,
+            content: <ImportStudentsTab onCancel={onCancel} />,
         },
         {
             key: 'add',
@@ -64,8 +64,8 @@ export const ImportStudentsModal = ({ onCancel }: any) => {
                                         )
                                     }
                                     className={`flex items-center gap-2 px-16 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${isActive
-                                            ? `text-white bg-gradient-to-r ${tab.color} shadow-md`
-                                            : 'text-gray-600 hover:text-gray-800'
+                                        ? `text-white bg-gradient-to-r ${tab.color} shadow-md`
+                                        : 'text-gray-600 hover:text-gray-800'
                                         }`}
                                 >
                                     <Icon className="size-4" />

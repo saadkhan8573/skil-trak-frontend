@@ -15,12 +15,14 @@ import { PlacementType } from './PlacementType'
 
 interface FormProps {
     onSubmit: SubmitHandler<ImportStudentFormType>
-    onStudentFound: Function
+    onStudentFound?: Function // Made optional to match usage if needed, or keep required if it is always passed. Original was: onStudentFound: Function
+    onCancel?: () => void
 }
 
 export const ImportStudentFormV2 = ({
     onSubmit,
     onStudentFound,
+    onCancel,
 }: FormProps) => {
     const { notification } = useNotification()
     const [studentsCount, setStudentsCount] = useState<number>(0)
@@ -30,10 +32,10 @@ export const ImportStudentFormV2 = ({
     const rtoCoursesOptions =
         rto.isSuccess && rto?.data?.courses && rto?.data?.courses?.length > 0
             ? rto?.data?.courses?.map((course: Course) => ({
-                  label: course?.title,
-                  value: course?.id,
-                  item: course,
-              }))
+                label: course?.title,
+                value: course?.id,
+                item: course,
+            }))
             : []
 
     const methods = useForm<any>({
@@ -158,7 +160,11 @@ export const ImportStudentFormV2 = ({
 
                     {/* Buttons */}
                     <div className="flex justify-end gap-x-2 items-center">
-                        <Button text="Cancel" variant="secondary" />
+                        <Button
+                            text="Cancel"
+                            variant="secondary"
+                            onClick={onCancel}
+                        />
                         <Button
                             text="Import Students"
                             Icon={Upload}

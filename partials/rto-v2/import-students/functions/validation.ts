@@ -1,12 +1,11 @@
+import moment from 'moment'
 import * as yup from 'yup'
 import { PlacementTypeEnum } from '../enum'
 import { getDate } from '@utils'
 
 // Utility to calculate date 3 months ahead
 export const getMinExpiryDate = () => {
-    const date = new Date()
-    date.setMonth(date.getMonth() + 3)
-    return date.toISOString().split('T')[0]
+    return moment().add(3, 'months').format('YYYY-MM-DD')
 }
 
 export const importStudentValidationSchema = yup.object({
@@ -45,7 +44,7 @@ export const importStudentValidationSchema = yup.object({
         then: (schema) =>
             schema
                 .min(
-                    new Date(getMinExpiryDate()),
+                    moment(getMinExpiryDate(), 'YYYY-MM-DD').toDate(),
                     'Expiry date must be at least 3 months from today'
                 )
                 .required('Must provide expiry date for rolling placement'),

@@ -8,8 +8,10 @@ import { ImportStudentFormV2 } from './ImportStudentFormV2'
 
 export const ImportStudentsListFormWithOTP = ({
     onSubmit,
+    onCancel,
 }: {
     onSubmit: (values: ImportStudentFormType) => void
+    onCancel?: () => void
 }) => {
     const [columnsToRead, setColumnsToRead] = useState<any>({
         id: 'id',
@@ -25,7 +27,7 @@ export const ImportStudentsListFormWithOTP = ({
     const [checkMails, checkMailsResult] =
         AdminApi.Rtos.useUserExistingEmailCheck()
 
-    const onStudentFound = (students: any, file: any, emailExists: any) => {
+    const onStudentFound = (students: any, file: any) => {
         setStudentList(students)
 
         const mails = students.map((std: any) => trimText(std.email))
@@ -36,7 +38,7 @@ export const ImportStudentsListFormWithOTP = ({
                 if (res.data?.length) {
                 }
             })
-            .catch((err) => {})
+            .catch((err) => { })
     }
 
     return (
@@ -61,6 +63,7 @@ export const ImportStudentsListFormWithOTP = ({
                     <ImportStudentFormV2
                         onSubmit={onSubmit}
                         onStudentFound={onStudentFound}
+                        onCancel={onCancel}
                     />
                 </div>
                 <div className="w-full">
@@ -127,26 +130,26 @@ export const ImportStudentsListFormWithOTP = ({
                                                                 <td key={k?.id}>
                                                                     {k ===
                                                                         columnsToRead?.email &&
-                                                                    checkMailsResult?.isSuccess &&
-                                                                    checkMailsResult.data?.findIndex(
-                                                                        (
-                                                                            obj: any
-                                                                        ) =>
-                                                                            student[
+                                                                        checkMailsResult?.isSuccess &&
+                                                                        checkMailsResult.data?.findIndex(
+                                                                            (
+                                                                                obj: any
+                                                                            ) =>
+                                                                                student[
                                                                                 k
-                                                                            ] ===
-                                                                            obj.email
-                                                                    ) !== -1 ? (
+                                                                                ] ===
+                                                                                obj.email
+                                                                        ) !== -1 ? (
                                                                         <s>
                                                                             {
                                                                                 student[
-                                                                                    k
+                                                                                k
                                                                                 ]
                                                                             }
                                                                         </s>
                                                                     ) : (
                                                                         student[
-                                                                            k
+                                                                        k
                                                                         ]
                                                                     )}
                                                                 </td>
@@ -163,6 +166,6 @@ export const ImportStudentsListFormWithOTP = ({
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

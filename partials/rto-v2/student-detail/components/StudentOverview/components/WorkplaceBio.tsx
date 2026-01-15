@@ -13,7 +13,10 @@ import {
     Star,
 } from 'lucide-react'
 import { useMemo } from 'react'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import {
+    IWorkplaceIndustries,
+    WorkplaceWorkIndustriesType,
+} from 'redux/queryTypes'
 
 export function WorkplaceBio({
     workplace,
@@ -28,9 +31,12 @@ export function WorkplaceBio({
         )
     }, [workplace?.workplaceApprovaleRequest])
 
+    const workIndustry = workplace?.industries?.find(
+        (i: WorkplaceWorkIndustriesType) => i?.applied
+    )
+
     const industry =
-        workplace?.industries?.[0]?.industry ||
-        latestWorkplaceApprovaleRequest?.industry
+        workIndustry?.industry || latestWorkplaceApprovaleRequest?.industry
 
     const supervisor: Supervisor =
         latestWorkplaceApprovaleRequest?.industry?.supervisors?.[0]

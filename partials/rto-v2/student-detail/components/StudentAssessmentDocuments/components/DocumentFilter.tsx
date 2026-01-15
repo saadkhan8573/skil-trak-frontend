@@ -15,7 +15,7 @@ export const DocumentFilter = ({
     return (
         <div className="bg-white rounded-xl border border-slate-200 shadow-lg p-4">
             <div className="flex flex-col md:flex-row gap-3">
-                <div className="flex-1">
+                {/* <div className="flex-1">
                     <TextInput
                         name="searchDocs"
                         placeholder="Search documents by name..."
@@ -41,7 +41,7 @@ export const DocumentFilter = ({
                         }
                         onlyValue
                     />
-                </div>
+                </div> */}
                 <div className="flex gap-2">
                     <Button
                         variant={

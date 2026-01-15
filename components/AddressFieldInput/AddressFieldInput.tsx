@@ -4,7 +4,9 @@ import { useAddressToPostCode } from '@hooks'
 export const AddressFieldInput = ({
     placesSuggetions,
     onChange,
+    helpText,
 }: {
+    helpText?: string
     onChange?: () => void
     placesSuggetions?: {
         placesSuggetions: boolean
@@ -27,6 +29,7 @@ export const AddressFieldInput = ({
                 onAddressToPostcodeClicked(e.target?.value)
             }}
             onPlaceSuggetions={placesSuggetions}
+            helpText={helpText}
         />
     )
 }

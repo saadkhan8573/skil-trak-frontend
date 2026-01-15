@@ -18,6 +18,7 @@ import {
     Calendar,
     CheckCircle2,
     Clock,
+    Eye,
     Hourglass,
     Mail,
     MapPin,
@@ -169,6 +170,24 @@ export const WorkplaceCard = ({
         }
     }
 
+    const getIndustryLink = () => {
+        const role = getUserCredentials()?.role
+        if (!industry?.id) return null
+
+        switch (role) {
+            case UserRoles.ADMIN:
+                return `/portals/admin/industry/${industry.id}`
+            case UserRoles.SUBADMIN:
+                return `/portals/sub-admin/users/industries/${industry.id}`
+            case UserRoles.RTO:
+                return `/portals/rto/manage/industries/${industry.id}/detail`
+            default:
+                return null
+        }
+    }
+
+    const industryLink = getIndustryLink()
+
     return (
         <div className="group bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200/60 shadow-lg hover:shadow-2xl transition-all overflow-hidden">
             {modal}
@@ -183,10 +202,27 @@ export const WorkplaceCard = ({
                     <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
                         <Building2 className="w-5 h-5 text-white" />
                     </div>
-                    <div>
-                        <h4 className="text-white">
-                            {industry?.user?.name || 'Industry Not Provided'}
-                        </h4>
+                    <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                            <h4 className="text-white">
+                                {industry?.user?.name || 'Industry Not Provided'}
+                            </h4>
+                            {industryLink && (
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        router.push(industryLink)
+                                    }}
+                                    className={`cursor-pointer p-1 rounded-md bg-white/20 hover:bg-white/30 text-white transition-colors border border-white/10 ${status === 'active'
+                                        ? 'animate-pulse'
+                                        : ''
+                                        }`}
+                                    title="View Industry Profile"
+                                >
+                                    <Eye className="w-4 h-4" />
+                                </button>
+                            )}
+                        </div>
                         <p className="text-white/80 text-sm">
                             {workplaceType?.name || 'Not Assigned'}
                         </p>
@@ -374,7 +410,7 @@ export const WorkplaceCard = ({
                                 <span className="font-medium">Status:</span>{' '}
                                 {
                                     WorkplaceStatusLabels[
-                                        workplace?.currentStatus
+                                    workplace?.currentStatus
                                     ]
                                 }
                             </p>
@@ -388,21 +424,21 @@ export const WorkplaceCard = ({
 
                 {workplace?.currentStatus ===
                     WorkplaceCurrentStatus.AwaitingRtoResponse && (
-                    <AuthorizedUserComponent roles={[UserRoles.RTO]}>
-                        <Button
-                            outline
-                            fullWidth
-                            variant="primaryNew"
-                            text="View Details"
-                            className="mt-3"
-                            onClick={() =>
-                                router.push(
-                                    `/portals/rto/action-required/approve-placement/${latestWorkplaceApprovaleRequest?.id}`
-                                )
-                            }
-                        />
-                    </AuthorizedUserComponent>
-                )}
+                        <AuthorizedUserComponent roles={[UserRoles.RTO]}>
+                            <Button
+                                outline
+                                fullWidth
+                                variant="primaryNew"
+                                text="View Details"
+                                className="mt-3"
+                                onClick={() =>
+                                    router.push(
+                                        `/portals/rto/action-required/approve-placement/${latestWorkplaceApprovaleRequest?.id}`
+                                    )
+                                }
+                            />
+                        </AuthorizedUserComponent>
+                    )}
 
                 {/* Cancel Section */}
                 <div className="mt-4 border-t border-slate-100">

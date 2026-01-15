@@ -3,7 +3,7 @@ import moment from 'moment'
 import { ReactElement, useMemo, useState } from 'react'
 import classNames from 'classnames'
 import { UploadDocModal } from '../modal'
-import { useAssessmentDocumentsView } from '@partials/common/StudentProfileDetail/components'
+import { ViewDocumentModal } from '@partials/rto-v2/industry-detail/components/courses/modals/ViewDocumentModal'
 
 export const InsuranceDocumentCard = ({
     insurance,
@@ -16,7 +16,7 @@ export const InsuranceDocumentCard = ({
 }) => {
     const [modal, setModal] = useState<ReactElement | null>(null)
     const [selected, setSelected] = useState<boolean>(false)
-    const { onFileClicked, documentsViewModal } = useAssessmentDocumentsView()
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false)
 
     const onCancel = () => setModal(null)
 
@@ -37,20 +37,19 @@ export const InsuranceDocumentCard = ({
         'day'
     )
 
+    const fileUrl = useMemo(() => {
+        if (!latestDocument?.file) return ''
+        return latestDocument.file
+            .replaceAll('{"', '')
+            .replaceAll('"}', '')
+    }, [latestDocument])
+
     const ViewDocument = (
         <Button
             text="View"
             variant="info"
             onClick={() => {
-                onFileClicked({
-                    ...latestDocument,
-                    showEdit: false,
-                    file: latestDocument?.file
-                        .replaceAll('{"', '')
-                        .replaceAll('"}', ''),
-                    extension: latestDocument?.file?.split('.')?.reverse()?.[0],
-                    type: 'all',
-                })
+                setIsViewModalOpen(true)
             }}
         />
     )
@@ -116,7 +115,12 @@ export const InsuranceDocumentCard = ({
     return (
         <>
             {modal}
-            {documentsViewModal}
+            <ViewDocumentModal
+                open={isViewModalOpen}
+                onOpenChange={setIsViewModalOpen}
+                fileUrl={fileUrl}
+                title={insurance?.title}
+            />
             <div className={classes}>
                 <Typography variant="label" medium>
                     {insurance?.title}

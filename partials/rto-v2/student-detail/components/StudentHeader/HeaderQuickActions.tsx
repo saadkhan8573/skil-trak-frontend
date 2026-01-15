@@ -2,11 +2,13 @@ import { Button } from '@components'
 import { useNotification } from '@hooks'
 import { SubAdminApi } from '@queries'
 import { Student } from '@types'
-import { Mail, Phone } from 'lucide-react'
+import { AuthorizedUserComponent } from '@components'
+import { UserRoles } from '@constants'
+import { DollarSign, Mail, Phone } from 'lucide-react'
 import { ReactElement, useState } from 'react'
 import { ComposeEmailModal } from '../Communications/modal'
 import { ProfileLinks } from '../ProfileLinks'
-import { StudentCallLogModal } from './modals'
+import { StudentCallLogModal, ViewPaymentDetailsModal } from './modals'
 
 export const HeaderQuickActions = ({ student }: { student: Student }) => {
     const [modal, setModal] = useState<ReactElement | null>(null)
@@ -37,9 +39,31 @@ export const HeaderQuickActions = ({ student }: { student: Student }) => {
             />
         )
     }
+
+    const onViewPaymentDetailsClicked = () => {
+        setModal(
+            <ViewPaymentDetailsModal
+                open={true}
+                onOpenChange={(val) => !val && setModal(null)}
+                studentId={student?.id}
+            />
+        )
+    }
+
     return (
         <div className="flex flex-wrap items-center justify-center xl:justify-end gap-2.5">
             {modal}
+            {student?.hasPaid && (
+                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+                    <Button
+                        onClick={onViewPaymentDetailsClicked}
+                        variant='info'
+                    >
+                        <DollarSign className="w-3.5 h-3.5 mr-2" />
+                        Payment Details
+                    </Button>
+                </AuthorizedUserComponent>
+            )}
             <Button
                 onClick={onMakeCallClicked}
                 className="bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-xl shadow-[#044866]/25 hover:shadow-2xl hover:scale-105 transition-all px-5 py-2"

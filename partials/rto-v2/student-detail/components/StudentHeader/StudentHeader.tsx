@@ -6,6 +6,7 @@ import { StudentQuickInfo } from './StudentQuickInfo'
 import { StudentTimeline } from './StudentTimeline'
 import { StudentStatusBanner } from './components/StudentStatusBanner'
 import { StudentStatusSwitches } from './StudentStatusSwitches'
+import { StudentInvoiceStatus } from './components/StudentInvoiceStatus'
 
 export const StudentHeader = ({ student }: { student: Student }) => {
     const studentContactInfo = [
@@ -88,14 +89,12 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                     {avatarBadges.map((badge) => (
                                         <div
                                             key={badge.id}
-                                            className={`absolute ${
-                                                badge.position ===
-                                                'bottom-right'
+                                            className={`absolute ${badge.position ===
+                                                    'bottom-right'
                                                     ? 'bottom-0 right-0'
                                                     : 'bottom-0 left-0'
-                                            } w-4.5 h-4.5 ${
-                                                badge.className
-                                            } rounded-full border-3 border-white shadow-lg flex items-center justify-center`}
+                                                } w-4.5 h-4.5 ${badge.className
+                                                } rounded-full border-3 border-white shadow-lg flex items-center justify-center`}
                                         >
                                             {badge.content === 'dot' ? (
                                                 <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
@@ -116,17 +115,14 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                         {studentBadges.map((badge) => (
                                             <div
                                                 key={badge.id}
-                                                className={`inline-flex items-center gap-${
-                                                    badge.icon || badge.emoji
+                                                className={`inline-flex items-center gap-${badge.icon || badge.emoji
                                                         ? '1.5'
                                                         : '2'
-                                                } px-${
-                                                    badge.icon || badge.emoji
+                                                    } px-${badge.icon || badge.emoji
                                                         ? '2'
                                                         : '2.5'
-                                                } py-1 rounded-full ${
-                                                    badge.className
-                                                }`}
+                                                    } py-1 rounded-full ${badge.className
+                                                    }`}
                                             >
                                                 {badge.hasIndicator && (
                                                     <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
@@ -140,11 +136,10 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                                     </span>
                                                 )}
                                                 <span
-                                                    className={`text-sm ${
-                                                        badge.uppercase
+                                                    className={`text-sm ${badge.uppercase
                                                             ? 'uppercase'
                                                             : ''
-                                                    }`}
+                                                        }`}
                                                 >
                                                     {badge.label}
                                                 </span>
@@ -156,20 +151,17 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                         {studentContactInfo.map((contact) => (
                                             <div
                                                 key={contact.id}
-                                                className={`inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-slate-200 px-2.5 py-1 rounded-full shadow-sm ${
-                                                    contact.hasHover
+                                                className={`inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-slate-200 px-2.5 py-1 rounded-full shadow-sm ${contact.hasHover
                                                         ? 'hover:shadow-md transition-all group cursor-pointer'
                                                         : ''
-                                                }`}
+                                                    }`}
                                             >
                                                 <div
-                                                    className={`w-4.5 h-4.5 rounded-full bg-gradient-to-br ${
-                                                        contact.bgGradient
-                                                    } flex items-center justify-center ${
-                                                        contact.hasHover
+                                                    className={`w-4.5 h-4.5 rounded-full bg-gradient-to-br ${contact.bgGradient
+                                                        } flex items-center justify-center ${contact.hasHover
                                                             ? 'group-hover:scale-110 transition-transform'
                                                             : ''
-                                                    }`}
+                                                        }`}
                                                 >
                                                     <contact.icon
                                                         className={`w-2.5 h-2.5 ${contact.iconColor}`}
@@ -180,6 +172,9 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                                 </span>
                                             </div>
                                         ))}
+                                    </div>
+                                    <div className="mt-2">
+                                        <StudentInvoiceStatus />
                                     </div>
                                 </div>
                             </div>

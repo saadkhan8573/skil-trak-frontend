@@ -15,6 +15,7 @@ import {
     DialogTitle,
 } from '@components/ui/dialog'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useNotification } from '@hooks'
 import { useUpdateIndustryProfileMutation, CommonApi } from '@queries'
 import { useAppSelector } from '@redux/hooks'
 import { OptionType } from '@types'
@@ -55,7 +56,6 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
     const [isEditing, setIsEditing] = useState(false)
     const [onSuburbClicked, setOnSuburbClicked] = useState<boolean>(true)
 
-
     // Get industry detail from Redux instead of API
     const industryDetail = useAppSelector(
         (state: any) => state.industry.industryDetail
@@ -63,6 +63,8 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
 
     const [updateProfile, updateProfileResult] =
         useUpdateIndustryProfileMutation()
+
+    const { notification } = useNotification()
 
     const [countryId, setCountryId] = useState<number | null>(null)
     const [onStateSelect, setOnStateSelect] = useState<number | null>(null)
@@ -129,6 +131,15 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
     const handleSave = (data: any) => {
         if (!industryDetail?.user?.id) return
 
+        if (!onSuburbClicked) {
+            notification.error({
+                title: 'Address Required',
+                description:
+                    'Please select an address from the dropdown suggestions.',
+            })
+            return
+        }
+
         updateProfile({
             id: Number(industryDetail.user.id),
             body: {
@@ -146,10 +157,17 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
         setIsEditing(false)
     }
 
-
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="!max-w-4xl h-[90vh] flex flex-col p-0 gap-0 overflow-hidden">
+            <DialogContent
+                onInteractOutside={(e) => {
+                    const target = e.target as HTMLElement
+                    if (target?.closest('.pac-container')) {
+                        e.preventDefault()
+                    }
+                }}
+                className="!max-w-4xl h-[90vh] flex flex-col p-0 gap-0 overflow-hidden"
+            >
                 <ShowErrorNotifications result={updateProfileResult} />
                 <DialogHeader className="bg-gradient-to-r from-[#044866] to-[#0D5468] px-6 py-5 relative overflow-hidden shrink-0">
                     <div className="absolute inset-0 opacity-10">
@@ -306,6 +324,7 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                                         <div className="md:col-span-2">
                                             {isEditing ? (
                                                 <AddressFieldInput
+                                                    helpText="For accurate verification, please select an address from the dropdown suggestions using either a mouse click or the Tab key."
                                                     placesSuggetions={{
                                                         placesSuggetions:
                                                             onSuburbClicked,
@@ -399,7 +418,7 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                                                                 countryId
                                                         )}
                                                     validationIcons
-                                                    menuPlacement='top'
+                                                    menuPlacement="top"
                                                 />
                                             ) : (
                                                 <ViewField
@@ -443,7 +462,7 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                                                                 s?.label ===
                                                                 formValues.region
                                                         )}
-                                                    menuPlacement='top'
+                                                    menuPlacement="top"
                                                 />
                                             ) : (
                                                 <ViewField

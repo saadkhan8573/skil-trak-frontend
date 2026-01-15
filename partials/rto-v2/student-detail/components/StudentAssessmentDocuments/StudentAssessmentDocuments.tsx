@@ -185,8 +185,6 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
         }
     }, [documents, selectedCourse, result])
 
-    console.log({ shouldShowSubmitButton })
-
     // Section configuration array
     const sections = [
         {

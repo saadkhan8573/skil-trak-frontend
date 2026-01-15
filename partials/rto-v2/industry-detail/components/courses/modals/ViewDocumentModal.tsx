@@ -15,12 +15,16 @@ interface ViewDocumentModalProps {
     open: boolean
     fileUrl: string
     onOpenChange: (open: boolean) => void
+    title?: string
+    subtitle?: string
 }
 
 export function ViewDocumentModal({
     open,
     fileUrl,
     onOpenChange,
+    title = 'Document Preview',
+    subtitle = 'Insurance Document Review',
 }: ViewDocumentModalProps) {
     const [totalPages, setTotalPages] = useState(0)
     const [currentPage, setCurrentPage] = useState(1)
@@ -124,10 +128,10 @@ export function ViewDocumentModal({
                         </div>
                         <div className="flex-1">
                             <DialogTitle className="text-xl font-bold tracking-tight text-white mb-0.5">
-                                Document Preview
+                                {title}
                             </DialogTitle>
                             <p className="text-white/80 text-xs font-medium uppercase tracking-wider">
-                                Facility Checklist Review
+                                {subtitle}
                             </p>
                         </div>
                     </div>

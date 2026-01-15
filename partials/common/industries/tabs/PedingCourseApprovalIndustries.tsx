@@ -37,7 +37,7 @@ export const PedingCourseApprovalIndustries = () => {
 
     const user = getUserCredentials()
     const isLocal = process.env.NEXT_PUBLIC_NODE_ENV === 'local'
-    const isAllowedUser = [4453, 78, 5714].includes(user?.id)
+    const isAllowedUser = [4453, 78, 5714, 6222, 20365].includes(user?.id)
     const showActionButtons =
         isLocal || isAllowedUser || user?.role === UserRoles.ADMIN
 

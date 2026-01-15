@@ -119,9 +119,7 @@ export const SubAdminUpdatedIndustries = () => {
             component: PedingCourseApprovalIndustries,
             hidden: () => {
                 const isLocal = process.env.NEXT_PUBLIC_NODE_ENV === 'local'
-                const isAllowedUser = [4453, 78, 5714, 6222, 20365].includes(
-                    user?.id
-                )
+                const isAllowedUser = [4453, 78, 5714, 20365].includes(user?.id)
                 return !(isLocal || isAllowedUser)
             },
         },

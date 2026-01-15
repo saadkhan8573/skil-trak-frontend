@@ -8,12 +8,34 @@ export const StudentQuickInfo = () => {
     const { selectedCourse, studentDetail } = useAppSelector(
         (state) => state.student
     )
+
+
+    const courseHours =
+        selectedCourse?.extraHours && selectedCourse?.extraHours?.length > 0
+            ? selectedCourse?.extraHours?.[0]?.hours
+            : selectedCourse?.hours
+
+
     const studentInfoCards = [
         {
             id: 'primary-course',
             title: 'Primary Course',
             mainText: selectedCourse?.code,
-            subText: selectedCourse?.title,
+            subText: (
+                <div className="flex flex-col gap-1 mt-1">
+                    <span className="line-clamp-1" title={selectedCourse?.title}>
+                        {selectedCourse?.title}
+                    </span>
+                    {courseHours && (
+                        <div className="flex items-center gap-1.5 pt-1 border-t border-white/10">
+                            <Clock className="w-3 h-3 text-white/70" />
+                            <span className="font-medium text-white/90">
+                                {courseHours} Hours Required
+                            </span>
+                        </div>
+                    )}
+                </div>
+            ),
             icon: Award,
             iconType: 'lucide' as const,
             gradient: 'from-[#044866] to-[#0D5468]',
@@ -77,7 +99,9 @@ export const StudentQuickInfo = () => {
                         <p className="text-white mb-0.5 text-[13px]">
                             {card.mainText}
                         </p>
-                        <p className="text-xs text-white/80">{card.subText}</p>
+                        <div className="text-xs text-white/80">
+                            {card.subText}
+                        </div>
                     </div>
                 </div>
             ))}

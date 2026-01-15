@@ -34,7 +34,7 @@ export const CourseOverview = () => {
                                 variant="primaryNew"
                                 text={`${
                                     studentCourses?.data?.length || 0
-                                } Active`}
+                                } Courses`}
                                 size="xs"
                                 className="border border-[#044866]/20"
                             />
@@ -80,10 +80,12 @@ export const CourseOverview = () => {
                         'md:!grid-cols-1': studentCourses?.data?.length === 1,
                     })}
                 >
-                    {studentCourses?.data?.map((course: any) => (
+                    {studentCourses?.data?.map((course: Course) => (
                         <CourseCard
                             key={course?.id}
-                            selectedCourse={course}
+                            selectedCourse={
+                                course as Course & { coursePrograms: number }
+                            }
                             onClick={() => onSelectCourse(course)}
                             isActive={selectedCourse?.id === course?.id}
                         />

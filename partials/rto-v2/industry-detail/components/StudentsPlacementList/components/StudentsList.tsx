@@ -24,7 +24,7 @@ export function StudentsList() {
     return (
         <div className="space-y-2">
             {students?.isError ? <TechnicalError /> : null}
-            {students?.isLoading ? (
+            {students?.isLoading || students?.isFetching ? (
                 <StudentsTabSkeleton />
             ) : students?.isSuccess &&
               students?.data?.data &&

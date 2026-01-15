@@ -18,7 +18,11 @@ export const GlobalModal = ({
                 <OutsideClickHandler
                     onOutsideClick={(e) => {
                         const target = e.target as HTMLElement
-                        if (target.closest('.modal-animation')) return
+                        if (
+                            target.closest('.modal-animation') ||
+                            target.closest('.pac-container')
+                        )
+                            return
                         e.stopPropagation()
                         onCancel && onCancel()
                     }}

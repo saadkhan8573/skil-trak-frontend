@@ -1,7 +1,7 @@
 import { Badge, Button, InitialAvatar, NoData, Typography } from '@components'
 import { latestWpApprovalRequest } from '@partials/rto-v2'
 import { Supervisor } from '@types'
-import { WorkplaceStatusLabels } from '@utils'
+import { WorkplaceCurrentStatus, WorkplaceStatusLabels } from '@utils'
 import {
     Award,
     Building2,
@@ -38,6 +38,14 @@ export function WorkplaceBio({
     const course = workplace?.courses?.[0]
     const courseApproval = course?.approvals?.[0]
 
+    const isCompletedWP = [
+        WorkplaceCurrentStatus.Completed,
+        WorkplaceCurrentStatus.Cancelled,
+        WorkplaceCurrentStatus.Rejected,
+        WorkplaceCurrentStatus.Terminated,
+        WorkplaceCurrentStatus.NoResponse,
+    ].includes(workplace?.currentStatus)
+
     return (
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-secondary shadow-xl shadow-slate-200/50 p-5 hover:shadow-2xl transition-all">
             <div className="flex items-center justify-between">
@@ -61,10 +69,15 @@ export function WorkplaceBio({
                 </div>
 
                 {/*  */}
-                <Button variant="primaryNew" onClick={handleAddNewWorkplace}>
-                    <Plus className="w-4 h-4" />
-                    Add New Workplace
-                </Button>
+                {isCompletedWP && (
+                    <Button
+                        variant="primaryNew"
+                        onClick={handleAddNewWorkplace}
+                    >
+                        <Plus className="w-4 h-4" />
+                        Add New Workplace
+                    </Button>
+                )}
             </div>
 
             {industry ? (
@@ -137,7 +150,7 @@ export function WorkplaceBio({
                         <p
                             className="text-sm text-slate-600 leading-relaxed"
                             dangerouslySetInnerHTML={{
-                                __html: courseApproval?.description || '',
+                                __html: industry?.bio || '',
                             }}
                         />
                     </div>
@@ -268,7 +281,7 @@ export function WorkplaceBio({
                             }
                         />
                     </div>
-                    <NoData text="No workplace bio found!" />
+                    <NoData text="No workplace industry found!" />
                 </div>
             )}
         </div>

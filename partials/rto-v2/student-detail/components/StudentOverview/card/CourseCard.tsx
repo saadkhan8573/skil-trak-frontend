@@ -2,7 +2,7 @@ import { Badge } from '@components'
 import { Course } from '@types'
 import { cn } from '@utils'
 import { Target } from 'lucide-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 export const CourseCard = ({
     onClick,
@@ -13,6 +13,20 @@ export const CourseCard = ({
     onClick?: () => void
     selectedCourse: Course & { coursePrograms: number }
 }) => {
+    const activeWorkplace = selectedCourse?.students?.find((student) =>
+        student?.workplace?.some((wp) =>
+            wp?.courses?.some((course) => course.id === selectedCourse.id)
+        )
+    )
+
+    useEffect(() => {
+        if (activeWorkplace) {
+            onClick?.()
+        }
+    }, [activeWorkplace])
+
+    console.log({ activeWorkplace })
+
     return (
         <div
             onClick={() => {
@@ -37,14 +51,19 @@ export const CourseCard = ({
                     >
                         {selectedCourse?.title}
                     </h3>
-                    <Badge
-                        variant="primaryNew"
-                        text="✓ Active"
-                        size="xs"
-                        className={cn('border border-[#044866]/20 shadow-sm', {
-                            'border-white': isActive,
-                        })}
-                    />
+                    {activeWorkplace && (
+                        <Badge
+                            variant="primaryNew"
+                            text="✓ Active"
+                            size="xs"
+                            className={cn(
+                                'border border-[#044866]/20 shadow-sm',
+                                {
+                                    'border-white': isActive,
+                                }
+                            )}
+                        />
+                    )}
                 </div>
                 <div className="flex items-center gap-3.5 text-sm text-slate-600">
                     <span

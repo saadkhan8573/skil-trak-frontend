@@ -132,9 +132,8 @@ export const TextInput = ({
             <div className="w-full">
                 <div className="relative">
                     <input
-                        className={`${inputFieldClasses} ${shadow}  ${
-                            color ? color : 'bg-white'
-                        }`}
+                        className={`${inputFieldClasses} ${shadow}  ${color ? color : 'bg-white'
+                            }`}
                         {...(id ? { id } : {})}
                         {...formRef}
                         type={passwordType || type}
@@ -157,13 +156,13 @@ export const TextInput = ({
                         }}
                         {...(value ? { value } : {})}
                         {...(onPlaceSuggetions?.placesSuggetions ||
-                        placesSuggetions
+                            placesSuggetions
                             ? {
-                                  ref: (e: any) => {
-                                      formRef && formRef.ref(e)
-                                      ref.current = e
-                                  },
-                              }
+                                ref: (e: any) => {
+                                    formRef && formRef.ref(e)
+                                    ref.current = e
+                                },
+                            }
                             : {})}
                     />
 

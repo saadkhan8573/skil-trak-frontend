@@ -21,6 +21,9 @@ export const FilteredSearchIndustries = ({
         onSetIndustryData,
     })
 
+    const industriesData =
+        industries?.data?.paginatedResults?.data || industries?.data?.data
+
     return (
         <>
             {modal}
@@ -34,10 +37,10 @@ export const FilteredSearchIndustries = ({
                 <Card noPadding>
                     {industries?.isLoading || industries?.isFetching ? (
                         <LoadingAnimation height="h-[60vh]" />
-                    ) : industries?.data && industries?.data?.data?.length ? (
+                    ) : industriesData && industriesData?.length ? (
                         <Table
                             columns={columns as any}
-                            data={industries.data?.data}
+                            data={industriesData}
                             quickActions={quickActionsElements}
                             enableRowSelection
                         >
@@ -53,7 +56,7 @@ export const FilteredSearchIndustries = ({
                                             {pageSize(
                                                 itemPerPage,
                                                 setItemPerPage,
-                                                industries.data?.data?.length
+                                                industriesData?.length
                                             )}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
@@ -67,14 +70,12 @@ export const FilteredSearchIndustries = ({
                                         <div className="px-6 overflow-auto custom-scrollbar">
                                             {table}
                                         </div>
-                                        {industries?.data?.data?.length >
-                                            10 && (
+                                        {industriesData?.length > 10 && (
                                             <div className="px-6 py-2 mb-2 flex justify-between">
                                                 {pageSize(
                                                     itemPerPage,
                                                     setItemPerPage,
-                                                    industries?.data?.data
-                                                        ?.length
+                                                    industriesData?.length
                                                 )}
                                                 <div className="flex gap-x-2">
                                                     {quickActions}

@@ -438,6 +438,7 @@ export const {
     useGetAgrementFileQuery,
     useGetArchivedAssessmentResponseQuery,
     useStudentAssessmentCoursesQuery,
+    useStudentAllCoursesListQuery,
     useAddCommentOnAssessmentMutation,
     useGetAssessmentEvidenceDetailQuery,
     useGetArchivedAssessmentEvidenceDetailQuery,
@@ -769,7 +770,8 @@ export const SubAdminApi = {
         usePreviousIndustryCourses: useGetPreviousIndustryCoursesQuery,
         useSectorBasedCapacity: useGetSectorBasedCapacityQuery,
         uploadCourseDocForIndustry: useUploadCourseDocForIndustryMutation,
-        assignChecklistToCourseApproval: useAssignChecklistToCourseApprovalMutation,
+        assignChecklistToCourseApproval:
+            useAssignChecklistToCourseApprovalMutation,
         useSectorBaseCapacity: useUpdateSectorBaseCapacityMutation,
         useUpdateOldCapacityToSectorBase:
             useUpdateOldCapacityToSectorBaseMutation,
@@ -862,6 +864,7 @@ export const SubAdminApi = {
     },
     AssessmentEvidence: {
         uploadDocs: useUploadAssessmentDocsMutation,
+        studentAllCourses: useStudentAllCoursesListQuery,
         getOtherDocAssessment: useGetOtherDocAssessmentResponseQuery,
         uploadOtherDocs: useUploadOtherDocAssessmentDocsMutation,
         useInitiateSigning: useInitiateSigningMutation,

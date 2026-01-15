@@ -175,6 +175,16 @@ export const assessmentEvidenceEndpoints = (
             'SubAdminWorkplace',
         ],
     }),
+    studentAllCoursesList: builder.query<AssessmentCourseType[], number>({
+        query: (id) => `${PREFIX}/student/course/${id}/data/list`,
+        keepUnusedDataFor: 0,
+        providesTags: [
+            'AssessmentEvidence',
+            'SubAdminStudents',
+            'Agreement',
+            'SubAdminWorkplace',
+        ],
+    }),
     maulallyReopenSubmissionRequest: builder.mutation<null, number>({
         query: (id) => ({
             url: `${PREFIX}/student/assessment-evidence/allow-submission/${id}`,

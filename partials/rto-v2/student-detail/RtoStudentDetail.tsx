@@ -13,8 +13,8 @@ import {
 import { ConfigTabs, EmptyData, TabConfig, TechnicalError } from '@components'
 import { Skeleton } from '@components/ui/skeleton'
 import { useGetSubAdminStudentDetailQuery } from '@queries'
-import { setStudentDetail } from '@redux'
-import { Student } from '@types'
+import { setSelectedCourse, setStudentDetail } from '@redux'
+import { Course, Student } from '@types'
 import {
     Book,
     Building2,
@@ -48,6 +48,9 @@ export const RtoStudentDetail = () => {
     useEffect(() => {
         if (profile?.data) {
             dispatch(setStudentDetail(profile?.data))
+        }
+        return () => {
+            dispatch(setSelectedCourse(null as unknown as Course))
         }
     }, [profile?.data])
 

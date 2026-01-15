@@ -46,7 +46,7 @@ export function CoursesHeaderSection({
 
     const user = getUserCredentials()
     const isLocal = process.env.NEXT_PUBLIC_NODE_ENV === 'local'
-    const isAllowedUser = [4453, 78, 5714, 6222, 20365].includes(user?.id)
+    const isAllowedUser = [4453, 78, 5714, 20365].includes(user?.id)
     const isAdmin = user?.role === UserRoles.ADMIN
     const showActionButtons = isLocal || isAllowedUser || isAdmin
 

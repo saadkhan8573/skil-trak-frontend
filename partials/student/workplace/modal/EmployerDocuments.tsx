@@ -72,7 +72,11 @@ export const EmployerDocuments = ({
             )
         })
 
-        if (role === UserRoles.SUBADMIN) {
+        if (
+            role === UserRoles.SUBADMIN ||
+            role === UserRoles.ADMIN ||
+            role === UserRoles.RTO
+        ) {
             formData.append('student', router?.query?.id + '')
         }
 

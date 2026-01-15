@@ -77,6 +77,10 @@ export const teamsEndpoints = (
         }),
         providesTags: ['Team'],
     }),
+    getUserTeam: builder.query<any, void>({
+        query: () => `${PREFIX}-team/list-by-user/current`,
+        providesTags: ['Team'],
+    }),
     // ==============================================================
     //   ---------------------- MUTATIONS -------------------------
     // ==============================================================

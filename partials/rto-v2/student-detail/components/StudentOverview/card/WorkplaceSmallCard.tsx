@@ -1,5 +1,5 @@
 import { Badge } from '@components'
-import { ChevronRight, Clock, MapPin } from 'lucide-react'
+import { ChevronRight, Clock, MapPin, Eye } from 'lucide-react'
 import { useDispatch } from 'react-redux'
 import { setSelectedWorkplace } from '@redux'
 import {
@@ -9,7 +9,7 @@ import {
 import { useStatusInfo } from '../hooks/useStatusInfo'
 import { useMemo } from 'react'
 import { WorkplaceStatusLabels, getUserCredentials } from '@utils'
-import { latestWpApprovalRequest } from '@partials/rto-v2'
+import { getStatusCategory, latestWpApprovalRequest } from '@partials/rto-v2'
 import { useRouter } from 'next/router'
 import { UserRoles } from '@constants'
 export const WorkplaceSmallCard = ({
@@ -25,7 +25,8 @@ export const WorkplaceSmallCard = ({
         return latestWpApprovalRequest(request?.workplaceApprovaleRequest || [])
     }, [request?.workplaceApprovaleRequest])
 
-    const isActive = true
+    const status = getStatusCategory(request?.currentStatus || '')
+    const isActive = status === 'active'
     const workIndustry = request?.industries?.[0]
     const industry =
         workIndustry?.industry || latestWorkplaceApprovaleRequest?.industry
@@ -49,6 +50,23 @@ export const WorkplaceSmallCard = ({
         }
     }
 
+    const getIndustryLink = () => {
+        if (!industry?.id) return null
+
+        switch (role) {
+            case UserRoles.ADMIN:
+                return `/portals/admin/industry/${industry.id}`
+            case UserRoles.SUBADMIN:
+                return `/portals/sub-admin/users/industries/${industry.id}`
+            case UserRoles.RTO:
+                return `/portals/rto/manage/industries/${industry.id}/detail`
+            default:
+                return null
+        }
+    }
+
+    const industryLink = getIndustryLink()
+
     const { progressPercent } = useStatusInfo({
         workplace: request,
         workIndustry: workIndustry as WorkplaceWorkIndustriesType,
@@ -57,13 +75,14 @@ export const WorkplaceSmallCard = ({
     const course = request?.courses?.[0]
     const extraHours = course?.extraHours?.[0]
 
+
     return (
         <div
             key={request.id}
             onClick={onSelectWorkplace}
-            className={`group relative flex items-center gap-3 p-3 rounded-xl border transition-all cursor-pointer ${true
-                    ? 'border-[#044866] bg-gradient-to-br from-[#044866]/5 via-white to-[#044866]/5 shadow-lg shadow-[#044866]/20 ring-2 ring-[#044866]/20'
-                    : 'border-slate-200/50 hover:border-[#044866] bg-gradient-to-br from-slate-50/50 to-slate-100/30 hover:shadow-lg opacity-50 hover:opacity-100'
+            className={`group relative flex items-center gap-3 p-3 rounded-xl border transition-all cursor-pointer ${isActive
+                ? 'animate-pulse border-[#044866] bg-gradient-to-br from-[#044866]/5 via-white to-[#044866]/5 shadow-lg shadow-[#044866]/20 ring-2 ring-[#044866]/20'
+                : 'border-slate-400 hover:border-[#044866] bg-gradient-to-br from-slate-50/50 to-slate-100/30 hover:shadow-lg opacity-[0.85] hover:opacity-100'
                 }`}
         >
             {/* Active Indicator */}
@@ -74,8 +93,8 @@ export const WorkplaceSmallCard = ({
             {/* Number */}
             <div
                 className={`w-7 h-7 rounded-lg flex items-center justify-center text-white text-xs flex-shrink-0 group-hover:scale-105 transition-transform shadow-md ${isActive
-                        ? 'bg-gradient-to-br from-[#F7A619] to-[#F7A619]/80 shadow-[#F7A619]/30'
-                        : 'bg-gradient-to-br from-slate-400 to-slate-500 shadow-slate-400/20'
+                    ? 'bg-gradient-to-br from-[#F7A619] to-[#F7A619]/80 shadow-[#F7A619]/30'
+                    : 'bg-gradient-to-br from-slate-400 to-slate-500 shadow-slate-400/20'
                     }`}
             >
                 {index + 1}
@@ -91,6 +110,19 @@ export const WorkplaceSmallCard = ({
                         {industry?.user?.name ||
                             'Workplace Option Not Provided yet'}
                     </span>
+                    {industryLink && (
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                router.push(industryLink)
+                            }}
+                            className={`cursor-pointer p-0.5 rounded-md bg-[#044866]/10 hover:bg-[#044866]/20 text-[#044866] transition-colors border border-[#044866]/10 ${isActive ? 'animate-pulse' : ''
+                                }`}
+                            title="View Industry Profile"
+                        >
+                            <Eye className="w-3 h-3" />
+                        </button>
+                    )}
 
                     {/* {isActive && (
                         <Badge
@@ -172,8 +204,8 @@ export const WorkplaceSmallCard = ({
             {/* Arrow */}
             <ChevronRight
                 className={`w-4 h-4 group-hover:translate-x-1 flex-shrink-0 transition-all ${isActive
-                        ? 'text-[#044866]'
-                        : 'text-slate-400 group-hover:text-[#044866]'
+                    ? 'text-[#044866]'
+                    : 'text-slate-400 group-hover:text-[#044866]'
                     }`}
             />
         </div>

@@ -1259,6 +1259,7 @@ ul.landing-content {
 /* For Google Addresses dropdown */
 .pac-container {
     z-index: 99999 !important;
+    pointer-events: auto !important;
 }
 
 /* Premium shadows */

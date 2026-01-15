@@ -1,39 +1,62 @@
-import { AuthorizedUserComponent, Button, Select } from '@components'
-import { CommonApi, AdminApi } from '@queries'
-import { Search, Filter, X, Calendar, UserCheck } from 'lucide-react'
-import { useState, useCallback } from 'react'
+import { Button, Select } from '@components'
+import { CommonApi } from '@queries'
+import { debounce } from 'lodash'
+import { Filter, Search, X } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import { useSupportTicketPermissions } from '../../hooks'
 import { FilterSection } from './FilterSection'
 import { FilterToggleButton } from './FilterToggleButton'
-import { debounce } from 'lodash'
-import { UserRoles } from '@constants'
-import { SubAdmin, UserStatus } from '@types'
 
 interface TicketFiltersProps {
-    onFilterChange: (filters: FilterState) => void
+    onFilterChange: React.Dispatch<React.SetStateAction<FilterState>>
     activeFilters: FilterState
 }
 
-export interface FilterState {
-    title: string
-    status: any
-    priority: any
-    dateRange: string
-    assignedTo: any
+type Member = {
+    subadmin?: {
+        id?: string
+        user?: {
+            name?: string
+        }
+    }
 }
 
-const statusOptions = [
-    { value: 'assigned', label: 'Assigned', color: 'bg-red-500' },
+type Status = 'assigned' | 'resolved' | 'inProgress'
+type Priority = 'low' | 'medium' | 'high' | 'critical'
+type DateRange = 'all' | 'today' | 'week' | 'month' | 'overdue'
+type FilterMode = 'basic' | 'advanced'
+export interface FilterState {
+    title: string
+    status?: Status
+    priority?: Priority
+    dateRange?: DateRange
+    assignedTo?: string | null
+}
+
+const statusOptions: Array<{
+    value: Status
+    label: string
+    color: string
+}> = [
+    { value: 'assigned', label: 'Opened', color: 'bg-red-500' },
     { value: 'resolved', label: 'Resolved', color: 'bg-green-500' },
 ]
 
-const priorityOptions = [
+const priorityOptions: Array<{
+    value: Priority
+    label: string
+    color: string
+}> = [
     { value: 'low', label: 'Low', color: 'bg-slate-500' },
     { value: 'medium', label: 'Medium', color: 'bg-blue-500' },
     { value: 'high', label: 'High', color: 'bg-[#F7A619]' },
     { value: 'critical', label: 'Critical', color: 'bg-red-500' },
 ]
 
-const dateRangeOptions = [
+const dateRangeOptions: Array<{
+    value: DateRange
+    label: string
+}> = [
     { value: 'all', label: 'All Time' },
     { value: 'today', label: 'Today' },
     { value: 'week', label: 'This Week' },
@@ -45,48 +68,55 @@ export function SupportTicketFilter({
     onFilterChange,
     activeFilters,
 }: TicketFiltersProps) {
-    const [showAdvanced, setShowAdvanced] = useState(false)
+    const [mode, setMode] = useState<FilterMode>('basic')
 
     const membersList = CommonApi.Teams.useSupportTeamMemberList()
+    const memberOptions = useMemo(
+        () =>
+            membersList?.data?.map((member: Member) => ({
+                label: member?.subadmin?.user?.name,
+                value: member?.subadmin?.id,
+            })) ?? [],
+        [membersList?.data]
+    )
 
-    const memberOptions =
-        membersList?.data?.map((member: any) => ({
-            label: member?.subadmin?.user?.name,
-            value: member?.subadmin?.id,
-        })) ?? []
-
+    const { canSeeAssignedFilter } = useSupportTicketPermissions()
     /** ---------------- Debounced title search ---------------- */
-    const onTitleChange = useCallback(
-        debounce((value: string) => {
-            onFilterChange({ ...activeFilters, title: value })
-        }, 700),
+    const onTitleChange = useMemo(
+        () =>
+            debounce((value: string) => {
+                onFilterChange((prev) => ({
+                    ...prev,
+                    title: value,
+                }))
+            }, 700),
         [onFilterChange]
     )
 
+    useEffect(() => {
+        return () => onTitleChange.cancel()
+    }, [onTitleChange])
+
     /** ---------------- Helpers ---------------- */
-    const toggleSingleValue = (key: 'status' | 'priority', value: string) => {
-        if (key === 'status') {
-            onFilterChange({
-                ...activeFilters,
-                status: value,
-            })
-        } else {
-            onFilterChange({
-                ...activeFilters,
-                priority: value,
-            })
-        }
+    const toggleSingleValue = <K extends 'status' | 'priority'>(
+        key: K,
+        value: FilterState[K]
+    ) => {
+        onFilterChange({
+            ...activeFilters,
+            [key]: value,
+        })
     }
 
     const clearAllFilters = () => {
         onFilterChange({
             title: '',
-            status: '',
-            priority: '',
-            dateRange: '',
+            status: undefined,
+            priority: undefined,
+            dateRange: undefined,
             assignedTo: null,
         })
-        setShowAdvanced(false)
+        setMode('basic')
     }
 
     return (
@@ -104,7 +134,7 @@ export function SupportTicketFilter({
                     />
                 </div>
 
-                {showAdvanced ? (
+                {mode === 'advanced' ? (
                     <Button
                         onClick={clearAllFilters}
                         className="text-sm text-red-600"
@@ -115,7 +145,7 @@ export function SupportTicketFilter({
                     </Button>
                 ) : (
                     <Button
-                        onClick={() => setShowAdvanced(true)}
+                        onClick={() => setMode('advanced')}
                         className="flex items-center gap-2 px-4 py-2 rounded-lg border"
                         variant="primaryNew"
                     >
@@ -126,19 +156,17 @@ export function SupportTicketFilter({
             </div>
 
             {/* Advanced Filters */}
-            {showAdvanced && (
+            {mode === 'advanced' && (
                 <div className="bg-white p-4 rounded-xl border space-y-4">
                     <FilterSection label="Status">
                         <div className="flex gap-2 flex-wrap">
                             {statusOptions?.map((s) => (
                                 <FilterToggleButton
                                     key={s.value}
-                                    active={activeFilters?.status?.includes(
-                                        s?.value
-                                    )}
+                                    active={activeFilters?.status === s?.value}
                                     activeClass={s.color}
                                     onClick={() =>
-                                        toggleSingleValue('status', s?.value)
+                                        toggleSingleValue('status', s.value)
                                     }
                                 >
                                     {s?.label}
@@ -152,9 +180,9 @@ export function SupportTicketFilter({
                             {priorityOptions?.map((p) => (
                                 <FilterToggleButton
                                     key={p?.value}
-                                    active={activeFilters?.priority?.includes(
-                                        p?.value
-                                    )}
+                                    active={
+                                        activeFilters?.priority === p?.value
+                                    }
                                     activeClass={p.color}
                                     onClick={() =>
                                         toggleSingleValue('priority', p?.value)
@@ -166,7 +194,7 @@ export function SupportTicketFilter({
                         </div>
                     </FilterSection>
 
-                    <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+                    {canSeeAssignedFilter && (
                         <FilterSection label="Assigned To">
                             <div className="relative z-50">
                                 <Select
@@ -183,7 +211,7 @@ export function SupportTicketFilter({
                                 />
                             </div>
                         </FilterSection>
-                    </AuthorizedUserComponent>
+                    )}
 
                     <FilterSection label="Date Range">
                         <div className="flex gap-2 flex-wrap">

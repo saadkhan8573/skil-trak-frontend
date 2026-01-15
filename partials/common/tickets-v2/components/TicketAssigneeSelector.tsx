@@ -6,6 +6,7 @@ import {
 import { UserRoles } from '@constants'
 import { CommonApi } from '@queries'
 import React, { useState } from 'react'
+import { useSupportTicketPermissions } from '../hooks'
 
 export const TicketAssigneeSelector = ({ taskId, teamId, member }: any) => {
     const [selectedMember, setSelectedMember] = useState<any>(null)
@@ -14,6 +15,7 @@ export const TicketAssigneeSelector = ({ taskId, teamId, member }: any) => {
     const membersList = CommonApi.Teams.useSupportTeamMembersByTeam(teamId, {
         skip: !teamId,
     })
+    const { canSeeAssignedFilter } = useSupportTicketPermissions()
     const memberOptions =
         membersList?.data &&
         membersList?.data?.length > 0 &&
@@ -27,7 +29,7 @@ export const TicketAssigneeSelector = ({ taskId, teamId, member }: any) => {
     return (
         <>
             <ShowErrorNotifications result={changeAssigneeResult} />
-            <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+            {canSeeAssignedFilter && (
                 <div className="overflow-visible relative z-50">
                     <Select
                         name="assignee"
@@ -53,7 +55,7 @@ export const TicketAssigneeSelector = ({ taskId, teamId, member }: any) => {
                         showError={false}
                     />
                 </div>
-            </AuthorizedUserComponent>
+            )}
         </>
     )
 }

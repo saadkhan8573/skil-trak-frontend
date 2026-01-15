@@ -2,7 +2,7 @@ import { AssessmentEvidenceFolder } from './assessment-evidence.type'
 import { BaseResponse } from './base.type'
 import { ConfirmationSource } from './confirmation.type'
 import { Folder } from './folder.type'
-import { Industry, User } from './user.type'
+import { Industry, Student, User } from './user.type'
 
 export interface CourseExtraHours extends BaseResponse {
     id: number
@@ -86,6 +86,7 @@ export interface Course extends BaseResponse {
     folders: Folder[]
     results: any
     timing: any
+    students: Student[]
     isSuperseded: boolean
     extraHours: CourseExtraHours[]
     assessmentEvidence: AssessmentEvidenceFolder[]

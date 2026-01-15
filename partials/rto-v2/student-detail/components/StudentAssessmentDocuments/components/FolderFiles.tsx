@@ -44,7 +44,10 @@ export const FolderFiles = ({
         eSignDocument.refetch()
     }, [])
 
-    if (!response?.id && (!eSignDocument?.data || eSignDocument?.data?.length === 0)) {
+    if (
+        !response?.id &&
+        (!eSignDocument?.data || eSignDocument?.data?.length === 0)
+    ) {
         return <NoData text="No files uploaded" />
     }
 
@@ -87,23 +90,26 @@ export const FolderFiles = ({
                     <div className="flex items-center gap-1 p-2 bg-slate-50/50 border-b border-slate-100">
                         <button
                             onClick={() => setViewType('active')}
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${viewType === 'active'
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                                viewType === 'active'
                                     ? 'bg-gradient-to-r from-white to-blue-50/80 text-[#044866] shadow-sm ring-1 ring-[#044866]/10'
                                     : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                                }`}
+                            }`}
                         >
                             <FileCheck
-                                className={`w-3.5 h-3.5 ${viewType === 'active'
+                                className={`w-3.5 h-3.5 ${
+                                    viewType === 'active'
                                         ? 'text-[#044866]'
                                         : 'text-slate-400'
-                                    }`}
+                                }`}
                             />
                             Active Files
                             <span
-                                className={`ml-1 px-1.5 py-0.5 rounded-full text-[10px] ${viewType === 'active'
+                                className={`ml-1 px-1.5 py-0.5 rounded-full text-[10px] ${
+                                    viewType === 'active'
                                         ? 'bg-[#044866]/10 text-[#044866]'
                                         : 'bg-slate-200 text-slate-500'
-                                    }`}
+                                }`}
                             >
                                 {filesData?.data?.filter(
                                     (d: any) => !d.isArchived
@@ -112,23 +118,26 @@ export const FolderFiles = ({
                         </button>
                         <button
                             onClick={() => setViewType('archived')}
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${viewType === 'archived'
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                                viewType === 'archived'
                                     ? 'bg-gradient-to-r from-white to-red-50/80 text-red-600 shadow-sm ring-1 ring-red-100'
                                     : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                                }`}
+                            }`}
                         >
                             <Archive
-                                className={`w-3.5 h-3.5 ${viewType === 'archived'
+                                className={`w-3.5 h-3.5 ${
+                                    viewType === 'archived'
                                         ? 'text-red-600'
                                         : 'text-slate-400'
-                                    }`}
+                                }`}
                             />
                             Archived
                             <span
-                                className={`ml-1 px-1.5 py-0.5 rounded-full text-[10px] ${viewType === 'archived'
+                                className={`ml-1 px-1.5 py-0.5 rounded-full text-[10px] ${
+                                    viewType === 'archived'
                                         ? 'bg-red-50 text-red-600'
                                         : 'bg-slate-200 text-slate-500'
-                                    }`}
+                                }`}
                             >
                                 {filesData?.data?.filter(
                                     (d: any) => d.isArchived
@@ -139,18 +148,14 @@ export const FolderFiles = ({
 
                     {filteredFiles.length > 0 ? (
                         <div className="p-4 space-y-2">
-                            {filteredFiles.map((doc: any) => {
-                                const docConfig = config
-
-                                return (
-                                    <FolderDocumentCard
-                                        doc={doc}
-                                        key={doc.id}
-                                        config={docConfig}
-                                        studentId={studentId}
-                                    />
-                                )
-                            })}
+                            {filteredFiles.map((doc: any) => (
+                                <FolderDocumentCard
+                                    doc={doc}
+                                    key={doc.id}
+                                    config={config}
+                                    studentId={studentId}
+                                />
+                            ))}
                         </div>
                     ) : (
                         <div className="py-8">
@@ -165,7 +170,10 @@ export const FolderFiles = ({
                     )}
                 </div>
             ) : (
-                filesData?.isSuccess && (!eSignDocument?.data || eSignDocument?.data?.length === 0) && <NoData text="No files uploaded" />
+                filesData?.isSuccess &&
+                (!eSignDocument?.data || eSignDocument?.data?.length === 0) && (
+                    <NoData text="No files uploaded" />
+                )
             )}
         </div>
     )

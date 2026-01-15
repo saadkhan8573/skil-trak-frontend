@@ -35,6 +35,7 @@ export const ticketEndpoints = (
         query: (id) => `${PREFIX}/get/count`,
         providesTags: ['Tickets'],
     }),
+
     getTicketDetail: builder.query<any, number>({
         query: (id) => `${PREFIX}/${id}`,
         providesTags: ['Tickets'],

@@ -46,6 +46,7 @@ export const useStatusInfo = ({
         WorkplaceCurrentStatus.AgreementSigned,
         WorkplaceCurrentStatus.PlacementStarted,
         WorkplaceCurrentStatus.Completed,
+        WorkplaceCurrentStatus.Cancelled,
     ]
 
     const getStatusArrays = (
@@ -119,6 +120,7 @@ export const useStatusInfo = ({
         [WorkplaceCurrentStatus.PlacementStarted]:
             workIndustry?.placementStartedDate,
         [WorkplaceCurrentStatus.Completed]: workIndustry?.isCompletedDate,
+        [WorkplaceCurrentStatus.Cancelled]: workIndustry?.cancelledDate,
     })
 
     const getNextStep = () => {

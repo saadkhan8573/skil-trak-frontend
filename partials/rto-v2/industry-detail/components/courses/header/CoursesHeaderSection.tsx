@@ -46,7 +46,7 @@ export function CoursesHeaderSection({
 
     const user = getUserCredentials()
     const isLocal = process.env.NEXT_PUBLIC_NODE_ENV === 'local'
-    const isAllowedUser = [4453, 78, 5714].includes(user?.id)
+    const isAllowedUser = [4453, 78, 5714, 6222, 20365].includes(user?.id)
     const isAdmin = user?.role === UserRoles.ADMIN
     const showActionButtons = isLocal || isAllowedUser || isAdmin
 
@@ -83,31 +83,32 @@ export function CoursesHeaderSection({
             icon: TrendingUp,
             delay: 0.2,
             type: 'utilization',
-            className: `border-2 ${overallCapacity >= 80
+            className: `border-2 ${
+                overallCapacity >= 80
                     ? 'bg-gradient-to-br from-[#10B981]/10 to-[#059669]/10 border-[#10B981]/30 shadow-[#10B981]/10'
                     : overallCapacity >= 50
-                        ? 'bg-gradient-to-br from-[#F7A619]/10 to-[#EA580C]/10 border-[#F7A619]/30 shadow-[#F7A619]/10'
-                        : 'bg-white border-[#E2E8F0]'
-                }`,
+                    ? 'bg-gradient-to-br from-[#F7A619]/10 to-[#EA580C]/10 border-[#F7A619]/30 shadow-[#F7A619]/10'
+                    : 'bg-white border-[#E2E8F0]'
+            }`,
             iconClass:
                 overallCapacity >= 80
                     ? 'bg-[#10B981]/20 text-[#10B981]'
                     : overallCapacity >= 50
-                        ? 'bg-[#F7A619]/20 text-[#F7A619]'
-                        : 'bg-[#64748B]/10 text-[#64748B]',
+                    ? 'bg-[#F7A619]/20 text-[#F7A619]'
+                    : 'bg-[#64748B]/10 text-[#64748B]',
             titleClass: 'text-[#64748B]',
             valueClass:
                 overallCapacity >= 80
                     ? 'text-[#10B981]'
                     : overallCapacity >= 50
-                        ? 'text-[#F7A619]'
-                        : 'text-[#1A2332]',
+                    ? 'text-[#F7A619]'
+                    : 'text-[#1A2332]',
             decorClass:
                 overallCapacity >= 80
                     ? 'bg-[#10B981]/10'
                     : overallCapacity >= 50
-                        ? 'bg-[#F7A619]/10'
-                        : 'bg-[#64748B]/5',
+                    ? 'bg-[#F7A619]/10'
+                    : 'bg-[#64748B]/5',
         },
         {
             title: 'Pending Actions',
@@ -240,8 +241,9 @@ export function CoursesHeaderSection({
 
                             {card.subtext && (
                                 <p
-                                    className={`text-[11px] mt-1 ${card.subtextClass || 'text-[#64748B]'
-                                        }`}
+                                    className={`text-[11px] mt-1 ${
+                                        card.subtextClass || 'text-[#64748B]'
+                                    }`}
                                 >
                                     {card.subtext}
                                 </p>
@@ -255,12 +257,13 @@ export function CoursesHeaderSection({
                                             width: `${overallCapacity}%`,
                                         }}
                                         transition={{ duration: 1, delay: 0.5 }}
-                                        className={`h-full rounded-full ${overallCapacity >= 80
+                                        className={`h-full rounded-full ${
+                                            overallCapacity >= 80
                                                 ? 'bg-gradient-to-r from-[#10B981] to-[#059669]'
                                                 : overallCapacity >= 50
-                                                    ? 'bg-gradient-to-r from-[#F7A619] to-[#EA580C]'
-                                                    : 'bg-gradient-to-r from-[#64748B] to-[#475569]'
-                                            }`}
+                                                ? 'bg-gradient-to-r from-[#F7A619] to-[#EA580C]'
+                                                : 'bg-gradient-to-r from-[#64748B] to-[#475569]'
+                                        }`}
                                     />
                                 </div>
                             )}

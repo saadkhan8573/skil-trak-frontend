@@ -92,9 +92,7 @@ export const CourseOverview = () => {
                     ))}
                 </div>
             ) : (
-                studentCourses?.isSuccess && (
-                    <NoData text="No Call Logs Found!" />
-                )
+                studentCourses?.isSuccess && <NoData text="No Courses Found!" />
             )}
         </div>
     )

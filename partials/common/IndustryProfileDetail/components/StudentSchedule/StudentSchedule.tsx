@@ -1,24 +1,7 @@
 import { useState } from 'react'
-import { ScheduleGrid, ScheduleHeader } from './components'
-import { employees } from './components/data'
-import { SubAdminApi } from '@queries'
-import { useRouter } from 'next/router'
 import { getStartOfWeek } from './utilsFunc'
-
-const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-]
+import { employees } from './components/data'
+import { ScheduleGrid, ScheduleHeader } from './components'
 
 export const StudentSchedule = () => {
     // get dates from ui

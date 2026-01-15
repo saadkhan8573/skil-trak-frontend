@@ -6,12 +6,13 @@ import { AuthorizedUserComponent } from '@components'
 import { UserRoles } from '@constants'
 import { DollarSign, Mail, Phone } from 'lucide-react'
 import { ReactElement, useState } from 'react'
-import { ComposeEmailModal } from '../Communications/modal'
+import { ComposeEmailDialog } from '../Communications/modal/ComposeEmailDialog'
 import { ProfileLinks } from '../ProfileLinks'
 import { StudentCallLogModal, ViewPaymentDetailsModal } from './modals'
 
 export const HeaderQuickActions = ({ student }: { student: Student }) => {
     const [modal, setModal] = useState<ReactElement | null>(null)
+    const [showEmailDialog, setShowEmailDialog] = useState(false)
 
     const { notification } = useNotification()
 
@@ -19,12 +20,7 @@ export const HeaderQuickActions = ({ student }: { student: Student }) => {
     const onCancelClicked = () => setModal(null)
 
     const onComposeMailClicked = () => {
-        setModal(
-            <ComposeEmailModal
-                user={student?.user}
-                onCancel={onCancelClicked}
-            />
-        )
+        setShowEmailDialog(true)
     }
 
     const onMakeCallClicked = () => {
@@ -53,6 +49,12 @@ export const HeaderQuickActions = ({ student }: { student: Student }) => {
     return (
         <div className="flex flex-wrap items-center justify-center xl:justify-end gap-2.5">
             {modal}
+            <ComposeEmailDialog
+                open={showEmailDialog}
+                onOpenChange={setShowEmailDialog}
+                user={student?.user}
+                userId={student?.user?.id}
+            />
             {student?.hasPaid && (
                 <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
                     <Button

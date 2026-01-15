@@ -140,7 +140,7 @@ export const studentEndpoints = (
             method: 'POST',
             body,
         }),
-        invalidatesTags: ['Students'],
+        invalidatesTags: ['Students', 'Rto-Students'],
     }),
 
     studentUnassignCourses: builder.mutation<
@@ -152,7 +152,7 @@ export const studentEndpoints = (
             params: { student: body.id },
             method: 'DELETE',
         }),
-        invalidatesTags: ['Students'],
+        invalidatesTags: ['Students', 'Rto-Students'],
     }),
 
     studentStatusChange: builder.mutation<

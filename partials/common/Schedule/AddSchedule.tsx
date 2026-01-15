@@ -119,11 +119,11 @@ export const AddScheduleContainer = ({
             scheduleId: schedules?.data?.schedule?.id,
             search: schedules?.data?.schedule?.startDate
                 ? `startDate:${moment(
-                      schedules?.data?.schedule?.startDate
-                  ).format('YYYY-MM-DD')},` +
-                  `endDate:${moment(schedules?.data?.schedule?.startDate)
-                      .add(8, 'days')
-                      .format('YYYY-MM-DD')}`
+                    schedules?.data?.schedule?.startDate
+                ).format('YYYY-MM-DD')},` +
+                `endDate:${moment(schedules?.data?.schedule?.startDate)
+                    .add(8, 'days')
+                    .format('YYYY-MM-DD')}`
                 : '',
         },
         {
@@ -141,6 +141,12 @@ export const AddScheduleContainer = ({
             setSelectedHours(displayHours)
         }
     }, [course])
+
+    // Reset mutation state on mount
+    useEffect(() => {
+        if (createScheduleResult.isSuccess) createScheduleResult.reset()
+        if (editScheduleResult.isSuccess) editScheduleResult.reset()
+    }, [])
 
     // Handle successful schedule creation
     useEffect(() => {
@@ -241,11 +247,11 @@ export const AddScheduleContainer = ({
                 currentSchedule.map((day) =>
                     day?.name === updatedDay?.name
                         ? {
-                              ...day,
-                              openingTime: updatedDay?.openingTime,
-                              closingTime: updatedDay?.closingTime,
-                              isActive: updatedDay?.isActive,
-                          }
+                            ...day,
+                            openingTime: updatedDay?.openingTime,
+                            closingTime: updatedDay?.closingTime,
+                            isActive: updatedDay?.isActive,
+                        }
                         : day
                 )
             )
@@ -367,7 +373,7 @@ export const AddScheduleContainer = ({
                 </div>
 
                 {(timeSlots?.isLoading || schedules?.isLoading) &&
-                !isDataLoaded ? (
+                    !isDataLoaded ? (
                     <LoadingAnimation />
                 ) : (
                     <>

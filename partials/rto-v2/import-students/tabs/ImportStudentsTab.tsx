@@ -6,7 +6,7 @@ import { CreatedStudentsList } from '@partials/common'
 import { RtoV2Api } from '@queries'
 import { ImportStudentsListFormWithOTP } from '../components'
 
-export const ImportStudentsTab = () => {
+export const ImportStudentsTab = ({ onCancel }: { onCancel?: () => void }) => {
     const navBar = useNavbar()
 
     const { notification } = useNotification()
@@ -47,7 +47,7 @@ export const ImportStudentsTab = () => {
     return (
         <>
             <ShowErrorNotifications result={importStudentsResult} />
-            <ImportStudentsListFormWithOTP onSubmit={onSubmit} />
+            <ImportStudentsListFormWithOTP onSubmit={onSubmit} onCancel={onCancel} />
         </>
     )
 }

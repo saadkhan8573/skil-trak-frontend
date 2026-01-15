@@ -200,7 +200,7 @@ const TicketCardComponent = ({
                     } text-white rounded text-[10px]`}
                 >
                     {ticket?.status === 'assigned'
-                        ? 'Open'
+                        ? 'Opened'
                         : ticket?.status === 'inProgress'
                         ? 'In Progress'
                         : 'Resolved'}

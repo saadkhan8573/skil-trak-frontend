@@ -21,6 +21,7 @@ import { useSubadminProfile } from '@hooks'
 import { SupportTicketFilter } from './filters'
 import { useEffect, useState } from 'react'
 import { CommonApi } from '@queries'
+import { useSupportTicketPermissions } from '../hooks'
 
 export enum TAGS {
     STUDENT_SERVICES = 'student services',
@@ -45,6 +46,7 @@ export const TeamTabsList = () => {
     const tabName = router.query.tab
     const teamTabQuery = router.query.teamTab as string
     const role = getUserCredentials()?.role
+    const { canSeeAdminTabs } = useSupportTicketPermissions()
 
     const buildSearchParams = (filter: any) => {
         if (!filter || typeof filter !== 'object') {
@@ -128,7 +130,8 @@ export const TeamTabsList = () => {
     ]
 
     const visibleTabs = teamTabs.filter((tab) => {
-        if (role === UserRoles.ADMIN) return true
+        // Admin + QA see everything
+        if (canSeeAdminTabs) return true
 
         if (role === UserRoles.RTO) {
             return tab.id === 'rto'
@@ -141,12 +144,11 @@ export const TeamTabsList = () => {
         return false
     })
 
-    const defaultTab =
-        role === UserRoles.ADMIN
-            ? 'all'
-            : role === UserRoles.RTO
-            ? 'rto'
-            : visibleTabs[0]?.id
+    const defaultTab = canSeeAdminTabs
+        ? 'all'
+        : role === UserRoles.RTO
+        ? 'rto'
+        : visibleTabs[0]?.id
 
     // Use teamTab from URL query if exists, otherwise use defaultTab
     const [activeTeamTab, setActiveTeamTab] = useState(

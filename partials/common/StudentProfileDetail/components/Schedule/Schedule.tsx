@@ -39,7 +39,6 @@ export const Schedule = ({
     )
     const [addSchedule, setAddSchedule] = useState<boolean>(false)
     const { selectedWorkplace } = useWorkplaceQueries({ student })
-    const router = useRouter()
     const courses = SubAdminApi.Student.useCourses(studentId, {
         skip: !studentId || !isEntered,
         refetchOnMountOrArgChange: 300,

@@ -1,21 +1,19 @@
-import { Badge, Button, Card } from '@components'
+import { Button, Card } from '@components'
 import { Separator } from '@components/ui/separator'
 import { DocumentsView } from '@hooks'
 import { VerifyCapacityComponent } from '@partials/common/StudentProfileDetail/components/Workplace/components/WorkplaceApprovalReq/VerifyCapacityComponent'
 import { WorkplaceMapBoxView } from '@partials/student'
 import { RtoV2Api } from '@queries'
 import {
-    AlertCircle,
     BadgeInfo,
     Building2,
-    FileCheck,
     Mail,
     MapPin,
     MapPinned,
     User,
 } from 'lucide-react'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 export const EnhancedIndustryDetailsCard = ({
     // showIndustryDetails,
@@ -35,6 +33,7 @@ export const EnhancedIndustryDetailsCard = ({
         const decimal = value % 1
         return decimal >= 0.7 ? Math.ceil(value) : Math.floor(value)
     }
+    console.log('workplace', workplace)
 
     const onToggleShowMap = () => {
         setShowMap(!showMap)

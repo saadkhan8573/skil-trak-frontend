@@ -39,6 +39,7 @@ export const needsWorkplaceStages = [
         color: '#10b981',
     },
     { id: 11, name: 'Completed', icon: CheckCircle2, color: '#059669' },
+    { id: 12, name: 'Cancelled', icon: User, color: '#f01e2c' },
 ]
 
 export const needsWorkplaceStagesEnum = {
@@ -53,6 +54,7 @@ export const needsWorkplaceStagesEnum = {
     PLACEMENT_STARTED: 'Placement Started',
     SCHEDULE_COMPLETED: 'Schedule Completed',
     COMPLETED: 'Completed',
+    CANCELLED: 'Cancelled',
 } as const
 
 // Workflow for students with provided workplace
@@ -96,6 +98,7 @@ export const providedWorkplaceStages = [
         color: '#10b981',
     },
     { id: 9, name: 'Completed', icon: CheckCircle2, color: '#059669' },
+    { id: 10, name: 'Cancelled', icon: User, color: '#f01e2c' },
 ]
 
 export const providedWorkplaceStagesEnum = {
@@ -108,6 +111,7 @@ export const providedWorkplaceStagesEnum = {
     PLACEMENT_STARTED: providedWorkplaceStages[6]?.name,
     SCHEDULE_COMPLETED: providedWorkplaceStages[7]?.name,
     COMPLETED: providedWorkplaceStages[8]?.name,
+    CANCELLED: providedWorkplaceStages[9]?.name,
 } as const
 
 export type ProvidedWorkplaceStageEnum =

@@ -14,7 +14,6 @@ export const useColumns = () => {
             header: () => 'Student',
             accessorKey: 'student',
             cell: (info) => {
-                console.log('info', info.row?.original)
                 return (
                     <StudentWorkplaceCellInfo
                         student={info?.row?.original?.student}

@@ -274,11 +274,6 @@ export const Approved = () => {
                                 <ActionButton
                                     variant="success"
                                     onClick={() => {
-                                        console.log(
-                                            'info.row.original BEBEBE',
-                                            info.row.original
-                                        )
-
                                         onApproveClicked(
                                             info.row.original?.id,
                                             appliedIndustry?.industry

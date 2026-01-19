@@ -6,6 +6,7 @@ import { FileText } from 'lucide-react'
 import { RtoInsuranceDocModal } from './modals/RtoInsuranceDocModal'
 import { UserRoles } from '@constants'
 import { useRouter } from 'next/router'
+import { Rto } from '@types'
 
 export const RtoInfo = () => {
     const studentId = useAppSelector((state) => state.student.studentDetail?.id)
@@ -15,14 +16,20 @@ export const RtoInfo = () => {
 
     const rtoProfile = SubAdminApi.Student.getStudentRtoDetail(studentId!, {
         skip: !studentId,
-        refetchOnMountOrArgChange: 300,
+        refetchOnMountOrArgChange: true,
     })
     const dispatch = useAppDispatch()
+
     useEffect(() => {
         if (rtoProfile.isSuccess && rtoProfile?.data) {
             dispatch(setRtoDetail(rtoProfile?.data))
         }
-    }, [rtoProfile])
+        return () => {
+            dispatch(setRtoDetail(null as unknown as Rto))
+        }
+    }, [rtoProfile, dispatch])
+
+    const rtoDetail = useAppSelector((state) => state.rto.rtoDetail)
 
     const rtoCoordinator = rtoProfile?.data?.contactPersons?.[0]
 

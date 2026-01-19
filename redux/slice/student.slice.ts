@@ -6,12 +6,16 @@ type initialStateType = {
     studentDetail: Student | null
     selectedCourse: Course | null
     selectedWorkplace: IWorkplaceIndustries | null
+    assessmentSubmittedCount: number
+    assessmentReSubmittedCount: number
 }
 
 const initialState: initialStateType = {
     studentDetail: null,
     selectedCourse: null,
     selectedWorkplace: null,
+    assessmentSubmittedCount: 0,
+    assessmentReSubmittedCount: 0,
 }
 
 export const studentSlice = createSlice({
@@ -30,9 +34,23 @@ export const studentSlice = createSlice({
         ) => {
             state.selectedWorkplace = action.payload
         },
+        setAssessmentSubmittedCount: (state, action: PayloadAction<number>) => {
+            state.assessmentSubmittedCount = action.payload
+        },
+        setAssessmentReSubmittedCount: (
+            state,
+            action: PayloadAction<number>
+        ) => {
+            state.assessmentReSubmittedCount = action.payload
+        },
     },
 })
 
-export const { setStudentDetail, setSelectedCourse, setSelectedWorkplace } =
-    studentSlice.actions
+export const {
+    setStudentDetail,
+    setSelectedCourse,
+    setSelectedWorkplace,
+    setAssessmentSubmittedCount,
+    setAssessmentReSubmittedCount,
+} = studentSlice.actions
 export default studentSlice.reducer

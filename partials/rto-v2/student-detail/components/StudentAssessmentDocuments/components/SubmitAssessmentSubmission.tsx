@@ -4,9 +4,15 @@ import { useNotification } from '@hooks'
 import { useSubmitStudentAssessmentMutation } from '@queries'
 import { Student } from '@types'
 import { getCourseResult } from '@utils'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Send, AlertCircle } from 'lucide-react'
+import { useDispatch } from 'react-redux'
+import {
+    setAssessmentReSubmittedCount,
+    setAssessmentSubmittedCount,
+    useAppSelector,
+} from '@redux'
 
 export const SubmitAssessmentSubmission = ({
     selectedCourseId,
@@ -26,6 +32,15 @@ export const SubmitAssessmentSubmission = ({
     const { notification } = useNotification()
     const [submitAssessment, submitAssessmentResult] =
         useSubmitStudentAssessmentMutation()
+
+    const dispatch = useDispatch()
+
+    const submittedCount = useAppSelector(
+        (state) => state.student.assessmentSubmittedCount
+    )
+    const reSubmittedCount = useAppSelector(
+        (state) => state.student.assessmentReSubmittedCount
+    )
 
     useEffect(() => {
         if (submitAssessmentResult.isSuccess) {
@@ -49,33 +64,53 @@ export const SubmitAssessmentSubmission = ({
         })
     }
 
+    console.log({ isFilesUploaded })
+
     useEffect(() => {
         if (
             isFilesUploaded &&
             !results?.length &&
             result?.result === Result.NotSubmitted &&
-            !submitAssessmentResult.isLoading
+            !submitAssessmentResult.isLoading &&
+            !submitAssessmentResult.isSuccess &&
+            !submittedCount
         ) {
+            dispatch(setAssessmentSubmittedCount(submittedCount + 1))
             onSubmitAssessment()
         }
-    }, [isFilesUploaded, submitAssessmentResult, results, result])
+    }, [
+        isFilesUploaded,
+        submitAssessmentResult,
+        results,
+        result,
+        submittedCount,
+    ])
+
+    useEffect(() => {
+        if (
+            (isResubmittedFiles || isAllApproved) &&
+            results?.length > 0 &&
+            result?.result !== Result.Pending &&
+            !submitAssessmentResult.isLoading &&
+            !reSubmittedCount
+        ) {
+            dispatch(setAssessmentReSubmittedCount(reSubmittedCount + 1))
+            onSubmitAssessment()
+        }
+    }, [
+        result,
+        results,
+        isResubmittedFiles,
+        isAllApproved,
+        submitAssessmentResult,
+        reSubmittedCount,
+    ])
 
     // useEffect(() => {
-    //     if (
-    //         (isResubmittedFiles || isAllApproved) &&
-    //         results?.length > 0 &&
-    //         result?.result !== Result.Pending &&
-    //         !submitAssessmentResult.isLoading
-    //     ) {
-    //         onSubmitAssessment()
+    //     return () => {
+    //         dispatch(setAssessmentSubmittedCount(0))
     //     }
-    // }, [
-    //     result,
-    //     results,
-    //     isResubmittedFiles,
-    //     isAllApproved,
-    //     submitAssessmentResult,
-    // ])
+    // }, [])
 
     const onSubmit = (values: any) => {
         onSubmitAssessment()
@@ -93,16 +128,27 @@ export const SubmitAssessmentSubmission = ({
                             <AlertCircle size={24} />
                         </div>
                         <div className="space-y-1">
-                            <Typography variant="title" className="font-bold text-slate-800">
+                            <Typography
+                                variant="title"
+                                className="font-bold text-slate-800"
+                            >
                                 Ready for Submission?
                             </Typography>
-                            <Typography variant="small" className="text-slate-500 max-w-lg">
-                                If the assessment hasn't triggered automatically, you can manually submit it for review by the RTO and Coordinator.
+                            <Typography
+                                variant="small"
+                                className="text-slate-500 max-w-lg"
+                            >
+                                If the assessment hasn't triggered
+                                automatically, you can manually submit it for
+                                review by the RTO and Coordinator.
                             </Typography>
                         </div>
                     </div>
 
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
                         <Button
                             text="Submit Assessment"
                             onClick={onSubmit}

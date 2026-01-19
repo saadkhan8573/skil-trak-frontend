@@ -266,14 +266,13 @@ export const InitiatedESignCard = ({
                                                     <Typography
                                                         variant="muted"
                                                         className={
-                                                            selectedDocument?.status ===
+                                                            signer?.status ===
                                                             EsignDocumentStatus.SIGNED
                                                                 ? 'text-green-600 font-semibold uppercase'
                                                                 : 'text-orange-600 font-semibold uppercase'
                                                         }
                                                     >
-                                                        {selectedDocument?.status ||
-                                                            'NA'}
+                                                        {signer?.status || 'NA'}
                                                     </Typography>
                                                 </div>
 
@@ -289,7 +288,7 @@ export const InitiatedESignCard = ({
                                                         variant="muted"
                                                         semibold
                                                     >
-                                                        {selectedDocument?.status ===
+                                                        {signer?.status ===
                                                         EsignDocumentStatus.SIGNED
                                                             ? moment(
                                                                   signer?.updatedAt
@@ -311,7 +310,7 @@ export const InitiatedESignCard = ({
                                                     <button
                                                         onClick={() => {
                                                             if (
-                                                                selectedDocument?.status ===
+                                                                signer?.status ===
                                                                 EsignDocumentStatus.SIGNED
                                                             ) {
                                                                 onRequestResign(
@@ -320,11 +319,11 @@ export const InitiatedESignCard = ({
                                                             }
                                                         }}
                                                         disabled={
-                                                            selectedDocument?.status !==
+                                                            signer?.status !==
                                                             EsignDocumentStatus.SIGNED
                                                         }
                                                         className={`transition-colors ${
-                                                            selectedDocument?.status ===
+                                                            signer?.status ===
                                                             EsignDocumentStatus.SIGNED
                                                                 ? 'text-blue-600 hover:text-blue-700 cursor-pointer'
                                                                 : 'text-gray-300 cursor-not-allowed'
@@ -333,7 +332,7 @@ export const InitiatedESignCard = ({
                                                         <FileSignature className="w-5 h-5" />
                                                     </button>
                                                     <Tooltip>
-                                                        {selectedDocument?.status ===
+                                                        {signer?.status ===
                                                         EsignDocumentStatus.SIGNED
                                                             ? 'Request Resign'
                                                             : 'Document not signed yet'}
@@ -351,7 +350,7 @@ export const InitiatedESignCard = ({
                                                     <button
                                                         onClick={() => {
                                                             if (
-                                                                selectedDocument?.status !==
+                                                                signer?.status !==
                                                                 EsignDocumentStatus.SIGNED
                                                             ) {
                                                                 onResendMailClicked(
@@ -361,11 +360,11 @@ export const InitiatedESignCard = ({
                                                             }
                                                         }}
                                                         disabled={
-                                                            selectedDocument?.status ===
+                                                            signer?.status ===
                                                             EsignDocumentStatus.SIGNED
                                                         }
                                                         className={`transition-colors ${
-                                                            selectedDocument?.status !==
+                                                            signer?.status !==
                                                             EsignDocumentStatus.SIGNED
                                                                 ? 'text-blue-600 hover:text-blue-700 cursor-pointer'
                                                                 : 'text-gray-300 cursor-not-allowed'
@@ -374,7 +373,7 @@ export const InitiatedESignCard = ({
                                                         <Send className="w-5 h-5" />
                                                     </button>
                                                     <Tooltip>
-                                                        {selectedDocument?.status !==
+                                                        {signer?.status !==
                                                         EsignDocumentStatus.SIGNED
                                                             ? 'Resend Email'
                                                             : 'Document Signed'}
@@ -478,7 +477,7 @@ export const InitiatedESignCard = ({
                                                     </button>
                                                     <Tooltip>
                                                         {signResponse?.id &&
-                                                        selectedDocument?.status !==
+                                                        signer?.status !==
                                                             EsignDocumentStatus.SIGNED
                                                             ? 'Submit Document'
                                                             : 'Unavailable'}

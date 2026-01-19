@@ -13,7 +13,7 @@ import {
 import { ConfigTabs, EmptyData, TabConfig, TechnicalError } from '@components'
 import { Skeleton } from '@components/ui/skeleton'
 import { useGetSubAdminStudentDetailQuery } from '@queries'
-import { setSelectedCourse, setStudentDetail } from '@redux'
+import { CommonApi, setSelectedCourse, setStudentDetail } from '@redux'
 import { Course, Student } from '@types'
 import {
     Book,
@@ -43,6 +43,10 @@ export const RtoStudentDetail = () => {
     const profile = useGetSubAdminStudentDetailQuery(studentId, {
         skip: !studentId,
         refetchOnMountOrArgChange: 30,
+    })
+    // Track profile visitor
+    CommonApi.Industries.useAddProfileVisitor(Number(profile?.data?.user?.id), {
+        skip: !profile?.data,
     })
 
     useEffect(() => {

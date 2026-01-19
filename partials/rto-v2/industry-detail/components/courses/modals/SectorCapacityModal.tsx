@@ -59,8 +59,6 @@ export function SectorCapacityModal({
         }
     }, [currentSectorData])
 
-    console.log({ currentSectorData })
-
     const handleUpdate = async () => {
         const val = parseInt(capacity)
         if (isNaN(val) || val < 1 || val > 100) {

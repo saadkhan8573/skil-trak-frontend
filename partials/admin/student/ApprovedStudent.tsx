@@ -105,15 +105,15 @@ export const ApprovedStudent = () => {
                 },
                 Icon: FaEye,
             },
-            {
-                text: 'View Old Profile',
-                onClick: (student: Student) => {
-                    router.push(
-                        `/portals/admin/student/${student?.id}/old-profile`
-                    )
-                },
-                Icon: FaEye,
-            },
+            // {
+            //     text: 'View Old Profile',
+            //     onClick: (student: Student) => {
+            //         router.push(
+            //             `/portals/admin/student/${student?.id}/old-profile`
+            //         )
+            //     },
+            //     Icon: FaEye,
+            // },
             {
                 text: 'Edit',
                 onClick: (student: Student) => {

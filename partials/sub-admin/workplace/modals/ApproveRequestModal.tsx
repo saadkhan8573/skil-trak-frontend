@@ -42,8 +42,6 @@ export const ApproveRequestModal = ({
                 status: 'accept',
             }).unwrap()
 
-            console.log({ updateStatusResult: 'TETETE' })
-
             notification.success({
                 title: 'Workplace Approved',
                 description: 'Workplace Approved Successfully',

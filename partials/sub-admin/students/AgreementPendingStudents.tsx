@@ -89,15 +89,15 @@ export const AgreementPendingStudents = () => {
             },
             Icon: FaEye,
         },
-        {
-            text: 'Old Profile',
-            onClick: (student) => {
-                router.push(
-                    `/portals/sub-admin/students/${student.id}?tab=overview`
-                )
-            },
-            Icon: FaEye,
-        },
+        // {
+        //     text: 'Old Profile',
+        //     onClick: (student) => {
+        //         router.push(
+        //             `/portals/sub-admin/students/${student.id}?tab=overview`
+        //         )
+        //     },
+        //     Icon: FaEye,
+        // },
         {
             text: 'Block',
             onClick: (student) => onBlockClicked(student),

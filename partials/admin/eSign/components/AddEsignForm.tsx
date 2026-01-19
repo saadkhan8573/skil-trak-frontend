@@ -59,11 +59,11 @@ export const AddEsignForm = ({
                         ? fileUrl
                             ? true
                             : value && [...value]?.length > 0
+                                ? true
+                                : false
+                        : value && [...value]?.length > 0
                             ? true
                             : false
-                        : value && [...value]?.length > 0
-                        ? true
-                        : false
                 }
             )
             .required('File is required!'),
@@ -80,7 +80,9 @@ export const AddEsignForm = ({
     useEffect(() => {
         if (data) {
             methods.setValue('name', data?.name)
-            methods.setValue('recipients', [...data?.recipients, 'student'])
+            // Deduplicate recipients to prevent duplicates when updating
+            const uniqueRecipients = Array.from(new Set([...data?.recipients, 'student']))
+            methods.setValue('recipients', uniqueRecipients)
             methods.setValue('user', data?.user?.id)
             methods.setValue('course', data?.course?.id)
             methods.setValue('folder', data?.folder?.id)
@@ -122,8 +124,8 @@ export const AddEsignForm = ({
                 fileObject={
                     fileUrl
                         ? {
-                              type: 'pdf',
-                          }
+                            type: 'pdf',
+                        }
                         : fileObject
                 }
             />

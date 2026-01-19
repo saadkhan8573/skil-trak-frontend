@@ -26,6 +26,8 @@ export const FinalResult = ({
 }) => {
     const [selectedResult, setSelectedResult] = useState(results?.[0])
 
+    console.log({ ININININININ: results, selectedResult })
+
     useEffect(() => {
         if (results && results?.length > 0) {
             setSelectedResult(

@@ -50,7 +50,6 @@ export const PurchaseCreditsModal = ({
     onOpenChange,
     workplaceCredits,
 }: PurchaseCreditsModalProps) => {
-
     const rto = useAppSelector((state) => state.rto.rtoDetail)
 
     const [clientSecret, setClientSecret] = useState<string | null>(null)

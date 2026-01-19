@@ -81,8 +81,6 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
         mode: 'all',
     })
 
-    console.log({ methods })
-
     const { handleSubmit, reset, watch } = methods
     const formValues = watch()
 
@@ -100,15 +98,14 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                 website: industryDetail?.website || '',
                 phoneNumber: industryDetail?.phoneNumber || '',
                 email: industryDetail?.user?.email || '',
-                country: industryDetail?.country || null,
+                region: industryDetail?.region?.id || null,
+                country: industryDetail?.region?.country?.id || null,
+                bio: industryDetail?.bio || null,
             })
 
-            if (industryDetail?.country) {
-                setCountryId(industryDetail.country)
+            if (industryDetail?.region?.country) {
+                setCountryId(industryDetail.region.country.id)
             }
-            // If the state is stored as a name, we might need to find its ID to set onStateSelect
-            // But usually, if it's dynamic, we might store IDs.
-            // For now, let's just ensure countryId is set so states can load.
         }
     }, [industryDetail, reset])
 
@@ -266,44 +263,20 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                                             )}
                                         </div>
 
-                                        {/* Year Established */}
-                                        <div>
-                                            {isEditing ? (
-                                                <TextInput
-                                                    name="yearEstablished"
-                                                    label="Year Established"
-                                                    placeholder="Year Established"
-                                                    validationIcons
-                                                />
-                                            ) : (
-                                                <ViewField
-                                                    label="Year Established"
-                                                    value={
-                                                        formValues.yearEstablished
-                                                    }
-                                                    icon={
-                                                        <Calendar className="w-3.5 h-3.5 inline mr-1" />
-                                                    }
-                                                />
-                                            )}
-                                        </div>
-
                                         {/* Description */}
                                         <div className="md:col-span-2">
                                             {isEditing ? (
                                                 <TextArea
-                                                    name="description"
-                                                    label="Company Description"
+                                                    name="bio"
+                                                    label="Company Bio"
                                                     placeholder="Brief description of your company..."
                                                     rows={3}
                                                     validationIcons
                                                 />
                                             ) : (
                                                 <ViewField
-                                                    label="Company Description"
-                                                    value={
-                                                        formValues.description
-                                                    }
+                                                    label="Company Bio"
+                                                    value={formValues.bio}
                                                 />
                                             )}
                                         </div>
@@ -424,11 +397,9 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                                                 <ViewField
                                                     label="Country"
                                                     value={
-                                                        country?.data?.find(
-                                                            (c: any) =>
-                                                                c?.id ===
-                                                                countryId
-                                                        )?.name || '-'
+                                                        industryDetail?.region
+                                                            ?.country?.name ||
+                                                        '-'
                                                     }
                                                 />
                                             )}
@@ -467,7 +438,10 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                                             ) : (
                                                 <ViewField
                                                     label="State"
-                                                    value={formValues.state}
+                                                    value={
+                                                        industryDetail?.region
+                                                            ?.name || '-'
+                                                    }
                                                 />
                                             )}
                                         </div>

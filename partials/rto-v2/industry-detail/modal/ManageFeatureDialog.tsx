@@ -81,7 +81,6 @@ export const ManageFeatureDialog = () => {
 
     const handleSaveFeatures = () => {
         // TODO: Implement save logic
-        console.log('Saving features:', editingFeatures)
         setOpen(false)
     }
 
@@ -122,10 +121,11 @@ export const ManageFeatureDialog = () => {
                                         className="p-0 h-auto hover:bg-transparent"
                                     >
                                         <CheckCircle
-                                            className={`w-5 h-5 transition-all ${feature.enabled
+                                            className={`w-5 h-5 transition-all ${
+                                                feature.enabled
                                                     ? 'text-[#10B981]'
                                                     : 'text-gray-300'
-                                                }`}
+                                            }`}
                                             fill={
                                                 feature.enabled
                                                     ? 'currentColor'

@@ -25,8 +25,6 @@ export const CourseCard = ({
         }
     }, [activeWorkplace])
 
-    console.log({ activeWorkplace })
-
     return (
         <div
             onClick={() => {

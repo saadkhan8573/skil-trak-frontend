@@ -24,30 +24,17 @@ import { StudentCellInfo } from './components'
 import { TechnicalError } from '@components/ActionAnimations/TechnicalError'
 import { useJoyRide } from '@hooks'
 import { SubAdminApi } from '@queries'
-import { Student, SubAdmin, UserStatus } from '@types'
+import { Student, UserStatus } from '@types'
 import { useEffect, useState } from 'react'
-import {
-    AddToNonContactableStudents,
-    AssignStudentModal,
-    BlockModal,
-    ChangeStudentStatusModal,
-    HighPriorityModal,
-} from './modals'
 
-import { EditTimer } from '@components/StudentTimer/EditTimer'
 import Modal from '@modals/Modal'
 import { SectorCell } from '@partials/admin/student/components'
-import {
-    FlagStudentModal,
-    SwitchOffFlagModal,
-} from '@partials/common/StudentProfileDetail/modals'
+import { SwitchOffFlagModal } from '@partials/common/StudentProfileDetail/modals'
 import { ColumnDef } from '@tanstack/react-table'
-import { getStudentWorkplaceAppliedIndustry, setLink } from '@utils'
+import { setLink } from '@utils'
 import moment from 'moment'
-import { WorkplaceWorkIndustriesType } from 'redux/queryTypes'
 import { isWorkplaceValid } from 'utils/workplaceRowBlinking'
 import { RTOCellInfo } from '../rto/components'
-import { InterviewModal } from '../workplace/modals'
 
 export const SubAdminFlaggedStudents = () => {
     const router = useRouter()

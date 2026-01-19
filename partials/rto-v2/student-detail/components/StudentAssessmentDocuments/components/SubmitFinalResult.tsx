@@ -39,8 +39,6 @@ export const SubmitFinalResult = ({
     const pathname = useRouter()
     const { notification } = useNotification()
 
-    console.log({ iiiiiiinnnnnnnn: result })
-
     // query
     const [submitAssessmentEvidence, submitAssessmentEvidenceResult] =
         useSubmitAssessmentEvidenceMutation()

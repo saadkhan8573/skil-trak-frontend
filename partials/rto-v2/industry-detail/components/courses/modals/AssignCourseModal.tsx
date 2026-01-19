@@ -74,8 +74,6 @@ export function AssignCourseModal({
     const courses = pendingCourses || []
     const selectedCourse = courses.find((c: any) => c.id === selectedCourseId)
 
-    console.log({ courses })
-
     return (
         <Dialog
             open={open}

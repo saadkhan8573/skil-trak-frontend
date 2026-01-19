@@ -21,8 +21,6 @@ export const StateWiseIndustries = ({
     const [page, setPage] = useState(1)
     const [itemPerPage, setItemPerPage] = useState(50)
 
-    console.log({ page, itemPerPage })
-
     const industries = SubAdminApi.Industry.getAllStateWiseSubAdminIndustries({
         search: JSON.stringify(removeEmptyValues({ ...baseFilter }))
             .replaceAll('{', '')

@@ -33,7 +33,6 @@ export const WorkplaceTypeModal = ({
     const currentType = CommonApi.Industries.getIndustryWPType(industryUserId, {
         refetchOnMountOrArgChange: true,
     })
-    console.log({ currentType })
     const { data: wpTypes, isLoading: isLoadingList } =
         CommonApi.Industries.getIndustriesWPTypeList(industryUserId)
     const [addWpType, { isLoading: isSaving, isError, error }] =

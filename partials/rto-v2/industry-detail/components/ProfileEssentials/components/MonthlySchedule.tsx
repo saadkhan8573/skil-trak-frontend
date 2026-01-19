@@ -23,7 +23,6 @@ const timeSlotPresets: OptionType[] = [
 ]
 
 export function MonthlySchedule({ data, onChange }: MonthlyScheduleProps) {
-    console.log({ data })
     const detectPreset = (start: string, end: string): string => {
         if (start === '09:00' && end === '12:00') return 'morning'
         if (start === '13:00' && end === '17:00') return 'afternoon'
@@ -54,7 +53,10 @@ export function MonthlySchedule({ data, onChange }: MonthlyScheduleProps) {
         onChange({ ...data, slots: [{ startTime: newStart, endTime: newEnd }] })
     }
 
-    const handleTimeChange = (field: 'startTime' | 'endTime', value: string) => {
+    const handleTimeChange = (
+        field: 'startTime' | 'endTime',
+        value: string
+    ) => {
         const currentSlot = data.slots[0] || {
             startTime: '09:00',
             endTime: '12:00',
@@ -113,7 +115,8 @@ export function MonthlySchedule({ data, onChange }: MonthlyScheduleProps) {
                         <Calendar
                             onClickDay={handleDateClick}
                             tileClassName={({ date }) => {
-                                const formattedDate = moment(date).format('YYYY-MM-DD')
+                                const formattedDate =
+                                    moment(date).format('YYYY-MM-DD')
                                 return data.dates.some(
                                     (d) =>
                                         moment(d.date).format('YYYY-MM-DD') ===
@@ -184,7 +187,10 @@ export function MonthlySchedule({ data, onChange }: MonthlyScheduleProps) {
                                             type="time"
                                             value={currentSlot.startTime}
                                             onChange={(e) =>
-                                                handleTimeChange('startTime', e.target.value)
+                                                handleTimeChange(
+                                                    'startTime',
+                                                    e.target.value
+                                                )
                                             }
                                             className="bg-white border border-slate-200 rounded px-2 py-1 text-xs font-medium text-slate-700 focus:outline-none focus:border-emerald-500 cursor-pointer transition-colors hover:border-emerald-300"
                                         />
@@ -195,7 +201,10 @@ export function MonthlySchedule({ data, onChange }: MonthlyScheduleProps) {
                                             type="time"
                                             value={currentSlot.endTime}
                                             onChange={(e) =>
-                                                handleTimeChange('endTime', e.target.value)
+                                                handleTimeChange(
+                                                    'endTime',
+                                                    e.target.value
+                                                )
                                             }
                                             className="bg-white border border-slate-200 rounded px-2 py-1 text-xs font-medium text-slate-700 focus:outline-none focus:border-emerald-500 text-right cursor-pointer transition-colors hover:border-emerald-300"
                                         />
@@ -204,7 +213,8 @@ export function MonthlySchedule({ data, onChange }: MonthlyScheduleProps) {
                             ) : (
                                 <div className="px-3 py-1.5 bg-[#044866]/5 rounded border border-[#044866]/10 text-[#044866] font-bold text-xs animate-in zoom-in-95 fade-in duration-300 shadow-sm flex items-center">
                                     <Clock className="w-3.5 h-3.5 mr-2 opacity-60" />
-                                    {currentSlot.startTime} - {currentSlot.endTime}
+                                    {currentSlot.startTime} -{' '}
+                                    {currentSlot.endTime}
                                 </div>
                             )}
                         </div>

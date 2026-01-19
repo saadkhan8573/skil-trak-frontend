@@ -1,20 +1,23 @@
-import { AuthorizedUserComponent, NoData } from '@components'
+import { NoData } from '@components'
 import { RtoV2Api } from '@queries'
 import { useAppSelector } from '@redux/hooks'
 import { Course, Student } from '@types'
 import { useMemo, useState } from 'react'
 import { CourseOverview } from '../StudentOverview'
+import {
+    DocumentFilter,
+    DocumentHeader
+} from './components'
 import { FolderSection } from './components/FolderSection'
-import { DocumentFilter, DocumentHeader } from './components'
 
 interface DocumentsProps {
     student: Student
 }
 
-import { StudentDocumentsTabSkeleton } from '../../skeletonLoader'
-import { Result, UserRoles } from '@constants'
+import { Result } from '@constants'
 import { useSubadminProfile } from '@hooks'
 import { getCourseResult } from '@utils'
+import { StudentDocumentsTabSkeleton } from '../../skeletonLoader'
 import { CourseResultModule, SubmitAssessmentSubmission } from './components'
 
 export function StudentAssessmentDocuments({ student }: DocumentsProps) {
@@ -68,13 +71,10 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
     const industryDocuments = getIndustryDocuments(true)
     const courseDocuments = getIndustryDocuments(false)
 
-    console.log({ selectedCourse })
-
     const result = useMemo(
         () => getCourseResult(selectedCourse?.results),
         [selectedCourse?.results]
     )
-    console.log({ rerererererere: result })
 
     const allCommentsAdded = useMemo(
         () =>
@@ -83,8 +83,6 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                 ?.every((f: any) => f?.studentResponse[0]?.comment),
         [documents?.data]
     )
-
-    console.log({ documents, allCommentsAdded })
 
     const isFilesUploaded = useMemo(
         () =>
@@ -217,8 +215,6 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
         // }
     }, [documents, selectedCourse, result])
 
-    console.log({ shouldShowSubmitButton })
-
     // Section configuration array
     const sections = [
         {
@@ -281,6 +277,11 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                     )
                 })
             )}
+
+            {/* <ManualAssessmentSubmission
+                result={result}
+                totalResultsCount={selectedCourse?.results?.length}
+            /> */}
 
             <div className="pt-8 space-y-4">
                 {shouldShowSubmitButton && (

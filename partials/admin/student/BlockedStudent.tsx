@@ -35,7 +35,6 @@ export const BlockedStudent = () => {
     const [modal, setModal] = useState<ReactElement | null>(null)
     const [itemPerPage, setItemPerPage] = useState(20)
     const [page, setPage] = useState(1)
-    const [filter, setFilter] = useState({})
     const role = getUserCredentials()?.role
     useEffect(() => {
         setPage(Number(router.query.page))
@@ -93,15 +92,15 @@ export const BlockedStudent = () => {
                 },
                 Icon: FaEye,
             },
-            {
-                text: 'View Old Profile',
-                onClick: (student: Student) => {
-                    router.push(
-                        `/portals/admin/student/${student?.id}/old-profile`
-                    )
-                },
-                Icon: FaEye,
-            },
+            // {
+            //     text: 'View Old Profile',
+            //     onClick: (student: Student) => {
+            //         router.push(
+            //             `/portals/admin/student/${student?.id}/old-profile`
+            //         )
+            //     },
+            //     Icon: FaEye,
+            // },
             {
                 text: 'Edit',
                 onClick: (row: any) => {

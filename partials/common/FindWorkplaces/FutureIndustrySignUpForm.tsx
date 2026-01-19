@@ -493,10 +493,6 @@ export const FutureIndustrySignUpForm = ({
                                     loading={country.isLoading}
                                     onChange={(e: any) => {
                                         setCountryId(e?.value)
-                                        formMethods.setValue(
-                                            'country',
-                                            e?.label
-                                        )
                                     }}
                                     value={country?.data?.find(
                                         (c: OptionType) =>

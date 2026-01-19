@@ -16,7 +16,6 @@ export const useShowErrorNotification = () => {
         position?: (typeof NotificationPositionOptions)[number]
     ) => {
         if (result?.isError) {
-            console.log({ result })
             const errorTitle = result.error?.data?.error
             if (errorTitle && Array.isArray(result.error?.data?.message)) {
                 for (let msg of result.error?.data?.message) {

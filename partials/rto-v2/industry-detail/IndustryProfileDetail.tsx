@@ -1,5 +1,10 @@
 import { EmptyData, TechnicalError } from '@components'
-import { RtoV2Api, setIndustryDetail, setNavigationTarget } from '@redux'
+import {
+    CommonApi,
+    RtoV2Api,
+    setIndustryDetail,
+    setNavigationTarget,
+} from '@redux'
 import { useAppDispatch, useAppSelector } from '@redux/hooks'
 import { scrollToSection } from '@utils'
 import { useRouter } from 'next/router'
@@ -31,6 +36,10 @@ export const IndustryProfileDetail = () => {
             refetchOnMountOrArgChange: true,
         }
     )
+    // its incresing the views of profile
+    CommonApi.Industries.useAddProfileVisitor(industryDetail?.data?.user?.id!, {
+        skip: !industryDetail?.data,
+    })
 
     useEffect(() => {
         if (industryDetail?.isSuccess && industryDetail?.data) {

@@ -1,16 +1,12 @@
-import { useState } from 'react'
-
-// components
+import { motion } from 'framer-motion'
+import { Briefcase, CheckCircle2, XCircle } from 'lucide-react' // Added XCircle
 import { Badge } from '@components'
-// shadcn ui
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from '@components/ui/tooltip'
-import { motion } from 'framer-motion'
-import { Briefcase, CheckCircle2 } from 'lucide-react'
 import {
     needsWorkplaceStages,
     providedWorkplaceStages,
@@ -21,37 +17,53 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
         workplaceType === 'provided'
             ? providedWorkplaceStages
             : needsWorkplaceStages
+
+    // 1. Check if the status is cancelled
+    const isCancelled = currentStatus?.stage === 'Cancelled'
+
     const getCurrentStageIndex = () => {
         const stage = workflowStages.find(
             (s) => s.name === currentStatus?.stage
         )
+        // If not found or cancelled, we handle index carefully
         return stage ? stage.id - 1 : 0
     }
+
+    const currentStageIndex = getCurrentStageIndex()
 
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-xl p-6 shadow-sm border border-slate-200 mb-8"
+            className={`bg-white rounded-xl p-6 shadow-sm border mb-8 ${
+                isCancelled ? 'border-red-200 bg-red-50/10' : 'border-slate-200'
+            }`}
         >
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                     <Badge
-                        Icon={Briefcase}
+                        Icon={isCancelled ? XCircle : Briefcase}
                         text={
-                            workplaceType === 'provided'
+                            isCancelled
+                                ? 'Cancelled'
+                                : workplaceType === 'provided'
                                 ? 'Provided Workplace'
                                 : 'Needs Workplace'
                         }
                         className={`${
-                            workplaceType === 'provided'
+                            isCancelled
+                                ? 'bg-red-500 shadow-red-500/30'
+                                : workplaceType === 'provided'
                                 ? 'bg-gradient-to-r from-purple-500 to-indigo-500 shadow-purple-500/30'
                                 : 'bg-gradient-to-r from-[#044866] to-[#0D5468] shadow-[#044866]/30'
                         } text-white border-0 shadow-lg px-3 py-1.5`}
-                    ></Badge>
+                    />
                     <span className="text-sm text-slate-600">
-                        Stage {getCurrentStageIndex() + 1} of{' '}
-                        {workflowStages.length}
+                        {isCancelled
+                            ? 'Process Cancelled'
+                            : `Stage ${currentStageIndex + 1} of ${
+                                  workflowStages.length
+                              }`}
                     </span>
                 </div>
             </div>
@@ -61,21 +73,22 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
                 <motion.div
                     initial={{ width: 0 }}
                     animate={{
-                        width: `${
-                            ((getCurrentStageIndex() + 1) /
-                                workflowStages.length) *
-                            100
-                        }%`,
+                        width: isCancelled
+                            ? '100%'
+                            : `${
+                                  ((currentStageIndex + 1) /
+                                      workflowStages.length) *
+                                  100
+                              }%`,
                     }}
-                    transition={{
-                        duration: 0.8,
-                        ease: 'easeOut',
-                    }}
-                    className={`absolute inset-y-0 left-0 ${
-                        workplaceType === 'provided'
+                    transition={{ duration: 0.8, ease: 'easeOut' }}
+                    className={`absolute inset-y-0 left-0 rounded-full ${
+                        isCancelled
+                            ? 'bg-red-500'
+                            : workplaceType === 'provided'
                             ? 'bg-gradient-to-r from-purple-500 to-indigo-500'
                             : 'bg-gradient-to-r from-[#044866] to-[#0D5468]'
-                    } rounded-full`}
+                    }`}
                 />
             </div>
 
@@ -83,13 +96,16 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
             <div
                 className={`${
                     workplaceType === 'provided'
-                        ? 'grid-cols-6 lg:grid-cols-9'
-                        : 'grid-cols-6 lg:grid-cols-11'
-                } grid  gap-2 mt-4`}
+                        ? 'grid-cols-6 lg:grid-cols-10'
+                        : 'grid-cols-6 lg:grid-cols-12'
+                } grid gap-2 mt-4`}
             >
                 {workflowStages?.map((stage, index) => {
-                    const isActive = index === getCurrentStageIndex()
-                    const isCompleted = index < getCurrentStageIndex()
+                    const isThisStageCancelled =
+                        isCancelled && stage.name === 'Cancelled'
+                    const isActive = !isCancelled && index === currentStageIndex
+                    const isCompleted =
+                        !isCancelled && index < currentStageIndex
 
                     return (
                         <TooltipProvider key={index}>
@@ -97,18 +113,22 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
                                 <TooltipTrigger asChild>
                                     <div
                                         className={`flex flex-col items-center gap-1.5 p-2 rounded-lg transition-all cursor-pointer ${
-                                            isActive
+                                            isThisStageCancelled
+                                                ? 'bg-red-50 border-2 border-red-300'
+                                                : isActive
                                                 ? workplaceType === 'provided'
                                                     ? 'bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-300'
                                                     : 'bg-gradient-to-br from-[#044866]/5 to-[#0D5468]/5 border-2 border-[#044866]/30'
                                                 : isCompleted
                                                 ? 'bg-emerald-50 border border-emerald-200'
-                                                : 'bg-slate-50 border border-slate-200'
+                                                : 'bg-slate-50 border border-slate-200 opacity-50' // Muted if cancelled
                                         }`}
                                     >
                                         <div
                                             className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                                                isActive
+                                                isThisStageCancelled
+                                                    ? 'bg-red-500 text-white'
+                                                    : isActive
                                                     ? workplaceType ===
                                                       'provided'
                                                         ? 'bg-gradient-to-br from-purple-500 to-indigo-500 text-white'
@@ -118,7 +138,9 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
                                                     : 'bg-slate-300 text-white'
                                             }`}
                                         >
-                                            {isCompleted ? (
+                                            {isThisStageCancelled ? (
+                                                <XCircle className="h-4 w-4" />
+                                            ) : isCompleted ? (
                                                 <CheckCircle2 className="h-4 w-4" />
                                             ) : (
                                                 <span className="text-xs font-bold">
@@ -128,7 +150,9 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
                                         </div>
                                         <span
                                             className={`text-xs text-center font-medium hidden lg:block ${
-                                                isActive
+                                                isThisStageCancelled
+                                                    ? 'text-red-700'
+                                                    : isActive
                                                     ? workplaceType ===
                                                       'provided'
                                                         ? 'text-purple-700'

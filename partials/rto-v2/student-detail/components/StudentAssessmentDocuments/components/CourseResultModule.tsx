@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { AuthorizedUserComponent, Button, Typography, Card } from '@components'
+import { AuthorizedUserComponent, Button, Typography, Card, Badge } from '@components'
 import { UserRoles, Result } from '@constants'
 import { Course, Student } from '@types'
 import { SubmitFinalResult } from './SubmitFinalResult'
 import { FinalResult } from './FinalResult'
 import { motion, AnimatePresence } from 'framer-motion'
-import { GraduationCap, ClipboardCheck, History, Edit3, X } from 'lucide-react'
+import { GraduationCap, ClipboardCheck, History, Edit3, X, AlertCircle } from 'lucide-react'
 
 interface CourseResultModuleProps {
     student: Student
@@ -39,7 +39,7 @@ export const CourseResultModule: React.FC<CourseResultModuleProps> = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="w-full max-w-5xl mx-auto"
+            className="w-full w-full mx-auto"
         >
             <Card className="overflow-hidden border-none shadow-2xl bg-white/80 backdrop-blur-md rounded-2xl ring-1 ring-black/5">
                 {/* Header Decoration */}
@@ -57,7 +57,7 @@ export const CourseResultModule: React.FC<CourseResultModuleProps> = ({
                                     Assessment Outcome
                                 </Typography>
                                 <Typography variant="small" className="text-slate-500">
-                                    Final review and certification for {selectedCourse.title}
+                                    Final review and certification for <Badge text={selectedCourse.title} variant='info' />
                                 </Typography>
                             </div>
                         </div>
@@ -66,19 +66,37 @@ export const CourseResultModule: React.FC<CourseResultModuleProps> = ({
                             {result?.isAssessed && !subadmin?.isAssociatedWithRto && (
                                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                                     <Button
-                                        text={editAssessment ? 'Cancel Edit' : 'Modify Result'}
+                                        text={editAssessment ? 'Cancel Edit' : 'Revise Last Assessment Result'}
                                         onClick={() => setEditAssessment(!editAssessment)}
                                         variant={editAssessment ? 'error' : 'primary'}
-                                        className={`transition-all duration-300 ${editAssessment
-                                            ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100'
-                                            : 'border-indigo-200 text-indigo-600 hover:bg-indigo-50'
-                                            }`}
+                                        // className={`transition-all duration-300 ${editAssessment
+                                        //     ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100'
+                                        //     : 'border-indigo-200 text-indigo-600 hover:bg-indigo-50'
+                                        //     }`}
                                         Icon={editAssessment ? X : Edit3}
                                     />
                                 </motion.div>
                             )}
                         </AuthorizedUserComponent>
                     </div>
+
+                    {/* Submission Limit Notice */}
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3"
+                    >
+                        <AlertCircle size={20} className="text-amber-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                            <Typography variant="small" className="text-amber-900 font-semibold">
+                                Submission Limit
+                            </Typography>
+                            <Typography variant="small" className="text-amber-700 mt-1">
+                                Students are allowed a maximum of 3 assessment submissions per course. Please ensure all feedback is comprehensive.
+                            </Typography>
+                        </div>
+                    </motion.div>
 
                     {/* Main Content Area */}
                     <div className="space-y-6">
@@ -98,6 +116,7 @@ export const CourseResultModule: React.FC<CourseResultModuleProps> = ({
                                     <SubmitFinalResult
                                         course={selectedCourse}
                                         result={result}
+                                        editAssessment={editAssessment}
                                         setEditAssessment={setEditAssessment}
                                         studentId={student?.id}
                                     />

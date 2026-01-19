@@ -68,10 +68,13 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
     const industryDocuments = getIndustryDocuments(true)
     const courseDocuments = getIndustryDocuments(false)
 
+    console.log({ selectedCourse })
+
     const result = useMemo(
         () => getCourseResult(selectedCourse?.results),
         [selectedCourse?.results]
     )
+    console.log({ rerererererere: result })
 
     const allCommentsAdded = useMemo(
         () =>
@@ -80,6 +83,8 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                 ?.every((f: any) => f?.studentResponse[0]?.comment),
         [documents?.data]
     )
+
+    console.log({ documents, allCommentsAdded })
 
     const isFilesUploaded = useMemo(
         () =>
@@ -162,7 +167,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                     (result?.result === Result.ReOpened ||
                         result?.result === Result.NotCompetent ||
                         allCommentsAdded) &&
-                    result?.result !== Result.Competent
+                    !result?.isSubmitted
                 )
             } else {
                 return (
@@ -170,8 +175,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                     !documents.isFetching &&
                     documents.isSuccess &&
                     result?.isManualSubmission &&
-                    allCommentsAdded &&
-                    result?.result !== Result.Competent
+                    allCommentsAdded
                 )
             }
         } else {
@@ -179,11 +183,41 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                 !documents.isLoading &&
                 !documents.isFetching &&
                 documents.isSuccess &&
-                allCommentsAdded &&
-                result?.result !== Result.Competent
+                allCommentsAdded
             )
         }
+        // if (!documents.isSuccess || !selectedCourse) return false
+
+        // if (selectedCourse?.results?.length > 0) {
+        //     if (result?.totalSubmission < 3) {
+        //         return (
+        //             (result?.result === Result.ReOpened ||
+        //                 result?.result === Result.NotCompetent ||
+        //                 allCommentsAdded) &&
+        //             result?.result !== Result.Competent
+        //         )
+        //     } else {
+        //         return (
+        //             !documents.isLoading &&
+        //             !documents.isFetching &&
+        //             documents.isSuccess &&
+        //             result?.isManualSubmission &&
+        //             allCommentsAdded &&
+        //             result?.result !== Result.Competent
+        //         )
+        //     }
+        // } else {
+        //     return (
+        //         !documents.isLoading &&
+        //         !documents.isFetching &&
+        //         documents.isSuccess &&
+        //         allCommentsAdded &&
+        //         result?.result !== Result.Competent
+        //     )
+        // }
     }, [documents, selectedCourse, result])
+
+    console.log({ shouldShowSubmitButton })
 
     // Section configuration array
     const sections = [

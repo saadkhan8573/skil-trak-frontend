@@ -25,10 +25,12 @@ import { getUserCredentials } from '@utils'
 
 export const SubmitFinalResult = ({
     result,
+    editAssessment,
     course,
     studentId,
     setEditAssessment,
 }: {
+    editAssessment?: boolean
     result: any
     course: Course
     studentId: number
@@ -36,6 +38,8 @@ export const SubmitFinalResult = ({
 }) => {
     const pathname = useRouter()
     const { notification } = useNotification()
+
+    console.log({ iiiiiiinnnnnnnn: result })
 
     // query
     const [submitAssessmentEvidence, submitAssessmentEvidenceResult] =
@@ -69,6 +73,13 @@ export const SubmitFinalResult = ({
         },
         [course, methods]
     )
+
+    useEffect(() => {
+        if (editAssessment && result) {
+            methods.setValue('finalComment', result?.finalComment)
+            methods.setValue('result', result?.result)
+        }
+    }, [editAssessment, result])
 
     const onSubmit = (values: AssessmentFinalCommentFormType) => {
         submitAssessmentEvidence({ id: result?.id, body: values }).then(

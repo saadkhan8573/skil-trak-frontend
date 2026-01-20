@@ -201,7 +201,7 @@ export const industriesEndpoints = (
 
     uploadCourseFacilityChecklist: builder.mutation<
         any,
-        { id: number; body: FormData; isResubmitted: boolean }
+        { id: number; body: FormData; isResubmitted?: boolean }
     >({
         query: ({ id, body,isResubmitted }) => ({
             url: `${INDUSTRIESPREFIX}course-approval/${id}/file/add`,

@@ -41,30 +41,37 @@ export const SubmitAssessmentSubmission = ({
     const reSubmittedCount = useAppSelector(
         (state) => state.student.assessmentReSubmittedCount
     )
-
-    useEffect(() => {
-        if (submitAssessmentResult.isSuccess) {
-            notification.success({
-                title: 'Assessment Submitted Successfully',
-                description: 'Assessment Submitted Successfully',
-            })
-        }
-    }, [submitAssessmentResult])
+    const isCourseLoading = useAppSelector(
+        (state) => state.student.isCourseLoading
+    )
 
     const result = getCourseResult(results)
 
-    const onSubmitAssessment = () => {
-        submitAssessment({
-            body: {
-                notifyCoordinator: true,
-                notifyRto: true,
-            },
-            student: student?.user?.id,
-            id: selectedCourseId,
-        })
+    const onSubmitAssessment = async () => {
+        try {
+            await submitAssessment({
+                body: {
+                    notifyCoordinator: true,
+                    notifyRto: true,
+                },
+                student: student?.user?.id,
+                id: selectedCourseId,
+            }).unwrap()
+
+            notification.success({
+                title: 'Assessment Submitted Successfully',
+                description: 'Your assessment has been submitted for review.',
+            })
+        } catch (error: any) {
+            notification.error({
+                title: 'Submission Failed',
+                description:
+                    error?.data?.message ||
+                    'Something went wrong while submitting the assessment.',
+            })
+        }
     }
 
-    console.log({ isFilesUploaded })
 
     useEffect(() => {
         if (
@@ -86,13 +93,15 @@ export const SubmitAssessmentSubmission = ({
         submittedCount,
     ])
 
+    console.log({ reSubmittedCount })
+
     useEffect(() => {
         if (
             (isResubmittedFiles || isAllApproved) &&
             results?.length > 0 &&
-            result?.result !== Result.Pending &&
+            result?.result !== Result.Pending && result?.result !== Result.Competent &&
             !submitAssessmentResult.isLoading &&
-            !reSubmittedCount
+            !reSubmittedCount && !isCourseLoading
         ) {
             dispatch(setAssessmentReSubmittedCount(reSubmittedCount + 1))
             onSubmitAssessment()
@@ -100,11 +109,13 @@ export const SubmitAssessmentSubmission = ({
     }, [
         result,
         results,
-        isResubmittedFiles,
         isAllApproved,
+        isResubmittedFiles,
         submitAssessmentResult,
-        reSubmittedCount,
+        reSubmittedCount, isCourseLoading
     ])
+
+    console.log({ submitAssessmentResult })
 
     // useEffect(() => {
     //     return () => {

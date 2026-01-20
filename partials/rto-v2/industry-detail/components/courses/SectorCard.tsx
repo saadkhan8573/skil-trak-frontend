@@ -205,14 +205,17 @@ export function SectorCard({ sector, sectorIndex, isDeleted }: SectorCardProps) 
                                                     setShowDocumentsModal(true)
                                                     dispatch(
                                                         setPendingCourses(
-                                                            sector.approvalCourses.filter(
-                                                                (
-                                                                    approval: IndustryCourseApproval
-                                                                ) =>
-                                                                    approval.status ===
-                                                                    'pending'
-                                                            )
+                                                            sector.approvalCourses
                                                         )
+                                                        // setPendingCourses(
+                                                        //     sector.approvalCourses.filter(
+                                                        //         (
+                                                        //             approval: IndustryCourseApproval
+                                                        //         ) =>
+                                                        //             approval.status ===
+                                                        //             'pending'
+                                                        //     )
+                                                        // )
                                                     )
                                                 }}
                                                 className="px-2.5 py-1.5 bg-white text-[#044866] border border-[#044866]/20 rounded-full text-[10px] font-bold flex items-center gap-1.5 shadow-sm hover:shadow-md hover:bg-[#F8FAFB] transition-all"

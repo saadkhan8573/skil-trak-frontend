@@ -13,7 +13,7 @@ import {
 import { ConfigTabs, EmptyData, TabConfig, TechnicalError } from '@components'
 import { Skeleton } from '@components/ui/skeleton'
 import { useGetSubAdminStudentDetailQuery } from '@queries'
-import { CommonApi, setSelectedCourse, setStudentDetail } from '@redux'
+import { CommonApi, setAssessmentReSubmittedCount, setAssessmentSubmittedCount, setSelectedCourse, setStudentDetail } from '@redux'
 import { Course, Student } from '@types'
 import {
     Book,
@@ -54,6 +54,8 @@ export const RtoStudentDetail = () => {
             dispatch(setStudentDetail(profile?.data))
         }
         return () => {
+            dispatch(setAssessmentSubmittedCount(0))
+            dispatch(setAssessmentReSubmittedCount(0))
             dispatch(setSelectedCourse(null as unknown as Course))
         }
     }, [profile?.data])

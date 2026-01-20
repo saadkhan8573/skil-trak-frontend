@@ -5,6 +5,7 @@ import { IWorkplaceIndustries } from 'redux/queryTypes'
 type initialStateType = {
     studentDetail: Student | null
     selectedCourse: Course | null
+    isCourseLoading : boolean
     selectedWorkplace: IWorkplaceIndustries | null
     assessmentSubmittedCount: number
     assessmentReSubmittedCount: number
@@ -16,6 +17,7 @@ const initialState: initialStateType = {
     selectedWorkplace: null,
     assessmentSubmittedCount: 0,
     assessmentReSubmittedCount: 0,
+    isCourseLoading: false,
 }
 
 export const studentSlice = createSlice({
@@ -43,12 +45,16 @@ export const studentSlice = createSlice({
         ) => {
             state.assessmentReSubmittedCount = action.payload
         },
+        setIsCourseLoading: (state, action: PayloadAction<boolean>) => {
+            state.isCourseLoading = action.payload
+        },
     },
 })
 
 export const {
     setStudentDetail,
     setSelectedCourse,
+    setIsCourseLoading,
     setSelectedWorkplace,
     setAssessmentSubmittedCount,
     setAssessmentReSubmittedCount,

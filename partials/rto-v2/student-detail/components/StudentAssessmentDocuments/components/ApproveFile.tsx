@@ -2,6 +2,11 @@ import React, { useState } from 'react'
 import { ApproveFileModal } from '../modal'
 import { ThumbsUp } from 'lucide-react'
 import { Button, ShowErrorNotifications } from '@components'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@components/ui/tooltip'
 import { FileType } from '@types'
 import { RtoV2Api } from '@queries'
 import { useNotification } from '@hooks'
@@ -46,12 +51,17 @@ export const ApproveFile = ({
     return (
         <div>
             <ShowErrorNotifications result={fileStatusChangeResult} />
-            <Button
-                mini
-                Icon={ThumbsUp}
-                variant="success"
-                onClick={() => setIsOpen(true)}
-            />
+            <Tooltip>
+                <TooltipTrigger>
+                    <Button
+                        mini
+                        Icon={ThumbsUp}
+                        variant="success"
+                        onClick={() => setIsOpen(true)}
+                    />
+                </TooltipTrigger>
+                <TooltipContent>Approve File</TooltipContent>
+            </Tooltip>
             <ApproveFileModal
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}

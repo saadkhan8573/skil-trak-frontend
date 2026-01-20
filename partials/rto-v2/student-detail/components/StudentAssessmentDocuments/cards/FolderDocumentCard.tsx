@@ -1,4 +1,9 @@
 import { Badge, Button, ViewDocumentModal } from '@components'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@components/ui/tooltip'
 import { getFileExtensionByUrl } from '@utils'
 import {
     AlertCircle,
@@ -104,37 +109,62 @@ export const FolderDocumentCard = ({
                         Icon={DocStatusIcon}
                     />
 
-                    <Button
-                        mini
-                        Icon={Eye}
-                        variant="action"
-                        onClick={() => setIsViewModalOpen(true)}
-                    />
-                    <Button
-                        mini
-                        Icon={Edit3}
-                        variant="action"
-                        onClick={() => setIsEditModalOpen(true)}
-                    />
-                    <Button
-                        mini
-                        Icon={Download}
-                        onClick={() => {
-                            window.open(doc?.file, '_blank')
-                        }}
-                        variant="action"
-                    />
-                    <Button
-                        mini
-                        Icon={doc?.isArchived ? RotateCcw : Trash2}
-                        variant="action"
-                        className={
-                            doc?.isArchived
-                                ? 'text-blue-600 hover:text-blue-700 hover:bg-blue-50'
-                                : 'text-red-600 hover:text-red-700 hover:bg-red-50'
-                        }
-                        onClick={() => setIsArchiveModalOpen(true)}
-                    />
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Button
+                                mini
+                                Icon={Eye}
+                                variant="action"
+                                onClick={() => setIsViewModalOpen(true)}
+                            />
+                        </TooltipTrigger>
+                        <TooltipContent>View Document</TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Button
+                                mini
+                                Icon={Edit3}
+                                variant="action"
+                                onClick={() => setIsEditModalOpen(true)}
+                            />
+                        </TooltipTrigger>
+                        <TooltipContent>Edit Document</TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Button
+                                mini
+                                Icon={Download}
+                                onClick={() => {
+                                    window.open(doc?.file, '_blank')
+                                }}
+                                variant="action"
+                            />
+                        </TooltipTrigger>
+                        <TooltipContent>Download Document</TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Button
+                                mini
+                                Icon={doc?.isArchived ? RotateCcw : Trash2}
+                                variant="action"
+                                className={
+                                    doc?.isArchived
+                                        ? 'text-blue-600 hover:text-blue-700 hover:bg-blue-50'
+                                        : 'text-red-600 hover:text-red-700 hover:bg-red-50'
+                                }
+                                onClick={() => setIsArchiveModalOpen(true)}
+                            />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {doc?.isArchived ? 'Restore' : 'Delete'} Document
+                        </TooltipContent>
+                    </Tooltip>
 
                     {(doc.status === 'uploaded' ||
                         doc.status === 'pending') && (

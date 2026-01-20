@@ -11,7 +11,12 @@ import {
     Zap,
 } from 'lucide-react'
 import Link from 'next/link'
-import { getDetailedTimeStuck, getProfileUrl } from './helper'
+import {
+    getDetailedTimeStuck,
+    getPlacementProfileUrl,
+    getProfileUrl,
+} from './helper'
+import { UserRoles } from '@constants'
 
 export const UserTicketInfoCard = ({ ticket }: any) => {
     const role = getUserCredentials().role
@@ -21,6 +26,18 @@ export const UserTicketInfoCard = ({ ticket }: any) => {
         studentId: ticket?.user?.student?.id,
         industryId: ticket?.user?.industry?.id,
     })
+    const studentId =
+        ticket?.origin === 'STUDENT'
+            ? ticket?.user?.student?.id
+            : ticket?.relatedUser?.student?.id
+    const placementUrl = ticket?.workplaceRequestId
+        ? getPlacementProfileUrl({
+              role,
+              origin: ticket?.origin,
+              workplaceRequestId: ticket?.workplaceRequestId,
+              studentId,
+          })
+        : null
 
     return (
         <div className="bg-white rounded-2xl shadow-xl mb-4 overflow-hidden border border-gray-200">
@@ -29,30 +46,47 @@ export const UserTicketInfoCard = ({ ticket }: any) => {
             <div className="p-5">
                 {/* Student Info and Badges Row */}
                 <div className="flex flex-wrap items-center gap-2 mb-4">
-                    <Link
-                        href={`${profileUrl}`}
-                        // onClick={() =>
-                        //     onViewStudentProfile &&
-                        //     onViewStudentProfile(ticket.studentId)
-                        // }
-                        className="inline-flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-[#044866] to-[#0D5468] text-white rounded-lg shadow-md hover:shadow-xl transition-all group/student"
-                        title="View student profile"
-                    >
-                        <div className="size-6 bg-white/20 rounded-full flex items-center justify-center">
-                            <User className="size-4" />
-                        </div>
-                        <div>
-                            <div className="text-xs flex items-center gap-1.5">
-                                {ticket?.user?.name ?? '---'}
-                                <ExternalLink className="size-3 opacity-0 group-hover/student:opacity-100 transition-opacity" />
+                    {ticket?.origin === 'STUDENT' && (
+                        <Link
+                            href={placementUrl ?? profileUrl}
+                            className="inline-flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-[#044866] to-[#0D5468] text-white rounded-lg shadow-md hover:shadow-xl transition-all group/student"
+                            title="View student profile"
+                        >
+                            <div className="size-6 bg-white/20 rounded-full flex items-center justify-center">
+                                <User className="size-4" />
                             </div>
-                            <div className="text-white/70 text-xs">
-                                {(ticket?.origin === 'STUDENT' &&
-                                    ticket?.user?.student?.studentId) ??
-                                    '---'}
+                            <div>
+                                <div className="text-xs flex items-center gap-1.5">
+                                    {ticket?.user?.name ?? '---'}
+                                    <ExternalLink className="size-3 opacity-0 group-hover/student:opacity-100 transition-opacity" />
+                                </div>
+                                <div className="text-white/70 text-xs">
+                                    {ticket?.user?.student?.studentId ?? '---'}
+                                </div>
                             </div>
-                        </div>
-                    </Link>
+                        </Link>
+                    )}
+                    {ticket?.relatedUser?.role === UserRoles.STUDENT && (
+                        <Link
+                            href={placementUrl ?? profileUrl}
+                            className="inline-flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-[#044866] to-[#0D5468] text-white rounded-lg shadow-md hover:shadow-xl transition-all group/student"
+                            title="View student profile"
+                        >
+                            <div className="size-6 bg-white/20 rounded-full flex items-center justify-center">
+                                <User className="size-4" />
+                            </div>
+                            <div>
+                                <div className="text-xs flex items-center gap-1.5">
+                                    {ticket?.relatedUser?.name ?? '---'}
+                                    <ExternalLink className="size-3 opacity-0 group-hover/student:opacity-100 transition-opacity" />
+                                </div>
+                                <div className="text-white/70 text-xs">
+                                    {ticket?.relatedUser?.student?.studentId ??
+                                        '---'}
+                                </div>
+                            </div>
+                        </Link>
+                    )}
 
                     <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-500/10 border border-purple-500/30 text-purple-700 rounded-lg">
                         <Zap className="size-3" />
@@ -161,19 +195,10 @@ export const UserTicketInfoCard = ({ ticket }: any) => {
                 </div>
 
                 {/* Industry Info (if available) */}
-                {ticket?.relatedUser && (
+                {ticket?.origin === 'INDUSTRY' && (
                     <div className="mt-3 grid grid-cols-2 gap-2">
-                        {/* {ticket.industryName && ( */}
                         <Link
                             href={`${profileUrl}`}
-                            // onClick={() => {
-                            //     const industryId = getIndustryId(
-                            //         ticket.industryName
-                            //     )
-                            //     if (industryId && onViewIndustryProfile) {
-                            //         onViewIndustryProfile(industryId)
-                            //     }
-                            // }}
                             className="bg-[#F7A619]/10 rounded-lg p-2.5 border border-[#F7A619]/20 hover:bg-[#F7A619]/20 transition-colors group/industry"
                             title="View industry profile"
                         >
@@ -185,14 +210,11 @@ export const UserTicketInfoCard = ({ ticket }: any) => {
                                         <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover/industry:opacity-100 transition-opacity" />
                                     </div>
                                     <div className="text-xs text-[#044866]">
-                                        {ticket?.relatedUser?.user?.name ??
-                                            'NA'}
+                                        {ticket?.user?.name ?? 'NA'}
                                     </div>
                                 </div>
                             </div>
                         </Link>
-                        {/* )} */}
-                        {/* {ticket.industryType && ( */}
                         <div className="bg-purple-500/10 rounded-lg p-2.5 border border-purple-500/20">
                             <div className="flex items-center gap-2 text-purple-700">
                                 <FileText className="w-4 h-4" />
@@ -201,14 +223,49 @@ export const UserTicketInfoCard = ({ ticket }: any) => {
                                         Type
                                     </div>
                                     <div className="text-xs text-[#044866]">
-                                        {ticket?.industryType ?? 'NA'}
+                                        {ticket?.user?.industryType ?? 'NA'}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {/*  )} */}
                     </div>
                 )}
+                {ticket?.relatedUser &&
+                    ticket?.relatedUser?.role === UserRoles.INDUSTRY && (
+                        <div className="mt-3 grid grid-cols-2 gap-2">
+                            <Link
+                                href={`${profileUrl}`}
+                                className="bg-[#F7A619]/10 rounded-lg p-2.5 border border-[#F7A619]/20 hover:bg-[#F7A619]/20 transition-colors group/industry"
+                                title="View industry profile"
+                            >
+                                <div className="flex items-center gap-2 text-[#F7A619]">
+                                    <Building2 className="w-4 h-4" />
+                                    <div className="text-left flex-1">
+                                        <div className="text-xs text-[#F7A619]/70 flex items-center gap-1">
+                                            Industry
+                                            <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover/industry:opacity-100 transition-opacity" />
+                                        </div>
+                                        <div className="text-xs text-[#044866]">
+                                            {ticket?.relatedUser?.name ?? 'NA'}
+                                        </div>
+                                    </div>
+                                </div>
+                            </Link>
+                            <div className="bg-purple-500/10 rounded-lg p-2.5 border border-purple-500/20">
+                                <div className="flex items-center gap-2 text-purple-700">
+                                    <FileText className="w-4 h-4" />
+                                    <div>
+                                        <div className="text-xs text-purple-700/70">
+                                            Type
+                                        </div>
+                                        <div className="text-xs text-[#044866]">
+                                            {ticket?.industryType ?? 'NA'}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
             </div>
         </div>
     )

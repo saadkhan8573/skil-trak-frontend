@@ -132,8 +132,7 @@ export const TextInput = ({
             <div className="w-full">
                 <div className="relative">
                     <input
-                        className={`${inputFieldClasses} ${shadow}  ${color ? color : 'bg-white'
-                            }`}
+                        className={`${inputFieldClasses} ${shadow} ${color ? color : 'bg-white'} caret-black`}
                         {...(id ? { id } : {})}
                         {...formRef}
                         type={passwordType || type}

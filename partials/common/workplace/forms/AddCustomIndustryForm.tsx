@@ -318,8 +318,9 @@ export const AddCustomIndustryForm = ({
                                         options={countryOptions || []}
                                         loading={country.isLoading}
                                         onChange={(e: any) => {
-                                            setCountryId(e?.value)
+                                            setCountryId(e)
                                         }}
+                                        onlyValue
                                         validationIcons
                                         required
                                     />

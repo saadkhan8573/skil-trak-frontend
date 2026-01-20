@@ -14,7 +14,7 @@ import { useState } from 'react'
 
 interface UploadFacilityChecklistDialogProps {
     open: boolean
-    isReassignCourse: boolean
+    isReassignCourse?: boolean
     approval: IndustryCourseApproval
     onOpenChange: (open: boolean) => void
 }

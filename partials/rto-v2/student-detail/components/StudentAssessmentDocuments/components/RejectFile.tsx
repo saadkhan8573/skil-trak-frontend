@@ -1,4 +1,9 @@
 import { Button, ShowErrorNotifications } from '@components'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@components/ui/tooltip'
 import { useNotification } from '@hooks'
 import { RtoV2Api } from '@queries'
 import { FileType } from '@types'
@@ -6,7 +11,7 @@ import { ThumbsDown } from 'lucide-react'
 import { useState } from 'react'
 import { RejectFileModal } from '../modal'
 
-export const    RejectFile = ({
+export const RejectFile = ({
     file,
     studentId,
 }: {
@@ -46,13 +51,18 @@ export const    RejectFile = ({
     return (
         <div>
             <ShowErrorNotifications result={fileStatusChangeResult} />
-            <Button
-                mini
-                outline
-                variant="error"
-                Icon={ThumbsDown}
-                onClick={() => setIsOpen(true)}
-            />
+            <Tooltip>
+                <TooltipTrigger>
+                    <Button
+                        mini
+                        outline
+                        variant="error"
+                        Icon={ThumbsDown}
+                        onClick={() => setIsOpen(true)}
+                    />
+                </TooltipTrigger>
+                <TooltipContent>Reject File</TooltipContent>
+            </Tooltip>
             <RejectFileModal
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}

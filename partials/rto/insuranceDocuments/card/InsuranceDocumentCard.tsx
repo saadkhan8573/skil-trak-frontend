@@ -1,9 +1,8 @@
-import { ActionButton, Button, Typography } from '@components'
+import { ActionButton, Button, Typography, ViewDocumentModal } from '@components'
 import moment from 'moment'
 import { ReactElement, useMemo, useState } from 'react'
 import classNames from 'classnames'
 import { UploadDocModal } from '../modal'
-import { ViewDocumentModal } from '@partials/rto-v2/industry-detail/components/courses/modals/ViewDocumentModal'
 
 export const InsuranceDocumentCard = ({
     insurance,

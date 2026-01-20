@@ -1,5 +1,4 @@
-import { Badge, Button } from '@components'
-import { DocumentsView } from '@hooks'
+import { Badge, Button, ViewDocumentModal } from '@components'
 import { getFileExtensionByUrl } from '@utils'
 import {
     AlertCircle,
@@ -25,17 +24,16 @@ export const FolderDocumentCard = ({
     doc: any
     config: any
 }) => {
+
     const DocStatusIcon = config.icon
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false)
-
-    const { documentsViewModal, onFileClicked } = DocumentsView()
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false)
 
     const extension = getFileExtensionByUrl(doc?.file)
 
     return (
         <>
-            {documentsViewModal}
             <div className="flex items-center justify-between p-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 transition-all group">
                 <div className="flex items-center gap-4 flex-1">
                     <div className="w-9 h-9 rounded bg-white border border-slate-200 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -54,7 +52,7 @@ export const FolderDocumentCard = ({
                             </span>
                             <span className="flex items-center gap-1">
                                 <Calendar className="w-3 h-3" />
-                                {moment(doc?.uploadDate).format('DD MMM YYYY')}
+                                {moment(doc?.createdAt).format('DD MMM YYYY')}
                             </span>
                             {doc?.actionedBy && (
                                 <span className="text-emerald-600 flex items-center gap-1">
@@ -110,13 +108,7 @@ export const FolderDocumentCard = ({
                         mini
                         Icon={Eye}
                         variant="action"
-                        onClick={() =>
-                            onFileClicked({
-                                ...doc,
-                                type: 'all',
-                                extension,
-                            })
-                        }
+                        onClick={() => setIsViewModalOpen(true)}
                     />
                     <Button
                         mini
@@ -162,6 +154,11 @@ export const FolderDocumentCard = ({
                 open={isArchiveModalOpen}
                 onOpenChange={setIsArchiveModalOpen}
                 file={doc}
+            />
+            <ViewDocumentModal
+                open={isViewModalOpen}
+                onOpenChange={setIsViewModalOpen}
+                fileUrl={doc?.file || ''}
             />
         </>
     )

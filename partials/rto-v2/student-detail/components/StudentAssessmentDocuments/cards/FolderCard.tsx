@@ -1,4 +1,4 @@
-import { Badge } from '@components'
+import { Badge, Typography } from '@components'
 import {
     AssessmentEvidenceDetailType,
     Folder as FolderType,
@@ -40,7 +40,6 @@ export const FolderCard = ({
     const StatusIcon = config.icon
     const [isOpened, setIsOpened] = useState(false)
     const [modal, setModal] = useState<any>(null)
-    const { workplaceRto } = useWorkplace()
 
     const rtoDetail = SubAdminApi.Student.getStudentRtoDetail(
         Number(student?.id),
@@ -75,6 +74,10 @@ export const FolderCard = ({
     const response = folder?.studentResponse?.[0]
 
     const folderStatus = response?.status
+
+    const responseFiles = response?.files
+
+    const isAllFilesApproved = responseFiles?.every((file: any) => file?.status === 'approved')
 
     const onInitiateSigning = () => {
         setModal(
@@ -136,13 +139,25 @@ export const FolderCard = ({
                                         folderStatus === 'approved'
                                             ? 'success'
                                             : folderStatus === 'pending'
-                                            ? 'warning'
-                                            : folderStatus === 'rejected'
-                                            ? 'error'
-                                            : 'info'
+                                                ? 'warning'
+                                                : folderStatus === 'rejected'
+                                                    ? 'error'
+                                                    : 'info'
                                     }
                                     Icon={StatusIcon}
                                 />
+                                {response?.filesCount > 0 &&
+                                    !isAllFilesApproved && (
+                                        <Typography
+                                            variant="label"
+                                            color="text-error"
+                                            className="flex items-center gap-1 font-medium"
+                                        >
+                                            <AlertCircle size={14} />
+                                            Approve all files before folder
+                                            approval
+                                        </Typography>
+                                    )}
                             </div>
                             {response?.comment && (
                                 <div
@@ -189,7 +204,7 @@ export const FolderCard = ({
                     </div>
 
                     <div className="flex items-center gap-2">
-                        {folderStatus === 'pending' && (
+                        {folderStatus === 'pending' && response?.filesCount > 0 && isAllFilesApproved && (
                             <>
                                 <ApproveAllFiles folder={response} />
                                 <RejectAllFile folder={response} />

@@ -57,6 +57,8 @@ export function CourseCard({
     const [isCourseExpanded, setIsCourseExpanded] = useState(true)
     const [uploadFacilityChecklist, setUploadFacilityChecklist] =
         useState(false)
+    const [isReassignCourse, setIsReassignCourse] =
+        useState(false)
     const [isDeleteOpen, setIsDeleteOpen] = useState(false)
 
     const userCredentials = useMemo(() => getUserCredentials(), [])
@@ -261,13 +263,16 @@ export function CourseCard({
                                 Course Fully Approved & Active
                             </p>
                         </div>
-                        {!approval?.file && !isDeletedInternal && (
+                        {!isDeletedInternal && (
                             <Button
-                                onClick={() => setUploadFacilityChecklist(true)}
+                                onClick={() => {
+                                    setIsReassignCourse(true)
+                                    setUploadFacilityChecklist(true)
+                                }}
                                 className="bg-gradient-to-r from-[#044866] to-[#0D5468] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#044866]/30"
                             >
                                 <UploadCloud className="w-3.5 h-3.5" />
-                                Manual E-sign Upload
+                                {approval?.file ? "Update Facility Checklist" : "Manual E-sign Upload"}
                             </Button>
                         )}
                     </motion.div>
@@ -345,7 +350,11 @@ export function CourseCard({
             <UploadFacilityChecklistDialog
                 open={uploadFacilityChecklist}
                 approval={approval}
-                onOpenChange={setUploadFacilityChecklist}
+                isReassignCourse={isReassignCourse}
+                onOpenChange={(open) => {
+                    setUploadFacilityChecklist(open)
+                    setIsReassignCourse(false)
+                }}
             />
 
             <DeleteCourseDialog

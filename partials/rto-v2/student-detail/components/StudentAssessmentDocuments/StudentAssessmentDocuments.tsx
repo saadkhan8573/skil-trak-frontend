@@ -164,7 +164,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                 return (
                     (result?.result === Result.ReOpened ||
                         result?.result === Result.NotCompetent ||
-                        allCommentsAdded) &&
+                        allCommentsAdded) && result?.result !== Result.Competent &&
                     !result?.isSubmitted
                 )
             } else {

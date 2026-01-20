@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { AssessmentCourseType, Course, Sector, Student } from '@types'
 import { useStudentAssessmentCoursesQuery, SubAdminApi } from '@queries'
 import { useAppDispatch, useAppSelector } from '@redux/hooks'
-import { setSelectedCourse } from '@redux'
+import { setIsCourseLoading, setSelectedCourse } from '@redux'
 
 export const useCourseSelection = () => {
     const [selectedSector, setSelectedSector] = useState<number | null>(null)
@@ -85,12 +85,16 @@ export const useCourseSelection = () => {
                     selectedSector && course
                         ? course
                         : !selectedCourse
-                        ? courses?.[0]
-                        : selectedCourse
+                            ? courses?.[0]
+                            : selectedCourse
                 )
             )
         }
     }, [courses, selectedSector])
+
+    useEffect(() => {
+        dispatch(setIsCourseLoading(studentCourses?.isLoading || studentCourses?.isFetching))
+    }, [studentCourses?.isLoading, studentCourses?.isFetching])
 
     return {
         selectedSector,

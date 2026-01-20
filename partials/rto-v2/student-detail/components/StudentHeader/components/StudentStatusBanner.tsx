@@ -1,7 +1,7 @@
-import { Ban, AlertCircle, PhoneOff, Clock } from 'lucide-react'
+import { Ban, AlertCircle, PhoneOff, Clock, CheckCircle, XCircle } from 'lucide-react'
 import { Typography } from '@components'
 import { useAppSelector } from '@redux/hooks'
-import { UserStatus } from '@types'
+import { UserStatus, StudentStatusEnum } from '@types'
 
 export function StudentStatusBanner() {
     const student = useAppSelector((state) => state.student.studentDetail)
@@ -12,8 +12,10 @@ export function StudentStatusBanner() {
     const isFlagged = student?.hasIssue
     const isNonContactable = student?.nonContactable
     const isSnoozed = student?.isSnoozed
+    const isCompleted = student?.studentStatus === StudentStatusEnum.COMPLETED
+    const isExpired = student?.studentStatus === StudentStatusEnum.EXPIRED
 
-    if (!isBlocked && !isFlagged && !isNonContactable && !isSnoozed) return null
+    if (!isBlocked && !isFlagged && !isNonContactable && !isSnoozed && !isCompleted && !isExpired) return null
 
     let title = ''
     let description = ''
@@ -43,6 +45,19 @@ export function StudentStatusBanner() {
             : 'This student is temporarily snoozed'
         Icon = Clock
         colorClasses = 'bg-gradient-to-r from-[#F7A619] via-[#EA580C] to-[#F7A619]'
+    } else if (isCompleted) {
+        title = '✅ Student Completed'
+        description = 'This student has successfully completed their program'
+        Icon = CheckCircle
+        colorClasses = 'bg-gradient-to-r from-[#10B981] via-[#059669] to-[#10B981]'
+    } else if (isExpired) {
+        title = '⏰ Student Expired'
+        const expiryDate = student?.expiryDate
+        description = expiryDate
+            ? `Student placement expired on ${new Date(expiryDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+            : 'This student\'s placement has expired'
+        Icon = XCircle
+        colorClasses = 'bg-gradient-to-r from-[#EF4444] via-[#DC2626] to-[#EF4444]'
     }
 
     return (

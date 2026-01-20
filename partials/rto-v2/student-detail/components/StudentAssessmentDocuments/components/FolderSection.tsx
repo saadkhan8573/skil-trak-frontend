@@ -25,17 +25,6 @@ export const FolderSection = ({
     description,
     student,
 }: FolderSectionProps) => {
-    // const documents = RtoV2Api.StudentDocuments.getStudentDocumentsList(
-    //     {
-    //         // search: `${filterKey}:true`,
-    //         studentId,
-    //         courseId: course?.id,
-    //     },
-    //     {
-    //         skip: !studentId || !course.id,
-    //     }
-    // )
-
     return (
         <div className="bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
             <FolderHeaderCard

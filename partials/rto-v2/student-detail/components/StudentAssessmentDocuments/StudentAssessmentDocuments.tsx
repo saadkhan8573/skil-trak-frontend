@@ -50,7 +50,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
 
     const industryStats = {
         pending: count?.data?.pendingIndustryCheck,
-        approved: count?.data?.approvedDocuments,
+        approved: count?.data?.approvedIndustryCheck,
     }
 
     const courseStats = {

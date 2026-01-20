@@ -9,6 +9,7 @@ import {
     TechnicalError,
     Tooltip,
     UserCreatedAt,
+    ViewDocumentModal,
 } from '@components'
 import { ColumnDef } from '@tanstack/react-table'
 
@@ -25,7 +26,6 @@ import { ellipsisText, getUserCredentials } from '@utils'
 import {
     ApproveRejectConfirmationModal,
     UploadFacilityChecklistDialog,
-    ViewDocumentModal,
 } from '../modal'
 import { setIndustryDetail, useAppDispatch } from '@redux'
 
@@ -180,8 +180,8 @@ export const PedingCourseApprovalIndustries = () => {
                         info.getValue() === 'pending'
                             ? 'warning'
                             : info.getValue() === 'approved'
-                            ? 'success'
-                            : 'error'
+                                ? 'success'
+                                : 'error'
                     }
                     size="xs"
                     shape="pill"

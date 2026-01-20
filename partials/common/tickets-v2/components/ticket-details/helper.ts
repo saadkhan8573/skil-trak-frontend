@@ -55,3 +55,25 @@ export const getProfileUrl = ({
 
     return '#'
 }
+
+export const getPlacementProfileUrl = ({
+    role,
+    origin,
+    workplaceRequestId,
+    studentId,
+}: {
+    role: Role
+    origin: Origin
+    workplaceRequestId?: number | string
+    studentId?: number | string
+}) => {
+    if (!workplaceRequestId || !studentId) return '#'
+
+    const placementRoutes: Record<Role, string> = {
+        admin: `/portals/admin/workplaces/${workplaceRequestId}/${studentId}`,
+        subadmin: `/portals/sub-admin/tasks/workplace/${workplaceRequestId}/${studentId}`,
+        rto: `/portals/rto/students-and-placements/placement-requests/${workplaceRequestId}/${studentId}`,
+    }
+
+    return placementRoutes[role]
+}

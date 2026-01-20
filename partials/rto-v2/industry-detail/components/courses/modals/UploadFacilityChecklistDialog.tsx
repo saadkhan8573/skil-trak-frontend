@@ -14,6 +14,7 @@ import { useState } from 'react'
 
 interface UploadFacilityChecklistDialogProps {
     open: boolean
+    isReassignCourse: boolean
     approval: IndustryCourseApproval
     onOpenChange: (open: boolean) => void
 }
@@ -22,6 +23,7 @@ export function UploadFacilityChecklistDialog({
     open,
     approval,
     onOpenChange,
+    isReassignCourse,
 }: UploadFacilityChecklistDialogProps) {
     const { notification } = useNotification()
     const [uploadedFile, setUploadedFile] = useState<File | null>(null)
@@ -67,6 +69,7 @@ export function UploadFacilityChecklistDialog({
         const res: any = await uploadFacilityChecklist({
             id: approval.id,
             body: formData,
+            isResubmitted: isReassignCourse,
         })
 
         if (res?.data) {
@@ -105,8 +108,8 @@ export function UploadFacilityChecklistDialog({
                         <Card className="p-1 border-2 border-dashed border-[#044866]/30 hover:border-[#044866]/60 transition-all rounded-2xl bg-background/60">
                             <div
                                 className={`relative rounded-xl p-6 text-center transition-all cursor-pointer ${dragActive
-                                        ? 'border-2 border-[#044866] bg-[#044866]/5'
-                                        : 'border-2 border-transparent hover:bg-muted/60'
+                                    ? 'border-2 border-[#044866] bg-[#044866]/5'
+                                    : 'border-2 border-transparent hover:bg-muted/60'
                                     }`}
                                 onDragEnter={handleDrag}
                                 onDragLeave={handleDrag}

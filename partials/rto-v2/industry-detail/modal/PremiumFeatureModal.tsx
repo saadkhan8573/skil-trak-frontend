@@ -57,7 +57,6 @@ export const PremiumFeatureModal = () => {
         setAddOnServices(editingAddOnServices)
         setAddOnDialogOpen(false)
         // TODO: Implement API call to save pricing
-        console.log('Saving add-on services:', editingAddOnServices)
     }
 
     return (

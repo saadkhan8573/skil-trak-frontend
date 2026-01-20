@@ -92,20 +92,16 @@ export const useAssessmentLogic = (
     )
 
     const shouldShowSubmitButton = useMemo(() => {
-        console.log('Check is this running outer?')
         if (!getAssessmentResponse.isSuccess || !selectedCourse) return false
-        console.log('Check is this running outer? 2')
 
         if (selectedCourse?.results?.length > 0) {
             if (result?.totalSubmission < 3) {
-                console.log('Check is this running?', 1)
                 return (
                     result?.result === Result.ReOpened ||
                     result?.result === Result.NotCompetent ||
                     allCommentsAdded
                 )
             } else {
-                console.log('Check is this running?', 2)
                 return (
                     !getAssessmentResponse.isLoading &&
                     !getAssessmentResponse.isFetching &&
@@ -115,7 +111,6 @@ export const useAssessmentLogic = (
                 )
             }
         } else {
-            console.log('Check is this running?', 3)
             return (
                 !getAssessmentResponse.isLoading &&
                 !getAssessmentResponse.isFetching &&

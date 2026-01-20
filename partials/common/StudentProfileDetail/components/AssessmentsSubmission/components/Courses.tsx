@@ -63,8 +63,6 @@ export const Courses: React.FC<CoursesProps> = ({
         shouldShowSubmitButton,
     } = useAssessmentLogic(selectedCourse, getFolders, getAssessmentResponse)
 
-    console.log({ OLDshouldShowSubmitButton: shouldShowSubmitButton })
-
     // Notify parent component of course selection
     useEffect(() => {
         if (onSetSelectedCourse) {

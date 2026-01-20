@@ -44,8 +44,6 @@ import { useSubadminProfile } from '@hooks'
 import { checkFilteredDataLength, getCountData, getFilterQuery } from '@utils'
 import { useRouter } from 'next/router'
 
-type Props = {}
-
 const filterKeys = [
     'nowp',
     'name',

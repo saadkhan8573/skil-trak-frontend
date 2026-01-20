@@ -73,7 +73,6 @@ export function ApproveFacilityChecklistDialog({
                 onOpenChange(false)
             }
         } catch (error) {
-            console.log({ error })
             notification.success({
                 title: 'Course Approved',
                 description: 'Course Approved Successfully!',

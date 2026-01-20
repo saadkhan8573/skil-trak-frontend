@@ -97,13 +97,13 @@ export const ArchivedStudent = () => {
             },
             Icon: FaEye,
         },
-        {
-            text: 'View Old Profile',
-            onClick: (student) => {
-                router.push(`/portals/admin/student/${student?.id}/old-profile`)
-            },
-            Icon: FaEye,
-        },
+        // {
+        //     text: 'View Old Profile',
+        //     onClick: (student) => {
+        //         router.push(`/portals/admin/student/${student?.id}/old-profile`)
+        //     },
+        //     Icon: FaEye,
+        // },
         {
             text: 'Edit',
             onClick: (row: any) => {

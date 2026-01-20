@@ -47,7 +47,6 @@ export const ViewQuestionsModal = ({
             </div>
         )
     }
-    console.log('workplaceAnswers', workplaceAnswers?.data)
     return (
         <Modal
             title="View Answers"

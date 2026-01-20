@@ -5,7 +5,7 @@ import {
     LoadingAnimation,
     Table,
     TableChildrenProps,
-    TechnicalError
+    TechnicalError,
 } from '@components'
 import { FaEdit } from 'react-icons/fa'
 
@@ -150,7 +150,7 @@ export const ApprovedStudent = () => {
 
     return (
         <>
-            {modal && modal}
+            {modal}
             {newModal}
             <div className="flex flex-col gap-y-3">
                 {/* <PageHeading

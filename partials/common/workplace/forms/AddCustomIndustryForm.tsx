@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import * as yup from 'yup'
 import _debounce from 'lodash/debounce'
@@ -68,6 +68,10 @@ export const AddCustomIndustryForm = ({
     const [countryId, setCountryId] = useState(null)
     const [onStateSelect, setOnStateSelect] = useState()
     const country = CommonApi.Countries.useCountriesList()
+
+    console.log({
+        sdfsfsd: country?.data?.find((c: OptionType) => c?.value === countryId),
+    })
 
     const { data: states, isLoading: statesLoading } =
         CommonApi.Countries.useCountryStatesList(countryId, {
@@ -175,6 +179,21 @@ export const AddCustomIndustryForm = ({
             })
         }
     }
+
+    const countryOptions = useMemo(
+        () =>
+            country?.data?.map((country: any) => ({
+                label: country.name,
+                value: country.id,
+            })),
+        [country?.data]
+    )
+
+    console.log({
+        iuyjuhu: countryOptions?.find(
+            (c: OptionType) => c?.value === countryId
+        ),
+    })
 
     return (
         <>
@@ -292,24 +311,15 @@ export const AddCustomIndustryForm = ({
                             {/* Address Information */}
 
                             <div>
-                                {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 mb-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 mb-4">
                                     <Select
                                         name="country"
                                         label={'Country'}
-                                        options={
-                                            country?.data?.map((country: any) => ({
-                                                label: country.name,
-                                                value: country.id,
-                                            })) || []
-                                        }
+                                        options={countryOptions || []}
                                         loading={country.isLoading}
                                         onChange={(e: any) => {
                                             setCountryId(e?.value)
-                                            formMethods.setValue('country', e?.label)
                                         }}
-                                        value={country?.data?.find(
-                                            (c: OptionType) => c?.value === countryId
-                                        )}
                                         validationIcons
                                         required
                                     />
@@ -320,8 +330,8 @@ export const AddCustomIndustryForm = ({
                                             label: state.name,
                                             value: state.id,
                                         }))}
+                                        onlyValue
                                         placeholder={'Select State...'}
-
                                         loading={statesLoading}
                                         disabled={!countryId}
                                         validationIcons
@@ -331,7 +341,7 @@ export const AddCustomIndustryForm = ({
                                                 state?.value === onStateSelect
                                         )}
                                     />
-                                </div> */}
+                                </div>
                                 <div className="grid grid-cols-4 gap-x-8">
                                     <div className="col-span-3">
                                         <AddressFieldInput

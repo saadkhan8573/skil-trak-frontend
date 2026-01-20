@@ -55,9 +55,14 @@ const ApproveRequestPage = () => {
             const errorData = (approveRequest?.error as any)?.data
             const errorMessage = errorData?.message
 
-            if (errorMessage?.includes('No interview availability found') || errorData?.type === 'INTERVIEW_AVAILABILITY_MISSING') {
+            if (
+                errorMessage?.includes('No interview availability found') ||
+                errorData?.type === 'INTERVIEW_AVAILABILITY_MISSING'
+            ) {
                 // Set industry detail in Redux before opening modal
-                const industryData = checkIsIndustryPerformedAction?.data?.industries?.[0]?.industry
+                const industryData =
+                    checkIsIndustryPerformedAction?.data?.industries?.[0]
+                        ?.industry
                 if (industryData) {
                     dispatch(setIndustryDetail(industryData))
                 }
@@ -70,14 +75,15 @@ const ApproveRequestPage = () => {
                 description: errorMessage || 'Something went wrong',
             })
         }
-    }, [approveRequest?.isError, approveRequest?.error, checkIsIndustryPerformedAction?.data])
+    }, [
+        approveRequest?.isError,
+        approveRequest?.error,
+        checkIsIndustryPerformedAction?.data,
+    ])
 
     const industryResponsed =
         checkIsIndustryPerformedAction?.data?.industries[0]?.industryResponse
-    console.log(
-        'checkIsIndustryPerformedAction',
-        checkIsIndustryPerformedAction?.data
-    )
+
     const isRejected =
         checkIsIndustryPerformedAction?.data?.industries[0]
             ?.industryResponse === 'rejected'
@@ -85,7 +91,7 @@ const ApproveRequestPage = () => {
     return (
         <div>
             {checkIsIndustryPerformedAction?.isLoading ||
-                approveRequest?.isLoading ? (
+            approveRequest?.isLoading ? (
                 <LoadingAnimation />
             ) : approveRequest?.isError ? (
                 <div
@@ -148,10 +154,10 @@ const ApproveRequestPage = () => {
                     </Card>
                 </div>
             ) : checkIsIndustryPerformedAction?.isSuccess &&
-                checkIsIndustryPerformedAction?.data &&
-                checkIsIndustryPerformedAction?.data?.currentStatus !==
-                WorkplaceCurrentStatus?.AwaitingWorkplaceResponse &&
-                industryResponsed ? (
+              checkIsIndustryPerformedAction?.data &&
+              checkIsIndustryPerformedAction?.data?.currentStatus !==
+                  WorkplaceCurrentStatus?.AwaitingWorkplaceResponse &&
+              industryResponsed ? (
                 <div
                     className="max-w-5xl mx-auto py-10 flex items-center justify-center p-4"
                     style={{ backgroundColor: '#f8fafc' }}

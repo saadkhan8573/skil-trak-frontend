@@ -1,7 +1,7 @@
 import { Button } from '@components'
 import { UserRoles } from '@constants'
 import { IndustryCourseApproval } from '@types'
-import { getUserCredentials } from '@utils'
+import { cn, getUserCredentials } from '@utils'
 import { motion } from 'framer-motion'
 import { AlertCircle, FileCheck, UploadCloud } from 'lucide-react'
 import moment from 'moment'
@@ -22,7 +22,7 @@ export const PendingCourseApproval = ({
         useState(false)
 
     const user = getUserCredentials()
-    const isLocal = process.env.NEXT_PUBLIC_NODE_ENV === 'local'
+    const isLocal = process.env.NEXT_PUBLIC_NODE_ENV === 'locala'
     const isAllowedUser = [4453, 78, 5714, 20365].includes(user?.id)
     const isAdmin = user?.role === UserRoles.ADMIN
     const showActionButtons =
@@ -61,24 +61,27 @@ export const PendingCourseApproval = ({
                             </p>
                         </div>
                     </div>
-                    {showActionButtons &&
-                        (hasFile ? (
-                            <Button
-                                onClick={() => setReviewFacilityChecklist(true)}
-                                className="bg-gradient-to-r from-[#F7A619] to-[#EA580C] hover:from-[#EA580C] hover:to-[#D97706] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#F7A619]/30"
-                            >
-                                <FileCheck className="w-3.5 h-3.5" />
-                                Review & Approve
-                            </Button>
-                        ) : (
-                            <Button
-                                onClick={() => setUploadFacilityChecklist(true)}
-                                className="bg-gradient-to-r from-[#044866] to-[#0D5468] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#044866]/30"
-                            >
-                                <UploadCloud className="w-3.5 h-3.5" />
-                                Manual E-sign Upload
-                            </Button>
-                        ))}
+                    {hasFile ? (
+                        <Button
+                            disabled={!showActionButtons}
+                            onClick={() => setReviewFacilityChecklist(true)}
+                            className={cn({
+                                'bg-gradient-to-r from-[#F7A619] to-[#EA580C] hover:from-[#EA580C] hover:to-[#D97706] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#F7A619]/30':
+                                    showActionButtons,
+                            })}
+                        >
+                            <FileCheck className="w-3.5 h-3.5" />
+                            Review & Approve
+                        </Button>
+                    ) : (
+                        <Button
+                            onClick={() => setUploadFacilityChecklist(true)}
+                            className="bg-gradient-to-r from-[#044866] to-[#0D5468] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#044866]/30"
+                        >
+                            <UploadCloud className="w-3.5 h-3.5" />
+                            Manual E-sign Upload
+                        </Button>
+                    )}
                 </div>
             </motion.div>
 

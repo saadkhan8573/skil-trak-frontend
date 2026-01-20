@@ -17,8 +17,6 @@ import {
 } from '../modals'
 import { ChoosePlacementNetworkModal } from '../modals'
 
-
-
 export const IndustryHeader = () => {
     const rto = useAppSelector((state) => state.rto.rtoDetail)
 

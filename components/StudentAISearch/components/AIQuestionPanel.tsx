@@ -175,7 +175,7 @@ export function AIQuestionPanel({ student }: AIQuestionPanelProps) {
                         </div>
                         <div>
                             <Typography variant="subtitle" semibold>
-                                Ask AI Bunny This Student
+                                Ask AI Lumo This Student
                             </Typography>
                             <Typography variant="small" color="text-gray-700">
                                 Get instant insights about placement status,
@@ -231,7 +231,7 @@ export function AIQuestionPanel({ student }: AIQuestionPanelProps) {
                                             <div className="flex items-center gap-2 mb-2">
                                                 <Sparkles className="h-4 w-4 text-primaryNew" />
                                                 <span className="text-xs font-semibold text-primaryNew">
-                                                    AI Bunny
+                                                    AI Lumo
                                                 </span>
                                             </div>
                                         )}
@@ -248,7 +248,7 @@ export function AIQuestionPanel({ student }: AIQuestionPanelProps) {
                                         <div className="flex items-center gap-2">
                                             <Loader2 className="h-4 w-4 animate-spin text-primaryNew" />
                                             <span className="text-sm text-gray-600">
-                                                Bunny AI is thinking...
+                                                Lumo AI is thinking...
                                             </span>
                                         </div>
                                     </div>

@@ -5,20 +5,18 @@ import { EmptyData, PageSize, Pagination, TechnicalError } from '@components'
 import { StudentsTabSkeleton } from '../../../skeletonLoader'
 import { useState } from 'react'
 
-export function StudentsList({ status }: { status?: string }) {
+export function WaitingStudents() {
     const [itemPerPage, setItemPerPage] = useState(20)
     const [page, setPage] = useState(1)
 
     const industry = useAppSelector((state) => state.industry)
-    const students = RtoV2Api.Industries.industryStudentsList(
+    const students = RtoV2Api.Industries.getIndustryWaitingStudents(
         {
-            sectorId: industry?.activeSector ?? 0,
             industryId: industry?.industryDetail?.id ?? 0,
             params: {
                 search: '',
                 skip: itemPerPage * page - itemPerPage,
                 limit: itemPerPage,
-                ...(status ? { status } : {}),
             },
         },
         {
@@ -28,7 +26,6 @@ export function StudentsList({ status }: { status?: string }) {
 
     return (
         <div className="space-y-2">
-
             {students?.isError ? <TechnicalError /> : null}
             {students?.isLoading || students?.isFetching ? (
                 <StudentsTabSkeleton />
@@ -48,16 +45,14 @@ export function StudentsList({ status }: { status?: string }) {
                             updateUrl={false}
                         />
                     </div>
-                    {
-                        students?.data?.data?.map((student: any) => (
-                            <StudentCard key={student.id} student={student} />
-                        ))
-                    }
+                    {students?.data?.data?.map((student: any) => (
+                        <StudentCard key={student.id} student={student} />
+                    ))}
                 </>
             ) : students?.isSuccess ? (
                 <EmptyData
-                    title="No Students"
-                    description="No students found"
+                    title="No Waiting Students"
+                    description="No students waiting for industry found"
                     height="50vh"
                 />
             ) : null}

@@ -4,7 +4,7 @@ import {
     Folder as FolderType,
     Student,
 } from '@types'
-import { cn } from '@utils'
+import { cn, getCourseResult } from '@utils'
 import {
     AlertCircle,
     CheckCircle,
@@ -14,7 +14,7 @@ import {
     Folder,
     FolderOpen,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
     ApproveAllFiles,
     FolderFiles,
@@ -25,6 +25,7 @@ import { CommonApi, SubAdminApi } from '@queries'
 import { useWorkplace } from '@hooks'
 import { InitiateSigningModal } from '../../../../../sub-admin/assessmentEvidence/modal'
 import { Button } from '@components'
+import { Result } from '@constants'
 
 export const FolderCard = ({
     folder,
@@ -37,6 +38,7 @@ export const FolderCard = ({
     course: any
     student: Student
 }) => {
+
     const StatusIcon = config.icon
     const [isOpened, setIsOpened] = useState(false)
     const [modal, setModal] = useState<any>(null)
@@ -48,6 +50,8 @@ export const FolderCard = ({
             refetchOnMountOrArgChange: 300,
         }
     )
+
+    console.log({ course })
 
     const getTemplate = CommonApi.ESign.useESignTemplateDetail(
         {
@@ -78,6 +82,11 @@ export const FolderCard = ({
     const responseFiles = response?.files
 
     const isAllFilesApproved = responseFiles?.every((file: any) => file?.status === 'approved')
+
+    const result = useMemo(
+        () => getCourseResult(course?.results),
+        [course?.results]
+    )
 
     const onInitiateSigning = () => {
         setModal(
@@ -147,7 +156,7 @@ export const FolderCard = ({
                                     Icon={StatusIcon}
                                 />
                                 {response?.filesCount > 0 &&
-                                    !isAllFilesApproved && (
+                                    !isAllFilesApproved && response?.status === Result.Pending && result?.result !== Result.Competent && (
                                         <Typography
                                             variant="label"
                                             color="text-error"
@@ -203,13 +212,15 @@ export const FolderCard = ({
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                        {folderStatus === 'pending' && response?.filesCount > 0 && isAllFilesApproved && (
-                            <>
-                                <ApproveAllFiles folder={response} />
-                                <RejectAllFile folder={response} />
-                            </>
-                        )}
+                    {result?.result !== Result.Competent && <div className="flex items-center gap-2">
+                        {folderStatus === 'pending' &&
+                            ((response?.filesCount || 0) === 0 ||
+                                isAllFilesApproved) && (
+                                <>
+                                    <ApproveAllFiles folder={response} />
+                                    <RejectAllFile folder={response} />
+                                </>
+                            )}
                         {getTemplate?.isSuccess &&
                             getTemplate?.data &&
                             getTemplate?.data?.length > 0 &&
@@ -221,7 +232,7 @@ export const FolderCard = ({
                                 />
                             )}
                         <UploadDocument folder={folder} student={student} />
-                    </div>
+                    </div>}
                 </div>
             </div>
 

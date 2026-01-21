@@ -1,12 +1,33 @@
 import React from 'react'
 import { RtoApprovalWorkplaceRequest } from '@types'
 import { AlertCircle, CheckCircle2, Clock } from 'lucide-react'
+import { RtoV2Api } from '@queries'
 
 export const PlacementRequestStatusAlert = ({
     approval,
 }: {
     approval: RtoApprovalWorkplaceRequest
 }) => {
+    // Check if RTO checklist file exists
+    const courseId = Number(approval?.workplaceRequest?.courses?.[0]?.id)
+    const studentId = Number(approval?.student?.id)
+    const industryUserId = Number(approval?.industry?.user?.id)
+
+    const getRtoCourseChecklist =
+        RtoV2Api.ApprovalRequest.getRtoCourseChecklist(
+            { courseId, studentId, industryUserId },
+            {
+                skip: !courseId || !studentId || !industryUserId,
+            }
+        )
+
+    const file =
+        getRtoCourseChecklist?.data?.url ||
+        getRtoCourseChecklist?.data?.studentResponse?.[0]?.files?.[0]?.file ||
+        getRtoCourseChecklist?.data?.files?.[0]
+
+    const hasFile = !!file
+
     const statusConfig = {
         pending: {
             border: 'border-[#F7A619]',
@@ -47,9 +68,33 @@ export const PlacementRequestStatusAlert = ({
             message:
                 'SkilTrak has been notified and will search for an alternative placement option.',
         },
+        incomplete: {
+            border: 'border-blue-500',
+            bg: 'bg-gradient-to-r from-blue-50 to-blue-100/50',
+            iconBg: 'bg-blue-500',
+            shadow: 'shadow-blue-500/30',
+            icon: AlertCircle,
+            iconClass: '',
+            text: 'text-blue-900',
+            title: 'Schedule 4 Incomplete:',
+            titleColor: 'text-blue-700',
+            message:
+                'RTO Facility Checklist (Schedule 4) is not completed yet. Approval cannot proceed until this is completed.',
+        },
     }
 
-    const config = statusConfig[approval?.rtoApprovalStatus]
+    // Determine which status to show: if no file and status is pending, show incomplete
+    let statusToShow: 'pending' | 'approved' | 'rejected' | 'incomplete' =
+        approval?.rtoApprovalStatus
+    if (
+        !hasFile &&
+        !getRtoCourseChecklist?.isLoading &&
+        statusToShow === 'pending'
+    ) {
+        statusToShow = 'incomplete'
+    }
+
+    const config = statusConfig[statusToShow]
     if (!config) return null
 
     const Icon = config.icon

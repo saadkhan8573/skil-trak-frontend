@@ -3,6 +3,7 @@ import {
     ConfigTabs,
     ShowErrorNotifications,
     TabConfig,
+    Switch,
 } from '@components'
 import { useNotification } from '@hooks/useNotification'
 import { RtoV2Api } from '@queries/portals/rto-v2/rto-v2.query'
@@ -22,10 +23,29 @@ export function InterviewAvailability({
 }: InterviewAvailabilityProps = {}) {
     const [createAvailability, createAvailabilityResult] =
         RtoV2Api.Industries.createAvailability()
+    const [updateIndustryAvailability, updateIndustryAvailabilityResult] =
+        RtoV2Api.Industries.updateIndustryAvailability()
 
     const industryDetail = useAppSelector(
         (state) => state.industry.industryDetail
     )
+
+    const handleUpdateAvailabilityStatus = async () => {
+        try {
+            await updateIndustryAvailability({
+                userId: industryDetail?.user?.id!,
+            }).unwrap()
+            notification.success({
+                title: 'Success',
+                description: 'Availability status updated successfully',
+            })
+        } catch (error) {
+            notification.error({
+                title: 'Error',
+                description: 'Failed to update availability status',
+            })
+        }
+    }
 
     const interviewAvailability = RtoV2Api.Industries.useIndustryAvailabilityV2(
         industryDetail?.id!,
@@ -260,6 +280,7 @@ export function InterviewAvailability({
     return (
         <>
             <ShowErrorNotifications result={createAvailabilityResult} />
+            <ShowErrorNotifications result={updateIndustryAvailabilityResult} />
             <div
                 id="interview-availability"
                 className="bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-all"
@@ -270,30 +291,49 @@ export function InterviewAvailability({
                         <Calendar className="w-4 h-4" />
                         Interview Availability
                     </h3>
-                    <div className="flex items-center gap-2 bg-white/20 px-2 py-1 rounded-full backdrop-blur-sm">
-                        <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></div>
-                        <span className="text-[10px] text-white font-medium uppercase tracking-wide">
-                            Active
-                        </span>
+                    <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 bg-white/10 px-2 py-1 rounded-lg backdrop-blur-sm">
+                            <span className="text-[10px] text-white font-medium">
+                                {industryDetail?.isAvailabilityProvidedAtRuntime
+                                    ? 'Inactive'
+                                    : 'Active'}
+                            </span>
+                            <Switch
+                                name="interviewAvailability"
+                                customStyleClass="profileSwitch"
+                                isChecked={
+                                    industryDetail?.isAvailabilityProvidedAtRuntime ?? false
+                                }
+                                onChange={(e: any) =>
+                                    handleUpdateAvailabilityStatus()
+                                }
+                                loading={updateIndustryAvailabilityResult.isLoading}
+                                disabled={updateIndustryAvailabilityResult.isLoading}
+                            />
+                        </div>
                     </div>
                 </div>
 
                 <div className="px-4 py-2 space-y-3">
-                    <ConfigTabs
-                        tabs={tabs}
-                        value={availabilityType}
-                        onValueChange={(val: string) =>
-                            setAvailabilityType(val as 'weekly' | 'monthly')
-                        }
-                        className={'!rounded'}
-                        tabsClasses="!p-1 !rounded-md"
-                        tabsTriggerClasses="!py-1 !rounded-md"
-                    />
+                    {!industryDetail?.isAvailabilityProvidedAtRuntime ? (
+                        <>
+                            <ConfigTabs
+                                tabs={tabs}
+                                value={availabilityType}
+                                onValueChange={(val: string) =>
+                                    setAvailabilityType(
+                                        val as 'weekly' | 'monthly'
+                                    )
+                                }
+                                className={'!rounded'}
+                                tabsClasses="!p-1 !rounded-md"
+                                tabsTriggerClasses="!py-1 !rounded-md"
+                            />
 
-                    {/* Action Footer */}
-                    <div className="border-t border-slate-100 space-y-3 pt-3">
-                        {/* Coordinator Select */}
-                        {/* <div className="space-y-1.5">
+                            {/* Action Footer */}
+                            <div className="border-t border-slate-100 space-y-3 pt-3">
+                                {/* Coordinator Select */}
+                                {/* <div className="space-y-1.5">
                             <Select
                                 label={'Select Interviewer'}
                                 name="interviewer"
@@ -318,27 +358,45 @@ export function InterviewAvailability({
                             />
                         </div> */}
 
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-start gap-2 max-w-[70%]">
-                                <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                <p className="text-slate-500 text-xs leading-relaxed">
-                                    Changes will be immediately reflected in the
-                                    student booking portal.
-                                </p>
-                            </div>
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-start gap-2 max-w-[70%]">
+                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                                        <p className="text-slate-500 text-xs leading-relaxed">
+                                            Changes will be immediately
+                                            reflected in the student booking
+                                            portal.
+                                        </p>
+                                    </div>
 
-                            <Button
-                                onClick={handleSave}
-                                variant="primary"
-                                className="bg-[#044866] hover:bg-[#03364d] text-white px-6 py-2 rounded-lg text-xs font-semibold shadow-lg shadow-[#044866]/20 transition-all hover:scale-105 active:scale-95"
-                                disabled={createAvailabilityResult.isLoading}
-                            >
-                                {createAvailabilityResult.isLoading
-                                    ? 'Saving...'
-                                    : 'Save Availability'}
-                            </Button>
+                                    <Button
+                                        onClick={handleSave}
+                                        variant="primary"
+                                        className="bg-[#044866] hover:bg-[#03364d] text-white px-6 py-2 rounded-lg text-xs font-semibold shadow-lg shadow-[#044866]/20 transition-all hover:scale-105 active:scale-95"
+                                        disabled={
+                                            createAvailabilityResult.isLoading
+                                        }
+                                    >
+                                        {createAvailabilityResult.isLoading
+                                            ? 'Saving...'
+                                            : 'Save Availability'}
+                                    </Button>
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
+                            <div className="w-12 h-12 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-3">
+                                <Calendar className="w-6 h-6" />
+                            </div>
+                            <h4 className="text-sm font-semibold text-slate-700 mb-1">
+                                Manual Scheduling Active
+                            </h4>
+                            <p className="text-xs text-slate-500 max-w-xs">
+                                The industry will receive interview availability timing
+                                for each student individually.
+                            </p>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </>

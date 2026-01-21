@@ -21,7 +21,7 @@ export const SnoozedIndustries: React.FC<SnoozedIndustriesProps> = ({
     const [itemPerPage, setItemPerPage] = useState(30)
 
     // const industries = SubAdminApi.Industry.useGetAllSubAdminIndustriesList({
-    const industries = SubAdminApi.Industry.getAllStateWiseSubAdminIndustries({
+    const industries = SubAdminApi.Industry.useGetAllSubAdminIndustriesList({
         search: JSON.stringify(
             removeEmptyValues({ ...baseFilter, isSnoozed: true })
         )

@@ -9,6 +9,7 @@ import {
     XCircle,
     AlertTriangle,
     Calendar,
+    ExternalLink,
 } from 'lucide-react'
 import { useState } from 'react'
 import { WorkflowStep } from './types'
@@ -22,9 +23,24 @@ import { Button } from '@components'
 import { Student } from '@types'
 import { useStatusInfo } from '@partials/rto-v2/student-detail/components/StudentOverview/hooks/useStatusInfo'
 import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
+import Link from 'next/link'
+import { getUserCredentials } from '@utils'
+
+import { UserRoles } from '@constants'
 
 interface StudentCardProps {
     student: Student
+}
+
+function getStudentProfileLink(role: string, studentId: number) {
+    switch (role) {
+        case UserRoles.ADMIN:
+            return `/portals/admin/student/${studentId}/detail`
+        case UserRoles.SUBADMIN:
+            return `/portals/sub-admin/students/${studentId}/detail`
+        default:
+            return `/portals/rto/students-and-placements/all-students/${studentId}/detail`
+    }
 }
 
 function getStatusCounts(workflow: WorkflowStep[]) {
@@ -36,6 +52,7 @@ function getStatusCounts(workflow: WorkflowStep[]) {
 }
 
 export function StudentCard({ student }: StudentCardProps) {
+    const role = getUserCredentials()?.role
     const [isOpen, setIsOpen] = useState(false)
     const [showActionsMenu, setShowActionsMenu] = useState(false)
     // const statusCounts = getStatusCounts(student.workflow)
@@ -73,19 +90,25 @@ export function StudentCard({ student }: StudentCardProps) {
 
                         {/* Info */}
                         <div className="flex-1">
-                            <h3 className="text-xs font-bold text-[#1A2332] mb-0.5">
-                                {student?.user?.name}
-                            </h3>
+                            <div className="flex items-center gap-1.5 mb-0.5">
+                                <h3 className="text-xs font-bold text-[#1A2332]">
+                                    {student?.user?.name} {student?.familyName}
+                                </h3>
+                                <Link
+                                    href={getStudentProfileLink(
+                                        role,
+                                        student?.id
+                                    )}
+                                >
+                                    <ExternalLink className="w-3 h-3 text-[#64748B] hover:text-[#044866] cursor-pointer" />
+                                </Link>
+                            </div>
                             <p className="text-[10px] text-[#64748B] mb-0.5">
                                 {student?.workplace?.[0]?.courses?.[0]?.title}
                             </p>
-                            <div className="flex items-center gap-1">
-                                <span className="text-[10px] text-[#64748B]">
-                                    📍{' '}
-                                    {
-                                        student?.workplace?.[0]?.industries?.[0]
-                                            ?.industry?.user?.name
-                                    }
+                            <div className="flex flex-col gap-0.5">
+                                <span className="text-xs font-semibold text-[#64748B]">
+                                    🏢 RTO: {student?.rto?.user?.name}
                                 </span>
                             </div>
                         </div>

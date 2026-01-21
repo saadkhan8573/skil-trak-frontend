@@ -6,12 +6,13 @@ import {
     StudentHeader,
     StudentInfoMessage,
     StudentOverview,
-    StudentSupportTickets,
-    Tickets,
+    Tickets
 } from './components'
 
 import { ConfigTabs, EmptyData, TabConfig, TechnicalError } from '@components'
 import { Skeleton } from '@components/ui/skeleton'
+import { ProfileSupportTickets } from '@partials/common'
+import { Schedule } from '@partials/common/StudentProfileDetail/components'
 import { useGetSubAdminStudentDetailQuery } from '@queries'
 import { CommonApi, setAssessmentReSubmittedCount, setAssessmentSubmittedCount, setSelectedCourse, setStudentDetail } from '@redux'
 import { Course, Student } from '@types'
@@ -32,7 +33,6 @@ import {
     StudentProfileHeaderSkeleton,
     StudentTopBarSkeleton,
 } from './skeletonLoader'
-import { Schedule } from '@partials/common/StudentProfileDetail/components'
 
 export const RtoStudentDetail = () => {
     const router = useRouter()
@@ -142,9 +142,7 @@ export const RtoStudentDetail = () => {
             label: 'Support Tickets',
             icon: Ticket,
             component: () => (
-                <div>
-                    <StudentSupportTickets userId={profile?.data?.user?.id} />
-                </div>
+                <ProfileSupportTickets userId={profile?.data?.user?.id!} />
             ),
         },
     ]

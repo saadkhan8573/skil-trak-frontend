@@ -14,6 +14,7 @@ export interface AdminIndustryFormFilter {
     suburb: string
     isPartner: boolean
     wpType: number
+    favoriteBy: number
     isHiring: boolean | undefined
     isSnoozed: boolean | undefined
     feature: any

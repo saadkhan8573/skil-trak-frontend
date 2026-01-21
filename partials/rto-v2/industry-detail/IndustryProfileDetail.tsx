@@ -122,7 +122,7 @@ export const IndustryProfileDetail = () => {
                     <ProfileEssentials />
                     <PlacementChecklist />
                     <div ref={operationalModulesRef}>
-                        <OperationalModules />
+                        <OperationalModules profile={industryDetail?.data} />
                     </div>
                 </div>
             ) : (

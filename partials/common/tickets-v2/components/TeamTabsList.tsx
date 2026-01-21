@@ -1,4 +1,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs'
+import { UserRoles } from '@constants'
+import { useSubadminProfile } from '@hooks'
+import { CommonApi } from '@queries'
+import { SupportTeamType } from '@types'
+import { getUserCredentials } from '@utils'
 import {
     Building2,
     ClipboardCheck,
@@ -7,6 +12,8 @@ import {
     Users,
 } from 'lucide-react'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { useSupportTicketPermissions } from '../hooks'
 import {
     AllTeamsTabs,
     FilteredSupportTickets,
@@ -15,13 +22,7 @@ import {
     RtoTeamTab,
     StudentServicesTab,
 } from '../tickets-tabs'
-import { getUserCredentials } from '@utils'
-import { UserRoles } from '@constants'
-import { useSubadminProfile } from '@hooks'
 import { SupportTicketFilter } from './filters'
-import { useEffect, useState } from 'react'
-import { CommonApi } from '@queries'
-import { useSupportTicketPermissions } from '../hooks'
 
 export enum TAGS {
     STUDENT_SERVICES = 'student services',
@@ -76,7 +77,7 @@ export const TeamTabsList = () => {
         })
 
     const subadmin = useSubadminProfile()
-    const getAllowedTabIdsForSubadmin = (supportTeam: any[] = []) => {
+    const getAllowedTabIdsForSubadmin = (supportTeam: SupportTeamType[] = []) => {
         const tabIds = new Set<string>()
 
         supportTeam.forEach((team) => {
@@ -147,8 +148,8 @@ export const TeamTabsList = () => {
     const defaultTab = canSeeAdminTabs
         ? 'all'
         : role === UserRoles.RTO
-        ? 'rto'
-        : visibleTabs[0]?.id
+            ? 'rto'
+            : visibleTabs[0]?.id
 
     // Use teamTab from URL query if exists, otherwise use defaultTab
     const [activeTeamTab, setActiveTeamTab] = useState(

@@ -10,7 +10,7 @@ import {
 import { CreateStudentNote } from '@partials/common/Notes/forms'
 import { CommonApi } from '@queries'
 import { Student } from '@types'
-import { isBrowser } from '@utils'
+import { getUserCredentials, isBrowser } from '@utils'
 import {
     FileText,
     Loader2,
@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
+import { searchAiUrls } from '../urls'
 
 interface AIQuestionPanelProps {
     student: Student
@@ -52,6 +53,9 @@ export function AIQuestionPanel({ student }: AIQuestionPanelProps) {
 
     const [aiAssisstant, aiAssisstantResult] =
         CommonApi.AiAssistant.askAiAboutStudent()
+
+    const role = getUserCredentials()?.role
+    const urls = searchAiUrls(role!, student?.id)
 
     const onHandleScroll = (i: string) => {
         if (isBrowser()) {
@@ -115,12 +119,6 @@ export function AIQuestionPanel({ student }: AIQuestionPanelProps) {
         }
     }
 
-    const handleKeyPress = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault()
-            handleSubmit()
-        }
-    }
 
     const handleSuggestedQuestion = (q: string) => {
         onSubmit(q)
@@ -129,7 +127,7 @@ export function AIQuestionPanel({ student }: AIQuestionPanelProps) {
     const onCancel = () => setModal(null)
 
     const onCreateTicket = () => {
-        router.push(`/portals/rto/tickets/add-ticket?student=${student?.id}`)
+        router.push(urls?.ticket + "")
     }
 
     const onAddNote = () => {
@@ -218,18 +216,16 @@ export function AIQuestionPanel({ student }: AIQuestionPanelProps) {
                                 <div
                                     key={msg.id}
                                     id={`detail-item-${msg?.id}`}
-                                    className={`flex ${
-                                        msg.type === 'user'
-                                            ? 'justify-end'
-                                            : 'justify-start'
-                                    }`}
+                                    className={`flex ${msg.type === 'user'
+                                        ? 'justify-end'
+                                        : 'justify-start'
+                                        }`}
                                 >
                                     <div
-                                        className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                                            msg.type === 'user'
-                                                ? 'bg-primaryNew text-white'
-                                                : 'bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200'
-                                        }`}
+                                        className={`max-w-[80%] rounded-2xl px-4 py-3 ${msg.type === 'user'
+                                            ? 'bg-primaryNew text-white'
+                                            : 'bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200'
+                                            }`}
                                     >
                                         {msg.type === 'ai' && (
                                             <div className="flex items-center gap-2 mb-2">

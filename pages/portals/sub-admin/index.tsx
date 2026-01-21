@@ -1,4 +1,8 @@
-import { NextPageWithLayout, UserStatus } from '@types'
+import {
+    NextPageWithLayout,
+    SupportTeamTagType,
+    UserStatus,
+} from '@types'
 import { ReactElement, useEffect, useState } from 'react'
 
 // layouts
@@ -10,6 +14,7 @@ import {
     ContextBarLoading,
     Modal,
     NoData,
+    StudentAISearch,
     Typography,
 } from '@components'
 // icons
@@ -189,6 +194,19 @@ const SubAdminDashboard: NextPageWithLayout = () => {
         setModal(<GlobalSearchModal onCancel={onCancel} />)
     }
 
+    const allowedTags: SupportTeamTagType[] = [
+        'student services',
+        'quality assurance',
+        'rto team',
+    ]
+
+    const hasStudentSearchAccess = subadmin?.supportTeam?.some(
+        (team) =>
+            team?.tags?.some((tag) =>
+                allowedTags.includes(tag)
+            )
+    )
+
     return (
         <>
             {modal}
@@ -200,15 +218,17 @@ const SubAdminDashboard: NextPageWithLayout = () => {
                     />
                 )}
             </div>
+            {!subadmin?.isAssociatedWithRto && hasStudentSearchAccess && (
+                <StudentAISearch />
+            )}
             <div className="flex flex-col gap-y-6 pb-8">
                 <div className="flex flex-col gap-y-4">
                     <div className="flex items-end justify-between gap-x-2.5 w-full mt-2">
                         <div
-                            className={`grid grid-cols-2 gap-x-2.5 gap-y-8 ${
-                                subadmin?.isAssociatedWithRto
-                                    ? 'w-full'
-                                    : 'w-1/2'
-                            }`}
+                            className={`grid grid-cols-2 gap-x-2.5 gap-y-8 ${subadmin?.isAssociatedWithRto
+                                ? 'w-full'
+                                : 'w-1/2'
+                                }`}
                         >
                             {/* {checkIsHod && (
                                 <>
@@ -239,7 +259,7 @@ const SubAdminDashboard: NextPageWithLayout = () => {
                                 count={
                                     subadmin?.isAssociatedWithRto
                                         ? statistics?.data
-                                              ?.countByRtoCoordinator
+                                            ?.countByRtoCoordinator
                                         : statistics?.data?.myStudents
                                 }
                                 title={'My Students'}

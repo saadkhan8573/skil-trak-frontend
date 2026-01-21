@@ -21,7 +21,7 @@ export const NonPartnerIndustries: React.FC<NonPartnerIndustriesProps> = ({
     const [page, setPage] = useState(1)
     const [itemPerPage, setItemPerPage] = useState(30)
 
-    const industries = SubAdminApi.Industry.getAllStateWiseSubAdminIndustries({
+    const industries = SubAdminApi.Industry.useGetAllSubAdminIndustriesList({
         search: JSON.stringify({
             ...baseFilter,
             status: UserStatus.Approved,

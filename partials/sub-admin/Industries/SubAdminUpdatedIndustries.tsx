@@ -70,8 +70,8 @@ export const SubAdminUpdatedIndustries = () => {
 
     const tabs: TabConfig[] = [
         {
-            value: 'state-wise-industries',
-            label: 'State Wise Industries',
+            value: 'all-industries',
+            label: 'All Industries',
             icon: Building2,
             // count: count.data?.partnerIndustries,
             component: StateWiseIndustries,

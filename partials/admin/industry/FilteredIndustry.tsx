@@ -29,12 +29,12 @@ export const FilteredIndustry = ({
             'businessName',
             'abn',
             'contactPerson',
-            'studentCount',
             'status',
             'address',
             'createdBy',
             'action',
-            "placementStatus"
+            "placementStatus",
+            "favoriteBy"
         ],
         actionKeys: [
             'view',

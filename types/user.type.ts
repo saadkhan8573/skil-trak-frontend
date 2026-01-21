@@ -284,6 +284,19 @@ export interface Department extends BaseResponse {
     email: null
 }
 
+export type SupportTeamTagType =
+    | 'quality assurance'
+    | 'student services'
+    | 'admin'
+    | 'sourcing team'
+    | 'rto team'
+
+export interface SupportTeamType extends BaseResponse {
+    id: number
+    name: string
+    tags: SupportTeamTagType[]
+}
+
 export interface SubAdmin extends BaseResponse {
     id: number
     user: User
@@ -333,7 +346,7 @@ export interface SubAdmin extends BaseResponse {
     hasAllStudentAccess: boolean
 
     studentsCount: number
-    supportTeam: any
+    supportTeam: SupportTeamType[]
 }
 
 export interface PartnerRemovalRequests extends BaseResponse {

@@ -1,29 +1,32 @@
 import { ConfigTabs, TabConfig } from '@components'
+import { ProfileSupportTickets } from '@partials/common'
+import { StudentSchedule } from '@partials/common/IndustryProfileDetail/components/StudentSchedule'
+import { useAppSelector } from '@redux/hooks'
+import { Industry } from '@types'
 import {
     BookOpen,
     Calendar,
     Clock,
-    FileText,
     FileSignature,
+    FileText,
     Image,
     MessageSquare,
     Shield,
+    Ticket,
     Users,
 } from 'lucide-react'
-import { GalleryModule } from './modules/GalleryModule'
+import { useEffect, useState } from 'react'
+import { IndustryCoursesSection } from './courses'
+import { AppointmentsModule } from './modules/AppointmentsModule/AppointmentsModule'
+import { CommunicationLog } from './modules/CommunicationLog'
 import { DocumentsModule } from './modules/DocumentsModule'
 import { ESignModule } from './modules/ESignModule'
-import { CommunicationLog } from './modules/CommunicationLog'
-import { StudentsPlacementList } from './StudentsPlacementList'
-import { TradingHoursModule } from './modules/TradingHoursModule'
+import { GalleryModule } from './modules/GalleryModule'
 import { RTOChecklistModule } from './modules/RtoChecklistModule'
-import { AppointmentsModule } from './modules/AppointmentsModule/AppointmentsModule'
-import { IndustryCoursesSection } from './courses'
-import { useAppSelector } from '@redux/hooks'
-import { useEffect, useState } from 'react'
-import { StudentSchedule } from '@partials/common/IndustryProfileDetail/components/StudentSchedule'
+import { TradingHoursModule } from './modules/TradingHoursModule'
+import { StudentsPlacementList } from './StudentsPlacementList'
 
-export function OperationalModules() {
+export function OperationalModules({ profile }: { profile: Industry }) {
     const navigationTarget = useAppSelector(
         (state) => state.industry.navigationTarget
     )
@@ -85,6 +88,12 @@ export function OperationalModules() {
             component: CommunicationLog,
         },
         {
+            value: 'industry-support-tickets',
+            label: 'Industry Support Tickets',
+            icon: Ticket,
+            component: () => <ProfileSupportTickets userId={profile?.user?.id} />,
+        },
+        {
             value: 'rto-checklist',
             label: 'RTO Checklist',
             icon: Shield,
@@ -96,6 +105,7 @@ export function OperationalModules() {
             icon: Image,
             component: GalleryModule,
         },
+
     ]
 
     return (

@@ -39,7 +39,7 @@ export const CourseResultModule: React.FC<CourseResultModuleProps> = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="w-full w-full mx-auto"
+            className="w-full mx-auto"
         >
             <Card className="overflow-hidden border-none shadow-2xl bg-white/80 backdrop-blur-md rounded-2xl ring-1 ring-black/5">
                 {/* Header Decoration */}

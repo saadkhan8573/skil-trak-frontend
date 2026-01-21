@@ -467,6 +467,7 @@ export interface Industry extends BaseResponse {
     secondaryContactPersonPhone?: string;
     secondaryContactName?: string;
     secondaryContactEmail?: string;
+    isAvailabilityProvidedAtRuntime?: boolean
 }
 
 export interface PendingIndustry extends Industry {

@@ -61,7 +61,7 @@ export const PlacementTopSection = ({ approval }: { approval: any }) => {
                         </div>
                     </div>
                     {/* Actions */}
-                    <PlacementActions approval={approval} />
+                    {/* <PlacementActions approval={approval} /> */}
                 </div>
             </div>
         </>

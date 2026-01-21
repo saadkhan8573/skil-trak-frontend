@@ -28,24 +28,14 @@ export const PendingPlacement = () => {
         }
     )
 
-    const toggleCardExpansion = (id: string) => {
-        const newExpanded = new Set(expandedCards)
-        if (newExpanded.has(id)) {
-            newExpanded.delete(id)
-        } else {
-            newExpanded.add(id)
-        }
-        setExpandedCards(newExpanded)
-    }
-
     return (
         <div className="space-y-4 animate-fade-in">
             {wpApprovalRequests?.isError && <TechnicalError />}
             {wpApprovalRequests?.isLoading || wpApprovalRequests?.isFetching ? (
                 <LoadingAnimation height="h-[60vh]" />
             ) : wpApprovalRequests?.data &&
-              wpApprovalRequests?.data?.data.length &&
-              wpApprovalRequests?.isSuccess ? (
+                wpApprovalRequests?.data?.data.length &&
+                wpApprovalRequests?.isSuccess ? (
                 wpApprovalRequests?.data?.data?.map((approval: any) => (
                     <PendingPlacementCard
                         key={approval.id}

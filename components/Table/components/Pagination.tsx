@@ -8,8 +8,9 @@ interface PaginationProps {
     table?: Table<any>
     pagination?: Paginate
     setPage?: Function
+    updateUrl?: boolean
 }
-export const Pagination = ({ table, pagination, setPage }: PaginationProps) => {
+export const Pagination = ({ table, pagination, setPage, updateUrl = true }: PaginationProps) => {
     const router = useRouter()
     const handlePageClick = ({ selected }: any) => {
         // const tabs = Object.entries(router.query)
@@ -19,7 +20,7 @@ export const Pagination = ({ table, pagination, setPage }: PaginationProps) => {
         })
             .map(([key, value]) => `${key}=${value}`)
             .join('&')
-        router.push(`${router?.pathname}?${tabs}`)
+        updateUrl && router.push(`${router?.pathname}?${tabs}`)
         // router.push(
         //     `${router?.pathname}?${tabs[0][0]}=${tabs[0][1]}&page=${
         //         !pagination ? selected : selected + 1
@@ -55,19 +56,17 @@ export const Pagination = ({ table, pagination, setPage }: PaginationProps) => {
                         : table?.getState().pagination.pageIndex
                 }
                 marginPagesDisplayed={3}
-                nextClassName={`${
-                    !hasNextPage()
-                        ? 'text-gray-400'
-                        : 'text-gray-700 hover:text-gray-900 cursor-pointer'
-                }  h-4 w-4 flex justify-center items-center`}
+                nextClassName={`${!hasNextPage()
+                    ? 'text-gray-400'
+                    : 'text-gray-700 hover:text-gray-900 cursor-pointer'
+                    }  h-4 w-4 flex justify-center items-center`}
                 // renderOnZeroPageCount={null}
                 prevRel={null}
                 nextRel={null}
-                previousClassName={`${
-                    !hasPreviousPage()
-                        ? 'text-gray-400'
-                        : 'text-gray-700 hover:text-gray-900 cursor-pointer'
-                }  h-4 w-4 flex justify-center items-center`}
+                previousClassName={`${!hasPreviousPage()
+                    ? 'text-gray-400'
+                    : 'text-gray-700 hover:text-gray-900 cursor-pointer'
+                    }  h-4 w-4 flex justify-center items-center`}
                 onPageChange={handlePageClick}
                 nextLabel={<FaChevronRight />}
                 previousLabel={<FaChevronLeft />}

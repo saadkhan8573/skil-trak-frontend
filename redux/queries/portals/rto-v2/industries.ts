@@ -143,7 +143,11 @@ export const industriesEndpoints = (
 
     industryStudentsList: builder.query<
         PaginatedResponse<Student>,
-        { params: PaginationWithSearch; industryId: number; sectorId: number }
+        {
+            params: PaginationWithSearch & { status?: string }
+            industryId: number
+            sectorId: number
+        }
     >({
         query: ({ params, industryId, sectorId }) => ({
             url: `${INDUSTRIESPREFIX}${industryId}/sector/${sectorId}/students-list`,
@@ -163,6 +167,20 @@ export const industriesEndpoints = (
     >({
         query: ({ industryId, sectorId }) =>
             `${INDUSTRIESPREFIX}${industryId}/sector/${sectorId}/students-count`,
+        providesTags: ['RTOIndustries'],
+    }),
+
+    getIndustryWaitingStudents: builder.query<
+        PaginatedResponse<Student>,
+        {
+            params: PaginationWithSearch
+            industryId: number
+        }
+    >({
+        query: ({ params, industryId }) => ({
+            url: `${INDUSTRIESPREFIX}${industryId}/waiting-for-industry-list`,
+            params,
+        }),
         providesTags: ['RTOIndustries'],
     }),
 
@@ -239,6 +257,15 @@ export const industriesEndpoints = (
             params,
         }),
         invalidatesTags: ['RTOIndustries'],
+    }),
+
+    updateIndustryAvailability: builder.mutation<any, { userId: number;  }>({
+        query: (params) => ({
+            url: `${INDUSTRIESPREFIX}toggle/run-time-availability`,
+            method: 'PATCH',
+            params
+        }),
+        invalidatesTags: ['RTOIndustries', 'Industry'],
     }),
     updateIndustryBio: builder.mutation<any, { id: number; bio: string }>({
         query: ({ id, ...body }) => ({

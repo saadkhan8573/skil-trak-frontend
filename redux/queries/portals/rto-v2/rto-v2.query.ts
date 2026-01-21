@@ -133,6 +133,8 @@ const {
     useGetIndustryInfoMessagesQuery,
     useAssignIndustryToCoordinatorMutation,
     useGetHighlightedTasksQuery,
+    useUpdateIndustryAvailabilityMutation,
+    useGetIndustryWaitingStudentsQuery,
 
     // ---- RTO Credits ---- //
     useGetRtoCreditsQuery,
@@ -259,6 +261,8 @@ export const RtoV2Api = {
         getIndustryInfoMessages: useGetIndustryInfoMessagesQuery,
         assignIndustryToCoordinator: useAssignIndustryToCoordinatorMutation,
         useGetHighlightedTasks: useGetHighlightedTasksQuery,
+        updateIndustryAvailability: useUpdateIndustryAvailabilityMutation,
+        getIndustryWaitingStudents: useGetIndustryWaitingStudentsQuery,
     },
     RtoCredits: {
         getRtoCredits: useGetRtoCreditsQuery,

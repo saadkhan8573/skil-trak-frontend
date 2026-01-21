@@ -36,7 +36,7 @@ export const studentDocumentsEndpoints = (
             params,
         }),
 
-        providesTags: ['RTO-Documents'],
+        providesTags: ['RTO-Documents','AssessmentEvidence'],
     }),
 
     getStudentDocumentFiles: builder.query<any, number>({

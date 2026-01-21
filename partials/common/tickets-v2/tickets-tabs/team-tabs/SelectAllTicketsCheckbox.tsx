@@ -8,6 +8,7 @@ import { useNotification } from '@hooks'
 import { CommonApi } from '@queries'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { DeleteSupportTicketModal } from '../../components'
+import { useSupportTicketPermissions } from '../../hooks'
 
 export const SelectAllTicketsCheckbox = ({
     isAllSelected,
@@ -18,6 +19,7 @@ export const SelectAllTicketsCheckbox = ({
 }: any) => {
     const { notification } = useNotification()
     const [modal, setModal] = useState<ReactElement | null>(null)
+    const { canSeeAssignedFilter } = useSupportTicketPermissions()
     const onCancel = () => {
         setModal(null)
     }
@@ -34,7 +36,7 @@ export const SelectAllTicketsCheckbox = ({
     return (
         <>
             {modal && modal}
-            <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+            {canSeeAssignedFilter && (
                 <div className="flex items-center justify-between gap-2 mb-2 ml-3.5">
                     <div className="flex items-center gap-2">
                         <input
@@ -61,7 +63,7 @@ export const SelectAllTicketsCheckbox = ({
                         />
                     )}
                 </div>
-            </AuthorizedUserComponent>
+            )}
         </>
     )
 }

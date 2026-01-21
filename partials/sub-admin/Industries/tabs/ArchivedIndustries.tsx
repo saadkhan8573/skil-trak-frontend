@@ -21,7 +21,7 @@ export const ArchivedIndustries: React.FC<ArchivedIndustriesProps> = ({
     const [page, setPage] = useState(1)
     const [itemPerPage, setItemPerPage] = useState(30)
 
-    const industries = SubAdminApi.Industry.getAllStateWiseSubAdminIndustries({
+    const industries = SubAdminApi.Industry.useGetAllSubAdminIndustriesList({
         search: JSON.stringify(
             removeEmptyValues({ ...baseFilter, status: UserStatus.Archived })
         )

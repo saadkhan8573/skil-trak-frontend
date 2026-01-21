@@ -99,6 +99,7 @@ export function EnhancedStudentProfile({
     return (
         <>
             {modal}
+
             <div className="space-y-6">
                 {/* Hero Card - Student Header */}
                 <motion.div

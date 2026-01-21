@@ -62,7 +62,6 @@ export const TicketDashboard = () => {
         params.set('tab', value)
         router.push(`?${params.toString()}`, { scroll: false })
     }
-console.log('count', count?.data);
     return (
         <>
             <Header />
@@ -86,13 +85,13 @@ console.log('count', count?.data);
                                         'group flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all border',
                                         // Primary Tab Styles
                                         theme === 'primary' &&
-                                            'data-[state=active]:bg-primaryNew data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=inactive]:bg-white data-[state=inactive]:text-[#044866] data-[state=inactive]:border-gray-200',
+                                        'data-[state=active]:bg-primaryNew data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=inactive]:bg-white data-[state=inactive]:text-[#044866] data-[state=inactive]:border-gray-200',
                                         // Success Tab Styles
                                         theme === 'success' &&
-                                            'data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=inactive]:bg-white data-[state=inactive]:text-green-600 data-[state=inactive]:border-gray-200',
+                                        'data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=inactive]:bg-white data-[state=inactive]:text-green-600 data-[state=inactive]:border-gray-200',
                                         // Info Tab Styles
                                         theme === 'info' &&
-                                            'data-[state=active]:bg-info data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=inactive]:bg-white data-[state=inactive]:text-info data-[state=inactive]:border-gray-200'
+                                        'data-[state=active]:bg-info data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=inactive]:bg-white data-[state=inactive]:text-info data-[state=inactive]:border-gray-200'
                                     )}
                                 >
                                     <Icon className="w-4 h-4" />
@@ -109,11 +108,11 @@ console.log('count', count?.data);
                                             // Badge logic using group state
                                             'group-data-[state=active]:bg-white/20 group-data-[state=active]:text-white',
                                             theme === 'primary' &&
-                                                'group-data-[state=inactive]:bg-[#044866]/10 group-data-[state=inactive]:text-[#044866]',
+                                            'group-data-[state=inactive]:bg-[#044866]/10 group-data-[state=inactive]:text-[#044866]',
                                             theme === 'success' &&
-                                                'group-data-[state=inactive]:bg-green-600/10 group-data-[state=inactive]:text-green-600',
+                                            'group-data-[state=inactive]:bg-green-600/10 group-data-[state=inactive]:text-green-600',
                                             theme === 'info' &&
-                                                'group-data-[state=inactive]:bg-info/10 group-data-[state=inactive]:text-info'
+                                            'group-data-[state=inactive]:bg-info/10 group-data-[state=inactive]:text-info'
                                         )}
                                     >
                                         {count?.data?.[countKey] ?? 0}

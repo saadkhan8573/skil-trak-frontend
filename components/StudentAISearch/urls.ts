@@ -6,6 +6,11 @@ export const searchAiUrls = (role: UserRoles, id: number) => {
                 ticket: `/portals/admin/tickets/add-ticket?student=${id}`,
                 detail: `/portals/admin/student-ai-search/${id}`,
             }
+        case UserRoles.SUBADMIN:
+            return {
+                detail: `/portals/sub-admin/student-ai-search/${id}`,
+                ticket: `/portals/sub-admin/tickets/add-ticket?student=${id}`,
+            }
         case UserRoles.RTO:
             return {
                 ticket: `/portals/rto/tickets/add-ticket?student=${id}`,

@@ -45,6 +45,7 @@ const filterKeys = [
     'isPartner',
     'isSnoozed',
     'industryId',
+    'favoriteBy',
     'feature',
     'placementReady',
 ]

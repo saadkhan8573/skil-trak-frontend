@@ -3,8 +3,8 @@ import { Checkbox, Select, TextInput } from '@components/inputs'
 import { StatusOptions } from './StatusOptions'
 
 // queries
-import { CommonApi, AuthApi } from '@queries'
-import { AdminIndustryFormFilter, Course, OptionType, UserStatus } from '@types'
+import { CommonApi, AuthApi, AdminApi } from '@queries'
+import { AdminIndustryFormFilter, Course, OptionType, SubAdmin, UserStatus } from '@types'
 import { SetQueryFilters } from './SetQueryFilters'
 import { CourseSelectOption, formatOptionLabel } from '@utils'
 import { State } from 'country-state-city'
@@ -29,6 +29,16 @@ export const IndustryFilters = ({
         value: course?.id,
         label: course?.title,
     }))
+
+    const { isLoading, isFetching, data, } =
+        AdminApi.SubAdmins.useListQuery(
+            {
+                search: `status:${UserStatus.Approved
+                    },isAssociatedWithRto:${false}`,
+                skip: 0,
+                limit: 100,
+            },
+        )
 
     const updatedFilter = {
         ...filter,
@@ -59,6 +69,11 @@ export const IndustryFilters = ({
         { value: 'ready', label: 'Ready' },
         { value: 'notReady', label: 'Not Ready' },
     ]
+
+    const coordinatorsOptions = data?.data?.map((coordinator: SubAdmin) => ({
+        value: coordinator?.id,
+        label: coordinator?.user?.name,
+    }))
 
     return (
         <>
@@ -151,6 +166,20 @@ export const IndustryFilters = ({
                     showError={false}
                 />
 
+                <TextInput
+                    label={'Suburb'}
+                    name={'suburb'}
+                    value={filter?.suburb}
+                    placeholder={'Select Industry Suburb...'}
+                    onChange={(e: any) => {
+                        onFilterChange({
+                            ...filter,
+                            suburb: e.target.value,
+                        })
+                    }}
+                    showError={false}
+                />
+
                 <Select
                     label={'State'}
                     name={'state'}
@@ -164,6 +193,24 @@ export const IndustryFilters = ({
                             state: e,
                         })
                     }}
+                    showError={false}
+                />
+
+                <Select
+                    label={'Filter by Coordinator'}
+                    name={'favoriteBy'}
+                    options={coordinatorsOptions}
+                    onlyValue
+                    value={Number(filter?.favoriteBy)}
+                    placeholder={'Select Coordinator...'}
+                    onChange={(e: number) => {
+                        onFilterChange({
+                            ...filter,
+                            favoriteBy: e,
+                        })
+                    }}
+                    loading={isLoading || isFetching}
+                    disabled={isLoading || isFetching}
                     showError={false}
                 />
 

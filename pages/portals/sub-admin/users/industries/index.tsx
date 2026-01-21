@@ -9,8 +9,7 @@ import { LoadingAnimation, TechnicalError } from '@components'
 
 import {
     RtoCoordinatorsIndustries,
-    SubadminIndustries,
-    SubAdminUpdatedIndustries,
+    SubAdminUpdatedIndustries
 } from '@partials/sub-admin/Industries'
 //query
 import { SubAdminApi } from '@queries'

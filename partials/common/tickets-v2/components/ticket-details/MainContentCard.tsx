@@ -163,7 +163,7 @@ export const MainContentCard = ({ ticket }: any) => {
                         )}
 
                     {/* Resolution (if resolved) */}
-                    {ticket?.status === 'resolved' && ticket?.resolution && (
+                    {ticket?.resolution && (
                         <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-5 text-white shadow-xl border-2 border-green-400">
                             <div className="flex items-center gap-3 mb-3">
                                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">

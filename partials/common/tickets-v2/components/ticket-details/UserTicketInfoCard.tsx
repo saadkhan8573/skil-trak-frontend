@@ -50,7 +50,7 @@ export const UserTicketInfoCard = ({ ticket }: any) => {
                         <Link
                             href={placementUrl ?? profileUrl}
                             className="inline-flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-[#044866] to-[#0D5468] text-white rounded-lg shadow-md hover:shadow-xl transition-all group/student"
-                            title="View student profile"
+                            title="View student details"
                         >
                             <div className="size-6 bg-white/20 rounded-full flex items-center justify-center">
                                 <User className="size-4" />
@@ -70,7 +70,7 @@ export const UserTicketInfoCard = ({ ticket }: any) => {
                         <Link
                             href={placementUrl ?? profileUrl}
                             className="inline-flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-[#044866] to-[#0D5468] text-white rounded-lg shadow-md hover:shadow-xl transition-all group/student"
-                            title="View student profile"
+                            title="View student details"
                         >
                             <div className="size-6 bg-white/20 rounded-full flex items-center justify-center">
                                 <User className="size-4" />
@@ -209,7 +209,7 @@ export const UserTicketInfoCard = ({ ticket }: any) => {
                                         Industry
                                         <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover/industry:opacity-100 transition-opacity" />
                                     </div>
-                                    <div className="text-xs text-[#044866]">
+                                    <div className="text-[#044866] font-semibold">
                                         {ticket?.user?.name ?? 'NA'}
                                     </div>
                                 </div>
@@ -245,7 +245,7 @@ export const UserTicketInfoCard = ({ ticket }: any) => {
                                             Industry
                                             <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover/industry:opacity-100 transition-opacity" />
                                         </div>
-                                        <div className="text-xs text-[#044866]">
+                                        <div className="text-[#044866] font-semibold">
                                             {ticket?.relatedUser?.name ?? 'NA'}
                                         </div>
                                     </div>

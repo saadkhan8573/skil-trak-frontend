@@ -6,7 +6,6 @@ import {
     NoData,
     Portal,
     ShowErrorNotifications,
-    TextArea,
 } from '@components'
 import { UserRoles } from '@constants'
 import { useContextBar, useNotification, useSubadminProfile } from '@hooks'
@@ -22,25 +21,14 @@ import {
 } from '@queries'
 import { IndustryStatus } from '@types'
 import { getUserCredentials } from '@utils'
-import {
-    CheckCircle2,
-    MapPin,
-    Phone,
-    Sparkles,
-    Star,
-    Users,
-} from 'lucide-react'
+import { CheckCircle2, MapPin, Phone, Sparkles } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { ReactElement, useCallback, useEffect, useState } from 'react'
 import { FiUserMinus, FiUserPlus } from 'react-icons/fi'
-import {
-    IoCallOutline,
-    IoDocumentTextOutline,
-    IoEyeOutline,
-} from 'react-icons/io5'
-import { LuPhoneCall, LuPhoneMissed } from 'react-icons/lu'
-import { OnViewMapCallAnswer } from './OnViewMapCallAnswer'
+import { IoDocumentTextOutline, IoEyeOutline } from 'react-icons/io5'
+import { LuPhoneCall } from 'react-icons/lu'
 import { CallStatus } from './CallStatus'
+import { OnViewMapCallAnswer } from './OnViewMapCallAnswer'
 export const OnViewMapFutureIndustryDetailsTab = ({
     selectedBox,
     workplace,
@@ -51,7 +39,29 @@ export const OnViewMapFutureIndustryDetailsTab = ({
     const [modal, setModal] = useState<ReactElement | null>(null)
     const workplaceId = workplace?.id
     const industryId = selectedBox?.id
+    const router = useRouter()
     const contextBar = useContextBar()
+    const role = getUserCredentials()?.role
+    const pathName = router.pathname
+    console.log('routerpathanme', router.isReady)
+
+    const getStudentId = () => {
+        if (!router.isReady) return undefined
+
+        // SUB ADMIN → explicit param
+        if (role === 'subadmin') {
+            return Number(router.query.studentId)
+        }
+
+        // RTO + ADMIN → last URL segment
+        if (role === 'rto' || role === 'admin') {
+            return Number(router.asPath.split('/').pop())
+        }
+
+        return undefined
+    }
+    const studentId = getStudentId()
+    console.log('studentId', studentId)
 
     const subadmin = useSubadminProfile()
 
@@ -73,7 +83,6 @@ export const OnViewMapFutureIndustryDetailsTab = ({
     const wasContacted = callLogEntry?.isAnswered !== null
 
     const { notification } = useNotification()
-    const router = useRouter()
 
     useEffect(() => {
         if (addToContactedResult.isSuccess) {
@@ -146,15 +155,13 @@ export const OnViewMapFutureIndustryDetailsTab = ({
 
     const rolesIncludes = [UserRoles.ADMIN, UserRoles.RTO]
 
-    const role = getUserCredentials()?.role
-
     const toggleCall = () => setShowCall((prev) => !prev)
 
     return (
         <>
             {modal}
             <ShowErrorNotifications
-                result={addExistingIndustryResult ?? addToContactedResult}
+                result={addExistingIndustryResult || addToContactedResult}
             />
             {industryDetails.isError && (
                 <NoData text="Something is not right...!" />
@@ -223,7 +230,10 @@ export const OnViewMapFutureIndustryDetailsTab = ({
                                 toggleCall()
                                 if (!call) {
                                     addToContacted({
-                                        studentId: Number(router?.query?.id),
+                                        studentId:
+                                            studentId !== undefined
+                                                ? studentId
+                                                : Number(router?.query?.id),
                                         industryId,
                                         wpId: workplaceId,
                                         isListing: true,

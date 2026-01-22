@@ -29,12 +29,20 @@ export const EnhancedIndustryDetailsCard = ({
         RtoV2Api.PlacementRequests.useStudentPlacementIndustryDetails(wpId, {
             skip: !wpId,
         })
+    const industry =
+        workplace?.industries?.length > 0
+            ? data
+            : workplace?.workplaceApprovaleRequest?.[0]?.industry
     const roundCustom = (value: number) => {
         const decimal = value % 1
         return decimal >= 0.7 ? Math.ceil(value) : Math.floor(value)
     }
-    console.log('workplace', workplace)
-
+    console.log(' workplace?.industries', workplace?.industries)
+    console.log('data::::', data)
+    console.log(
+        'workplace?.workplaceApprovaleRequest',
+        workplace?.workplaceApprovaleRequest
+    )
     const onToggleShowMap = () => {
         setShowMap(!showMap)
     }
@@ -42,7 +50,8 @@ export const EnhancedIndustryDetailsCard = ({
 
     const fileName = fileUrl.split('/').pop() ?? ''
     const extension = fileName.split('.').pop()?.toLowerCase()
-    const shouldRenderIndustryCard = data && Object.keys(data)?.length > 0
+    const shouldRenderIndustryCard =
+        industry && Object.keys(industry)?.length > 0
 
     return (
         <>
@@ -74,7 +83,7 @@ export const EnhancedIndustryDetailsCard = ({
                                 </span>
                             </div>
                             <span className="text-[#044866] font-bold text-lg">
-                                {roundCustom(data?.distance || 0)} km
+                                {roundCustom(industry?.distance || 0)} km
                             </span>
                         </div>
                         <Button
@@ -86,20 +95,20 @@ export const EnhancedIndustryDetailsCard = ({
                             {showMap ? 'Close Map' : 'View Map'}
                         </Button>
                         <p className="text-xs text-slate-500 mt-2 text-center">
-                            {/* {data?.addressLine1 || "---"} */}
+                            {/* {industry?.addressLine1 || "---"} */}
                         </p>
                         {showMap && (
                             <>
                                 <WorkplaceMapBoxView
-                                    industryLocation={data?.location?.split(
+                                    industryLocation={industry?.location?.split(
                                         ','
                                     )}
                                     studentLocation={student?.location?.split(
                                         ','
                                     )}
-                                    workplaceName={data?.user?.name}
+                                    workplaceName={industry?.user?.name}
                                     showMap={
-                                        !data?.industry?.location &&
+                                        !industry?.industry?.location &&
                                         !!student?.location
                                     }
                                 />
@@ -113,11 +122,11 @@ export const EnhancedIndustryDetailsCard = ({
                             </div>
                             <div className="flex-1">
                                 <h4 className="text-[#044866] font-semibold text-lg">
-                                    {data?.user?.name ?? '———'}
+                                    {industry?.user?.name ?? '———'}
                                 </h4>
                                 <p className="text-slate-600 text-sm">
                                     Verified Industry{' '}
-                                    {data?.isPartner
+                                    {industry?.isPartner
                                         ? 'Partner'
                                         : 'Non-Partner'}
                                 </p>
@@ -142,7 +151,7 @@ export const EnhancedIndustryDetailsCard = ({
                                         className="cursor-pointer text-primary size-5"
                                         onClick={() =>
                                             onFileClicked({
-                                                file: data?.employmentDocument,
+                                                file: industry?.employmentDocument,
                                                 extension,
                                                 type: 'all',
                                             })
@@ -160,7 +169,7 @@ export const EnhancedIndustryDetailsCard = ({
                                     Location
                                 </p>
                                 <p className="text-slate-900 font-medium">
-                                    {data?.addressLine1 ?? '———'}
+                                    {industry?.addressLine1 ?? '———'}
                                 </p>
                             </div>
                             <div className="p-3 bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-lg">
@@ -168,7 +177,7 @@ export const EnhancedIndustryDetailsCard = ({
                                     Distance
                                 </p>
                                 <p className="text-slate-900 font-medium">
-                                    {roundCustom(data?.distance || 0)} km
+                                    {roundCustom(industry?.distance || 0)} km
                                 </p>
                             </div>
                         </div>
@@ -181,7 +190,7 @@ export const EnhancedIndustryDetailsCard = ({
                                         Contact Person
                                     </p>
                                     <p className="text-slate-900 font-medium text-sm">
-                                        {data?.contactPerson ?? '————'}
+                                        {industry?.contactPerson ?? '————'}
                                     </p>
                                 </div>
                             </div>
@@ -192,7 +201,7 @@ export const EnhancedIndustryDetailsCard = ({
                                         Email
                                     </p>
                                     <p className="text-slate-900 font-medium text-sm">
-                                        {data?.user?.email ?? '————'}
+                                        {industry?.user?.email ?? '————'}
                                     </p>
                                 </div>
                             </div>

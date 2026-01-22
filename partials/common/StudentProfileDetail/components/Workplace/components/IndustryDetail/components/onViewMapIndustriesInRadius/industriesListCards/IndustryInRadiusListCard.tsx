@@ -21,7 +21,7 @@ export const IndustryInRadiusListCard = ({
     isLocked = false,
 }: IndustryInRadiusListCardProps) => {
     const handleCardClick = () => {
-        if (isLocked) return
+        // if (isLocked) return
         const selectedItem = branch ? { ...item, type: 'branch' } : item
         onSelect(selectedItem)
     }
@@ -36,13 +36,13 @@ export const IndustryInRadiusListCard = ({
                 flex items-center justify-between 
                 bg-white border border-gray-200 rounded-xl shadow-sm 
                 p-4 w-full transition-all hover:shadow-md
-                ${isLocked ? 'opacity-60 cursor-not-allowed' : 'hover:border-gray-300'}
+                hover:border-gray-300
             `}
         >
             {/* Left Section */}
             <div
                 onClick={handleCardClick}
-                className={`flex gap-4 flex-1 ${isLocked ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                className={`flex gap-4 flex-1 cursor-pointer`}
             >
                 {/* Avatar */}
                 <div className="relative flex-shrink-0">
@@ -54,16 +54,16 @@ export const IndustryInRadiusListCard = ({
                                 className="w-full h-full object-cover"
                             />
                         ) : (
-                            <span className="text-base font-semibold text-gray-600">
+                            <span className="font-semibold text-gray-600">
                                 {item?.user?.name?.[0]?.toUpperCase() ?? 'N'}
                             </span>
                         )}
                     </div>
-                    {isLocked && (
+                    {/* {isLocked && (
                         <div className="absolute inset-0 bg-gray-900/50 rounded-full flex items-center justify-center">
                             <Lock size={18} className="text-white" />
                         </div>
-                    )}
+                    )} */}
                 </div>
 
                 {/* Content */}
@@ -71,7 +71,7 @@ export const IndustryInRadiusListCard = ({
                     {/* Header */}
                     <div className="flex items-center gap-2 mb-1">
                         <h3
-                            className="font-semibold text-base text-gray-900 truncate"
+                            className="font-semibold text-gray-900 truncate"
                             title={item?.user?.name}
                         >
                             {branch
@@ -132,14 +132,14 @@ export const IndustryInRadiusListCard = ({
 
             {/* Right Section */}
             <div className="flex-shrink-0 ml-4">
-                {isLocked ? (
+                {/* {isLocked ? (
                     <div className="flex flex-col items-center justify-center gap-2 w-32 text-center">
                         <Lock size={28} className="text-gray-400" />
                         <span className="text-xs text-gray-500 font-medium leading-tight">
                             Complete previous industries to unlock
                         </span>
                     </div>
-                ) : (
+                ) : ( */}
                     <div className="flex flex-col gap-3 items-end min-w-[140px]">
                         {/* Actions */}
                         <Actions
@@ -176,7 +176,7 @@ export const IndustryInRadiusListCard = ({
                             </span>
                         </div>
                     </div>
-                )}
+                {/* )} */}
             </div>
         </div>
     )

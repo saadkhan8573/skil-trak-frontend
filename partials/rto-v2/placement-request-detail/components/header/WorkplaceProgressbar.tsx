@@ -7,12 +7,17 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from '@components/ui/tooltip'
+import moment from 'moment'
 import {
     needsWorkplaceStages,
     providedWorkplaceStages,
 } from '../workplaceStages'
 
-export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
+export const WorkplaceProgressbar = ({
+    currentStatus,
+    workplaceType,
+    createdAt,
+}: any) => {
     const workflowStages =
         workplaceType === 'provided'
             ? providedWorkplaceStages
@@ -47,15 +52,15 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
                             isCancelled
                                 ? 'Cancelled'
                                 : workplaceType === 'provided'
-                                ? 'Provided Workplace'
-                                : 'Needs Workplace'
+                                  ? 'Provided Workplace'
+                                  : 'Needs Workplace'
                         }
                         className={`${
                             isCancelled
                                 ? 'bg-red-500 shadow-red-500/30'
                                 : workplaceType === 'provided'
-                                ? 'bg-gradient-to-r from-purple-500 to-indigo-500 shadow-purple-500/30'
-                                : 'bg-gradient-to-r from-[#044866] to-[#0D5468] shadow-[#044866]/30'
+                                  ? 'bg-gradient-to-r from-purple-500 to-indigo-500 shadow-purple-500/30'
+                                  : 'bg-gradient-to-r from-[#044866] to-[#0D5468] shadow-[#044866]/30'
                         } text-white border-0 shadow-lg px-3 py-1.5`}
                     />
                     <span className="text-sm text-slate-600">
@@ -65,6 +70,12 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
                                   workflowStages.length
                               }`}
                     </span>
+                </div>
+                <div className="text-sm text-slate-600">
+                    <span className="font-bold">Workplace created date: </span>
+                    {createdAt
+                        ? moment(createdAt).format('DD MMM YYYY, hh:mm A')
+                        : '---'}
                 </div>
             </div>
 
@@ -86,8 +97,8 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
                         isCancelled
                             ? 'bg-red-500'
                             : workplaceType === 'provided'
-                            ? 'bg-gradient-to-r from-purple-500 to-indigo-500'
-                            : 'bg-gradient-to-r from-[#044866] to-[#0D5468]'
+                              ? 'bg-gradient-to-r from-purple-500 to-indigo-500'
+                              : 'bg-gradient-to-r from-[#044866] to-[#0D5468]'
                     }`}
                 />
             </div>
@@ -116,12 +127,12 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
                                             isThisStageCancelled
                                                 ? 'bg-red-50 border-2 border-red-300'
                                                 : isActive
-                                                ? workplaceType === 'provided'
-                                                    ? 'bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-300'
-                                                    : 'bg-gradient-to-br from-[#044866]/5 to-[#0D5468]/5 border-2 border-[#044866]/30'
-                                                : isCompleted
-                                                ? 'bg-emerald-50 border border-emerald-200'
-                                                : 'bg-slate-50 border border-slate-200 opacity-50' // Muted if cancelled
+                                                  ? workplaceType === 'provided'
+                                                      ? 'bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-300'
+                                                      : 'bg-gradient-to-br from-[#044866]/5 to-[#0D5468]/5 border-2 border-[#044866]/30'
+                                                  : isCompleted
+                                                    ? 'bg-emerald-50 border border-emerald-200'
+                                                    : 'bg-slate-50 border border-slate-200 opacity-50' // Muted if cancelled
                                         }`}
                                     >
                                         <div
@@ -129,13 +140,13 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
                                                 isThisStageCancelled
                                                     ? 'bg-red-500 text-white'
                                                     : isActive
-                                                    ? workplaceType ===
-                                                      'provided'
-                                                        ? 'bg-gradient-to-br from-purple-500 to-indigo-500 text-white'
-                                                        : 'bg-gradient-to-br from-[#044866] to-[#0D5468] text-white'
-                                                    : isCompleted
-                                                    ? 'bg-emerald-500 text-white'
-                                                    : 'bg-slate-300 text-white'
+                                                      ? workplaceType ===
+                                                        'provided'
+                                                          ? 'bg-gradient-to-br from-purple-500 to-indigo-500 text-white'
+                                                          : 'bg-gradient-to-br from-[#044866] to-[#0D5468] text-white'
+                                                      : isCompleted
+                                                        ? 'bg-emerald-500 text-white'
+                                                        : 'bg-slate-300 text-white'
                                             }`}
                                         >
                                             {isThisStageCancelled ? (
@@ -153,13 +164,13 @@ export const WorkplaceProgressbar = ({ currentStatus, workplaceType }: any) => {
                                                 isThisStageCancelled
                                                     ? 'text-red-700'
                                                     : isActive
-                                                    ? workplaceType ===
-                                                      'provided'
-                                                        ? 'text-purple-700'
-                                                        : 'text-[#044866]'
-                                                    : isCompleted
-                                                    ? 'text-emerald-700'
-                                                    : 'text-slate-500'
+                                                      ? workplaceType ===
+                                                        'provided'
+                                                          ? 'text-purple-700'
+                                                          : 'text-[#044866]'
+                                                      : isCompleted
+                                                        ? 'text-emerald-700'
+                                                        : 'text-slate-500'
                                             }`}
                                         >
                                             {stage?.name}

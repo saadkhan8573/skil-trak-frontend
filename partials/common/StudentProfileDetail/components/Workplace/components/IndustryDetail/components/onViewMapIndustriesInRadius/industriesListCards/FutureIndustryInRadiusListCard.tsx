@@ -14,31 +14,28 @@ type FutureIndustryInRadiusListCardProps = {
 export const FutureIndustryInRadiusListCard = ({
     item,
     onSelect,
-    isLocked = false
+    isLocked = false,
 }: FutureIndustryInRadiusListCardProps) => {
     return (
-        <div
-            className={`flex items-center justify-between w-full ${isLocked ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
-        >
+        <div className={`flex items-center justify-between w-full `}>
             {/* Left Section */}
             <div
                 onClick={() => {
-                    if (isLocked) return
+                    // if (isLocked) return
                     onSelect?.({
                         ...item,
                         type: 'futureIndustry',
                     })
                 }}
-                className={`flex gap-3 ${isLocked ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                className={`flex gap-3 cursor-pointer`}
             >
                 {/* Placeholder Avatar */}
                 <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center relative">
-                    {isLocked && (
+                    {/* {isLocked && (
                         <div className="absolute inset-0 bg-gray-900/40 rounded-full flex items-center justify-center">
                             <Lock size={16} className="text-white" />
                         </div>
-                    )}
+                    )} */}
                     <span className="text-sm font-bold text-gray-600">
                         {item?.businessName?.[0] ?? 'N'}
                     </span>
@@ -82,14 +79,16 @@ export const FutureIndustryInRadiusListCard = ({
             </div>
 
             {/* Right Section: Contacted Status or Lock */}
-            {isLocked ? (
+            {/* {isLocked ? (
                 <div className="flex flex-col items-center justify-center gap-2">
                     <Lock size={24} className="text-gray-400" />
                     <span className="text-xs text-gray-500 font-medium text-center">
-                        Complete previous<br />industries to unlock
+                        Complete previous
+                        <br />
+                        industries to unlock
                     </span>
                 </div>
-            ) : (
+            ) : ( */}
                 <div className="flex flex-col gap-y-2 justify-center items-end">
                     <Actions
                         alreadyContacted={item?.studentIndustryContact}
@@ -117,7 +116,7 @@ export const FutureIndustryInRadiusListCard = ({
                         )}
                     </div>
                 </div>
-            )}
+            {/* )} */}
         </div>
     )
 }

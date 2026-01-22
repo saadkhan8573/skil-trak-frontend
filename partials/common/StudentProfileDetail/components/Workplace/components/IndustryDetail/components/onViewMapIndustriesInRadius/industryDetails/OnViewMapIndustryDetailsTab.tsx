@@ -3,15 +3,10 @@ import {
     LoadingAnimation,
     NoData,
     ShowErrorNotifications,
-    useIsRestricted
+    useIsRestricted,
 } from '@components'
 import { SubAdminApi, useAddExistingIndustriesMutation } from '@queries'
-import {
-    CheckCircle2,
-    MapPin,
-    Phone,
-    Sparkles
-} from 'lucide-react'
+import { CheckCircle2, MapPin, Phone, Sparkles } from 'lucide-react'
 import { ReactElement, useEffect, useState } from 'react'
 import { IoDocumentTextOutline } from 'react-icons/io5'
 
@@ -34,6 +29,7 @@ import {
 } from '../../../../../modals'
 import { CallStatus } from './CallStatus'
 import { OnViewMapCallAnswer } from './OnViewMapCallAnswer'
+import moment from 'moment'
 
 export const OnViewMapIndustryDetailsTab = ({
     selectedBox,
@@ -245,11 +241,14 @@ export const OnViewMapIndustryDetailsTab = ({
                                 >
                                     {industryDetails?.data?.user?.name ?? 'NA'}
                                 </h3>
-                                {industryDetails?.data?.user?.emails?.length >
-                                    0 && (
+                                {industryDetails?.data?.emails?.length > 0 && (
                                     <div className="flex items-center gap-x-2 text-xs font-medium text-indigo-600 bg-indigo-100 border border-indigo-200 rounded-full px-3 py-1.5 mt-1 w-fit">
                                         <div className="w-2 h-2 rounded-full bg-indigo-600" />
                                         <span>Email Sent</span>
+                                        {moment(
+                                            industryDetails?.data?.emails?.[0]
+                                                ?.updatedAt
+                                        ).format('DD MMM YYYY, hh:mm A')}
                                     </div>
                                 )}
                                 <CallStatus

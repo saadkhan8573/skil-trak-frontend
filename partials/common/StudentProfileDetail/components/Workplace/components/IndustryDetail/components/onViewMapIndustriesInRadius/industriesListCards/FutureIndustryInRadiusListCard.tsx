@@ -4,6 +4,7 @@ import { ellipsisText } from '@utils'
 import { DistanceIndicator } from './DistanceIndicator'
 import { Actions } from '../contactHistoryTab/Actions'
 import { MdNoAccounts } from 'react-icons/md'
+import moment from 'moment'
 
 type FutureIndustryInRadiusListCardProps = {
     item: any
@@ -89,33 +90,71 @@ export const FutureIndustryInRadiusListCard = ({
                     </span>
                 </div>
             ) : ( */}
-                <div className="flex flex-col gap-y-2 justify-center items-end">
-                    <Actions
-                        alreadyContacted={item?.studentIndustryContact}
-                        int={item?.studentIndustryContact?.[0]?.intrested}
-                        contactId={item?.studentIndustryContact?.[0]?.id}
-                    />
-                    <div className="flex items-center gap-x-2">
-                        {item?.studentIndustryContact?.length > 0 ? (
-                            <span className="text-[9px] font-medium bg-green-100 text-green-500 px-3 py-1 rounded-lg">
-                                Contacted
-                            </span>
-                        ) : (
-                            <span className="text-[9px] font-medium bg-red-100 text-red-500 px-3 py-1 rounded-lg">
-                                Not Contacted
+            <div className="flex flex-col gap-y-3 justify-center items-end">
+                <Actions
+                    alreadyContacted={item?.studentIndustryContact}
+                    int={item?.studentIndustryContact?.[0]?.intrested}
+                    contactId={item?.studentIndustryContact?.[0]?.id}
+                />
+
+                <div className="flex flex-col gap-3 w-fit items-end">
+                    {/* Contact Status */}
+                    <div className="flex flex-col gap-1 items-end">
+                        <span
+                            className={`
+                    inline-flex justify-center
+                    text-[10px] font-semibold
+                    px-3 py-1.5 rounded-md
+                    ${
+                        item?.studentIndustryContact?.length > 0
+                            ? 'bg-green-50 text-green-700 border border-green-200'
+                            : 'bg-red-50 text-red-700 border border-red-200'
+                    }
+                `}
+                        >
+                            {item?.studentIndustryContact?.length > 0
+                                ? 'Contacted'
+                                : 'Not Contacted'}
+                        </span>
+
+                        {item?.studentIndustryContact?.length > 0 && (
+                            <span className="text-[11px] text-slate-500 text-right">
+                                {moment(
+                                    item?.studentIndustryContact?.[0]?.updatedAt
+                                ).format('DD MMM YYYY, hh:mm A')}
                             </span>
                         )}
-                        {item?.user?.emails?.length ? (
-                            <span className="text-[9px] font-medium bg-indigo-100 text-indigo-500 px-3 py-1 rounded-lg">
-                                Email Sent
-                            </span>
-                        ) : (
-                            <span className="text-[9px] font-medium bg-rose-100 text-rose-700 px-3 py-1 rounded-lg">
-                                No Email Sent
+                    </div>
+
+                    {/* Email Status */}
+                    <div className="flex flex-col gap-1 items-end">
+                        <span
+                            className={`
+                    inline-flex justify-center
+                    text-[10px] font-semibold
+                    px-3 py-1.5 rounded-md
+                    ${
+                        item?.user?.emails?.length > 0
+                            ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                            : 'bg-rose-50 text-rose-700 border border-rose-200'
+                    }
+                `}
+                        >
+                            {item?.user?.emails?.length > 0
+                                ? 'Email Sent'
+                                : 'No Email Sent'}
+                        </span>
+
+                        {item?.user?.emails?.length > 0 && (
+                            <span className="text-[11px] text-slate-500 text-right">
+                                {moment(
+                                    item?.user?.emails?.[0]?.updatedAt
+                                ).format('DD MMM YYYY, hh:mm A')}
                             </span>
                         )}
                     </div>
                 </div>
+            </div>
             {/* )} */}
         </div>
     )

@@ -162,6 +162,16 @@ export const SubAdminIndustryFilter = ({
                     }}
                     showError={false}
                 />
+                <TextInput
+                    label={'Suburb'}
+                    name={'suburb'}
+                    value={filter?.suburb}
+                    placeholder={'Search By Suburb...'}
+                    onChange={(e: any) => {
+                        onFilterChange({ ...filter, suburb: e.target.value })
+                    }}
+                    showError={false}
+                />
 
                 <Select
                     label={'State'}

@@ -46,11 +46,23 @@ export const StepReviewInfo = () => {
     const onCancel = () => {
         setModal(null)
     }
+
+    const sectorResponse = AuthApi.useSectorsByRto(
+        Number(id),
+        {
+            skip: !id,
+        }
+    )
+
+    console.log(
+        { sectorResponse }
+    )
+
     // rtos/id
     const onEditData = () => {
         SignUpUtils.setEditingMode(true)
         // navigate to form
-        router.push({ query: { step: 'account-info' } })
+        router.push({ query: { ...router.query, step: 'account-info' } })
     }
 
     const onSubmitData = () => {
@@ -59,7 +71,7 @@ export const StepReviewInfo = () => {
 
         // set-up account type from here
         if (!data?.allowStudentSelfPayment || !(formData?.rtoInfo !== '')) {
-            router.push({ query: { step: 'requested' } })
+            router.push({ query: { ...router.query, step: 'requested' } })
         }
     }
 
@@ -144,7 +156,7 @@ export const StepReviewInfo = () => {
         }
         if (registerResult.isError) {
             SignUpUtils.setEditingMode(true)
-            router.push({ query: { step: 'account-info' } })
+            router.push({ query: { ...router.query, step: 'account-info' } })
         }
     }, [registerResult])
 
@@ -193,6 +205,17 @@ export const StepReviewInfo = () => {
             </GlobalModal>
         )
     }
+
+    // Map course IDs to full course objects using sectorResponse data
+    const mappedCourses = sectorResponse?.data
+        ?.filter((course: any) =>
+            formData?.courses?.includes(course?.id) ||
+            formData?.courses?.some((c: any) => (c?.value || c) === course?.id)
+        )
+        ?.map((course: any) => ({
+            label: course?.title,
+            value: course?.id
+        })) || []
 
     return (
         <>
@@ -322,7 +345,7 @@ export const StepReviewInfo = () => {
                             {/* Sector Info */}
                             <div>
                                 {formData?.sectors &&
-                                formData?.sectors?.length > 0 ? (
+                                    formData?.sectors?.length > 0 ? (
                                     <>
                                         <div className="border-b  border-secondary-dark mt-8">
                                             <Typography
@@ -348,12 +371,9 @@ export const StepReviewInfo = () => {
                                                         (
                                                             sector: OptionType
                                                         ) => (
-                                                            <InfoboxCard>
+                                                            <InfoboxCard key={Number(sector?.value || sector)}>
                                                                 <div
                                                                     className=""
-                                                                    key={Number(
-                                                                        sector.value
-                                                                    )}
                                                                 >
                                                                     <Typography
                                                                         variant={
@@ -361,7 +381,7 @@ export const StepReviewInfo = () => {
                                                                         }
                                                                     >
                                                                         {
-                                                                            sector.label
+                                                                            sector?.label
                                                                         }
                                                                     </Typography>
                                                                 </div>
@@ -370,7 +390,7 @@ export const StepReviewInfo = () => {
                                                     )}
                                                 </div>
                                             </Card>
-                                            <Card>
+                                            {mappedCourses?.length > 0 && <Card>
                                                 <div className="mb-2">
                                                     <Typography
                                                         variant={'xs'}
@@ -380,16 +400,13 @@ export const StepReviewInfo = () => {
                                                     </Typography>
                                                 </div>
                                                 <div className="flex flex-col gap-y-1">
-                                                    {formData?.courses?.map(
+                                                    {mappedCourses?.map(
                                                         (
-                                                            course: OptionType
+                                                            course: any
                                                         ) => (
-                                                            <InfoboxCard>
+                                                            <InfoboxCard key={Number(course.value)}>
                                                                 <div
                                                                     className=""
-                                                                    key={Number(
-                                                                        course.value
-                                                                    )}
                                                                 >
                                                                     <Typography
                                                                         variant={
@@ -397,7 +414,7 @@ export const StepReviewInfo = () => {
                                                                         }
                                                                     >
                                                                         {
-                                                                            course.label
+                                                                            course?.label
                                                                         }
                                                                     </Typography>
                                                                 </div>
@@ -405,7 +422,7 @@ export const StepReviewInfo = () => {
                                                         )
                                                     )}
                                                 </div>
-                                            </Card>
+                                            </Card>}
                                         </div>
                                     </>
                                 ) : (
@@ -489,7 +506,7 @@ export const StepReviewInfo = () => {
                             {/* Actions */}
                             <div className="mt-8 flex items-center gap-x-8">
                                 {data?.allowStudentSelfPayment ||
-                                formData?.rtoInfo !== '' ? (
+                                    formData?.rtoInfo !== '' ? (
                                     paymentConfirmed ? (
                                         <Button
                                             variant={'primary'}
@@ -523,7 +540,7 @@ export const StepReviewInfo = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div >
             )}
         </>
     )

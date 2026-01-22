@@ -178,7 +178,6 @@ export const StudentTimeline = () => {
                         onClick={() => setIsExtendModalOpen(true)}
                     >
                         <Edit2 className="w-3.5 h-3.5" />
-                        <span className="text-sm font-medium">Extend</span>
                     </Button>
                 </div>
             </div>

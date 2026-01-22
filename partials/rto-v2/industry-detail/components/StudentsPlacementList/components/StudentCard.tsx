@@ -74,7 +74,13 @@ export function StudentCard({ student }: StudentCardProps) {
         <Collapsible
             open={isOpen}
             onOpenChange={setIsOpen}
-            className="bg-white border border-[#E2E8F0] rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300"
+            className={`${currentStep?.label &&
+                ['Cancelled', 'Terminated', 'Rejected'].includes(
+                    currentStep.label
+                )
+                ? 'bg-red-100 border-red-200'
+                : 'bg-white border-[#E2E8F0]'
+                } border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300`}
         >
             {/* Student Header */}
             <div className="p-2">
@@ -118,17 +124,29 @@ export function StudentCard({ student }: StudentCardProps) {
                     <div className="flex items-center gap-2">
                         <div className="text-right">
                             <div className="flex items-center gap-1.5 justify-end mb-0.5">
-                                <span className="text-[10px] font-bold text-[#044866]">
-                                    {completedCount} of {totalCount} steps
+                                <span className={`text-[10px] font-bold ${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected'].includes(currentStep.label)
+                                    ? 'text-red-600'
+                                    : 'text-[#044866]'
+                                    }`}>
+                                    {currentStep?.label && ['Cancelled', 'Terminated', 'Rejected'].includes(currentStep.label)
+                                        ? 'Terminal State'
+                                        : `${completedCount} of ${totalCount} steps`}
                                 </span>
-                                <span className="text-[10px] font-bold text-[#64748B]">
-                                    •
-                                </span>
-                                <span className="text-[10px] font-bold text-[#044866]">
-                                    {progressPercent}%
-                                </span>
+                                {!(currentStep?.label && ['Cancelled', 'Terminated', 'Rejected'].includes(currentStep.label)) && (
+                                    <>
+                                        <span className="text-[10px] font-bold text-[#64748B]">
+                                            •
+                                        </span>
+                                        <span className="text-[10px] font-bold text-[#044866]">
+                                            {progressPercent}%
+                                        </span>
+                                    </>
+                                )}
                             </div>
-                            <p className="text-[9px] text-[#64748B]">
+                            <p className={`text-[9px] ${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected'].includes(currentStep.label)
+                                ? 'text-red-500 font-bold'
+                                : 'text-[#64748B]'
+                                }`}>
                                 {currentStep?.label}
                             </p>
                         </div>
@@ -173,26 +191,38 @@ export function StudentCard({ student }: StudentCardProps) {
                 <div className="mb-2">
                     <div className="h-1.5 bg-[#E8F4F8] rounded-full overflow-hidden shadow-sm">
                         <div
-                            className="h-full bg-gradient-to-r from-[#044866] to-[#0D5468] rounded-full transition-all duration-1000"
-                            style={{ width: `${progressPercent}%` }}
+                            className={`h-full rounded-full transition-all duration-1000 ${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected'].includes(currentStep.label)
+                                ? 'bg-red-500'
+                                : 'bg-gradient-to-r from-[#044866] to-[#0D5468]'
+                                }`}
+                            style={{ width: `${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected'].includes(currentStep.label) ? 100 : progressPercent}%` }}
                         />
                     </div>
                 </div>
 
                 {/* Status Badges */}
                 <div className="flex items-center gap-1 mb-2">
-                    <div className="flex items-center gap-1 bg-[#D1FAE5] text-[#065F46] px-2 py-0.5 rounded-md text-[10px] font-medium border border-[#10B981]/20">
-                        <CheckCircle className="w-2.5 h-2.5" />
-                        <span>{completedCount} Completed</span>
-                    </div>
-                    <div className="flex items-center gap-1 bg-[#FEF3C7] text-[#92400E] px-2 py-0.5 rounded-md text-[10px] font-medium border border-[#F7A619]/20">
-                        <Clock className="w-2.5 h-2.5" />
-                        <span>1 In Progress</span>
-                    </div>
-                    <div className="flex items-center gap-1 bg-[#F8FAFB] text-[#64748B] px-2 py-0.5 rounded-md text-[10px] font-medium border border-[#E2E8F0]">
-                        <Circle className="w-2.5 h-2.5" />
-                        <span>{statusArrays?.pending?.length} Remaining</span>
-                    </div>
+                    {currentStep?.label && ['Cancelled', 'Terminated', 'Rejected'].includes(currentStep.label) ? (
+                        <div className="flex items-center gap-1 bg-[#FEE2E2] text-[#991B1B] px-2 py-0.5 rounded-md text-[10px] font-bold border border-[#EF4444]/20">
+                            <XCircle className="w-2.5 h-2.5" />
+                            <span>{currentStep.label}</span>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="flex items-center gap-1 bg-[#D1FAE5] text-[#065F46] px-2 py-0.5 rounded-md text-[10px] font-medium border border-[#10B981]/20">
+                                <CheckCircle className="w-2.5 h-2.5" />
+                                <span>{completedCount} Completed</span>
+                            </div>
+                            <div className="flex items-center gap-1 bg-[#FEF3C7] text-[#92400E] px-2 py-0.5 rounded-md text-[10px] font-medium border border-[#F7A619]/20">
+                                <Clock className="w-2.5 h-2.5" />
+                                <span>1 In Progress</span>
+                            </div>
+                            <div className="flex items-center gap-1 bg-[#F8FAFB] text-[#64748B] px-2 py-0.5 rounded-md text-[10px] font-medium border border-[#E2E8F0]">
+                                <Circle className="w-2.5 h-2.5" />
+                                <span>{statusArrays?.pending?.length} Remaining</span>
+                            </div>
+                        </>
+                    )}
                 </div>
 
                 {/* Expand Button */}

@@ -51,8 +51,6 @@ export const FolderCard = ({
         }
     )
 
-    console.log({ course })
-
     const getTemplate = CommonApi.ESign.useESignTemplateDetail(
         {
             folder: Number(folder?.id),
@@ -81,7 +79,7 @@ export const FolderCard = ({
 
     const responseFiles = response?.files
 
-    const isAllFilesApproved = responseFiles?.every((file: any) => file?.status === 'approved')
+    const isAllFilesStatusChanged = responseFiles?.filter((file) => !file?.isArchived)?.every((file: any) => file?.status !== 'pending')
 
     const result = useMemo(
         () => getCourseResult(course?.results),
@@ -156,7 +154,7 @@ export const FolderCard = ({
                                     Icon={StatusIcon}
                                 />
                                 {response?.filesCount > 0 &&
-                                    !isAllFilesApproved && response?.status === Result.Pending && result?.result !== Result.Competent && (
+                                    !isAllFilesStatusChanged && response?.status === Result.Pending && result?.result !== Result.Competent && (
                                         <Typography
                                             variant="label"
                                             color="text-error"
@@ -215,7 +213,7 @@ export const FolderCard = ({
                     {result?.result !== Result.Competent && <div className="flex items-center gap-2">
                         {folderStatus === 'pending' &&
                             ((response?.filesCount || 0) === 0 ||
-                                isAllFilesApproved) && (
+                                isAllFilesStatusChanged) && (
                                 <>
                                     <ApproveAllFiles folder={response} />
                                     <RejectAllFile folder={response} />

@@ -19,7 +19,7 @@ export const StepCreate = () => {
     const [login, loginResult] = AuthApi.useLogin()
     const { notification } = useNotification()
     const hader = router?.pathname?.split('/')?.[4]
-    
+
     // Helper function to prepare payload based on RTO selection
     const preparePayload = (formData: StudentFormType) => {
         const basePayload = {
@@ -101,7 +101,7 @@ export const StepCreate = () => {
         }
         if (registerResult.isError) {
             SignUpUtils.setEditingMode(true)
-            router.push({ query: { step: 'account-info' } })
+            router.push({ query: { ...router.query, step: 'account-info' } })
         }
     }, [registerResult])
 

@@ -5,42 +5,32 @@ import {
     TabConfig,
 } from '@components'
 import {
-    Archive,
-    Building2,
-    CalendarClock,
-    History,
-    Moon,
-    ShieldAlert,
-    UserMinus,
+    Building2
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { IndustryCounts, IndustryHeader } from './components'
 import {
     ArchivedIndustries,
     BlockedIndustries,
     FilteredIndustries,
-    MonthlyCallsIndustries,
     NonPartnerIndustries,
-    PendingIndustries,
-    RejectedIndustries,
     SnoozedIndustries,
     StateWiseIndustries,
-    YourPartnerIndustries,
+    YourPartnerIndustries
 } from './tabs'
 //Layouts
+import { PedingCourseApprovalIndustries } from '@partials/common'
+import { SubAdminApi } from '@redux'
 import { SubadminIndustryFilter } from '@types'
 import { getUserCredentials, removeEmptyValues } from '@utils'
-import { SubAdminApi } from '@redux'
-import { PedingCourseApprovalIndustries } from '@partials/common'
 
 const filterKeys = [
+    'abn',
     'name',
     'email',
     'phone',
-    'address',
-    'suburb',
     'state',
-    'abn',
+    'suburb',
+    'address',
     'courseId',
     'isHiring',
     'isPartner',

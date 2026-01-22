@@ -46,7 +46,8 @@ export const Actions = ({ contactId, alreadyContacted, int }: any) => {
         <>
             <ShowErrorNotifications result={interestedResult} />
             <div className="flex items-center gap-2">
-                {alreadyContacted?.length > 0 && (int === null || int === undefined) ? (
+                {alreadyContacted?.length > 0 &&
+                (int === null || int === undefined) ? (
                     <>
                         <button
                             onClick={() => onClickNotInterested(contactId)}
@@ -74,7 +75,10 @@ export const Actions = ({ contactId, alreadyContacted, int }: any) => {
                         </button>
                     </>
                 ) : (
-                    <StatusBadge status={int} />
+                    <StatusBadge
+                        status={int}
+                        date={alreadyContacted?.[0]?.updatedAt ?? '---'}
+                    />
                 )}
             </div>
         </>

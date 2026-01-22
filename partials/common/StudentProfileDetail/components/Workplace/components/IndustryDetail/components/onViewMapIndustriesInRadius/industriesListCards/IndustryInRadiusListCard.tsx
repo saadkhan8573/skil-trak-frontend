@@ -6,6 +6,7 @@ import { Actions } from '../contactHistoryTab/Actions'
 import { FaHandshakeSimple, FaHandshakeSimpleSlash } from 'react-icons/fa6'
 import { FaCheck, FaTimes } from 'react-icons/fa'
 import { Badge } from '@components'
+import moment from 'moment'
 
 type IndustryInRadiusListCardProps = {
     item: any
@@ -29,7 +30,6 @@ export const IndustryInRadiusListCard = ({
     const isContacted = item?.studentIndustryContact?.length > 0
     const hasEmailSent = item?.user?.emails?.length > 0
     const contactData = item?.studentIndustryContact?.[0]
-
     return (
         <div
             className={`
@@ -84,13 +84,23 @@ export const IndustryInRadiusListCard = ({
                     <div className="flex items-center gap-2 mb-2">
                         {item?.isPartner ? (
                             <>
-                                <FaHandshakeSimple className="text-orange-500 flex-shrink-0" size={14} />
-                                <span className="text-xs font-medium text-orange-600">Partner</span>
+                                <FaHandshakeSimple
+                                    className="text-orange-500 flex-shrink-0"
+                                    size={14}
+                                />
+                                <span className="text-xs font-medium text-orange-600">
+                                    Partner
+                                </span>
                             </>
                         ) : (
                             <>
-                                <FaHandshakeSimpleSlash className="text-green-600 flex-shrink-0" size={14} />
-                                <span className="text-xs font-medium text-green-700">Non-Partner</span>
+                                <FaHandshakeSimpleSlash
+                                    className="text-green-600 flex-shrink-0"
+                                    size={14}
+                                />
+                                <span className="text-xs font-medium text-green-700">
+                                    Non-Partner
+                                </span>
                             </>
                         )}
                     </div>
@@ -100,8 +110,13 @@ export const IndustryInRadiusListCard = ({
                         className="flex items-start gap-1.5 text-sm text-gray-600 mb-2"
                         title={item?.addressLine1}
                     >
-                        <MapPin className="text-red-500 flex-shrink-0 mt-0.5" size={14} />
-                        <span className="truncate">{ellipsisText(item?.addressLine1, 25)}</span>
+                        <MapPin
+                            className="text-red-500 flex-shrink-0 mt-0.5"
+                            size={14}
+                        />
+                        <span className="truncate">
+                            {ellipsisText(item?.addressLine1, 25)}
+                        </span>
                     </div>
 
                     {/* Distance */}
@@ -140,42 +155,70 @@ export const IndustryInRadiusListCard = ({
                         </span>
                     </div>
                 ) : ( */}
-                    <div className="flex flex-col gap-3 items-end min-w-[140px]">
-                        {/* Actions */}
-                        <Actions
-                            alreadyContacted={item?.studentIndustryContact}
-                            int={contactData?.intrested}
-                            contactId={contactData?.id}
-                        />
+                <div className="flex flex-col gap-3 items-end min-w-[140px]">
+                    {/* Actions */}
+                    <Actions
+                        alreadyContacted={item?.studentIndustryContact}
+                        int={contactData?.intrested}
+                        contactId={contactData?.id}
+                    />
 
-                        {/* Status Badges */}
-                        <div className="flex flex-col gap-1.5 w-full">
+                    {/* Status Badges */}
+                    <div className="flex flex-col gap-3 w-full">
+                        {/* Contact Status */}
+                        <div className="flex flex-col gap-1">
                             <span
                                 className={`
-                                    text-[10px] font-semibold text-center
+                                    inline-flex justify-center
+                                    text-[10px] font-semibold
                                     px-3 py-1.5 rounded-md
-                                    ${isContacted 
-                                        ? 'bg-green-50 text-green-700 border border-green-200' 
-                                        : 'bg-red-50 text-red-700 border border-red-200'
+                                    ${
+                                        isContacted
+                                            ? 'bg-green-50 text-green-700 border border-green-200'
+                                            : 'bg-red-50 text-red-700 border border-red-200'
                                     }
                                 `}
                             >
                                 {isContacted ? 'Contacted' : 'Not Contacted'}
                             </span>
+
+                            <span className="text-[11px] text-slate-500 text-center">
+                                {item?.studentIndustryContact?.length > 0
+                                    ? moment(
+                                          item?.studentIndustryContact?.[0]
+                                              ?.updatedAt
+                                      ).format('DD MMM YYYY, hh:mm A')
+                                    : null}
+                            </span>
+                        </div>
+
+                        {/* Email Status */}
+                        <div className="flex flex-col gap-1">
                             <span
                                 className={`
-                                    text-[10px] font-semibold text-center
+                                    inline-flex justify-center
+                                    text-[10px] font-semibold
                                     px-3 py-1.5 rounded-md
-                                    ${hasEmailSent 
-                                        ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' 
-                                        : 'bg-rose-50 text-rose-700 border border-rose-200'
+                                    ${
+                                        hasEmailSent
+                                            ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                                            : 'bg-rose-50 text-rose-700 border border-rose-200'
                                     }
                                 `}
                             >
                                 {hasEmailSent ? 'Email Sent' : 'No Email Sent'}
                             </span>
+
+                            <span className="text-[11px] text-slate-500 text-center">
+                                {item?.user?.emails?.length > 0
+                                    ? moment(
+                                          item?.user?.emails?.[0]?.updatedAt
+                                      ).format('DD MMM YYYY, hh:mm A')
+                                    : null}
+                            </span>
                         </div>
                     </div>
+                </div>
                 {/* )} */}
             </div>
         </div>

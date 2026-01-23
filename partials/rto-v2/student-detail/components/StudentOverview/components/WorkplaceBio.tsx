@@ -31,6 +31,8 @@ export function WorkplaceBio({
         )
     }, [workplace?.workplaceApprovaleRequest])
 
+    console.log({ latestWorkplaceApprovaleRequest })
+
     const workIndustry = workplace?.industries?.find(
         (i: WorkplaceWorkIndustriesType) => i?.applied
     )
@@ -42,7 +44,6 @@ export function WorkplaceBio({
         latestWorkplaceApprovaleRequest?.industry?.supervisors?.[0]
 
     const course = workplace?.courses?.[0]
-    const courseApproval = course?.approvals?.[0]
 
     const isCompletedWP = [
         WorkplaceCurrentStatus.Completed,
@@ -97,6 +98,43 @@ export function WorkplaceBio({
                             <Award className="w-4 h-4 text-[#F7A619]" />
                         </div>
                     </div>
+
+                    {/* Approval Status */}
+                    {latestWorkplaceApprovaleRequest && (
+                        <div className="mb-5 bg-gradient-to-br from-secondary to-white rounded-xl p-4 border border-secondary">
+                            <div className="flex items-center gap-2 mb-2">
+                                <Typography variant="title" medium>
+                                    Student  Approval Status
+                                </Typography>
+                                <Badge
+                                    variant={
+                                        latestWorkplaceApprovaleRequest.status === 'approved'
+                                            ? 'success'
+                                            : latestWorkplaceApprovaleRequest.status === 'rejected'
+                                                ? 'error'
+                                                : 'warning'
+                                    }
+                                    text={
+                                        latestWorkplaceApprovaleRequest?.status
+                                            ?.charAt(0)
+                                            ?.toUpperCase() +
+                                        latestWorkplaceApprovaleRequest?.status?.slice(1)
+                                    }
+                                />
+                            </div>
+                            {latestWorkplaceApprovaleRequest?.status === 'rejected' &&
+                                latestWorkplaceApprovaleRequest.comment && (
+                                    <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <p className="text-sm text-slate-600 mb-1">
+                                            Rejection Reason:
+                                        </p>
+                                        <p className="text-sm text-slate-900">
+                                            {latestWorkplaceApprovaleRequest.comment}
+                                        </p>
+                                    </div>
+                                )}
+                        </div>
+                    )}
 
                     {/* Key Information Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 mb-5">

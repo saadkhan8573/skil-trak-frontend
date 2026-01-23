@@ -47,7 +47,20 @@ export const useStatusInfo = ({
         WorkplaceCurrentStatus.PlacementStarted,
         WorkplaceCurrentStatus.Completed,
         WorkplaceCurrentStatus.Cancelled,
+        WorkplaceCurrentStatus.Terminated,
+        WorkplaceCurrentStatus.NoResponse,
     ]
+
+    const terminalStatuses = [
+        WorkplaceCurrentStatus.Cancelled,
+        WorkplaceCurrentStatus.Terminated,
+        WorkplaceCurrentStatus.Rejected,
+        WorkplaceCurrentStatus.NoResponse,
+    ]
+
+    const isTerminal = terminalStatuses.includes(workplace?.currentStatus)
+
+    console.log({ statusOrder })
 
     const getStatusArrays = (
         currentStatus: WorkplaceCurrentStatus
@@ -57,10 +70,19 @@ export const useStatusInfo = ({
     } => {
         const currentIndex = statusOrder.indexOf(currentStatus)
 
+
+
+        if (isTerminal) {
+            return {
+                completed: statusOrder.map((s) => statusMapping[s]),
+                pending: [],
+            }
+        }
+
         if (currentIndex === -1) {
             return {
                 completed: [],
-                pending: statusOrder.map(
+                pending: statusOrder?.filter((status) => !terminalStatuses.includes(status)).map(
                     (s: WorkplaceCurrentStatus) =>
                         statusMapping[s as keyof typeof statusMapping]
                 ),
@@ -74,7 +96,7 @@ export const useStatusInfo = ({
                     statusMapping[status as keyof typeof statusMapping]
             )
 
-        const pending = statusOrder
+        const pending = statusOrder?.filter((status) => !terminalStatuses.includes(status))
             .slice(currentIndex + 1) // All statuses after current
             .map(
                 (status: WorkplaceCurrentStatus) =>
@@ -121,9 +143,24 @@ export const useStatusInfo = ({
             workIndustry?.placementStartedDate,
         [WorkplaceCurrentStatus.Completed]: workIndustry?.isCompletedDate,
         [WorkplaceCurrentStatus.Cancelled]: workIndustry?.cancelledDate,
+        [WorkplaceCurrentStatus.Terminated]: workIndustry?.terminatedDate,
+        [WorkplaceCurrentStatus.NoResponse]: workIndustry?.industryResponseDate,
     })
 
+    const getCurrentStep = () => {
+        if (isTerminal) {
+            return {
+                label: statusMapping[workplace.currentStatus],
+                completed: false,
+                current: true,
+                date: workIndustry?.cancelledDate || null,
+            }
+        }
+        return statuses.find((step) => step.current === true) || null
+    }
+
     const getNextStep = () => {
+        if (isTerminal) return null
         const currentIndex = statuses.findIndex((step) => step.current === true)
 
         // If no current step found or current is the last step
@@ -135,6 +172,7 @@ export const useStatusInfo = ({
     }
 
     const getPreviousStep = () => {
+        if (isTerminal) return statuses[statuses.length - 1]
         const currentIndex = statuses.findIndex((step) => step.current === true)
 
         // If no current step found or current is the first step
@@ -145,14 +183,20 @@ export const useStatusInfo = ({
         return statuses[currentIndex - 1]
     }
 
-    const getCurrentStep = () => {
-        return statuses.find((step) => step.current === true) || null
-    }
+    const terminalStatusesLabels = [
+        'Cancelled',
+        'Terminated',
+        'Rejected',
+        'No Response'
+    ]
 
-    const completedCount = statuses.filter((s) => s.completed).length
-    const totalCount = statuses.length
-    const progressPercent = Math.round((completedCount / totalCount) * 100)
+    const validStatus = statuses.filter((step: any) => !terminalStatusesLabels.includes(step?.label))
 
+    const currentStep = getCurrentStep()
+    const completedCount = isTerminal ? statuses.length : currentStep?.label === "Schedule Completed" ? validStatus?.length : statuses.filter((s) => s.completed).length
+    const totalCount = validStatus.length
+    const progressPercent = isTerminal || currentStep?.label === "Schedule Completed" ? 100 : Math.round((completedCount / totalCount) * 100)
+    console.log({ statusesstatusesstatuses: statuses, currentStep })
     return {
         statuses,
         totalCount,
@@ -160,7 +204,7 @@ export const useStatusInfo = ({
         progressPercent,
         nextStep: getNextStep(),
         previousStep: getPreviousStep(),
-        currentStep: getCurrentStep(),
+        currentStep, validStatus,
         statusArrays: getStatusArrays(workplace?.currentStatus),
     }
 }

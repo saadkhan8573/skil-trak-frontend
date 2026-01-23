@@ -63,6 +63,7 @@ export function StudentCard({ student }: StudentCardProps) {
         completedCount,
         totalCount,
         statusArrays,
+        validStatus,
         currentStep,
     } = useStatusInfo({
         workplace: student?.workplace?.[0],
@@ -75,7 +76,7 @@ export function StudentCard({ student }: StudentCardProps) {
             open={isOpen}
             onOpenChange={setIsOpen}
             className={`${currentStep?.label &&
-                ['Cancelled', 'Terminated', 'Rejected'].includes(
+                ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(
                     currentStep.label
                 )
                 ? 'bg-red-100 border-red-200'
@@ -124,11 +125,11 @@ export function StudentCard({ student }: StudentCardProps) {
                     <div className="flex items-center gap-2">
                         <div className="text-right">
                             <div className="flex items-center gap-1.5 justify-end mb-0.5">
-                                <span className={`text-[10px] font-bold ${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected'].includes(currentStep.label)
+                                <span className={`text-[10px] font-bold ${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label)
                                     ? 'text-red-600'
                                     : 'text-[#044866]'
                                     }`}>
-                                    {currentStep?.label && ['Cancelled', 'Terminated', 'Rejected'].includes(currentStep.label)
+                                    {currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label)
                                         ? 'Terminal State'
                                         : `${completedCount} of ${totalCount} steps`}
                                 </span>
@@ -143,7 +144,7 @@ export function StudentCard({ student }: StudentCardProps) {
                                     </>
                                 )}
                             </div>
-                            <p className={`text-[9px] ${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected'].includes(currentStep.label)
+                            <p className={`text-[9px] ${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label)
                                 ? 'text-red-500 font-bold'
                                 : 'text-[#64748B]'
                                 }`}>
@@ -191,18 +192,18 @@ export function StudentCard({ student }: StudentCardProps) {
                 <div className="mb-2">
                     <div className="h-1.5 bg-[#E8F4F8] rounded-full overflow-hidden shadow-sm">
                         <div
-                            className={`h-full rounded-full transition-all duration-1000 ${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected'].includes(currentStep.label)
+                            className={`h-full rounded-full transition-all duration-1000 ${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label)
                                 ? 'bg-red-500'
                                 : 'bg-gradient-to-r from-[#044866] to-[#0D5468]'
                                 }`}
-                            style={{ width: `${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected'].includes(currentStep.label) ? 100 : progressPercent}%` }}
+                            style={{ width: `${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label) ? 100 : progressPercent}%` }}
                         />
                     </div>
                 </div>
 
                 {/* Status Badges */}
                 <div className="flex items-center gap-1 mb-2">
-                    {currentStep?.label && ['Cancelled', 'Terminated', 'Rejected'].includes(currentStep.label) ? (
+                    {currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label) ? (
                         <div className="flex items-center gap-1 bg-[#FEE2E2] text-[#991B1B] px-2 py-0.5 rounded-md text-[10px] font-bold border border-[#EF4444]/20">
                             <XCircle className="w-2.5 h-2.5" />
                             <span>{currentStep.label}</span>

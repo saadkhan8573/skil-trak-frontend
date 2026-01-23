@@ -2,12 +2,9 @@ import { Typography } from '@components'
 import {
     useGetArchivedAssessmentEvidenceDetailQuery,
     useGetArchivedAssessmentResponseQuery,
-    useGetAssessmentEvidenceDetailQuery,
-    useGetAssessmentResponseQuery,
-    useStudentAssessmentCoursesQuery,
+    useStudentAssessmentCoursesQuery
 } from '@queries'
 import { AssessmentEvidenceDetailType, Course, Sector, Student } from '@types'
-import { getCourseResult } from '@utils'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md'
 import { Navigation } from 'swiper/modules'

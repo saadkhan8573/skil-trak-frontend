@@ -143,7 +143,3 @@ export interface AssessmentResultType
     student: Student
     comments: CommentType[]
 }
-
-export interface AssessmentCourseType extends Course, BaseResponse {
-    results: AssessmentResultType[]
-}

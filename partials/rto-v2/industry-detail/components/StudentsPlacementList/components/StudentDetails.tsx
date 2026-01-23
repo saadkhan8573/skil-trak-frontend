@@ -19,14 +19,19 @@ interface StudentDetailsProps {
 }
 
 export function StudentDetails({ workflow }: StudentDetailsProps) {
-    const terminalStatuses = ['Cancelled', 'Terminated', 'Rejected']
+    const terminalStatuses = [
+        'Cancelled',
+        'Terminated',
+        'Rejected',
+        'No Response'
+    ]
     const isTerminalActive = workflow.some(
         (step) => step.current && terminalStatuses.includes(step?.label)
     )
 
     const displayedWorkflow = isTerminalActive
-        ? workflow.filter((step) => step.current && terminalStatuses.includes(step?.label))
-        : workflow
+        ? workflow.filter((step) => !terminalStatuses.includes(step?.label))
+        : workflow.filter((step) => !terminalStatuses.includes(step?.label))
 
     return (
         <div className="border-t border-[#E2E8F0] bg-gradient-to-br from-[#F8FAFB] to-[#FFFFFF] p-3">
@@ -39,26 +44,26 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
             <div className="space-y-2">
                 {displayedWorkflow.map((step, index) => {
                     const isTerminal = terminalStatuses.includes(step?.label)
-
+                    console.log({ step })
                     return (
                         <div
                             key={index}
                             className="relative flex items-start gap-2"
                         >
                             {/* Connector Line */}
-                            {!isTerminalActive && index < displayedWorkflow.length - 1 && (
+                            {index < displayedWorkflow.length - 1 && (
                                 <div className="absolute left-[9px] top-5 w-0.5 h-4 bg-[#E2E8F0]" />
                             )}
 
                             {/* Status Icon */}
                             <div
                                 className={`w-5 h-5 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0 transition-all duration-300 ${step?.completed
-                                        ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
-                                        : step?.current
-                                            ? isTerminal
-                                                ? 'bg-gradient-to-br from-[#EF4444] to-[#B91C1C]'
-                                                : 'bg-gradient-to-br from-[#F7A619] to-[#EA580C] animate-pulse'
-                                            : 'bg-gradient-to-br from-[#F8FAFB] to-[#E2E8F0]'
+                                    ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
+                                    : step?.current
+                                        ? isTerminal
+                                            ? 'bg-gradient-to-br from-[#EF4444] to-[#B91C1C]'
+                                            : 'bg-gradient-to-br from-[#F7A619] to-[#EA580C] animate-pulse'
+                                        : 'bg-gradient-to-br from-[#F8FAFB] to-[#E2E8F0]'
                                     }`}
                             >
                                 {step?.completed ? (
@@ -79,12 +84,12 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
                                 <div className="flex items-start justify-between mb-0.5">
                                     <h5
                                         className={`text-[10px] font-medium ${step?.completed
-                                                ? 'text-[#1A2332]'
-                                                : step?.current
-                                                    ? isTerminal
-                                                        ? 'text-[#991B1B]'
-                                                        : 'text-[#B45309]'
-                                                    : 'text-[#94A3B8]'
+                                            ? 'text-[#1A2332]'
+                                            : step?.current
+                                                ? isTerminal
+                                                    ? 'text-[#991B1B]'
+                                                    : 'text-[#B45309]'
+                                                : 'text-[#94A3B8]'
                                             }`}
                                     >
                                         {step?.label}
@@ -95,10 +100,10 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
                                         </span>
                                     )}
                                 </div>
-                                {step?.current && (
+                                {step?.current && step?.label !== "Schedule Completed" && (
                                     <p className={`text-[9px] px-1.5 py-0.5 rounded inline-block border ${isTerminal
-                                            ? 'text-[#991B1B] bg-[#FEE2E2] border-[#EF4444]/20'
-                                            : 'text-[#92400E] bg-[#FEF3C7] border-[#F7A619]/20'
+                                        ? 'text-[#991B1B] bg-[#FEE2E2] border-[#EF4444]/20'
+                                        : 'text-[#92400E] bg-[#FEF3C7] border-[#F7A619]/20'
                                         }`}>
                                         {isTerminal ? '❌ Request Cancelled' : '⚡ Currently in progress'}
                                     </p>

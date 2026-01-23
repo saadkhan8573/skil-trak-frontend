@@ -1,3 +1,4 @@
+import { Result } from '@constants'
 import { AssessmentEvidenceFolder } from './assessment-evidence.type'
 import { BaseResponse } from './base.type'
 import { ConfirmationSource } from './confirmation.type'
@@ -70,6 +71,19 @@ export interface IndustryCourseApproval extends BaseResponse {
     industry?: Industry
 }
 
+export interface AssessmentResult extends BaseResponse {
+    id: number;
+    finalComment: string;
+    isSubmitted: boolean;
+    isManualSubmission: boolean;
+    isAssessed: boolean;
+    totalSubmission: number;
+    result: Result;
+    assessor: User;
+    student: Student;
+    comments: string[];
+  }
+
 export interface Course extends BaseResponse {
     id: number
     code: string
@@ -84,7 +98,7 @@ export interface Course extends BaseResponse {
     sector: Sector
     keywords: string[]
     folders: Folder[]
-    results: any
+    results: AssessmentResult[]
     timing: any
     students: Student[]
     isSuperseded: boolean

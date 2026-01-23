@@ -20,7 +20,7 @@ import {
     useAddExistingIndustriesMutation,
 } from '@queries'
 import { IndustryStatus } from '@types'
-import { getUserCredentials } from '@utils'
+import { ellipsisText, getUserCredentials } from '@utils'
 import { CheckCircle2, MapPin, Phone, Sparkles } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { ReactElement, useCallback, useEffect, useState } from 'react'
@@ -29,6 +29,7 @@ import { IoDocumentTextOutline, IoEyeOutline } from 'react-icons/io5'
 import { LuPhoneCall } from 'react-icons/lu'
 import { CallStatus } from './CallStatus'
 import { OnViewMapCallAnswer } from './OnViewMapCallAnswer'
+import moment from 'moment'
 export const OnViewMapFutureIndustryDetailsTab = ({
     selectedBox,
     workplace,
@@ -193,15 +194,22 @@ export const OnViewMapFutureIndustryDetailsTab = ({
                                             ? 'text-emerald-700'
                                             : 'text-gray-800'
                                     }`}
+                                    title={industryDetails?.data?.businessName}
                                 >
-                                    {industryDetails?.data?.businessName ??
-                                        'NA'}
+                                    {ellipsisText(
+                                        industryDetails?.data?.businessName,
+                                        15
+                                    ) ?? 'NA'}
                                 </h3>
                                 {statusData()}
                                 {industryDetails?.data?.emails?.length > 0 && (
                                     <div className="flex items-center gap-x-2 text-xs font-medium text-indigo-600 bg-indigo-100 border border-indigo-200 rounded-full px-3 py-1.5 mt-1 w-fit">
                                         <div className="w-2 h-2 rounded-full bg-indigo-600" />
                                         <span>Email Sent</span>
+                                        {moment(
+                                            industryDetails?.data?.emails?.[0]
+                                                ?.updatedAt
+                                        ).format('DD MMM YYYY, hh:mm A')}
                                     </div>
                                 )}
                                 <CallStatus

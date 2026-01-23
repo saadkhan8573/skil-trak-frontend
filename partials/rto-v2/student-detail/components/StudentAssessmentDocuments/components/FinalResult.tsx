@@ -1,6 +1,6 @@
 import { Card, Typography } from '@components'
 import { Result } from '@constants'
-import { UserStatus } from '@types'
+import { AssessmentResult, UserStatus } from '@types'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -13,6 +13,7 @@ import {
     ChevronRight,
     Trophy,
     AlertCircle,
+    User,
 } from 'lucide-react'
 
 export const FinalResult = ({
@@ -20,9 +21,9 @@ export const FinalResult = ({
     folders,
     courseName,
 }: {
-    results: any
     folders: any
     courseName: string
+    results: AssessmentResult[]
 }) => {
     const [selectedResult, setSelectedResult] = useState(results?.[0])
 
@@ -181,6 +182,32 @@ export const FinalResult = ({
                                             selectedResult?.updatedAt
                                         ).format('MMM DD, YYYY • hh:mm a')}
                                     </p>
+                                    {selectedResult?.assessor?.name && (
+                                        <motion.div
+                                            whileHover={{ scale: 1.02, y: -2 }}
+                                            className="bg-gradient-to-br from-indigo-50 to-blue-50 border-2 border-indigo-200 rounded-lg px-3 py-2.5 shadow-sm hover:shadow-md transition-all duration-300 group"
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                <div className="p-1.5 bg-indigo-100 rounded-md">
+                                                    <User
+                                                        size={14}
+                                                        className="text-indigo-600"
+                                                    />
+                                                </div>
+                                                <div className="flex flex-col gap-0.5">
+                                                    <p className="text-xs text-slate-500 font-medium">
+                                                        Assessed by
+                                                    </p>
+                                                    <p className="text-sm font-bold text-indigo-700">
+                                                        {
+                                                            selectedResult
+                                                                ?.assessor?.name
+                                                        }
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    )}
                                 </div>
                             </div>
 

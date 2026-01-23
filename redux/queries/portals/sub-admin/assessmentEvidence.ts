@@ -5,15 +5,15 @@ import {
     AgreementFileType,
     ArchiveAssessmentType,
     AssessmentAddCommentType,
-    AssessmentCourseType,
     AssessmentEvidenceDetailType,
     AssessmentEvidenceResponse,
     AssessmentEvidenceType,
     AssessmentFinalCommentFormType,
     AssessmentSubmissionsCount,
+    Course,
     FileType,
     PaginatedResponse,
-    PaginationWithSearch,
+    PaginationWithSearch
 } from '@types'
 
 const PREFIX = 'subadmin'
@@ -165,7 +165,7 @@ export const assessmentEvidenceEndpoints = (
         }),
         invalidatesTags: ['AssessmentEvidence', 'SubAdminStudents'],
     }),
-    studentAssessmentCourses: builder.query<AssessmentCourseType[], number>({
+    studentAssessmentCourses: builder.query<Course[], number>({
         query: (id) => `${PREFIX}/student/course/${id}`,
         keepUnusedDataFor: 0,
         providesTags: [
@@ -175,7 +175,7 @@ export const assessmentEvidenceEndpoints = (
             'SubAdminWorkplace',
         ],
     }),
-    studentAllCoursesList: builder.query<AssessmentCourseType[], number>({
+    studentAllCoursesList: builder.query<Course[], number>({
         query: (id) => `${PREFIX}/student/course/${id}/data/list`,
         keepUnusedDataFor: 0,
         providesTags: [

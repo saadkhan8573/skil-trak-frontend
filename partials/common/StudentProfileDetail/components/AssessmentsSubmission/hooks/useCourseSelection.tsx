@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { AssessmentCourseType, Course, Sector, Student } from '@types'
+import { Course, Sector, Student } from '@types'
 import { useStudentAssessmentCoursesQuery, SubAdminApi } from '@queries'
 
 export const useCourseSelection = (student: Student, isEntered: boolean) => {
@@ -21,7 +21,7 @@ export const useCourseSelection = (student: Student, isEntered: boolean) => {
         }
     )
 
-    const getSectors = (data: AssessmentCourseType[]) => {
+    const getSectors = (data: Course[]) => {
         const sectorsById: { [key: number]: Sector } = {}
 
         data?.forEach((item: Course) => {

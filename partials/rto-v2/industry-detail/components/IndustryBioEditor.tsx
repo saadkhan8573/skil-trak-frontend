@@ -2,23 +2,23 @@ import * as Yup from 'yup'
 import { Button, TextArea, ShowErrorNotifications } from '@components'
 import { useUpdateIndustryDataMutation } from '@queries'
 import { useNotification } from '@hooks'
-import { Building, Edit2, FileText, Save, X } from 'lucide-react'
+import { Building, Edit2, FileText, Save, Sparkles, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { GenerateIndustryBioModal } from './GenerateIndustryBioModal'
 
 interface IndustryBioEditorProps {
     industryId: number
     initialBio: string
-    updatedAt?: string
 }
 
 export function IndustryBioEditor({
     industryId,
     initialBio,
-    updatedAt,
 }: IndustryBioEditorProps) {
     const [isEditing, setIsEditing] = useState(false)
+    const [isGenerateModalOpen, setIsGenerateModalOpen] = useState(false)
     const { notification } = useNotification()
 
     const [updateProfile, updateResult] = useUpdateIndustryDataMutation()
@@ -36,7 +36,7 @@ export function IndustryBioEditor({
         mode: 'all',
     })
 
-    const { handleSubmit, reset, watch } = methods
+    const { handleSubmit, reset, watch, setValue } = methods
     const bioValue = watch('bio')
 
     useEffect(() => {
@@ -76,6 +76,11 @@ export function IndustryBioEditor({
         setIsEditing(false)
     }
 
+    const handleBioGenerated = (bio: string) => {
+        // setValue('bio', bio, { shouldDirty: true, shouldValidate: true })
+        setIsEditing(true)
+    }
+
     return (
         <div className="bg-white rounded-xl shadow-sm border border-[#E2E8F0] overflow-hidden hover:shadow-md transition-all h-full flex flex-col">
             <ShowErrorNotifications result={updateResult} />
@@ -84,16 +89,27 @@ export function IndustryBioEditor({
                     <FileText className="w-4 h-4 text-[#64748B]" />
                     Industry Biography
                 </h3>
-                {!isEditing && (
+                <div className="flex items-center gap-2">
                     <Button
-                        onClick={() => setIsEditing(true)}
+                        onClick={() => setIsGenerateModalOpen(true)}
                         variant="secondary"
-                        className="w-6 h-6 bg-white hover:bg-white text-[#64748B] hover:text-[#044866] border border-[#E2E8F0] hover:border-[#044866]/30 p-0 flex items-center justify-center rounded-md transition-all shadow-sm"
-                        title="Edit Biography"
+                        className="h-6 bg-white hover:bg-white text-[#64748B] hover:text-[#F7A619] border border-[#E2E8F0] hover:border-[#F7A619]/30 px-2 text-xs flex items-center gap-1.5 rounded-md transition-all shadow-sm"
+                        title="Generate Bio with AI"
                     >
-                        <Edit2 className="w-3 h-3" />
+                        <Sparkles className="w-3 h-3" />
+                        <span className="hidden sm:inline">Generate</span>
                     </Button>
-                )}
+                    {!isEditing && (
+                        <Button
+                            onClick={() => setIsEditing(true)}
+                            variant="secondary"
+                            className="w-6 h-6 bg-white hover:bg-white text-[#64748B] hover:text-[#044866] border border-[#E2E8F0] hover:border-[#044866]/30 p-0 flex items-center justify-center rounded-md transition-all shadow-sm"
+                            title="Edit Biography"
+                        >
+                            <Edit2 className="w-3 h-3" />
+                        </Button>
+                    )}
+                </div>
             </div>
 
             <div className="p-3 flex-1 flex flex-col">
@@ -143,25 +159,16 @@ export function IndustryBioEditor({
                                 </p>
                             </div>
                         </div>
-                        {updatedAt && (
-                            <div className="mt-3 flex items-center gap-2 text-xs text-[#64748B] shrink-0">
-                                <FileText className="w-3 h-3" />
-                                <span>
-                                    Last updated:{' '}
-                                    {new Date(updatedAt).toLocaleDateString(
-                                        'en-AU',
-                                        {
-                                            month: 'short',
-                                            day: 'numeric',
-                                            year: 'numeric',
-                                        }
-                                    )}
-                                </span>
-                            </div>
-                        )}
                     </>
                 )}
             </div>
+
+            <GenerateIndustryBioModal
+                isOpen={isGenerateModalOpen}
+                onClose={() => setIsGenerateModalOpen(false)}
+                industryId={industryId}
+                onBioGenerated={handleBioGenerated}
+            />
         </div>
     )
 }

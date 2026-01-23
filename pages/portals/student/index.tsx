@@ -1,9 +1,7 @@
+import moment from 'moment'
 import Image from 'next/image'
 import { ReactElement, useEffect, useState } from 'react'
 
-import { StudentLayout } from '@layouts'
-import { Course, NextPageWithLayout, SubAdmin } from '@types'
-import CustomModal from '@modals/Modal'
 import {
     Button,
     Card,
@@ -15,6 +13,8 @@ import {
     NoData,
     Typography,
 } from '@components'
+import { StudentLayout } from '@layouts'
+import { Course, NextPageWithLayout, SubAdmin } from '@types'
 
 import { FaBriefcase, FaMapMarkerAlt, FaSchool } from 'react-icons/fa'
 import { IoBriefcase } from 'react-icons/io5'
@@ -29,23 +29,20 @@ import {
 } from '@partials/student/components'
 
 import {
-    AdminApi,
     CommonApi,
     StudentApi,
-    useGetStudentProfileDetailQuery,
+    useGetStudentProfileDetailQuery
 } from '@queries'
 
 import { Desktop, Mobile } from '@components/Responsive'
 import { MediaQueries } from '@constants'
+import { UponAppointmentCompletionModal } from '@partials/common/StudentProfileDetail/components'
+import { FeedbackForm } from '@partials/common/StudentProfileDetail/feedbackForm/FeedbackForm'
+import { processSubmission } from '@partials/common/StudentProfileDetail/feedbackForm/utils/getAnswersWithQuestions'
+import { StudentWpScheduleModal } from '@partials/student/Schedule/modal'
 import { getSectors } from '@utils'
 import Link from 'next/link'
 import { useMediaQuery } from 'react-responsive'
-import { MapStarRating, RateCoordinatorModal } from '@partials/common'
-import { processSubmission } from '@partials/common/StudentProfileDetail/feedbackForm/utils/getAnswersWithQuestions'
-import { FeedbackForm } from '@partials/common/StudentProfileDetail/feedbackForm/FeedbackForm'
-import { IndustryRatingForm } from '@partials/student'
-import { UponAppointmentCompletionModal } from '@partials/common/StudentProfileDetail/components'
-import { StudentWpScheduleModal } from '@partials/student/Schedule/modal'
 
 const StudentDashboard: NextPageWithLayout = () => {
     const [modal, setModal] = useState<any | null>(null)
@@ -89,7 +86,12 @@ const StudentDashboard: NextPageWithLayout = () => {
             Object.keys(appointmentCompletion?.data).length > 0 &&
             !appointmentCompletion?.data?.isSuccessfull
         ) {
-            uponCompletionAppointment()
+            const appointmentDate = moment(appointmentCompletion?.data?.date)
+            const oneMonthAgo = moment().subtract(1, 'months')
+
+            if (appointmentDate.isAfter(oneMonthAgo)) {
+                uponCompletionAppointment()
+            }
         }
     }, [appointmentCompletion?.data])
     useEffect(() => {
@@ -441,38 +443,38 @@ const StudentDashboard: NextPageWithLayout = () => {
                                                 1,
                                                 data?.rto?.subadmin?.length
                                             ).length > 0 && (
-                                                <InitialAvatarContainer
-                                                    show={2}
-                                                >
-                                                    {data?.rto.subadmin
-                                                        .slice(
-                                                            1,
-                                                            data?.rto?.subadmin
-                                                                .length
-                                                        )
-                                                        .map(
-                                                            (
-                                                                subAdmin: SubAdmin,
-                                                                idx: number
-                                                            ) => (
-                                                                <InitialAvatar
-                                                                    key={
-                                                                        subAdmin.id
-                                                                    }
-                                                                    name={
-                                                                        subAdmin
-                                                                            ?.user
-                                                                            ?.name
-                                                                    }
-                                                                    first={
-                                                                        idx ===
-                                                                        0
-                                                                    }
-                                                                />
+                                                    <InitialAvatarContainer
+                                                        show={2}
+                                                    >
+                                                        {data?.rto.subadmin
+                                                            .slice(
+                                                                1,
+                                                                data?.rto?.subadmin
+                                                                    .length
                                                             )
-                                                        )}
-                                                </InitialAvatarContainer>
-                                            )}
+                                                            .map(
+                                                                (
+                                                                    subAdmin: SubAdmin,
+                                                                    idx: number
+                                                                ) => (
+                                                                    <InitialAvatar
+                                                                        key={
+                                                                            subAdmin.id
+                                                                        }
+                                                                        name={
+                                                                            subAdmin
+                                                                                ?.user
+                                                                                ?.name
+                                                                        }
+                                                                        first={
+                                                                            idx ===
+                                                                            0
+                                                                        }
+                                                                    />
+                                                                )
+                                                            )}
+                                                    </InitialAvatarContainer>
+                                                )}
                                         </div>
                                     </div>
                                 </div>

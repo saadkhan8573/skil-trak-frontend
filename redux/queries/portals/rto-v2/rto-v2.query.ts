@@ -26,7 +26,7 @@ export const rtoV2Api = apiSlice.injectEndpoints({
     // overrideExisting: true,
 })
 
-const {
+export const {
     // Dashboard
     useAutoWpCountQuery,
     useAdminMessageQuery,
@@ -135,6 +135,7 @@ const {
     useGetHighlightedTasksQuery,
     useUpdateIndustryAvailabilityMutation,
     useGetIndustryWaitingStudentsQuery,
+    useGenerateIndustryBioMutation,
 
     // ---- RTO Credits ---- //
     useGetRtoCreditsQuery,
@@ -263,6 +264,7 @@ export const RtoV2Api = {
         useGetHighlightedTasks: useGetHighlightedTasksQuery,
         updateIndustryAvailability: useUpdateIndustryAvailabilityMutation,
         getIndustryWaitingStudents: useGetIndustryWaitingStudentsQuery,
+        generateIndustryBio: useGenerateIndustryBioMutation,
     },
     RtoCredits: {
         getRtoCredits: useGetRtoCreditsQuery,

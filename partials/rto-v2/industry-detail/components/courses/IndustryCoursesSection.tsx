@@ -61,10 +61,13 @@ export function IndustryCoursesSection() {
     )
 
     const totalStudents =
-        sectorCapacityData?.reduce(
-            (acc: number, curr: any) => acc + (curr.enrolled || 0),
+        Number(sectorCapacityData?.reduce(
+            (acc: number, curr: any) => acc + (Number(curr.enrolled) || 0),
             0
-        ) || 0
+        )) || 0
+    console.log(
+        { sectorCapacityData }
+    )
     const totalCapacity =
         sectorCapacityData?.reduce(
             (acc: number, curr: any) => acc + (Number(curr?.capacity) || 0),

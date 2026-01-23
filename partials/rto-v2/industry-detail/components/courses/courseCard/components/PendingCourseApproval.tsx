@@ -16,13 +16,14 @@ export const PendingCourseApproval = ({
     approval: IndustryCourseApproval
     hasInitiatedESign?: boolean
 }) => {
+    console.log("Hello There")
     const [reviewFacilityChecklist, setReviewFacilityChecklist] =
         useState(false)
     const [uploadFacilityChecklist, setUploadFacilityChecklist] =
         useState(false)
 
     const user = getUserCredentials()
-    const isLocal = process.env.NEXT_PUBLIC_NODE_ENV === 'locala'
+    const isLocal = process.env.NEXT_PUBLIC_NODE_ENV === 'local'
     const isAllowedUser = [4453, 78, 5714, 20365].includes(user?.id)
     const isAdmin = user?.role === UserRoles.ADMIN
     const showActionButtons =
@@ -47,17 +48,17 @@ export const PendingCourseApproval = ({
                                 {hasFile
                                     ? 'Facility Checklist Ready for Review'
                                     : hasInitiatedESign
-                                    ? 'E-sign in Progress'
-                                    : 'Facility Checklist Missing'}
+                                        ? 'E-sign in Progress'
+                                        : 'Facility Checklist Missing'}
                             </p>
                             <p className="text-[10px] text-[#64748B]">
                                 {hasFile
                                     ? `Industry partner signed on ${moment(
-                                          approval?.createdAt
-                                      ).fromNow()}`
+                                        approval?.createdAt
+                                    ).fromNow()}`
                                     : hasInitiatedESign
-                                    ? 'Waiting for industry partner to sign the document.'
-                                    : 'Please upload the facility checklist to proceed with approval.'}
+                                        ? 'Waiting for industry partner to sign the document.'
+                                        : 'Please upload the facility checklist to proceed with approval.'}
                             </p>
                         </div>
                     </div>

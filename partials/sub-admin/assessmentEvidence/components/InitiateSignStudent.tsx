@@ -70,21 +70,21 @@ const UserCellInfo = ({
                         const usersMails = sMail?.map((a: any) =>
                             profile?.user?.id === a?.user
                                 ? {
-                                      ...a,
-                                      email: e?.target?.value,
-                                  }
+                                    ...a,
+                                    email: e?.target?.value,
+                                }
                                 : a
                         )
 
                         return findUser
                             ? [...usersMails]
                             : [
-                                  ...sMail,
-                                  {
-                                      user: profile?.user?.id,
-                                      email: e?.target?.value,
-                                  },
-                              ]
+                                ...sMail,
+                                {
+                                    user: profile?.user?.id,
+                                    email: e?.target?.value,
+                                },
+                            ]
                     })
                 }}
             />
@@ -197,8 +197,8 @@ export const InitiateSignStudent = ({
                     student?.data?.subadmin
                         ? student?.data?.subadmin
                         : subadmins?.data?.find(
-                              (s: SubAdmin) => s?.user?.id === user?.id
-                          ) || subadmins?.data?.[0]
+                            (s: SubAdmin) => s?.user?.id === user?.id
+                        ) || subadmins?.data?.[0]
                 )
             }
         },
@@ -288,8 +288,7 @@ export const InitiateSignStudent = ({
             try {
                 setIsLoading(true)
                 const response = await axiosInstance.post(
-                    `/esign/document/initiate/${
-                        template?.id
+                    `/esign/document/initiate/${template?.id
                     }?users=${Object.values(userIds())?.join(',')}`,
                     // (...{
                     //     signers: secondaryMails,
@@ -298,6 +297,7 @@ export const InitiateSignStudent = ({
                         ...(secondaryMails && secondaryMails?.length > 0
                             ? { signers: secondaryMails }
                             : { signers: secondaryMails }),
+                        originId: workplaceRto?.user?.id
                     }
                 )
 
@@ -356,7 +356,7 @@ export const InitiateSignStudent = ({
             userIdsValue &&
             (!secondaryMails ||
                 secondaryMails.filter((s: any) => s?.user)?.length <
-                    (template?.recipients?.length || 0))
+                (template?.recipients?.length || 0))
         ) {
             const newSecondaryMails = Object.entries(userIdsValue).map(
                 ([role, id]: [string, any]) => ({

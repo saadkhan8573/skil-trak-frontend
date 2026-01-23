@@ -248,7 +248,7 @@ export interface StudentIssue extends BaseResponse {
 
 export interface RtoApprovalWorkplaceRequest extends BaseResponse {
     id: number
-    status: string
+    status: 'pending' | 'approved' | 'rejected'
     isRtoApprovalRequired: boolean
     rtoApprovalStatus: 'pending' | 'approved' | 'rejected'
     declaration: string
@@ -464,9 +464,9 @@ export interface Industry extends BaseResponse {
     industryCourseApprovals: IndustryCourseApprovals[]
     profileCompletionPercentage: string
     isRtoAssociated: boolean
-    secondaryContactPersonPhone?: string;
-    secondaryContactName?: string;
-    secondaryContactEmail?: string;
+    secondaryContactPersonPhone?: string
+    secondaryContactName?: string
+    secondaryContactEmail?: string
     isAvailabilityProvidedAtRuntime?: boolean
 }
 

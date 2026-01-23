@@ -77,6 +77,7 @@ export function CourseCard({
     const hasFacilityFile = !!approval?.file
     const needsApproval = hasFacilityFile && !isApproved
 
+
     return (
         <motion.div
             initial={{ opacity: 0, x: -20 }}

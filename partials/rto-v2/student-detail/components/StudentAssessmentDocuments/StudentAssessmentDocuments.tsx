@@ -261,7 +261,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                     const shouldRender =
                         selectedView === 'all' || selectedView === section.type
                     return (
-                        shouldRender && (
+                        shouldRender && section?.documents && section?.documents?.length > 0 && (
                             <FolderSection
                                 key={section.type}
                                 course={selectedCourse ?? ({ id: 0 } as Course)}

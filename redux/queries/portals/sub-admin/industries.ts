@@ -324,7 +324,11 @@ export const subAdminIndustriesEndpoints = (
             method: 'PATCH',
             body,
         }),
-        invalidatesTags: ['RequestToAddCourse', 'SubAdminIndustries', 'Industries'],
+        invalidatesTags: [
+            'RequestToAddCourse',
+            'SubAdminIndustries',
+            'Industries',
+        ],
     }),
 
     getRejectedDepartmentIndustry: builder.query<any, any>({

@@ -163,7 +163,6 @@ export function ContactBiographyModal({
                                                 industry?.id
                                             )}
                                             initialBio={industry.bio || ''}
-                                            updatedAt={industry.updatedAt + ""}
                                         />
                                     </div>
                                 </div>

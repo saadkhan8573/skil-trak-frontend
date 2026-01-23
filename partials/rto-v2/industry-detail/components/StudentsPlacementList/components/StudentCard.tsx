@@ -19,7 +19,7 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from '@components/ui/collapsible'
-import { Button } from '@components'
+import { Button, Portal } from '@components'
 import { Student } from '@types'
 import { useStatusInfo } from '@partials/rto-v2/student-detail/components/StudentOverview/hooks/useStatusInfo'
 import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
@@ -27,6 +27,11 @@ import Link from 'next/link'
 import { getUserCredentials } from '@utils'
 
 import { UserRoles } from '@constants'
+import { WorkplaceCurrentStatus } from '@utils'
+import { ActionButton } from '@components'
+import { ApproveRequestModal } from '@partials/sub-admin/workplace/modals'
+import { DeclineStudentByIndustryModal } from '@partials/common/StudentProfileDetail/components'
+import { ReactNode } from 'react'
 
 interface StudentCardProps {
     student: Student
@@ -55,6 +60,30 @@ export function StudentCard({ student }: StudentCardProps) {
     const role = getUserCredentials()?.role
     const [isOpen, setIsOpen] = useState(false)
     const [showActionsMenu, setShowActionsMenu] = useState(false)
+    const [modal, setModal] = useState<ReactNode | null>(null)
+    const workplace = student?.workplace?.[0]
+
+    const onModalCancelClicked = () => setModal(null)
+
+    const onApproveClicked = (wpId: number) => {
+        setModal(
+            <Portal>
+                <ApproveRequestModal
+                    workplaceId={wpId}
+                    onCancel={onModalCancelClicked}
+                />
+            </Portal>
+        )
+    }
+
+    const onRejectClicked = (wpId: number) => {
+        setModal(
+            <DeclineStudentByIndustryModal
+                workplaceId={wpId}
+                onCancel={onModalCancelClicked}
+            />
+        )
+    }
     // const statusCounts = getStatusCounts(student.workflow)
 
     const {
@@ -123,6 +152,29 @@ export function StudentCard({ student }: StudentCardProps) {
 
                     {/* Workflow Status - Top Right */}
                     <div className="flex items-center gap-2">
+                        {workplace?.currentStatus ===
+                            WorkplaceCurrentStatus.AwaitingWorkplaceResponse && (
+                                <div className="flex gap-2 mb-2">
+                                    <ActionButton
+                                        variant="success"
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            if (workplace?.id) onApproveClicked(workplace.id)
+                                        }}
+                                    >
+                                        Accept
+                                    </ActionButton>
+                                    <ActionButton
+                                        variant="error"
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            if (workplace?.id) onRejectClicked(workplace.id)
+                                        }}
+                                    >
+                                        Reject
+                                    </ActionButton>
+                                </div>
+                            )}
                         <div className="text-right">
                             <div className="flex items-center gap-1.5 justify-end mb-0.5">
                                 <span className={`text-[10px] font-bold ${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label)
@@ -151,6 +203,18 @@ export function StudentCard({ student }: StudentCardProps) {
                                 {currentStep?.label}
                             </p>
                         </div>
+
+                        <CollapsibleTrigger asChild>
+                            <div
+                                className="h-6 w-6 p-0 hover:bg-slate-100 rounded-full flex items-center justify-center cursor-pointer transition-colors"
+                            >
+                                {isOpen ? (
+                                    <ChevronUp className="w-4 h-4 text-slate-500" />
+                                ) : (
+                                    <ChevronDown className="w-4 h-4 text-slate-500" />
+                                )}
+                            </div>
+                        </CollapsibleTrigger>
 
                         {/* Actions Menu */}
                         <div className="relative">
@@ -226,6 +290,8 @@ export function StudentCard({ student }: StudentCardProps) {
                     )}
                 </div>
 
+
+
                 {/* Expand Button */}
                 <CollapsibleTrigger asChild>
                     <Button
@@ -252,6 +318,7 @@ export function StudentCard({ student }: StudentCardProps) {
             <CollapsibleContent>
                 <StudentDetails workflow={statuses} />
             </CollapsibleContent>
+            {modal}
         </Collapsible>
     )
 }

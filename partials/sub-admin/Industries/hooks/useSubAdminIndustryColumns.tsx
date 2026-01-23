@@ -65,28 +65,26 @@ export const useSubAdminIndustryColumns = () => {
                 },
                 Icon: FaEye,
             },
+            // {
+            //     text: 'View Old Profile',
+            //     onClick: (industry: Industry) => {
+            //         router.push(
+            //             `/portals/sub-admin/users/industries/${industry.id}/old-detail`
+            //         )
+            //         setLink('subadmin-industries', router)
+            //     },
+            //     Icon: FaEye,
+            // },
             {
-                text: 'View Old Profile',
-                onClick: (industry: Industry) => {
-                    router.push(
-                        `/portals/sub-admin/users/industries/${industry.id}/old-detail`
-                    )
-                    setLink('subadmin-industries', router)
-                },
-                Icon: FaEye,
-            },
-            {
-                text: `${
-                    industry?.favoriteBy &&
-                    industry?.favoriteBy?.user?.id === subadminId
+                text: `${industry?.favoriteBy &&
+                        industry?.favoriteBy?.user?.id === subadminId
                         ? 'Un Favourite'
                         : 'Add Favourite'
-                }`,
-                color: `${
-                    industry?.subAdmin && industry?.subAdmin?.length > 0
+                    }`,
+                color: `${industry?.subAdmin && industry?.subAdmin?.length > 0
                         ? 'text-error'
                         : 'text-primary'
-                }`,
+                    }`,
                 onClick: (industry: Industry) =>
                     onAddToFavoriteClicked(industry),
                 Icon: subAdmin ? MdFavorite : MdFavoriteBorder,
@@ -181,9 +179,9 @@ export const useSubAdminIndustryColumns = () => {
                             {Number(
                                 row?.original?.profileCompletionPercentage
                             ) === 100 &&
-                            row?.original?.user?.status ===
+                                row?.original?.user?.status ===
                                 UserStatus.Approved &&
-                            !row?.original?.isSnoozed ? (
+                                !row?.original?.isSnoozed ? (
                                 <Badge
                                     variant={'primaryNew'}
                                     text={'Placement Ready'}

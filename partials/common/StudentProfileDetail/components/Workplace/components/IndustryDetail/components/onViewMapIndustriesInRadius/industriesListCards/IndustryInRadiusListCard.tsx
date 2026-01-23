@@ -19,7 +19,6 @@ export const IndustryInRadiusListCard = ({
     item,
     onSelect,
     branch = false,
-    isLocked = false,
 }: IndustryInRadiusListCardProps) => {
     const handleCardClick = () => {
         // if (isLocked) return

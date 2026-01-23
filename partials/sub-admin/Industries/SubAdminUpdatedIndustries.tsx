@@ -13,6 +13,7 @@ import {
     BlockedIndustries,
     FilteredIndustries,
     NonPartnerIndustries,
+    PendingIndustries,
     SnoozedIndustries,
     StateWiseIndustries,
     YourPartnerIndustries
@@ -100,6 +101,12 @@ export const SubAdminUpdatedIndustries = () => {
             icon: Building2,
             // count: count.data?.nonPartnerIndustries,
             component: SnoozedIndustries,
+        },
+        {
+            value: 'pending-industries',
+            label: 'Pending Industries',
+            icon: Building2,
+            component: PendingIndustries,
         },
         {
             value: 'pending-course-approval',

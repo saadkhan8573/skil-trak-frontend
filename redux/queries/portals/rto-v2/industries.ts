@@ -221,7 +221,7 @@ export const industriesEndpoints = (
         any,
         { id: number; body: FormData; isResubmitted?: boolean }
     >({
-        query: ({ id, body,isResubmitted }) => ({
+        query: ({ id, body, isResubmitted }) => ({
             url: `${INDUSTRIESPREFIX}course-approval/${id}/file/add`,
             method: 'PATCH',
             params: { isResubmitted },
@@ -259,11 +259,11 @@ export const industriesEndpoints = (
         invalidatesTags: ['RTOIndustries'],
     }),
 
-    updateIndustryAvailability: builder.mutation<any, { userId: number;  }>({
+    updateIndustryAvailability: builder.mutation<any, { userId: number }>({
         query: (params) => ({
             url: `${INDUSTRIESPREFIX}toggle/run-time-availability`,
             method: 'PATCH',
-            params
+            params,
         }),
         invalidatesTags: ['RTOIndustries', 'Industry'],
     }),
@@ -272,6 +272,14 @@ export const industriesEndpoints = (
             url: `${INDUSTRIESPREFIX}${id}/bio/update`,
             method: 'PATCH',
             body,
+        }),
+        invalidatesTags: ['RTOIndustries', 'Industries'],
+    }),
+    generateIndustryBio: builder.mutation<any, number>({
+        query: (id) => ({
+            url: `${INDUSTRIESPREFIX}generate/bio`,
+            method: 'POST',
+            body: { industryId: id },
         }),
         invalidatesTags: ['RTOIndustries', 'Industries'],
     }),
@@ -325,22 +333,31 @@ export const industriesEndpoints = (
             industryId: number
             taskId: number
             confirmationSource?: ConfirmationSource
-            isConfirmed: boolean,
+            isConfirmed: boolean
             confirmationDetailId?: number
         }
     >({
-        query: ({ industryId, taskId, confirmationSource, isConfirmed, confirmationDetailId }) => ({
+        query: ({
+            industryId,
+            taskId,
+            confirmationSource,
+            isConfirmed,
+            confirmationDetailId,
+        }) => ({
             url: `${INDUSTRIESPREFIX}${industryId}/task/${taskId}/confirm`,
             method: 'POST',
-            params: { industryTaskId:confirmationDetailId },
+            params: { industryTaskId: confirmationDetailId },
             body: { confirmationSource, isConfirmed },
         }),
         invalidatesTags: ['RTOIndustries', 'Industry'],
     }),
-    getHighlightedTasks: builder.query<any, {industryId:number; courseId: number }>({
-        query: ({ courseId,...params }) => ({
+    getHighlightedTasks: builder.query<
+        any,
+        { industryId: number; courseId: number }
+    >({
+        query: ({ courseId, ...params }) => ({
             url: `${INDUSTRIESPREFIX}course/${courseId}/tasks`,
-            params
+            params,
         }),
         providesTags: ['RTOIndustries', 'Industry'],
     }),

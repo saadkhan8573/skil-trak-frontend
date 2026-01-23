@@ -1,8 +1,8 @@
-import { useState, useEffect, useMemo } from 'react'
-import { AssessmentCourseType, Course, Sector, Student } from '@types'
-import { useStudentAssessmentCoursesQuery, SubAdminApi } from '@queries'
-import { useAppDispatch, useAppSelector } from '@redux/hooks'
+import { SubAdminApi } from '@queries'
 import { setIsCourseLoading, setSelectedCourse } from '@redux'
+import { useAppDispatch, useAppSelector } from '@redux/hooks'
+import { Course, Sector } from '@types'
+import { useEffect, useMemo, useState } from 'react'
 
 export const useCourseSelection = () => {
     const [selectedSector, setSelectedSector] = useState<number | null>(null)
@@ -27,7 +27,7 @@ export const useCourseSelection = () => {
         }
     )
 
-    const getSectors = (data: AssessmentCourseType[]) => {
+    const getSectors = (data: Course[]) => {
         const sectorsById: { [key: number]: Sector } = {}
 
         data?.forEach((item: Course) => {

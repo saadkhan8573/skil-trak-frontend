@@ -37,14 +37,13 @@ export const PendingIndustries: React.FC<ArchivedIndustriesProps> = ({
     const { columns } = getTableConfig({
         columnKeys: [
             'name',
-            'abn',
-            'students',
             'contactPerson',
             'favouriteBy',
             'createdAt',
             'profileCompletionPercentage',
             'action',
         ],
+        
     })
 
     return (

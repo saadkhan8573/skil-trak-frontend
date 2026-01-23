@@ -8,7 +8,9 @@ import {
 import { SubAdminApi } from '@queries'
 import React, { useState, useMemo, useEffect } from 'react'
 import { IndustryInRadiusListCard } from '../industriesListCards'
+import { useRouter } from 'next/router'
 
+const TAB_KEY = 'signed'
 export const SignedUpIndustriesInRadiusTab = ({
     courseId,
     workplaceId,
@@ -16,11 +18,11 @@ export const SignedUpIndustriesInRadiusTab = ({
 }: any) => {
     const [page, setPage] = useState(1)
     const [itemPerPage, setItemPerPage] = useState(5)
-    const [completedPages, setCompletedPages] = useState<Set<number>>(
-        new Set([1])
-    ) // Page 1 is always unlocked
 
-    // Current page data with server-side pagination
+    const router = useRouter()
+    useEffect(() => {
+        setPage(Number(router.query.page || 1))
+    }, [router.query.page])
     const workplaceCourseIndustries =
         SubAdminApi.Workplace.useWorkplaceCourseIndustries(
             {
@@ -37,52 +39,16 @@ export const SignedUpIndustriesInRadiusTab = ({
             }
         )
 
-    // Check if current page's industries are all contacted
-    useEffect(() => {
-        if (workplaceCourseIndustries?.data?.data) {
-            const allContactedOnCurrentPage =
-                workplaceCourseIndustries.data.data.every(
-                    (ind: any) => ind?.studentIndustryContact?.length > 0
-                )
-
-            if (allContactedOnCurrentPage) {
-                // Mark current page as completed, which unlocks next page
-                setCompletedPages((prev) => {
-                    const updated = new Set(prev)
-                    updated.add(page)
-                    return updated
-                })
-            } else {
-                // If not all contacted, remove this page from completed
-                setCompletedPages((prev) => {
-                    const updated = new Set(prev)
-                    updated.delete(page)
-                    return updated
-                })
-            }
-        }
-    }, [workplaceCourseIndustries?.data?.data, page])
-
-    // Check if current page is locked
-    const isLocked = useMemo(() => {
-        // Page 1 is always unlocked
-        if (page === 1) return false
-
-        // Current page is unlocked if previous page is completed
-        const previousPageCompleted = completedPages.has(page - 1)
-
-        return !previousPageCompleted
-    }, [page, completedPages])
-
-    // Add isLocked to each industry
     const processedIndustries = useMemo(() => {
-        if (!workplaceCourseIndustries?.data?.data) return []
+        return workplaceCourseIndustries?.data?.data ?? []
+    }, [workplaceCourseIndustries?.data?.data])
 
-        return workplaceCourseIndustries.data.data.map((industry: any) => ({
-            ...industry,
-            isLocked,
-        }))
-    }, [workplaceCourseIndustries?.data?.data, isLocked])
+    const preserveScroll = () => {
+        const y = window.scrollY
+        requestAnimationFrame(() => {
+            window.scrollTo({ top: y, behavior: 'auto' })
+        })
+    }
 
     return (
         <div className="h-[25rem] overflow-auto remove-scrollbar space-y-4">
@@ -120,7 +86,21 @@ export const SignedUpIndustriesInRadiusTab = ({
                             pagination={
                                 workplaceCourseIndustries?.data?.pagination
                             }
-                            setPage={setPage}
+                            setPage={(p: number) => {
+                                preserveScroll()
+                                setPage(p)
+                                router.push(
+                                    {
+                                        query: {
+                                            ...router.query,
+                                            tab: TAB_KEY,
+                                            page: p,
+                                        },
+                                    },
+                                    undefined,
+                                    { shallow: true, scroll: false }
+                                )
+                            }}
                         />
                     </div>
 
@@ -128,10 +108,20 @@ export const SignedUpIndustriesInRadiusTab = ({
                         <React.Fragment key={item?.id}>
                             <IndustryInRadiusListCard
                                 item={item}
-                                onSelect={(selected: any) =>
+                                onSelect={(selected: any) => {
+                                    router.push(
+                                        {
+                                            query: {
+                                                ...router.query,
+                                                tab: TAB_KEY,
+                                                page,
+                                            },
+                                        },
+                                        undefined,
+                                        { shallow: true, scroll: false }
+                                    )
                                     setSelectedBox(selected)
-                                }
-                                isLocked={item.isLocked}
+                                }}
                             />
                             {item?.locations?.length > 0 &&
                                 item?.locations?.map((branch: any) => (
@@ -140,7 +130,6 @@ export const SignedUpIndustriesInRadiusTab = ({
                                         item={{ ...item, ...branch }}
                                         onSelect={setSelectedBox}
                                         branch
-                                        isLocked={item.isLocked}
                                     />
                                 ))}
                         </React.Fragment>

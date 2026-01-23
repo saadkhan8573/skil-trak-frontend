@@ -222,11 +222,10 @@ export const WorkplaceCard = ({
                                         e.stopPropagation()
                                         router.push(industryLink)
                                     }}
-                                    className={`cursor-pointer p-1 rounded-md bg-white/20 hover:bg-white/30 text-white transition-colors border border-white/10 ${
-                                        status === 'active'
-                                            ? 'animate-pulse'
-                                            : ''
-                                    }`}
+                                    className={`cursor-pointer p-1 rounded-md bg-white/20 hover:bg-white/30 text-white transition-colors border border-white/10 ${status === 'active'
+                                        ? 'animate-pulse'
+                                        : ''
+                                        }`}
                                     title="View Industry Profile"
                                 >
                                     <Eye className="w-4 h-4" />
@@ -420,7 +419,7 @@ export const WorkplaceCard = ({
                                 <span className="font-medium">Status:</span>{' '}
                                 {
                                     WorkplaceStatusLabels[
-                                        workplace?.currentStatus
+                                    workplace?.currentStatus
                                     ]
                                 }
                             </p>
@@ -434,28 +433,49 @@ export const WorkplaceCard = ({
 
                 {workplace?.currentStatus ===
                     WorkplaceCurrentStatus.AwaitingRtoResponse && (
-                    <AuthorizedUserComponent roles={[UserRoles.RTO]}>
-                        <Button
-                            outline
-                            fullWidth
-                            variant="primaryNew"
-                            text="View Details"
-                            className="mt-3"
-                            onClick={() =>
-                                router.push(
-                                    `/portals/rto/action-required/approve-placement/${latestWorkplaceApprovaleRequest?.id}`
-                                )
-                            }
-                        />
-                    </AuthorizedUserComponent>
-                )}
+                        <AuthorizedUserComponent roles={[UserRoles.RTO]}>
+                            <Button
+                                outline
+                                fullWidth
+                                variant="primaryNew"
+                                text="View Details"
+                                className="mt-3"
+                                onClick={() =>
+                                    router.push(
+                                        `/portals/rto/action-required/approve-placement/${latestWorkplaceApprovaleRequest?.id}`
+                                    )
+                                }
+                            />
+                        </AuthorizedUserComponent>
+                    )}
 
                 {/* Cancel Section */}
+                {/* {[
+                    WorkplaceCurrentStatus.Applied,
+                    WorkplaceCurrentStatus.CaseOfficerAssigned,
+                    WorkplaceCurrentStatus.Interview,
+                    WorkplaceCurrentStatus.AwaitingStudentResponse,
+                    WorkplaceCurrentStatus.AwaitingRtoResponse,
+                    WorkplaceCurrentStatus.AwaitingWorkplaceResponse,
+                    WorkplaceCurrentStatus.AppointmentBooked,
+                    WorkplaceCurrentStatus.AwaitingAgreementSigned,
+                ].includes(workplace?.currentStatus as WorkplaceCurrentStatus) && ( */}
                 <div className="mt-4 border-t border-slate-100">
                     {!workplace?.cancelledRequests?.length ? (
-                        <CancelWpRequest
+                        [
+                            WorkplaceCurrentStatus.Applied,
+                            WorkplaceCurrentStatus.CaseOfficerAssigned,
+                            WorkplaceCurrentStatus.Interview,
+                            WorkplaceCurrentStatus.AwaitingStudentResponse,
+                            WorkplaceCurrentStatus.AwaitingRtoResponse,
+                            WorkplaceCurrentStatus.AwaitingWorkplaceResponse,
+                            WorkplaceCurrentStatus.AppointmentBooked,
+                            WorkplaceCurrentStatus.AwaitingAgreementSigned,
+                        ].includes(workplace?.currentStatus as WorkplaceCurrentStatus) && <CancelWpRequest
                             onCancelWPClicked={onCancelWPClicked}
-                            onCancelWPRequestClicked={onCancelWPRequestClicked}
+                            onCancelWPRequestClicked={
+                                onCancelWPRequestClicked
+                            }
                         />
                     ) : (
                         <div className="bg-amber-50 rounded-xl p-3 border border-amber-100 flex items-center gap-3">

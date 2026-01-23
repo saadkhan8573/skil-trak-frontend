@@ -40,6 +40,7 @@ const statusOptions: Array<{
 }> = [
     { value: 'assigned', label: 'Opened', color: 'bg-red-500' },
     { value: 'resolved', label: 'Resolved', color: 'bg-green-500' },
+    { value: 'inProgress', label: 'In Progress', color: 'bg-primaryNew' },
 ]
 
 const priorityOptions: Array<{

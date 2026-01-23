@@ -9,13 +9,11 @@ import moment from 'moment'
 type FutureIndustryInRadiusListCardProps = {
     item: any
     onSelect: any
-    isLocked?: boolean
 }
 
 export const FutureIndustryInRadiusListCard = ({
     item,
     onSelect,
-    isLocked = false,
 }: FutureIndustryInRadiusListCardProps) => {
     return (
         <div className={`flex items-center justify-between w-full `}>

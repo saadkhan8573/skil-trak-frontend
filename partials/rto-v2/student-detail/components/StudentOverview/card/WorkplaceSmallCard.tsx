@@ -27,7 +27,7 @@ export const WorkplaceSmallCard = ({
     const { selectedWorkplace } = useAppSelector((state) => state.student)
 
     const status = getStatusCategory(request?.currentStatus || '')
-    const isActive = status === 'active' || selectedWorkplace?.id === request?.id
+    const isActive = (status === 'active' || status === "pending") && selectedWorkplace?.id === request?.id
     console.log({ isActive, selectedWorkplace, request })
     const workIndustry = request?.industries?.find(
         (i: WorkplaceWorkIndustriesType) => i?.applied

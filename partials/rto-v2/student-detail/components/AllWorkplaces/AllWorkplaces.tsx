@@ -1,18 +1,16 @@
 import {
     Badge,
-    Button,
     EmptyData,
-    LoadingAnimation,
-    TechnicalError,
+    TechnicalError
 } from '@components'
 import { RtoV2Api } from '@queries'
 import { Building2 } from 'lucide-react'
+import { useMemo } from 'react'
 import { WorkplaceCard } from './cards'
 import { WorkplaceCounts } from './components'
-import { useMemo } from 'react'
-import { WorkplaceCurrentStatus } from '@utils'
 
 import { WorkplaceTabSkeleton } from '../../skeletonLoader'
+import { sortedWorkplaceRequests } from '../../utils'
 
 export function AllWorkplaces({ studentId }: { studentId: number }) {
     const workplaces = RtoV2Api.StudentsWorkplace.getStudentWorkplaceList(
@@ -23,22 +21,9 @@ export function AllWorkplaces({ studentId }: { studentId: number }) {
         }
     )
 
-    const sortedWorkplaces = useMemo(() => {
-        if (!workplaces?.data) return []
-        return [...workplaces.data].sort((a, b) => {
-            if (
-                a.currentStatus === WorkplaceCurrentStatus.Cancelled &&
-                b.currentStatus !== WorkplaceCurrentStatus.Cancelled
-            )
-                return 1
-            if (
-                a.currentStatus !== WorkplaceCurrentStatus.Cancelled &&
-                b.currentStatus === WorkplaceCurrentStatus.Cancelled
-            )
-                return -1
-            return 0
-        })
-    }, [workplaces.data])
+    const sortedWorkplaces = useMemo(() =>
+        sortedWorkplaceRequests(workplaces?.data),
+        [workplaces?.data])
 
     return (
         <>

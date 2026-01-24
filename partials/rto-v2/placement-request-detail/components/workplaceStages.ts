@@ -55,6 +55,7 @@ export const needsWorkplaceStagesEnum = {
     SCHEDULE_COMPLETED: 'Schedule Completed',
     COMPLETED: 'Completed',
     CANCELLED: 'Cancelled',
+    Industry_Eligibility_Pending: 'Industry Eligibility Pending',
 } as const
 
 // Workflow for students with provided workplace

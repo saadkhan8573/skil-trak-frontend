@@ -43,6 +43,7 @@ export const PremiumCurrentActionsCard = ({
     workplace,
     student,
 }: any) => {
+    console.log({ currentStatus })
     const [modal, setModal] = useState<ReactElement | null>(null)
     const [showAppointmentDialog, setShowAppointmentDialog] = useState(false)
     const [showAgreementDialog, setShowAgreementDialog] = useState(false)
@@ -395,6 +396,47 @@ export const PremiumCurrentActionsCard = ({
                         /> */}
                     </motion.div>
                 )
+            case needsWorkplaceStagesEnum.Industry_Eligibility_Pending:
+                return (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="space-y-3"
+                    >
+                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-[#044866]/20 rounded-xl">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-[#044866]/5 rounded-full -mr-16 -mt-16" />
+                            <div className="relative flex items-start gap-3">
+                                <div className="p-2 bg-white rounded-lg shadow-sm">
+                                    <User className="h-5 w-5 text-[#044866]" />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-[#044866] font-medium">
+                                        Industry Eligibility Pending
+                                    </p>
+                                    {/* <p className="text-[#0D5468] text-sm mt-1">
+                                        Industry:
+                                    </p> */}
+                                </div>
+                            </div>
+                        </div>
+                        {/* <Button
+                            className="w-full bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-600 hover:via-teal-600 hover:to-emerald-600 text-white shadow-xl shadow-emerald-500/30 h-12 font-semibold transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/40 hover:-translate-y-0.5"
+                            onClick={handleStudentApprove}
+                        >
+                            <ThumbsUp className="mr-2 h-5 w-5" /> Student
+                            Approves
+                        </Button>
+                        <Button
+                            outline
+                            variant="error"
+                            className="w-full border-2 border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400 h-12 font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-red-200"
+                            onClick={handleStudentReject}
+                            Icon={ThumbsDown}
+                            text="Student Rejects"
+                        /> */}
+                    </motion.div>
+                )
+
 
             case needsWorkplaceStagesEnum.WAITING_FOR_INDUSTRY:
                 return (

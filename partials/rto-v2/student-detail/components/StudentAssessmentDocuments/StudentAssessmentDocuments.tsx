@@ -296,14 +296,15 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                         />
                     </div>
                 )}
-                <CourseResultModule
-                    student={student}
-                    selectedCourse={selectedCourse}
-                    result={result}
-                    allCommentsAdded={allCommentsAdded}
-                    subadmin={subadmin}
-                    getFolders={documents}
-                />
+                {selectedCourse?.results && selectedCourse?.results?.length > 0 &&
+                    <CourseResultModule
+                        student={student}
+                        selectedCourse={selectedCourse}
+                        result={result}
+                        allCommentsAdded={allCommentsAdded}
+                        subadmin={subadmin}
+                        getFolders={documents}
+                    />}
             </div>
         </div>
     )

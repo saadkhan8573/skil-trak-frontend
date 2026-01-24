@@ -4,6 +4,7 @@ import { DocumentsView } from '@hooks'
 import { VerifyCapacityComponent } from '@partials/common/StudentProfileDetail/components/Workplace/components/WorkplaceApprovalReq/VerifyCapacityComponent'
 import { WorkplaceMapBoxView } from '@partials/student'
 import { RtoV2Api } from '@queries'
+import { WorkplaceCurrentStatus } from '@utils'
 import {
     BadgeInfo,
     Building2,
@@ -29,20 +30,22 @@ export const EnhancedIndustryDetailsCard = ({
         RtoV2Api.PlacementRequests.useStudentPlacementIndustryDetails(wpId, {
             skip: !wpId,
         })
-    const industry =
+    const workplaceIndustry =
         workplace?.industries?.length > 0
             ? data
             : workplace?.workplaceApprovaleRequest?.[0]?.industry
+
+    const workplaceEligibilityIndustry = workplace?.currentStatus === WorkplaceCurrentStatus.IndustryEligibility ? data : null
+    const industry = workplaceEligibilityIndustry || workplaceIndustry
+
+
     const roundCustom = (value: number) => {
         const decimal = value % 1
         return decimal >= 0.7 ? Math.ceil(value) : Math.floor(value)
     }
-    console.log(' workplace?.industries', workplace?.industries)
-    console.log('data::::', data)
-    console.log(
-        'workplace?.workplaceApprovaleRequest',
-        workplace?.workplaceApprovaleRequest
-    )
+
+
+
     const onToggleShowMap = () => {
         setShowMap(!showMap)
     }

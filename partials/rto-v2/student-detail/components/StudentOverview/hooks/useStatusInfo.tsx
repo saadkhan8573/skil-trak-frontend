@@ -60,8 +60,6 @@ export const useStatusInfo = ({
 
     const isTerminal = terminalStatuses.includes(workplace?.currentStatus)
 
-    console.log({ statusOrder })
-
     const getStatusArrays = (
         currentStatus: WorkplaceCurrentStatus
     ): {
@@ -196,7 +194,7 @@ export const useStatusInfo = ({
     const completedCount = isTerminal ? statuses.length : currentStep?.label === "Schedule Completed" ? validStatus?.length : statuses.filter((s) => s.completed).length
     const totalCount = validStatus.length
     const progressPercent = isTerminal || currentStep?.label === "Schedule Completed" ? 100 : Math.round((completedCount / totalCount) * 100)
-    console.log({ statusesstatusesstatuses: statuses, currentStep })
+
     return {
         statuses,
         totalCount,

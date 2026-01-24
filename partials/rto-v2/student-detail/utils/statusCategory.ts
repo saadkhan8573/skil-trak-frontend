@@ -15,6 +15,7 @@ export const getStatusCategory = (status: string): string => {
         status === 'caseOfficerAssigned' ||
         status === 'interview' ||
         status === 'industryEligibility' ||
+        status === 'industryEligibility' ||
         status === 'awaitingWorkplaceResponse' ||
         status === 'awaitingStudentResponse' ||
         status === 'awaitingRtoResponse' ||

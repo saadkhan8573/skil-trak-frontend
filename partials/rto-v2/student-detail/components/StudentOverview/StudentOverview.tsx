@@ -1,4 +1,9 @@
 import { RtoV2Api } from '@queries'
+import { setSelectedWorkplace } from '@redux'
+import { useAppDispatch, useAppSelector } from '@redux/hooks'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
+import { useEffect, useMemo, useState } from 'react'
+import { sortedWorkplaceRequests } from '../../utils'
 import {
     ApplyWorkplaceOverview,
     CourseOverview,
@@ -6,11 +11,6 @@ import {
     PlacementRequest,
     WorkplaceBio,
 } from './components'
-import { useAppDispatch, useAppSelector } from '@redux/hooks'
-import { useEffect, useMemo, useState } from 'react'
-import { IWorkplaceIndustries } from '@redux/queryTypes'
-import { WorkplaceCurrentStatus } from '@utils'
-import { setSelectedWorkplace } from '@redux'
 
 export const StudentOverview = () => {
     const { selectedCourse, studentDetail, selectedWorkplace } = useAppSelector(
@@ -34,22 +34,9 @@ export const StudentOverview = () => {
             }
         )
 
-    const sortedWorkplaces = useMemo(() => {
-        if (!studentWorkplaces?.data) return []
-        return [...studentWorkplaces?.data].sort((a, b) => {
-            if (
-                a.currentStatus === WorkplaceCurrentStatus.Cancelled &&
-                b.currentStatus !== WorkplaceCurrentStatus.Cancelled
-            )
-                return 1
-            if (
-                a.currentStatus !== WorkplaceCurrentStatus.Cancelled &&
-                b.currentStatus === WorkplaceCurrentStatus.Cancelled
-            )
-                return -1
-            return 0
-        })
-    }, [studentWorkplaces?.data])
+    const sortedWorkplaces = useMemo(() =>
+        sortedWorkplaceRequests(studentWorkplaces?.data),
+        [studentWorkplaces?.data])
 
     useEffect(() => {
         if (sortedWorkplaces && sortedWorkplaces?.length > 0) {

@@ -31,14 +31,12 @@ export function WorkplaceBio({
         )
     }, [workplace?.workplaceApprovaleRequest])
 
-    console.log({ latestWorkplaceApprovaleRequest })
-
     const workIndustry = workplace?.industries?.find(
         (i: WorkplaceWorkIndustriesType) => i?.applied
     )
 
     const industry =
-        workIndustry?.industry || latestWorkplaceApprovaleRequest?.industry
+        workIndustry?.industry || latestWorkplaceApprovaleRequest?.industry || workplace?.studentProvidedWorkplaceRequestApproval?.industry
 
     const supervisor: Supervisor =
         latestWorkplaceApprovaleRequest?.industry?.supervisors?.[0]

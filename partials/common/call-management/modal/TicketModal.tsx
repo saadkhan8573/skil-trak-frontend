@@ -88,10 +88,10 @@ export const TicketModal = ({ call, onClose }: TicketModalProps) => {
                                         <p className="text-blue-900 font-medium">
                                             Call Information
                                         </p>
-                                        <p className="text-blue-700">
+                                        {/* <p className="text-blue-700">
                                             Agent: {call.agentName} | Phone:{' '}
                                             {call.phoneNumber}
-                                        </p>
+                                        </p> */}
                                     </div>
                                 </div>
                             </div>

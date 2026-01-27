@@ -4,6 +4,7 @@ import {
     ActionAlert,
     ActionButton,
     BackButton,
+    Badge,
     Button,
     Card,
     LoadingAnimation,
@@ -201,7 +202,7 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
         //     />
         // )
     }
-
+    console.log('workplaceData?.studentProvidedWorkplace', workplaceData)
     return (
         <>
             {modal}
@@ -342,18 +343,70 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
                                     </Card>
                                 ) : workplaceData?.studentProvidedWorkplace ? (
                                     <Card>
-                                        <div className="px-5 py-16 border-2 border-dashed border-gray-600 flex justify-center">
+                                        <div className="">
                                             <Typography
                                                 variant={'label'}
                                                 center
                                                 color={'text-gray-700'}
                                             >
-                                                Your request has been received,
-                                                Our team after confirming the
-                                                provided information will
-                                                approved your request and Will
-                                                Contact you soon
+                                                Workplace Status:{' '}
                                             </Typography>
+                                            {workplaceData?.currentStatus ===
+                                            'industryEligibility' ? (
+                                                <>
+                                                    <Badge
+                                                        variant="info"
+                                                        text={
+                                                            'Industry Eligibility'
+                                                        }
+                                                        className="mb-4"
+                                                    />
+                                                </>
+                                            ) : (
+                                                'NA'
+                                            )}
+                                        </div>
+                                        <div className="px-5 py-16 border-2 border-dashed border-gray-600 flex justify-center">
+                                            {workplaceData?.currentStatus ===
+                                            'industryEligibility' ? (
+                                                <Typography
+                                                    variant={'label'}
+                                                    center
+                                                    color={'text-gray-700'}
+                                                >
+                                                    We have received your
+                                                    workplace request. Our team
+                                                    is currently reviewing the
+                                                    information you have
+                                                    provided about the work
+                                                    industry. Once the industry
+                                                    eligibility is approved,
+                                                    your workplace request
+                                                    process will proceed
+                                                    further. We will contact you
+                                                    if any additional
+                                                    information is required.
+                                                </Typography>
+                                            ) : (
+                                                <Typography
+                                                    variant={'label'}
+                                                    center
+                                                    color={'text-gray-700'}
+                                                >
+                                                    We have received your
+                                                    workplace request. Our team
+                                                    is currently reviewing the
+                                                    information you have
+                                                    provided about the work
+                                                    industry. Once the industry
+                                                    eligibility is approved,
+                                                    your workplace request
+                                                    process will proceed
+                                                    further. We will contact you
+                                                    if any additional
+                                                    information is required.
+                                                </Typography>
+                                            )}
                                         </div>
                                         {workplaceCancelRequest()}
                                     </Card>

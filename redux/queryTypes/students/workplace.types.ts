@@ -75,6 +75,9 @@ export interface WorkplaceWorkIndustriesType {
     updatedAt: Date
     industry: Industry
     workplaceRequest: IWorkplaceIndustries
+    actionDate?: any
+    actionedBy?: any
+    action?: any
 }
 
 export interface EmploymentDocument extends BaseResponse {

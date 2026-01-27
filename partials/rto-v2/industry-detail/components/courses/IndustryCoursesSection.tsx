@@ -1,4 +1,9 @@
-import { RtoV2Api, setDeletedCourses, setIndustrySectorCapacity, SubAdminApi } from '@redux'
+import {
+    RtoV2Api,
+    setDeletedCourses,
+    setIndustrySectorCapacity,
+    SubAdminApi,
+} from '@redux'
 import { useAppDispatch, useAppSelector } from '@redux/hooks'
 import { useEffect, useState } from 'react'
 
@@ -26,7 +31,11 @@ export function IndustryCoursesSection() {
         SubAdminApi.Industry.useSectorBasedCapacity(industry?.id || 0, {
             skip: !industry?.id,
         })
-
+    const { data: counts, isLoading: isCountsLoading } =
+        RtoV2Api.Industries.getRtoIndustryDataCount(industry?.id || 0, {
+            skip: !industry?.id,
+        })
+    console.log('sectorCapacityData', sectorCapacityData)
     useEffect(() => {
         if (sectorCapacityData) {
             dispatch(setIndustrySectorCapacity(sectorCapacityData))
@@ -60,14 +69,7 @@ export function IndustryCoursesSection() {
         0
     )
 
-    const totalStudents =
-        Number(sectorCapacityData?.reduce(
-            (acc: number, curr: any) => acc + (Number(curr.enrolled) || 0),
-            0
-        )) || 0
-    console.log(
-        { sectorCapacityData }
-    )
+    const totalStudents = counts?.totalStudents || 0
     const totalCapacity =
         sectorCapacityData?.reduce(
             (acc: number, curr: any) => acc + (Number(curr?.capacity) || 0),
@@ -168,8 +170,8 @@ export function IndustryCoursesSection() {
             <div id="capacity" className="space-y-3">
                 {coursesDetails?.isError && <TechnicalError />}
                 {coursesDetails?.isSuccess &&
-                    coursesDetails?.data &&
-                    coursesDetails?.data?.length > 0 ? (
+                coursesDetails?.data &&
+                coursesDetails?.data?.length > 0 ? (
                     coursesData.map((group, sectorIndex) => (
                         <SectorCard
                             key={group.sector.id}

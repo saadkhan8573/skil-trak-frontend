@@ -55,6 +55,12 @@ export const ScheduleAppointmentModal = ({
             skip: !selectedUser?.id,
         }
     )
+    const coursesOptions =
+        selectedUser?.courses?.length > 0 &&
+        selectedUser?.courses?.map((course: any) => ({
+            label: `${course?.code} ${course?.title}`,
+            value: course?.id,
+        }))
 
     useEffect(() => {
         if (createAppointmentResult.isSuccess) {
@@ -69,9 +75,9 @@ export const ScheduleAppointmentModal = ({
     const appointmentTypesOptions =
         appointmentTypes?.data && appointmentTypes?.data?.length > 0
             ? appointmentTypes?.data?.map((type: any) => ({
-                label: type.title,
-                value: type.id,
-            }))
+                  label: type.title,
+                  value: type.id,
+              }))
             : []
 
     const methods = useForm({
@@ -80,7 +86,7 @@ export const ScheduleAppointmentModal = ({
     const onSubmit = (values: any) => {
         // if (!values.date || !values.startTime) return;
         const { participants, ...rest } = values
-        const course = selectedCourse?.id
+        const course = selectedCourse?.id ?? values?.course
         const appointmentFor = selectedUser?.user?.id
         const fullDateTime = new Date(`${values.date}T${values.startTime}:00`)
         const date = fullDateTime?.toISOString()
@@ -93,12 +99,10 @@ export const ScheduleAppointmentModal = ({
         }
         createAppointment(payload)
     }
-
     return (
         <>
             <ShowErrorNotifications result={createAppointmentResult} />
             <Dialog open={scheduleOpen} onOpenChange={setScheduleOpen}>
-
                 <DialogContent className="min-w-3xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>Schedule New Appointment</DialogTitle>
@@ -237,6 +241,21 @@ export const ScheduleAppointmentModal = ({
                                                 </div>
                                             </div>
                                         )}
+                                    </>
+                                )}
+                                {defaultSelectedParicipantType ===
+                                    'industry' && (
+                                    <>
+                                        {' '}
+                                        <Select
+                                            name="course"
+                                            disabled={participantType === ''}
+                                            options={coursesOptions}
+                                            loading={appointmentTypes.isLoading}
+                                            label="Select Course"
+                                            placeholder="Select course"
+                                            onlyValue
+                                        />
                                     </>
                                 )}
 

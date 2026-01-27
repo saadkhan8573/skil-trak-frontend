@@ -4,10 +4,11 @@ import {
     StatsOverview,
     StudentsList,
     WaitingStudents,
+    RejectedStudentsList,
 } from './components'
 
 import { ConfigTabs, TabConfig } from '@components'
-import { Users, Clock } from 'lucide-react'
+import { Users, Clock, Ban } from 'lucide-react'
 import { useState } from 'react'
 
 export function StudentsPlacementList() {
@@ -22,6 +23,7 @@ export function StudentsPlacementList() {
         </div>
     )
     const WaitingStudentsWrapper = () => <WaitingStudents />
+    const RejectedStudentsListWrapper = () => <RejectedStudentsList />
 
     const tabs: TabConfig[] = [
         {
@@ -30,11 +32,18 @@ export function StudentsPlacementList() {
             icon: Users,
             component: AllStudents,
         },
+        // RejectedStudentsList
         {
             value: 'waiting_for_industry',
             label: 'Waiting for Industry',
             icon: Clock,
             component: WaitingStudentsWrapper,
+        },
+        {
+            value: 'rejected_students',
+            label: 'Rejected Students',
+            icon: Ban,
+            component: RejectedStudentsListWrapper,
         },
     ]
 

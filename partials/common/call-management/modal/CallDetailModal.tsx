@@ -121,7 +121,7 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                     <span className="text-xs">Date</span>
                                 </div>
                                 <p className="text-sm text-gray-900">
-                                    {formatDate(call?.createdAt)}
+                                    {formatDate(call?.createdAt as any)}
                                 </p>
                             </div>
 
@@ -133,7 +133,7 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                     </span>
                                 </div>
                                 <p className="text-sm text-gray-900">
-                                    {formatTime(call?.createdAt)} (
+                                    {formatTime(call?.createdAt as any)} (
                                     {call?.callDuration ?? '---'})
                                 </p>
                             </div>
@@ -144,7 +144,7 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                     <span className="text-xs">Agent</span>
                                 </div>
                                 <p className="text-sm text-gray-900">
-                                    {call?.agentName ?? 'AI'}
+                                    {'AI'}
                                 </p>
                             </div>
 
@@ -153,10 +153,10 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                     <Building2 className="w-3 h-3" />
                                     <span className="text-xs">Industry</span>
                                 </div>
-                                <p className="text-sm text-gray-900">
+                                {/* <p className="text-sm text-gray-900">
                                     {call?.industry?.user?.name ||
                                         'Not specified'}
-                                </p>
+                                </p> */}
                             </div>
                         </div>
 
@@ -383,11 +383,11 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                 <FileText className="w-4 h-4" />
                                 <span className="text-sm">Call Notes</span>
                             </div>
-                            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                            {/* <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                                 <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
                                     {call.notes}
                                 </p>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 

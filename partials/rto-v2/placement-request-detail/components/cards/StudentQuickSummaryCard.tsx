@@ -1,16 +1,30 @@
 import { Badge, Card } from '@components'
+import { UserRoles } from '@constants'
 import { RtoV2Api } from '@queries'
-import { ellipsisText, maskText } from '@utils'
+import { ellipsisText, getUserCredentials, maskText } from '@utils'
 import {
     Briefcase,
     Calendar,
     CheckCircle2,
+    ExternalLink,
     GraduationCap,
     ListChecks,
     Phone,
     User,
 } from 'lucide-react'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
+
+function getStudentProfileLink(role: string, studentId: number) {
+    switch (role) {
+        case UserRoles.ADMIN:
+            return `/portals/admin/student/${studentId}/detail`
+        case UserRoles.SUBADMIN:
+            return `/portals/sub-admin/students/${studentId}/detail`
+        default:
+            return `/portals/rto/students-and-placements/all-students/${studentId}/detail`
+    }
+}
 
 export const StudentQuickSummaryCard = ({
     studentDetails,
@@ -25,6 +39,7 @@ export const StudentQuickSummaryCard = ({
             skip: !wpId,
         }
     )
+    const role = getUserCredentials()?.role || ''
     function formatAIRequirements(text: string) {
         if (!text) return ''
 
@@ -71,16 +86,37 @@ export const StudentQuickSummaryCard = ({
                                 <CheckCircle2 className="h-3 w-3 text-white" />
                             </div>
                         </div>
-                        <div>
-                            <h3 className="text-[#044866] text-xl font-bold">
-                                {studentDetails?.user?.name ?? '___'}{' '}
-                                {studentDetails?.familyName ?? '___'} (
-                                {ellipsisText(
-                                    studentDetails?.rto?.user?.name,
-                                    30
-                                ) ?? '___'}
-                                )
-                            </h3>
+                        <div className="">
+                            <div className="flex gap-1 group">
+                                <Link
+                                    href={getStudentProfileLink(
+                                        role,
+                                        studentDetails?.id
+                                    )}
+                                    className="flex gap-1 text-[#044866] text-xl font-bold hover:underline"
+                                >
+                                    <span>
+                                        {studentDetails?.user?.name ?? '___'}{' '}
+                                        {studentDetails?.familyName ?? '___'} (
+                                        {ellipsisText(
+                                            studentDetails?.rto?.user?.name,
+                                            30
+                                        ) ?? '___'}
+                                        )
+                                    </span>
+
+                                    {/* Hover icon */}
+                                    <ExternalLink
+                                        className="
+                                            w-4 h-4 text-[#64748B]
+                                            opacity-0 scale-95
+                                            transition-all duration-200
+                                            group-hover:opacity-100 group-hover:scale-100
+                                        "
+                                    />
+                                </Link>
+                            </div>
+
                             <p className="text-slate-500 text-sm mt-0.5 flex items-center gap-1.5">
                                 <span className="w-1 h-1 rounded-full bg-slate-400"></span>
                                 {studentDetails?.studentId ?? '____'}

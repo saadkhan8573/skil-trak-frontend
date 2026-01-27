@@ -1,20 +1,34 @@
 import { Button, Card } from '@components'
 import { Separator } from '@components/ui/separator'
+import { UserRoles } from '@constants'
 import { DocumentsView } from '@hooks'
 import { VerifyCapacityComponent } from '@partials/common/StudentProfileDetail/components/Workplace/components/WorkplaceApprovalReq/VerifyCapacityComponent'
 import { WorkplaceMapBoxView } from '@partials/student'
 import { RtoV2Api } from '@queries'
-import { WorkplaceCurrentStatus } from '@utils'
+import { getUserCredentials, WorkplaceCurrentStatus } from '@utils'
 import {
     BadgeInfo,
     Building2,
+    ExternalLink,
     Mail,
     MapPin,
     MapPinned,
     User,
 } from 'lucide-react'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+
+function getIndustryProfileLink(role: string, industryId: number) {
+    switch (role) {
+        case UserRoles.ADMIN:
+            return `/portals/admin/industry/${industryId}`
+        case UserRoles.SUBADMIN:
+            return `/portals/sub-admin/users/industries/${industryId}/?tab=students`
+        default:
+            return `portals/rto/manage/industries/${industryId}/detail`
+    }
+}
 
 export const EnhancedIndustryDetailsCard = ({
     // showIndustryDetails,
@@ -26,6 +40,7 @@ export const EnhancedIndustryDetailsCard = ({
     const router = useRouter()
     const { onFileClicked, documentsViewModal } = DocumentsView()
     const wpId = router?.query?.id
+    const role = getUserCredentials()?.role || ''
     const { data, isLoading, isError } =
         RtoV2Api.PlacementRequests.useStudentPlacementIndustryDetails(wpId, {
             skip: !wpId,
@@ -35,16 +50,16 @@ export const EnhancedIndustryDetailsCard = ({
             ? data
             : workplace?.workplaceApprovaleRequest?.[0]?.industry
 
-    const workplaceEligibilityIndustry = workplace?.currentStatus === WorkplaceCurrentStatus.IndustryEligibility ? data : null
+    const workplaceEligibilityIndustry =
+        workplace?.currentStatus === WorkplaceCurrentStatus.IndustryEligibility
+            ? data
+            : null
     const industry = workplaceEligibilityIndustry || workplaceIndustry
-
 
     const roundCustom = (value: number) => {
         const decimal = value % 1
         return decimal >= 0.7 ? Math.ceil(value) : Math.floor(value)
     }
-
-
 
     const onToggleShowMap = () => {
         setShowMap(!showMap)
@@ -134,6 +149,14 @@ export const EnhancedIndustryDetailsCard = ({
                                         : 'Non-Partner'}
                                 </p>
                             </div>
+                            <Link
+                                href={getIndustryProfileLink(
+                                    role,
+                                    industry?.id
+                                )}
+                            >
+                                <ExternalLink className="w-3 h-3 text-[#64748B] hover:text-[#044866] cursor-pointer" />
+                            </Link>
                             {workplaceType === 'provided' && (
                                 <div className="flex items-center gap-x-2">
                                     {/* {proofSkipped ? (

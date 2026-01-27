@@ -183,6 +183,19 @@ export const industriesEndpoints = (
         }),
         providesTags: ['RTOIndustries'],
     }),
+    getIndustryRejectedStudents: builder.query<
+        PaginatedResponse<Student>,
+        {
+            params: PaginationWithSearch
+            industryId: number
+        }
+    >({
+        query: ({ params, industryId }) => ({
+            url: `${INDUSTRIESPREFIX}${industryId}/rejected-industries-list`,
+            params,
+        }),
+        providesTags: ['RTOIndustries'],
+    }),
 
     industryCoursesDetails: builder.query<
         IndustryCourseApproval[],

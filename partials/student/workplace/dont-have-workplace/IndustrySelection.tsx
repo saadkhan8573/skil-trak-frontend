@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react'
 
 // components
-import { ActionButton, Card, LoadingAnimation, Typography } from '@components'
+import {
+    ActionButton,
+    Badge,
+    Card,
+    LoadingAnimation,
+    Typography,
+} from '@components'
 
 import { IndustryNotResponded } from '@partials/common'
 import { RejectedIndustries } from '@partials/common/workplace/components/dontHaveWorkplace/RejectedIndustries'
@@ -105,6 +111,7 @@ export const IndustrySelection = ({
         }
         return null
     }
+    console.log('workplace::::::::::::', workplace?.data?.[0])
 
     return !industrySelection ? (
         <div className="flex flex-col gap-y-3">
@@ -146,51 +153,105 @@ export const IndustrySelection = ({
             ) : (
                 !appliedIndustry && (
                     <Card>
-                        <div className="flex flex-col gap-y-3 px-5 py-12 border border-dashed rounded-lg">
-                            <Typography
-                                variant={'subtitle'}
-                                color={'text-gray-600'}
-                            >
-                                Thank you for submitting your Workplace Request!
-                            </Typography>
+                        <div className="">
                             <Typography
                                 variant={'label'}
-                                color={'text-gray-600'}
+                                center
+                                color={'text-gray-700'}
                             >
-                                Your request has been successfully received. Our
-                                placement team will now review your information.
-                                One of our coordinators will reach out to you
-                                within 48 hours. regarding your workplace
-                                placement.
+                                Workplace Status:{' '}
                             </Typography>
-                            <div>
-                                <Typography
-                                    variant={'label'}
-                                    color={'text-gray-600'}
-                                >
-                                    If you have any immediate questions, feel
-                                    free to reach out to us at:
-                                </Typography>
-                                <Typography
-                                    variant={'small'}
-                                    color={'text-gray-600'}
-                                    semibold
-                                >
-                                    Phone: 0393636378
-                                </Typography>
-                                <Typography
-                                    variant={'small'}
-                                    color={'text-gray-600'}
-                                    semibold
-                                >
-                                    Email:{' '}
-                                    {assignedCoordinator
-                                        ? assignedCoordinator?.departmentMember
-                                              ?.department?.email ??
-                                          'info@skiltrak.com.au'
-                                        : 'info@skiltrak.com.au'}
-                                </Typography>
-                            </div>
+                            {workplace?.data?.[0]?.currentStatus ===
+                            'awaitingRtoResponse' ? (
+                                <>
+                                    <Badge
+                                        variant="info"
+                                        text={'Awaiting RtoResponse'}
+                                        className="mb-4"
+                                    />
+                                </>
+                            ) : (
+                                'NA'
+                            )}
+                        </div>
+                        <div className="flex flex-col gap-y-3 px-5 py-12 border border-dashed rounded-lg">
+                            {workplace?.data?.[0]?.currentStatus ===
+                            'awaitingRtoResponse' ? (
+                                <>
+                                    {' '}
+                                    <Typography
+                                        variant={'subtitle'}
+                                        color={'text-gray-600'}
+                                    >
+                                        Your request has been successfully
+                                        received. Your Registered Training
+                                        Organisation (RTO) is currently
+                                        reviewing the information you have
+                                        provided.
+                                    </Typography>
+                                    <Typography
+                                        variant={'label'}
+                                        color={'text-gray-600'}
+                                    >
+                                        Once the RTO approves your details, we
+                                        will proceed with the next steps of your
+                                        workplace placement process. Our team
+                                        will keep you informed and contact you
+                                        if any additional information is
+                                        required.
+                                    </Typography>
+                                </>
+                            ) : (
+                                <>
+                                    <Typography
+                                        variant={'subtitle'}
+                                        color={'text-gray-600'}
+                                    >
+                                        Thank you for submitting your Workplace
+                                        Request!
+                                    </Typography>
+                                    <Typography
+                                        variant={'label'}
+                                        color={'text-gray-600'}
+                                    >
+                                        Your request has been successfully
+                                        received. Our placement team will now
+                                        review your information. One of our
+                                        coordinators will reach out to you
+                                        within 48 hours. regarding your
+                                        workplace placement.
+                                    </Typography>
+                                    <div>
+                                        <Typography
+                                            variant={'label'}
+                                            color={'text-gray-600'}
+                                        >
+                                            If you have any immediate questions,
+                                            feel free to reach out to us at:
+                                        </Typography>
+                                        <Typography
+                                            variant={'small'}
+                                            color={'text-gray-600'}
+                                            semibold
+                                        >
+                                            Phone: 0393636378
+                                        </Typography>
+                                        <Typography
+                                            variant={'small'}
+                                            color={'text-gray-600'}
+                                            semibold
+                                        >
+                                            Email:{' '}
+                                            {assignedCoordinator
+                                                ? (assignedCoordinator
+                                                      ?.departmentMember
+                                                      ?.department?.email ??
+                                                  'info@skiltrak.com.au')
+                                                : 'info@skiltrak.com.au'}
+                                        </Typography>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </Card>
                 )

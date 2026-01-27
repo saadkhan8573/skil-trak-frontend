@@ -14,6 +14,7 @@ import {
 import { useState } from 'react'
 import { AddCourseRequestDialog } from '../modals'
 import { getUserCredentials } from '@utils'
+import { RtoV2Api } from '@queries'
 
 interface CoursesHeaderSectionProps {
     showSearch: boolean
@@ -65,7 +66,7 @@ export function CoursesHeaderSection({
         },
         {
             title: 'Active Students',
-            value: totalStudents,
+            value: totalStudents || 0,
             subtext: `of ${totalCapacity} capacity`,
             icon: Users,
             delay: 0.15,
@@ -87,28 +88,28 @@ export function CoursesHeaderSection({
                 overallCapacity >= 80
                     ? 'bg-gradient-to-br from-[#10B981]/10 to-[#059669]/10 border-[#10B981]/30 shadow-[#10B981]/10'
                     : overallCapacity >= 50
-                    ? 'bg-gradient-to-br from-[#F7A619]/10 to-[#EA580C]/10 border-[#F7A619]/30 shadow-[#F7A619]/10'
-                    : 'bg-white border-[#E2E8F0]'
+                      ? 'bg-gradient-to-br from-[#F7A619]/10 to-[#EA580C]/10 border-[#F7A619]/30 shadow-[#F7A619]/10'
+                      : 'bg-white border-[#E2E8F0]'
             }`,
             iconClass:
                 overallCapacity >= 80
                     ? 'bg-[#10B981]/20 text-[#10B981]'
                     : overallCapacity >= 50
-                    ? 'bg-[#F7A619]/20 text-[#F7A619]'
-                    : 'bg-[#64748B]/10 text-[#64748B]',
+                      ? 'bg-[#F7A619]/20 text-[#F7A619]'
+                      : 'bg-[#64748B]/10 text-[#64748B]',
             titleClass: 'text-[#64748B]',
             valueClass:
                 overallCapacity >= 80
                     ? 'text-[#10B981]'
                     : overallCapacity >= 50
-                    ? 'text-[#F7A619]'
-                    : 'text-[#1A2332]',
+                      ? 'text-[#F7A619]'
+                      : 'text-[#1A2332]',
             decorClass:
                 overallCapacity >= 80
                     ? 'bg-[#10B981]/10'
                     : overallCapacity >= 50
-                    ? 'bg-[#F7A619]/10'
-                    : 'bg-[#64748B]/5',
+                      ? 'bg-[#F7A619]/10'
+                      : 'bg-[#64748B]/5',
         },
         {
             title: 'Pending Actions',
@@ -261,8 +262,8 @@ export function CoursesHeaderSection({
                                             overallCapacity >= 80
                                                 ? 'bg-gradient-to-r from-[#10B981] to-[#059669]'
                                                 : overallCapacity >= 50
-                                                ? 'bg-gradient-to-r from-[#F7A619] to-[#EA580C]'
-                                                : 'bg-gradient-to-r from-[#64748B] to-[#475569]'
+                                                  ? 'bg-gradient-to-r from-[#F7A619] to-[#EA580C]'
+                                                  : 'bg-gradient-to-r from-[#64748B] to-[#475569]'
                                         }`}
                                     />
                                 </div>

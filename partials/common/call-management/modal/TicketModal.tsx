@@ -1,11 +1,10 @@
 import { Button, Select, TextArea, TextInput } from '@components'
+import { PlacementCall } from '@types'
 import { AlertCircle, TicketPlus, X } from 'lucide-react'
-import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Call } from '../components'
 
 interface TicketModalProps {
-    call: Call
+    call: PlacementCall
     onClose: () => void
 }
 
@@ -89,10 +88,10 @@ export const TicketModal = ({ call, onClose }: TicketModalProps) => {
                                         <p className="text-blue-900 font-medium">
                                             Call Information
                                         </p>
-                                        <p className="text-blue-700">
+                                        {/* <p className="text-blue-700">
                                             Agent: {call.agentName} | Phone:{' '}
                                             {call.phoneNumber}
-                                        </p>
+                                        </p> */}
                                     </div>
                                 </div>
                             </div>
@@ -133,17 +132,16 @@ export const TicketModal = ({ call, onClose }: TicketModalProps) => {
                                                         priority
                                                     )
                                                 }
-                                                className={`px-4 py-2.5 rounded-lg border-2 transition-all ${
-                                                    selectedPriority ===
+                                                className={`px-4 py-2.5 rounded-lg border-2 transition-all ${selectedPriority ===
                                                     priority
-                                                        ? priority === 'high'
-                                                            ? 'bg-red-50 border-red-500 text-red-700'
-                                                            : priority ===
-                                                              'medium'
+                                                    ? priority === 'high'
+                                                        ? 'bg-red-50 border-red-500 text-red-700'
+                                                        : priority ===
+                                                            'medium'
                                                             ? 'bg-yellow-50 border-yellow-500 text-yellow-700'
                                                             : 'bg-green-50 border-green-500 text-green-700'
-                                                        : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400'
-                                                }`}
+                                                    : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400'
+                                                    }`}
                                             >
                                                 {priority
                                                     .charAt(0)

@@ -1,10 +1,15 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { PaginatedResponse, PaginationWithSearch, Student } from '@types'
+import { PlacementCall } from 'types/placement-call.type'
 
 export const callManagementLoginEndpoints = (
     builder: EndpointBuilder<BaseQueryFn, string, string>
 ) => ({
-    getAllAiCallList: builder.query<any, any>({
+    getAllAiCallList: builder.query<
+        PaginatedResponse<PlacementCall>,
+        PaginationWithSearch
+    >({
         query: (params) => {
             return {
                 url: `ai-voice-calls/summaries/list`,
@@ -12,5 +17,60 @@ export const callManagementLoginEndpoints = (
             }
         },
         providesTags: ['CallManagement'],
+    }),
+
+    getAiCallStatistics: builder.query<
+        {
+            totalCalls: number
+            resoved: number
+            pending: number
+        },
+        void
+    >({
+        query: () => {
+            return {
+                url: `ai-voice-calls/summaries/get-stastistics`,
+            }
+        },
+        providesTags: ['CallManagement'],
+    }),
+    getCallRecording: builder.query<{ url: string }, string>({
+        query: (callId) => ({
+            url: `ai-voice-calls/${callId}/recording-get`,
+        }),
+        providesTags: ['CallManagement'],
+    }),
+
+    completeCall: builder.mutation<any, string>({
+        query: (callId) => ({
+            url: `ai-voice-calls/${callId}/update-status`,
+            method: 'PATCH',
+        }),
+        invalidatesTags: ['CallManagement'],
+    }),
+
+    getStudentsToCallList: builder.query<
+        PaginatedResponse<Student>,
+        PaginationWithSearch
+    >({
+        query: (params) => {
+            return {
+                url: `shared/students/without-workplace-requests`,
+                params,
+            }
+        },
+        providesTags: ['CallManagement'],
+    }),
+
+    initiateAiCall: builder.mutation<
+        any,
+        { studentId: number; courseId: number }
+    >({
+        query: ({ studentId, courseId }) => ({
+            url: `ai-voice-calls/student/${studentId}/make-call`,
+            method: 'POST',
+            body: { courseId },
+        }),
+        invalidatesTags: ['CallManagement'],
     }),
 })

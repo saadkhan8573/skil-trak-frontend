@@ -69,10 +69,6 @@ export const AddCustomIndustryForm = ({
     const [onStateSelect, setOnStateSelect] = useState()
     const country = CommonApi.Countries.useCountriesList()
 
-    console.log({
-        sdfsfsd: country?.data?.find((c: OptionType) => c?.value === countryId),
-    })
-
     const { data: states, isLoading: statesLoading } =
         CommonApi.Countries.useCountryStatesList(countryId, {
             skip: !countryId,
@@ -188,12 +184,6 @@ export const AddCustomIndustryForm = ({
             })),
         [country?.data]
     )
-
-    console.log({
-        iuyjuhu: countryOptions?.find(
-            (c: OptionType) => c?.value === countryId
-        ),
-    })
 
     return (
         <>

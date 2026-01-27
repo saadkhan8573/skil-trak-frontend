@@ -18,7 +18,7 @@ export function CompanyBadges({ industry }: CompanyBadgesProps) {
         <div className="flex items-center gap-1 flex-wrap mb-1">
             {industry?.user?.isEmailVerified && (
                 <Badge className="px-1.5 py-0.5 bg-gradient-to-r from-[#10B981] to-[#059669] text-white rounded-full text-[10px] font-medium shadow-lg shadow-[#10B981]/20 border border-[#10B981]/20 hover:from-[#059669] hover:to-[#10B981] transition-all active:scale-95 cursor-pointer h-auto">
-                    ✓ Verified Partner
+                    ✓ Verified Email
                 </Badge>
             )}
             {industry?.isPremium && (

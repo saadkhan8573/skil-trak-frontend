@@ -19,7 +19,7 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from '@components/ui/collapsible'
-import { Button, Portal } from '@components'
+import { Badge, Button, Portal } from '@components'
 import { Student } from '@types'
 import { useStatusInfo } from '@partials/rto-v2/student-detail/components/StudentOverview/hooks/useStatusInfo'
 import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
@@ -32,6 +32,7 @@ import { ActionButton } from '@components'
 import { ApproveRequestModal } from '@partials/sub-admin/workplace/modals'
 import { DeclineStudentByIndustryModal } from '@partials/common/StudentProfileDetail/components'
 import { ReactNode } from 'react'
+import moment from 'moment'
 
 interface StudentCardProps {
     student: Student
@@ -99,18 +100,30 @@ export function StudentCard({ student }: StudentCardProps) {
         workIndustry: student?.workplace?.[0]
             ?.industries?.[0] as WorkplaceWorkIndustriesType,
     })
+    // ------------------- Action by Info START --------------------- //
+    const industry = student?.workplace?.[0]?.industries?.[0]
+    const isApproved = industry?.action === 'approved'
+
+    const containerStyles = isApproved
+        ? 'bg-green-50 border-green-200'
+        : 'bg-red-50 border-red-200'
+
+    const textStyles = isApproved ? 'text-green-600' : 'text-red-600'
+
+    // ------------------- Action by Info END ----------------------- //
 
     return (
         <Collapsible
             open={isOpen}
             onOpenChange={setIsOpen}
-            className={`${currentStep?.label &&
+            className={`${
+                currentStep?.label &&
                 ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(
                     currentStep.label
                 )
-                ? 'bg-red-100 border-red-200'
-                : 'bg-white border-[#E2E8F0]'
-                } border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300`}
+                    ? 'bg-red-100 border-red-200'
+                    : 'bg-white border-[#E2E8F0]'
+            } border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300`}
         >
             {/* Student Header */}
             <div className="p-2">
@@ -151,15 +164,17 @@ export function StudentCard({ student }: StudentCardProps) {
                     </div>
 
                     {/* Workflow Status - Top Right */}
-                    <div className="flex items-center gap-2">
-                        {workplace?.currentStatus ===
-                            WorkplaceCurrentStatus.AwaitingWorkplaceResponse && (
+                    <div>
+                        <div className="flex items-center gap-2">
+                            {workplace?.currentStatus ===
+                                WorkplaceCurrentStatus.AwaitingWorkplaceResponse && (
                                 <div className="flex gap-2 mb-2">
                                     <ActionButton
                                         variant="success"
                                         onClick={(e) => {
                                             e.stopPropagation()
-                                            if (workplace?.id) onApproveClicked(workplace.id)
+                                            if (workplace?.id)
+                                                onApproveClicked(workplace.id)
                                         }}
                                     >
                                         Accept
@@ -168,57 +183,87 @@ export function StudentCard({ student }: StudentCardProps) {
                                         variant="error"
                                         onClick={(e) => {
                                             e.stopPropagation()
-                                            if (workplace?.id) onRejectClicked(workplace.id)
+                                            if (workplace?.id)
+                                                onRejectClicked(workplace.id)
                                         }}
                                     >
                                         Reject
                                     </ActionButton>
                                 </div>
                             )}
-                        <div className="text-right">
-                            <div className="flex items-center gap-1.5 justify-end mb-0.5">
-                                <span className={`text-[10px] font-bold ${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label)
-                                    ? 'text-red-600'
-                                    : 'text-[#044866]'
-                                    }`}>
-                                    {currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label)
-                                        ? 'Terminal State'
-                                        : `${completedCount} of ${totalCount} steps`}
-                                </span>
-                                {!(currentStep?.label && ['Cancelled', 'Terminated', 'Rejected'].includes(currentStep.label)) && (
-                                    <>
-                                        <span className="text-[10px] font-bold text-[#64748B]">
-                                            •
-                                        </span>
-                                        <span className="text-[10px] font-bold text-[#044866]">
-                                            {progressPercent}%
-                                        </span>
-                                    </>
-                                )}
+                            <div className="text-right">
+                                <div className="flex items-center gap-1.5 justify-end mb-0.5">
+                                    <span
+                                        className={`text-[10px] font-bold ${
+                                            currentStep?.label &&
+                                            [
+                                                'Cancelled',
+                                                'Terminated',
+                                                'Rejected',
+                                                'No Response',
+                                            ].includes(currentStep.label)
+                                                ? 'text-red-600'
+                                                : 'text-[#044866]'
+                                        }`}
+                                    >
+                                        {currentStep?.label &&
+                                        [
+                                            'Cancelled',
+                                            'Terminated',
+                                            'Rejected',
+                                            'No Response',
+                                        ].includes(currentStep.label)
+                                            ? 'Terminal State'
+                                            : `${completedCount} of ${totalCount} steps`}
+                                    </span>
+                                    {!(
+                                        currentStep?.label &&
+                                        [
+                                            'Cancelled',
+                                            'Terminated',
+                                            'Rejected',
+                                        ].includes(currentStep.label)
+                                    ) && (
+                                        <>
+                                            <span className="text-[10px] font-bold text-[#64748B]">
+                                                •
+                                            </span>
+                                            <span className="text-[10px] font-bold text-[#044866]">
+                                                {progressPercent}%
+                                            </span>
+                                        </>
+                                    )}
+                                </div>
+                                <p
+                                    className={`text-[9px] ${
+                                        currentStep?.label &&
+                                        [
+                                            'Cancelled',
+                                            'Terminated',
+                                            'Rejected',
+                                            'No Response',
+                                        ].includes(currentStep.label)
+                                            ? 'text-red-500 font-bold'
+                                            : 'text-[#64748B]'
+                                    }`}
+                                >
+                                    {currentStep?.label}
+                                </p>
                             </div>
-                            <p className={`text-[9px] ${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label)
-                                ? 'text-red-500 font-bold'
-                                : 'text-[#64748B]'
-                                }`}>
-                                {currentStep?.label}
-                            </p>
-                        </div>
 
-                        <CollapsibleTrigger asChild>
-                            <div
-                                className="h-6 w-6 p-0 hover:bg-slate-100 rounded-full flex items-center justify-center cursor-pointer transition-colors"
-                            >
-                                {isOpen ? (
-                                    <ChevronUp className="w-4 h-4 text-slate-500" />
-                                ) : (
-                                    <ChevronDown className="w-4 h-4 text-slate-500" />
-                                )}
-                            </div>
-                        </CollapsibleTrigger>
+                            <CollapsibleTrigger asChild>
+                                <div className="h-6 w-6 p-0 hover:bg-slate-100 rounded-full flex items-center justify-center cursor-pointer transition-colors">
+                                    {isOpen ? (
+                                        <ChevronUp className="w-4 h-4 text-slate-500" />
+                                    ) : (
+                                        <ChevronDown className="w-4 h-4 text-slate-500" />
+                                    )}
+                                </div>
+                            </CollapsibleTrigger>
 
-                        {/* Actions Menu */}
-                        <div className="relative">
-                            {/* <button
+                            {/* Actions Menu */}
+                            <div className="relative">
+                                {/* <button
                                 onClick={() =>
                                     setShowActionsMenu(!showActionsMenu)
                                 }
@@ -227,28 +272,55 @@ export function StudentCard({ student }: StudentCardProps) {
                                 <MoreVertical className="w-3 h-3 text-[#64748B]" />
                             </button> */}
 
-                            {/* Actions Dropdown */}
-                            {showActionsMenu && (
-                                <div className="absolute right-0 mt-1 w-40 bg-white rounded-lg shadow-2xl border border-[#E2E8F0] overflow-hidden z-10">
-                                    <button className="w-full px-3 py-1.5 text-left text-[10px] hover:bg-[#F8FAFB] transition-all flex items-center gap-1.5 text-[#64748B] hover:text-[#044866]">
-                                        <Pause className="w-3 h-3" />
-                                        Put On Hold
-                                    </button>
-                                    <button className="w-full px-3 py-1.5 text-left text-[10px] hover:bg-[#FEF3C7] transition-all flex items-center gap-1.5 text-[#92400E]">
-                                        <Calendar className="w-3 h-3" />
-                                        Request Extension
-                                    </button>
-                                    <button className="w-full px-3 py-1.5 text-left text-[10px] hover:bg-[#FEE2E2] transition-all flex items-center gap-1.5 text-[#DC2626]">
-                                        <XCircle className="w-3 h-3" />
-                                        Cancel Placement
-                                    </button>
-                                    <button className="w-full px-3 py-1.5 text-left text-[10px] hover:bg-[#FEE2E2] transition-all flex items-center gap-1.5 text-[#DC2626]">
-                                        <AlertTriangle className="w-3 h-3" />
-                                        Terminate Placement
-                                    </button>
-                                </div>
-                            )}
+                                {/* Actions Dropdown */}
+                                {showActionsMenu && (
+                                    <div className="absolute right-0 mt-1 w-40 bg-white rounded-lg shadow-2xl border border-[#E2E8F0] overflow-hidden z-10">
+                                        <button className="w-full px-3 py-1.5 text-left text-[10px] hover:bg-[#F8FAFB] transition-all flex items-center gap-1.5 text-[#64748B] hover:text-[#044866]">
+                                            <Pause className="w-3 h-3" />
+                                            Put On Hold
+                                        </button>
+                                        <button className="w-full px-3 py-1.5 text-left text-[10px] hover:bg-[#FEF3C7] transition-all flex items-center gap-1.5 text-[#92400E]">
+                                            <Calendar className="w-3 h-3" />
+                                            Request Extension
+                                        </button>
+                                        <button className="w-full px-3 py-1.5 text-left text-[10px] hover:bg-[#FEE2E2] transition-all flex items-center gap-1.5 text-[#DC2626]">
+                                            <XCircle className="w-3 h-3" />
+                                            Cancel Placement
+                                        </button>
+                                        <button className="w-full px-3 py-1.5 text-left text-[10px] hover:bg-[#FEE2E2] transition-all flex items-center gap-1.5 text-[#DC2626]">
+                                            <AlertTriangle className="w-3 h-3" />
+                                            Terminate Placement
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         </div>
+                        {industry?.actionedBy && (
+                            <div
+                                className={`mt-2 rounded-md border px-3 py-2 text-[10px] ${containerStyles}`}
+                            >
+                                <div className="flex items-center gap-1 justify-between">
+                                    <Badge
+                                        text={'Approved By'}
+                                        variant={'info'}
+                                        size="xs"
+                                    />
+                                    <p
+                                        className={`font-medium capitalize ${textStyles}`}
+                                    >
+                                        {industry.actionedBy?.name}
+                                    </p>
+                                </div>
+
+                                <p className="mt-1 text-gray-500">
+                                    {industry.actionDate
+                                        ? moment(industry.actionDate).format(
+                                              'DD MMM YYYY · hh:mm A'
+                                          )
+                                        : '—'}
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -256,18 +328,33 @@ export function StudentCard({ student }: StudentCardProps) {
                 <div className="mb-2">
                     <div className="h-1.5 bg-[#E8F4F8] rounded-full overflow-hidden shadow-sm">
                         <div
-                            className={`h-full rounded-full transition-all duration-1000 ${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label)
-                                ? 'bg-red-500'
-                                : 'bg-gradient-to-r from-[#044866] to-[#0D5468]'
-                                }`}
-                            style={{ width: `${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label) ? 100 : progressPercent}%` }}
+                            className={`h-full rounded-full transition-all duration-1000 ${
+                                currentStep?.label &&
+                                [
+                                    'Cancelled',
+                                    'Terminated',
+                                    'Rejected',
+                                    'No Response',
+                                ].includes(currentStep.label)
+                                    ? 'bg-red-500'
+                                    : 'bg-gradient-to-r from-[#044866] to-[#0D5468]'
+                            }`}
+                            style={{
+                                width: `${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label) ? 100 : progressPercent}%`,
+                            }}
                         />
                     </div>
                 </div>
 
                 {/* Status Badges */}
                 <div className="flex items-center gap-1 mb-2">
-                    {currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label) ? (
+                    {currentStep?.label &&
+                    [
+                        'Cancelled',
+                        'Terminated',
+                        'Rejected',
+                        'No Response',
+                    ].includes(currentStep.label) ? (
                         <div className="flex items-center gap-1 bg-[#FEE2E2] text-[#991B1B] px-2 py-0.5 rounded-md text-[10px] font-bold border border-[#EF4444]/20">
                             <XCircle className="w-2.5 h-2.5" />
                             <span>{currentStep.label}</span>
@@ -284,13 +371,13 @@ export function StudentCard({ student }: StudentCardProps) {
                             </div>
                             <div className="flex items-center gap-1 bg-[#F8FAFB] text-[#64748B] px-2 py-0.5 rounded-md text-[10px] font-medium border border-[#E2E8F0]">
                                 <Circle className="w-2.5 h-2.5" />
-                                <span>{statusArrays?.pending?.length} Remaining</span>
+                                <span>
+                                    {statusArrays?.pending?.length} Remaining
+                                </span>
                             </div>
                         </>
                     )}
                 </div>
-
-
 
                 {/* Expand Button */}
                 <CollapsibleTrigger asChild>

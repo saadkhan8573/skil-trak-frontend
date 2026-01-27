@@ -107,11 +107,11 @@ export const BlockedSubAdmin = () => {
             {
                 ...(role === UserRoles.ADMIN
                     ? {
-                          text: 'View Password',
-                          onClick: (subAdmin: SubAdmin) =>
-                              onViewPassword(subAdmin),
-                          Icon: RiLockPasswordFill,
-                      }
+                        text: 'View Password',
+                        onClick: (subAdmin: SubAdmin) =>
+                            onViewPassword(subAdmin),
+                        Icon: RiLockPasswordFill,
+                    }
                     : {}),
             },
             {
@@ -124,13 +124,13 @@ export const BlockedSubAdmin = () => {
             {
                 ...(role === UserRoles.ADMIN
                     ? {
-                          text: `${!subAdmin?.canAdmin && 'Delete'}`,
-                          onClick: (subAdmin: SubAdmin) => {
-                              onDeleteClicked(subAdmin)
-                          },
-                          Icon: FaTrash,
-                          color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
-                      }
+                        text: `${!subAdmin?.canAdmin && 'Delete'}`,
+                        onClick: (subAdmin: SubAdmin) => {
+                            onDeleteClicked(subAdmin)
+                        },
+                        Icon: FaTrash,
+                        color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
+                    }
                     : {}),
             },
 
@@ -230,19 +230,6 @@ export const BlockedSubAdmin = () => {
             {modal && modal}
             {passwordModal && passwordModal}
             <div className="flex flex-col gap-y-4 mb-32">
-                <PageHeading
-                    title={'Rejected Sub Admin'}
-                    subtitle={'List of Rejected Sub Admin'}
-                >
-                    {data && data?.data.length ? (
-                        <Button
-                            text="Export"
-                            variant="action"
-                            Icon={FaFileExport}
-                        />
-                    ) : null}
-                </PageHeading>
-
                 <Card noPadding>
                     {isError && <TechnicalError />}
                     {isLoading ? (

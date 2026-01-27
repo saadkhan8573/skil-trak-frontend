@@ -62,9 +62,8 @@ export const ActiveSubAdmin = () => {
     const { isLoading, isFetching, data, isError, refetch } =
         AdminApi.SubAdmins.useListQuery(
             {
-                search: `status:${
-                    UserStatus.Approved
-                },isAssociatedWithRto:${false}`,
+                search: `status:${UserStatus.Approved
+                    },isAssociatedWithRto:${false}`,
                 skip: itemPerPage * page - itemPerPage,
                 limit: itemPerPage,
             },
@@ -143,19 +142,19 @@ export const ActiveSubAdmin = () => {
         {
             ...(role === UserRoles.ADMIN
                 ? {
-                      text: 'Permissions',
-                      onClick: (subAdmin) => onAllowPermissionClicked(subAdmin),
-                      Icon: PiCellSignalLowFill,
-                  }
+                    text: 'Permissions',
+                    onClick: (subAdmin) => onAllowPermissionClicked(subAdmin),
+                    Icon: PiCellSignalLowFill,
+                }
                 : {}),
         },
         {
             ...(role === UserRoles.ADMIN
                 ? {
-                      text: 'View Password',
-                      onClick: (subAdmin) => onViewPassword(subAdmin),
-                      Icon: RiLockPasswordFill,
-                  }
+                    text: 'View Password',
+                    onClick: (subAdmin) => onViewPassword(subAdmin),
+                    Icon: RiLockPasswordFill,
+                }
                 : {}),
         },
         {
@@ -189,10 +188,13 @@ export const ActiveSubAdmin = () => {
             cell: (info) => <RtoCell subAdmin={info.row.original} />,
         },
         {
-            accessorKey: 'studentCount',
-            header: () => <span>Students</span>,
+            accessorKey: 'totalIndustries',
+            header: () => <span>Total Industries</span>,
         },
-
+        {
+            accessorKey: 'placementReadyIndustries',
+            header: () => <span>Placement Ready</span>,
+        },
         {
             accessorKey: 'createdBy.role',
             header: () => <span>Created By</span>,
@@ -215,7 +217,7 @@ export const ActiveSubAdmin = () => {
                         </Typography>
                     </>
                 ) : info.row.original?.createdBy?.role ===
-                  UserRoles.SUBADMIN ? (
+                    UserRoles.SUBADMIN ? (
                     <>
                         <SubAdminCell
                             subAdmin={
@@ -264,10 +266,10 @@ export const ActiveSubAdmin = () => {
         id: 'id',
         individual: (id: SubAdmin) => (
             <div className="flex gap-x-2">
-                <ActionButton variant="success" onClick={() => {}}>
+                <ActionButton variant="success" onClick={() => { }}>
                     Accept
                 </ActionButton>
-                <ActionButton variant="error" onClick={() => {}}>
+                <ActionButton variant="error" onClick={() => { }}>
                     Reject
                 </ActionButton>
             </div>
@@ -290,11 +292,6 @@ export const ActiveSubAdmin = () => {
             {modal}
             {passwordModal}
             <div className="flex flex-col gap-y-4 mb-32">
-                <PageHeading
-                    title={'Active Sub Admin'}
-                    subtitle={'List of Active Sub Admin'}
-                />
-
                 <Card noPadding>
                     {isError && <TechnicalError />}
                     {isLoading || isFetching ? (
@@ -345,23 +342,23 @@ export const ActiveSubAdmin = () => {
                                             <div className="p-6 mb-2 flex justify-between">
                                                 {pageSize
                                                     ? pageSize(
-                                                          itemPerPage,
-                                                          (e) => {
-                                                              setItemPerPage(e)
-                                                              setIsRouting(
-                                                                  false
-                                                              )
-                                                          },
-                                                          data?.data?.length
-                                                      )
+                                                        itemPerPage,
+                                                        (e) => {
+                                                            setItemPerPage(e)
+                                                            setIsRouting(
+                                                                false
+                                                            )
+                                                        },
+                                                        data?.data?.length
+                                                    )
                                                     : null}
                                                 <div className="flex gap-x-2">
                                                     {quickActions}
                                                     {pagination
                                                         ? pagination(
-                                                              data?.pagination,
-                                                              setPage
-                                                          )
+                                                            data?.pagination,
+                                                            setPage
+                                                        )
                                                         : null}
                                                 </div>
                                             </div>

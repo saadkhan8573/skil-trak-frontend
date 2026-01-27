@@ -21,7 +21,7 @@ export const AllCommunicationComponent = ({
     const [page, setPage] = useState(1)
 
     const [searchTerm, setSearchTerm] = useState('')
-    const [typeFilter, setTypeFilter] = useState('notes')
+    const [typeFilter, setTypeFilter] = useState('all')
     const [showLoader, setShowLoader] = useState<boolean>(false)
 
     // Virtualization states

@@ -367,6 +367,11 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
             Icon: PiHeadsetBold,
         },
         {
+            text: 'AI Voice Calls',
+            path: getRoutePath('/ai-voice-calls'),
+            Icon: RiVoiceRecognitionLine,
+        },
+        {
             text: 'Notes Templates',
             path: getRoutePath('/note-template?tab=statusCheckLabelNotes'),
             Icon: FaRegNoteSticky,

@@ -40,7 +40,9 @@ export function StudentQuickPreview({ student }: StudentQuickPreviewProps) {
                         />
 
                         <div>
-                            <h3 className="text-xl">{student?.user?.name}</h3>
+                            <h3 className="text-xl">{student?.user?.name} {
+                                student?.familyName
+                            }</h3>
                             {student?.studentStatus ? (
                                 <Badge
                                     className="mt-1"

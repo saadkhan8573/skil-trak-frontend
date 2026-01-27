@@ -12,7 +12,7 @@ StudentAiSearchDetailPage.getLayout = (page: ReactElement) => {
         <RtoLayoutV2
             titleProps={{
                 Icon: Sparkles,
-                title: 'Student Ai Search Detail',
+                title: 'Student Detail',
             }}
         >
             {page}

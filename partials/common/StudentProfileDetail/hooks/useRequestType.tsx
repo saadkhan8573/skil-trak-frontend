@@ -164,7 +164,7 @@ export const useRequestType = ({
             primaryText: 'Request Sent',
             secondaryText: 'No Case Officer',
             color: 'text-primary-dark',
-            onClick: () => {},
+            onClick: () => { },
             status: WorkplaceCurrentStatus.Applied,
             date: appliedIndustry?.appliedDate || workplace?.createdAt,
         },
@@ -172,7 +172,7 @@ export const useRequestType = ({
             primaryText: 'Assigned',
             secondaryText: 'Case Officer',
             color: 'text-primary',
-            onClick: () => {},
+            onClick: () => { },
             status: WorkplaceCurrentStatus.CaseOfficerAssigned,
             date: appliedIndustry?.caseOfficerAssignedDate,
         },
@@ -356,9 +356,9 @@ export const useRequestType = ({
                 ) {
                     if (
                         workplace?.currentStatus ===
-                            WorkplaceCurrentStatus.AwaitingAgreementSigned ||
+                        WorkplaceCurrentStatus.AwaitingAgreementSigned ||
                         workplace?.currentStatus ===
-                            WorkplaceCurrentStatus.AgreementSigned
+                        WorkplaceCurrentStatus.AgreementSigned
                     ) {
                         onPlacementStartedClicked(Number(appliedIndustry?.id))
                         isCleared(true)
@@ -417,7 +417,7 @@ export const useRequestType = ({
             primaryText: 'Rejected',
             secondaryText: 'Rejected',
             color: 'text-error',
-            onClick: () => {},
+            onClick: () => { },
             status: WorkplaceCurrentStatus.Rejected,
             date: industryResponse?.industryResponseDate,
         },
@@ -435,7 +435,7 @@ export const useRequestType = ({
             primaryText: 'No Response',
             secondaryText: 'No Response',
             color: 'text-error',
-            onClick: () => {},
+            onClick: () => { },
             status: WorkplaceCurrentStatus.NoResponse,
             date: industryResponse?.industryResponseDate,
         },
@@ -446,7 +446,7 @@ export const useRequestType = ({
             primaryText: 'Request Sent',
             secondaryText: 'No Case Officer',
             color: 'text-primary-dark',
-            onClick: () => {},
+            onClick: () => { },
             status: 'applied',
             date: appliedIndustry?.appliedDate || workplace?.createdAt,
         },
@@ -454,7 +454,7 @@ export const useRequestType = ({
             primaryText: 'Assigned',
             secondaryText: 'Case Officer',
             color: 'text-primary',
-            onClick: () => {},
+            onClick: () => { },
             status: 'caseOfficerAssigned',
             date: appliedIndustry?.caseOfficerAssignedDate,
         },
@@ -462,9 +462,17 @@ export const useRequestType = ({
             primaryText: 'Industry Eligibility',
             secondaryText: 'Case Officer',
             color: 'text-primary',
-            onClick: () => {},
+            onClick: () => { },
             status: WorkplaceCurrentStatus.IndustryEligibility,
             date: appliedIndustry?.caseOfficerAssignedDate,
+        },
+        {
+            primaryText: 'Waiting For Industry',
+            secondaryText: 'for Workplace Response',
+            color: 'text-info-light',
+            onClick: () => { },
+            status: WorkplaceCurrentStatus.AwaitingWorkplaceResponse,
+            date: appliedIndustry?.awaitingWorkplaceResponseDate,
         },
         {
             primaryText: 'Agreement & Eligibility (Pending)',
@@ -577,7 +585,7 @@ export const useRequestType = ({
             primaryText: 'Rejected',
             secondaryText: 'Rejected',
             color: 'text-error',
-            onClick: () => {},
+            onClick: () => { },
             status: 'rejected',
         },
         {
@@ -597,7 +605,7 @@ export const useRequestType = ({
             primaryText: 'Request Sent',
             secondaryText: 'No Case Officer',
             color: 'text-primary-dark',
-            onClick: () => {},
+            onClick: () => { },
             status: 'applied',
             date: appliedIndustry?.appliedDate || workplace?.createdAt,
         },
@@ -605,7 +613,7 @@ export const useRequestType = ({
             primaryText: 'Assigned',
             secondaryText: 'Case Officer',
             color: 'text-primary',
-            onClick: () => {},
+            onClick: () => { },
             status: 'caseOfficerAssigned',
             date: appliedIndustry?.caseOfficerAssignedDate,
         },
@@ -693,7 +701,7 @@ export const useRequestType = ({
                 ) {
                     if (
                         workplace?.currentStatus ===
-                            'awaitingWorkplaceResponse' ||
+                        'awaitingWorkplaceResponse' ||
                         workplace?.currentStatus === 'AgreementSigned' ||
                         workplace?.currentStatus === 'awaitingAgreementSigned'
                     ) {
@@ -742,7 +750,7 @@ export const useRequestType = ({
             primaryText: 'Rejected',
             secondaryText: 'Rejected',
             color: 'text-error',
-            onClick: () => {},
+            onClick: () => { },
             status: 'rejected',
         },
         {

@@ -27,6 +27,8 @@ export function IndustryCoursesSection() {
             skip: !industry?.id,
         })
 
+    console.log({ sectorCapacityData })
+
     useEffect(() => {
         if (sectorCapacityData) {
             dispatch(setIndustrySectorCapacity(sectorCapacityData))

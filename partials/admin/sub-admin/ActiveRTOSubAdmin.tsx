@@ -425,19 +425,6 @@ export const ActiveRTOSubAdmin = () => {
             {modal && modal}
             {passwordModal && passwordModal}
             <div className="flex flex-col gap-y-4 mb-32">
-                <PageHeading
-                    title={'Active Sub Admin'}
-                    subtitle={'List of Active Sub Admin'}
-                >
-                    {/* {data && data?.data.length ? (
-                        <Button
-                            text="Export"
-                            variant="action"
-                            Icon={FaFileExport}
-                        />
-                    ) : null} */}
-                </PageHeading>
-
                 <Card noPadding>
                     {isError && <TechnicalError />}
                     {isLoading || isFetching ? (

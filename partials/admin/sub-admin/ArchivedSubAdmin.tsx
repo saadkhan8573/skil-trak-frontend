@@ -101,10 +101,10 @@ export const ArchivedSubAdmin = () => {
         {
             ...(role === UserRoles.ADMIN
                 ? {
-                      text: 'View Password',
-                      onClick: (subAdmin: SubAdmin) => onViewPassword(subAdmin),
-                      Icon: RiLockPasswordFill,
-                  }
+                    text: 'View Password',
+                    onClick: (subAdmin: SubAdmin) => onViewPassword(subAdmin),
+                    Icon: RiLockPasswordFill,
+                }
                 : {}),
         },
         {
@@ -116,13 +116,13 @@ export const ArchivedSubAdmin = () => {
         {
             ...(role === UserRoles.ADMIN
                 ? {
-                      text: `Delete`,
-                      onClick: (subAdmin: SubAdmin) => {
-                          onDeleteClicked(subAdmin)
-                      },
-                      Icon: FaTrash,
-                      color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
-                  }
+                    text: `Delete`,
+                    onClick: (subAdmin: SubAdmin) => {
+                        onDeleteClicked(subAdmin)
+                    },
+                    Icon: FaTrash,
+                    color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
+                }
                 : {}),
         },
     ]
@@ -223,19 +223,6 @@ export const ArchivedSubAdmin = () => {
             {modal}
             {passwordModal}
             <div className="flex flex-col gap-y-4 mb-32">
-                <PageHeading
-                    title={'Archived Sub Admin'}
-                    subtitle={'List of Archived Sub Admin'}
-                >
-                    {data && data?.data.length ? (
-                        <Button
-                            text="Export"
-                            variant="action"
-                            Icon={FaFileExport}
-                        />
-                    ) : null}
-                </PageHeading>
-
                 <Card noPadding>
                     {isError && <TechnicalError />}
                     {isLoading ? (

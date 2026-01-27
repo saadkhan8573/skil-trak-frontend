@@ -28,7 +28,7 @@ export interface StatusConfig {
 
 export const statusConfigs: Record<CallStatus, StatusConfig> = {
     pending: {
-        label: 'Open States',
+        label: 'Pending',
         color: '#044866',
         bgColor: '#E6F2F7',
         borderColor: '#B3D9E8',

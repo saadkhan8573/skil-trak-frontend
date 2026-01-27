@@ -14,13 +14,7 @@ const CallManagementPage = () => {
     return (
         <div className="min-h-screen bg-gray-50">
             <div className="max-w-[1400px] mx-auto px-6 py-6">
-                {/* Header */}
-                <div className="mb-6">
-                    <h1 className="text-gray-900 mb-1">Call Management</h1>
-                    <p className="text-gray-600">
-                        Track and manage student and industry placement calls
-                    </p>
-                </div>
+
 
                 <DashboardStats
                 // activeStatusPage={activeStatusPage}

@@ -707,6 +707,11 @@ const {
     useGetUserTeamQuery,
     // --------- Call Management ----------- //
     useGetAllAiCallListQuery,
+    useGetAiCallStatisticsQuery,
+    useGetCallRecordingQuery,
+    useCompleteCallMutation,
+    useGetStudentsToCallListQuery,
+    useInitiateAiCallMutation,
 } = commonApi
 
 export const CommonApi = {
@@ -1088,5 +1093,10 @@ export const CommonApi = {
     },
     CallManagement: {
         useAllAiCallList: useGetAllAiCallListQuery,
+        useAiCallStatistics: useGetAiCallStatisticsQuery,
+        useGetCallRecordingQuery: useGetCallRecordingQuery,
+        useCompleteCallMutation: useCompleteCallMutation,
+        useGetStudentsToCallListQuery: useGetStudentsToCallListQuery,
+        useInitiateAiCallMutation: useInitiateAiCallMutation,
     },
 }

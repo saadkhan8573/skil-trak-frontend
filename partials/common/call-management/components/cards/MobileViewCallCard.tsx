@@ -35,19 +35,17 @@ export const MobileViewCallCard = ({
         <div className="lg:hidden divide-y divide-gray-100">
             <div
                 key={call.id}
-                className={`p-4 transition-all ${
-                    isCompleted ? 'bg-green-50/50' : 'hover:bg-gray-50'
-                }`}
+                className={`p-4 transition-all ${isCompleted ? 'bg-green-50/50' : 'hover:bg-gray-50'
+                    }`}
             >
                 {/* Priority Bar */}
                 <div
-                    className={`h-1 rounded-full mb-3 ${
-                        call.priority === 'high' && !isCompleted
+                    className={`h-1 rounded-full mb-3 ${call.priority === 'high' && !isCompleted
                             ? 'bg-red-500'
                             : call.priority === 'medium' && !isCompleted
-                            ? 'bg-yellow-500'
-                            : 'bg-gray-200'
-                    }`}
+                                ? 'bg-yellow-500'
+                                : 'bg-gray-200'
+                        }`}
                 />
 
                 {/* Main Content */}
@@ -73,9 +71,8 @@ export const MobileViewCallCard = ({
 
                     <div className="flex-1 min-w-0">
                         <h3
-                            className={`text-gray-900 mb-1 ${
-                                isCompleted ? 'opacity-60' : ''
-                            }`}
+                            className={`text-gray-900 mb-1 ${isCompleted ? 'opacity-60' : ''
+                                }`}
                         >
                             {call.studentName}
                         </h3>
@@ -128,26 +125,23 @@ export const MobileViewCallCard = ({
                         onClick={(e) =>
                             handleActionClick(e, call.id, 'completed')
                         }
-                        className={`p-2 rounded-lg transition-all ${
-                            isCompleted
+                        className={`p-2 rounded-lg transition-all ${isCompleted
                                 ? 'bg-green-500 text-white'
                                 : 'bg-green-100 text-green-600'
-                        }`}
+                            }`}
                     >
                         <CheckCircle
-                            className={`w-5 h-5 ${
-                                isCompleted ? 'fill-current' : ''
-                            }`}
+                            className={`w-5 h-5 ${isCompleted ? 'fill-current' : ''
+                                }`}
                         />
                     </button>
 
                     <button
                         onClick={(e) => handleActionClick(e, call.id, 'ticket')}
-                        className={`p-2 rounded-lg transition-all ${
-                            hasTicket
+                        className={`p-2 rounded-lg transition-all ${hasTicket
                                 ? 'bg-purple-500 text-white'
                                 : 'bg-purple-100 text-purple-600'
-                        }`}
+                            }`}
                     >
                         <TicketPlus className="w-5 h-5" />
                     </button>

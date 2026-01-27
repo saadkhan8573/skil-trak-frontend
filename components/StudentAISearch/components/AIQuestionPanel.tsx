@@ -175,7 +175,7 @@ export function AIQuestionPanel({ student }: AIQuestionPanelProps) {
                         </div>
                         <div>
                             <Typography variant="subtitle" semibold>
-                                Ask AI Lumo This Student
+                                Ask Lumo
                             </Typography>
                             <Typography variant="small" color="text-gray-700">
                                 Get instant insights about placement status,

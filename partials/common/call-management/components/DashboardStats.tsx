@@ -1,46 +1,41 @@
-import { Phone, CheckCircle, Clock } from 'lucide-react'
-import { Call, CallStatus } from './call'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs'
+import { CommonApi } from '@queries'
+import { PlacementCall } from '@types'
+import { CheckCircle, Clock, Phone } from 'lucide-react'
 import { useState } from 'react'
 import { AllCallList } from '../call-management-tabs'
 import { CallDetailModal, TicketModal } from '../modal'
 
-interface DashboardStatsProps {
-    calls: Call[]
-}
-
 export function DashboardStats() {
-    // const totalCalls = calls.length
-    // const completedCalls = calls.filter((c) => c.status === 'completed').length
-    // const openCalls = calls.filter((c) => c.status === 'pending').length
-    const [selectedCall, setSelectedCall] = useState<Call | null>(null)
-    const [ticketModalCall, setTicketModalCall] = useState<Call | null>(null)
+    const [selectedCall, setSelectedCall] = useState<PlacementCall | null>(null)
+    const [ticketModalCall, setTicketModalCall] = useState<PlacementCall | null>(null)
 
-    
+    const { data: statistics } = CommonApi.CallManagement.useAiCallStatistics()
+
     const stats = [
         {
             label: 'Total Calls',
-            // value: totalCalls,
+            value: statistics?.totalCalls || 0,
             icon: Phone,
-            color: 'bg-[#044866]',
+            color: 'bg-primaryNew',
             lightColor: 'bg-[#E6F2F7]',
             textColor: 'text-[#044866]',
             valueKey: 'all',
         },
         {
             label: 'Completed Placements',
-            // value: completedCalls,
+            value: statistics?.resoved || 0,
             icon: CheckCircle,
-            color: 'bg-[#0D5468]',
+            color: 'bg-primaryNew',
             lightColor: 'bg-[#E8F4F6]',
             textColor: 'text-[#0D5468]',
             valueKey: 'completed',
         },
         {
-            label: 'Open States',
-            // value: openCalls,
+            label: 'Pending States',
+            value: statistics?.pending || 0,
             icon: Clock,
-            color: 'bg-[#044866]',
+            color: 'bg-primaryNew',
             lightColor: 'bg-[#E6F2F7]',
             textColor: 'text-[#044866]',
             valueKey: 'open',
@@ -69,14 +64,14 @@ export function DashboardStats() {
                             >
                                 <div className="relative z-10 w-full ">
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className="text-xs text-gray-600 data-[state=active]:text-white/80">
+                                        <span className="text-xs text-gray-600 group-data-[state=active]:text-white/80">
                                             {stat.label}
                                         </span>
 
                                         <div
                                             className={`
                                             p-1.5 rounded-lg
-                                            data-[state=active]:bg-white/20
+                                            group-data-[state=active]:bg-white/20
                                             ${stat.lightColor}
                                         `}
                                         >
@@ -84,15 +79,15 @@ export function DashboardStats() {
                                                 className={`
                                                 w-4 h-4
                                                 ${stat.textColor}
-                                                data-[state=active]:text-white
+                                                group-data-[state=active]:text-white
                                             `}
                                             />
                                         </div>
                                     </div>
 
-                                    {/* <div className="text-3xl text-gray-900 data-[state=active]:text-white">
+                                    <div className="text-3xl text-gray-900 group-data-[state=active]:text-white font-bold">
                                         {stat.value}
-                                    </div> */}
+                                    </div>
                                 </div>
 
                                 {/* Active indicator */}
@@ -106,13 +101,10 @@ export function DashboardStats() {
               Render these wherever you want:
               */}
                 <TabsContent value="all">
-                    <AllCallList
-                        setSelectedCall={setSelectedCall}
-                        // handleCreateTicket={handleCreateTicket}
-                    />
+                    <AllCallList />
                 </TabsContent>
-                <TabsContent value="completed">Completed List</TabsContent>
-                <TabsContent value="open">Open States</TabsContent>
+                <TabsContent value="completed"> <AllCallList status='completed' /></TabsContent>
+                <TabsContent value="open"> <AllCallList status='pending' /></TabsContent>
             </Tabs>
 
             {selectedCall && (

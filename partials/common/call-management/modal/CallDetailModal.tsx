@@ -15,14 +15,17 @@ import {
 import { useState } from 'react'
 import { Call, StatusBadge } from '../components'
 import { formatDate, formatTime } from '../utils'
+import { CallAudioModal } from './CallAudioModal'
+import { PlacementCall } from '@types'
 
 interface CallDetailModalProps {
-    call: Call
+    call: PlacementCall
     onClose: () => void
 }
 
 export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
     const [activeForm, setActiveForm] = useState<'find' | 'own' | null>(null)
+    const [audioModalOpen, setAudioModalOpen] = useState(false)
     return (
         <div className="fixed inset-0 z-50 overflow-y-auto">
             {/* Backdrop */}
@@ -59,8 +62,8 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                             <div className="flex items-center gap-3 mb-3">
                                 <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#044866] to-[#0D5468] flex items-center justify-center flex-shrink-0">
                                     <span className="text-white">
-                                        {(call?.student?.name &&
-                                            call?.student?.name
+                                        {(call?.student?.user?.name &&
+                                            call?.student?.user?.name
                                                 .split(' ')
                                                 .map((n: any) => n[0])
                                                 .join('')) ??
@@ -93,13 +96,12 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                 </div>
                                 {call.priority && (
                                     <div
-                                        className={`px-2.5 py-1 rounded-full text-xs ${
-                                            call?.priority === 'high'
-                                                ? 'bg-red-100 text-red-700'
-                                                : call.priority === 'medium'
+                                        className={`px-2.5 py-1 rounded-full text-xs ${call?.priority === 'high'
+                                            ? 'bg-red-100 text-red-700'
+                                            : call.priority === 'medium'
                                                 ? 'bg-yellow-100 text-yellow-700'
                                                 : 'bg-green-100 text-green-700'
-                                        }`}
+                                            }`}
                                     >
                                         {call?.priority
                                             ?.charAt(0)
@@ -119,7 +121,7 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                     <span className="text-xs">Date</span>
                                 </div>
                                 <p className="text-sm text-gray-900">
-                                    {formatDate(call?.createdAt)}
+                                    {formatDate(call?.createdAt as any)}
                                 </p>
                             </div>
 
@@ -131,7 +133,7 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                     </span>
                                 </div>
                                 <p className="text-sm text-gray-900">
-                                    {formatTime(call?.createdAt)} (
+                                    {formatTime(call?.createdAt as any)} (
                                     {call?.callDuration ?? '---'})
                                 </p>
                             </div>
@@ -142,7 +144,7 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                     <span className="text-xs">Agent</span>
                                 </div>
                                 <p className="text-sm text-gray-900">
-                                    {call?.agentName ?? 'AI'}
+                                    {'AI'}
                                 </p>
                             </div>
 
@@ -151,10 +153,10 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                     <Building2 className="w-3 h-3" />
                                     <span className="text-xs">Industry</span>
                                 </div>
-                                <p className="text-sm text-gray-900">
+                                {/* <p className="text-sm text-gray-900">
                                     {call?.industry?.user?.name ||
                                         'Not specified'}
-                                </p>
+                                </p> */}
                             </div>
                         </div>
 
@@ -174,7 +176,7 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                         )}
 
                         {/* Call Recording */}
-                        {call?.recordingUrl && (
+                        {call?.callId && (
                             <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg p-3 border border-purple-200">
                                 <div className="flex items-start justify-between gap-3">
                                     <div className="flex-1">
@@ -187,31 +189,14 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                         <p className="text-xs text-purple-700 mb-2">
                                             Listen to the full call recording
                                         </p>
-                                        <audio
-                                            controls
-                                            className="w-full"
-                                            style={{
-                                                height: '32px',
-                                                borderRadius: '6px',
-                                            }}
-                                        >
-                                            <source
-                                                src={call.recordingUrl}
-                                                type="audio/mpeg"
-                                            />
-                                            Your browser does not support the
-                                            audio element.
-                                        </audio>
                                     </div>
-                                    <a
-                                        href={call.recordingUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="px-2.5 py-1.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-xs flex items-center gap-1.5 whitespace-nowrap"
+                                    <button
+                                        onClick={() => setAudioModalOpen(true)}
+                                        className="px-3 py-2 bg-[#044866] text-white rounded-lg hover:bg-[#095a7d] transition-colors text-xs flex items-center gap-1.5 whitespace-nowrap"
                                     >
-                                        <Play className="w-3 h-3" />
-                                        Open
-                                    </a>
+                                        <Headphones className="w-3.5 h-3.5" />
+                                        Listen
+                                    </button>
                                 </div>
                             </div>
                         )}
@@ -398,11 +383,11 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                 <FileText className="w-4 h-4" />
                                 <span className="text-sm">Call Notes</span>
                             </div>
-                            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                            {/* <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                                 <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
                                     {call.notes}
                                 </p>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 
@@ -417,6 +402,14 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                     </div>
                 </div>
             </div>
+
+            {/* Audio Modal */}
+            {audioModalOpen && (
+                <CallAudioModal
+                    call={call as any}
+                    onClose={() => setAudioModalOpen(false)}
+                />
+            )}
         </div>
     )
 }

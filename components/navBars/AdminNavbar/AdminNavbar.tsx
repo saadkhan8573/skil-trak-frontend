@@ -39,9 +39,8 @@ export const AdminNavbar = () => {
         typeof Number(titlePath?.[0]) === 'number' &&
         !isNaN(Number(titlePath?.[0]))
 
-    const title = `${
-        titlePath?.[isId ? 1 : 0]?.split('-')?.join(' ')?.split('?')?.[0]
-    } ${isId ? 'Detail' : ''}`
+    const title = `${titlePath?.[isId ? 1 : 0]?.split('-')?.join(' ')?.split('?')?.[0]
+        } ${isId ? 'Detail' : ''}`
 
     const unreadNotifications = data?.data?.data?.filter(
         (notification: any) => notification?.isRead === false
@@ -51,7 +50,6 @@ export const AdminNavbar = () => {
     const { data: mailCount } = CommonApi.Messages.useMailCount()
     const allMails = CommonApi.Messages.useRecentMails()
     const [seenMessage, resultSeenMessage] = CommonApi.Messages.useIsSeen()
-
     return (
         <div className="w-full transition-all  z-30 py-2 px-6  flex justify-between items-center">
             <div>

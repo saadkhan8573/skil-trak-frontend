@@ -35,7 +35,7 @@ export function IndustryCoursesSection() {
         RtoV2Api.Industries.getRtoIndustryDataCount(industry?.id || 0, {
             skip: !industry?.id,
         })
-    console.log('sectorCapacityData', sectorCapacityData)
+
     useEffect(() => {
         if (sectorCapacityData) {
             dispatch(setIndustrySectorCapacity(sectorCapacityData))
@@ -170,8 +170,8 @@ export function IndustryCoursesSection() {
             <div id="capacity" className="space-y-3">
                 {coursesDetails?.isError && <TechnicalError />}
                 {coursesDetails?.isSuccess &&
-                coursesDetails?.data &&
-                coursesDetails?.data?.length > 0 ? (
+                    coursesDetails?.data &&
+                    coursesDetails?.data?.length > 0 ? (
                     coursesData.map((group, sectorIndex) => (
                         <SectorCard
                             key={group.sector.id}

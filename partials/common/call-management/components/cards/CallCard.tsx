@@ -35,24 +35,21 @@ export const CallCard = ({
     return (
         <div
             key={call?.id}
-            className={`flex items-center gap-5 px-6 py-4 transition-all group cursor-pointer ${
-                index !== 0 ? 'border-t border-gray-100' : ''
-            } ${
-                isCompleted
+            className={`flex items-center gap-5 px-6 py-4 transition-all group cursor-pointer ${index !== 0 ? 'border-t border-gray-100' : ''
+                } ${isCompleted
                     ? 'bg-green-50/50 hover:bg-green-50'
                     : 'hover:bg-blue-50/50'
-            }`}
+                }`}
             onClick={() => onCallSelect(call)}
         >
             {/* Priority Indicator */}
             <div
-                className={`w-1 h-12 rounded-full flex-shrink-0 ${
-                    call.priority === 'high' && !isCompleted
+                className={`w-1 h-12 rounded-full flex-shrink-0 ${call.priority === 'high' && !isCompleted
                         ? 'bg-red-500'
                         : call.priority === 'medium' && !isCompleted
-                        ? 'bg-yellow-500'
-                        : 'bg-gray-200'
-                }`}
+                            ? 'bg-yellow-500'
+                            : 'bg-gray-200'
+                    }`}
             />
 
             {/* Student Info */}
@@ -74,9 +71,8 @@ export const CallCard = ({
                 </div>
                 <div className="min-w-0 flex-1">
                     <p
-                        className={`text-gray-900 font-medium truncate ${
-                            isCompleted ? 'opacity-60' : ''
-                        }`}
+                        className={`text-gray-900 font-medium truncate ${isCompleted ? 'opacity-60' : ''
+                            }`}
                     >
                         {call?.student?.user?.name}
                     </p>
@@ -137,20 +133,18 @@ export const CallCard = ({
 
                 <button
                     onClick={(e) => handleActionClick(e, call.id, 'completed')}
-                    className={`p-2 rounded-lg transition-all ${
-                        isCompleted
+                    className={`p-2 rounded-lg transition-all ${isCompleted
                             ? 'bg-green-500 hover:bg-green-600 '
                             : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
-                    }`}
+                        }`}
                     title={
                         isCompleted ? 'Mark as Incomplete' : 'Mark as Completed'
                     }
                 >
                     {isCompleted ? (
                         <CheckCircle
-                            className={`w-5 h-5 ${
-                                isCompleted ? 'text-white cursor-pointer' : ''
-                            }`}
+                            className={`w-5 h-5 ${isCompleted ? 'text-white cursor-pointer' : ''
+                                }`}
                         />
                     ) : (
                         <Circle className="size-5 cursor-pointer" />
@@ -164,11 +158,10 @@ export const CallCard = ({
 
                 <button
                     onClick={(e) => handleActionClick(e, call.id, 'ticket')}
-                    className={`p-2 rounded-lg transition-all ${
-                        hasTicket
+                    className={`p-2 rounded-lg transition-all ${hasTicket
                             ? 'bg-purple-500 text-white hover:bg-purple-600'
                             : 'bg-purple-100 text-purple-600 hover:bg-purple-200'
-                    }`}
+                        }`}
                     title={hasTicket ? 'Ticket Created' : 'Create Ticket'}
                 >
                     <TicketPlus className="w-5 h-5" />

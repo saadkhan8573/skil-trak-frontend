@@ -84,10 +84,6 @@ const StateEditPage: NextPageWithLayout = () => {
                                 onSubmit={onSubmit}
                                 initialValues={data}
                                 result={updateResult}
-                                requirementFile={
-                                    requirementFile || data?.requirements
-                                }
-                                setRequirementFile={setRequirementFile}
                             />
                         )
                     ) : (

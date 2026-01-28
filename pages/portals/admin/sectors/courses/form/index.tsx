@@ -64,8 +64,6 @@ const CourseAddPage: NextPageWithLayout = () => {
                     <CourseForm
                         result={addResult}
                         onSubmit={onSubmit}
-                        requirementFile={requirementFile}
-                        setRequirementFile={setRequirementFile}
                     />
                 </Card>
             </div>

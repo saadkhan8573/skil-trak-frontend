@@ -1,31 +1,24 @@
 import {
     Button,
-    ContentEditor,
-    InputContentEditor,
+    InputRichTextEditor,
     Select,
-    TextArea,
     TextInput,
-    Typography,
-    htmlToDraftText,
+    Typography
 } from '@components'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { AdminApi } from '@queries'
-import { Course, OptionType, Sector } from '@types'
-import { isBrowser } from '@utils'
-import React, { useEffect, useState } from 'react'
-import { FormProvider, useForm, useFieldArray } from 'react-hook-form'
+import { Course, OptionType } from '@types'
+import { useEffect, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import { MdAdd, MdDelete } from 'react-icons/md'
-import { HighlightedTasksField } from './components/HighlightedTasksField'
 import { ConfirmCourseUpdateModal } from './components/ConfirmCourseUpdateModal'
+import { HighlightedTasksField } from './components/HighlightedTasksField'
 
 interface CourseFormProps {
     result: any
     onSubmit: (values: any) => void
     edit?: boolean
     initialValues?: Course
-    requirementFile?: any
-    setRequirementFile: Function
 }
 
 export const CourseForm = ({
@@ -33,8 +26,6 @@ export const CourseForm = ({
     onSubmit,
     result,
     initialValues,
-    requirementFile,
-    setRequirementFile,
 }: CourseFormProps) => {
     const { data, isLoading } = AdminApi.Sectors.useListQuery({
         limit: 100,
@@ -53,9 +44,7 @@ export const CourseForm = ({
             }
             methods.reset({
                 ...initialValues,
-                requirements: htmlToDraftText(
-                    initialValues?.requirements as string
-                ),
+                requirements: initialValues?.requirements,
                 sector: initialValues?.sector?.id,
                 highlightedTasks:
                     initialValues?.highlightedTasks &&
@@ -87,9 +76,7 @@ export const CourseForm = ({
         resolver: yupResolver(validationSchema),
         defaultValues: {
             ...initialValues,
-            requirements: htmlToDraftText(
-                initialValues?.requirements as string
-            ),
+            requirements: initialValues?.requirements,
             sector: initialValues?.sector?.id,
             highlightedTasks: initialValues?.highlightedTasks || [
                 { statement: '' },
@@ -99,6 +86,7 @@ export const CourseForm = ({
     })
 
     const handleFormSubmit = (values: any) => {
+        console.log({ values })
         if (!edit) {
             onSubmit(values)
             return
@@ -293,7 +281,7 @@ export const CourseForm = ({
                             content={requirementFile}
                             setContent={setRequirementFile}
                         /> */}
-                        <InputContentEditor
+                        <InputRichTextEditor
                             label="Requirement"
                             name="requirements"
                         />

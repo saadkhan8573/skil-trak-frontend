@@ -41,11 +41,9 @@ const CourseEditPage: NextPageWithLayout = () => {
     }, [data, isSuccess])
 
     const onSubmit = async (values: any) => {
-        const requirements = draftToHtmlText(values?.requirements)
         const body = {
             ...values,
             id,
-            requirements,
         }
         await update(body)
     }
@@ -78,10 +76,6 @@ const CourseEditPage: NextPageWithLayout = () => {
                             onSubmit={onSubmit}
                             initialValues={data}
                             result={updateResult}
-                            requirementFile={
-                                requirementFile || data?.requirements
-                            }
-                            setRequirementFile={setRequirementFile}
                         />
                     ) : (
                         <LoadingAnimation />

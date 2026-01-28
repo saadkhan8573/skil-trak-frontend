@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Industry, IndustryCourseApproval, IndustryCourseApprovals, Supervisor } from '@types'
+import { Industry, IndustryCourseApproval, Supervisor } from '@types'
 
 type initialStateType = {
     industryDetail: Industry | null

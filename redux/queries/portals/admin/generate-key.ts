@@ -1,6 +1,6 @@
 import { PaginatedResponse, PaginationValues } from '@types'
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { BaseQueryFn } from '@reduxjs/toolkit/query'
+import { EndpointBuilder } from '@reduxjs/toolkit/query'
 
 const PREFIX = 'api/v1/partners'
 export const generateKeysEndpoints = (

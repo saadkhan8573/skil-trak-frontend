@@ -1,5 +1,5 @@
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { BaseQueryFn } from '@reduxjs/toolkit/query'
+import { EndpointBuilder } from '@reduxjs/toolkit/query'
 import { providesTagsOnSuccess } from '@redux/utils'
 
 const PREFIX = 'students'
@@ -34,7 +34,10 @@ export const studentsScheduleEndpoints = (
             params: { stdUser },
             body,
         }),
-        invalidatesTags: providesTagsOnSuccess(['StudentSchedule', 'SubAdminWorkplace']),
+        invalidatesTags: providesTagsOnSuccess([
+            'StudentSchedule',
+            'SubAdminWorkplace',
+        ]),
     }),
     editStudentSchedule: builder.mutation({
         query: ({ id, stdUser, ...body }) => ({
@@ -43,7 +46,10 @@ export const studentsScheduleEndpoints = (
             params: { stdUser },
             body,
         }),
-        invalidatesTags: providesTagsOnSuccess(['StudentSchedule', 'SubAdminWorkplace']),
+        invalidatesTags: providesTagsOnSuccess([
+            'StudentSchedule',
+            'SubAdminWorkplace',
+        ]),
     }),
     addScheduleNote: builder.mutation<any, any>({
         query: ({ id, ...body }) => ({

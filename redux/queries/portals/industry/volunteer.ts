@@ -1,6 +1,6 @@
-import { VolunteerRequestEnum } from '@partials';
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { VolunteerRequestEnum } from '@partials'
+import { BaseQueryFn } from '@reduxjs/toolkit/query'
+import { EndpointBuilder } from '@reduxjs/toolkit/query'
 
 const PREFIX = 'industries'
 export const volunteerEndpoints = (
@@ -24,7 +24,10 @@ export const volunteerEndpoints = (
         }),
         invalidatesTags: ['RequestAVolunteer'],
     }),
-    cancelVolunteerRequest: builder.mutation<any, { id: number; status: VolunteerRequestEnum }>({
+    cancelVolunteerRequest: builder.mutation<
+        any,
+        { id: number; status: VolunteerRequestEnum }
+    >({
         query: ({ id, ...body }) => ({
             url: `${PREFIX}/volunteer-request/${id}/status-update`,
             method: 'PATCH',

@@ -1,5 +1,5 @@
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { BaseQueryFn } from '@reduxjs/toolkit/query'
+import { EndpointBuilder } from '@reduxjs/toolkit/query'
 
 const PREFIX = 'management'
 export const teamEndpoints = (
@@ -23,21 +23,20 @@ export const teamEndpoints = (
         providesTags: ['TeamManagement', 'TeamMembers'],
     }),
     getTeamMembersDetail: builder.query<any, any>({
-        query: ({id, params}) => ({
+        query: ({ id, params }) => ({
             url: `${PREFIX}/member/${id}/detail`,
             params,
         }),
         providesTags: ['TeamManagement', 'KpiReportDocument', 'KpiReportList'],
     }),
     // sectors/list
-    
 
-    // Mutation 
+    // Mutation
     createTeam: builder.mutation<any, any>({
         query: (body) => ({
             url: `${PREFIX}/team/add`,
             method: 'POST',
-            body: body // name, sector
+            body: body, // name, sector
         }),
         invalidatesTags: ['TeamManagement'],
     }),
@@ -49,7 +48,7 @@ export const teamEndpoints = (
         invalidatesTags: ['TeamManagement'],
     }),
     updateTeamName: builder.mutation<any, any>({
-        query: ({id,body}) => ({
+        query: ({ id, body }) => ({
             url: `${PREFIX}/team/${id}/update`,
             method: 'PATCH',
             body: body,
@@ -57,7 +56,7 @@ export const teamEndpoints = (
         invalidatesTags: ['TeamManagement'],
     }),
     updateMemberTeam: builder.mutation<any, any>({
-        query: ({id,body}) => ({
+        query: ({ id, body }) => ({
             url: `${PREFIX}/member/${id}/update`,
             method: 'PATCH',
             body: body,
@@ -66,15 +65,14 @@ export const teamEndpoints = (
     }),
     // member/id/update
     createTeamMembers: builder.mutation<any, any>({
-        query: ({id,body}) => {
+        query: ({ id, body }) => {
             return {
                 url: `${PREFIX}/team/${id}/add-members`,
                 method: 'POST',
-                body: body // team: teamId, subadmin: id
+                body: body, // team: teamId, subadmin: id
             }
-        }, 
+        },
         invalidatesTags: ['TeamManagement'],
     }),
     // ${PREFIX}/subadmin/${id}/kpi-reports
-
 })

@@ -1,5 +1,5 @@
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { BaseQueryFn } from '@reduxjs/toolkit/query'
+import { EndpointBuilder } from '@reduxjs/toolkit/query'
 
 const PREFIX = 'industries'
 export const coursesEndpoints = (
@@ -51,10 +51,7 @@ export const coursesEndpoints = (
         },
         providesTags: ['Course'],
     }),
-    getIndustrySectors: builder.query<
-        any,
-        { userId?: number;  } | null
-    >({
+    getIndustrySectors: builder.query<any, { userId?: number } | null>({
         query: (params) => {
             return {
                 url: 'industries/sectors/list',

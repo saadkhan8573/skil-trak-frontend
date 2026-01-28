@@ -1,5 +1,5 @@
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { BaseQueryFn } from '@reduxjs/toolkit/query'
+import { EndpointBuilder } from '@reduxjs/toolkit/query'
 import {
     AddCommentEnum,
     AgreementFileType,
@@ -13,7 +13,7 @@ import {
     Course,
     FileType,
     PaginatedResponse,
-    PaginationWithSearch
+    PaginationWithSearch,
 } from '@types'
 
 const PREFIX = 'subadmin'

@@ -54,10 +54,6 @@ export const StepReviewInfo = () => {
         }
     )
 
-    console.log(
-        { sectorResponse }
-    )
-
     // rtos/id
     const onEditData = () => {
         SignUpUtils.setEditingMode(true)

@@ -43,8 +43,6 @@ export const OnViewMapFutureIndustryDetailsTab = ({
     const router = useRouter()
     const contextBar = useContextBar()
     const role = getUserCredentials()?.role
-    const pathName = router.pathname
-    console.log('routerpathanme', router.isReady)
 
     const getStudentId = () => {
         if (!router.isReady) return undefined
@@ -179,7 +177,7 @@ export const OnViewMapFutureIndustryDetailsTab = ({
                                     true
                                         ? 'bg-gradient-to-br from-emerald-500 to-emerald-600'
                                         : 'bg-gradient-to-br from-[#044866] to-[#0D5468]'
-                                }`}
+                                    }`}
                             >
                                 {true && (
                                     <CheckCircle2 className="h-4 w-4 text-white" />
@@ -189,11 +187,10 @@ export const OnViewMapFutureIndustryDetailsTab = ({
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
                                 <h3
-                                    className={`font-semibold text-sm truncate ${
-                                        true
+                                    className={`font-semibold text-sm truncate ${true
                                             ? 'text-emerald-700'
                                             : 'text-gray-800'
-                                    }`}
+                                        }`}
                                     title={industryDetails?.data?.businessName}
                                 >
                                     {ellipsisText(
@@ -292,7 +289,7 @@ export const OnViewMapFutureIndustryDetailsTab = ({
                             <OnViewMapCallAnswer
                                 callLog={industryDetails?.data?.callLog?.[0]}
                                 workplaceId={workplaceId}
-                                //  isListing={ true}
+                            //  isListing={ true}
                             />
                         </div>
                     )}

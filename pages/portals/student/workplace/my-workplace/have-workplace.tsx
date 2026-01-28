@@ -202,7 +202,6 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
         //     />
         // )
     }
-    console.log('workplaceData?.studentProvidedWorkplace', workplaceData)
     return (
         <>
             {modal}
@@ -269,8 +268,8 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
 
                         {active === 2 &&
                             (!result?.data &&
-                            (findIndustryType === 'abn' ||
-                                !findIndustryType) ? (
+                                (findIndustryType === 'abn' ||
+                                    !findIndustryType) ? (
                                 <div className="mb-4">
                                     <AddCustomIndustryForm
                                         onSubmit={onAddIndustry}
@@ -313,8 +312,8 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
                                 {(workplaceData?.industryStatus ===
                                     UserStatus.Approved &&
                                     workplaceData?.approvalStatus ===
-                                        UserStatus.Approved) ||
-                                workplaceData?.byExistingAbn ? (
+                                    UserStatus.Approved) ||
+                                    workplaceData?.byExistingAbn ? (
                                     <AppliedIndustry
                                         appliedIndustry={
                                             workplaceData?.industries[0]
@@ -325,7 +324,7 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
                                         course={workplaceData?.courses[0]}
                                     />
                                 ) : workplaceData?.industryStatus ===
-                                  'rejected' ? (
+                                    'rejected' ? (
                                     <Card>
                                         <div className="px-5 py-16 border-2 border-dashed border-gray-600 flex justify-center">
                                             <Typography
@@ -352,7 +351,7 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
                                                 Workplace Status:{' '}
                                             </Typography>
                                             {workplaceData?.currentStatus ===
-                                            'industryEligibility' ? (
+                                                'industryEligibility' ? (
                                                 <>
                                                     <Badge
                                                         variant="info"
@@ -368,7 +367,7 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
                                         </div>
                                         <div className="px-5 py-16 border-2 border-dashed border-gray-600 flex justify-center">
                                             {workplaceData?.currentStatus ===
-                                            'industryEligibility' ? (
+                                                'industryEligibility' ? (
                                                 <Typography
                                                     variant={'label'}
                                                     center
@@ -431,12 +430,11 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
                                                 title={
                                                     'Workplace Request Successfully Added'
                                                 }
-                                                description={`We have successfully processed your workplace request. A case officer will be assigned to your case promptly to assist you further. ${
-                                                    answer === 'yes'
+                                                description={`We have successfully processed your workplace request. A case officer will be assigned to your case promptly to assist you further. ${answer === 'yes'
                                                         ? '<p class="italic mt-4 font-semibold text-sm">You have been successfully added to the Talent Pool Programme! Industries in your field can now view your profile and contact you with opportunities.</p>'
                                                         : answer === 'no' &&
-                                                          '<p class="italic mt-4 font-semibold text-sm">You can join the Talent Pool Programme later from your dashboard.</p>'
-                                                }`}
+                                                        '<p class="italic mt-4 font-semibold text-sm">You can join the Talent Pool Programme later from your dashboard.</p>'
+                                                    }`}
                                                 variant={'primary'}
                                                 redirect
                                             />

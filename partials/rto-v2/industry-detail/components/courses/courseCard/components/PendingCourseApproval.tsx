@@ -16,7 +16,6 @@ export const PendingCourseApproval = ({
     approval: IndustryCourseApproval
     hasInitiatedESign?: boolean
 }) => {
-    console.log("Hello There")
     const [reviewFacilityChecklist, setReviewFacilityChecklist] =
         useState(false)
     const [uploadFacilityChecklist, setUploadFacilityChecklist] =

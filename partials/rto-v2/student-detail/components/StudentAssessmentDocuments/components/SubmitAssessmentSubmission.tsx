@@ -93,7 +93,6 @@ export const SubmitAssessmentSubmission = ({
         submittedCount,
     ])
 
-    console.log({ reSubmittedCount })
 
     useEffect(() => {
         if (
@@ -114,8 +113,6 @@ export const SubmitAssessmentSubmission = ({
         submitAssessmentResult,
         reSubmittedCount, isCourseLoading
     ])
-
-    console.log({ submitAssessmentResult })
 
     // useEffect(() => {
     //     return () => {

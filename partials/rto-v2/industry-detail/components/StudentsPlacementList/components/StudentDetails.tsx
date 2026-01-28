@@ -44,7 +44,6 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
             <div className="space-y-2">
                 {displayedWorkflow.map((step, index) => {
                     const isTerminal = terminalStatuses.includes(step?.label)
-                    console.log({ step })
                     return (
                         <div
                             key={index}

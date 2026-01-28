@@ -43,7 +43,6 @@ export const PremiumCurrentActionsCard = ({
     workplace,
     student,
 }: any) => {
-    console.log({ currentStatus })
     const [modal, setModal] = useState<ReactElement | null>(null)
     const [showAppointmentDialog, setShowAppointmentDialog] = useState(false)
     const [showAgreementDialog, setShowAgreementDialog] = useState(false)

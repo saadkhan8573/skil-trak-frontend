@@ -91,29 +91,29 @@ const IndustryList: NextPageWithLayout = () => {
     }, [router])
 
     const tabs: TabProps[] = [
-        // {
-        //     label: 'Pending',
-        //     href: {
-        //         pathname: 'industry',
-        //         query: { tab: UserStatus.Pending, page: 1, pageSize: 50 },
-        //     },
-        //     badge: {
-        //         text: data?.pending,
-        //         loading: isLoading,
-        //     },
-        //     element: <PendingIndustry />,
-        // },
         {
             label: 'Pending Course Approval',
             href: {
                 pathname: 'industry',
-                query: { tab: UserStatus.Pending, page: 1, pageSize: 50 },
+                query: { tab: "pending-course", page: 1, pageSize: 50 },
             },
             badge: {
                 text: data?.pendingCourseApprovals,
                 loading: isLoading,
             },
             element: <PedingCourseApprovalIndustries />,
+        },
+        {
+            label: 'Pending',
+            href: {
+                pathname: 'industry',
+                query: { tab: UserStatus.Pending, page: 1, pageSize: 50 },
+            },
+            badge: {
+                text: data?.pending,
+                loading: isLoading,
+            },
+            element: <PendingIndustry />,
         },
         {
             label: 'Approved',

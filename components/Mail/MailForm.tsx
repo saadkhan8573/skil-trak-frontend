@@ -11,14 +11,12 @@ import {
     ActionButton,
     Button,
     Card,
-    InputContentEditor,
+    InputRichTextEditor,
     Select,
     SelectOption,
     ShowErrorNotifications,
     TextInput,
-    Typography,
-    draftToHtmlText,
-    htmlToDraftText,
+    Typography
 } from '@components'
 import { FileUpload } from '@hoc'
 
@@ -92,7 +90,7 @@ export const MailForm = ({
             if (getEmailDraft?.data?.content) {
                 methods.setValue(
                     'message',
-                    htmlToDraftText(getEmailDraft?.data?.content) as EditorState
+                    getEmailDraft?.data?.content
                 )
             }
 
@@ -134,9 +132,9 @@ export const MailForm = ({
 
     const templateOptions = getTemplates?.data?.length
         ? getTemplates?.data?.map((template: any) => ({
-              label: template?.subject,
-              value: template?.id,
-          }))
+            label: template?.subject,
+            value: template?.id,
+        }))
         : []
 
     const onFixGrammerClick = async () => {
@@ -146,7 +144,7 @@ export const MailForm = ({
             setMailContent(data?.correctedText)
             methods.setValue(
                 'message',
-                htmlToDraftText(data?.correctedText) as EditorState
+                data?.correctedText
             )
         }
     }
@@ -175,18 +173,18 @@ export const MailForm = ({
         // const parent = replyMessage?.id
         const formData = new FormData()
 
-        const message = draftToHtmlText(values.message)
+        // const message = draftToHtmlText(values.message)
         const ccEmails = values.cc
             ? values.cc
-                  .split(',')
-                  .map((email) => email.trim())
-                  .filter((email) => email.length > 0)
+                .split(',')
+                .map((email) => email.trim())
+                .filter((email) => email.length > 0)
             : []
 
         const { attachments, ...rest } = values
         const data = {
             subject: values.subject,
-            message,
+            message: values.message,
             type: 'email',
             sender: userCredentials?.id,
             receiver: receiverId,
@@ -224,7 +222,7 @@ export const MailForm = ({
         methods.setValue('subject', template?.subject)
         methods.setValue(
             'message',
-            htmlToDraftText(template?.content) as EditorState
+            template?.content
         )
         if (template?.file) {
             setTemplateAttachment(template.file)
@@ -297,31 +295,31 @@ export const MailForm = ({
                                         validationIcons
                                     />
                                 ) : // <TagsInput
-                                //     label="CC (optional)"
-                                //     name="cc"
-                                //     placeholder="Add email address..."
-                                //     hint="Add multiple emails separated by comma or press Enter"
-                                //     validationIcons
-                                //     onBlur={(emails) => {
-                                //         // Convert the email tags to a comma-separated string
-                                //         const emailString = emails.join(',')
-                                //         methods.setValue('cc', emailString)
+                                    //     label="CC (optional)"
+                                    //     name="cc"
+                                    //     placeholder="Add email address..."
+                                    //     hint="Add multiple emails separated by comma or press Enter"
+                                    //     validationIcons
+                                    //     onBlur={(emails) => {
+                                    //         // Convert the email tags to a comma-separated string
+                                    //         const emailString = emails.join(',')
+                                    //         methods.setValue('cc', emailString)
 
-                                //         // If you want to automatically save to draft when user leaves the field
-                                //         // if (
-                                //         //     emailString &&
-                                //         //     !ref.current?.contains(
-                                //         //         document.activeElement
-                                //         //     )
-                                //         // ) {
-                                //         //     emailDraft({
-                                //         //         receiver: receiverId,
-                                //         //         cc: emailString,
-                                //         //     })
-                                //         // }
-                                //     }}
-                                // />
-                                null}
+                                    //         // If you want to automatically save to draft when user leaves the field
+                                    //         // if (
+                                    //         //     emailString &&
+                                    //         //     !ref.current?.contains(
+                                    //         //         document.activeElement
+                                    //         //     )
+                                    //         // ) {
+                                    //         //     emailDraft({
+                                    //         //         receiver: receiverId,
+                                    //         //         cc: emailString,
+                                    //         //     })
+                                    //         // }
+                                    //     }}
+                                    // />
+                                    null}
                                 <TextInput
                                     label={'Subject'}
                                     name={'subject'}
@@ -370,13 +368,16 @@ export const MailForm = ({
                                     }}
                                 >
                                     <div className="mb-3">
-                                        <InputContentEditor
+                                        <InputRichTextEditor name='message' onChange={(e: any) => {
+                                            setMailContent(e)
+                                        }} />
+                                        {/* <InputContentEditor
                                             name={'message'}
                                             onChange={(e: any) => {
                                                 const mail = draftToHtmlText(e)
                                                 setMailContent(mail)
                                             }}
-                                        />
+                                        /> */}
                                     </div>
                                 </ClickAwayListener>
                                 {/* <TextArea
@@ -406,14 +407,14 @@ export const MailForm = ({
                                     placeholder="Select Email Template"
                                     onChange={findTamplates}
                                     menuPlacement="top"
-                                    // loading={courseLoading}
-                                    // value={templateValue}
-                                    // onChange={(e: any) => {
-                                    //     setTemplate(e?.label)
-                                    //     setTemplateId(e?.value)
-                                    //     findTemplate(e?.value)
-                                    //     setTemplateValue(e)
-                                    // }}
+                                // loading={courseLoading}
+                                // value={templateValue}
+                                // onChange={(e: any) => {
+                                //     setTemplate(e?.label)
+                                //     setTemplateId(e?.value)
+                                //     findTemplate(e?.value)
+                                //     setTemplateValue(e)
+                                // }}
                                 />
 
                                 <div className="flex justify-between items-center gap-x-4 mt-2">

@@ -2,16 +2,6 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 
-// const Editor = dynamic<EditorProps>(
-//     () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
-//     {
-//         ssr: false,
-//     }
-// )
-
-const htmlToDraft =
-    typeof window === 'object' && require('html-to-draftjs').default
-
 import { EditorState } from 'draft-js'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
@@ -19,18 +9,17 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import {
     ActionButton,
     AuthorizedUserComponent,
-    Badge,
     Button,
     Checkbox,
     draftToHtmlText,
-    htmlToDraftText,
-    InputContentEditor,
     inputEditorErrorMessage,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
     RadioGroup,
     Select,
     ShowErrorNotifications,
     TextInput,
-    Typography,
+    Typography
 } from '@components'
 
 // query
@@ -44,9 +33,8 @@ import { getUserCredentials, HtmlToPlainText } from '@utils'
 import ClickAwayListener from 'react-click-away-listener'
 import { FaTimes } from 'react-icons/fa'
 import { IoCheckmark } from 'react-icons/io5'
-import { StudentNotesDropdown } from '../components'
-import { ReWritePhrase } from '@pages/api/openai/fixGrammer'
 import { RiShining2Fill } from 'react-icons/ri'
+import { StudentNotesDropdown } from '../components'
 interface onSubmitType {
     title: string
     body: EditorState
@@ -193,7 +181,7 @@ export const CreateStudentNote = ({
     const validationSchema = Yup.object({
         title: Yup.string().required('Title is required'),
         body: Yup.mixed().test('Message', 'Must Provide Message', (value) =>
-            inputEditorErrorMessage(value)
+            inputRichTextEditorErrorMessage(value)
         ),
     })
 
@@ -205,7 +193,7 @@ export const CreateStudentNote = ({
 
     const noteBodyWordsCount = noteContent
         ? HtmlToPlainText(noteContent)?.trim()?.replace(/\s+/g, ' ')?.split(' ')
-              ?.length
+            ?.length
         : ''
 
     const isBodyGreaterThen30 = noteBodyWordsCount > 30
@@ -214,10 +202,6 @@ export const CreateStudentNote = ({
         setIsSendDraft(false)
 
         if (values?.body) {
-            // const body = draftToHtml(
-            //     convertToRaw(values?.body.getCurrentContent())
-            // )
-            const body = draftToHtmlText(values?.body)
             if (selectedType !== 'custom' && role !== UserRoles.RTO) {
                 const noteRes: any = await changeNoteStatus({
                     id: Number(selectedContent?.value),
@@ -230,7 +214,6 @@ export const CreateStudentNote = ({
                 if (noteRes?.data) {
                     const res: any = await createNote({
                         ...values,
-                        body,
                         isSuccess:
                             selectedStatus === NotesTemplateStatus.Success
                                 ? true
@@ -255,7 +238,6 @@ export const CreateStudentNote = ({
             } else if (selectedType === 'custom' || role === UserRoles.RTO) {
                 const res: any = await createNote({
                     ...values,
-                    body,
                     isPinned: isBodyGreaterThen30 ? false : values?.isPinned,
                     student: studentId,
                     postedFor: receiverId,
@@ -282,7 +264,7 @@ export const CreateStudentNote = ({
 
         if (data?.correctedText) {
             setNoteContent(data?.correctedText)
-            methods.setValue('body', htmlToDraftText(data?.correctedText))
+            // methods.setValue('body', htmlToDraftText(data?.correctedText))
         }
     }
 
@@ -409,9 +391,9 @@ export const CreateStudentNote = ({
                                                                             template.value
                                                                         ) &&
                                                                         selectedType ===
-                                                                            NotesTemplateType[
-                                                                                'Status Check Label'
-                                                                            ]
+                                                                        NotesTemplateType[
+                                                                        'Status Check Label'
+                                                                        ]
                                                                     ) {
                                                                         notification.warning(
                                                                             {
@@ -425,11 +407,11 @@ export const CreateStudentNote = ({
                                                                             template.value
                                                                         ) &&
                                                                         filteredNotesTemplate?.[0] !==
-                                                                            template.value &&
+                                                                        template.value &&
                                                                         selectedType ===
-                                                                            NotesTemplateType[
-                                                                                'Status Check Label'
-                                                                            ]
+                                                                        NotesTemplateType[
+                                                                        'Status Check Label'
+                                                                        ]
                                                                     ) {
                                                                         notification.warning(
                                                                             {
@@ -444,21 +426,20 @@ export const CreateStudentNote = ({
                                                                         )
                                                                     }
                                                                 }}
-                                                                className={`${
-                                                                    selectedContent?.value ===
+                                                                className={`${selectedContent?.value ===
                                                                     template?.value
-                                                                        ? 'bg-gray-200'
-                                                                        : ''
-                                                                } hover:bg-gray-200 py-2 border-b border-secondary-dark px-2 flex items-center justify-between gap-x-2 cursor-pointer`}
+                                                                    ? 'bg-gray-200'
+                                                                    : ''
+                                                                    } hover:bg-gray-200 py-2 border-b border-secondary-dark px-2 flex items-center justify-between gap-x-2 cursor-pointer`}
                                                             >
                                                                 <div className="flex items-center gap-x-2">
                                                                     <Typography
                                                                         variant={
                                                                             filteredNotesTemplate?.[0] ===
                                                                                 template?.value &&
-                                                                            selectedType ===
+                                                                                selectedType ===
                                                                                 NotesTemplateType[
-                                                                                    'Status Check Label'
+                                                                                'Status Check Label'
                                                                                 ]
                                                                                 ? 'label'
                                                                                 : 'small'
@@ -466,9 +447,9 @@ export const CreateStudentNote = ({
                                                                         color={
                                                                             filteredNotesTemplate?.[0] !==
                                                                                 template?.value &&
-                                                                            selectedType ===
+                                                                                selectedType ===
                                                                                 NotesTemplateType[
-                                                                                    'Status Check Label'
+                                                                                'Status Check Label'
                                                                                 ]
                                                                                 ? 'text-gray-400'
                                                                                 : 'text-black'
@@ -477,9 +458,9 @@ export const CreateStudentNote = ({
                                                                         {!filteredNotesTemplate?.includes(
                                                                             template.value
                                                                         ) &&
-                                                                        selectedType ===
+                                                                            selectedType ===
                                                                             NotesTemplateType[
-                                                                                'Status Check Label'
+                                                                            'Status Check Label'
                                                                             ] ? (
                                                                             <del>
                                                                                 {i +
@@ -494,9 +475,9 @@ export const CreateStudentNote = ({
                                                                         variant={
                                                                             filteredNotesTemplate?.[0] ===
                                                                                 template?.value &&
-                                                                            selectedType ===
+                                                                                selectedType ===
                                                                                 NotesTemplateType[
-                                                                                    'Status Check Label'
+                                                                                'Status Check Label'
                                                                                 ]
                                                                                 ? 'label'
                                                                                 : 'small'
@@ -504,9 +485,9 @@ export const CreateStudentNote = ({
                                                                         color={
                                                                             filteredNotesTemplate?.[0] !==
                                                                                 template?.value &&
-                                                                            selectedType ===
+                                                                                selectedType ===
                                                                                 NotesTemplateType[
-                                                                                    'Status Check Label'
+                                                                                'Status Check Label'
                                                                                 ]
                                                                                 ? 'text-gray-400'
                                                                                 : 'text-black'
@@ -515,9 +496,9 @@ export const CreateStudentNote = ({
                                                                         {!filteredNotesTemplate?.includes(
                                                                             template.value
                                                                         ) &&
-                                                                        selectedType ===
+                                                                            selectedType ===
                                                                             NotesTemplateType[
-                                                                                'Status Check Label'
+                                                                            'Status Check Label'
                                                                             ] ? (
                                                                             <del>
                                                                                 {
@@ -533,9 +514,9 @@ export const CreateStudentNote = ({
                                                                     template.value
                                                                 ) &&
                                                                     selectedType ===
-                                                                        NotesTemplateType[
-                                                                            'Status Check Label'
-                                                                        ] && (
+                                                                    NotesTemplateType[
+                                                                    'Status Check Label'
+                                                                    ] && (
                                                                         <IoCheckmark />
                                                                     )}
                                                             </div>
@@ -591,16 +572,16 @@ export const CreateStudentNote = ({
                                                 ) {
                                                     methods.setValue(
                                                         'body',
-                                                        htmlToDraftText(
-                                                            updatedContent?.successContent
-                                                        )
+                                                        // htmlToDraftText(
+                                                        updatedContent?.successContent
+                                                        // )
                                                     )
                                                 } else {
                                                     methods.setValue(
                                                         'body',
-                                                        htmlToDraftText(
-                                                            updatedContent?.failureContent
-                                                        )
+                                                        // htmlToDraftText(
+                                                        updatedContent?.failureContent
+                                                        // )
                                                     )
                                                 }
                                             }}
@@ -613,9 +594,9 @@ export const CreateStudentNote = ({
                                     // disabled={!!selectedStatus}
                                     disabled={
                                         selectedType ===
-                                            NotesTemplateType[
-                                                'Status Check Label'
-                                            ] && !!selectedStatus
+                                        NotesTemplateType[
+                                        'Status Check Label'
+                                        ] && !!selectedStatus
                                     }
                                     placeholder={'Note Title...'}
                                     validationIcons
@@ -668,14 +649,17 @@ export const CreateStudentNote = ({
                                         }}
                                     >
                                         <div className="mb-3">
-                                            <InputContentEditor
+                                            <InputRichTextEditor name='body' onChange={(e: any) => {
+                                                setNoteContent(e)
+                                            }} />
+                                            {/* <InputContentEditor
                                                 name={'body'}
                                                 onChange={(e: any) => {
                                                     const note =
                                                         draftToHtmlText(e)
                                                     setNoteContent(note)
                                                 }}
-                                            />
+                                            /> */}
                                         </div>
                                     </ClickAwayListener>
                                 </div>
@@ -707,9 +691,8 @@ export const CreateStudentNote = ({
                                     <Button
                                         submit
                                         fullWidth
-                                        text={`${
-                                            editing ? 'Update' : 'Add'
-                                        } Note`}
+                                        text={`${editing ? 'Update' : 'Add'
+                                            } Note`}
                                         loading={
                                             createNoteResult?.isLoading ||
                                             changeNoteStatusResult?.isLoading

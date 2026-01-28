@@ -1,27 +1,11 @@
-import {
-    CheckCircle,
-    Clock,
-    Circle,
-    ChevronDown,
-    ChevronUp,
-    ExternalLink,
-    XCircle,
-} from 'lucide-react'
-import { useState } from 'react'
-import { StudentDetails } from './StudentDetails'
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from '@components/ui/collapsible'
-import { Badge, Button } from '@components'
-import { Student } from '@types'
+import { Badge } from '@components'
+import { UserRoles } from '@constants'
 import { useStatusInfo } from '@partials/rto-v2/student-detail/components/StudentOverview/hooks/useStatusInfo'
 import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
-import Link from 'next/link'
 import { getUserCredentials } from '@utils'
-import { UserRoles } from '@constants'
+import { ExternalLink } from 'lucide-react'
 import moment from 'moment'
+import Link from 'next/link'
 
 interface StudentCardProps {
     student: any
@@ -40,18 +24,10 @@ function getStudentProfileLink(role: string, studentId: number) {
 
 export function RejectedStudentCard({ student }: StudentCardProps) {
     const role = getUserCredentials()?.role
-    const [isOpen, setIsOpen] = useState(false)
     const workplace = student?.workplace?.[0]
     const industry = workplace?.industries?.[0]
 
-    const {
-        statuses,
-        progressPercent,
-        completedCount,
-        totalCount,
-        statusArrays,
-        currentStep,
-    } = useStatusInfo({
+    const { currentStep } = useStatusInfo({
         workplace: workplace,
         workIndustry: industry as WorkplaceWorkIndustriesType,
     })
@@ -66,6 +42,8 @@ export function RejectedStudentCard({ student }: StudentCardProps) {
     // Action info
     const isApproved = industry?.action === 'approved'
     const hasActionInfo = student?.ActionedBy
+
+    console.log({ student })
 
     return (
         <div

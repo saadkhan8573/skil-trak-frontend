@@ -111,7 +111,6 @@ export const IndustrySelection = ({
         }
         return null
     }
-    console.log('workplace::::::::::::', workplace?.data?.[0])
 
     return !industrySelection ? (
         <div className="flex flex-col gap-y-3">
@@ -162,7 +161,7 @@ export const IndustrySelection = ({
                                 Workplace Status:{' '}
                             </Typography>
                             {workplace?.data?.[0]?.currentStatus ===
-                            'awaitingRtoResponse' ? (
+                                'awaitingRtoResponse' ? (
                                 <>
                                     <Badge
                                         variant="info"
@@ -176,7 +175,7 @@ export const IndustrySelection = ({
                         </div>
                         <div className="flex flex-col gap-y-3 px-5 py-12 border border-dashed rounded-lg">
                             {workplace?.data?.[0]?.currentStatus ===
-                            'awaitingRtoResponse' ? (
+                                'awaitingRtoResponse' ? (
                                 <>
                                     {' '}
                                     <Typography
@@ -244,9 +243,9 @@ export const IndustrySelection = ({
                                             Email:{' '}
                                             {assignedCoordinator
                                                 ? (assignedCoordinator
-                                                      ?.departmentMember
-                                                      ?.department?.email ??
-                                                  'info@skiltrak.com.au')
+                                                    ?.departmentMember
+                                                    ?.department?.email ??
+                                                    'info@skiltrak.com.au')
                                                 : 'info@skiltrak.com.au'}
                                         </Typography>
                                     </div>

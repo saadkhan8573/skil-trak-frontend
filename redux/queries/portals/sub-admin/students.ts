@@ -1,7 +1,7 @@
 import { NotesTemplateType } from '@partials/admin/noteTemplates/enum'
 import { NotesTemplateStatus } from '@partials/common/Notes/forms'
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { BaseQueryFn } from '@reduxjs/toolkit/query'
+import { EndpointBuilder } from '@reduxjs/toolkit/query'
 import {
     PaginatedResponse,
     PaginationValues,

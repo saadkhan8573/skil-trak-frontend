@@ -1,6 +1,6 @@
 import { PaginationValues, PaginationWithSearch } from '@types'
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { BaseQueryFn } from '@reduxjs/toolkit/query'
+import { EndpointBuilder } from '@reduxjs/toolkit/query'
 import { WpAppRequEnum } from '@partials/rto/wpApprovalReq/enum'
 
 const PREFIX = 'rtos'

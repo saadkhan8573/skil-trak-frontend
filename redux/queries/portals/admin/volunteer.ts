@@ -1,10 +1,10 @@
 import { VolunteerRequestEnum } from '@partials'
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { BaseQueryFn } from '@reduxjs/toolkit/query'
+import { EndpointBuilder } from '@reduxjs/toolkit/query'
 import {
     PaginatedResponse,
     PaginationWithSearch,
-    VolunteerRequest
+    VolunteerRequest,
 } from '@types'
 
 const PREFIX = 'admin/'

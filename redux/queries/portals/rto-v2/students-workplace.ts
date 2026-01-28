@@ -1,5 +1,5 @@
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { BaseQueryFn } from '@reduxjs/toolkit/query'
+import { EndpointBuilder } from '@reduxjs/toolkit/query'
 import { IWorkplaceIndustries } from 'redux/queryTypes'
 
 const PREFIX = 'students/'

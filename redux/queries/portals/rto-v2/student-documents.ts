@@ -1,5 +1,5 @@
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { BaseQueryFn } from '@reduxjs/toolkit/query'
+import { EndpointBuilder } from '@reduxjs/toolkit/query'
 
 const PREFIX = 'students/'
 export const studentDocumentsEndpoints = (
@@ -36,13 +36,13 @@ export const studentDocumentsEndpoints = (
             params,
         }),
 
-        providesTags: ['RTO-Documents','AssessmentEvidence'],
+        providesTags: ['RTO-Documents', 'AssessmentEvidence'],
     }),
 
     getStudentDocumentFiles: builder.query<any, number>({
         query: (studentResponseId) =>
             `${PREFIX}folder/${studentResponseId}/files/list`,
-        providesTags: ['RTO-Documents','Logbook','AssessmentEvidence'],
+        providesTags: ['RTO-Documents', 'Logbook', 'AssessmentEvidence'],
     }),
 
     uploadStudentDocumentFile: builder.mutation<

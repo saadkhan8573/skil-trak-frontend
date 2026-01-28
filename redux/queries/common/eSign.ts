@@ -1,5 +1,5 @@
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { BaseQueryFn } from '@reduxjs/toolkit/query'
+import { EndpointBuilder } from '@reduxjs/toolkit/query'
 import { PaginationValues, PaginationWithSearch, UserStatus } from '@types'
 import { EsignDocumentStatus } from '@utils'
 
@@ -92,10 +92,13 @@ export const eSignEndpoints = (
         providesTags: ['E-Sign'],
     }),
 
-    getIndustryAllEsignList: builder.query<any, {id:number,sectorId?:number}>({
-        query: ({id,...params}) => ({
-            url : `${PREFIX}/industry/${id}/docs`,
-            params 
+    getIndustryAllEsignList: builder.query<
+        any,
+        { id: number; sectorId?: number }
+    >({
+        query: ({ id, ...params }) => ({
+            url: `${PREFIX}/industry/${id}/docs`,
+            params,
         }),
         providesTags: ['E-Sign'],
     }),

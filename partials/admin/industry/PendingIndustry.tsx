@@ -32,20 +32,13 @@ export const PendingIndustry = () => {
         columnKeys: [
             'businessName',
             'abn',
-            'studentCount',
             'contactPerson',
             'favoriteBy',
-            'sectors',
             'createdBy',
             'action',
         ],
         actionKeys: [
             'view',
-            'viewOldProfile',
-            'viewPassword',
-            'edit',
-            'accept',
-            'reject',
         ],
     })
 
@@ -85,10 +78,10 @@ export const PendingIndustry = () => {
         id: 'id',
         individual: (id: Industry) => (
             <div className="flex gap-x-2">
-                <ActionButton variant="success" onClick={() => {}}>
+                <ActionButton variant="success" onClick={() => { }}>
                     Accept
                 </ActionButton>
-                <ActionButton variant="error" onClick={() => {}}>
+                <ActionButton variant="error" onClick={() => { }}>
                     Reject
                 </ActionButton>
             </div>

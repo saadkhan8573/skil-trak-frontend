@@ -703,6 +703,7 @@ const {
     useChangeSupportTicketAssigneeMutation,
     useGetSupportTeamMembersByTeamQuery,
     useGetStudentSupportTicketsListQuery,
+    useGetTicketsByUserIdQuery,
     useUpdateTicketStatusMutation,
     useGetUserTeamQuery,
     // --------- Call Management ----------- //
@@ -1088,6 +1089,7 @@ export const CommonApi = {
         useChangeSupportTicketAssignee: useChangeSupportTicketAssigneeMutation,
         useSupportTeamMembersByTeam: useGetSupportTeamMembersByTeamQuery,
         useStudentSupportTicketsList: useGetStudentSupportTicketsListQuery,
+        useTicketsByUserId: useGetTicketsByUserIdQuery,
         useUpdateTicketStatus: useUpdateTicketStatusMutation,
         useUserTeam: useGetUserTeamQuery,
     },

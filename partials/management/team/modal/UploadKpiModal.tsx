@@ -4,7 +4,6 @@ import {
     TextInput,
     Typography,
 } from '@components'
-import { read, utils } from 'xlsx'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
@@ -42,8 +41,7 @@ export const UploadKpiModal = ({ onCancel, member }: UploadKpiModalProps) => {
     }
 
     const onFileChange = async (e: any) => {
-        // const selectedFile = e.target.files[0];
-        // const wb = readFile(e.target.result)
+        const { read, utils } = await import('xlsx')
         const wb = read(e.target.result, { type: 'binary' })
         const sheets = wb.SheetNames
 

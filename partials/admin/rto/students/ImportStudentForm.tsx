@@ -8,7 +8,6 @@ import { CourseSelectOption, formatOptionLabel, getDate } from '@utils'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { read, utils } from 'xlsx'
 import * as yup from 'yup'
 
 interface FormProps {
@@ -80,6 +79,7 @@ export const ImportStudentForm = ({
 
     const onFileChange = async (e: any, fileData: any) => {
         try {
+            const { read, utils } = await import('xlsx')
             const wb = read(e.target.result, { type: 'binary' })
             const sheets = wb.SheetNames
 
@@ -162,7 +162,7 @@ export const ImportStudentForm = ({
                             name="list"
                             onChange={onFileChange}
                             fileAsObject={false}
-                            // acceptTypes={['.xlsx, .csv']}
+                        // acceptTypes={['.xlsx, .csv']}
                         />
                     </div>
                 </div>

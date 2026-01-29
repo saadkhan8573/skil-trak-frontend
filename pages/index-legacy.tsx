@@ -8,7 +8,6 @@ import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
 import { NextPage } from 'next'
 import Marquee from 'react-fast-marquee'
-import ReactStars from 'react-stars'
 import { Button } from '../components/site/Button'
 import { FigureCard } from '../components/site/FigureCard'
 import { NewsCard } from '../components/site/NewsCard'
@@ -92,7 +91,7 @@ const Page: NextPage = () => {
                     setSliderNews(res.data.slice(4, res.data.length))
                 }
             })
-            .catch((err) => {})
+            .catch((err) => { })
     }, [])
 
     const showNewsOrLoader = () => {
@@ -117,6 +116,8 @@ const Page: NextPage = () => {
                 </div>
             )
     }
+
+    const [value, setvalue] = useState(5)
 
     return (
         <SiteLayout title="Home">

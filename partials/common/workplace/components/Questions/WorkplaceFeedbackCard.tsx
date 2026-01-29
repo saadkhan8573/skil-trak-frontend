@@ -1,8 +1,6 @@
-import { Badge, Typography } from '@components'
+import { StarRating, Typography } from '@components'
 import classNames from 'classnames'
-import React, { useEffect, useState } from 'react'
-import { FaCircleCheck } from 'react-icons/fa6'
-import ReactStars from 'react-stars'
+import { useEffect, useState } from 'react'
 
 enum WorkplaceAnswerEnum {
     Yes = 'Yes',
@@ -55,7 +53,7 @@ export const WorkplaceFeedbackCard = ({
 
             {/*  */}
             <div className="flex items-center gap-x-6 px-10">
-                <ReactStars
+                <StarRating
                     count={5}
                     value={answer}
                     onChange={(e) => {
@@ -64,8 +62,8 @@ export const WorkplaceFeedbackCard = ({
                             onClick(e)
                         }
                     }}
-                    size={24}
-                    color2={'#ffd700'}
+                    size={19}
+                    activeColor={'#ffd700'}
                 />
             </div>
         </div>

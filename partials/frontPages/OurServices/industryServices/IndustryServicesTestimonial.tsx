@@ -1,15 +1,13 @@
-import { Typography } from '@components'
+import { StarRating, Typography } from '@components'
 import Image from 'next/image'
-import React from 'react'
 import { CgQuote } from 'react-icons/cg'
-import ReactStars from 'react-stars'
 
 {
     /* <Image src={"/images/site/services/industry-services/our-professional-workflow.svg"} alt="" width={800} height={500} className='w-full' />  */
 }
 export const IndustryServicesTestimonial = () => {
-  return (
-    <div className="bg-[#9B2000] flex items-center flex-col md:flex-row gap-5 md:gap-2 md:pb-10 md:!pt-20 w-full ">
+    return (
+        <div className="bg-[#9B2000] flex items-center flex-col md:flex-row gap-5 md:gap-2 md:pb-10 md:!pt-20 w-full ">
             <div className="w-full relative z-20">
                 <Image
                     width={900}
@@ -104,12 +102,12 @@ export const IndustryServicesTestimonial = () => {
                                         >
                                             Web Designer
                                         </Typography>
-                                        <ReactStars
+                                        <StarRating
                                             count={5}
                                             value={4.5}
                                             edit={false}
-                                            size={25}
-                                            color2={'#ffd700'}
+                                            size={18}
+                                            activeColor={'#ffd700'}
                                         />
                                     </div>
                                 </div>
@@ -155,5 +153,5 @@ export const IndustryServicesTestimonial = () => {
                 </div>
             </div>
         </div>
-  )
+    )
 }

@@ -57,10 +57,17 @@ export const AdminWorkplaceFilters = ({
     const rtoOptions =
         getRtos?.data && getRtos?.data?.length > 0
             ? getRtos?.data?.map((rto: Rto) => ({
-                  value: rto?.id,
-                  label: rto?.user?.name,
-              }))
+                value: rto?.id,
+                label: rto?.user?.name,
+            }))
             : []
+
+    const noWorkplaceOption = [
+        {
+            label: 'No Workplace',
+            value: 'Na',
+        },
+    ]
 
     return (
         <>
@@ -221,6 +228,20 @@ export const AdminWorkplaceFilters = ({
                     showError={false}
                     loading={departments.isLoading}
                     disabled={departments.isLoading}
+                />
+
+                <Select
+                    label={'Student with no workplace'}
+                    name={'nowp'}
+                    options={noWorkplaceOption}
+                    placeholder={'Student with no workplace...'}
+                    value={noWorkplaceOption?.find(
+                        (noWp: SelectOption) => noWp.value === filter?.nowp
+                    )}
+                    onChange={(e: any) => {
+                        onFilterChange({ ...filter, nowp: e?.value })
+                    }}
+                    showError={false}
                 />
             </div>
         </>

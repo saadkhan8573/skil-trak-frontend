@@ -1,8 +1,7 @@
-import { EmptyData, LoadingAnimation, Typography } from '@components'
+import { EmptyData, LoadingAnimation, StarRating, Typography } from '@components'
 import { WorkplaceQuestionCard } from '@partials/common'
 import { StudentFeedbackType } from '@partials/common/StudentProfileDetail/components'
 import { CommonApi } from '@queries'
-import ReactStars from 'react-stars'
 import { WorkplaceQuestionType } from 'redux/queryTypes'
 
 export const CoordinatorFeedback = () => {
@@ -18,12 +17,12 @@ export const CoordinatorFeedback = () => {
                     <div>
                         <Typography>Rating</Typography>
                         <div className="flex items-center gap-x-2">
-                            <ReactStars
+                            <StarRating
                                 count={5}
                                 value={feedback?.data?.[0]?.rating}
                                 edit={false}
-                                size={24}
-                                color2={'#ffd700'}
+                                size={17}
+                                activeColor={'#ffd700'}
                             />
                             <Typography variant="label">
                                 {feedback?.data?.[0]?.rating}

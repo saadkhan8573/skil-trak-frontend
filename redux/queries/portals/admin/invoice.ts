@@ -2,8 +2,8 @@ import {
     InvoiceCategoriesEnum,
     PaymentStatusEnum,
 } from '@partials/admin/invoices'
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { BaseQueryFn } from '@reduxjs/toolkit/query'
+import { EndpointBuilder } from '@reduxjs/toolkit/query'
 import { PaginationWithSearch } from '@types'
 
 const PREFIX = 'invoice-setting'

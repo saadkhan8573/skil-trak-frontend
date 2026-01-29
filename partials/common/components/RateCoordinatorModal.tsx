@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import {
     Button,
     ShowErrorNotifications,
@@ -6,15 +5,14 @@ import {
     Typography,
 } from '@components'
 import { UserRoles } from '@constants'
+import { useNotification } from '@hooks'
+import { CommonApi } from '@queries'
 import { getUserCredentials } from '@utils'
+import React, { useEffect, useState } from 'react'
+import { BiSolidMessageRounded } from 'react-icons/bi'
 import { FcGraduationCap } from 'react-icons/fc'
 import { GiRoundStar } from 'react-icons/gi'
-import ReactStars from 'react-stars'
-import Modal from '@modals/Modal'
-import { BiSolidMessageRounded } from 'react-icons/bi'
 import { StarRating } from './StarRating'
-import { CommonApi } from '@queries'
-import { useNotification } from '@hooks'
 
 export const RateCoordinatorModal = ({
     userId,
@@ -104,12 +102,12 @@ export const RateCoordinatorModal = ({
                                 {rating === 1
                                     ? 'Poor'
                                     : rating === 2
-                                    ? 'Fair'
-                                    : rating === 3
-                                    ? 'Good'
-                                    : rating === 4
-                                    ? 'Very Good'
-                                    : 'Excellent'}
+                                        ? 'Fair'
+                                        : rating === 3
+                                            ? 'Good'
+                                            : rating === 4
+                                                ? 'Very Good'
+                                                : 'Excellent'}
                             </p>
                         )}
                     </div>

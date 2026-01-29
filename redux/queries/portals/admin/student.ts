@@ -1,5 +1,5 @@
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { BaseQueryFn } from '@reduxjs/toolkit/query'
+import { EndpointBuilder } from '@reduxjs/toolkit/query'
 
 import {
     Course,
@@ -209,5 +209,5 @@ export const studentEndpoints = (
     studentPaymentDetails: builder.query<any, any>({
         query: (id) => `stripe/student/${id}/payment/list-view`,
         providesTags: ['Students'],
-    })
+    }),
 })

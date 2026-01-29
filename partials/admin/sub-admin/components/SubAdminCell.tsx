@@ -1,4 +1,4 @@
-import { InitialAvatar, Tooltip, TooltipPosition } from '@components'
+import { InitialAvatar, StarRating, Tooltip, TooltipPosition } from '@components'
 import { MapStarRating } from '@partials/common'
 import { AdminApi } from '@queries'
 import { SubAdmin } from '@types'
@@ -62,9 +62,10 @@ export const SubAdminCell = ({ subAdmin }: { subAdmin: SubAdmin }) => {
                         </p> */}
                         {Number(averageRating?.totalReviews) > 0 &&
                             Number(averageRating?.averageRating) > 0 && (
-                                <MapStarRating
-                                    rating={averageRating.averageRating}
-                                    size="xs"
+                                <StarRating
+                                    value={averageRating?.averageRating}
+                                    size={17}
+                                    showValue
                                 />
                             )}
 
@@ -73,7 +74,7 @@ export const SubAdminCell = ({ subAdmin }: { subAdmin: SubAdmin }) => {
                                 <MdPhoneIphone />
                             </span>
                             {subAdmin?.phone}
-                        </p> 
+                        </p>
                     </div>
                 </div>
             </a>

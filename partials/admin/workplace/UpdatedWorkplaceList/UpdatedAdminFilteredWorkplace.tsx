@@ -1,16 +1,7 @@
 // components
-import { Card, EmptyData, Table, Typography, UserCreatedAt } from '@components'
+import { Card, EmptyData, Table } from '@components'
 
 // queries
-import { ColumnDef } from '@tanstack/react-table'
-import { ellipsisText } from '@utils'
-import Link from 'next/link'
-import {
-    CourseWorkplaceCell,
-    RtoWorkplaceCell,
-    StudentWorkplaceCellInfo,
-    UpdatedWorkplaceRequest,
-} from './components'
 import { useColumns } from './hooks'
 
 export const UpdatedAdminFilteredWorkplace = ({
@@ -29,8 +20,8 @@ export const UpdatedAdminFilteredWorkplace = ({
         <div className="p-4">
             <Card noPadding>
                 {workplace?.data?.data &&
-                workplace?.data?.data?.length &&
-                !workplace?.isError ? (
+                    workplace?.data?.data?.length &&
+                    !workplace?.isError ? (
                     <Table
                         columns={Columns}
                         data={workplace?.data?.data}

@@ -11,7 +11,6 @@ import {
     X,
 } from 'lucide-react'
 import { Badge, Button, Card, Typography, Select } from '@components'
-import { read, utils } from 'xlsx'
 import { useNotification } from '@hooks'
 import { BinaryFileUpload } from '@components/inputs/BinaryFileUpload'
 import { AdminApi, RtoApi } from '@redux'
@@ -65,10 +64,10 @@ export const BulkIndustryImportForm = ({
     const rtoCoursesOptions =
         rto.isSuccess && rto?.data?.courses && rto?.data?.courses?.length > 0
             ? rto?.data?.courses?.map((course: Course) => ({
-                  label: course?.title,
-                  value: course?.id,
-                  item: course,
-              }))
+                label: course?.title,
+                value: course?.id,
+                item: course,
+            }))
             : []
 
     const [dragActive, setDragActive] = useState(false)
@@ -108,9 +107,10 @@ export const BulkIndustryImportForm = ({
         const reader: any = new FileReader()
         const rABS = !!reader.readAsBinaryString
         if (reader) {
-            reader.onload = (loadEvent: any) => {
+            reader.onload = async (loadEvent: any) => {
                 if (reader.readyState === 2) {
                     try {
+                        const { read, utils } = await import('xlsx')
                         const wb = read(loadEvent.target.result, {
                             type: 'binary',
                         })
@@ -203,11 +203,10 @@ export const BulkIndustryImportForm = ({
 
                     <Card className="p-5 border-2 border-dashed border-primaryNew/30 hover:border-primaryNew/60 transition-all rounded-2xl bg-background/60">
                         <div
-                            className={`relative rounded-xl p-6 text-center transition-all cursor-pointer ${
-                                dragActive
-                                    ? 'border-2 border-primaryNew bg-primaryNew/5'
-                                    : 'border-2 border-border hover:border-primaryNew/60 hover:bg-muted/60'
-                            }`}
+                            className={`relative rounded-xl p-6 text-center transition-all cursor-pointer ${dragActive
+                                ? 'border-2 border-primaryNew bg-primaryNew/5'
+                                : 'border-2 border-border hover:border-primaryNew/60 hover:bg-muted/60'
+                                }`}
                             onDragEnter={handleDrag}
                             onDragLeave={handleDrag}
                             onDragOver={handleDrag}

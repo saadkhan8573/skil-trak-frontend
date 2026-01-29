@@ -14,7 +14,7 @@ import { PlacementType } from './PlacementType'
 
 interface FormProps {
     onSubmit: SubmitHandler<ImportStudentFormType>
-    onStudentFound?: Function // Made optional to match usage if needed, or keep required if it is always passed. Original was: onStudentFound: Function
+    onStudentFound?: Function
     onCancel?: () => void
 }
 

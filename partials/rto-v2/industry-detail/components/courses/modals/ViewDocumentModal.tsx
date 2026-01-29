@@ -62,7 +62,6 @@ export function ViewDocumentModal({
             setTotalPages(pdf.numPages)
             setCurrentPage(1)
         } catch (err: any) {
-            console.error('Error loading PDF', err)
             setError(err.message || 'Failed to load PDF')
         } finally {
             setLoading(false)

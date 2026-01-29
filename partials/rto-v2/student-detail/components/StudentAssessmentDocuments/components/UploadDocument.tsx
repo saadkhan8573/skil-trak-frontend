@@ -3,7 +3,8 @@ import { useNotification } from '@hooks'
 import { RtoV2Api } from '@queries'
 import { AssessmentEvidenceDetailType, Student } from '@types'
 import { Upload } from 'lucide-react'
-import React, { useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
+import { folderResponse } from '../utils'
 
 export const UploadDocument = ({
     folder,
@@ -17,6 +18,10 @@ export const UploadDocument = ({
         RtoV2Api.StudentDocuments.uploadStudentDocumentFile()
 
     const { notification } = useNotification()
+
+    const response = useMemo(() => {
+        return folderResponse(folder.studentResponse)
+    }, [folder?.studentResponse])
 
     const handleButtonClick = () => {
         fileInputRef.current?.click()
@@ -32,6 +37,7 @@ export const UploadDocument = ({
             const res: any = await uploadDocument({
                 stdId: Number(student?.id),
                 folderId: folder?.id ?? 0,
+                responseId: response?.id!,
                 body: formData,
             })
 

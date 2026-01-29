@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import '../styles/animations.css'
 import '../styles/globals.css'
 import '../styles/site.css'
+import '../styles/rich-text.css'
 
 type AppPropsWithLayout = AppProps & {
     Component: NextPageWithLayout

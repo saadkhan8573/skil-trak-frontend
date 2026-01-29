@@ -1,46 +1,41 @@
 "use client"
 
-import React, { useEffect, useState, useRef } from "react"
-import { useEditor, EditorContent, Editor } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit"
-import Underline from "@tiptap/extension-underline"
-import Link from "@tiptap/extension-link"
-import Image from "@tiptap/extension-image"
-import TextAlign from "@tiptap/extension-text-align"
 import Highlight from "@tiptap/extension-highlight"
+import Image from "@tiptap/extension-image"
+import Link from "@tiptap/extension-link"
 import Placeholder from "@tiptap/extension-placeholder"
+import TextAlign from "@tiptap/extension-text-align"
+import Underline from "@tiptap/extension-underline"
+import { Editor, EditorContent, useEditor } from "@tiptap/react"
+import StarterKit from "@tiptap/starter-kit"
 import {
-    Bold,
-    Italic,
-    Underline as UnderlineIcon,
-    Strikethrough,
-    List,
-    ListOrdered,
-    AlignLeft,
     AlignCenter,
-    AlignRight,
     AlignJustify,
-    Quote,
-    Undo,
-    Redo,
-    Link as LinkIcon,
-    Image as ImageIcon,
+    AlignLeft,
+    AlignRight,
+    Bold,
+    ChevronDown,
     Code,
     Highlighter,
-    ChevronDown,
+    Image as ImageIcon,
+    Italic,
+    Link as LinkIcon,
+    List,
+    ListOrdered,
+    Quote,
+    Redo,
+    Strikethrough,
+    Underline as UnderlineIcon,
+    Undo,
 } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
 
 import { Button, Typography } from "@components"
-import { cn } from "@utils"
 import { Label } from "@components/ui/label"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@components/ui/popover"
-import { adminApi } from "@queries/portals/admin/admin.query"
 import { useNotification } from "@hooks"
+import { adminApi } from "@queries/portals/admin/admin.query"
 import * as pmState from "@tiptap/pm/state"
+import { cn } from "@utils"
 
 // Custom Image Extension with Width and Alignment support
 const CustomImage = Image.extend({

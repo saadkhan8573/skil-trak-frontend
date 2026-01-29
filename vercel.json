@@ -1,0 +1,19 @@
+{
+    "framework": "nextjs",
+    "buildCommand": "next build",
+    "functions": {
+        "pages/api/**/*.{js,ts}": {
+            "memory": 3008,
+            "maxDuration": 300
+        },
+        "pages/**/*.{js,ts,tsx,jsx}": {
+            "memory": 3008,
+            "maxDuration": 60
+        },
+        "app/**/*.{js,ts,tsx,jsx}": {
+            "memory": 3008,
+            "maxDuration": 60
+        }
+    },
+    "regions": ["iad1"]
+}

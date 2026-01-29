@@ -38,7 +38,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@components/ui/popover"
-import { AdminApi, adminApi } from "@queries"
+import { adminApi } from "@queries/portals/admin/admin.query"
 import { useNotification } from "@hooks"
 import * as pmState from "@tiptap/pm/state"
 

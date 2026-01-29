@@ -1,15 +1,17 @@
-import { useFormContext } from 'react-hook-form'
-import { TextArea } from '../TextArea'
+import React from 'react'
+import { Controller, useFormContext } from 'react-hook-form'
+import dynamic from 'next/dynamic'
+import { htmltotext } from '@utils'
 
-// const RichTextEditor = dynamic(
-//     () => import('./RichTextEditor').then((mod) => mod.RichTextEditor),
-//     {
-//         ssr: false,
-//         loading: () => (
-//             <div className="h-50 w-full bg-gray-50 animate-pulse rounded-md border" />
-//         ),
-//     }
-// )
+const RichTextEditor = dynamic(
+    () => import('./RichTextEditor').then((mod) => mod.RichTextEditor),
+    {
+        ssr: false,
+        loading: () => (
+            <div className="h-50 w-full bg-gray-50 animate-pulse rounded-md border" />
+        ),
+    }
+)
 
 interface InputRichTextEditorProps {
     name: string
@@ -21,10 +23,10 @@ interface InputRichTextEditorProps {
 }
 
 export const inputRichTextEditorErrorMessage = (value: string) => {
-    // if (htmltotext(value)?.length > 1) {
-    return true
-    // }
-    // return false
+    if (htmltotext(value)?.length > 1) {
+        return true
+    }
+    return false
 }
 
 export const InputRichTextEditor = ({
@@ -41,35 +43,24 @@ export const InputRichTextEditor = ({
     } = useFormContext()
     const error = errors[name]?.message as string
 
-    return <TextArea
-        name={name}
-        label={label}
-        // value={value}
-        onChange={(e: any) => {
-            onChange?.(e)
-            // fieldChange(e)
-        }}
-        placeholder={placeholder}
-    />
-
-    // return (
-    //     <Controller
-    //         name={name}
-    //         control={control}
-    //         rules={rules}
-    //         render={({ field: { value, onChange: fieldChange } }) => (
-    //             <RichTextEditor
-    //                 label={label}
-    //                 value={value}
-    //                 onChange={(e: any) => {
-    //                     onChange?.(e)
-    //                     fieldChange(e)
-    //                 }}
-    //                 placeholder={placeholder}
-    //                 error={error}
-    //                 className={className}
-    //             />
-    //         )}
-    //     />
-    // )
+    return (
+        <Controller
+            name={name}
+            control={control}
+            rules={rules}
+            render={({ field: { value, onChange: fieldChange } }) => (
+                <RichTextEditor
+                    label={label}
+                    value={value}
+                    onChange={(e: any) => {
+                        onChange?.(e)
+                        fieldChange(e)
+                    }}
+                    placeholder={placeholder}
+                    error={error}
+                    className={className}
+                />
+            )}
+        />
+    )
 }

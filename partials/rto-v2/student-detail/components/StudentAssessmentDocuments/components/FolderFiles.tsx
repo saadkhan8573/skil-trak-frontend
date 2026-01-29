@@ -5,6 +5,8 @@ import { FolderDocumentCard } from '../cards'
 import { LoadingAnimation, NoData, Typography } from '@components'
 import { useAppSelector } from '@redux/hooks'
 import { InitiatedESignCard } from './InitiatedESignCard'
+import moment from 'moment'
+import { folderResponse } from '../utils'
 
 export const FolderFiles = ({
     folder,
@@ -19,10 +21,12 @@ export const FolderFiles = ({
     course: any
     student: any
 }) => {
-    const response = folder?.studentResponse?.[0]
+    const response = useMemo(() => {
+        return folderResponse(folder.studentResponse)
+    }, [folder?.studentResponse])
 
     const filesData = RtoV2Api.StudentDocuments.getStudentDocumentFiles(
-        response?.id,
+        response?.id!,
         {
             skip: !response?.id,
         }
@@ -90,26 +94,23 @@ export const FolderFiles = ({
                     <div className="flex items-center gap-1 p-2 bg-slate-50/50 border-b border-slate-100">
                         <button
                             onClick={() => setViewType('active')}
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                                viewType === 'active'
-                                    ? 'bg-gradient-to-r from-white to-blue-50/80 text-[#044866] shadow-sm ring-1 ring-[#044866]/10'
-                                    : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                            }`}
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${viewType === 'active'
+                                ? 'bg-gradient-to-r from-white to-blue-50/80 text-[#044866] shadow-sm ring-1 ring-[#044866]/10'
+                                : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
+                                }`}
                         >
                             <FileCheck
-                                className={`w-3.5 h-3.5 ${
-                                    viewType === 'active'
-                                        ? 'text-[#044866]'
-                                        : 'text-slate-400'
-                                }`}
+                                className={`w-3.5 h-3.5 ${viewType === 'active'
+                                    ? 'text-[#044866]'
+                                    : 'text-slate-400'
+                                    }`}
                             />
                             Active Files
                             <span
-                                className={`ml-1 px-1.5 py-0.5 rounded-full text-[10px] ${
-                                    viewType === 'active'
-                                        ? 'bg-[#044866]/10 text-[#044866]'
-                                        : 'bg-slate-200 text-slate-500'
-                                }`}
+                                className={`ml-1 px-1.5 py-0.5 rounded-full text-[10px] ${viewType === 'active'
+                                    ? 'bg-[#044866]/10 text-[#044866]'
+                                    : 'bg-slate-200 text-slate-500'
+                                    }`}
                             >
                                 {filesData?.data?.filter(
                                     (d: any) => !d.isArchived
@@ -118,26 +119,23 @@ export const FolderFiles = ({
                         </button>
                         <button
                             onClick={() => setViewType('archived')}
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                                viewType === 'archived'
-                                    ? 'bg-gradient-to-r from-white to-red-50/80 text-red-600 shadow-sm ring-1 ring-red-100'
-                                    : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                            }`}
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${viewType === 'archived'
+                                ? 'bg-gradient-to-r from-white to-red-50/80 text-red-600 shadow-sm ring-1 ring-red-100'
+                                : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
+                                }`}
                         >
                             <Archive
-                                className={`w-3.5 h-3.5 ${
-                                    viewType === 'archived'
-                                        ? 'text-red-600'
-                                        : 'text-slate-400'
-                                }`}
+                                className={`w-3.5 h-3.5 ${viewType === 'archived'
+                                    ? 'text-red-600'
+                                    : 'text-slate-400'
+                                    }`}
                             />
                             Archived
                             <span
-                                className={`ml-1 px-1.5 py-0.5 rounded-full text-[10px] ${
-                                    viewType === 'archived'
-                                        ? 'bg-red-50 text-red-600'
-                                        : 'bg-slate-200 text-slate-500'
-                                }`}
+                                className={`ml-1 px-1.5 py-0.5 rounded-full text-[10px] ${viewType === 'archived'
+                                    ? 'bg-red-50 text-red-600'
+                                    : 'bg-slate-200 text-slate-500'
+                                    }`}
                             >
                                 {filesData?.data?.filter(
                                     (d: any) => d.isArchived

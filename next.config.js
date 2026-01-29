@@ -54,6 +54,8 @@ const nextConfig = {
             'skiltrak-dev.s3.ap-southeast-2.amazonaws.com',
         ],
     },
+    output: 'standalone', // Optimized for Vercel deployment size
+    serverExternalPackages: ['@zoomus/websdk', 'pdfjs-dist', 'xlsx', 'exceljs'],
     // compress: true,
     // Enable module optimization
     // experimental: {

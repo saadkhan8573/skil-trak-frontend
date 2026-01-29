@@ -184,35 +184,6 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                 allCommentsAdded
             )
         }
-        // if (!documents.isSuccess || !selectedCourse) return false
-
-        // if (selectedCourse?.results?.length > 0) {
-        //     if (result?.totalSubmission < 3) {
-        //         return (
-        //             (result?.result === Result.ReOpened ||
-        //                 result?.result === Result.NotCompetent ||
-        //                 allCommentsAdded) &&
-        //             result?.result !== Result.Competent
-        //         )
-        //     } else {
-        //         return (
-        //             !documents.isLoading &&
-        //             !documents.isFetching &&
-        //             documents.isSuccess &&
-        //             result?.isManualSubmission &&
-        //             allCommentsAdded &&
-        //             result?.result !== Result.Competent
-        //         )
-        //     }
-        // } else {
-        //     return (
-        //         !documents.isLoading &&
-        //         !documents.isFetching &&
-        //         documents.isSuccess &&
-        //         allCommentsAdded &&
-        //         result?.result !== Result.Competent
-        //     )
-        // }
     }, [documents, selectedCourse, result])
 
     // Section configuration array

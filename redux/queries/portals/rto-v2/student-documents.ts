@@ -47,11 +47,12 @@ export const studentDocumentsEndpoints = (
 
     uploadStudentDocumentFile: builder.mutation<
         any,
-        { stdId: number; folderId: number; body: FormData }
+        { stdId: number; folderId: number; responseId: number; body: FormData }
     >({
-        query: ({ stdId, folderId, body }) => ({
+        query: ({ stdId, folderId, responseId, body }) => ({
             url: `${PREFIX}${stdId}/folder/${folderId}/response/add`,
             method: 'POST',
+            params: { responseId },
             body,
         }),
         invalidatesTags: ['RTO-Documents'],

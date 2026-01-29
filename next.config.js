@@ -54,6 +54,15 @@ const nextConfig = {
             'skiltrak-dev.s3.ap-southeast-2.amazonaws.com',
         ],
     },
+    output: 'standalone',
+    serverExternalPackages: [
+        '@zoomus/websdk',
+        'pdfjs-dist',
+        'xlsx',
+        'exceljs',
+        'jspdf',
+        'canvas',
+    ],
     // compress: true,
     // Enable module optimization
     // experimental: {

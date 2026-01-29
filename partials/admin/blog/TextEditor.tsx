@@ -2,6 +2,7 @@ import {
     Button,
     Card,
     Checkbox,
+    InputRichTextEditor,
     Select,
     ShowErrorNotifications,
     TextArea,
@@ -559,7 +560,7 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
         return () => {
             try {
                 editor.off('text-change', onChange)
-            } catch {}
+            } catch { }
             observer.disconnect()
             window.removeEventListener('resize', onResize)
             root.removeEventListener('scroll', onScroll, true)
@@ -575,7 +576,8 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
 
             return
         }
-        const content = quillRef.current.getEditor().root.innerHTML
+        // const content = quillRef.current.getEditor().root.innerHTML
+        const content = data?.content
 
         if (!data.featuredImage || !data.featuredImage[0]) {
             formMethods.setError('featuredImage', {
@@ -765,15 +767,14 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                         onChange={handleShortDescriptionChange}
                     />
                     <div
-                        className={`${
-                            shortDescriptionWordCount > 385
-                                ? 'text-red-500'
-                                : ' text-slate-500'
-                        } text-sm mb-5`}
+                        className={`${shortDescriptionWordCount > 385
+                            ? 'text-red-500'
+                            : ' text-slate-500'
+                            } text-sm mb-5`}
                     >
                         {`${shortDescriptionWordCount} / 385 words`}
                     </div>
-                    <div
+                    {/* <div
                         ref={editorWrapperRef}
                         style={{ position: 'relative' }}
                     >
@@ -783,7 +784,8 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                             modules={modules}
                         />
                     </div>
-                    <InputErrorMessage name={'content'} />
+                    <InputErrorMessage name={'content'} /> */}
+                    <InputRichTextEditor name={'content'} />
                     <div className="mt-4">
                         <Checkbox
                             onChange={handleChecked}

@@ -1,6 +1,5 @@
-import { Typography } from '@components'
+import { StarRating, Typography } from '@components'
 import Image from 'next/image'
-import ReactStars from 'react-stars'
 
 export const FindWorkplaces = ({ item, onClick }: any) => {
     const photoUrl = item?.photos && item?.photos[0]?.getUrl()
@@ -34,12 +33,11 @@ export const FindWorkplaces = ({ item, onClick }: any) => {
                             </Typography>
                         </div>
 
-                        <ReactStars
+                        <StarRating
                             count={5}
                             value={item?.rating}
                             edit={false}
-                            size={25}
-                            color2={'orange'}
+                            size={17}
                         />
                         <Typography variant="muted" color="text-gray-600">
                             ({item.user_ratings_total || 'N/A'})

@@ -1,8 +1,7 @@
-import React from 'react'
-import { Typography } from '@components/Typography'
 import { InitialAvatar } from '@components/InitialAvatar'
+import { StarRating } from '@components/StarRating'
+import { Typography } from '@components/Typography'
 import { ellipsisText } from '@utils'
-import ReactStars from 'react-stars'
 
 const reviews = [
     {
@@ -53,12 +52,12 @@ export const StudentReviews = () => {
                             {ellipsisText(review?.review, 200)}
                         </Typography>
                         <div className="flex justify-end">
-                            <ReactStars
+                            <StarRating
                                 count={5}
                                 value={review?.rating}
                                 edit={false}
                                 size={25}
-                                color2={index === 1 ? "#043873" : '#F9A307'}
+                                activeColor={index === 1 ? "#043873" : '#F9A307'}
                             />
                         </div>
                     </div>

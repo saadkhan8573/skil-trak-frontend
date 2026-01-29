@@ -1,5 +1,5 @@
+import { StarRating } from '@components'
 import { useState } from 'react'
-import ReactStars from 'react-stars'
 
 const TRUNCATED_LIMIT = 180
 export const ReviewSlide = ({ content }: any) => {
@@ -30,6 +30,13 @@ export const ReviewSlide = ({ content }: any) => {
           sm:overflow-hidden md:p-0
         "
         >
+            <StarRating
+                count={5}
+                value={5}
+                edit={false}
+                size={20}
+                activeColor={'orange'}
+            />
             <div
                 className="
             w-32
@@ -76,18 +83,12 @@ export const ReviewSlide = ({ content }: any) => {
                         </p>
                     </div>
                     <div className="rating my-3 lg:my-0">
-                        {/* <StarRatings
-                            rating={5}
-                            starRatedColor="orange"
-                            starDimension="14px"
-                            starSpacing="4px"
-                        /> */}
-                        <ReactStars
+                        <StarRating
                             count={5}
                             value={5}
                             edit={false}
-                            size={25}
-                            color2={'orange'}
+                            size={20}
+                            activeColor={'orange'}
                         />
                     </div>
                 </div>

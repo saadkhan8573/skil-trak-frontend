@@ -48,6 +48,7 @@ export * from './StudentAISearch'
 export * from './PageNotFound'
 export * from './ErrorBoundary'
 export * from './MasonryGrid'
+export * from './StarRating'
 
 // export * from './Pagination'
 export * from './PopUp'

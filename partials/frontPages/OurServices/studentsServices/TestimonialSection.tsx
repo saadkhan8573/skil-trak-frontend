@@ -1,6 +1,5 @@
-import { Typography } from '@components'
+import { StarRating, Typography } from '@components'
 import Image from 'next/image'
-import ReactStars from 'react-stars'
 import { CgQuote } from 'react-icons/cg'
 
 export const TestimonialSection = () => {
@@ -84,12 +83,12 @@ export const TestimonialSection = () => {
                                         >
                                             Web Designer
                                         </Typography>
-                                        <ReactStars
+                                        <StarRating
                                             count={5}
                                             value={4.5}
                                             edit={false}
-                                            size={25}
-                                            color2={'#ffd700'}
+                                            size={18}
+                                            activeColor={'#ffd700'}
                                         />
                                     </div>
                                 </div>

@@ -1,6 +1,4 @@
-import { ActionButton, Typography } from '@components'
-import React from 'react'
-import ReactStars from 'react-stars'
+import { ActionButton, StarRating, Typography } from '@components'
 
 export const WorkplaceFeedback = ({
     onViewPlacementStartedAnswers,
@@ -21,12 +19,10 @@ export const WorkplaceFeedback = ({
             </ActionButton>
             <div className="flex items-center gap-x-1">
                 <div className="flex items-center gap-x-2">
-                    <ReactStars
+                    <StarRating
                         count={5}
                         value={selectedWorkplace?.studentFeedBacks?.[0]?.rating}
                         edit={false}
-                        size={27}
-                        color2={'#ffd700'}
                     />
                     <Typography variant="label">
                         {selectedWorkplace?.studentFeedBacks?.[0]?.rating}

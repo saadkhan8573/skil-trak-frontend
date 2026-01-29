@@ -77,6 +77,13 @@ export const teamsEndpoints = (
         }),
         providesTags: ['Team'],
     }),
+    getTicketsByUserId: builder.query<any, any>({
+        query: ({ params, id }) => ({
+            url: `${PREFIX}-task/workplace/${id}/tickets-list`,
+            params,
+        }),
+        providesTags: ['Team'],
+    }),
     getUserTeam: builder.query<any, void>({
         query: () => `${PREFIX}-team/list-by-user/current`,
         providesTags: ['Team'],

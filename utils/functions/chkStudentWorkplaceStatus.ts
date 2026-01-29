@@ -32,7 +32,7 @@ export const WorkplaceStatusLabels: Record<WorkplaceCurrentStatus, string> = {
     [WorkplaceCurrentStatus.AwaitingWorkplaceResponse]: 'Waiting For Industry',
     [WorkplaceCurrentStatus.AwaitingStudentResponse]: 'Waiting For Student',
     [WorkplaceCurrentStatus.AwaitingRtoResponse]: 'Waiting For RTO',
-    [WorkplaceCurrentStatus.AppointmentBooked]: 'Appointment Booked',
+    [WorkplaceCurrentStatus.AppointmentBooked]: 'Appointment',
     [WorkplaceCurrentStatus.AwaitingAgreementSigned]:
         'Agreement & Eligibility (Pending)',
     [WorkplaceCurrentStatus.AgreementSigned]:

@@ -2,6 +2,16 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 
+// const Editor = dynamic<EditorProps>(
+//     () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
+//     {
+//         ssr: false,
+//     }
+// )
+
+const htmlToDraft =
+    typeof window === 'object' && require('html-to-draftjs').default
+
 import { EditorState } from 'draft-js'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
@@ -9,17 +19,18 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import {
     ActionButton,
     AuthorizedUserComponent,
+    Badge,
     Button,
     Checkbox,
     draftToHtmlText,
+    htmlToDraftText,
+    InputContentEditor,
     inputEditorErrorMessage,
-    InputRichTextEditor,
-    inputRichTextEditorErrorMessage,
     RadioGroup,
     Select,
     ShowErrorNotifications,
     TextInput,
-    Typography
+    Typography,
 } from '@components'
 
 // query
@@ -33,8 +44,9 @@ import { getUserCredentials, HtmlToPlainText } from '@utils'
 import ClickAwayListener from 'react-click-away-listener'
 import { FaTimes } from 'react-icons/fa'
 import { IoCheckmark } from 'react-icons/io5'
-import { RiShining2Fill } from 'react-icons/ri'
 import { StudentNotesDropdown } from '../components'
+import { ReWritePhrase } from '@pages/api/openai/fixGrammer'
+import { RiShining2Fill } from 'react-icons/ri'
 interface onSubmitType {
     title: string
     body: EditorState
@@ -181,7 +193,7 @@ export const CreateStudentNote = ({
     const validationSchema = Yup.object({
         title: Yup.string().required('Title is required'),
         body: Yup.mixed().test('Message', 'Must Provide Message', (value) =>
-            inputRichTextEditorErrorMessage(value)
+            inputEditorErrorMessage(value)
         ),
     })
 
@@ -202,6 +214,10 @@ export const CreateStudentNote = ({
         setIsSendDraft(false)
 
         if (values?.body) {
+            // const body = draftToHtml(
+            //     convertToRaw(values?.body.getCurrentContent())
+            // )
+            const body = draftToHtmlText(values?.body)
             if (selectedType !== 'custom' && role !== UserRoles.RTO) {
                 const noteRes: any = await changeNoteStatus({
                     id: Number(selectedContent?.value),
@@ -214,6 +230,7 @@ export const CreateStudentNote = ({
                 if (noteRes?.data) {
                     const res: any = await createNote({
                         ...values,
+                        body,
                         isSuccess:
                             selectedStatus === NotesTemplateStatus.Success
                                 ? true
@@ -238,6 +255,7 @@ export const CreateStudentNote = ({
             } else if (selectedType === 'custom' || role === UserRoles.RTO) {
                 const res: any = await createNote({
                     ...values,
+                    body,
                     isPinned: isBodyGreaterThen30 ? false : values?.isPinned,
                     student: studentId,
                     postedFor: receiverId,
@@ -264,7 +282,7 @@ export const CreateStudentNote = ({
 
         if (data?.correctedText) {
             setNoteContent(data?.correctedText)
-            // methods.setValue('body', htmlToDraftText(data?.correctedText))
+            methods.setValue('body', htmlToDraftText(data?.correctedText))
         }
     }
 
@@ -427,9 +445,9 @@ export const CreateStudentNote = ({
                                                                     }
                                                                 }}
                                                                 className={`${selectedContent?.value ===
-                                                                    template?.value
-                                                                    ? 'bg-gray-200'
-                                                                    : ''
+                                                                        template?.value
+                                                                        ? 'bg-gray-200'
+                                                                        : ''
                                                                     } hover:bg-gray-200 py-2 border-b border-secondary-dark px-2 flex items-center justify-between gap-x-2 cursor-pointer`}
                                                             >
                                                                 <div className="flex items-center gap-x-2">
@@ -572,16 +590,16 @@ export const CreateStudentNote = ({
                                                 ) {
                                                     methods.setValue(
                                                         'body',
-                                                        // htmlToDraftText(
-                                                        updatedContent?.successContent
-                                                        // )
+                                                        htmlToDraftText(
+                                                            updatedContent?.successContent
+                                                        )
                                                     )
                                                 } else {
                                                     methods.setValue(
                                                         'body',
-                                                        // htmlToDraftText(
-                                                        updatedContent?.failureContent
-                                                        // )
+                                                        htmlToDraftText(
+                                                            updatedContent?.failureContent
+                                                        )
                                                     )
                                                 }
                                             }}
@@ -649,17 +667,14 @@ export const CreateStudentNote = ({
                                         }}
                                     >
                                         <div className="mb-3">
-                                            <InputRichTextEditor name='body' onChange={(e: any) => {
-                                                setNoteContent(e)
-                                            }} />
-                                            {/* <InputContentEditor
+                                            <InputContentEditor
                                                 name={'body'}
                                                 onChange={(e: any) => {
                                                     const note =
                                                         draftToHtmlText(e)
                                                     setNoteContent(note)
                                                 }}
-                                            /> */}
+                                            />
                                         </div>
                                     </ClickAwayListener>
                                 </div>

@@ -1,5 +1,6 @@
 import {
     LoadingAnimation,
+    MasonryGrid,
     NoData,
     SectorCourseStudentCount,
     StudentAISearch,
@@ -15,9 +16,6 @@ import { AuthUtils } from '@utils'
 import moment from 'moment'
 import { ReactElement, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
-import StackGrid, { transitions } from 'react-stack-grid'
-
-const { scaleDown } = transitions
 
 const AdminDashboard: NextPageWithLayout = () => {
     const navBar = useNavbar()
@@ -156,18 +154,13 @@ const AdminDashboard: NextPageWithLayout = () => {
                 {sectorsStudentsCount.isLoading ? (
                     <LoadingAnimation size={80} height={'h-48'} />
                 ) : sectorsStudentsCount?.data &&
-                  sectorsStudentsCount?.data?.length > 0 ? (
-                    <StackGrid
+                    sectorsStudentsCount?.data?.length > 0 ? (
+                    <MasonryGrid
                         columnWidth={
                             isMobile ? '100%' : isTablet ? '50%' : '33%'
                         }
                         gutterWidth={11}
                         gutterHeight={11}
-                        appear={scaleDown.appear}
-                        appeared={scaleDown.appeared}
-                        enter={scaleDown.enter}
-                        entered={scaleDown.entered}
-                        leaved={scaleDown.leaved}
                     >
                         {sectorsStudentsCount?.data?.map(
                             (sector: any, i: number) => (
@@ -180,7 +173,7 @@ const AdminDashboard: NextPageWithLayout = () => {
                                 />
                             )
                         )}
-                    </StackGrid>
+                    </MasonryGrid>
                 ) : (
                     sectorsStudentsCount.isSuccess && (
                         <NoData text={'No Sectors Student Count'} />

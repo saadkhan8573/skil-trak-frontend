@@ -2,6 +2,7 @@ import {
     Button,
     Card,
     Checkbox,
+    InputRichTextEditor,
     Select,
     ShowErrorNotifications,
     TextArea,
@@ -561,7 +562,7 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
         return () => {
             try {
                 editor.off('text-change', onChange)
-            } catch {}
+            } catch { }
             observer.disconnect()
             window.removeEventListener('resize', onResize)
             root.removeEventListener('scroll', onScroll, true)
@@ -770,22 +771,25 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                         onChange={handleShortDescriptionChange}
                     />
                     <div
-                        className={`${
-                            shortDescriptionWordCount > 385
-                                ? 'text-red-500'
-                                : ' text-slate-500'
-                        } text-sm mb-5`}
+                        className={`${shortDescriptionWordCount > 385
+                            ? 'text-red-500'
+                            : ' text-slate-500'
+                            } text-sm mb-5`}
                     >
                         {`${shortDescriptionWordCount} / 385 words`}
                     </div>
-                    <div ref={editorWrapperRef}>
+                    <InputRichTextEditor
+                        name="content"
+                        label="Content"
+                    />
+                    {/* <div ref={editorWrapperRef}>
                         <ReactQuill
                             theme="snow"
                             ref={quillRef}
                             modules={modules}
                         />
                     </div>
-                    <InputErrorMessage name={'content'} />
+                    <InputErrorMessage name={'content'} /> */}
                     <div className="mt-4">
                         <Checkbox
                             onChange={handleChecked}

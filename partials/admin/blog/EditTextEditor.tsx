@@ -2,13 +2,14 @@ import {
     Button,
     Card,
     Checkbox,
+    InputRichTextEditor,
     Select,
+    ShowErrorNotifications,
     TextArea,
     TextInput,
     Typography,
     UploadFile,
     useShowErrorNotification,
-    ShowErrorNotifications,
 } from '@components'
 import { FileUpload } from '@hoc'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -17,7 +18,6 @@ import { adminApi, AdminApi } from '@queries'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useMemo, useRef, useState } from 'react'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
-import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import * as yup from 'yup'
 
@@ -41,7 +41,7 @@ export default function EditTextEditor({
     blogData,
     tagIds,
 }: // onSubmit,
-TextEditorProps) {
+    TextEditorProps) {
     const quillRef = useRef<any>(null)
     const autoUploadingRef = useRef<boolean>(false)
     const editorWrapperRef = useRef<HTMLDivElement | null>(null)
@@ -54,7 +54,6 @@ TextEditorProps) {
     const { notification } = useNotification()
     const [selectedCategories, setSelectedCategories] = useState<any>([])
     const [blogPost, setBlogPost] = useState<any>('')
-    const [removeFaq, removeFaqResult] = adminApi.useRemoveFaqMutation()
     const [modal, setModal] = useState<ReactElement | null>(null)
 
     const [shortDescriptionWordCount, setShortDescriptionWordCount] =
@@ -88,9 +87,7 @@ TextEditorProps) {
     const onModalCancelClicked = () => {
         setModal(null)
     }
-    const preFilledCategoriesOption = blogData?.category?.map(
-        (category: any) => category?.id
-    )
+
     const handleChecked = () => {
         setIsFeatured(!isFeatured)
     }
@@ -149,7 +146,7 @@ TextEditorProps) {
             author: blogData?.author || '',
             isFeatured: blogData?.isFeatured || false,
             category: [],
-            content: '',
+            content: blogData?.content || '',
             blogQuestions: blogData?.blogQuestions || [
                 { question: '', answer: '' },
             ],
@@ -627,8 +624,8 @@ TextEditorProps) {
                 fileObject={
                     coverUrl
                         ? {
-                              type: 'image',
-                          }
+                            type: 'image',
+                        }
                         : fileObject
                 }
             />
@@ -638,7 +635,7 @@ TextEditorProps) {
     // Quill Editor
     useEffect(() => {
         if (blogData && !coverUrl) {
-            quillRef.current.getEditor().root.innerHTML = blogData.content || ''
+            // quillRef.current.getEditor().root.innerHTML = blogData.content || ''
             setCoverUrl(blogData?.featuredImage)
         }
     }, [blogData])
@@ -714,7 +711,7 @@ TextEditorProps) {
         return () => {
             try {
                 editor.off('text-change', onChange)
-            } catch {}
+            } catch { }
             observer.disconnect()
             window.removeEventListener('resize', onResize)
             root.removeEventListener('scroll', onScroll, true)
@@ -810,7 +807,7 @@ TextEditorProps) {
         }
 
         if (tagIds) {
-            ;(values as any)['tags'] = tagIds
+            ; (values as any)['tags'] = tagIds
         }
 
         const formData = new FormData()
@@ -900,15 +897,15 @@ TextEditorProps) {
                             onChange={handleShortDescriptionChange}
                         />
                         <div
-                            className={`${
-                                shortDescriptionWordCount > 385
-                                    ? 'text-red-500'
-                                    : ' text-slate-500'
-                            } text-sm mb-5`}
+                            className={`${shortDescriptionWordCount > 385
+                                ? 'text-red-500'
+                                : ' text-slate-500'
+                                } text-sm mb-5`}
                         >
                             {`${shortDescriptionWordCount} / 385 words`}
                         </div>
-                        <div
+                        <InputRichTextEditor name={'content'} />
+                        {/* <div
                             ref={editorWrapperRef}
                             style={{ position: 'relative' }}
                         >
@@ -918,7 +915,7 @@ TextEditorProps) {
                                 modules={modules}
                             />
                         </div>
-                        <InputErrorMessage name={'content'} />
+                        <InputErrorMessage name={'content'} /> */}
                         <div className="mt-4">
                             <Checkbox
                                 onChange={handleChecked}
@@ -944,9 +941,8 @@ TextEditorProps) {
                                             <div className="flex flex-col w-3/4">
                                                 <TextInput
                                                     name={`blogQuestions.${index}.question`}
-                                                    label={`FAQ ${
-                                                        index + 1
-                                                    } Question`}
+                                                    label={`FAQ ${index + 1
+                                                        } Question`}
                                                     placeholder="Enter Question"
                                                     defaultValue={faq.question}
                                                     required
@@ -956,9 +952,8 @@ TextEditorProps) {
                                                 />
                                                 <TextArea
                                                     name={`blogQuestions.${index}.answer`}
-                                                    label={`FAQ ${
-                                                        index + 1
-                                                    } Answer`}
+                                                    label={`FAQ ${index + 1
+                                                        } Answer`}
                                                     placeholder="Enter Answer"
                                                     // defaultValue={faq.answer}
                                                     required

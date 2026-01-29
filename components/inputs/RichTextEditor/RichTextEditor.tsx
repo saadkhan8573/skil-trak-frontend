@@ -38,8 +38,9 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@components/ui/popover"
-import { AdminApi } from "@queries"
+import { AdminApi, adminApi } from "@queries"
 import { useNotification } from "@hooks"
+import * as pmState from "@tiptap/pm/state"
 
 // Custom Image Extension with Width and Alignment support
 const CustomImage = Image.extend({
@@ -60,11 +61,21 @@ const CustomImage = Image.extend({
                 renderHTML: attributes => ({
                     alignment: attributes.alignment,
                 })
+            },
+            autoUploadAttempted: {
+                default: false,
+                parseHTML: element => element.hasAttribute('data-auto-upload-attempted'),
+                renderHTML: attributes => {
+                    if (attributes.autoUploadAttempted) {
+                        return { 'data-auto-upload-attempted': 'true' }
+                    }
+                    return {}
+                }
             }
         }
     },
     renderHTML({ HTMLAttributes }) {
-        const { width, alignment, ...rest } = HTMLAttributes
+        const { width, alignment, autoUploadAttempted, ...rest } = HTMLAttributes
         const style = [
             `width: ${width || "100%"}`,
             "height: auto",
@@ -98,6 +109,22 @@ const CustomImage = Image.extend({
         }
     }
 })
+
+const SERVER_IMAGE_PREFIXES = [
+    'https://skiltrak-dev.s3.ap-southeast-2.amazonaws.com/',
+    'https://skiltrak-dev.s3.amazonaws.com/',
+    'https://skiltrak-prod.s3.ap-southeast-2.amazonaws.com/',
+    'https://skiltrak-prod.s3.amazonaws.com/',
+]
+
+const isServerImageUrl = (url: string) => {
+    if (!url) return false
+    // Also check if it contains skiltrak and s3 for broader coverage
+    const isInternal = SERVER_IMAGE_PREFIXES.some((prefix) => url.startsWith(prefix)) ||
+        (url.includes('skiltrak') && url.includes('s3'))
+    return isInternal
+}
+
 
 interface RichTextEditorProps {
     value?: string
@@ -438,7 +465,214 @@ export const RichTextEditor = ({
     error,
 }: RichTextEditorProps) => {
     const { notification } = useNotification()
-    const [uploadImage, uploadImageResult] = AdminApi.Blogs.uploadImage()
+    const [uploadImage, uploadImageResult] = adminApi.useUploadImageMutation()
+    const editorWrapperRef = useRef<HTMLDivElement>(null)
+    const autoUploadingRef = useRef<boolean>(false)
+    const [isAutoUploading, setIsAutoUploading] = useState(false)
+
+    const uploadImageToServer = async (file: File) => {
+        const formData = new FormData()
+        formData.append('file', file)
+
+        try {
+            const res: any = await uploadImage(formData)
+            if (res?.data?.url) {
+                return res.data.url
+            }
+            return null
+        } catch (err) {
+            return null
+        }
+    }
+
+    const computeImageOverlays = () => {
+        if (!editor || !editorWrapperRef.current) return
+
+        const view = editor.view
+        const wrapper = editorWrapperRef.current
+        const wrapperRect = wrapper.getBoundingClientRect()
+
+        let overlay: HTMLDivElement | null = wrapper.querySelector('.tiptap-image-upload-overlays')
+
+        if (!overlay) {
+            overlay = document.createElement('div')
+            overlay.className = 'tiptap-image-upload-overlays'
+            overlay.style.position = 'absolute'
+            overlay.style.top = '0'
+            overlay.style.left = '0'
+            overlay.style.right = '0'
+            overlay.style.bottom = '0'
+            overlay.style.pointerEvents = 'none'
+            wrapper.appendChild(overlay)
+        }
+
+        overlay.innerHTML = ''
+
+        editor.state.doc.descendants((node, pos) => {
+            if (node.type.name === 'image') {
+                const src = node.attrs.src || ''
+                if (isServerImageUrl(src)) return
+
+                // Get coordinates of the image node
+                const dom = view.nodeDOM(pos) as HTMLElement
+                if (!dom) return
+
+                const imgRect = dom.getBoundingClientRect()
+                if (imgRect.width === 0 || imgRect.height === 0) return
+
+                const top = imgRect.top - wrapperRect.top + 4
+                const right = wrapperRect.right - imgRect.right + 4
+
+                const button = document.createElement('button')
+                button.type = 'button'
+                button.textContent = 'Upload'
+                button.className = 'tiptap-image-upload-float'
+                button.style.position = 'absolute'
+                button.style.top = `${Math.max(top, 0)}px`
+                button.style.right = `${Math.max(right, 0)}px`
+                button.style.zIndex = '30'
+                button.style.background = '#2563eb'
+                button.style.color = '#ffffff'
+                button.style.borderRadius = '4px'
+                button.style.padding = '2px 8px'
+                button.style.fontSize = '10px'
+                button.style.fontWeight = '600'
+                button.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)'
+                button.style.cursor = 'pointer'
+                button.style.pointerEvents = 'auto'
+
+                button.onclick = async (e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+
+                    let fileToUpload: File | null = null
+                    try {
+                        const response = await fetch(src, { mode: 'cors' })
+                        if (!response.ok) throw new Error('Fetch failed')
+                        const blob = await response.blob()
+                        fileToUpload = new File([blob], 'image.png', { type: blob.type })
+                    } catch (err) {
+                        const input = document.createElement('input')
+                        input.type = 'file'
+                        input.accept = 'image/*'
+                        input.onchange = () => {
+                            const f = input.files?.[0] || null
+                            if (f) {
+                                fileToUpload = f
+                                void proceed()
+                            }
+                        }
+                        input.click()
+                        return
+                    }
+
+                    await proceed()
+
+                    async function proceed() {
+                        if (!fileToUpload) return
+                        const uploadedUrl = await uploadImageToServer(fileToUpload)
+                        if (uploadedUrl) {
+                            editor?.view.dispatch(
+                                editor.state.tr.setNodeMarkup(pos, undefined, {
+                                    ...node.attrs,
+                                    src: uploadedUrl,
+                                })
+                            )
+                            computeImageOverlays()
+                        }
+                    }
+                }
+
+                overlay?.appendChild(button)
+            }
+        })
+    }
+
+
+    const autoUploadExternalImages = async () => {
+        if (autoUploadingRef.current || !editor) return
+
+        const externalImages: { pos: number, src: string, node: any }[] = []
+        editor.state.doc.descendants((node, pos) => {
+            if (node.type.name === 'image') {
+                const src = node.attrs.src || ''
+                if (!isServerImageUrl(src) && !node.attrs.autoUploadAttempted) {
+                    externalImages.push({ pos, src, node })
+                }
+            }
+        })
+
+        if (externalImages.length === 0) return
+
+        autoUploadingRef.current = true
+        setIsAutoUploading(true)
+        try {
+            for (const { pos, src, node } of externalImages) {
+                // Find current position of this node (it might have shifted)
+                let currentPos = -1
+                editor.state.doc.descendants((n, p) => {
+                    if (n === node) {
+                        currentPos = p
+                        return false
+                    }
+                })
+
+                const targetPos = currentPos !== -1 ? currentPos : pos
+
+                // Mark as attempted in the editor state
+                editor.view.dispatch(
+                    editor.state.tr.setNodeMarkup(targetPos, undefined, {
+                        ...node.attrs,
+                        autoUploadAttempted: true,
+                    })
+                )
+
+                try {
+                    // Try fetch without mode:cors first to allow blob/data URLs and simple gets
+                    const response = await fetch(src)
+                    if (!response.ok) throw new Error('Fetch failed')
+                    const blob = await response.blob()
+
+                    if (blob.size > 5 * 1024 * 1024) continue
+
+                    const fileName = (src.split('/').pop() || 'image').split('?')[0] || 'image.png'
+                    const file = new File([blob], fileName, { type: blob.type })
+                    const uploadedUrl = await uploadImageToServer(file)
+
+                    if (uploadedUrl) {
+                        // Re-check position before final update
+                        let finalPos = -1
+                        editor.state.doc.descendants((n, p) => {
+                            if (n === node || (n.type.name === 'image' && n.attrs.src === src)) {
+                                finalPos = p
+                                return false
+                            }
+                        })
+
+                        const actualFinalPos = finalPos !== -1 ? finalPos : targetPos
+
+                        editor.view.dispatch(
+                            editor.state.tr.setNodeMarkup(actualFinalPos, undefined, {
+                                ...node.attrs,
+                                src: uploadedUrl,
+                                autoUploadAttempted: true,
+                            })
+                        )
+                    }
+                } catch (err) {
+                    console.error("Auto-upload failed for image:", src, err)
+                    continue
+                }
+            }
+        } finally {
+            autoUploadingRef.current = false
+            setIsAutoUploading(false)
+            computeImageOverlays()
+        }
+    }
+
+
+
 
     const editor = useEditor({
         extensions: [
@@ -469,7 +703,12 @@ export const RichTextEditor = ({
         immediatelyRender: false,
         onUpdate: ({ editor }) => {
             onChange?.(editor.getHTML())
+            setTimeout(() => {
+                computeImageOverlays()
+                void autoUploadExternalImages()
+            }, 0)
         },
+
         editorProps: {
             attributes: {
                 class: cn(
@@ -479,14 +718,46 @@ export const RichTextEditor = ({
                     "prose-a:text-primaryNew prose-a:underline"
                 ),
             },
+            handlePaste: (view, event) => {
+                const { clipboardData } = event
+                if (!clipboardData) return false
+
+                // 1. Handle image files from clipboard (e.g. screenshots)
+                const items = Array.from(clipboardData.items)
+                const imageItem = items.find(item => item.type.startsWith('image'))
+
+                if (imageItem) {
+                    const file = imageItem.getAsFile()
+                    if (file) {
+                        event.preventDefault()
+                        void (async () => {
+                            const url = await uploadImageToServer(file)
+                            if (url) {
+                                view.dispatch(view.state.tr.replaceSelectionWith(
+                                    view.state.schema.nodes.image.create({ src: url })
+                                ))
+                            }
+                        })()
+                        return true
+                    }
+                }
+
+                // 2. Handle HTML paste that might contain images
+                // Tiptap handles this by default, but we want to ensure autoUpload triggers
+                // so we don't return true here, let Tiptap proceed.
+                // Our onUpdate hook will catch the new images.
+
+                return false
+            },
+
             handleDOMEvents: {
+
                 mousedown: (view, event) => {
                     const target = event.target as HTMLElement
                     if (target && target.nodeName === 'IMG') {
                         const { state } = view
                         const nodePos = view.posAtDOM(target, 0)
                         if (nodePos >= 0) {
-                            const pmState = require('@tiptap/pm/state')
                             if (pmState?.NodeSelection) {
                                 view.dispatch(state.tr.setSelection(pmState.NodeSelection.create(state.doc, nodePos)))
                                 return true
@@ -503,7 +774,6 @@ export const RichTextEditor = ({
                 if (event.target instanceof HTMLImageElement) {
                     const nodePos = view.posAtDOM(event.target, 0)
                     if (nodePos >= 0) {
-                        const pmState = require('@tiptap/pm/state')
                         if (pmState?.NodeSelection) {
                             view.dispatch(state.tr.setSelection(pmState.NodeSelection.create(state.doc, nodePos)))
                             return true
@@ -518,7 +788,6 @@ export const RichTextEditor = ({
                 for (const p of posToCheck) {
                     const node = state.doc.nodeAt(p)
                     if (node && node.type.name === 'image') {
-                        const pmState = require('@tiptap/pm/state')
                         if (pmState?.NodeSelection) {
                             view.dispatch(state.tr.setSelection(pmState.NodeSelection.create(state.doc, p)))
                             return true
@@ -580,23 +849,76 @@ export const RichTextEditor = ({
     useEffect(() => {
         if (editor && value !== editor.getHTML()) {
             editor.commands.setContent(value || "")
+            setTimeout(() => {
+                computeImageOverlays()
+                void autoUploadExternalImages()
+            }, 0)
         }
     }, [value, editor])
 
+    // Setup observers and listeners
+    useEffect(() => {
+        if (!editor || !editorWrapperRef.current) return
+
+        const root = editor.view.dom
+        const observer = new MutationObserver(() => {
+            computeImageOverlays()
+            void autoUploadExternalImages()
+        })
+
+        observer.observe(root, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['src'],
+        })
+
+        const onResize = () => computeImageOverlays()
+        const onScroll = () => computeImageOverlays()
+
+        window.addEventListener('resize', onResize)
+        editorWrapperRef.current.addEventListener('scroll', onScroll, true)
+
+        // Initial check
+        setTimeout(() => {
+            computeImageOverlays()
+            void autoUploadExternalImages()
+        }, 500)
+
+        return () => {
+            observer.disconnect()
+            window.removeEventListener('resize', onResize)
+            editorWrapperRef.current?.removeEventListener('scroll', onScroll, true)
+        }
+    }, [editor])
+
+
     return (
         <div className={cn("space-y-2", className)}>
+            {(uploadImageResult?.isLoading || isAutoUploading) && (
+                <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[1000] animate-fade-in">
+                    <div className="bg-primaryNew rounded-lg shadow-lg border border-gray-200 px-6 py-4 flex items-center gap-3">
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                        <span className="font-medium text-white">
+                            Uploading image...
+                        </span>
+                    </div>
+                </div>
+            )}
             {label && <Label className="text-sm font-medium">{label}</Label>}
             <div
+                ref={editorWrapperRef}
                 className={cn(
                     "relative min-h-[300px] max-h-[500px] w-full rounded-md border border-input bg-background overflow-y-auto custom-scrollbar flex flex-col",
                     "focus-within:ring-2 focus-within:ring-ring/50 focus-within:border-ring transition-all",
                     error && "border-destructive focus-within:ring-destructive/50"
                 )}
             >
+
                 <Toolbar
                     editor={editor}
                     onImageUpload={handleImageUpload}
-                    isUploading={uploadImageResult.isLoading}
+                    isUploading={!!uploadImageResult?.isLoading}
                 />
                 <EditorContent editor={editor} />
             </div>

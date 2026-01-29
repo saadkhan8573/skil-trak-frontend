@@ -11,4 +11,5 @@ export interface AdminWorkplaceFiltersType {
     industryId: number
     depId: number
     courseId: number
+    nowp: string
 }

@@ -1,4 +1,3 @@
-
 import { Button, ShowErrorNotifications } from '@components'
 import {
     Dialog,
@@ -32,7 +31,6 @@ export function GenerateIndustryBioModal({
         setGeneratedBio('')
         try {
             const res = await generateBio(industryId).unwrap()
-            console.log({ res })
             // Assuming the API returns { data: "generated bio string" } or similar
             // Adjust based on actual API response structure
             setGeneratedBio(res?.bio)

@@ -60,7 +60,6 @@ export const OnViewMapFutureIndustryDetailsTab = ({
         return undefined
     }
     const studentId = getStudentId()
-    console.log('studentId', studentId)
 
     const subadmin = useSubadminProfile()
 
@@ -188,8 +187,8 @@ export const OnViewMapFutureIndustryDetailsTab = ({
                             <div className="flex items-center gap-2 mb-1">
                                 <h3
                                     className={`font-semibold text-sm truncate ${true
-                                            ? 'text-emerald-700'
-                                            : 'text-gray-800'
+                                        ? 'text-emerald-700'
+                                        : 'text-gray-800'
                                         }`}
                                     title={industryDetails?.data?.businessName}
                                 >

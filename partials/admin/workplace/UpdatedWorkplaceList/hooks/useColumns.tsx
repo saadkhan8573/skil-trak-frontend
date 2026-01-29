@@ -4,8 +4,10 @@ import {
     CourseWorkplaceCell,
     IndustryDetail,
     RtoWorkplaceCell,
+    StudentTicketsCell,
     StudentWorkplaceCellInfo,
     UpdatedWorkplaceRequest,
+    AdminCancelCell,
 } from '../components'
 
 export const useColumns = () => {
@@ -22,6 +24,7 @@ export const useColumns = () => {
                 )
             },
         },
+
         {
             header: () => 'Industry Status',
             accessorKey: 'status',
@@ -57,16 +60,19 @@ export const useColumns = () => {
             ),
         },
         {
-            header: () => 'Coordinator',
-            accessorKey: 'coordinator',
-            cell: ({ row }: any) => (
-                <UpdatedWorkplaceRequest
-                    workplace={row?.original}
-                    assignToMe={true}
-                />
-            ),
+            header: () => 'Tickets',
+            accessorKey: 'tickets',
+            cell: (info) => {
+                return (
+                    <StudentTicketsCell
+                        wpId={info?.row?.original?.id}
+                        ticketsCount={
+                            info?.row?.original?.student?.tickets?.length || 0
+                        }
+                    />
+                )
+            },
         },
-
         {
             accessorKey: 'createdAt',
             header: () => <span>WP Created At</span>,
@@ -80,6 +86,13 @@ export const useColumns = () => {
             cell: ({ row }: any) => (
                 <UserCreatedAt createdAt={row.original?.student?.createdAt} />
             ),
+        },
+        {
+            header: () => 'Admin Cancel',
+            accessorKey: 'cancel',
+            cell: (info) => {
+                return <AdminCancelCell wpId={info?.row?.original?.id} />
+            },
         },
     ]
     return Columns

@@ -4,7 +4,6 @@ import { useNotification } from '@hooks'
 import { CommonApi } from '@queries'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { read, utils } from 'xlsx'
 import { IndustryListingDepartment } from '../enum'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
@@ -28,6 +27,7 @@ export const ImportIndustriesList = () => {
 
     const onFileChange = async (e: any, fileData: any) => {
         try {
+            const { read, utils } = await import('xlsx')
             const wb = read(e.target.result, { type: 'binary' })
             const sheets = wb.SheetNames
 
@@ -52,8 +52,8 @@ export const ImportIndustriesList = () => {
                 region: ind?.states,
                 sector: ind?.sector
                     ? String(ind?.sector)
-                          ?.split(',')
-                          ?.map((s: any) => Number(s))
+                        ?.split(',')
+                        ?.map((s: any) => Number(s))
                     : null,
             })),
         }).then((res: any) => {
@@ -113,7 +113,7 @@ export const ImportIndustriesList = () => {
                         onChange={onFileChange}
                         fileAsObject={false}
                         result={importListResult}
-                        // acceptTypes={['.xlsx, .csv']}
+                    // acceptTypes={['.xlsx, .csv']}
                     />
                     <div className="flex items-center justify-end mt-2">
                         <Button
@@ -128,7 +128,7 @@ export const ImportIndustriesList = () => {
 
             <div className="mt-5">
                 {importListResult?.data?.errorMails &&
-                importListResult?.data?.errorMails?.length > 0 ? (
+                    importListResult?.data?.errorMails?.length > 0 ? (
                     <div className="flex flex-col gap-y-1">
                         {duplicatedIndustries('listing') &&
                             duplicatedIndustries('listing')?.length > 0 && (

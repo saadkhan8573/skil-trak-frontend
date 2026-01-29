@@ -9,7 +9,6 @@ import classNames from 'classnames'
 // query
 import { useNotification } from '@hooks'
 import { CommonApi } from '@queries'
-import jsPDF from 'jspdf'
 import Image from 'next/image'
 import { ReactElement, useState, useEffect } from 'react'
 export const ImportantDocuments = ({
@@ -54,10 +53,11 @@ export const ImportantDocuments = ({
     const plainText = contentUrl?.replace(/<[^>]+>/g, '')
 
     // pdf
-    const downloadPdf = () => {
+    const downloadPdf = async () => {
         const text = plainText
 
         // Create a new jsPDF instance
+        const { default: jsPDF } = await import('jspdf')
         const pdf = new jsPDF()
 
         const maxWidth = 180
@@ -127,8 +127,8 @@ export const ImportantDocuments = ({
                                 />
                             </div>
                         ) : ['mp4', 'mkv', 'avi', 'mpeg'].includes(
-                              extension.toLowerCase()
-                          ) ? (
+                            extension.toLowerCase()
+                        ) ? (
                             <VideoPlayModal
                                 downloadUrl={document?.file}
                                 url={document?.file}

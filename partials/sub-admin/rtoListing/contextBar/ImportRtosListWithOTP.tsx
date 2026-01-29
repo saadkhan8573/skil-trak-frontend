@@ -1,5 +1,4 @@
 import React, { ReactElement, useCallback, useState } from 'react'
-import { read, utils } from 'xlsx'
 import { useNotification } from '@hooks'
 import { BinaryFileUpload } from '@components/inputs/BinaryFileUpload'
 import { Button, ShowErrorNotifications, Typography } from '@components'
@@ -20,6 +19,7 @@ export const ImportRtosListWithOTP = () => {
 
     const onFileChange = async (e: any, fileData: any) => {
         try {
+            const { read, utils } = await import('xlsx')
             const wb = read(e.target.result, { type: 'binary' })
             const sheets = wb.SheetNames
 
@@ -76,8 +76,8 @@ export const ImportRtosListWithOTP = () => {
                 name="list"
                 onChange={onFileChange}
                 fileAsObject={false}
-                // result={importListResult}
-                // acceptTypes={['.xlsx, .csv']}
+            // result={importListResult}
+            // acceptTypes={['.xlsx, .csv']}
             />
             <div className="flex items-center justify-end mt-2">
                 <Button
@@ -92,7 +92,7 @@ export const ImportRtosListWithOTP = () => {
 
             <div className="mt-5">
                 {importListResult?.errorMails &&
-                importListResult?.errorMails?.length > 0 ? (
+                    importListResult?.errorMails?.length > 0 ? (
                     <div className="flex flex-col gap-y-2">
                         {duplicatedIndustries('listing') &&
                             duplicatedIndustries('listing')?.length > 0 && (

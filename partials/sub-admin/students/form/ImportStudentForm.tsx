@@ -5,7 +5,6 @@ import { AdminApi } from '@queries'
 import { Course } from '@types'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { read, utils } from 'xlsx'
 import * as yup from 'yup'
 
 interface FormProps {
@@ -68,7 +67,7 @@ export const ImportStudentForm = ({
     })
 
     const onFileChange = async (e: any, fileData: any) => {
-        // const wb = readFile(e.target.result)
+        const { read, utils } = await import('xlsx')
         const wb = read(e.target.result, { type: 'binary' })
         const sheets = wb.SheetNames
 
@@ -116,9 +115,9 @@ export const ImportStudentForm = ({
                                         sectors.isLoading
                                             ? []
                                             : sectors.data?.data.map((s) => ({
-                                                  label: s.name,
-                                                  value: s.id,
-                                              }))
+                                                label: s.name,
+                                                value: s.id,
+                                            }))
                                     }
                                     onChange={(option: any) =>
                                         onSectorSelect(option)
@@ -143,7 +142,7 @@ export const ImportStudentForm = ({
                         name="list"
                         onChange={onFileChange}
                         fileAsObject={false}
-                        // acceptTypes={['.xlsx, .csv']}
+                    // acceptTypes={['.xlsx, .csv']}
                     />
                 </div>
                 <div className="flex">

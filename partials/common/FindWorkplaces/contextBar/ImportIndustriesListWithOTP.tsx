@@ -1,4 +1,3 @@
-import ExcelJS from 'exceljs'
 import { ReactElement, useCallback, useState } from 'react'
 import * as Yup from 'yup'
 
@@ -44,6 +43,7 @@ export const ImportIndustriesListWithOTP = () => {
             })
             return
         } else {
+            const { default: ExcelJS } = await import('exceljs')
             const reader = new FileReader()
             const workbook = new ExcelJS.Workbook()
 
@@ -158,8 +158,8 @@ export const ImportIndustriesListWithOTP = () => {
                         name="list"
                         onChange={onFileChange}
                         fileAsObject={false}
-                        // result={importListResult}
-                        // acceptTypes={['.xlsx, .csv']}
+                    // result={importListResult}
+                    // acceptTypes={['.xlsx, .csv']}
                     />
                     <div className="flex items-center justify-end mt-2">
                         <Button
@@ -177,7 +177,7 @@ export const ImportIndustriesListWithOTP = () => {
 
             <div className="mt-5">
                 {importListResult?.errorMails &&
-                importListResult?.errorMails?.length > 0 ? (
+                    importListResult?.errorMails?.length > 0 ? (
                     <div className="flex flex-col gap-y-1">
                         {duplicatedIndustries('listing') &&
                             duplicatedIndustries('listing')?.length > 0 && (

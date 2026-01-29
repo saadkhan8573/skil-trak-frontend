@@ -8,7 +8,6 @@ import { CourseSelectOption, formatOptionLabel, getDate } from '@utils'
 import { Upload } from 'lucide-react'
 import { useState } from 'react'
 import { FormProvider, SubmitHandler, useForm, useWatch } from 'react-hook-form'
-import { read, utils } from 'xlsx'
 import { PlacementTypeEnum } from '../enum'
 import { getMinExpiryDate, importStudentValidationSchema } from '../functions'
 import { PlacementType } from './PlacementType'
@@ -48,6 +47,7 @@ export const ImportStudentFormV2 = ({
 
     const onFileChange = async (e: any, fileData: any) => {
         try {
+            const { read, utils } = await import('xlsx')
             const wb = read(e.target.result, { type: 'binary' })
             const sheets = wb.SheetNames
 

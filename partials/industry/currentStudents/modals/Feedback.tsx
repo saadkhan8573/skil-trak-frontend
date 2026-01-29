@@ -1,16 +1,15 @@
 import {
     Modal,
-    Select,
     ShowErrorNotifications,
+    StarRating,
     TextArea,
-    Typography,
+    Typography
 } from '@components'
 import { useEffect, useState } from 'react'
-import ReactStars from 'react-stars'
 
 // query
-import { useAddFeedbackMutation } from '@queries'
 import { useNotification } from '@hooks'
+import { useAddFeedbackMutation } from '@queries'
 
 type valuesTypes = { subject: string; comment: string }
 
@@ -90,14 +89,14 @@ export const Feedback = ({ onCancel, workIndustry, student }: any) => {
                 <Typography variant={'label'}>
                     Please Rate this Student
                 </Typography>
-                <ReactStars
+                <StarRating
                     count={5}
                     value={rating}
                     onChange={(e) => {
                         setRating(e)
                     }}
-                    size={24}
-                    color2={'#ffd700'}
+                    size={17}
+                    activeColor={'#ffd700'}
                 />
                 <TextArea
                     name={'comment'}

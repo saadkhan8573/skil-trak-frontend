@@ -1,4 +1,4 @@
-import { AuthorizedUserComponent, Card, Typography } from '@components'
+import { AuthorizedUserComponent, Card, StarRating, Typography } from '@components'
 import { SubAdmin } from '@types'
 import { BsPatchCheckFill } from 'react-icons/bs'
 import { ProfileCard } from './ProfileCard'
@@ -48,8 +48,13 @@ export const ProfileDetail = ({ subadmin }: { subadmin: SubAdmin }) => {
                         {/* useCoordinatorOverallRating */}
                         <div className="flex flex-col justify-center items-center gap-x-2 mt-2">
                             <div className="flex items-center gap-x-2">
-                                <MapStarRating
+                                {/* <MapStarRating
                                     rating={averageRating?.averageRating}
+                                /> */}
+                                <StarRating
+                                    value={averageRating?.averageRating}
+                                    size={17}
+                                    showValue
                                 />
                                 <span className="text-sm text-gray-500">
                                     ({averageRating?.totalReviews ?? 0} reviews)

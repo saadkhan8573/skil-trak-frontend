@@ -1,6 +1,5 @@
-import { Card, Typography } from '@components'
+import { Card, StarRating, Typography } from '@components'
 import { FaTimes } from 'react-icons/fa'
-import ReactStars from 'react-stars'
 
 export const InfoBoxCard = ({ item, selectedBox, setSelectedBox }: any) => {
     const url =
@@ -52,12 +51,11 @@ export const InfoBoxCard = ({ item, selectedBox, setSelectedBox }: any) => {
                                     </Typography>
                                 </div>
 
-                                <ReactStars
+                                <StarRating
                                     count={5}
                                     value={selectedBox?.rating}
                                     edit={false}
-                                    size={25}
-                                    color2={'orange'}
+                                    size={17}
                                 />
                                 <Typography
                                     variant="muted"

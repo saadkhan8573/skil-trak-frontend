@@ -2,14 +2,13 @@ import {
     Button,
     Card,
     Checkbox,
-    InputRichTextEditor,
     Select,
-    ShowErrorNotifications,
     TextArea,
     TextInput,
     Typography,
     UploadFile,
     useShowErrorNotification,
+    ShowErrorNotifications,
 } from '@components'
 import { FileUpload } from '@hoc'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -18,6 +17,7 @@ import { adminApi, AdminApi } from '@queries'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useMemo, useRef, useState } from 'react'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
+import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import * as yup from 'yup'
 
@@ -54,6 +54,7 @@ export default function EditTextEditor({
     const { notification } = useNotification()
     const [selectedCategories, setSelectedCategories] = useState<any>([])
     const [blogPost, setBlogPost] = useState<any>('')
+    const [removeFaq, removeFaqResult] = adminApi.useRemoveFaqMutation()
     const [modal, setModal] = useState<ReactElement | null>(null)
 
     const [shortDescriptionWordCount, setShortDescriptionWordCount] =
@@ -87,7 +88,9 @@ export default function EditTextEditor({
     const onModalCancelClicked = () => {
         setModal(null)
     }
-
+    const preFilledCategoriesOption = blogData?.category?.map(
+        (category: any) => category?.id
+    )
     const handleChecked = () => {
         setIsFeatured(!isFeatured)
     }
@@ -146,7 +149,7 @@ export default function EditTextEditor({
             author: blogData?.author || '',
             isFeatured: blogData?.isFeatured || false,
             category: [],
-            content: blogData?.content || '',
+            content: '',
             blogQuestions: blogData?.blogQuestions || [
                 { question: '', answer: '' },
             ],
@@ -635,7 +638,7 @@ export default function EditTextEditor({
     // Quill Editor
     useEffect(() => {
         if (blogData && !coverUrl) {
-            // quillRef.current.getEditor().root.innerHTML = blogData.content || ''
+            quillRef.current.getEditor().root.innerHTML = blogData.content || ''
             setCoverUrl(blogData?.featuredImage)
         }
     }, [blogData])
@@ -898,14 +901,13 @@ export default function EditTextEditor({
                         />
                         <div
                             className={`${shortDescriptionWordCount > 385
-                                ? 'text-red-500'
-                                : ' text-slate-500'
+                                    ? 'text-red-500'
+                                    : ' text-slate-500'
                                 } text-sm mb-5`}
                         >
                             {`${shortDescriptionWordCount} / 385 words`}
                         </div>
-                        <InputRichTextEditor name={'content'} />
-                        {/* <div
+                        <div
                             ref={editorWrapperRef}
                             style={{ position: 'relative' }}
                         >
@@ -915,7 +917,7 @@ export default function EditTextEditor({
                                 modules={modules}
                             />
                         </div>
-                        <InputErrorMessage name={'content'} /> */}
+                        <InputErrorMessage name={'content'} />
                         <div className="mt-4">
                             <Checkbox
                                 onChange={handleChecked}

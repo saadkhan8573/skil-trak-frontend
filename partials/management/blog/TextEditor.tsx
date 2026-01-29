@@ -2,7 +2,6 @@ import {
     Button,
     Card,
     Checkbox,
-    InputRichTextEditor,
     Select,
     ShowErrorNotifications,
     TextArea,
@@ -772,24 +771,20 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                     />
                     <div
                         className={`${shortDescriptionWordCount > 385
-                            ? 'text-red-500'
-                            : ' text-slate-500'
+                                ? 'text-red-500'
+                                : ' text-slate-500'
                             } text-sm mb-5`}
                     >
                         {`${shortDescriptionWordCount} / 385 words`}
                     </div>
-                    <InputRichTextEditor
-                        name="content"
-                        label="Content"
-                    />
-                    {/* <div ref={editorWrapperRef}>
+                    <div ref={editorWrapperRef}>
                         <ReactQuill
                             theme="snow"
                             ref={quillRef}
                             modules={modules}
                         />
                     </div>
-                    <InputErrorMessage name={'content'} /> */}
+                    <InputErrorMessage name={'content'} />
                     <div className="mt-4">
                         <Checkbox
                             onChange={handleChecked}

@@ -45,10 +45,16 @@ export const EnhancedIndustryDetailsCard = ({
         RtoV2Api.PlacementRequests.useStudentPlacementIndustryDetails(wpId, {
             skip: !wpId,
         })
+    const wpApprovalStatus = workplace.workplaceApprovaleRequest?.filter(
+        (req: any) =>
+            req.status !== 'rejected' && req.rtoApprovalStatus !== 'rejected'
+    )
     const workplaceIndustry =
         workplace?.industries?.length > 0
             ? data
-            : workplace?.workplaceApprovaleRequest?.[0]?.industry
+            : wpApprovalStatus?.length > 0
+              ? wpApprovalStatus?.[0]?.industry
+              : null
 
     const workplaceEligibilityIndustry =
         workplace?.currentStatus === WorkplaceCurrentStatus.IndustryEligibility

@@ -141,7 +141,6 @@ export const PlacementRequestDetail = () => {
         return index !== -1 ? index : 0
     }
 
-
     const studentPreferences = [
         {
             id: 1,
@@ -298,6 +297,12 @@ export const PlacementRequestDetail = () => {
             // Preference verified and matched
         }
     }
+    const wpApprovalStatus =
+        placementRequestsDetails?.data?.workplaceApprovaleRequest?.filter(
+            (req: any) =>
+                req?.status !== 'rejected' &&
+                req?.rtoApprovalStatus !== 'rejected'
+        )
 
     const handleCancelRequest = () => {
         if (!cancellationReason.trim()) {
@@ -525,9 +530,7 @@ export const PlacementRequestDetail = () => {
                                     {/* Find Workplace Section - Only shown when Request Generated */}
                                     {wpCurrentStatus?.stage ===
                                         'Request Generated' &&
-                                        placementRequestsDetails?.data
-                                            ?.workplaceApprovaleRequest
-                                            ?.length === 0 && (
+                                        wpApprovalStatus?.length === 0 && (
                                             <FindWorkplaceSection
                                                 isExpanded={
                                                     showFindWorkplaceSection

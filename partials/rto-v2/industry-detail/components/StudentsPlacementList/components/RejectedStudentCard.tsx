@@ -59,7 +59,7 @@ export function RejectedStudentCard({ student }: StudentCardProps) {
                     {/* Left: Student Info */}
                     <div className="flex items-start gap-3 flex-1">
                         {/* Avatar */}
-                        <div className="w-10 h-10 bg-gradient-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-sm">
+                        <div className="w-10 h-10 `bg-gradient-to-br` from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-sm">
                             {student?.student?.user?.name
                                 ?.split(' ')
                                 .map((n: any) => n[0])

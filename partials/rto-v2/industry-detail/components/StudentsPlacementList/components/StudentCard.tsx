@@ -130,7 +130,7 @@ export function StudentCard({ student }: StudentCardProps) {
                 <div className="flex items-start justify-between mb-2">
                     <div className="flex items-start gap-2 flex-1">
                         {/* Avatar */}
-                        <div className="w-7 h-7 bg-gradient-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center text-white text-[10px] font-bold shadow-sm">
+                        <div className="w-7 h-7 `bg-gradient-to-br` from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center text-white text-[10px] font-bold shadow-sm">
                             {student?.user?.name
                                 .split(' ')
                                 .map((n) => n[0])
@@ -337,7 +337,7 @@ export function StudentCard({ student }: StudentCardProps) {
                                     'No Response',
                                 ].includes(currentStep.label)
                                     ? 'bg-red-500'
-                                    : 'bg-gradient-to-r from-[#044866] to-[#0D5468]'
+                                    : '`bg-gradient-to-r` from-[#044866] to-[#0D5468]'
                             }`}
                             style={{
                                 width: `${currentStep?.label && ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(currentStep.label) ? 100 : progressPercent}%`,
@@ -384,7 +384,7 @@ export function StudentCard({ student }: StudentCardProps) {
                     <Button
                         variant="secondary"
                         outline
-                        className="w-full px-2 py-1 bg-gradient-to-br from-[#F8FAFB] to-[#E8F4F8] hover:from-[#E8F4F8] hover:to-[#D1E7F0] rounded-md text-[10px] font-medium text-[#044866] transition-all duration-300 flex items-center justify-center gap-1 h-auto"
+                        className="w-full px-2 py-1 `bg-gradient-to-br` from-[#F8FAFB] to-[#E8F4F8] hover:from-[#E8F4F8] hover:to-[#D1E7F0] rounded-md text-[10px] font-medium text-[#044866] transition-all duration-300 flex items-center justify-center gap-1 h-auto"
                     >
                         {isOpen ? (
                             <>

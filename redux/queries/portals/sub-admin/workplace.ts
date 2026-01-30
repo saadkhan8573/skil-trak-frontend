@@ -228,7 +228,8 @@ export const workplaceEndpoints = (
         { id: number; status: string; comment?: string }
     >({
         query: ({ id, comment, ...params }) => ({
-            url: `students/workplace-requests/${id}/response/add`,
+            // url: `students/workplace-requests/${id}/response/add`,
+            url: `students/workplace-requests/${id}/update/status`,
             params,
             body: { comment },
             method: 'POST',

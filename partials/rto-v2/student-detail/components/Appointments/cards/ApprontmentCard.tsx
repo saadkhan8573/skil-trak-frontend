@@ -62,9 +62,9 @@ export const ApprontmentCard = ({
     return (
         <>
             {modal}
-            <div className="group relative overflow-hidden bg-gradient-to-br from-white to-slate-50/50 rounded-xl border border-slate-200 p-3 hover:shadow-xl hover:border-[#044866]/30 transition-all">
+            <div className="group relative overflow-hidden bg-linear-to-br from-white to-slate-50/50 rounded-xl border border-slate-200 p-3 hover:shadow-xl hover:border-[#044866]/30 transition-all">
                 {appointment.type?.videoAppointment && (
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#F7A619]/10 to-transparent rounded-full blur-2xl"></div>
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-[#F7A619]/10 to-transparent rounded-full blur-2xl"></div>
                 )}
 
                 <div className="relative space-y-2.5">
@@ -107,7 +107,7 @@ export const ApprontmentCard = ({
                                         className="flex items-center gap-3 bg-slate-50 rounded-lg p-3"
                                     >
                                         <detail.icon
-                                            className={`w-4 h-4 text-primaryNew flex-shrink-0`}
+                                            className={`w-4 h-4 text-primaryNew shrink-0`}
                                         />
                                         <span className="text-[13px] text-slate-700">
                                             {detail.value}
@@ -118,7 +118,7 @@ export const ApprontmentCard = ({
                         </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-slate-50 to-white rounded-xl p-4 border border-slate-200/60 flex items-center gap-x-3">
+                    <div className="`bg-gradient-to-br` from-slate-50 to-white rounded-xl p-4 border border-slate-200/60 flex items-center gap-x-3">
                         <p className="text-sm text-slate-600">Attendees:</p>
                         <div className="flex flex-wrap gap-2">
                             <span className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-700 hover:border-[#044866] transition-colors">

@@ -1,23 +1,13 @@
 "use client"
 
-import Highlight from "@tiptap/extension-highlight"
-import Link from "@tiptap/extension-link"
-import Placeholder from "@tiptap/extension-placeholder"
-import TextAlign from "@tiptap/extension-text-align"
-import Underline from "@tiptap/extension-underline"
+import { useEffect, useRef, useState, useMemo } from "react"
 import { EditorContent, useEditor } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit"
-import { useEffect, useRef, useState } from "react"
-
 import { Label } from "@components/ui/label"
 import { useNotification } from "@hooks"
 import { adminApi } from "@queries/portals/admin/admin.query"
 import { cn } from "@utils"
-
-// Modularized imports
 import { Toolbar } from "./components/Toolbar"
 import { isServerImageUrl } from "./constants"
-import { CustomImage } from "./extensions/CustomImage"
 
 interface RichTextEditorProps {
   value?: string
@@ -28,14 +18,17 @@ interface RichTextEditorProps {
   error?: string
 }
 
-export const RichTextEditor = ({
+// Internal editor component that receives loaded extensions
+const RichTextEditorContent = ({
   value,
   onChange,
   label,
   placeholder,
   className,
   error,
-}: RichTextEditorProps) => {
+  extensions,
+  CustomImage
+}: RichTextEditorProps & { extensions: any[], CustomImage: any }) => {
   const { notification } = useNotification()
   const [uploadImage, uploadImageResult] = adminApi.useUploadImageMutation()
   const editorWrapperRef = useRef<HTMLDivElement>(null)
@@ -238,30 +231,7 @@ export const RichTextEditor = ({
   }
 
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Underline,
-      Link.configure({
-        openOnClick: false,
-        HTMLAttributes: {
-          class: "text-primaryNew underline decoration-primaryNew underline-offset-4 cursor-pointer",
-        },
-      }),
-      CustomImage.configure({
-        HTMLAttributes: {
-          class: "rounded-md max-w-full h-auto cursor-pointer",
-        },
-      }),
-      TextAlign.configure({
-        types: ["heading", "paragraph"],
-      }),
-      Highlight.configure({
-        multicolor: true,
-      }),
-      Placeholder.configure({
-        placeholder: placeholder || "Write something amazing...",
-      }),
-    ],
+    extensions,
     content: value,
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
@@ -301,7 +271,7 @@ export const RichTextEditor = ({
         return false
       },
     },
-  })
+  }, [extensions])
 
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
@@ -361,4 +331,105 @@ export const RichTextEditor = ({
       {error && <p className="text-xs font-medium text-destructive mt-1">{error}</p>}
     </div>
   )
+}
+
+// Main component that handles dynamic loading
+export const RichTextEditor = (props: RichTextEditorProps) => {
+  const [modules, setModules] = useState<{
+    StarterKit: any,
+    Underline: any,
+    Link: any,
+    TextAlign: any,
+    Highlight: any,
+    Placeholder: any,
+    CustomImage: any,
+    extensions: any[]
+  } | null>(null)
+
+  useEffect(() => {
+    const loadModules = async () => {
+      try {
+        const [
+          { default: StarterKit },
+          { default: Underline },
+          { default: Link },
+          { default: TextAlign },
+          { default: Highlight },
+          { default: Placeholder },
+          { loadCustomImage },
+        ] = await Promise.all([
+          import('@tiptap/starter-kit'),
+          import('@tiptap/extension-underline'),
+          import('@tiptap/extension-link'),
+          import('@tiptap/extension-text-align'),
+          import('@tiptap/extension-highlight'),
+          import('@tiptap/extension-placeholder'),
+          import('./extensions/CustomImage'),
+        ])
+
+        const CustomImage = await loadCustomImage()
+
+        const extensions = [
+          StarterKit,
+          Underline,
+          Link.configure({
+            openOnClick: false,
+            HTMLAttributes: {
+              class: "text-primaryNew underline decoration-primaryNew underline-offset-4 cursor-pointer",
+            },
+          }),
+          CustomImage.configure({
+            HTMLAttributes: {
+              class: "rounded-md max-w-full h-auto cursor-pointer",
+            },
+          }),
+          TextAlign.configure({
+            types: ["heading", "paragraph"],
+          }),
+          Highlight.configure({
+            multicolor: true,
+          }),
+          Placeholder.configure({
+            placeholder: props.placeholder || "Write something amazing...",
+          }),
+        ]
+
+        setModules({
+          StarterKit,
+          Underline,
+          Link,
+          TextAlign,
+          Highlight,
+          Placeholder,
+          CustomImage,
+          extensions
+        })
+      } catch (err) {
+        console.error('Failed to load TipTap modules', err)
+      }
+    }
+
+    loadModules()
+  }, [])
+
+  if (!modules) {
+    return (
+      <div className="flex flex-col gap-1 w-full animate-in fade-in duration-300">
+        {props.label && <Label className="text-sm font-medium mb-1">{props.label}</Label>}
+        <div className={cn(
+          "relative min-h-[300px] max-h-[500px] w-full rounded-md border border-input bg-background/50",
+          "flex items-center justify-center",
+          props.error && "border-destructive"
+        )}>
+          <div className="flex flex-col items-center gap-2">
+            <div className="h-8 w-8 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
+            <span className="text-sm text-muted-foreground">Initializing editor...</span>
+          </div>
+        </div>
+        {props.error && <p className="text-xs font-medium text-destructive mt-1">{props.error}</p>}
+      </div>
+    )
+  }
+
+  return <RichTextEditorContent {...props} extensions={modules.extensions} CustomImage={modules.CustomImage} />
 }

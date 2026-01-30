@@ -1,17 +1,7 @@
 import React from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-import dynamic from 'next/dynamic'
 import { htmltotext } from '@utils'
-
-const RichTextEditor = dynamic(
-    () => import('./RichTextEditor').then((mod) => mod.RichTextEditor),
-    {
-        ssr: false,
-        loading: () => (
-            <div className="h-50 w-full bg-gray-50 animate-pulse rounded-md border" />
-        ),
-    }
-)
+import { RichTextEditor } from './ExportRichText'
 
 interface InputRichTextEditorProps {
     name: string

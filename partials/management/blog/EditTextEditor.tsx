@@ -9,7 +9,6 @@ import {
     UploadFile,
     useShowErrorNotification,
     ShowErrorNotifications,
-    InputRichTextEditor,
 } from '@components'
 import { FileUpload } from '@hoc'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -154,7 +153,7 @@ export default function EditTextEditor({
             author: blogData?.author || '',
             isFeatured: blogData?.isFeatured || false,
             category: [],
-            content: blogData?.content || '',
+            content: '',
             blogQuestions: blogData?.blogQuestions || [
                 { question: '', answer: '' },
             ],
@@ -644,7 +643,7 @@ export default function EditTextEditor({
     // Quill Editor
     useEffect(() => {
         if (blogData && !coverUrl) {
-            // quillRef.current.getEditor().root.innerHTML = blogData.content || ''
+            quillRef.current.getEditor().root.innerHTML = blogData.content || ''
             setCoverUrl(blogData?.featuredImage)
         }
     }, [blogData])
@@ -943,13 +942,13 @@ export default function EditTextEditor({
                         />
                         <div
                             className={`${shortDescriptionWordCount > 385
-                                ? 'text-red-500'
-                                : ' text-slate-500'
+                                    ? 'text-red-500'
+                                    : ' text-slate-500'
                                 } text-sm mb-5`}
                         >
                             {`${shortDescriptionWordCount} / 385 words`}
                         </div>
-                        {/* <div
+                        <div
                             ref={editorWrapperRef}
                             style={{ position: 'relative' }}
                         >
@@ -959,11 +958,7 @@ export default function EditTextEditor({
                                 modules={modules}
                             />
                         </div>
-                        <InputErrorMessage name={'content'} /> */}
-                        <InputRichTextEditor
-                            name="content"
-                            label="Content"
-                        />
+                        <InputErrorMessage name={'content'} />
                         <div className="mt-4">
                             <Checkbox
                                 onChange={handleChecked}

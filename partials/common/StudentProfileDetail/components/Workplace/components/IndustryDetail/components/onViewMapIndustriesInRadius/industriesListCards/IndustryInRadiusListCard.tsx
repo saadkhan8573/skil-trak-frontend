@@ -119,9 +119,9 @@ export const IndustryInRadiusListCard = ({
                     </div>
 
                     {/* Distance */}
-                    {/* <div className="mb-2">
+                    <div className="mb-2">
                         <DistanceIndicator distance={item?.distance ?? 0} mode="car" />
-                    </div> */}
+                    </div>
 
                     {/* Placement Status */}
                     <div>

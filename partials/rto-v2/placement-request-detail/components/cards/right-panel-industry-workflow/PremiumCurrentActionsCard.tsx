@@ -57,6 +57,12 @@ export const PremiumCurrentActionsCard = ({
             />
         )
     }
+
+    const wpApprovalStatus = workplace?.workplaceApprovaleRequest?.filter(
+        (req: any) =>
+            req?.status !== 'rejected' && req?.rtoApprovalStatus !== 'rejected'
+    )
+
     const handleAgreementSigned = () => {
         setShowAgreementDialog(true)
         requestStatusChange('Agreement Signed')
@@ -250,7 +256,7 @@ export const PremiumCurrentActionsCard = ({
                         className="space-y-3"
                     >
                         {/* useWorkplaceHook() */}
-                        {workplace?.workplaceApprovaleRequest?.length === 0 ? (
+                        {wpApprovalStatus?.length === 0 ? (
                             <>
                                 {autoApplyLoader ? (
                                     <WPProcessMatchingLoader />
@@ -435,7 +441,6 @@ export const PremiumCurrentActionsCard = ({
                         /> */}
                     </motion.div>
                 )
-
 
             case needsWorkplaceStagesEnum.WAITING_FOR_INDUSTRY:
                 return (

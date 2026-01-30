@@ -31,6 +31,7 @@ export const FileMimeTypes = {
 const AcceptMimeTypes = [...Object.values(FileMimeTypes)] as const
 
 export const isFileTypeAcceptable = (types: string[]) => {
+    console.log({ types })
     return types.some((t) =>
         AcceptMimeTypes.some((mimeType) => mimeType.includes(t))
     )

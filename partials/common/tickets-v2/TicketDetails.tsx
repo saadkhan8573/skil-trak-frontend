@@ -62,7 +62,7 @@ export const TicketDetails = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 animate-fade-in py-6">
+        <div className="min-h-screen `bg-gradient-to-br` from-slate-50 to-gray-100 animate-fade-in py-6">
             {isLoading ? (
                 <TicketDetailsSkeleton />
             ) : (

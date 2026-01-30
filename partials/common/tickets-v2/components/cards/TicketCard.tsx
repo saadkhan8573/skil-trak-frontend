@@ -1,26 +1,24 @@
 import {
-    Clock,
-    User,
-    ArrowRight,
-    Building2,
-    ExternalLink,
-    RefreshCw,
-} from 'lucide-react'
-import { memo } from 'react'
-import { Ticket } from './types'
-import { Select } from '@components'
-import { getDetailedTimeStuck, getProfileUrl } from '../ticket-details/helper'
-import { TicketAssigneeSelector } from '../TicketAssigneeSelector'
-import { getUserCredentials } from '@utils'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import moment from 'moment'
-import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from '@components/ui/tooltip'
+import { getUserCredentials } from '@utils'
+import {
+    ArrowRight,
+    Building2,
+    Clock,
+    ExternalLink,
+    RefreshCw,
+    User,
+} from 'lucide-react'
+import moment from 'moment'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { memo } from 'react'
+import { getDetailedTimeStuck, getProfileUrl } from '../ticket-details/helper'
+import { Ticket } from './types'
 
 interface TicketCardProps {
     ticket: Ticket
@@ -147,19 +145,19 @@ const TicketCardComponent = ({
                     isOverTwoDays
                         ? 'bg-red-500 animate-pulse'
                         : ticket?.severity === 'CRITICAL'
-                        ? 'bg-red-400'
-                        : ticket?.severity === 'HIGH'
-                        ? 'bg-[#F7A619]'
-                        : ticket?.severity === 'MEDIUM'
-                        ? 'bg-blue-600'
-                        : ticket?.severity === 'LOW'
-                        ? 'bg-green-600'
-                        : 'bg-[#044866]'
+                          ? 'bg-red-400'
+                          : ticket?.severity === 'HIGH'
+                            ? 'bg-[#F7A619]'
+                            : ticket?.severity === 'MEDIUM'
+                              ? 'bg-blue-600'
+                              : ticket?.severity === 'LOW'
+                                ? 'bg-green-600'
+                                : 'bg-[#044866]'
                 }`}
             ></div>
 
             {/* Hover glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#F7A619]/3 to-[#0D5468]/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+            <div className="absolute inset-0 `bg-gradient-to-r` from-[#F7A619]/3 to-[#0D5468]/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
 
             {/* Single Line Layout */}
             <div className="relative z-10 flex items-center gap-4">
@@ -173,7 +171,7 @@ const TicketCardComponent = ({
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <div className="relative flex-shrink-0">
+                            <div className="relative `flex-shrink-0`">
                                 <div
                                     className={`w-2 h-2 rounded-full ${
                                         statusColors[ticket?.status]
@@ -191,7 +189,7 @@ const TicketCardComponent = ({
                 </TooltipProvider>
 
                 {/* Ticket ID */}
-                <span className="text-[#044866] text-xs w-20 flex-shrink-0">
+                <span className="text-[#044866] text-xs w-20 `flex-shrink-0`">
                     TKT-{ticket?.id}
                 </span>
                 <span
@@ -202,12 +200,12 @@ const TicketCardComponent = ({
                     {ticket?.status === 'assigned'
                         ? 'Opened'
                         : ticket?.status === 'inProgress'
-                        ? 'In Progress'
-                        : 'Resolved'}
+                          ? 'In Progress'
+                          : 'Resolved'}
                 </span>
 
                 {/* Badges */}
-                <div className="flex items-center gap-1.5 flex-shrink-0">
+                <div className="flex items-center gap-1.5 `flex-shrink-0`">
                     {isOverTwoDays && (
                         <span className="px-2 py-0.5 bg-red-500 text-white rounded text-[10px] animate-pulse">
                             {getDetailedTimeStuck(ticket?.createdAt)}
@@ -236,7 +234,7 @@ const TicketCardComponent = ({
                     <Link
                         href={profileUrl}
                         onClick={(e) => e.stopPropagation()}
-                        className="flex items-center gap-2 w-36 flex-shrink-0 hover:bg-[#F7A619]/5 rounded px-1 -mx-1 py-0.5 transition-colors group/profile"
+                        className="flex items-center gap-2 w-36 `flex-shrink-0` hover:bg-[#F7A619]/5 rounded px-1 -mx-1 py-0.5 transition-colors group/profile"
                         title="View industry profile"
                     >
                         <div className="w-5 h-5 bg-[#F7A619] rounded-full flex items-center justify-center">
@@ -255,7 +253,7 @@ const TicketCardComponent = ({
                 ) : (
                     <Link
                         href={profileUrl}
-                        className="flex items-center gap-2 w-36 flex-shrink-0 hover:bg-[#044866]/5 rounded px-1 -mx-1 py-0.5 transition-colors group/profile"
+                        className="flex items-center gap-2 w-36 `flex-shrink-0` hover:bg-[#044866]/5 rounded px-1 -mx-1 py-0.5 transition-colors group/profile"
                         title="View student profile"
                         onClick={(e) => e.stopPropagation()}
                     >
@@ -275,12 +273,12 @@ const TicketCardComponent = ({
                 )}
 
                 {/* Time */}
-                <div className="flex items-center gap-1 text-[10px] text-[#0D5468]/70 w-16 flex-shrink-0">
+                <div className="flex items-center gap-1 text-[10px] text-[#0D5468]/70 w-16 `flex-shrink-0`">
                     <Clock className="w-3 h-3" />
                     <span>{getDetailedTimeStuck(ticket?.createdAt)}</span>
                 </div>
                 {router.query.tab === 'resolved' && (
-                    <div className="flex items-center gap-1 text-[10px] text-[#0D5468]/70 w-16 flex-shrink-0">
+                    <div className="flex items-center gap-1 text-[10px] text-[#0D5468]/70 w-16 `flex-shrink-0`">
                         <RefreshCw className="w-3 h-3" />
                         <span>{moment(ticket?.updatedAt).fromNow()}</span>
                     </div>
@@ -300,14 +298,14 @@ const TicketCardComponent = ({
                 </div>
 
                 {/* Assignee */}
-                <div className="w-24 flex-shrink-0 text-right">
+                <div className="w-24 `flex-shrink-0` text-right">
                     <span className="text-[#044866] text-[10px] truncate block">
                         {ticket?.assignedTo?.user?.name ?? '---'}
                     </span>
                 </div>
 
                 {/* Arrow */}
-                <ArrowRight className="w-3.5 h-3.5 text-[#F7A619] opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0.5 flex-shrink-0" />
+                <ArrowRight className="w-3.5 h-3.5 text-[#F7A619] opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0.5 `flex-shrink-0`" />
             </div>
         </div>
     )

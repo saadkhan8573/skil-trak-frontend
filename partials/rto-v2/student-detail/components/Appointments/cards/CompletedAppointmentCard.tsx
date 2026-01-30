@@ -46,7 +46,7 @@ export const CompletedAppointmentCard = ({
     return (
         <>
             <ShowErrorNotifications result={updateStatusResult} />
-            <div className="bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-xl border border-slate-200/60 p-3">
+            <div className="`bg-linear-to-br` from-slate-50 to-slate-100/50 rounded-xl border border-slate-200/60 p-3">
                 <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
                         <h5 className="text-slate-700 mb-3 flex items-center gap-2 capitalize">

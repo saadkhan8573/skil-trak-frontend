@@ -57,7 +57,6 @@ export const InputRichTextEditor = ({
                         fieldChange(e)
                     }}
                     placeholder={placeholder}
-                    error={error}
                     className={className}
                 />
             )}

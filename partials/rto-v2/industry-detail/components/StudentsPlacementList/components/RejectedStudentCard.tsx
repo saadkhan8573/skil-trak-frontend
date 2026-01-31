@@ -43,15 +43,12 @@ export function RejectedStudentCard({ student }: StudentCardProps) {
     const isApproved = industry?.action === 'approved'
     const hasActionInfo = student?.ActionedBy
 
-    console.log({ student })
-
     return (
         <div
-            className={`${
-                isTerminalState
-                    ? 'bg-red-50 border-red-200'
-                    : 'bg-white border-[#E2E8F0]'
-            } border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300`}
+            className={`${isTerminalState
+                ? 'bg-red-50 border-red-200'
+                : 'bg-white border-[#E2E8F0]'
+                } border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300`}
         >
             <div className="p-4">
                 {/* Header Section */}
@@ -107,11 +104,10 @@ export function RejectedStudentCard({ student }: StudentCardProps) {
                     <div className="">
                         {hasActionInfo && (
                             <div
-                                className={`mb-4 rounded-md border px-3 py-2 text-xs ${
-                                    isApproved
-                                        ? 'bg-green-50 border-green-200'
-                                        : 'bg-red-50 border-red-200'
-                                }`}
+                                className={`mb-4 rounded-md border px-3 py-2 text-xs ${isApproved
+                                    ? 'bg-green-50 border-green-200'
+                                    : 'bg-red-50 border-red-200'
+                                    }`}
                             >
                                 <div className="flex items-center gap-1 justify-between">
                                     <Badge
@@ -120,11 +116,10 @@ export function RejectedStudentCard({ student }: StudentCardProps) {
                                         size="xs"
                                     />
                                     <p
-                                        className={`font-medium capitalize ${
-                                            isApproved
-                                                ? 'text-green-600'
-                                                : 'text-red-600'
-                                        }`}
+                                        className={`font-medium capitalize ${isApproved
+                                            ? 'text-green-600'
+                                            : 'text-red-600'
+                                            }`}
                                     >
                                         {student?.ActionedBy?.name}
                                     </p>

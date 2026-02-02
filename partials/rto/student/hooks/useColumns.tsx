@@ -10,8 +10,10 @@ import { EditTimer } from '@components/StudentTimer/EditTimer'
 import { SubadminStudentIndustries } from '@partials/sub-admin/students'
 import { ChangeStudentStatusModal } from '@partials/sub-admin/students/modals'
 import { ColumnDef } from '@tanstack/react-table'
-import { Student } from '@types'
+import { Student, UserStatus } from '@types'
 import { studentsListWorkplace } from '@utils'
+import { InitiateAiCallModal } from '@partials/common/modal'
+import { Phone } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
 import {
@@ -37,6 +39,7 @@ type ActionKey =
     | 'delete'
     | 'accept'
     | 'reject'
+    | 'aiCall'
 
 type ColumnKey =
     | 'name'
@@ -153,6 +156,15 @@ export const useColumns = () => {
         )
     }
 
+    const onAiCallClicked = (student: Student): void => {
+        setModal(
+            <InitiateAiCallModal
+                student={student}
+                onClose={() => onModalCancelClicked()}
+            />
+        )
+    }
+
     // All available columns definition
     const allColumns: ColumnDef<Student>[] = [
         {
@@ -163,8 +175,8 @@ export const useColumns = () => {
                         '/portals/rto/students-and-placements/all-students'
                     )
                         ? {
-                              link: `/portals/rto/students-and-placements/all-students/${info?.row?.original?.id}/detail`,
-                          }
+                            link: `/portals/rto/students-and-placements/all-students/${info?.row?.original?.id}/detail`,
+                        }
                         : {})}
                     student={info.row.original}
                     call
@@ -186,8 +198,8 @@ export const useColumns = () => {
                         industries={info.row.original?.industries}
                     />
                 ) : info.row.original?.workplace &&
-                  info.row.original?.workplace?.length > 0 &&
-                  appliedIndustry ? (
+                    info.row.original?.workplace?.length > 0 &&
+                    appliedIndustry ? (
                     <SubadminStudentIndustries
                         workplace={info.row.original?.workplace}
                         industries={info.row.original?.industries}
@@ -305,6 +317,11 @@ export const useColumns = () => {
             onClick: (student) => onRejectClicked(student),
             Icon: FaEdit,
             color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
+        },
+        aiCall: {
+            text: 'AI Voice Call',
+            onClick: (student) => onAiCallClicked(student),
+            Icon: Phone as any,
         },
     })
 

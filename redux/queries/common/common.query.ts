@@ -712,7 +712,10 @@ const {
     useGetCallRecordingQuery,
     useCompleteCallMutation,
     useGetStudentsToCallListQuery,
+    useGetScheduledAiCallListQuery,
     useInitiateAiCallMutation,
+    useScheduleAiCallMutation,
+    useBulkScheduleAiCallMutation,
 } = commonApi
 
 export const CommonApi = {
@@ -1100,5 +1103,8 @@ export const CommonApi = {
         useCompleteCallMutation: useCompleteCallMutation,
         useGetStudentsToCallListQuery: useGetStudentsToCallListQuery,
         useInitiateAiCallMutation: useInitiateAiCallMutation,
+        useScheduleAiCallMutation: useScheduleAiCallMutation,
+        useBulkScheduleAiCallMutation: useBulkScheduleAiCallMutation,
+        useGetScheduledAiCallListQuery: useGetScheduledAiCallListQuery,
     },
 }

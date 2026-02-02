@@ -51,15 +51,15 @@ export const useCallColumns = () => {
                 return (
                     <div className="flex items-center gap-3">
                         <div
-                            className={`w-1 h-8 rounded-full flex-shrink-0 ${call.priority === 'high' && !isCompleted
+                            className={`w-1 h-8 rounded-full shrink-0 ${call.priority === 'high' && !isCompleted
                                 ? 'bg-red-500'
                                 : call.priority === 'medium' && !isCompleted
                                     ? 'bg-yellow-500'
                                     : 'bg-gray-200'
                                 }`}
                         />
-                        <div className="relative flex-shrink-0">
-                            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-sm">
+                        <div className="relative shrink-0">
+                            <div className="w-9 h-9 rounded-lg bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-sm">
                                 <span className="text-white font-medium text-xs">
                                     {call?.student?.user?.name
                                         ?.split(' ')
@@ -92,12 +92,30 @@ export const useCallColumns = () => {
             size: 150
         },
         {
+            header: 'Answered',
+            accessorKey: 'isAnswered',
+            cell: ({ row }) => {
+                const isAnswered = row.original.isAnswered
+                if (isAnswered === null) return <span className="text-gray-400">-</span>
+                return (
+                    <span
+                        className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${isAnswered
+                            ? 'bg-green-100 text-green-700 border border-green-200'
+                            : 'bg-red-100 text-red-700 border border-red-200'
+                            }`}
+                    >
+                        {isAnswered ? 'Yes' : 'No'}
+                    </span>
+                )
+            }
+        },
+        {
             header: 'Date',
             accessorKey: 'createdAt',
             cell: ({ row }) => (
                 <div className="flex items-center gap-2">
                     <p className="text-sm text-gray-700">
-                        {moment(row.original.createdAt).format('MMM D, YYYY')}
+                        {moment(row.original.scheduledAt || row.original.createdAt).format('MMM D, YYYY')}
                     </p>
                 </div>
             )
@@ -121,6 +139,7 @@ export const useCallColumns = () => {
             cell: ({ row }) => {
                 const call = row.original
                 const isCompleted = call?.status === 'completed'
+                const isScheduled = call?.status === 'scheduled'
                 const hasTicket = call?.hasTicket
                 return (
                     <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
@@ -138,57 +157,61 @@ export const useCallColumns = () => {
                             </TooltipContent>
                         </Tooltip>
 
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button
-                                    onClick={(e) => handleActionClick(e, 'audio', call)}
-                                    className="p-1.5 rounded-lg transition-all bg-blue-100 text-blue-600 hover:bg-blue-200"
-                                >
-                                    <Headphones className="w-4 h-4" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>Listen to Recording</p>
-                            </TooltipContent>
-                        </Tooltip>
+                        {!isScheduled && (
+                            <>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <button
+                                            onClick={(e) => handleActionClick(e, 'audio', call)}
+                                            className="p-1.5 rounded-lg transition-all bg-blue-100 text-blue-600 hover:bg-blue-200"
+                                        >
+                                            <Headphones className="w-4 h-4" />
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Listen to Recording</p>
+                                    </TooltipContent>
+                                </Tooltip>
 
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button
-                                    onClick={(e) => handleActionClick(e, 'completed', call)}
-                                    className={`p-1.5 rounded-lg transition-all ${isCompleted
-                                        ? 'bg-green-500 text-white hover:bg-green-600'
-                                        : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
-                                        }`}
-                                >
-                                    {isCompleted ? (
-                                        <CheckCircle className="w-4 h-4 text-white" />
-                                    ) : (
-                                        <Clock className="w-4 h-4" />
-                                    )}
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>{isCompleted ? 'Completed' : 'Mark as Completed'}</p>
-                            </TooltipContent>
-                        </Tooltip>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <button
+                                            onClick={(e) => handleActionClick(e, 'completed', call)}
+                                            className={`p-1.5 rounded-lg transition-all ${isCompleted
+                                                ? 'bg-green-500 text-white hover:bg-green-600'
+                                                : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
+                                                }`}
+                                        >
+                                            {isCompleted ? (
+                                                <CheckCircle className="w-4 h-4 text-white" />
+                                            ) : (
+                                                <Clock className="w-4 h-4" />
+                                            )}
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>{isCompleted ? 'Completed' : 'Mark as Completed'}</p>
+                                    </TooltipContent>
+                                </Tooltip>
 
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button
-                                    onClick={(e) => handleActionClick(e, 'ticket', call)}
-                                    className={`p-1.5 rounded-lg transition-all ${hasTicket
-                                        ? 'bg-purple-500 text-white hover:bg-purple-600'
-                                        : 'bg-purple-100 text-purple-600 hover:bg-purple-200'
-                                        }`}
-                                >
-                                    <TicketPlus className="w-4 h-4" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>{hasTicket ? 'Ticket Created' : 'Create Ticket'}</p>
-                            </TooltipContent>
-                        </Tooltip>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <button
+                                            onClick={(e) => handleActionClick(e, 'ticket', call)}
+                                            className={`p-1.5 rounded-lg transition-all ${hasTicket
+                                                ? 'bg-purple-500 text-white hover:bg-purple-600'
+                                                : 'bg-purple-100 text-purple-600 hover:bg-purple-200'
+                                                }`}
+                                        >
+                                            <TicketPlus className="w-4 h-4" />
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>{hasTicket ? 'Ticket Created' : 'Create Ticket'}</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </>
+                        )}
                     </div>
                 )
             }

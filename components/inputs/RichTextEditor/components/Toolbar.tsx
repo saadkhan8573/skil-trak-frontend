@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import {
@@ -12,6 +14,9 @@ import {
   $isRangeSelection,
   $createParagraphNode,
   $getRoot,
+  $insertNodes,
+  $getNodeByKey,
+  $isNodeSelection,
   ElementFormatType,
 } from 'lexical';
 import {
@@ -48,6 +53,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { INSERT_IMAGE_COMMAND } from '../plugins/ImagePlugin';
+import { $createImageNode, $isImageNode } from '../nodes/ImageNode';
 import { AdminApi } from '@queries';
 
 const LowPriority = 1;
@@ -190,6 +196,12 @@ export const Toolbar = () => {
           setBlockType(type);
         }
       }
+    } else if ($isNodeSelection(selection)) {
+      const nodes = selection.getNodes();
+      if (nodes.length === 1 && $isImageNode(nodes[0])) {
+        // You could update some state here if needed, 
+        // e.g., to highlight alignment buttons based on image alignment.
+      }
     }
   }, [editor]);
 
@@ -254,28 +266,52 @@ export const Toolbar = () => {
       if (file) {
         // Show local preview immediately
         const reader = new FileReader();
-        reader.onload = () => {
-          editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
-            altText: file.name,
-            src: reader.result as string,
-          });
-        };
-        reader.readAsDataURL(file);
+        reader.onload = async () => {
+          const temporarySrc = reader.result as string;
+          let nodeKey: string | null = null;
 
-        // Start upload
-        const formData = new FormData();
-        formData.append('file', file);
-        try {
-          const res: any = await uploadImage(formData);
-          if (res?.data?.url) {
-            editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
+          editor.update(() => {
+            const imageNode = $createImageNode({
               altText: file.name,
-              src: res.data.url,
+              src: temporarySrc,
+            });
+            $insertNodes([imageNode]);
+            nodeKey = imageNode.getKey();
+          });
+
+          if (!nodeKey) return;
+
+          // Start upload
+          const formData = new FormData();
+          formData.append('file', file);
+          try {
+            const res: any = await uploadImage(formData);
+            if (res?.data?.url) {
+              editor.update(() => {
+                const node = $getNodeByKey(nodeKey!);
+                if ($isImageNode(node)) {
+                  node.setSrc(res.data.url);
+                }
+              });
+            } else {
+              editor.update(() => {
+                const node = $getNodeByKey(nodeKey!);
+                if (node) {
+                  node.remove();
+                }
+              });
+            }
+          } catch (e) {
+            console.error('Upload failed', e);
+            editor.update(() => {
+              const node = $getNodeByKey(nodeKey!);
+              if (node) {
+                node.remove();
+              }
             });
           }
-        } catch (e) {
-          console.error('Upload failed', e);
-        }
+        };
+        reader.readAsDataURL(file);
       }
     };
   }, [editor, uploadImage]);

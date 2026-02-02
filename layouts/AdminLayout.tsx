@@ -362,15 +362,15 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
             Icon: MdEmail,
         },
         {
-            text: 'Call Management',
+            text: 'AI Calls',
             path: getRoutePath('/call-management'),
             Icon: PiHeadsetBold,
         },
-        {
-            text: 'AI Voice Calls',
-            path: getRoutePath('/ai-voice-calls'),
-            Icon: RiVoiceRecognitionLine,
-        },
+        // {
+        //     text: 'AI Voice Calls',
+        //     path: getRoutePath('/ai-voice-calls'),
+        //     Icon: RiVoiceRecognitionLine,
+        // },
         {
             text: 'Notes Templates',
             path: getRoutePath('/note-template?tab=statusCheckLabelNotes'),

@@ -18,12 +18,12 @@ import { BiMessageRoundedDots } from 'react-icons/bi'
 import { BsFillSendArrowUpFill } from 'react-icons/bs'
 import { FiPhoneOff } from 'react-icons/fi'
 import { ImPhone, ImPhoneHangUp } from 'react-icons/im'
-import { LuFlagTriangleRight } from 'react-icons/lu'
+import { LuFlagTriangleRight, LuPhoneOutgoing } from 'react-icons/lu'
 import { MdEmail, MdPhone, MdSnooze } from 'react-icons/md'
 
 export const StudentCellInfo = ({
-    student,
     call,
+    student,
     showHignPriority = true,
 }: {
     call?: boolean
@@ -147,12 +147,12 @@ export const StudentCellInfo = ({
                                 </div>
                             )}
                             {router.pathname !== '/portals/admin/talent-pool' &&
-                            showHignPriority
+                                showHignPriority
                                 ? student?.isHighPriority && (
-                                      <div className="rounded-md whitespace-nowrap px-1 py-0.5 border border-red-400 text-red-400 text-xs font-medium">
-                                          High Priority
-                                      </div>
-                                  )
+                                    <div className="rounded-md whitespace-nowrap px-1 py-0.5 border border-red-400 text-red-400 text-xs font-medium">
+                                        High Priority
+                                    </div>
+                                )
                                 : null}
                         </div>
                         {call &&
@@ -192,13 +192,20 @@ export const StudentCellInfo = ({
                                     : student?.familyName || ''}
                             </p>
                             <CopyData
-                                text={`${student?.user?.name} ${
-                                    student?.familyName || ''
-                                }`}
+                                text={`${student?.user?.name} ${student?.familyName || ''
+                                    }`}
                                 type={'Student Name'}
                             />
                         </div>
 
+                        {student?.aiVoiceCalls && student?.aiVoiceCalls?.length > 0 ? (
+                            <div className="w-5 h-5 flex items-center justify-center rounded relative group">
+                                <LuPhoneOutgoing className="text-info text-lg" />
+                                <Tooltip>
+                                    Scheduled: {moment(student?.aiVoiceCalls[0]?.scheduledAt).format('DD/MM/YYYY')}
+                                </Tooltip>
+                            </div>
+                        ) : null}
                         {student?.tickets && student?.tickets?.length > 0 ? (
                             <div className="w-5 h-5 flex items-center justify-center rounded relative group">
                                 <BiMessageRoundedDots className="text-primary text-lg" />

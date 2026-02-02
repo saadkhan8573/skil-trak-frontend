@@ -140,7 +140,7 @@ export const Notification = ({
                     )
                 )}
             </div>
-            <div className="flex-grow p-2">
+            <div className="grow p-2">
                 <Typography
                     variant={'label'}
                     color={(theme as any)[variant].title}

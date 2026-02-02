@@ -52,6 +52,7 @@ export const {
     useGetStudentPlacementStatusCheckNotesQuery,
     useAddManualNoteMutation,
     useConfirmHighlightedTaskMutation,
+    useGetRtoCourseWpTypesQuery,
 
     // Courses
     useRtoCoursesQuery,
@@ -122,6 +123,7 @@ export const {
     useGetIndustryInitiatedESignQuery,
     useCancelIndustryInitiatedESignMutation,
     useIndustryUserStatusChangeMutation,
+    useGetIndustryCancelledStudentsQuery,
     useGetIndutryAvailableWorkingHoursQuery,
     useGetPedingCourseApprovalIndustriesQuery,
     useStatusChangeCourseFacilityChecklistMutation,
@@ -195,6 +197,7 @@ export const RtoV2Api = {
         useUpdateSupervisorRequirements:
             useUpdateSupervisorRequirementsMutation,
         setupConfirmationPercentage: useSetupConfirmationPercentageQuery,
+        useRtoCourseWpTypes: useGetRtoCourseWpTypesQuery,
     },
     Students: {
         importStudents: useImportStudentsMutation,
@@ -248,6 +251,7 @@ export const RtoV2Api = {
         useConfirmHighlightedTask: useConfirmIndustryHighlightedTaskMutation,
         useIndustryAvailabilityV2: useGetIndustryAvailabilityV2Query,
         industryUserStatusChange: useIndustryUserStatusChangeMutation,
+        getIndustryCancelledStudents: useGetIndustryCancelledStudentsQuery,
         getIndustryInitiatedESign: useGetIndustryInitiatedESignQuery,
         cancelIndustryInitiatedESign: useCancelIndustryInitiatedESignMutation,
         useGetIndutryAvailableHours: useGetIndutryAvailableWorkingHoursQuery,

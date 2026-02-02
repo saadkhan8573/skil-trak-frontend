@@ -766,8 +766,8 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                     />
                     <div
                         className={`${shortDescriptionWordCount > 385
-                                ? 'text-red-500'
-                                : ' text-slate-500'
+                            ? 'text-red-500'
+                            : ' text-slate-500'
                             } text-sm mb-5`}
                     >
                         {`${shortDescriptionWordCount} / 385 words`}

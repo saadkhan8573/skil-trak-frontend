@@ -1,9 +1,6 @@
 import { Button } from '@components'
 import { AddCourseProgramIndustry } from '@partials/common/IndustryProfileDetail/components/CourseManagement/components/AddCourseProgramIndustry'
-import {
-    Industry,
-    IndustryCourseApproval,
-} from '@types'
+import { Industry, IndustryCourseApproval } from '@types'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
     AlertCircle,
@@ -57,13 +54,17 @@ export function CourseCard({
     const [isCourseExpanded, setIsCourseExpanded] = useState(true)
     const [uploadFacilityChecklist, setUploadFacilityChecklist] =
         useState(false)
-    const [isReassignCourse, setIsReassignCourse] =
-        useState(false)
+    const [isReassignCourse, setIsReassignCourse] = useState(false)
     const [isDeleteOpen, setIsDeleteOpen] = useState(false)
 
     const userCredentials = useMemo(() => getUserCredentials(), [])
 
     const isDeletedInternal = !!approval?.deletedAt
+    const user = getUserCredentials()
+    const isLocal = process.env.NEXT_PUBLIC_NODE_ENV === 'local'
+    const isAllowedUser = [4453, 78, 5714, 20365].includes(user?.id)
+    const isAdmin = user?.role === UserRoles.ADMIN
+    const showActionButtons = isLocal || isAllowedUser || isAdmin
 
     const isApproved = approval?.status === 'approved'
     const isPending = approval?.status === 'pending'
@@ -77,20 +78,20 @@ export function CourseCard({
     const hasFacilityFile = !!approval?.file
     const needsApproval = hasFacilityFile && !isApproved
 
-
     return (
         <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: courseIndex * 0.05 }}
-            className={`rounded-xl overflow-hidden transition-all duration-300 ${isApproved
-                ? 'bg-gradient-to-br from-[#10B981]/10 via-white to-[#059669]/10 border-2 border-[#10B981]/30 shadow-lg'
-                : needsApproval
-                    ? 'bg-gradient-to-br from-[#F7A619]/10 via-white to-[#EA580C]/10 border-2 border-[#F7A619]/40 shadow-lg animate-pulse-slow'
-                    : isRejected
-                        ? 'bg-gradient-to-br from-[#EF4444]/5 via-white to-[#DC2626]/5 border-2 border-[#EF4444]/30'
+            className={`rounded-xl overflow-hidden transition-all duration-300 ${
+                isApproved
+                    ? 'bg-linear-to-br from-[#10B981]/10 via-white to-[#059669]/10 border-2 border-[#10B981]/30 shadow-lg'
+                    : needsApproval
+                      ? 'bg-linear-to-br from-[#F7A619]/10 via-white to-[#EA580C]/10 border-2 border-[#F7A619]/40 shadow-lg animate-pulse-slow'
+                      : isRejected
+                        ? 'bg-linear-to-br from-[#EF4444]/5 via-white to-[#DC2626]/5 border-2 border-[#EF4444]/30'
                         : 'bg-white border border-[#E2E8F0] hover:shadow-md hover:border-[#044866]/20'
-                }`}
+            }`}
         >
             {/* Course Header */}
             <div className="p-4">
@@ -99,40 +100,41 @@ export function CourseCard({
                         {/* Course Title & Code */}
                         <div className="flex items-center gap-2 mb-2">
                             <div
-                                className={`px-2 py-1 rounded-md text-[10px] font-bold ${isApproved
-                                    ? 'bg-[#10B981]/20 text-[#10B981]'
-                                    : 'bg-[#044866]/10 text-[#044866]'
-                                    }`}
+                                className={`px-2 py-1 rounded-md text-[10px] font-bold ${
+                                    isApproved
+                                        ? 'bg-[#10B981]/20 text-[#10B981]'
+                                        : 'bg-[#044866]/10 text-[#044866]'
+                                }`}
                             >
                                 {approval?.course.code}
                             </div>
                             {isDeletedInternal ? (
-                                <div className="px-2 py-1 bg-gradient-to-r from-slate-500 to-slate-700 text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md">
+                                <div className="px-2 py-1 bg-linear-to-r from-slate-500 to-slate-700 text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md">
                                     <Trash2 className="w-3 h-3" />
                                     REMOVED
                                 </div>
                             ) : (
                                 <>
                                     {isApproved && (
-                                        <div className="px-2 py-1 bg-gradient-to-r from-[#10B981] to-[#059669] text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md">
+                                        <div className="px-2 py-1 bg-linear-to-r from-[#10B981] to-[#059669] text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md">
                                             <CheckCircle2 className="w-3 h-3" />
                                             FULLY APPROVED
                                         </div>
                                     )}
                                     {isPending && approval?.file && (
-                                        <div className="px-2 py-1 bg-gradient-to-r from-[#F7A619] to-[#EA580C] text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md animate-pulse">
+                                        <div className="px-2 py-1 bg-linear-to-r from-[#F7A619] to-[#EA580C] text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md animate-pulse">
                                             <AlertCircle className="w-3 h-3" />
                                             ACTION REQUIRED
                                         </div>
                                     )}
                                     {isPending && !approval?.file && (
-                                        <div className="px-2 py-1 bg-gradient-to-r from-[#F7A619] to-[#EA580C] text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md animate-pulse">
+                                        <div className="px-2 py-1 bg-linear-to-r from-[#F7A619] to-[#EA580C] text-white rounded-md text-[10px] font-bold flex items-center gap-1 shadow-md animate-pulse">
                                             <AlertCircle className="w-3 h-3" />
                                             PENDING
                                         </div>
                                     )}
                                     {isRejected && (
-                                        <div className="px-2 py-1 bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white rounded-md text-[10px] font-bold flex items-center gap-1">
+                                        <div className="px-2 py-1 bg-linear-to-r from-[#EF4444] to-[#DC2626] text-white rounded-md text-[10px] font-bold flex items-center gap-1">
                                             <AlertTriangle className="w-3 h-3" />
                                             CHANGES REQUESTED
                                         </div>
@@ -151,14 +153,15 @@ export function CourseCard({
                                 {/* Facility Checklist Status */}
                                 {!isDeletedInternal && (
                                     <div
-                                        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-medium ${isApproved
-                                            ? 'bg-[#10B981]/10 text-[#10B981]'
-                                            : needsApproval
-                                                ? 'bg-[#F7A619]/20 text-[#F7A619]'
-                                                : isRejected
+                                        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-medium ${
+                                            isApproved
+                                                ? 'bg-[#10B981]/10 text-[#10B981]'
+                                                : needsApproval
+                                                  ? 'bg-[#F7A619]/20 text-[#F7A619]'
+                                                  : isRejected
                                                     ? 'bg-[#EF4444]/10 text-[#EF4444]'
                                                     : 'bg-[#64748B]/10 text-[#64748B]'
-                                            }`}
+                                        }`}
                                     >
                                         <FileCheck className="w-3 h-3" />
                                         {isApproved && 'Checklist Approved'}
@@ -189,31 +192,34 @@ export function CourseCard({
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                        {canDelete && !isDeletedInternal && (
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation()
-                                    setIsDeleteOpen(true)
-                                }}
-                                className="w-8 h-8 rounded-lg flex items-center justify-center bg-red-50 hover:bg-red-100 text-red-500 transition-colors"
-                                title="Remove Course"
-                            >
-                                <Trash2 className="w-4 h-4" />
-                            </button>
-                        )}
+                    <div className="flex items-center gap-2 shrink-0">
+                        {showActionButtons &&
+                            canDelete &&
+                            !isDeletedInternal && (
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        setIsDeleteOpen(true)
+                                    }}
+                                    className="w-8 h-8 rounded-lg flex items-center justify-center bg-red-50 hover:bg-red-100 text-red-500 transition-colors"
+                                    title="Remove Course"
+                                >
+                                    <Trash2 className="w-4 h-4" />
+                                </button>
+                            )}
                         <motion.button
                             onClick={() =>
                                 setIsCourseExpanded(!isCourseExpanded)
                             }
                             animate={{ rotate: isCourseExpanded ? 180 : 0 }}
                             transition={{ duration: 0.3 }}
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isApproved
-                                ? 'bg-[#10B981]/10 hover:bg-[#10B981]/20 text-[#10B981]'
-                                : needsApproval
-                                    ? 'bg-[#F7A619]/10 hover:bg-[#F7A619]/20 text-[#F7A619]'
-                                    : 'bg-[#F8FAFB] hover:bg-[#E8F4F8] text-[#044866]'
-                                }`}
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                                isApproved
+                                    ? 'bg-[#10B981]/10 hover:bg-[#10B981]/20 text-[#10B981]'
+                                    : needsApproval
+                                      ? 'bg-[#F7A619]/10 hover:bg-[#F7A619]/20 text-[#F7A619]'
+                                      : 'bg-[#F8FAFB] hover:bg-[#E8F4F8] text-[#044866]'
+                            }`}
                         >
                             <ChevronDown className="w-4 h-4" />
                         </motion.button>
@@ -235,7 +241,10 @@ export function CourseCard({
                                 Removed By: {approval.deletedBy.name}
                             </p>
                             <p className="text-[10px] text-slate-500">
-                                On {moment(approval.deletedAt).format('MMMM Do YYYY, h:mm a')}
+                                On{' '}
+                                {moment(approval.deletedAt).format(
+                                    'MMMM Do YYYY, h:mm a'
+                                )}
                             </p>
                         </div>
                     </motion.div>
@@ -254,9 +263,9 @@ export function CourseCard({
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="bg-gradient-to-r from-[#10B981]/10 to-[#059669]/10 border border-[#10B981]/30 rounded-lg p-3 flex items-center gap-2"
+                        className="bg-linear-to-r from-[#10B981]/10 to-[#059669]/10 border border-[#10B981]/30 rounded-lg p-3 flex items-center gap-2"
                     >
-                        <div className="w-8 h-8 bg-gradient-to-br from-[#10B981] to-[#059669] rounded-lg flex items-center justify-center">
+                        <div className="w-8 h-8 bg-linear-to-br from-[#10B981] to-[#059669] rounded-lg flex items-center justify-center">
                             <CheckCircle2 className="w-4 h-4 text-white" />
                         </div>
                         <div className="flex-1">
@@ -270,10 +279,12 @@ export function CourseCard({
                                     setIsReassignCourse(true)
                                     setUploadFacilityChecklist(true)
                                 }}
-                                className="bg-gradient-to-r from-[#044866] to-[#0D5468] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#044866]/30"
+                                className="bg-linear-to-r from-[#044866] to-[#0D5468] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#044866]/30"
                             >
                                 <UploadCloud className="w-3.5 h-3.5" />
-                                {approval?.file ? "Update Facility Checklist" : "Manual E-sign Upload"}
+                                {approval?.file
+                                    ? 'Update Facility Checklist'
+                                    : 'Manual E-sign Upload'}
                             </Button>
                         )}
                     </motion.div>
@@ -284,11 +295,11 @@ export function CourseCard({
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="bg-gradient-to-r from-[#EF4444]/10 to-[#DC2626]/10 border border-[#EF4444]/30 rounded-lg p-3"
+                        className="bg-linear-to-r from-[#EF4444]/10 to-[#DC2626]/10 border border-[#EF4444]/30 rounded-lg p-3"
                     >
                         <div className="flex items-center justify-between gap-3">
                             <div className="flex items-center gap-2">
-                                <div className="w-8 h-8 bg-gradient-to-br from-[#EF4444] to-[#DC2626] rounded-lg flex items-center justify-center">
+                                <div className="w-8 h-8 bg-linear-to-br from-[#EF4444] to-[#DC2626] rounded-lg flex items-center justify-center">
                                     <AlertTriangle className="w-4 h-4 text-white" />
                                 </div>
                                 <div>
@@ -296,13 +307,14 @@ export function CourseCard({
                                         Changes Requested
                                     </p>
                                     <p className="text-[10px] text-[#DC2626]">
-                                        Facility checklist requires modifications
+                                        Facility checklist requires
+                                        modifications
                                     </p>
                                 </div>
                             </div>
                             <Button
                                 onClick={() => setUploadFacilityChecklist(true)}
-                                className="bg-gradient-to-r from-[#044866] to-[#0D5468] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#044866]/30"
+                                className="bg-linear-to-r from-[#044866] to-[#0D5468] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#044866]/30"
                             >
                                 <UploadCloud className="w-3.5 h-3.5" />
                                 Manual E-sign Upload

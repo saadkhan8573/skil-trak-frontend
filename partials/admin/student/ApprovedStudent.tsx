@@ -32,6 +32,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { MdBlock, MdPriorityHigh } from 'react-icons/md'
 import { RiLockPasswordFill } from 'react-icons/ri'
+import { Phone } from 'lucide-react'
 import { SectorCell, StudentCellInfo, StudentIndustries } from './components'
 import { AdminStudentModalType, getAdminStudentsModal } from './modals'
 
@@ -124,6 +125,13 @@ export const ApprovedStudent = () => {
                 Icon: FaEdit,
             },
             {
+                text: 'AI Voice Call',
+                onClick: (student: Student) => {
+                    handleOpenModal(AdminStudentModalType.AI_CALL, student)
+                },
+                Icon: () => <Phone className='w-3 h-3' />,
+            },
+            {
                 text: 'Change Status',
                 onClick: (student: Student) => {
                     // onChangeStatus(student)
@@ -180,6 +188,7 @@ export const ApprovedStudent = () => {
                 Icon: MdBlock,
                 color: 'text-red-400 hover:bg-red-100 hover:border-red-200',
             },
+
         ]
     }
 
@@ -330,6 +339,17 @@ export const ApprovedStudent = () => {
                     >
                         Block
                     </ActionButton>
+                    <ActionButton
+                        Icon={Phone as any}
+                        onClick={() => {
+                            handleOpenModal(
+                                AdminStudentModalType.AI_CALL,
+                                student
+                            )
+                        }}
+                    >
+                        AI Call
+                    </ActionButton>
                 </div>
             )
         },
@@ -412,21 +432,21 @@ export const ApprovedStudent = () => {
                                         >
                                             {pageSize
                                                 ? pageSize(
-                                                      itemPerPage,
-                                                      (e) => {
-                                                          setItemPerPage(e)
-                                                          setIsRouting(false)
-                                                      },
-                                                      data?.data?.length
-                                                  )
+                                                    itemPerPage,
+                                                    (e) => {
+                                                        setItemPerPage(e)
+                                                        setIsRouting(false)
+                                                    },
+                                                    data?.data?.length
+                                                )
                                                 : null}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination
                                                     ? pagination(
-                                                          data?.pagination,
-                                                          setPage
-                                                      )
+                                                        data?.pagination,
+                                                        setPage
+                                                    )
                                                     : null}
                                             </div>
                                         </div>
@@ -442,23 +462,23 @@ export const ApprovedStudent = () => {
                                             <div className="p-6 mb-2 flex justify-between">
                                                 {pageSize
                                                     ? pageSize(
-                                                          itemPerPage,
-                                                          (e) => {
-                                                              setItemPerPage(e)
-                                                              setIsRouting(
-                                                                  false
-                                                              )
-                                                          },
-                                                          data?.data?.length
-                                                      )
+                                                        itemPerPage,
+                                                        (e) => {
+                                                            setItemPerPage(e)
+                                                            setIsRouting(
+                                                                false
+                                                            )
+                                                        },
+                                                        data?.data?.length
+                                                    )
                                                     : null}
                                                 <div className="flex gap-x-2">
                                                     {quickActions}
                                                     {pagination
                                                         ? pagination(
-                                                              data?.pagination,
-                                                              setPage
-                                                          )
+                                                            data?.pagination,
+                                                            setPage
+                                                        )
                                                         : null}
                                                 </div>
                                             </div>

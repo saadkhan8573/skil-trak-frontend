@@ -43,8 +43,8 @@ const CourseEditPage: NextPageWithLayout = () => {
     const onSubmit = async (values: any) => {
         const requirements = draftToHtmlText(values?.requirements)
         const body = {
-            requirements,
             ...values,
+            requirements,
             id,
         }
         await update(body)

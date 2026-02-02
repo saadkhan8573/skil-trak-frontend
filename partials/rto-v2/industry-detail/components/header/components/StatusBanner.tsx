@@ -25,16 +25,16 @@ export function StatusBanner({
     return (
         <div
             className={`relative rounded-t-xl px-4 py-2 overflow-hidden ${isBlocked
-                ? 'bg-gradient-to-r from-[#EF4444] via-[#DC2626] to-[#EF4444]'
+                ? 'bg-linear-to-r from-[#EF4444] via-[#DC2626] to-[#EF4444]'
                 : isSnoozed
-                    ? 'bg-gradient-to-r from-[#F7A619] via-[#EA580C] to-[#F7A619]'
+                    ? 'bg-linear-to-r from-[#F7A619] via-[#EA580C] to-[#F7A619]'
                     : isPlacementReady
-                        ? 'bg-gradient-to-r from-[#10B981] via-[#059669] to-[#10B981]'
-                        : 'bg-gradient-to-r from-[#F7A619] via-[#EA580C] to-[#F7A619]'
-                } bg-[length:200%_100%] animate-gradient`}
+                        ? 'bg-linear-to-r from-[#10B981] via-[#059669] to-[#10B981]'
+                        : 'bg-linear-to-r from-[#F7A619] via-[#EA580C] to-[#F7A619]'
+                } bg-size-[200%_100%] animate-gradient`}
         >
             {/* Animated Shimmer Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+            <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
 
             <div className="relative flex items-center justify-between">
                 <div className="flex items-center gap-2">

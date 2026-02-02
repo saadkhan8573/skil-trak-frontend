@@ -81,8 +81,11 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
                 listingResults={filteredCompanies(
                     Object.values(listingResults)?.flat()
                 )
-                    ?.filter((l: any) => !l?.duplicated)
-                    ?.map((l: any) => l?.placeId)}
+                    // ?.filter((l: any) => !l?.duplicated)
+                    ?.map((l: any) => ({
+                        id: l?.placeId,
+                        name: l?.name,
+                    }))}
             />
         )
     }
@@ -263,10 +266,9 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
                                         <div className="ml-auto">
                                             <Badge
                                                 variant="secondary"
-                                                text={`${
-                                                    filteredCompanies(companies)
+                                                text={`${filteredCompanies(companies)
                                                         ?.length
-                                                } companies`}
+                                                    } companies`}
                                             />
                                         </div>
                                     </div>

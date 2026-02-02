@@ -378,7 +378,7 @@ export const PlacementRequestDetail = () => {
         }
     }, [workplaceType, currentStatus]) // Re-run when content might change
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100/50">
+        <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50/30 to-slate-100/50">
             {placementRequestsDetails?.isError ? <TechnicalError /> : null}
             {placementRequestsDetails.isLoading ? (
                 <div className="space-y-0">
@@ -412,7 +412,7 @@ export const PlacementRequestDetail = () => {
 
                     {/* Main Content */}
                     <div className="px-8 py-8">
-                        <div className="max-w-[1900px] mx-auto">
+                        <div className="max-w-475 mx-auto">
                             <div className="grid grid-cols-2 gap-10">
                                 {/* Left Panel - Student Information */}
                                 <motion.div
@@ -432,13 +432,13 @@ export const PlacementRequestDetail = () => {
                                     <StudentQuickSummaryCard
                                         studentDetails={studentDetails?.data}
                                     />
-                                    <CollapsibleStudentDetailsCard
+                                    {/* <CollapsibleStudentDetailsCard
                                         setShowStudentDetails={
                                             setShowStudentDetails
                                         }
                                         showStudentDetails={showStudentDetails}
                                         studentDetails={studentDetails?.data}
-                                    />
+                                    /> */}
                                     <EnhancedComplianceChecks />
                                     <EnhancedPlacementProgramCard
                                         toggleRequirement={toggleRequirement}

@@ -22,7 +22,7 @@ function getStudentProfileLink(role: string, studentId: number) {
     }
 }
 
-export function RejectedStudentCard({ student }: StudentCardProps) {
+export function CancelledStudentCard({ student }: StudentCardProps) {
     const role = getUserCredentials()?.role
     const workplace = student?.workplace?.[0]
     const industry = workplace?.industries?.[0]
@@ -40,15 +40,13 @@ export function RejectedStudentCard({ student }: StudentCardProps) {
         )
 
     // Action info
-    const isApproved = industry?.action === 'approved'
     const hasActionInfo = student?.ActionedBy
-
 
     return (
         <div
             className={`${isTerminalState
-                ? 'bg-red-50 border-red-200'
-                : 'bg-white border-[#E2E8F0]'
+                    ? 'bg-red-50 border-red-200'
+                    : 'bg-white border-[#E2E8F0]'
                 } border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300`}
         >
             <div className="p-4">
@@ -57,7 +55,7 @@ export function RejectedStudentCard({ student }: StudentCardProps) {
                     {/* Left: Student Info */}
                     <div className="flex items-start gap-3 flex-1">
                         {/* Avatar */}
-                        <div className="w-10 h-10 bg-linear-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-sm">
+                        <div className="w-10 h-10 bg-gradient-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-sm">
                             {student?.student?.user?.name
                                 ?.split(' ')
                                 .map((n: any) => n[0])
@@ -105,23 +103,15 @@ export function RejectedStudentCard({ student }: StudentCardProps) {
                     <div className="">
                         {hasActionInfo && (
                             <div
-                                className={`mb-4 rounded-md border px-3 py-2 text-xs ${isApproved
-                                    ? 'bg-green-50 border-green-200'
-                                    : 'bg-red-50 border-red-200'
-                                    }`}
+                                className={`mb-4 rounded-md border px-3 py-2 text-xs bg-red-50 border-red-200`}
                             >
                                 <div className="flex items-center gap-1 justify-between">
                                     <Badge
-                                        text={'Rejected By'}
+                                        text={'Cancelled By'}
                                         variant={'error'}
                                         size="xs"
                                     />
-                                    <p
-                                        className={`font-medium capitalize ${isApproved
-                                            ? 'text-green-600'
-                                            : 'text-red-600'
-                                            }`}
-                                    >
+                                    <p className="font-medium capitalize text-red-600">
                                         {student?.ActionedBy?.name}
                                     </p>
                                 </div>

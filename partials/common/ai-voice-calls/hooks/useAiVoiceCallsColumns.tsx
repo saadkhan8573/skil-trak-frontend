@@ -1,14 +1,71 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { Phone } from 'lucide-react'
-import React, { useState } from 'react'
+import { Phone, Calendar } from 'lucide-react'
+import React, { useReducer } from 'react'
 import { Student } from '@types'
-import { InitialAvatar } from '@components'
+import { ActionButton, Badge, Button, InitialAvatar } from '@components'
 import Link from 'next/link'
 import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover'
 import { BookOpen } from 'lucide-react'
 
+type State = {
+    selectedStudent: Student | null
+    selectedStudentsForBulk: Student[]
+}
+
+type Action =
+    | { type: 'SET_SELECTED_STUDENT'; payload: Student | null }
+    | { type: 'SET_SELECTED_STUDENTS_FOR_BULK'; payload: Student[] }
+
+const initialState: State = {
+    selectedStudent: null,
+    selectedStudentsForBulk: [],
+}
+
+const reducer = (state: State, action: Action): State => {
+    switch (action.type) {
+        case 'SET_SELECTED_STUDENT':
+            return { ...state, selectedStudent: action.payload }
+        case 'SET_SELECTED_STUDENTS_FOR_BULK':
+            return { ...state, selectedStudentsForBulk: action.payload }
+        default:
+            return state
+    }
+}
+
 export const useAiVoiceCallsColumns = () => {
-    const [selectedStudent, setSelectedStudent] = useState<Student | null>(null)
+    const [state, dispatch] = useReducer(reducer, initialState)
+    const { selectedStudent, selectedStudentsForBulk } = state
+
+    const setSelectedStudent = (student: Student | null) =>
+        dispatch({ type: 'SET_SELECTED_STUDENT', payload: student })
+    const setSelectedStudentsForBulk = (students: Student[]) =>
+        dispatch({ type: 'SET_SELECTED_STUDENTS_FOR_BULK', payload: students })
+
+
+    const quickActionsElements = {
+        id: 'id',
+        individual: (student: Student) => (
+            <div className="flex items-center gap-2">
+                <Badge
+                    variant="primaryNew"
+                    className='whitespace-pre'
+                    onClick={() => setSelectedStudent(student)}
+                    Icon={Phone}
+                >
+                    AI Voice Call
+                </Badge>
+            </div>
+        ),
+        common: (students: Student[]) => (
+            <Button
+                variant="primaryNew"
+                className='!py-1'
+                onClick={() => setSelectedStudentsForBulk(students)}
+            >
+                Schedule
+            </Button>
+        ),
+    }
 
     const columns: ColumnDef<Student>[] = [
         {
@@ -106,13 +163,14 @@ export const useAiVoiceCallsColumns = () => {
             id: 'actions',
             cell: ({ row }) => (
                 <div className="flex items-center gap-2">
-                    <button
-                        className="px-4 py-1.5 bg-[#044866] text-white rounded-lg text-xs font-medium hover:bg-[#095a7d] transition-all flex items-center gap-2"
+                    <Badge
+                        variant="primaryNew"
+                        className='whitespace-pre'
                         onClick={() => setSelectedStudent(row.original)}
+                        Icon={Phone}
                     >
-                        <Phone className="w-3 h-3" />
-                        Call Now
-                    </button>
+                        AI Voice Call
+                    </Badge>
                 </div>
             )
         }
@@ -121,6 +179,9 @@ export const useAiVoiceCallsColumns = () => {
     return {
         columns,
         selectedStudent,
-        setSelectedStudent
+        setSelectedStudent,
+        quickActionsElements,
+        selectedStudentsForBulk,
+        setSelectedStudentsForBulk
     }
 }

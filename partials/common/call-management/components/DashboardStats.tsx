@@ -32,20 +32,29 @@ export function DashboardStats() {
             valueKey: 'completed',
         },
         {
-            label: 'Pending States',
+            label: 'Action Required',
             value: statistics?.pending || 0,
             icon: Clock,
             color: 'bg-primaryNew',
             lightColor: 'bg-[#E6F2F7]',
             textColor: 'text-[#044866]',
-            valueKey: 'open',
+            valueKey: 'pending',
+        },
+        {
+            label: 'Schedule States',
+            value: statistics?.scheduled || 0,
+            icon: Clock,
+            color: 'bg-primaryNew',
+            lightColor: 'bg-[#E6F2F7]',
+            textColor: 'text-[#044866]',
+            valueKey: 'scheduled',
         },
     ] as const
 
     return (
         <>
             <Tabs defaultValue="all" className="mb-5">
-                <TabsList className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-transparent p-0 h-32 w-full">
+                <TabsList className="grid grid-cols-1 md:grid-cols-4 gap-2 bg-transparent p-0 h-24 w-full">
                     {stats?.map((stat) => {
                         const Icon = stat.icon
 
@@ -54,7 +63,7 @@ export function DashboardStats() {
                                 key={stat.valueKey}
                                 value={stat.valueKey}
                                 className={`
-                                group relative rounded-xl border-2 p-4 text-left transition-all 
+                                group relative rounded-xl border-2 p-3 text-left transition-all 
                                 data-[state=active]:shadow-lg
                                 data-[state=active]:scale-[1.02]
                                 data-[state=active]:border-transparent
@@ -63,7 +72,7 @@ export function DashboardStats() {
                             `}
                             >
                                 <div className="relative z-10 w-full ">
-                                    <div className="flex items-center justify-between mb-2">
+                                    <div className="flex items-center justify-between">
                                         <span className="text-xs text-gray-600 group-data-[state=active]:text-white/80">
                                             {stat.label}
                                         </span>
@@ -85,7 +94,7 @@ export function DashboardStats() {
                                         </div>
                                     </div>
 
-                                    <div className="text-3xl text-gray-900 group-data-[state=active]:text-white font-bold">
+                                    <div className="text-2xl text-gray-900 group-data-[state=active]:text-white font-bold">
                                         {stat.value}
                                     </div>
                                 </div>
@@ -104,7 +113,8 @@ export function DashboardStats() {
                     <AllCallList />
                 </TabsContent>
                 <TabsContent value="completed"> <AllCallList status='completed' /></TabsContent>
-                <TabsContent value="open"> <AllCallList status='pending' /></TabsContent>
+                <TabsContent value="pending"> <AllCallList status='pending' /></TabsContent>
+                <TabsContent value="scheduled"> <AllCallList status='scheduled' /></TabsContent>
             </Tabs>
 
             {selectedCall && (

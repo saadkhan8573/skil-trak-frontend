@@ -1,73 +1,38 @@
-import React, { useState } from 'react'
-import { CommonApi } from '@queries'
-import { LoadingAnimation, NoData, Table, TextInput } from '@components'
-import { useAiVoiceCallsColumns } from './hooks/useAiVoiceCallsColumns'
-import { Search } from 'lucide-react'
-import { InitiateCallModal } from './modals'
+import { ConfigTabs, TabConfig } from '@components/ConfigTabs'
+import { Calendar, Users } from 'lucide-react'
+import { ScheduledCallsTab, StudentsToCallTab } from './tabs'
 
 export const AiVoiceCalls = () => {
-    const [itemPerPage, setItemPerPage] = useState(50)
-    const [page, setPage] = useState(1)
-    const [search, setSearch] = useState('')
 
-    const { data, isLoading, isError } =
-        CommonApi.CallManagement.useGetStudentsToCallListQuery({
-            skip: itemPerPage * page - itemPerPage,
-            limit: itemPerPage,
-            search,
-        })
-
-    const { columns, selectedStudent, setSelectedStudent } = useAiVoiceCallsColumns()
+    const tabs: TabConfig[] = [
+        {
+            value: 'students',
+            label: 'Students to Call',
+            icon: Users,
+            component: StudentsToCallTab,
+            // count: studentsToCallCount?.data?.pagination?.totalItems || 0
+        },
+        {
+            value: 'scheduled',
+            label: 'Scheduled Calls',
+            icon: Calendar,
+            component: ScheduledCallsTab,
+            // count: scheduledCallsCount?.data?.pagination?.totalItems || 0
+        },
+    ]
 
     return (
         <div className="p-6 space-y-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-900">AI Voice Calls</h1>
-                    <p className="text-sm text-gray-500">Manage and initiate AI voice calls to students.</p>
-                </div>
-
-                <div className="w-full md:w-96">
-                    <TextInput
-                        name={"filter"}
-                        placeholder="Search students..."
-                        value={search}
-                        onChange={(e: any) => setSearch(e.target.value)}
-                    />
-                </div>
+            <div>
+                <h1 className="text-2xl font-bold text-gray-900">AI Voice Calls</h1>
+                <p className="text-sm text-gray-500">Manage student communications and scheduled automated calls.</p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden !p-4">
-                {isError && <NoData isError />}
-                {isLoading ? (
-                    <LoadingAnimation />
-                ) : data?.data && data?.data?.length > 0 ? (
-                    <>
-                        <Table
-                            columns={columns}
-                            data={data?.data}
-                        >
-                            {({ pageSize, pagination, table }) => (
-                                <>
-                                    <div className="flex items-center justify-between mb-4">
-                                        {pageSize && pageSize(itemPerPage, setItemPerPage, data?.data?.length)}
-                                        {pagination && pagination(data?.pagination, setPage)}
-                                    </div>
-                                    <div className="overflow-x-auto">
-                                        {table}
-                                    </div>
-                                </>
-                            )}
-                        </Table>
-                    </>
-                ) : (
-                    !isError && <NoData text="No students found to call." />
-                )}
-            </div>
-
-            <InitiateCallModal
-                student={selectedStudent}
-                onClose={() => setSelectedStudent(null)}
+            <ConfigTabs
+                tabs={tabs}
+                defaultValue="students"
+                tabsClasses="!mb-6 !py-1 !rounded"
+                tabsTriggerClasses='!py-1 !rounded'
             />
         </div>
     )

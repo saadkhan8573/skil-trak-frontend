@@ -64,12 +64,11 @@ const nextConfig = {
         'canvas',
     ],
     // compress: true,
-    // Enable module optimization
-    // experimental: {
-
-    // },
-    //     // reactStrictMode: true,
-    //     instrumentationHook: true,
+    experimental: {
+        outputFileTracingExcludes: {
+            '*': ['node_modules/canvas/**/*'],
+        },
+    },
 }
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
     enabled: process.env.ANALYZE === 'true',

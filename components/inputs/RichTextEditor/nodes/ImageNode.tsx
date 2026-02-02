@@ -99,8 +99,6 @@ function ImageComponent({ src, altText, width, height, maxWidth, nodeKey, alignm
     const onUploadToServer = useCallback(async () => {
         let fileToUpload: File | null = null;
 
-        console.log(`ImageNode: 🔄 Deep Investigation Mirroring for ${src}`);
-
         // Phase 1: Try Direct Fetch (CORS)
         try {
             const response = await fetch(src, { mode: 'cors' });

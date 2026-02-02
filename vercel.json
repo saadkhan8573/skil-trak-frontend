@@ -2,17 +2,20 @@
     "framework": "nextjs",
     "buildCommand": "next build",
     "functions": {
-        "pages/api/**/*.{js,ts}": {
+        "api/**/*.js": {
             "memory": 3008,
-            "maxDuration": 300
+            "maxDuration": 300,
+            "excludeFiles": "node_modules/canvas/**/*"
         },
         "pages/**/*.{js,ts,tsx,jsx}": {
             "memory": 3008,
-            "maxDuration": 60
+            "maxDuration": 60,
+            "excludeFiles": "node_modules/canvas/**/*"
         },
         "app/**/*.{js,ts,tsx,jsx}": {
             "memory": 3008,
-            "maxDuration": 60
+            "maxDuration": 60,
+            "excludeFiles": "node_modules/canvas/**/*"
         }
     },
     "regions": ["iad1"]

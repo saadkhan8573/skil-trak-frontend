@@ -42,7 +42,7 @@ export const StartMatchingAutoWP = ({ onCancel }: { onCancel: () => void }) => {
         wpAutoMatchingList.refetch()
     }
     return (
-        <GlobalModal className="!overflow-hidden !max-w-3xl">
+        <GlobalModal className="overflow-hidden! max-w-3xl!">
             <ShowErrorNotifications result={applyResult} />
             <MdCancel
                 onClick={() => {
@@ -54,7 +54,7 @@ export const StartMatchingAutoWP = ({ onCancel }: { onCancel: () => void }) => {
             />
             <div
                 className={
-                    'relative px-6 pt-6 pb-4 overflow-hidden border-b bg-gradient-to-br from-primary/5 via-accent/5 to-transparent'
+                    'relative px-6 pt-6 pb-4 overflow-hidden border-b bg-linear-to-br from-primary/5 via-accent/5 to-transparent'
                 }
             >
                 <div className="relative">
@@ -87,10 +87,16 @@ export const StartMatchingAutoWP = ({ onCancel }: { onCancel: () => void }) => {
             {wpAutoMatchingList?.isLoading || wpAutoMatchingList?.isFetching ? (
                 <LoadingAnimation />
             ) : wpAutoMatchingList?.data &&
-              wpAutoMatchingList?.data?.length > 0 &&
-              wpAutoMatchingList?.isSuccess ? (
-                <div className="h-[70vh] overflow-auto custom-scrollbar p-4">
-                    <div className="space-y-6">
+                wpAutoMatchingList?.data?.length > 0 &&
+                wpAutoMatchingList?.isSuccess ? (
+                <div className="h-[70vh] overflow-auto custom-scrollbar px-4 py-2">
+                    <div className="space-y-3">
+                        <div className="bg-gray-50 p-3 rounded-md border border-gray-100">
+                            <Typography className="text-gray-600 text-sm">
+                                <span className="font-semibold text-gray-700">Note:</span> Only 5
+                                workplaces will be automated per run.
+                            </Typography>
+                        </div>
                         {/* Students Pending Assignment */}
                         <div>
                             <div className="flex items-center justify-between mb-4 gap-6">
@@ -137,12 +143,11 @@ export const StartMatchingAutoWP = ({ onCancel }: { onCancel: () => void }) => {
                                     return (
                                         <Card
                                             key={workplace?.id}
-                                            className={`border transition-all !rounded-md ${
-                                                result
-                                                    ? 'border-success/40 bg-success/5'
-                                                    : applyResult?.data &&
-                                                      'border-orange-400/40 bg-orange-50/50'
-                                            } `}
+                                            className={`border transition-all rounded-md! ${result
+                                                ? 'border-success/40 bg-success/5'
+                                                : applyResult?.data &&
+                                                'border-orange-400/40 bg-orange-50/50'
+                                                } `}
                                         >
                                             <div>
                                                 <div className="flex items-start justify-between gap-4">
@@ -278,7 +283,7 @@ export const StartMatchingAutoWP = ({ onCancel }: { onCancel: () => void }) => {
 
                         {/* Summary */}
                         {resultData?.length > 0 && !applyResult?.isLoading && (
-                            <Card className="border-primary/40 bg-gradient-to-br from-primary/5 to-transparent">
+                            <Card className="border-primary/40 bg-linear-to-br from-primary/5 to-transparent">
                                 <div className="p-6">
                                     <h3 className="font-semibold mb-3 flex items-center gap-2">
                                         <Sparkles className="h-4 w-4 text-primary" />

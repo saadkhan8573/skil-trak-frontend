@@ -53,7 +53,7 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
                 course: selectedCourseId,
                 scheduledAt,
                 studentPhones,
-                isSchedualed: true
+                isScheduled: true
             }).unwrap()
 
             notification.success({

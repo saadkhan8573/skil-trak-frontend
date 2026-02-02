@@ -39,7 +39,7 @@ export const ScheduleCallModal = ({ student, onClose }: ScheduleCallModalProps) 
                 course: selectedCourseId,
                 scheduledAt,
                 phone: student.phone || '',
-                isSchedualed: true
+                isScheduled: true
             }).unwrap()
 
             notification.success({

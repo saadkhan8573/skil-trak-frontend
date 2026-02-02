@@ -41,7 +41,7 @@ export const InitiateAiCallModal = ({ student, onClose }: InitiateAiCallModalPro
                 course: selectedCourseId,
                 scheduledAt,
                 phone: student.phone || '',
-                isSchedualed: isScheduled
+                isScheduled: isScheduled
             }).unwrap()
 
             notification.success({
@@ -85,7 +85,15 @@ export const InitiateAiCallModal = ({ student, onClose }: InitiateAiCallModalPro
                             name="isScheduled"
                             customStyleClass='profileSwitch'
                             isChecked={isScheduled}
-                            onChange={(e: any) => setIsScheduled(e.target.checked)}
+                            onChange={(e: any) => {
+                                const checked = e.target.checked
+                                setIsScheduled(checked)
+                                if (checked) {
+                                    setScheduledDate(
+                                        moment().add(1, 'days').format('YYYY-MM-DD')
+                                    )
+                                }
+                            }}
                         />
                     </div>
 

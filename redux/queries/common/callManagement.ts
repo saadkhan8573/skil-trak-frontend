@@ -82,13 +82,13 @@ export const callManagementLoginEndpoints = (
             course: number
             scheduledAt: string
             phone: string
-            isSchedualed: boolean
+            isScheduled: boolean
         }
     >({
-        query: ({ studentId, course, scheduledAt, phone, isSchedualed }) => ({
+        query: ({ studentId, course, scheduledAt, phone, isScheduled }) => ({
             url: `ai-voice-calls/student/${studentId}/schedule-call`,
             method: 'POST',
-            body: { course, scheduledAt, phone, isSchedualed },
+            body: { course, scheduledAt, phone, isScheduled },
         }),
         invalidatesTags: ['CallManagement'],
     }),
@@ -100,7 +100,7 @@ export const callManagementLoginEndpoints = (
             course: number
             scheduledAt: string
             studentPhones: string[]
-            isSchedualed: boolean
+            isScheduled: boolean
         }
     >({
         query: (body) => ({

@@ -28,7 +28,7 @@ export interface StatusConfig {
 
 export const statusConfigs: Record<CallStatus, StatusConfig> = {
     pending: {
-        label: 'Pending',
+        label: 'Skiltrak Action Required',
         color: '#044866',
         bgColor: '#E6F2F7',
         borderColor: '#B3D9E8',

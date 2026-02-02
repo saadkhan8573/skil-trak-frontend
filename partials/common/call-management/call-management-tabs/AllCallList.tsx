@@ -36,7 +36,7 @@ export const AllCallList = ({ status }: { status?: 'completed' | 'pending' | 'sc
     } = useCallColumns()
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden !p-4">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden p-4!">
             {isError && <NoData isError />}
             {isLoading ? (
                 <LoadingAnimation />

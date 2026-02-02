@@ -32,7 +32,7 @@ export function DashboardStats() {
             valueKey: 'completed',
         },
         {
-            label: 'Pending States',
+            label: 'Action Required',
             value: statistics?.pending || 0,
             icon: Clock,
             color: 'bg-primaryNew',

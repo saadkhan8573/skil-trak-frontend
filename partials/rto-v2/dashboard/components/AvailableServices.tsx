@@ -25,11 +25,11 @@ export interface Service {
     variant: 'primaryNew' | 'primary' | 'success'
     icon: any
     featureId:
-        | 'expert-consultation'
-        | 'mou-legal'
-        | 'webinar-platform'
-        | 'simulation-tools'
-        | 'default'
+    | 'expert-consultation'
+    | 'mou-legal'
+    | 'webinar-platform'
+    | 'simulation-tools'
+    | 'default'
     duration: string
     colorScheme: {
         cardBg: string
@@ -155,10 +155,10 @@ export const AvailableServices = () => {
             <div className="flex items-center justify-between flex-wrap gap-3">
                 <div className="flex items-center gap-2.5">
                     <div className="relative group/number">
-                        <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-warning/20 rounded-lg blur-lg opacity-40 group-hover/number:opacity-60 transition-opacity"></div>
+                        <div className="absolute inset-0 bg-linear-to-br from-accent/20 to-warning/20 rounded-lg blur-lg opacity-40 group-hover/number:opacity-60 transition-opacity"></div>
                         <div className="relative h-9 w-9 rounded-lg bg-primary-light/40 flex items-center justify-center font-bold text-primary shadow-premium group-hover/number:shadow-glow-accent transition-all text-sm">
                             <span className="relative">4</span>
-                            <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-accent/5 to-transparent"></div>
+                            <div className="absolute inset-0 rounded-lg bg-linear-to-t from-accent/5 to-transparent"></div>
                         </div>
                     </div>
                     <div>
@@ -192,10 +192,10 @@ export const AvailableServices = () => {
                             className={`border ${service.colorScheme.cardBg} shadow-premium-lg hover:shadow-premium-xl transition-all hover-lift relative overflow-hidden group/service`}
                         >
                             {/* Decorative corner */}
-                            <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-white/40 to-transparent rounded-bl-full opacity-0 group-hover/service:opacity-100 transition-opacity"></div>
+                            <div className="absolute top-0 right-0 w-16 h-16 bg-linear-to-br from-white/40 to-transparent rounded-bl-full opacity-0 group-hover/service:opacity-100 transition-opacity"></div>
 
                             {/* Shimmer effect on hover */}
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover/service:opacity-100 transition-opacity"></div>
+                            <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover/service:opacity-100 transition-opacity"></div>
 
                             <div className="p-3 relative space-y-2.5">
                                 {/* Icon & Badge */}
@@ -208,7 +208,7 @@ export const AvailableServices = () => {
                                             className={`relative h-8 w-8 rounded-lg ${service.colorScheme.iconBg} flex items-center justify-center shadow-premium group-hover/service:scale-110 transition-transform`}
                                         >
                                             <Icon className="h-4 w-4 text-white" />
-                                            <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-white/0 to-white/20"></div>
+                                            <div className="absolute inset-0 rounded-lg bg-linear-to-t from-white/0 to-white/20"></div>
                                         </div>
                                     </div>
                                     <Badge

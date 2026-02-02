@@ -108,4 +108,10 @@ export const placementRequestsEndPoints = (
         }),
         providesTags: ['RTO'],
     }),
+    getRtoCourseWpTypes: builder.query<any, any>({
+        query: ({ cId, id }) => ({
+            url: `subadmin/course/${cId}/rto/${id}/workplace-types`,
+        }),
+        providesTags: ['RTO'],
+    }),
 })

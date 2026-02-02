@@ -44,8 +44,8 @@ export const IndustryInRadiusListCard = ({
                 className={`flex gap-4 flex-1 cursor-pointer`}
             >
                 {/* Avatar */}
-                <div className="relative flex-shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden">
+                <div className="relative shrink-0">
+                    <div className="w-12 h-12 rounded-full bg-linear-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden">
                         {item.user?.avatar ? (
                             <img
                                 src={item.user.avatar}
@@ -84,7 +84,7 @@ export const IndustryInRadiusListCard = ({
                         {item?.isPartner ? (
                             <>
                                 <FaHandshakeSimple
-                                    className="text-orange-500 flex-shrink-0"
+                                    className="text-orange-500 shrink-0"
                                     size={14}
                                 />
                                 <span className="text-xs font-medium text-orange-600">
@@ -94,7 +94,7 @@ export const IndustryInRadiusListCard = ({
                         ) : (
                             <>
                                 <FaHandshakeSimpleSlash
-                                    className="text-green-600 flex-shrink-0"
+                                    className="text-green-600 shrink-0"
                                     size={14}
                                 />
                                 <span className="text-xs font-medium text-green-700">
@@ -110,7 +110,7 @@ export const IndustryInRadiusListCard = ({
                         title={item?.addressLine1}
                     >
                         <MapPin
-                            className="text-red-500 flex-shrink-0 mt-0.5"
+                            className="text-red-500 shrink-0 mt-0.5"
                             size={14}
                         />
                         <span className="truncate">
@@ -120,7 +120,10 @@ export const IndustryInRadiusListCard = ({
 
                     {/* Distance */}
                     <div className="mb-2">
-                        <DistanceIndicator distance={item?.distance ?? 0} mode="car" />
+                        <DistanceIndicator
+                            distance={item?.distance ?? 0}
+                            mode="car"
+                        />
                     </div>
 
                     {/* Placement Status */}
@@ -130,14 +133,14 @@ export const IndustryInRadiusListCard = ({
                                 variant="primaryNew"
                                 text="Placement Ready"
                                 Icon={FaCheck}
-                                className="!whitespace-nowrap"
+                                className="whitespace-nowrap!"
                             />
                         ) : (
                             <Badge
                                 variant="error"
                                 text="Placement Not Ready"
                                 Icon={FaTimes}
-                                className="!whitespace-nowrap"
+                                className="whitespace-nowrap!"
                             />
                         )}
                     </div>
@@ -145,7 +148,7 @@ export const IndustryInRadiusListCard = ({
             </div>
 
             {/* Right Section */}
-            <div className="flex-shrink-0 ml-4">
+            <div className="shrink-0 ml-4">
                 {/* {isLocked ? (
                     <div className="flex flex-col items-center justify-center gap-2 w-32 text-center">
                         <Lock size={28} className="text-gray-400" />
@@ -154,7 +157,7 @@ export const IndustryInRadiusListCard = ({
                         </span>
                     </div>
                 ) : ( */}
-                <div className="flex flex-col gap-3 items-end min-w-[140px]">
+                <div className="flex flex-col gap-3 items-end min-w-35">
                     {/* Actions */}
                     <Actions
                         alreadyContacted={item?.studentIndustryContact}

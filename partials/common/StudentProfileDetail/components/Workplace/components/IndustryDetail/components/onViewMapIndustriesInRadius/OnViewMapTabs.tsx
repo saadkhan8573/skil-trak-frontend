@@ -66,8 +66,6 @@ export const OnViewMapTabs = ({
         }
     }, [activeIndustryListTab, workplaceId])
 
-    
-
     /* ---------------------------------------------
      * Handlers
      * ------------------------------------------- */

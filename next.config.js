@@ -64,10 +64,8 @@ const nextConfig = {
         'canvas',
     ],
     // compress: true,
-    experimental: {
-        outputFileTracingExcludes: {
-            '*': ['node_modules/canvas/**/*'],
-        },
+    outputFileTracingExcludes: {
+        '*': ['node_modules/canvas/**/*'],
     },
 }
 const withBundleAnalyzer = require('@next/bundle-analyzer')({

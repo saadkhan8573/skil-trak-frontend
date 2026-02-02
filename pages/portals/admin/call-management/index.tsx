@@ -3,14 +3,6 @@ import { Call, CallStatus, DashboardStats } from '@partials/common'
 import { ReactElement, useState } from 'react'
 
 const CallManagementPage = () => {
-    const [selectedStatuses, setSelectedStatuses] = useState<CallStatus[]>([])
-    const [selectedCall, setSelectedCall] = useState<Call | null>(null)
-    const [searchQuery, setSearchQuery] = useState('')
-    const [activeStatusPage, setActiveStatusPage] = useState<
-        CallStatus | 'all'
-    >('all')
-    const [ticketModalCall, setTicketModalCall] = useState<Call | null>(null)
-
     return (
         <div className="min-h-screen bg-gray-50">
             <div className="max-w-[1400px] mx-auto px-6 py-6">

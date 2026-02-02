@@ -20,6 +20,7 @@ import { Toolbar } from './components/Toolbar';
 import { ImageNode } from './nodes/ImageNode';
 import ImagePlugin from './plugins/ImagePlugin';
 import DragDropPastePlugin from './plugins/DragDropPastePlugin';
+import ExternalImagePlugin from './plugins/ExternalImagePlugin';
 
 import { Typography } from '@components';
 
@@ -134,6 +135,7 @@ export const RichTextEditor = ({
             <LinkPlugin />
             <ImagePlugin />
             <DragDropPastePlugin />
+            <ExternalImagePlugin />
             <OnChangePlugin onChange={handleOnChange} />
 
             {/* Initial Value Plugin */}

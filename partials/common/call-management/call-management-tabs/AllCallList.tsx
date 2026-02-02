@@ -6,7 +6,7 @@ import { CallDetailModal, TicketModal, CompleteCallModal } from '../modal'
 import { CallAudioModal } from '../modal/CallAudioModal'
 import { removeEmptyValues } from '@utils'
 
-export const AllCallList = ({ status }: { status?: 'completed' | 'pending' }) => {
+export const AllCallList = ({ status }: { status?: 'completed' | 'pending' | 'scheduled' }) => {
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
 
@@ -36,7 +36,7 @@ export const AllCallList = ({ status }: { status?: 'completed' | 'pending' }) =>
     } = useCallColumns()
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden !p-4">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden p-4!">
             {isError && <NoData isError />}
             {isLoading ? (
                 <LoadingAnimation />

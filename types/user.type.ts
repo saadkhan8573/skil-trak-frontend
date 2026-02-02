@@ -9,6 +9,7 @@ import {
     IndustrySectorCapacity,
     MealTypes,
     Packages,
+    PlacementCall,
     Supervisor,
     WorkplaceType,
 } from '@types'
@@ -188,6 +189,7 @@ export interface Student extends BaseResponse {
     subadmin: SubAdmin
     called: boolean
     batch: string
+    aiVoiceCalls: PlacementCall[]
     emergencyPersonPhone: string
     industries: Industry[]
     expiryDate: Date

@@ -197,6 +197,20 @@ export const industriesEndpoints = (
         providesTags: ['RTOIndustries'],
     }),
 
+    getIndustryCancelledStudents: builder.query<
+        PaginatedResponse<Student>,
+        {
+            params: PaginationWithSearch
+            industryId: number
+        }
+    >({
+        query: ({ params, industryId }) => ({
+            url: `${INDUSTRIESPREFIX}${industryId}/cancelled/workplaces-list`,
+            params,
+        }),
+        providesTags: ['RTOIndustries'],
+    }),
+
     industryCoursesDetails: builder.query<
         IndustryCourseApproval[],
         { userId?: number; isDeleted?: boolean }

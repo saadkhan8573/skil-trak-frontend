@@ -5,10 +5,11 @@ import {
     StudentsList,
     WaitingStudents,
     RejectedStudentsList,
+    CancelledStudentsList,
 } from './components'
 
 import { ConfigTabs, TabConfig } from '@components'
-import { Users, Clock, Ban } from 'lucide-react'
+import { Users, Clock, Ban, XCircle } from 'lucide-react'
 import { useState } from 'react'
 
 export function StudentsPlacementList() {
@@ -24,6 +25,7 @@ export function StudentsPlacementList() {
     )
     const WaitingStudentsWrapper = () => <WaitingStudents />
     const RejectedStudentsListWrapper = () => <RejectedStudentsList />
+    const CancelledStudentsListWrapper = () => <CancelledStudentsList />
 
     const tabs: TabConfig[] = [
         {
@@ -45,6 +47,12 @@ export function StudentsPlacementList() {
             icon: Ban,
             component: RejectedStudentsListWrapper,
         },
+        {
+            value: 'cancelled_students',
+            label: 'Cancelled Students',
+            icon: XCircle,
+            component: CancelledStudentsListWrapper,
+        },
     ]
 
     return (
@@ -55,7 +63,7 @@ export function StudentsPlacementList() {
                         tabs={tabs}
                         value={activeTab}
                         onValueChange={setActiveTab}
-                        className="!p-1 !bg-slate-100 !rounded-lg w-full"
+                        className="p-1! bg-slate-100! rounded-lg! w-full"
                         tabsClasses="!p-1.5 !rounded-md"
                         tabsTriggerClasses="!py-1.5 !px-4 !text-xs !font-medium"
                     />

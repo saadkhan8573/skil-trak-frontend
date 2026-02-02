@@ -9,6 +9,7 @@ import { DeleteModal } from './DeleteModal'
 import { AcceptModal } from './AcceptModal'
 import { RejectModal } from './RejectModal'
 import { UnblockModal } from './UnblockModal'
+import { InitiateAiCallModal } from '@partials/common/modal'
 
 export enum AdminStudentModalType {
     ARCHIVE = 'archive',
@@ -21,6 +22,7 @@ export enum AdminStudentModalType {
     ACCEPT = 'accept',
     REJECT = 'reject',
     UNBLOCK = 'unblock',
+    AI_CALL = 'aiCall',
 }
 
 export const getAdminStudentsModal = (
@@ -62,6 +64,9 @@ export const getAdminStudentsModal = (
         ),
         [AdminStudentModalType.UNBLOCK]: (
             <UnblockModal item={student} onCancel={onCancel} />
+        ),
+        [AdminStudentModalType.AI_CALL]: (
+            <InitiateAiCallModal student={student} onClose={onCancel} />
         ),
     }
     return modals[type]

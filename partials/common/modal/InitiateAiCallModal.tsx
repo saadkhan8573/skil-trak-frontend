@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/ui/dialog'
 import { Student } from '@types'
-import { Phone, User, X, CheckCircle2 } from 'lucide-react'
+import { CheckCircle2 } from 'lucide-react'
 import { CommonApi } from '@queries'
-import { Button } from '@components'
+import { Button, TextInput, Switch } from '@components'
 import { useNotification } from '@hooks'
 import { cn } from '@utils'
+import moment from 'moment'
 
-interface InitiateCallModalProps {
+interface InitiateAiCallModalProps {
     student: Student | null
     onClose: () => void
 }
 
-export const InitiateCallModal = ({ student, onClose }: InitiateCallModalProps) => {
+export const InitiateAiCallModal = ({ student, onClose }: InitiateAiCallModalProps) => {
     const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null)
-    const [initiateCall, { isLoading }] = CommonApi.CallManagement.useInitiateAiCallMutation()
+    const [isScheduled, setIsScheduled] = useState(false)
+    const [scheduledDate, setScheduledDate] = useState<string>(moment().format('YYYY-MM-DD'))
+
+    const [scheduleCall, { isLoading }] = CommonApi.CallManagement.useScheduleAiCallMutation()
+
     const { notification } = useNotification()
 
     useEffect(() => {
@@ -25,20 +30,29 @@ export const InitiateCallModal = ({ student, onClose }: InitiateCallModalProps) 
         }
     }, [student])
 
-    const handleInitiateCall = async () => {
+    const handleAction = async () => {
         if (!student || !selectedCourseId) return
 
         try {
-            await initiateCall({ studentId: student.id, courseId: selectedCourseId }).unwrap()
+            const scheduledAt = isScheduled ? `${scheduledDate}T00:00:00` : moment().format('YYYY-MM-DDTHH:mm:ss')
+
+            await scheduleCall({
+                studentId: student.id,
+                course: selectedCourseId,
+                scheduledAt,
+                phone: student.phone || '',
+                isScheduled: isScheduled
+            }).unwrap()
+
             notification.success({
                 title: 'Success',
-                description: 'Call initiated successfully!',
+                description: isScheduled ? 'Call scheduled successfully!' : 'Call initiated successfully!',
             })
             onClose()
         } catch (error: any) {
             notification.error({
                 title: 'Error',
-                description: error?.data?.message || 'Failed to initiate call',
+                description: error?.data?.message || `Failed to ${isScheduled ? 'schedule' : 'initiate'} call`,
             })
         }
     }
@@ -52,14 +66,37 @@ export const InitiateCallModal = ({ student, onClose }: InitiateCallModalProps) 
             <DialogContent className="sm:max-w-lg p-6 flex flex-col max-h-[90vh]">
                 <DialogHeader className="mb-4">
                     <DialogTitle className="text-xl font-bold text-gray-900">
-                        Initiate Call
+                        {isScheduled ? 'Schedule AI Call' : 'Initiate AI Call'}
                     </DialogTitle>
                     <p className="text-sm text-gray-500">
-                        Select a course and confirm details to start the AI voice call.
+                        {isScheduled
+                            ? 'Pick a date to schedule an automated AI voice call.'
+                            : 'Select a course and confirm details to start the AI voice call now.'}
                     </p>
                 </DialogHeader>
 
                 <div className="space-y-6 overflow-y-auto flex-1 pr-2 -mr-2">
+                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <div className="flex flex-col gap-0.5">
+                            <span className="text-sm font-semibold text-gray-900">Schedule for later?</span>
+                            <p className="text-xs text-gray-500">Toggle to pick a specific date for the call.</p>
+                        </div>
+                        <Switch
+                            name="isScheduled"
+                            customStyleClass='profileSwitch'
+                            isChecked={isScheduled}
+                            onChange={(e: any) => {
+                                const checked = e.target.checked
+                                setIsScheduled(checked)
+                                if (checked) {
+                                    setScheduledDate(
+                                        moment().add(1, 'days').format('YYYY-MM-DD')
+                                    )
+                                }
+                            }}
+                        />
+                    </div>
+
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col gap-1">
                             <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Student</span>
@@ -72,9 +109,23 @@ export const InitiateCallModal = ({ student, onClose }: InitiateCallModalProps) 
                         </div>
                     </div>
 
+                    {isScheduled && (
+                        <div className="space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Schedule Date</span>
+                            <TextInput
+                                name="date"
+                                type="date"
+                                showError={false}
+                                value={scheduledDate}
+                                onChange={(e: any) => setScheduledDate(e.target.value)}
+                                min={moment().format('YYYY-MM-DD')}
+                            />
+                        </div>
+                    )}
+
                     <div className="space-y-3">
                         <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Select Course</span>
-                        <div className="grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-1">
+                        <div className="grid grid-cols-1 gap-2 max-h-[250px] overflow-y-auto pr-1">
                             {courses.length > 0 ? (
                                 courses.map((course) => (
                                     <button
@@ -121,11 +172,11 @@ export const InitiateCallModal = ({ student, onClose }: InitiateCallModalProps) 
                     </Button>
                     <Button
                         className="flex-1 bg-[#044866] hover:bg-[#095a7d] text-white"
-                        onClick={handleInitiateCall}
+                        onClick={handleAction}
                         loading={isLoading}
-                        disabled={!selectedCourseId}
+                        disabled={!selectedCourseId || (isScheduled && !scheduledDate)}
                     >
-                        Proceed
+                        {isScheduled ? 'Schedule' : 'Call Now'}
                     </Button>
                 </div>
             </DialogContent>

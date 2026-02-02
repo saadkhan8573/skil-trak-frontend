@@ -121,6 +121,7 @@ export const useCallColumns = () => {
             cell: ({ row }) => {
                 const call = row.original
                 const isCompleted = call?.status === 'completed'
+                const isScheduled = call?.status === 'scheduled'
                 const hasTicket = call?.hasTicket
                 return (
                     <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
@@ -138,57 +139,61 @@ export const useCallColumns = () => {
                             </TooltipContent>
                         </Tooltip>
 
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button
-                                    onClick={(e) => handleActionClick(e, 'audio', call)}
-                                    className="p-1.5 rounded-lg transition-all bg-blue-100 text-blue-600 hover:bg-blue-200"
-                                >
-                                    <Headphones className="w-4 h-4" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>Listen to Recording</p>
-                            </TooltipContent>
-                        </Tooltip>
+                        {!isScheduled && (
+                            <>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <button
+                                            onClick={(e) => handleActionClick(e, 'audio', call)}
+                                            className="p-1.5 rounded-lg transition-all bg-blue-100 text-blue-600 hover:bg-blue-200"
+                                        >
+                                            <Headphones className="w-4 h-4" />
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Listen to Recording</p>
+                                    </TooltipContent>
+                                </Tooltip>
 
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button
-                                    onClick={(e) => handleActionClick(e, 'completed', call)}
-                                    className={`p-1.5 rounded-lg transition-all ${isCompleted
-                                        ? 'bg-green-500 text-white hover:bg-green-600'
-                                        : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
-                                        }`}
-                                >
-                                    {isCompleted ? (
-                                        <CheckCircle className="w-4 h-4 text-white" />
-                                    ) : (
-                                        <Clock className="w-4 h-4" />
-                                    )}
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>{isCompleted ? 'Completed' : 'Mark as Completed'}</p>
-                            </TooltipContent>
-                        </Tooltip>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <button
+                                            onClick={(e) => handleActionClick(e, 'completed', call)}
+                                            className={`p-1.5 rounded-lg transition-all ${isCompleted
+                                                ? 'bg-green-500 text-white hover:bg-green-600'
+                                                : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
+                                                }`}
+                                        >
+                                            {isCompleted ? (
+                                                <CheckCircle className="w-4 h-4 text-white" />
+                                            ) : (
+                                                <Clock className="w-4 h-4" />
+                                            )}
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>{isCompleted ? 'Completed' : 'Mark as Completed'}</p>
+                                    </TooltipContent>
+                                </Tooltip>
 
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button
-                                    onClick={(e) => handleActionClick(e, 'ticket', call)}
-                                    className={`p-1.5 rounded-lg transition-all ${hasTicket
-                                        ? 'bg-purple-500 text-white hover:bg-purple-600'
-                                        : 'bg-purple-100 text-purple-600 hover:bg-purple-200'
-                                        }`}
-                                >
-                                    <TicketPlus className="w-4 h-4" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>{hasTicket ? 'Ticket Created' : 'Create Ticket'}</p>
-                            </TooltipContent>
-                        </Tooltip>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <button
+                                            onClick={(e) => handleActionClick(e, 'ticket', call)}
+                                            className={`p-1.5 rounded-lg transition-all ${hasTicket
+                                                ? 'bg-purple-500 text-white hover:bg-purple-600'
+                                                : 'bg-purple-100 text-purple-600 hover:bg-purple-200'
+                                                }`}
+                                        >
+                                            <TicketPlus className="w-4 h-4" />
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>{hasTicket ? 'Ticket Created' : 'Create Ticket'}</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </>
+                        )}
                     </div>
                 )
             }

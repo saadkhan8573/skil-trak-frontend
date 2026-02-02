@@ -1,4 +1,4 @@
-export type CallStatus = 'pending' | 'completed'
+export type CallStatus = 'pending' | 'completed' | 'scheduled'
 
 export interface Call {
     id: string
@@ -40,5 +40,12 @@ export const statusConfigs: Record<CallStatus, StatusConfig> = {
         bgColor: '#E8F4F6',
         borderColor: '#B8DDE4',
         description: 'Placement completed',
+    },
+    scheduled: {
+        label: 'Scheduled',
+        color: '#044866',
+        bgColor: '#E6F2F7',
+        borderColor: '#B3D9E8',
+        description: 'Call is scheduled',
     },
 }

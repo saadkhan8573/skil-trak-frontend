@@ -24,6 +24,7 @@ export const callManagementLoginEndpoints = (
             totalCalls: number
             resoved: number
             pending: number
+            scheduled: number
         },
         void
     >({
@@ -72,5 +73,52 @@ export const callManagementLoginEndpoints = (
             body: { courseId },
         }),
         invalidatesTags: ['CallManagement'],
+    }),
+
+    scheduleAiCall: builder.mutation<
+        any,
+        {
+            studentId: number
+            course: number
+            scheduledAt: string
+            phone: string
+            isSchedualed: boolean
+        }
+    >({
+        query: ({ studentId, course, scheduledAt, phone, isSchedualed }) => ({
+            url: `ai-voice-calls/student/${studentId}/schedule-call`,
+            method: 'POST',
+            body: { course, scheduledAt, phone, isSchedualed },
+        }),
+        invalidatesTags: ['CallManagement'],
+    }),
+
+    bulkScheduleAiCall: builder.mutation<
+        any,
+        {
+            studentIds: number[]
+            course: number
+            scheduledAt: string
+            studentPhones: string[]
+            isSchedualed: boolean
+        }
+    >({
+        query: (body) => ({
+            url: `ai-voice-calls/bulk-schedule-call`,
+            method: 'POST',
+            body,
+        }),
+        invalidatesTags: ['CallManagement'],
+    }),
+
+    getScheduledAiCallList: builder.query<
+        PaginatedResponse<any>,
+        PaginationWithSearch
+    >({
+        query: (params) => ({
+            url: `ai-voice-calls/scheduled-calls/list`,
+            params,
+        }),
+        providesTags: ['CallManagement'],
     }),
 })

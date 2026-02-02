@@ -6,7 +6,7 @@ import { CallDetailModal, TicketModal, CompleteCallModal } from '../modal'
 import { CallAudioModal } from '../modal/CallAudioModal'
 import { removeEmptyValues } from '@utils'
 
-export const AllCallList = ({ status }: { status?: 'completed' | 'pending' }) => {
+export const AllCallList = ({ status }: { status?: 'completed' | 'pending' | 'scheduled' }) => {
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
 

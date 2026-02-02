@@ -6,7 +6,7 @@ export interface PlacementCall extends BaseResponse {
     summary: string
     callId: string | null
     placementType: string
-    status: 'pending' | 'completed'
+    status: 'pending' | 'completed' | 'scheduled'
     callOutcome: string | null
     callType: 'outbound' | 'inbound'
     callDuration: number

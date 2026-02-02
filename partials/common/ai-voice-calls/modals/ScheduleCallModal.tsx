@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/ui/dialog'
 import { Student } from '@types'
-import { Phone, User, X, CheckCircle2 } from 'lucide-react'
+import { Calendar, CheckCircle2 } from 'lucide-react'
 import { CommonApi } from '@queries'
-import { Button } from '@components'
+import { Button, TextInput } from '@components'
 import { useNotification } from '@hooks'
 import { cn } from '@utils'
+import moment from 'moment'
 
-interface InitiateCallModalProps {
+interface ScheduleCallModalProps {
     student: Student | null
     onClose: () => void
 }
 
-export const InitiateCallModal = ({ student, onClose }: InitiateCallModalProps) => {
+export const ScheduleCallModal = ({ student, onClose }: ScheduleCallModalProps) => {
     const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null)
-    const [initiateCall, { isLoading }] = CommonApi.CallManagement.useInitiateAiCallMutation()
+    const [scheduledDate, setScheduledDate] = useState<string>(moment().format('YYYY-MM-DD'))
+
+    const [scheduleCall, { isLoading }] = CommonApi.CallManagement.useScheduleAiCallMutation()
     const { notification } = useNotification()
 
     useEffect(() => {
@@ -25,20 +28,29 @@ export const InitiateCallModal = ({ student, onClose }: InitiateCallModalProps) 
         }
     }, [student])
 
-    const handleInitiateCall = async () => {
-        if (!student || !selectedCourseId) return
+    const handleScheduleCall = async () => {
+        if (!student || !selectedCourseId || !scheduledDate) return
+
+        const scheduledAt = `${scheduledDate}T00:00:00`
 
         try {
-            await initiateCall({ studentId: student.id, courseId: selectedCourseId }).unwrap()
+            await scheduleCall({
+                studentId: student.id,
+                course: selectedCourseId,
+                scheduledAt,
+                phone: student.phone || '',
+                isSchedualed: true
+            }).unwrap()
+
             notification.success({
                 title: 'Success',
-                description: 'Call initiated successfully!',
+                description: 'Call scheduled successfully!',
             })
             onClose()
         } catch (error: any) {
             notification.error({
                 title: 'Error',
-                description: error?.data?.message || 'Failed to initiate call',
+                description: error?.data?.message || 'Failed to schedule call',
             })
         }
     }
@@ -49,13 +61,14 @@ export const InitiateCallModal = ({ student, onClose }: InitiateCallModalProps) 
 
     return (
         <Dialog open={!!student} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-lg p-6 flex flex-col max-h-[90vh]">
+            <DialogContent className="sm:max-w-2xl! p-6 flex flex-col max-h-[90vh]">
                 <DialogHeader className="mb-4">
-                    <DialogTitle className="text-xl font-bold text-gray-900">
-                        Initiate Call
+                    <DialogTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                        <Calendar className="w-5 h-5 text-[#044866]" />
+                        Schedule Call
                     </DialogTitle>
                     <p className="text-sm text-gray-500">
-                        Select a course and confirm details to start the AI voice call.
+                        Pick a date and time to schedule an AI voice call for this student.
                     </p>
                 </DialogHeader>
 
@@ -73,8 +86,23 @@ export const InitiateCallModal = ({ student, onClose }: InitiateCallModalProps) 
                     </div>
 
                     <div className="space-y-3">
+                        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Schedule Details</span>
+                        <div className="grid grid-cols-1 gap-4">
+                            <TextInput
+                                name="date"
+                                label="Date"
+                                type="date"
+                                showError={false}
+                                value={scheduledDate}
+                                onChange={(e: any) => setScheduledDate(e.target.value)}
+                                min={moment().format('YYYY-MM-DD')}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="space-y-3">
                         <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Select Course</span>
-                        <div className="grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-1">
+                        <div className="grid grid-cols-1 gap-2 max-h-[250px] overflow-y-auto pr-1">
                             {courses.length > 0 ? (
                                 courses.map((course) => (
                                     <button
@@ -121,11 +149,11 @@ export const InitiateCallModal = ({ student, onClose }: InitiateCallModalProps) 
                     </Button>
                     <Button
                         className="flex-1 bg-[#044866] hover:bg-[#095a7d] text-white"
-                        onClick={handleInitiateCall}
+                        onClick={handleScheduleCall}
                         loading={isLoading}
-                        disabled={!selectedCourseId}
+                        disabled={!selectedCourseId || !scheduledDate}
                     >
-                        Proceed
+                        Schedule
                     </Button>
                 </div>
             </DialogContent>

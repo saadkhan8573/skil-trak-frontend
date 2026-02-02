@@ -52,6 +52,7 @@ export const {
     useGetStudentPlacementStatusCheckNotesQuery,
     useAddManualNoteMutation,
     useConfirmHighlightedTaskMutation,
+    useGetRtoCourseWpTypesQuery,
 
     // Courses
     useRtoCoursesQuery,
@@ -195,6 +196,7 @@ export const RtoV2Api = {
         useUpdateSupervisorRequirements:
             useUpdateSupervisorRequirementsMutation,
         setupConfirmationPercentage: useSetupConfirmationPercentageQuery,
+        useRtoCourseWpTypes: useGetRtoCourseWpTypesQuery,
     },
     Students: {
         importStudents: useImportStudentsMutation,

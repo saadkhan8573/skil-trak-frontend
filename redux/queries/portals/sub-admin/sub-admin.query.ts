@@ -419,6 +419,7 @@ export const {
     useGetFutureIndustryInRadiusWorkplaceEmailsQuery,
     useSkipWorkplaceAndApplyAnotherMutation,
     useSkippedIndustriesListQuery,
+    useGetStudentPreferredCallTimeQuery,
 
     // ---- LOGBOOK ---- //
     useSaveLogbookMutation,
@@ -723,6 +724,7 @@ export const SubAdminApi = {
             useGetFutureIndustryInRadiusWorkplaceEmailsQuery,
         skipWpAndApplyAnother: useSkipWorkplaceAndApplyAnotherMutation,
         skippedIndustriesList: useSkippedIndustriesListQuery,
+        useStudentPreferredCallTime: useGetStudentPreferredCallTimeQuery,
     },
     LogBook: {
         useSaveLogbook: useSaveLogbookMutation,

@@ -3,8 +3,12 @@ import { FiltersPanel } from '../components'
 
 export const RunListingAutomationModal = ({
     onCancel,
+    studentAddress,
+    sectorId,
 }: {
     onCancel: () => void
+    studentAddress?: string
+    sectorId?: number
 }) => {
     return (
         <Modal
@@ -14,7 +18,11 @@ export const RunListingAutomationModal = ({
             onCancelClick={onCancel}
         >
             <div className="max-h-[70vh] lg:max-h-[80vh] w-full lg:w-[900px] overflow-auto custom-scrollbar">
-                <FiltersPanel onClose={onCancel} />
+                <FiltersPanel
+                    onClose={onCancel}
+                    studentAddress={studentAddress}
+                    sectorId={sectorId}
+                />
             </div>
         </Modal>
     )

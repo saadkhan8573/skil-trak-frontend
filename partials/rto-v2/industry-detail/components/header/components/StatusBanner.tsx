@@ -1,18 +1,23 @@
 import { Ban, XCircle, Clock, Sparkles } from 'lucide-react'
 import { IndustryStatus } from '../types'
-import { Typography } from '@components'
+import { Typography, Badge } from '@components'
 import { useAppSelector } from '@redux/hooks'
 import { UserStatus } from '@types'
+import { useState } from 'react'
+import { PlacementReadyModal } from '../modals'
+import moment from 'moment'
 
 interface StatusBannerProps {
     profileCompletion: number
-    isPlacementReady: boolean
+    isProfileComplete: boolean
 }
 
 export function StatusBanner({
     profileCompletion,
-    isPlacementReady,
+    isProfileComplete
 }: StatusBannerProps) {
+    const [showPlacementReadyModal, setShowPlacementReadyModal] =
+        useState(false)
     const industryDetail = useAppSelector(
         (state) => state.industry.industryDetail
     )
@@ -21,6 +26,7 @@ export function StatusBanner({
     const isSnoozed = industryDetail?.isSnoozed
     const snoozedStartDate = industryDetail?.snoozedAt
     const snoozedEndDate = industryDetail?.snoozedDate
+    const isPlacementReady = industryDetail?.isPlacementReady
 
     return (
         <div
@@ -78,18 +84,11 @@ export function StatusBanner({
                                 ? 'This industry is currently blocked and cannot accept placements'
                                 : isSnoozed
                                     ? snoozedStartDate && snoozedEndDate
-                                        ? `Snoozed from ${new Date(
+                                        ? `Snoozed from ${moment(
                                             snoozedStartDate
-                                        ).toLocaleDateString('en-US', {
-                                            month: 'short',
-                                            day: 'numeric',
-                                        })} to ${new Date(
+                                        ).format('MMM D')} to ${moment(
                                             snoozedEndDate
-                                        ).toLocaleDateString('en-US', {
-                                            month: 'short',
-                                            day: 'numeric',
-                                            year: 'numeric',
-                                        })}`
+                                        ).format('MMM D, YYYY')}`
                                         : 'This industry is temporarily snoozed for placements'
                                     : isPlacementReady
                                         ? 'Your industry profile is optimized and ready for placements'
@@ -101,42 +100,82 @@ export function StatusBanner({
 
                 {/* Circular Progress Ring - Only show when not in special states */}
                 {!isBlocked && !isSnoozed && (
-                    <div className="relative w-12 h-12">
-                        <svg className="w-12 h-12 transform -rotate-90">
-                            <circle
-                                cx="24"
-                                cy="24"
-                                r="19"
-                                stroke="white"
-                                strokeOpacity="0.2"
-                                strokeWidth="3"
-                                fill="none"
-                            />
-                            <circle
-                                cx="24"
-                                cy="24"
-                                r="19"
-                                stroke="white"
-                                strokeWidth="3"
-                                fill="none"
-                                strokeDasharray={`${2 * Math.PI * 19}`}
-                                strokeDashoffset={`${2 *
-                                    Math.PI *
-                                    19 *
-                                    (1 - profileCompletion / 100)
-                                    }`}
-                                strokeLinecap="round"
-                                className="transition-all duration-1000 drop-shadow-lg"
-                            />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-white font-bold text-[10px]">
-                                {profileCompletion}%
-                            </span>
+                    <div className="flex items-center gap-4">
+                        {/* Placement Ready Information or Action Badge */}
+                        {industryDetail?.placementReadyBy ? (
+                            <div className="flex flex-col items-end leading-tight">
+                                <div className="flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-md rounded-lg border border-white/30 shadow-sm">
+                                    <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                                    <span className="text-white text-xs font-bold whitespace-nowrap uppercase tracking-tight">
+                                        Ready by {industryDetail.placementReadyBy.name}
+                                    </span>
+                                </div>
+                                <span className="text-white/90 text-[10px] mt-1 mr-1 font-bold uppercase tracking-wider">
+                                    {moment(industryDetail.placementReadyAt).format(
+                                        'MMM D, YYYY'
+                                    )}
+                                </span>
+                            </div>
+                        ) : (
+                            isProfileComplete && (
+                                <Badge
+                                    text="Placement Ready"
+                                    variant="success"
+                                    Icon={Sparkles}
+                                    size="sm"
+                                    shape="pill"
+                                    className="bg-white! text-green-600! shadow-md hover:scale-110 transition-transform cursor-pointer px-4 py-1.5 font-bold"
+                                    onClick={() => setShowPlacementReadyModal(true)}
+                                />
+                            )
+                        )}
+
+
+                        <div className="relative w-12 h-12">
+                            <svg className="w-12 h-12 transform -rotate-90">
+                                <circle
+                                    cx="24"
+                                    cy="24"
+                                    r="19"
+                                    stroke="white"
+                                    strokeOpacity="0.2"
+                                    strokeWidth="3"
+                                    fill="none"
+                                />
+                                <circle
+                                    cx="24"
+                                    cy="24"
+                                    r="19"
+                                    stroke="white"
+                                    strokeWidth="3"
+                                    fill="none"
+                                    strokeDasharray={`${2 * Math.PI * 19}`}
+                                    strokeDashoffset={`${2 *
+                                        Math.PI *
+                                        19 *
+                                        (1 - profileCompletion / 100)
+                                        }`}
+                                    strokeLinecap="round"
+                                    className="transition-all duration-1000 drop-shadow-lg"
+                                />
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <span className="text-white font-bold text-[10px]">
+                                    {profileCompletion}%
+                                </span>
+                            </div>
                         </div>
                     </div>
                 )}
             </div>
+
+            {showPlacementReadyModal && industryDetail && (
+                <PlacementReadyModal
+                    industryId={industryDetail.id}
+                    industryName={industryDetail.businessName || ''}
+                    onCancel={() => setShowPlacementReadyModal(false)}
+                />
+            )}
         </div>
     )
 }

@@ -442,6 +442,7 @@ export interface Industry extends BaseResponse {
     industrySectorCapacity: IndustrySectorCapacity[]
     createdBy: any
     channel: string
+    isPlacementReady: boolean
     website: string
     addressLine1: string
     addressLine2: string
@@ -470,6 +471,8 @@ export interface Industry extends BaseResponse {
     secondaryContactName?: string
     secondaryContactEmail?: string
     isAvailabilityProvidedAtRuntime?: boolean
+    placementReadyBy: User
+    placementReadyAt: string
 }
 
 export interface PendingIndustry extends Industry {

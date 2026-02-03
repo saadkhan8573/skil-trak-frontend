@@ -103,7 +103,7 @@ export const Filter = <FormFilterTypes,>({
     }
 
     return expanded ? (
-        <Card className="rounded-xl border-2 border-primaryNew/20 bg-gradient-to-br from-primaryNew/5 to-transparent space-y-4">
+        <Card className="rounded-xl border-2 border-primaryNew/20 bg-linear-to-br from-primaryNew/5 to-transparent space-y-4">
             <div>
                 <div className="flex justify-between mb-2">
                     <p className="text-sm font-medium flex items-center gap-x-2 text-gray-400">

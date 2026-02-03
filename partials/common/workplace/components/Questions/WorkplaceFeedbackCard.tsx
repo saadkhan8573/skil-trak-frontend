@@ -63,6 +63,7 @@ export const WorkplaceFeedbackCard = ({
                         }
                     }}
                     size={19}
+                    edit
                     activeColor={'#ffd700'}
                 />
             </div>

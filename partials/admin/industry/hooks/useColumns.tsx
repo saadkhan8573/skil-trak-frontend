@@ -215,8 +215,7 @@ export const useColumns = () => {
                 header: () => <span>Placement Status</span>,
                 cell: ({ row }) => (
                     <div>
-                        {Number(row?.original?.profileCompletionPercentage) ===
-                            100 &&
+                        {row?.original?.isPlacementReady &&
                         row?.original?.user?.status === UserStatus.Approved &&
                         !row?.original?.isSnoozed ? (
                             <Badge

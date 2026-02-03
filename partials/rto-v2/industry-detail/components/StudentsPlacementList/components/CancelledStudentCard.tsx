@@ -1,14 +1,14 @@
 import { Badge } from '@components'
 import { UserRoles } from '@constants'
 import { useStatusInfo } from '@partials/rto-v2/student-detail/components/StudentOverview/hooks/useStatusInfo'
-import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
+import { IWorkplaceIndustries, WorkplaceWorkIndustriesType } from '@redux/queryTypes'
 import { getUserCredentials } from '@utils'
 import { ExternalLink } from 'lucide-react'
 import moment from 'moment'
 import Link from 'next/link'
 
 interface StudentCardProps {
-    student: any
+    workplace: IWorkplaceIndustries
 }
 
 function getStudentProfileLink(role: string, studentId: number) {
@@ -22,9 +22,8 @@ function getStudentProfileLink(role: string, studentId: number) {
     }
 }
 
-export function CancelledStudentCard({ student }: StudentCardProps) {
+export function CancelledStudentCard({ workplace }: StudentCardProps) {
     const role = getUserCredentials()?.role
-    const workplace = student?.workplace?.[0]
     const industry = workplace?.industries?.[0]
 
     const { currentStep } = useStatusInfo({
@@ -40,13 +39,13 @@ export function CancelledStudentCard({ student }: StudentCardProps) {
         )
 
     // Action info
-    const hasActionInfo = student?.ActionedBy
+    const hasActionInfo = workplace?.cancelledBy
 
     return (
         <div
             className={`${isTerminalState
-                    ? 'bg-red-50 border-red-200'
-                    : 'bg-white border-[#E2E8F0]'
+                ? 'bg-red-50 border-red-200'
+                : 'bg-white border-[#E2E8F0]'
                 } border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300`}
         >
             <div className="p-4">
@@ -55,8 +54,8 @@ export function CancelledStudentCard({ student }: StudentCardProps) {
                     {/* Left: Student Info */}
                     <div className="flex items-start gap-3 flex-1">
                         {/* Avatar */}
-                        <div className="w-10 h-10 bg-gradient-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-sm">
-                            {student?.student?.user?.name
+                        <div className="w-10 h-10 bg-linear-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-sm">
+                            {workplace?.student?.user?.name
                                 ?.split(' ')
                                 .map((n: any) => n[0])
                                 .join('') || '?'}
@@ -66,14 +65,14 @@ export function CancelledStudentCard({ student }: StudentCardProps) {
                         <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
                                 <h3 className="text-sm font-bold text-[#1A2332]">
-                                    {student?.student?.user?.name}{' '}
-                                    {student?.familyName || ''}
+                                    {workplace?.student?.user?.name}{' '}
+                                    {workplace?.student?.familyName || ''}
                                 </h3>
-                                {student?.id && (
+                                {workplace?.id && (
                                     <Link
                                         href={getStudentProfileLink(
                                             role,
-                                            student?.student?.id
+                                            workplace?.student?.id!
                                         )}
                                     >
                                         <ExternalLink className="w-4 h-4 text-[#64748B] hover:text-[#044866] cursor-pointer" />
@@ -82,18 +81,18 @@ export function CancelledStudentCard({ student }: StudentCardProps) {
                             </div>
 
                             {/* Course Title - Only if exists */}
-                            {student?.course?.title && (
+                            {workplace?.courses?.[0]?.title && (
                                 <p className="text-xs text-[#64748B] mb-2">
-                                    {student?.course?.title}
+                                    {workplace?.courses?.[0]?.title}
                                 </p>
                             )}
 
                             {/* RTO Info - Only if exists */}
-                            {student?.student?.rto?.user?.name && (
+                            {workplace?.student?.rto?.user?.name && (
                                 <span className="text-xs font-semibold text-[#64748B]">
                                     {' '}
                                     🏢 RTO:{' '}
-                                    {student?.student?.rto?.user?.name}{' '}
+                                    {workplace?.student?.rto?.user?.name}{' '}
                                 </span>
                             )}
                         </div>
@@ -112,12 +111,12 @@ export function CancelledStudentCard({ student }: StudentCardProps) {
                                         size="xs"
                                     />
                                     <p className="font-medium capitalize text-red-600">
-                                        {student?.ActionedBy?.name}
+                                        {hasActionInfo}
                                     </p>
                                 </div>
-                                {student?.createdAt && (
+                                {workplace?.cancelledAt && (
                                     <p className="mt-1 text-gray-500">
-                                        {moment(student?.createdAt).format(
+                                        {moment(workplace?.cancelledAt).format(
                                             'DD MMM YYYY · hh:mm A'
                                         )}
                                     </p>

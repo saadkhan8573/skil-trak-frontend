@@ -21,7 +21,7 @@ import { Student, UserStatus } from '@types'
 import { getUserCredentials } from '@utils'
 import moment from 'moment'
 import { useRouter } from 'next/router'
-import { ReactElement, useState } from 'react'
+import { ReactElement, ReactNode, useState } from 'react'
 import { CgUnblock } from 'react-icons/cg'
 import { MdBlock } from 'react-icons/md'
 import { RiLockPasswordFill } from 'react-icons/ri'
@@ -36,7 +36,11 @@ import {
     DeleteModal,
     RejectModal,
     UnblockModal,
+    AdminStudentModalType,
+    getAdminStudentsModal,
 } from './modals'
+
+import { Phone } from 'lucide-react'
 
 interface StatusTableActionOption<T> extends TableActionOption<T> {
     status: UserStatus[]
@@ -56,7 +60,7 @@ export const FilteredStudents = ({
     setItemPerPage: any
 }) => {
     const router = useRouter()
-    const [modal, setModal] = useState<ReactElement | null>(null)
+    const [modal, setModal] = useState<ReactNode | null>(null)
     const role = getUserCredentials()?.role
     // hooks
     const { passwordModal, onViewPassword } = useActionModal()
@@ -131,6 +135,10 @@ export const FilteredStudents = ({
 
     const onModalCancelClicked = () => {
         setModal(null)
+    }
+
+    const handleOpenModal = (type: AdminStudentModalType, student: any) => {
+        setModal(getAdminStudentsModal(type, student, onModalCancelClicked))
     }
     const onBlockClicked = (student: Student) => {
         setModal(
@@ -214,6 +222,13 @@ export const FilteredStudents = ({
             Icon: FaEdit,
         },
         {
+            text: 'AI Voice Call',
+            onClick: (student: any) => {
+                handleOpenModal(AdminStudentModalType.AI_CALL, student)
+            },
+            Icon: () => <Phone className="w-3 h-3" />,
+        },
+        {
             text: 'View Password',
             onClick: (student: Student) => onViewPassword(student),
             Icon: RiLockPasswordFill,
@@ -250,16 +265,16 @@ export const FilteredStudents = ({
         {
             ...(role === UserRoles.ADMIN
                 ? {
-                      status: [
-                          UserStatus.Blocked,
-                          UserStatus.Rejected,
-                          UserStatus.Archived,
-                      ],
-                      text: 'Delete',
-                      onClick: (student) => onDeleteClicked(student),
-                      Icon: FaTrash,
-                      color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
-                  }
+                    status: [
+                        UserStatus.Blocked,
+                        UserStatus.Rejected,
+                        UserStatus.Archived,
+                    ],
+                    text: 'Delete',
+                    onClick: (student) => onDeleteClicked(student),
+                    Icon: FaTrash,
+                    color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
+                }
                 : { status: [] }),
         },
         // {

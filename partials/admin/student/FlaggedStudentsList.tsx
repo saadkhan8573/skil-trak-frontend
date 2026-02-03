@@ -29,7 +29,7 @@ import {
     setLink,
 } from '@utils'
 import { useRouter } from 'next/router'
-import { ReactElement, useCallback, useEffect, useRef, useState } from 'react'
+import { ReactElement, ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { MdBlock } from 'react-icons/md'
 import { SectorCell, StudentCellInfo, StudentIndustries } from './components'
 import {
@@ -38,7 +38,10 @@ import {
     BlockMultiStudentsModal,
     ChangeStatusModal,
     HighPriorityModal,
+    AdminStudentModalType,
+    getAdminStudentsModal,
 } from './modals'
+import { Phone } from 'lucide-react'
 
 // hooks
 import { useActionModal } from '@hooks'
@@ -54,7 +57,7 @@ import { isWorkplaceValid } from 'utils/workplaceRowBlinking'
 
 export const FlaggedStudentsList = () => {
     const router = useRouter()
-    const [modal, setModal] = useState<ReactElement | null>(null)
+    const [modal, setModal] = useState<ReactNode | null>(null)
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
     const listingRef = useRef<any>(null)
@@ -97,6 +100,9 @@ export const FlaggedStudentsList = () => {
     const onModalCancelClicked = useCallback(() => {
         setModal(null)
     }, [])
+    const handleOpenModal = (type: AdminStudentModalType, student: any) => {
+        setModal(getAdminStudentsModal(type, student, onModalCancelClicked))
+    }
     const onBlockClicked = (student: Student) => {
         setModal(<BlockModal item={student} onCancel={onModalCancelClicked} />)
     }
@@ -120,7 +126,7 @@ export const FlaggedStudentsList = () => {
             <HighPriorityModal
                 item={studetnt}
                 onCancel={onModalCancelClicked}
-                // setRefetchStudents={setRefetchStudents}
+            // setRefetchStudents={setRefetchStudents}
             />
         )
     }
@@ -201,6 +207,13 @@ export const FlaggedStudentsList = () => {
                 Icon: FaEye,
             },
             {
+                text: 'AI Voice Call',
+                onClick: (student: Student) => {
+                    handleOpenModal(AdminStudentModalType.AI_CALL, student)
+                },
+                Icon: () => <Phone className="w-3 h-3" />,
+            },
+            {
                 text:
                     // !student?.isReported && student?.hasIssue
                     //     ? 'Report to RTO'
@@ -265,20 +278,19 @@ export const FlaggedStudentsList = () => {
                                     Reported Comment
                                 </Typography>
                                 {info.row?.original?.statusHistory &&
-                                info.row?.original?.statusHistory?.length >
+                                    info.row?.original?.statusHistory?.length >
                                     0 ? (
                                     <div className="flex gap-x-4 w-full h-full">
                                         <div
-                                            className={`flex flex-col gap-y-1 ${
+                                            className={`flex flex-col gap-y-1 ${info.row?.original
+                                                ?.statusHistory?.[
                                                 info.row?.original
-                                                    ?.statusHistory?.[
-                                                    info.row?.original
-                                                        ?.statusHistory
-                                                        ?.length - 1
-                                                ]?.response
-                                                    ? 'w-1/2'
-                                                    : 'w-full'
-                                            }`}
+                                                    ?.statusHistory
+                                                    ?.length - 1
+                                            ]?.response
+                                                ? 'w-1/2'
+                                                : 'w-full'
+                                                }`}
                                         >
                                             <Typography
                                                 variant="label"
@@ -299,26 +311,26 @@ export const FlaggedStudentsList = () => {
                                             info.row?.original?.statusHistory
                                                 ?.length - 1
                                         ]?.response && (
-                                            <>
-                                                <div className="w-[2px] bg-gray-200 h-auto min-h-full mx-4"></div>
-                                                <div className="flex flex-col gap-y-1 w-1/2">
-                                                    <Typography
-                                                        variant="label"
-                                                        semibold
-                                                    >
-                                                        RTO Comment
-                                                    </Typography>
-                                                    <Typography variant="body">
-                                                        {info.row?.original
-                                                            ?.statusHistory?.[
-                                                            info.row?.original
-                                                                ?.statusHistory
-                                                                ?.length - 1
-                                                        ]?.response ?? 'NA'}
-                                                    </Typography>
-                                                </div>
-                                            </>
-                                        )}
+                                                <>
+                                                    <div className="w-[2px] bg-gray-200 h-auto min-h-full mx-4"></div>
+                                                    <div className="flex flex-col gap-y-1 w-1/2">
+                                                        <Typography
+                                                            variant="label"
+                                                            semibold
+                                                        >
+                                                            RTO Comment
+                                                        </Typography>
+                                                        <Typography variant="body">
+                                                            {info.row?.original
+                                                                ?.statusHistory?.[
+                                                                info.row?.original
+                                                                    ?.statusHistory
+                                                                    ?.length - 1
+                                                            ]?.response ?? 'NA'}
+                                                        </Typography>
+                                                    </div>
+                                                </>
+                                            )}
                                     </div>
                                 ) : (
                                     <NoData text="No Data found" />
@@ -470,18 +482,18 @@ export const FlaggedStudentsList = () => {
                                     >
                                         {pageSize
                                             ? pageSize(
-                                                  itemPerPage,
-                                                  setItemPerPage,
-                                                  data?.data?.length
-                                              )
+                                                itemPerPage,
+                                                setItemPerPage,
+                                                data?.data?.length
+                                            )
                                             : null}
                                         <div className="flex gap-x-2">
                                             {quickActions}
                                             {pagination
                                                 ? pagination(
-                                                      data?.pagination,
-                                                      setPage
-                                                  )
+                                                    data?.pagination,
+                                                    setPage
+                                                )
                                                 : null}
                                         </div>
                                     </div>
@@ -497,18 +509,18 @@ export const FlaggedStudentsList = () => {
                                         <div className="p-6 mb-2 flex justify-between">
                                             {pageSize
                                                 ? pageSize(
-                                                      itemPerPage,
-                                                      setItemPerPage,
-                                                      data?.data?.length
-                                                  )
+                                                    itemPerPage,
+                                                    setItemPerPage,
+                                                    data?.data?.length
+                                                )
                                                 : null}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination
                                                     ? pagination(
-                                                          data?.pagination,
-                                                          setPage
-                                                      )
+                                                        data?.pagination,
+                                                        setPage
+                                                    )
                                                     : null}
                                             </div>
                                         </div>

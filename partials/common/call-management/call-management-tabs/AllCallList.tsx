@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { CommonApi } from '@queries'
 import { LoadingAnimation, NoData, Table } from '@components'
 import { useCallColumns } from '../hooks/useCallColumns'
-import { CallDetailModal, TicketModal, CompleteCallModal } from '../modal'
+import { CallDetailModal, TicketModal, CompleteCallModal, DeleteCallModal } from '../modal'
 import { CallAudioModal } from '../modal/CallAudioModal'
 import { removeEmptyValues } from '@utils'
 
@@ -32,7 +32,9 @@ export const AllCallList = ({ status }: { status?: 'completed' | 'pending' | 'sc
         audioModalCall,
         setAudioModalCall,
         completeModalCall,
-        setCompleteModalCall
+        setCompleteModalCall,
+        deleteModalCall,
+        setDeleteModalCall
     } = useCallColumns()
 
     return (
@@ -84,6 +86,13 @@ export const AllCallList = ({ status }: { status?: 'completed' | 'pending' | 'sc
                         <CompleteCallModal
                             call={completeModalCall}
                             onClose={() => setCompleteModalCall(null)}
+                        />
+                    )}
+
+                    {deleteModalCall && (
+                        <DeleteCallModal
+                            item={deleteModalCall}
+                            onCancel={() => setDeleteModalCall(null)}
                         />
                     )}
                 </>

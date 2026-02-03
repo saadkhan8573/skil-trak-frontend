@@ -716,6 +716,7 @@ const {
     useInitiateAiCallMutation,
     useScheduleAiCallMutation,
     useBulkScheduleAiCallMutation,
+    useDeleteAiCallMutation,
 } = commonApi
 
 export const CommonApi = {
@@ -1106,5 +1107,6 @@ export const CommonApi = {
         useScheduleAiCallMutation: useScheduleAiCallMutation,
         useBulkScheduleAiCallMutation: useBulkScheduleAiCallMutation,
         useGetScheduledAiCallListQuery: useGetScheduledAiCallListQuery,
+        useDeleteAiCallMutation: useDeleteAiCallMutation,
     },
 }

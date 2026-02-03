@@ -1,17 +1,18 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { PlacementCall } from '@types'
-import { Calendar, CheckCircle, Clock, Eye, TicketPlus, Headphones } from 'lucide-react'
-import { StatusBadge } from '../components/StatusBadge'
-import { formatDate, formatTime } from '../utils'
-import React, { useState } from 'react'
+import { CheckCircle, Clock, Eye, Headphones, TicketPlus, Trash2 } from 'lucide-react'
 import moment from 'moment'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
+import React, { useState } from 'react'
+import { StatusBadge } from '../components/StatusBadge'
+
+import { TableAction } from '@components'
 
 export const useCallColumns = () => {
     const [selectedCall, setSelectedCall] = useState<PlacementCall | null>(null)
     const [ticketModalCall, setTicketModalCall] = useState<PlacementCall | null>(null)
     const [audioModalCall, setAudioModalCall] = useState<PlacementCall | null>(null)
     const [completeModalCall, setCompleteModalCall] = useState<PlacementCall | null>(null)
+    const [deleteModalCall, setDeleteModalCall] = useState<PlacementCall | null>(null)
 
     const handleMarkCompleted = (call: PlacementCall) => {
         setCompleteModalCall(call)
@@ -27,7 +28,7 @@ export const useCallColumns = () => {
 
     const handleActionClick = (
         e: React.MouseEvent,
-        action: 'completed' | 'ticket' | 'audio',
+        action: 'completed' | 'ticket' | 'audio' | 'delete',
         call: PlacementCall
     ) => {
         e.stopPropagation()
@@ -38,7 +39,49 @@ export const useCallColumns = () => {
             handleCreateTicket(String(call.id), call)
         } else if (action === 'audio') {
             handleListenAudio(call)
+        } else if (action === 'delete') {
+            setDeleteModalCall(call)
         }
+    }
+
+    const getTableActions = (call: PlacementCall) => {
+        const isCompleted = call?.status === 'completed'
+        const isScheduled = call?.status === 'scheduled'
+        const hasTicket = call?.hasTicket
+
+        return [
+            {
+                text: 'View Details',
+                Icon: Eye,
+                onClick: () => setSelectedCall(call)
+            },
+            {
+                text: 'Recording',
+                Icon: Headphones,
+                onClick: () => handleListenAudio(call),
+                hidden: isScheduled
+            },
+            {
+                text: isCompleted ? 'Completed' : 'Mark Completed',
+                Icon: isCompleted ? CheckCircle : Clock,
+                onClick: () => handleMarkCompleted(call),
+                hidden: isScheduled,
+                color: isCompleted ? 'text-green-600' : ''
+            },
+            {
+                text: hasTicket ? 'Ticket Created' : 'Create Ticket',
+                Icon: TicketPlus,
+                onClick: () => handleCreateTicket(String(call.id), call),
+                hidden: isScheduled,
+                color: hasTicket ? 'text-purple-600' : ''
+            },
+            {
+                text: 'Delete',
+                Icon: Trash2,
+                onClick: () => setDeleteModalCall(call),
+                color: 'text-red-500'
+            }
+        ]
     }
 
     const columns: ColumnDef<PlacementCall>[] = [
@@ -110,6 +153,11 @@ export const useCallColumns = () => {
             }
         },
         {
+            header: 'Course',
+            accessorKey: 'course.title',
+            cell: ({ row }) => <span className="text-sm text-gray-700">{row.original.course?.title}</span>
+        },
+        {
             header: 'Date',
             accessorKey: 'createdAt',
             cell: ({ row }) => (
@@ -138,81 +186,12 @@ export const useCallColumns = () => {
             id: 'actions',
             cell: ({ row }) => {
                 const call = row.original
-                const isCompleted = call?.status === 'completed'
-                const isScheduled = call?.status === 'scheduled'
-                const hasTicket = call?.hasTicket
+
                 return (
-                    <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button
-                                    onClick={() => setSelectedCall(call)}
-                                    className="cursor-pointer p-1.5 hover:bg-[#044866] hover:text-white text-[#044866] rounded-lg transition-all"
-                                >
-                                    <Eye className="w-4 h-4" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>View Details</p>
-                            </TooltipContent>
-                        </Tooltip>
-
-                        {!isScheduled && (
-                            <>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <button
-                                            onClick={(e) => handleActionClick(e, 'audio', call)}
-                                            className="p-1.5 rounded-lg transition-all bg-blue-100 text-blue-600 hover:bg-blue-200"
-                                        >
-                                            <Headphones className="w-4 h-4" />
-                                        </button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p>Listen to Recording</p>
-                                    </TooltipContent>
-                                </Tooltip>
-
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <button
-                                            onClick={(e) => handleActionClick(e, 'completed', call)}
-                                            className={`p-1.5 rounded-lg transition-all ${isCompleted
-                                                ? 'bg-green-500 text-white hover:bg-green-600'
-                                                : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
-                                                }`}
-                                        >
-                                            {isCompleted ? (
-                                                <CheckCircle className="w-4 h-4 text-white" />
-                                            ) : (
-                                                <Clock className="w-4 h-4" />
-                                            )}
-                                        </button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p>{isCompleted ? 'Completed' : 'Mark as Completed'}</p>
-                                    </TooltipContent>
-                                </Tooltip>
-
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <button
-                                            onClick={(e) => handleActionClick(e, 'ticket', call)}
-                                            className={`p-1.5 rounded-lg transition-all ${hasTicket
-                                                ? 'bg-purple-500 text-white hover:bg-purple-600'
-                                                : 'bg-purple-100 text-purple-600 hover:bg-purple-200'
-                                                }`}
-                                        >
-                                            <TicketPlus className="w-4 h-4" />
-                                        </button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p>{hasTicket ? 'Ticket Created' : 'Create Ticket'}</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </>
-                        )}
-                    </div>
+                    <TableAction
+                        rowItem={call}
+                        options={getTableActions(call)}
+                    />
                 )
             }
         }
@@ -228,6 +207,8 @@ export const useCallColumns = () => {
         setAudioModalCall,
         completeModalCall,
         setCompleteModalCall,
+        deleteModalCall,
+        setDeleteModalCall,
         handleCreateTicket,
         handleActionClick
     }

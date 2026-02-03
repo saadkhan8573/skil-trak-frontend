@@ -199,6 +199,10 @@ export const FilteredStudents = ({
         )
     }
 
+    const onBulkCallClicked = (students: Student[]) => {
+        handleOpenModal(AdminStudentModalType.BULK_AI_CALL, students)
+    }
+
     const tableActionOptions: TableActionOption<any>[] = [
         {
             text: 'View',
@@ -221,13 +225,17 @@ export const FilteredStudents = ({
             },
             Icon: FaEdit,
         },
-        {
-            text: 'AI Voice Call',
-            onClick: (student: any) => {
-                handleOpenModal(AdminStudentModalType.AI_CALL, student)
-            },
-            Icon: () => <Phone className="w-3 h-3" />,
-        },
+        ...(filter?.courseId
+            ? [
+                {
+                    text: 'AI Voice Call',
+                    onClick: (student: any) => {
+                        handleOpenModal(AdminStudentModalType.AI_CALL, student)
+                    },
+                    Icon: () => <Phone className="w-3 h-3" />,
+                },
+            ]
+            : []),
         {
             text: 'View Password',
             onClick: (student: Student) => onViewPassword(student),
@@ -440,25 +448,50 @@ export const FilteredStudents = ({
 
     const quickActionsElements = {
         id: 'id',
-        individual: (id: Student) => (
+        individual: (student: Student) => (
             <div className="flex gap-x-2">
                 <ActionButton Icon={FaEdit}>Edit</ActionButton>
                 <ActionButton>Sub Admins</ActionButton>
                 <ActionButton Icon={MdBlock} variant="error">
                     Block
                 </ActionButton>
+                {filter?.courseId && (
+                    <ActionButton
+                        onClick={() => {
+                            handleOpenModal(
+                                AdminStudentModalType.AI_CALL,
+                                student
+                            )
+                        }}
+                        Icon={Phone}
+                    >
+                        Call
+                    </ActionButton>
+                )}
             </div>
         ),
         common: (student: Student[]) => (
-            <ActionButton
-                onClick={() => {
-                    onBlockMultiStudents(student)
-                }}
-                Icon={MdBlock}
-                variant="error"
-            >
-                Block
-            </ActionButton>
+            <div className="flex gap-x-2">
+                {filter?.courseId && (
+                    <ActionButton
+                        onClick={() => {
+                            onBulkCallClicked(student)
+                        }}
+                        Icon={Phone}
+                    >
+                        Call
+                    </ActionButton>
+                )}
+                <ActionButton
+                    onClick={() => {
+                        onBlockMultiStudents(student)
+                    }}
+                    Icon={MdBlock}
+                    variant="error"
+                >
+                    Block
+                </ActionButton>
+            </div>
         ),
     }
 

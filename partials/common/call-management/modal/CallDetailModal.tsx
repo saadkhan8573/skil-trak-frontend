@@ -11,11 +11,14 @@ import {
     Play,
     Sparkles,
     Briefcase,
+    BookOpen,
+    Trash2,
 } from 'lucide-react'
 import { useState } from 'react'
 import { Call, StatusBadge } from '../components'
 import { formatDate, formatTime } from '../utils'
 import { CallAudioModal } from './CallAudioModal'
+import { DeleteCallModal } from './DeleteCallModal'
 import { PlacementCall } from '@types'
 
 interface CallDetailModalProps {
@@ -26,6 +29,7 @@ interface CallDetailModalProps {
 export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
     const [activeForm, setActiveForm] = useState<'find' | 'own' | null>(null)
     const [audioModalOpen, setAudioModalOpen] = useState(false)
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false)
     return (
         <div className="fixed inset-0 z-50 overflow-y-auto">
             {/* Backdrop */}
@@ -47,12 +51,21 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                 Complete information about this call
                             </p>
                         </div>
-                        <button
-                            onClick={onClose}
-                            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                        >
-                            <X className="w-5 h-5 text-gray-500" />
-                        </button>
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={() => setDeleteModalOpen(true)}
+                                className="p-2 hover:bg-red-50 rounded-lg transition-colors group"
+                                title="Delete Call"
+                            >
+                                <Trash2 className="w-5 h-5 text-gray-400 group-hover:text-red-500" />
+                            </button>
+                            <button
+                                onClick={onClose}
+                                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                            >
+                                <X className="w-5 h-5 text-gray-500" />
+                            </button>
+                        </div>
                     </div>
 
                     {/* Content */}
@@ -60,7 +73,7 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                         {/* Student Information */}
                         <div>
                             <div className="flex items-center gap-3 mb-3">
-                                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#044866] to-[#0D5468] flex items-center justify-center flex-shrink-0">
+                                <div className="w-14 h-14 rounded-full bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shrink-0">
                                     <span className="text-white">
                                         {(call?.student?.user?.name &&
                                             call?.student?.user?.name
@@ -83,7 +96,7 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                         </div>
 
                         {/* Call Status - Prominent Display */}
-                        <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-4 border border-gray-200">
+                        <div className="bg-linear-to-br from-gray-50 to-blue-50 rounded-xl p-4 border border-gray-200">
                             <div className="flex items-start justify-between">
                                 <div className="flex-1">
                                     <p className="text-xs text-gray-600 mb-2">
@@ -150,6 +163,16 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
 
                             <div className="bg-gray-50 rounded-lg p-2.5">
                                 <div className="flex items-center gap-2 text-gray-600 mb-0.5">
+                                    <BookOpen className="w-3 h-3" />
+                                    <span className="text-xs">Course</span>
+                                </div>
+                                <p className="text-sm text-gray-900">
+                                    {call?.course?.title || 'Not specified'}
+                                </p>
+                            </div>
+
+                            <div className="bg-gray-50 rounded-lg p-2.5">
+                                <div className="flex items-center gap-2 text-gray-600 mb-0.5">
                                     <Building2 className="w-3 h-3" />
                                     <span className="text-xs">Industry</span>
                                 </div>
@@ -177,7 +200,7 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
 
                         {/* Call Recording */}
                         {call?.callId && (
-                            <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg p-3 border border-purple-200">
+                            <div className="bg-linear-to-br from-purple-50 to-blue-50 rounded-lg p-3 border border-purple-200">
                                 <div className="flex items-start justify-between gap-3">
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2 text-purple-900 mb-1">
@@ -224,10 +247,10 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                     {/* Option 1: Need a Workplace */}
                                     <button
                                         onClick={() => setActiveForm('find')}
-                                        className="text-left bg-gradient-to-br from-[#044866] to-[#0D5468] rounded-lg p-3 border border-[#044866] hover:shadow-md transition-all group"
+                                        className="text-left bg-linear-to-br from-[#044866] to-[#0D5468] rounded-lg p-3 border border-[#044866] hover:shadow-md transition-all group"
                                     >
                                         <div className="flex items-center gap-2 mb-1.5">
-                                            <Sparkles className="w-4 h-4 text-white flex-shrink-0" />
+                                            <Sparkles className="w-4 h-4 text-white shrink-0" />
                                             <span className="text-sm text-white">
                                                 Need a Workplace?
                                             </span>
@@ -244,10 +267,10 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                                     {/* Option 2: Have Your Own Workplace */}
                                     <button
                                         onClick={() => setActiveForm('own')}
-                                        className="text-left bg-gradient-to-br from-[#F7A619] to-[#E09515] rounded-lg p-3 border border-[#F7A619] hover:shadow-md transition-all group"
+                                        className="text-left bg-linear-to-br from-[#F7A619] to-[#E09515] rounded-lg p-3 border border-[#F7A619] hover:shadow-md transition-all group"
                                     >
                                         <div className="flex items-center gap-2 mb-1.5">
-                                            <Briefcase className="w-4 h-4 text-white flex-shrink-0" />
+                                            <Briefcase className="w-4 h-4 text-white shrink-0" />
                                             <span className="text-sm text-white">
                                                 Have Your Own?
                                             </span>
@@ -410,6 +433,14 @@ export function CallDetailModal({ call, onClose }: CallDetailModalProps) {
                 <CallAudioModal
                     call={call as any}
                     onClose={() => setAudioModalOpen(false)}
+                />
+            )}
+
+            {/* Delete Modal */}
+            {deleteModalOpen && (
+                <DeleteCallModal
+                    item={call}
+                    onCancel={() => setDeleteModalOpen(false)}
                 />
             )}
         </div>

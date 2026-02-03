@@ -22,7 +22,7 @@ export const callManagementLoginEndpoints = (
     getAiCallStatistics: builder.query<
         {
             totalCalls: number
-            resoved: number
+            resolved: number
             pending: number
             scheduled: number
         },
@@ -97,14 +97,13 @@ export const callManagementLoginEndpoints = (
         any,
         {
             studentIds: number[]
-            course: number
+            courseId: number
             scheduledAt: string
-            studentPhones: string[]
             isScheduled: boolean
         }
     >({
         query: (body) => ({
-            url: `ai-voice-calls/bulk-schedule-call`,
+            url: `ai-voice-calls/bulk/schedule-call`,
             method: 'POST',
             body,
         }),
@@ -120,5 +119,12 @@ export const callManagementLoginEndpoints = (
             params,
         }),
         providesTags: ['CallManagement'],
+    }),
+    deleteAiCall: builder.mutation<any, number>({
+        query: (id) => ({
+            url: `ai-voice-calls/${id}`,
+            method: 'DELETE',
+        }),
+        invalidatesTags: ['CallManagement'],
     }),
 })

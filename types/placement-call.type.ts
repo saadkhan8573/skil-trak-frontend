@@ -1,3 +1,4 @@
+import { Course } from '@redux/queryTypes'
 import { BaseResponse } from './base.type'
 import { Student } from './user.type'
 
@@ -14,6 +15,7 @@ export interface PlacementCall extends BaseResponse {
     callDuration: number
     errorMessage: string | null
     student: Student
+    course: Course
     priority?: 'low' | 'medium' | 'high'
     hasTicket?: boolean
     recordingUrl?: string

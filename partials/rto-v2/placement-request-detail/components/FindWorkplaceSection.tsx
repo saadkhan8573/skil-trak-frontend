@@ -484,7 +484,7 @@ function ProgressInfo({
     ).length
 
     return (
-        <div className="mb-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border-2 border-[#044866]/20">
+        <div className="mb-4 p-4 bg-linear-to-r from-blue-50 to-indigo-50 rounded-lg border-2 border-[#044866]/20">
             <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                     <Lock className="h-4 w-4 text-[#044866]" />
@@ -562,21 +562,19 @@ function IndustryList({
                             className="relative"
                         >
                             <div
-                                className={`flex items-center gap-3 p-4 bg-white border-2 rounded-lg transition-all ${
-                                    isLocked
-                                        ? 'border-slate-200 opacity-40 blur-sm pointer-events-none'
-                                        : isProcessed
+                                className={`flex items-center gap-3 p-4 bg-white border-2 rounded-lg transition-all ${isLocked
+                                    ? 'border-slate-200 opacity-40 blur-sm pointer-events-none'
+                                    : isProcessed
                                         ? 'border-emerald-300 bg-emerald-50/50 shadow-sm'
                                         : 'border-slate-200 hover:shadow-md hover:border-[#044866]/40 cursor-pointer'
-                                } group`}
+                                    } group`}
                             >
                                 {/* Avatar */}
                                 <div
-                                    className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-white shadow-sm ${
-                                        isProcessed
-                                            ? 'bg-gradient-to-br from-emerald-600 to-emerald-700'
-                                            : 'bg-gradient-to-br from-[#044866] to-[#0D5468] group-hover:scale-105'
-                                    } transition-transform`}
+                                    className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 text-white shadow-sm ${isProcessed
+                                        ? 'bg-linear-to-br from-emerald-600 to-emerald-700'
+                                        : 'bg-linear-to-br from-[#044866] to-[#0D5468] group-hover:scale-105'
+                                        } transition-transform`}
                                 >
                                     <span className="text-lg font-bold">
                                         {industry.avatar}
@@ -598,11 +596,10 @@ function IndustryList({
                                         )}
                                         {contactCount > 0 && (
                                             <Badge
-                                                text={`${contactCount} ${
-                                                    contactCount === 1
-                                                        ? 'call'
-                                                        : 'calls'
-                                                }`}
+                                                text={`${contactCount} ${contactCount === 1
+                                                    ? 'call'
+                                                    : 'calls'
+                                                    }`}
                                                 variant="warning"
                                                 size="xs"
                                                 Icon={History}

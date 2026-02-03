@@ -8,7 +8,7 @@ import {
     PaginatedResponse,
     PaginationWithSearch,
     Student,
-    UserStatus
+    UserStatus,
 } from '@types'
 
 const PREFIX = 'rtos/'
@@ -386,5 +386,12 @@ export const industriesEndpoints = (
             params,
         }),
         providesTags: ['RTOIndustries', 'Industry'],
+    }),
+    industryPlacementReady: builder.mutation<any, { id: number }>({
+        query: ({ id }) => ({
+            url: `${INDUSTRIESPREFIX}${id}/placement-ready`,
+            method: 'PATCH',
+        }),
+        invalidatesTags: ['RTOIndustries', 'Industry'],
     }),
 })

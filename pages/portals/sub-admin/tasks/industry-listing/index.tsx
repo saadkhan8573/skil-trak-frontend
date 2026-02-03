@@ -223,7 +223,7 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
                     )}
                     {filteredDataLength ? (
                         filteredIndustries.isLoading ||
-                        filteredIndustries.isFetching ? (
+                            filteredIndustries.isFetching ? (
                             <LoadingAnimation />
                         ) : (
                             filteredIndustries.isSuccess && (
@@ -245,7 +245,7 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
                                 return (
                                     <div>
                                         <div className="flex items-end justify-between">
-                                            <div className="flex-grow">
+                                            <div className="grow">
                                                 {header}
                                             </div>
                                         </div>

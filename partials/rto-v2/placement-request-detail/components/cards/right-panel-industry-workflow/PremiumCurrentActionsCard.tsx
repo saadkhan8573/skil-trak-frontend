@@ -92,7 +92,7 @@ export const PremiumCurrentActionsCard = ({
                     animate={{ opacity: 1, y: 0 }}
                     className="space-y-3"
                 >
-                    <div className="relative overflow-hidden p-6 bg-gradient-to-br from-red-50 to-rose-50 border-2 border-red-200 rounded-xl">
+                    <div className="relative overflow-hidden p-6 bg-linear-to-br from-red-50 to-rose-50 border-2 border-red-200 rounded-xl">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-red-200/30 rounded-full -mr-16 -mt-16" />
                         <div className="relative flex items-start gap-3">
                             <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -128,7 +128,7 @@ export const PremiumCurrentActionsCard = ({
                     animate={{ opacity: 1, y: 0 }}
                     className="space-y-3"
                 >
-                    <div className="relative overflow-hidden p-6 bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-300 rounded-xl">
+                    <div className="relative overflow-hidden p-6 bg-linear-to-br from-green-50 to-emerald-50 border-2 border-green-300 rounded-xl">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-green-200/30 rounded-full -mr-16 -mt-16" />
                         <div className="relative flex items-start gap-3">
                             <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -165,7 +165,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-slate-200/30 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -262,7 +262,7 @@ export const PremiumCurrentActionsCard = ({
                                     <WPProcessMatchingLoader />
                                 ) : (
                                     <>
-                                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-blue-50 to-cyan-50 border border-[#044866]/20 rounded-xl">
+                                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-blue-50 to-cyan-50 border border-[#044866]/20 rounded-xl">
                                             <div className="absolute top-0 right-0 w-32 h-32 bg-[#044866]/5 rounded-full -mr-16 -mt-16" />
                                             <div className="relative flex items-start gap-3">
                                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -282,7 +282,7 @@ export const PremiumCurrentActionsCard = ({
                                             </div>
                                         </div>
                                         <Button
-                                            className="w-full bg-gradient-to-r from-[#044866] via-[#0D5468] to-[#044866] hover:from-[#0D5468] hover:via-[#044866] hover:to-[#0D5468] text-white shadow-xl shadow-[#044866]/30 h-12 font-semibold transition-all duration-500 hover:shadow-2xl hover:shadow-[#044866]/40 hover:-translate-y-0.5"
+                                            className="w-full bg-linear-to-r from-[#044866] via-[#0D5468] to-[#044866] hover:from-[#0D5468] hover:via-[#044866] hover:to-[#0D5468] text-white shadow-xl shadow-[#044866]/30 h-12 font-semibold transition-all duration-500 hover:shadow-2xl hover:shadow-[#044866]/40 hover:-translate-y-0.5"
                                             onClick={onReRunAutomation}
                                         >
                                             <Sparkles className="mr-2 h-5 w-5 animate-pulse" />{' '}
@@ -294,7 +294,7 @@ export const PremiumCurrentActionsCard = ({
                         ) : (
                             <>
                                 {' '}
-                                <div className="relative overflow-hidden p-4 bg-gradient-to-br from-amber-50 to-orange-50 border border-[#F7A619]/30 rounded-xl">
+                                <div className="relative overflow-hidden p-4 bg-linear-to-br from-amber-50 to-orange-50 border border-[#F7A619]/30 rounded-xl">
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-[#F7A619]/10 rounded-full -mr-16 -mt-16" />
                                     <div className="relative flex items-start gap-3">
                                         <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -323,7 +323,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-amber-50 to-orange-50 border border-[#F7A619]/30 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-amber-50 to-orange-50 border border-[#F7A619]/30 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-[#F7A619]/10 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -368,7 +368,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-[#044866]/20 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-blue-50 to-indigo-50 border border-[#044866]/20 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-[#044866]/5 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -408,7 +408,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-[#044866]/20 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-blue-50 to-indigo-50 border border-[#044866]/20 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-[#044866]/5 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -449,7 +449,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-violet-200/30 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -516,7 +516,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-indigo-50 to-blue-50 border border-[#0D5468]/20 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-indigo-50 to-blue-50 border border-[#0D5468]/20 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-[#0D5468]/5 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -553,7 +553,7 @@ export const PremiumCurrentActionsCard = ({
                         ) : (
                             <>
                                 <Button
-                                    className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white shadow-lg shadow-emerald-600/20 h-11"
+                                    className="w-full bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white shadow-lg shadow-emerald-600/20 h-11"
                                     onClick={handleAppointmentSuccessful}
                                 >
                                     <CheckCircle2 className="mr-2 h-4 w-4" />{' '}
@@ -591,7 +591,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-indigo-50 to-purple-50 border border-[#0D5468]/20 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-indigo-50 to-purple-50 border border-[#0D5468]/20 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-[#0D5468]/5 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -608,7 +608,7 @@ export const PremiumCurrentActionsCard = ({
                             </div>
                         </div>
                         <Button
-                            className="w-full bg-gradient-to-r from-[#0D5468] to-[#044866] hover:from-[#044866] hover:to-[#0D5468] text-white shadow-lg shadow-[#0D5468]/20 h-11"
+                            className="w-full bg-linear-to-r from-[#0D5468] to-[#044866] hover:from-[#044866] hover:to-[#0D5468] text-white shadow-lg shadow-[#0D5468]/20 h-11"
                             onClick={() => setShowAgreementDialog(true)}
                         >
                             <FileSignature className="mr-2 h-4 w-4" /> Generate
@@ -632,7 +632,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-200/30 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -649,7 +649,7 @@ export const PremiumCurrentActionsCard = ({
                             </div>
                         </div>
                         <Button
-                            className="w-full bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-lg shadow-[#044866]/20 h-11"
+                            className="w-full bg-linear-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-lg shadow-[#044866]/20 h-11"
                             onClick={() => setShowScheduleDialog(true)}
                         >
                             <CalendarCheck className="mr-2 h-4 w-4" /> Confirm
@@ -664,7 +664,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-200/30 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -681,7 +681,7 @@ export const PremiumCurrentActionsCard = ({
                             </div>
                         </div>
                         <Button
-                            className="w-full bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-lg shadow-[#044866]/20 h-11"
+                            className="w-full bg-linear-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-lg shadow-[#044866]/20 h-11"
                             onClick={() => setShowScheduleDialog(true)}
                         >
                             <CalendarCheck className="mr-2 h-4 w-4" /> Confirm
@@ -697,7 +697,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-emerald-50 to-green-50 border border-emerald-200 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-200/30 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -748,7 +748,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-200/30 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -780,10 +780,10 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-5 bg-gradient-to-br from-emerald-50 via-teal-50 to-green-50 border-2 border-emerald-300 rounded-xl">
+                        <div className="relative overflow-hidden p-5 bg-linear-to-br from-emerald-50 via-teal-50 to-green-50 border-2 border-emerald-300 rounded-xl">
                             <div className="absolute top-0 right-0 w-40 h-40 bg-emerald-300/20 rounded-full -mr-20 -mt-20" />
                             <div className="relative flex items-start gap-3">
-                                <div className="p-3 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl shadow-lg">
+                                <div className="p-3 bg-linear-to-br from-emerald-500 to-emerald-600 rounded-xl shadow-lg">
                                     <Award className="h-6 w-6 text-white" />
                                 </div>
                                 <div className="flex-1">
@@ -805,13 +805,13 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-5 bg-gradient-to-br from-red-50 via-rose-50 to-orange-50 border-2 border-red-200 rounded-xl">
+                        <div className="relative overflow-hidden p-5 bg-linear-to-br from-red-50 via-rose-50 to-orange-50 border-2 border-red-200 rounded-xl">
                             {/* Decorative background circle */}
                             <div className="absolute top-0 right-0 w-40 h-40 bg-red-200/20 rounded-full -mr-20 -mt-20" />
 
                             <div className="relative flex items-start gap-4">
                                 {/* Icon Container */}
-                                <div className="p-3 bg-gradient-to-br from-red-500 to-rose-600 rounded-xl shadow-lg shadow-red-200">
+                                <div className="p-3 bg-linear-to-br from-red-500 to-rose-600 rounded-xl shadow-lg shadow-red-200">
                                     <XCircle className="h-6 w-6 text-white" />
                                 </div>
 
@@ -848,13 +848,13 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-5 bg-gradient-to-br from-red-50 via-rose-50 to-orange-50 border-2 border-red-200 rounded-xl">
+                        <div className="relative overflow-hidden p-5 bg-linear-to-br from-red-50 via-rose-50 to-orange-50 border-2 border-red-200 rounded-xl">
                             {/* Decorative background circle */}
                             <div className="absolute top-0 right-0 w-40 h-40 bg-red-200/20 rounded-full -mr-20 -mt-20" />
 
                             <div className="relative flex items-start gap-4">
                                 {/* Icon Container */}
-                                <div className="p-3 bg-gradient-to-br from-red-500 to-rose-600 rounded-xl shadow-lg shadow-red-200">
+                                <div className="p-3 bg-linear-to-br from-red-500 to-rose-600 rounded-xl shadow-lg shadow-red-200">
                                     <XCircle className="h-6 w-6 text-white" />
                                 </div>
 
@@ -892,7 +892,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-blue-50 to-cyan-50 border border-[#044866]/20 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-blue-50 to-cyan-50 border border-[#044866]/20 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-[#044866]/5 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -926,7 +926,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-amber-200/30 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -968,7 +968,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-indigo-50 to-purple-50 border border-[#0D5468]/20 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-indigo-50 to-purple-50 border border-[#0D5468]/20 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-[#0D5468]/5 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -985,7 +985,7 @@ export const PremiumCurrentActionsCard = ({
                             </div>
                         </div>
                         <Button
-                            className="w-full bg-gradient-to-r from-[#0D5468] to-[#044866] hover:from-[#044866] hover:to-[#0D5468] text-white shadow-lg shadow-[#0D5468]/20 h-11"
+                            className="w-full bg-linear-to-r from-[#0D5468] to-[#044866] hover:from-[#044866] hover:to-[#0D5468] text-white shadow-lg shadow-[#0D5468]/20 h-11"
                             onClick={() => setShowAgreementDialog(true)}
                         >
                             <FileSignature className="mr-2 h-4 w-4" /> Generate
@@ -1010,7 +1010,7 @@ export const PremiumCurrentActionsCard = ({
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-3"
                     >
-                        <div className="relative overflow-hidden p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl">
+                        <div className="relative overflow-hidden p-4 bg-linear-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-green-200/30 rounded-full -mr-16 -mt-16" />
                             <div className="relative flex items-start gap-3">
                                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -1052,7 +1052,7 @@ export const PremiumCurrentActionsCard = ({
                             </div>
                         )} */}
                         <Button
-                            className="w-full bg-gradient-to-r from-[#044866] via-[#0D5468] to-[#044866] hover:from-[#0D5468] hover:via-[#044866] hover:to-[#0D5468] text-white shadow-xl shadow-[#044866]/30 h-12 font-semibold transition-all duration-500 hover:shadow-2xl hover:shadow-[#044866]/40 hover:-translate-y-0.5"
+                            className="w-full bg-linear-to-r from-[#044866] via-[#0D5468] to-[#044866] hover:from-[#0D5468] hover:via-[#044866] hover:to-[#0D5468] text-white shadow-xl shadow-[#044866]/30 h-12 font-semibold transition-all duration-500 hover:shadow-2xl hover:shadow-[#044866]/40 hover:-translate-y-0.5"
                             onClick={() => setShowScheduleDialog(true)}
                         >
                             <CalendarCheck className="mr-2 h-5 w-5" /> Add
@@ -1072,7 +1072,7 @@ export const PremiumCurrentActionsCard = ({
                 noPadding
                 className="border-0 shadow-2xl shadow-slate-200/50 overflow-hidden hover:shadow-3xl transition-shadow duration-500"
             >
-                <div className="bg-gradient-to-r from-[#0D5468] via-[#044866] to-[#0D5468] px-6 py-5 relative overflow-hidden">
+                <div className="bg-linear-to-r from-[#0D5468] via-[#044866] to-[#0D5468] px-6 py-5 relative overflow-hidden">
                     <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
                     <div className="relative flex items-center gap-3 text-white">
                         <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg">

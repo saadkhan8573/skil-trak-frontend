@@ -1,11 +1,12 @@
 import { EmptyData, TechnicalError } from '@components'
 import { WorkplaceHookProvider } from '@partials/common/StudentProfileDetail/components/Workplace/hooks'
 import { RtoV2Api } from '@queries'
+import { setStudentDetail, useAppDispatch } from '@redux'
+import { Student } from '@types'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import {
-    CollapsibleStudentDetailsCard,
     EnhancedComplianceChecks,
     EnhancedHighlightedTasksCard,
     EnhancedIndustryDetailsCard,
@@ -14,8 +15,7 @@ import {
     EnhancedStatusNotesCard,
     EnhancedStudentPreferencesChecklistCard,
     PremiumCurrentActionsCard,
-    PremiumCurrentActionsCardV2,
-    StudentQuickSummaryCard,
+    StudentQuickSummaryCard
 } from './components/cards'
 import { CleanHeader } from './components/CleanHeader'
 import { FindWorkplaceSection } from './components/FindWorkplaceSection'
@@ -44,9 +44,8 @@ interface StatusNote {
 }
 
 export const PlacementRequestDetail = () => {
-    // const [workplaceType, setWorkplaceType] = useState<
-    //     'needs' | 'provided' | null
-    // >(null)
+    const dispatch = useAppDispatch()
+
     const router = useRouter()
     const wpId = router?.query?.id
     const studentId = router.query.studentId
@@ -54,10 +53,7 @@ export const PlacementRequestDetail = () => {
         RtoV2Api.PlacementRequests.useStudentPlacementProfileDetails(wpId, {
             skip: !wpId,
         })
-    // const industryAvailability = RtoV2Api.Industries.useIndustryAvailabilityV2(
-    //     Number(router.query.id),
-    //     { skip: !router.query.id }
-    // )
+
     const [currentStatus, setCurrentStatus] =
         useState<string>('Request Generated')
 
@@ -105,6 +101,8 @@ export const PlacementRequestDetail = () => {
             skip: !studentId,
         })
 
+    console.log({ studentDetails })
+
     // Workflow for students who need a workplace
     const workplaceType = placementRequestsDetails?.data
         ?.studentProvidedWorkplace
@@ -134,6 +132,19 @@ export const PlacementRequestDetail = () => {
     //     ?.map((s: any) => s?.completed)
     //     ?.lastIndexOf(true)
     // const wpCurrentStatus = progress?.data[lastTrueIndex]
+
+
+    useEffect(() => {
+        if (studentDetails?.isSuccess && studentDetails?.data) {
+            dispatch(setStudentDetail(studentDetails?.data))
+        }
+
+        return () => {
+            dispatch(setStudentDetail(null as unknown as Student))
+        }
+    }, [studentDetails])
+
+
     const getCurrentStageIndex = () => {
         const index = progressData?.data?.findIndex(
             (s: any) => s.stage === currentStatus
@@ -387,7 +398,7 @@ export const PlacementRequestDetail = () => {
                     <CardsSkeleton />
                 </div>
             ) : placementRequestsDetails?.isSuccess &&
-              placementRequestsDetails?.data ? (
+                placementRequestsDetails?.data ? (
                 <>
                     {/* Clean Modern Header */}
                     <CleanHeader
@@ -423,11 +434,10 @@ export const PlacementRequestDetail = () => {
                                         duration: 0.5,
                                         ease: 'easeOut',
                                     }}
-                                    className={`space-y-7 ${
-                                        leftPanelSticky
-                                            ? 'sticky top-24 self-start'
-                                            : ''
-                                    }`}
+                                    className={`space-y-7 ${leftPanelSticky
+                                        ? 'sticky top-24 self-start'
+                                        : ''
+                                        }`}
                                 >
                                     <StudentQuickSummaryCard
                                         studentDetails={studentDetails?.data}
@@ -467,11 +477,10 @@ export const PlacementRequestDetail = () => {
                                         duration: 0.5,
                                         ease: 'easeOut',
                                     }}
-                                    className={`space-y-7 ${
-                                        rightPanelSticky
-                                            ? 'sticky top-24 self-start'
-                                            : ''
-                                    }`}
+                                    className={`space-y-7 ${rightPanelSticky
+                                        ? 'sticky top-24 self-start'
+                                        : ''
+                                        }`}
                                 >
                                     {/* Industry Match Validation - Shown from workflow start through completion */}
                                     {/* {workplaceType === 'needs' && (

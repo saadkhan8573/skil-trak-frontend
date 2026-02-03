@@ -1,6 +1,8 @@
 import { Badge, Card, TextInput, Typography } from '@components'
 import { UserRoles } from '@constants'
 import { RtoV2Api } from '@queries'
+import { setSelectedCourse, useAppDispatch } from '@redux'
+import { Course } from '@types'
 import { ellipsisText, getUserCredentials, maskText } from '@utils'
 import {
     AtSign,
@@ -16,6 +18,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 function getStudentProfileLink(role: string, studentId: number) {
     switch (role) {
@@ -34,6 +37,8 @@ export const StudentQuickSummaryCard = ({
     studentDetails: any
 }) => {
     const router = useRouter()
+    const dispatch = useAppDispatch()
+
     const wpId = router.query.id
     const { data } = RtoV2Api.PlacementRequests.useStudentPlacementCourse(
         wpId,
@@ -41,6 +46,7 @@ export const StudentQuickSummaryCard = ({
             skip: !wpId,
         }
     )
+    console.log({ data })
     const {
         data: courseWpTypesData,
         isLoading,
@@ -51,6 +57,16 @@ export const StudentQuickSummaryCard = ({
             skip: !data?.id || !studentDetails?.rto?.id,
         }
     )
+
+    useEffect(() => {
+        if (data) {
+            dispatch(setSelectedCourse(data))
+        }
+        return () => {
+            dispatch(setSelectedCourse(null as unknown as Course))
+        }
+    }, [data])
+
     const role = getUserCredentials()?.role || ''
     function formatAIRequirements(text: string) {
         if (!text) return ''
@@ -249,7 +265,7 @@ export const StudentQuickSummaryCard = ({
                                         Error loading data
                                     </p>
                                 ) : courseWpTypesData &&
-                                  courseWpTypesData?.length > 0 ? (
+                                    courseWpTypesData?.length > 0 ? (
                                     <ul className="list-disc list-inside text-xs text-slate-900 font-medium">
                                         {courseWpTypesData?.map(
                                             (type: any, index: number) => (

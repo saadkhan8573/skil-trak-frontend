@@ -63,10 +63,10 @@ export function CallAudioModal({ call, onClose }: CallAudioModalProps) {
     }
 
     return (
-        <Dialog open={true} onOpenChange={onClose}>
-            <DialogContent className="max-w-sm p-0 gap-0 overflow-hidden border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 sm:rounded-2xl shadow-2xl">
+        <Dialog open={!!call} onOpenChange={(open) => !open && onClose()}>
+            <DialogContent className="max-w-sm p-0 gap-0 overflow-hidden border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 sm:rounded-2xl shadow-2xl [&>button[data-slot='dialog-close']]:text-white [&>button[data-slot='dialog-close']]:opacity-100">
                 {/* Decorative background elements */}
-                <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-[#044866] to-[#0D5468] z-0" />
+                <div className="absolute top-0 left-0 w-full h-24 bg-linear-to-br from-[#044866] to-[#0D5468] z-0" />
                 <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl pointer-events-none" />
 
                 <DialogHeader className="relative z-10 px-5 pt-5 pb-3">
@@ -87,7 +87,7 @@ export function CallAudioModal({ call, onClose }: CallAudioModalProps) {
                 <div className="relative z-10 bg-white rounded-t-3xl px-5 py-6 mt-2">
                     {/* Vinyl Record Animation / Visualizer Placeholder */}
                     <div className="flex justify-center mb-3">
-                        <div className={`relative w-14 h-14 rounded-full border-2 border-gray-100 shadow-[0_8px_16px_rgba(0,0,0,0.1)] flex items-center justify-center bg-gradient-to-tr from-gray-50 to-gray-200 ${isPlaying ? 'animate-spin-slow' : ''}`}>
+                        <div className={`relative w-14 h-14 rounded-full border-2 border-gray-100 shadow-[0_8px_16px_rgba(0,0,0,0.1)] flex items-center justify-center bg-linear-to-tr from-gray-50 to-gray-200 ${isPlaying ? 'animate-spin-slow' : ''}`}>
                             <div className="absolute inset-0 rounded-full border border-gray-300 opacity-50" />
                             <div className="absolute inset-2 rounded-full border border-gray-300 opacity-50" />
                             <div className="absolute inset-4 rounded-full border border-gray-300 opacity-50" />

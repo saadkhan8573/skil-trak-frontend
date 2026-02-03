@@ -77,13 +77,13 @@ export const useSubAdminIndustryColumns = () => {
             // },
             {
                 text: `${industry?.favoriteBy &&
-                        industry?.favoriteBy?.user?.id === subadminId
-                        ? 'Un Favourite'
-                        : 'Add Favourite'
+                    industry?.favoriteBy?.user?.id === subadminId
+                    ? 'Un Favourite'
+                    : 'Add Favourite'
                     }`,
                 color: `${industry?.subAdmin && industry?.subAdmin?.length > 0
-                        ? 'text-error'
-                        : 'text-primary'
+                    ? 'text-error'
+                    : 'text-primary'
                     }`,
                 onClick: (industry: Industry) =>
                     onAddToFavoriteClicked(industry),
@@ -176,9 +176,7 @@ export const useSubAdminIndustryColumns = () => {
                     header: () => <span>Placement Status</span>,
                     cell: ({ row }) => (
                         <Typography variant={'muted'} color={'gray'}>
-                            {Number(
-                                row?.original?.profileCompletionPercentage
-                            ) === 100 &&
+                            {row?.original?.isPlacementReady &&
                                 row?.original?.user?.status ===
                                 UserStatus.Approved &&
                                 !row?.original?.isSnoozed ? (

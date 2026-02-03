@@ -10,7 +10,7 @@ import styles from './css/FiltersPanel.module.css'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoadingAnimation } from './LoadingAnimation'
 import { FormProvider, useForm } from 'react-hook-form'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
     Button,
     Select,
@@ -22,11 +22,24 @@ import {
 } from '@components'
 import { ResultsDisplay } from './ResultsDisplay'
 
-interface FiltersPanelProps {
-    onClose: () => void
+interface FormValues {
+    sector: number | string
+    address: string
+    keywords: string
+    type: string
 }
 
-export const FiltersPanel: React.FC<FiltersPanelProps> = ({ onClose }) => {
+interface FiltersPanelProps {
+    onClose: () => void
+    studentAddress?: string
+    sectorId?: number
+}
+
+export const FiltersPanel: React.FC<FiltersPanelProps> = ({
+    onClose,
+    studentAddress,
+    sectorId,
+}) => {
     const [selectedSector, setSelectedSector] = useState<number | null>(null)
     const [currentView, setCurrentView] = useState<
         'filters' | 'loading' | 'results'
@@ -43,8 +56,12 @@ export const FiltersPanel: React.FC<FiltersPanelProps> = ({ onClose }) => {
         type: Yup.string().required('Type is required'),
     })
 
-    const methods = useForm({
-        resolver: yupResolver(validationSchema),
+    const methods = useForm<FormValues>({
+        resolver: yupResolver(validationSchema) as any,
+        defaultValues: {
+            address: studentAddress || '',
+            sector: sectorId || '',
+        },
         mode: 'all',
     })
 
@@ -59,8 +76,14 @@ export const FiltersPanel: React.FC<FiltersPanelProps> = ({ onClose }) => {
             )
             setSelectedSector(option)
         },
-        [setSelectedSector, sectorResponse.data]
+        [setSelectedSector, sectorResponse.data, methods]
     )
+
+    useEffect(() => {
+        if (sectorId && sectorResponse.isSuccess && sectorResponse.data) {
+            handleSectorChange(Number(sectorId))
+        }
+    }, [sectorId, sectorResponse.isSuccess, sectorResponse.data, handleSectorChange])
 
     const handleRunAutomation = async (values: any) => {
         const keywords = values?.keywords?.split(', ')

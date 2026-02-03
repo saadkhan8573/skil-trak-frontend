@@ -194,7 +194,7 @@ const FutureIndustryListing: NextPageWithLayout = (props: Props) => {
                         return (
                             <div>
                                 <div className="flex items-end justify-between">
-                                    <div className="flex-grow">{header}</div>
+                                    <div className="grow">{header}</div>
                                 </div>
                                 <div className="flex items-center gap-x-2 mt-3">
                                     <FigureCard

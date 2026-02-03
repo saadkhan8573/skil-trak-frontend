@@ -19,10 +19,11 @@ import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
 import { mergeRegister } from '@lexical/utils';
-import { AlignLeft, AlignCenter, AlignRight, Upload, RefreshCw } from 'lucide-react';
+import { AlignLeft, AlignCenter, AlignRight, Upload, RefreshCw, Type, Check, X } from 'lucide-react';
 import { AdminApi } from '@queries';
 import { useNotification } from '@hooks';
 import { isServerImageUrl } from '../constants';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../../../ui/tooltip';
 
 export type ImageAlignment = 'left' | 'right' | 'center' | 'full' | undefined;
 
@@ -71,6 +72,8 @@ function ImageComponent({ src, altText, width, height, maxWidth, nodeKey, alignm
     const [editor] = useLexicalComposerContext();
     const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey);
     const [isHovered, setIsHovered] = useState(false);
+    const [isEditingAlt, setIsEditingAlt] = useState(false);
+    const [tempAltText, setTempAltText] = useState(altText);
     const imageRef = useRef<HTMLImageElement | null>(null);
     const [uploadImage, { isLoading: isUploadingToServer }] = AdminApi.Blogs.uploadImage();
     const { notification: { success, error } } = useNotification();
@@ -232,6 +235,27 @@ function ImageComponent({ src, altText, width, height, maxWidth, nodeKey, alignm
         }
     }, [src, nodeKey, editor, uploadImage]);
 
+    const onAltTextChange = useCallback((text: string) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            if ($isImageNode(node)) {
+                node.setAltText(text);
+            }
+        });
+    }, [editor, nodeKey]);
+
+    const handleAltSubmit = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onAltTextChange(tempAltText);
+        setIsEditingAlt(false);
+    };
+
+    const handleAltCancel = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setTempAltText(altText);
+        setIsEditingAlt(false);
+    };
+
     useEffect(() => {
         return mergeRegister(
             editor.registerCommand(
@@ -300,29 +324,87 @@ function ImageComponent({ src, altText, width, height, maxWidth, nodeKey, alignm
                     }}
                 />
 
-                {isSelected && !isUploading && (
+                {isSelected && !isUploading && isEditingAlt && (
                     <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg shadow-xl p-1 flex items-center gap-1 z-20 animate-in fade-in zoom-in duration-200 whitespace-nowrap min-w-max">
-                        <button
-                            onClick={(e) => { e.stopPropagation(); onAlignmentChange('left'); }}
-                            className={`p-1.5 rounded hover:bg-gray-100 transition-colors ${alignment === 'left' ? 'text-primary bg-primary/10' : 'text-gray-600'}`}
-                            title="Align Left"
-                        >
-                            <AlignLeft size={16} />
-                        </button>
-                        <button
-                            onClick={(e) => { e.stopPropagation(); onAlignmentChange('center'); }}
-                            className={`p-1.5 rounded hover:bg-gray-100 transition-colors ${alignment === 'center' ? 'text-primary bg-primary/10' : 'text-gray-600'}`}
-                            title="Align Center"
-                        >
-                            <AlignCenter size={16} />
-                        </button>
-                        <button
-                            onClick={(e) => { e.stopPropagation(); onAlignmentChange('right'); }}
-                            className={`p-1.5 rounded hover:bg-gray-100 transition-colors ${alignment === 'right' ? 'text-primary bg-primary/10' : 'text-gray-600'}`}
-                            title="Align Right"
-                        >
-                            <AlignRight size={16} />
-                        </button>
+                        <input
+                            type="text"
+                            value={tempAltText}
+                            onChange={(e) => setTempAltText(e.target.value)}
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-xs border rounded px-2 py-1 outline-none focus:border-blue-500 min-w-[150px]"
+                            placeholder="Alt text"
+                            autoFocus
+                        />
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button
+                                    onClick={handleAltSubmit}
+                                    className="p-1.5 rounded hover:bg-green-100 text-green-600 transition-colors"
+                                >
+                                    <Check size={14} />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Save Alt Text</p>
+                            </TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button
+                                    onClick={handleAltCancel}
+                                    className="p-1.5 rounded hover:bg-red-100 text-red-600 transition-colors"
+                                >
+                                    <X size={14} />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Cancel</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </div>
+                )}
+
+                {isSelected && !isUploading && !isEditingAlt && (
+                    <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg shadow-xl p-1 flex items-center gap-1 z-20 animate-in fade-in zoom-in duration-200 whitespace-nowrap min-w-max">
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button
+                                    onClick={(e) => { e.stopPropagation(); onAlignmentChange('left'); }}
+                                    className={`p-1.5 rounded hover:bg-gray-100 transition-colors ${alignment === 'left' ? 'text-primary bg-primary/10' : 'text-gray-600'}`}
+                                >
+                                    <AlignLeft size={16} />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Align Left</p>
+                            </TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button
+                                    onClick={(e) => { e.stopPropagation(); onAlignmentChange('center'); }}
+                                    className={`p-1.5 rounded hover:bg-gray-100 transition-colors ${alignment === 'center' ? 'text-primary bg-primary/10' : 'text-gray-600'}`}
+                                >
+                                    <AlignCenter size={16} />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Align Center</p>
+                            </TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button
+                                    onClick={(e) => { e.stopPropagation(); onAlignmentChange('right'); }}
+                                    className={`p-1.5 rounded hover:bg-gray-100 transition-colors ${alignment === 'right' ? 'text-primary bg-primary/10' : 'text-gray-600'}`}
+                                >
+                                    <AlignRight size={16} />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Align Right</p>
+                            </TooltipContent>
+                        </Tooltip>
                         <div className="w-px h-6 bg-gray-200 mx-0.5" />
                         <div className="flex items-center gap-0.5 px-0.5">
                             {(['25%', '50%', '75%', '100%'] as const).map((size) => (
@@ -336,47 +418,74 @@ function ImageComponent({ src, altText, width, height, maxWidth, nodeKey, alignm
                             ))}
                         </div>
 
+                        <div className="w-px h-6 bg-gray-200 mx-0.5" />
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setTempAltText(altText);
+                                        setIsEditingAlt(true);
+                                    }}
+                                    className={`p-1.5 rounded hover:bg-gray-100 transition-colors text-gray-600`}
+                                >
+                                    <Type size={16} />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Edit Alt Text</p>
+                            </TooltipContent>
+                        </Tooltip>
+
                         {isExternal && (
                             <>
                                 <div className="w-px h-6 bg-gray-200 mx-0.5" />
-                                <button
-                                    onClick={(e) => { e.stopPropagation(); onUploadToServer(); }}
-                                    className={`p-1.5 rounded transition-colors flex items-center gap-1 px-2 mx-1 shadow-sm ${isUploadingToServer ? 'bg-gray-100 text-gray-400' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
-                                    title="Upload this external image to your server"
-                                    disabled={isUploadingToServer}
-                                >
-                                    {isUploadingToServer ? (
-                                        <RefreshCw size={14} className="animate-spin" />
-                                    ) : (
-                                        <Upload size={14} />
-                                    )}
-                                    <span className="text-[10px] font-bold">
-                                        {isUploadingToServer ? 'Uploading...' : 'Upload to Server'}
-                                    </span>
-                                </button>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); onUploadToServer(); }}
+                                            className={`p-1.5 rounded transition-colors flex items-center gap-1 px-2 mx-1 shadow-sm ${isUploadingToServer ? 'bg-gray-100 text-gray-400' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                                            disabled={isUploadingToServer}
+                                        >
+                                            {isUploadingToServer ? (
+                                                <RefreshCw size={14} className="animate-spin" />
+                                            ) : (
+                                                <Upload size={14} />
+                                            )}
+                                            <span className="text-[10px] font-bold">
+                                                {isUploadingToServer ? 'Uploading...' : 'Upload to Server'}
+                                            </span>
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Upload this external image to your server</p>
+                                    </TooltipContent>
+                                </Tooltip>
                             </>
                         )}
                     </div>
                 )}
             </div>
 
-            {isUploading && (
-                <div style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    background: 'rgba(0,0,0,0.5)',
-                    color: 'white',
-                    padding: '4px 8px',
-                    borderRadius: '4px',
-                    fontSize: '12px',
-                    zIndex: 10
-                }}>
-                    Uploading...
-                </div>
-            )}
-        </div>
+            {
+                isUploading && (
+                    <div style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        background: 'rgba(0,0,0,0.5)',
+                        color: 'white',
+                        padding: '4px 8px',
+                        borderRadius: '4px',
+                        fontSize: '12px',
+                        zIndex: 10
+                    }}>
+                        Uploading...
+                    </div>
+                )
+            }
+        </div >
     );
 }
 
@@ -559,6 +668,11 @@ export class ImageNode extends DecoratorNode<React.ReactNode> {
 
     getSrc(): string {
         return this.__src;
+    }
+
+    setAltText(altText: string): void {
+        const writable = this.getWritable();
+        writable.__altText = altText;
     }
 
     getAltText(): string {

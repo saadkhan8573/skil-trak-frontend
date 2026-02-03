@@ -10,7 +10,7 @@ export function CancelledStudentsList() {
     const [page, setPage] = useState(1)
 
     const industry = useAppSelector((state) => state.industry)
-    const students = RtoV2Api.Industries.getIndustryCancelledStudents(
+    const workplaceCancelledStudents = RtoV2Api.Industries.getIndustryCancelledStudents(
         {
             industryId: industry?.industryDetail?.id ?? 0,
             params: {
@@ -26,30 +26,30 @@ export function CancelledStudentsList() {
 
     return (
         <div className="space-y-2">
-            {students?.isError ? <TechnicalError /> : null}
-            {students?.isLoading || students?.isFetching ? (
+            {workplaceCancelledStudents?.isError ? <TechnicalError /> : null}
+            {workplaceCancelledStudents?.isLoading || workplaceCancelledStudents?.isFetching ? (
                 <StudentsTabSkeleton />
-            ) : students?.isSuccess &&
-                students?.data?.data &&
-                students?.data?.data?.length > 0 ? (
+            ) : workplaceCancelledStudents?.isSuccess &&
+                workplaceCancelledStudents?.data?.data &&
+                workplaceCancelledStudents?.data?.data?.length > 0 ? (
                 <>
                     <div className="flex items-center justify-between">
                         <PageSize
                             itemPerPage={itemPerPage}
                             setItemPerPage={setItemPerPage}
-                            records={students?.data?.data?.length}
+                            records={workplaceCancelledStudents?.data?.data?.length}
                         />
                         <Pagination
                             setPage={setPage}
-                            pagination={students.data?.pagination}
+                            pagination={workplaceCancelledStudents.data?.pagination}
                             updateUrl={false}
                         />
                     </div>
-                    {students?.data?.data?.map((student: any) => (
-                        <CancelledStudentCard key={student.id} student={student} />
+                    {workplaceCancelledStudents?.data?.data?.map((workplace) => (
+                        <CancelledStudentCard key={workplace.id} workplace={workplace} />
                     ))}
                 </>
-            ) : students?.isSuccess ? (
+            ) : workplaceCancelledStudents?.isSuccess ? (
                 <EmptyData
                     title="No Cancelled Students"
                     description="No cancelled students for industry found"

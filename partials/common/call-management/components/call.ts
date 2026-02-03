@@ -29,23 +29,23 @@ export interface StatusConfig {
 export const statusConfigs: Record<CallStatus, StatusConfig> = {
     pending: {
         label: 'Skiltrak Action Required',
-        color: '#044866',
-        bgColor: '#E6F2F7',
-        borderColor: '#B3D9E8',
+        color: '#B45309',
+        bgColor: '#FFFBEB',
+        borderColor: '#FDE68A',
         description: 'Call in open state',
     },
     completed: {
         label: 'Completed Placements',
-        color: '#0D5468',
-        bgColor: '#E8F4F6',
-        borderColor: '#B8DDE4',
+        color: '#15803D',
+        bgColor: '#F0FDF4',
+        borderColor: '#BBF7D0',
         description: 'Placement completed',
     },
     scheduled: {
         label: 'Scheduled',
-        color: '#044866',
-        bgColor: '#E6F2F7',
-        borderColor: '#B3D9E8',
+        color: '#1D4ED8',
+        bgColor: '#EFF6FF',
+        borderColor: '#BFDBFE',
         description: 'Call is scheduled',
     },
 }

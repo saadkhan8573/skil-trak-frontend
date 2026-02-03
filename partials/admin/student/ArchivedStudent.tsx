@@ -1,5 +1,6 @@
 import {
     ActionButton,
+    Button, // Added for potential usage if needed, but primarily added Phone and modals
     Card,
     CaseOfficerAssignedStudent,
     EmptyData,
@@ -26,7 +27,13 @@ import { useEffect, useState } from 'react'
 import { RiLockPasswordFill } from 'react-icons/ri'
 import { RtoCellInfo } from '../rto/components'
 import { SectorCell, StudentCellInfo, StudentIndustries } from './components'
-import { ChangeStatusModal, DeleteModal } from './modals'
+import { Phone } from 'lucide-react'
+import {
+    AdminStudentModalType,
+    ChangeStatusModal,
+    DeleteModal,
+    getAdminStudentsModal,
+} from './modals'
 
 export const ArchivedStudent = () => {
     const router = useRouter()
@@ -56,6 +63,10 @@ export const ArchivedStudent = () => {
 
     const onModalCancelClicked = () => {
         setModal(null)
+    }
+
+    const handleOpenModal = (type: AdminStudentModalType, student: any) => {
+        setModal(getAdminStudentsModal(type, student, onModalCancelClicked))
     }
 
     const onDeleteClicked = (item: Student) => {
@@ -110,6 +121,13 @@ export const ArchivedStudent = () => {
                 router.push(`/portals/admin/student/edit-student/${row?.id}`)
             },
             Icon: FaEdit,
+        },
+        {
+            text: 'AI Voice Call',
+            onClick: (student: Student) => {
+                handleOpenModal(AdminStudentModalType.AI_CALL, student)
+            },
+            Icon: () => <Phone className="w-3 h-3" />,
         },
         {
             text: 'View Password',
@@ -183,7 +201,7 @@ export const ArchivedStudent = () => {
                     <span className="font-semibold whitespace-pre">
                         {moment(
                             info?.row?.original?.oldExpiry ||
-                                info?.row?.original?.expiryDate
+                            info?.row?.original?.expiryDate
                         ).format('Do MMM YYYY')}
                     </span>
                 </Typography>
@@ -195,7 +213,7 @@ export const ArchivedStudent = () => {
             cell: (info) => {
                 var marchFirst = new Date(
                     info?.row?.original?.oldExpiry ||
-                        info?.row?.original?.expiryDate
+                    info?.row?.original?.expiryDate
                 )
 
                 // Get today's date
@@ -337,18 +355,18 @@ export const ArchivedStudent = () => {
                                         <div className="p-6 mb-2 flex justify-between">
                                             {pageSize
                                                 ? pageSize(
-                                                      itemPerPage,
-                                                      setItemPerPage,
-                                                      data?.data?.length
-                                                  )
+                                                    itemPerPage,
+                                                    setItemPerPage,
+                                                    data?.data?.length
+                                                )
                                                 : null}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination
                                                     ? pagination(
-                                                          data?.pagination,
-                                                          setPage
-                                                      )
+                                                        data?.pagination,
+                                                        setPage
+                                                    )
                                                     : null}
                                             </div>
                                         </div>
@@ -362,18 +380,18 @@ export const ArchivedStudent = () => {
                                             <div className="p-6 mb-2 flex justify-between">
                                                 {pageSize
                                                     ? pageSize(
-                                                          itemPerPage,
-                                                          setItemPerPage,
-                                                          data?.data?.length
-                                                      )
+                                                        itemPerPage,
+                                                        setItemPerPage,
+                                                        data?.data?.length
+                                                    )
                                                     : null}
                                                 <div className="flex gap-x-2">
                                                     {quickActions}
                                                     {pagination
                                                         ? pagination(
-                                                              data?.pagination,
-                                                              setPage
-                                                          )
+                                                            data?.pagination,
+                                                            setPage
+                                                        )
                                                         : null}
                                                 </div>
                                             </div>

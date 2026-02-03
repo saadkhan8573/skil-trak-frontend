@@ -57,6 +57,7 @@ import {
 import { INSERT_IMAGE_COMMAND } from '../plugins/ImagePlugin';
 import { $createImageNode, $isImageNode } from '../nodes/ImageNode';
 import { AdminApi } from '@queries';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip';
 
 const LowPriority = 1;
 
@@ -349,37 +350,55 @@ export const Toolbar = () => {
 
   return (
     <div className="flex items-center gap-1 p-2 border-b bg-gray-50 sticky top-0 z-10 flex-wrap">
-      <button
-        disabled={!canUndo}
-        onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}
-        className="p-1.5 hover:bg-gray-200 rounded disabled:opacity-30"
-        title="Undo"
-      >
-        <Undo size={18} />
-      </button>
-      <button
-        disabled={!canRedo}
-        onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}
-        className="p-1.5 hover:bg-gray-200 rounded disabled:opacity-30"
-        title="Redo"
-      >
-        <Redo size={18} />
-      </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            disabled={!canUndo}
+            onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}
+            className="p-1.5 hover:bg-gray-200 rounded disabled:opacity-30"
+          >
+            <Undo size={18} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Undo</p>
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            disabled={!canRedo}
+            onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}
+            className="p-1.5 hover:bg-gray-200 rounded disabled:opacity-30"
+          >
+            <Redo size={18} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Redo</p>
+        </TooltipContent>
+      </Tooltip>
 
       <div className="w-px h-6 bg-gray-300 mx-1" />
 
       {/* Block Type Dropdown */}
       <div className="relative" ref={dropdownAnchorRef}>
-        <button
-          onClick={() => setShowBlockOptions(!showBlockOptions)}
-          className="flex items-center gap-2 px-3 py-1.5 rounded hover:bg-gray-200 text-sm font-medium transition-colors"
-          title="Text Style"
-        >
-          <span className="w-24 text-left truncate">
-            {blockTypeToBlockName[blockType as keyof typeof blockTypeToBlockName] || 'Normal'}
-          </span>
-          <ChevronDown size={14} />
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={() => setShowBlockOptions(!showBlockOptions)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded hover:bg-gray-200 text-sm font-medium transition-colors"
+            >
+              <span className="w-24 text-left truncate">
+                {blockTypeToBlockName[blockType as keyof typeof blockTypeToBlockName] || 'Normal'}
+              </span>
+              <ChevronDown size={14} />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Text Style</p>
+          </TooltipContent>
+        </Tooltip>
 
         {showBlockOptions && dropdownAnchorRef.current && createPortal(
           <BlockOptionsDropdownList
@@ -394,86 +413,146 @@ export const Toolbar = () => {
 
       <div className="w-px h-6 bg-gray-300 mx-1" />
 
-      <button
-        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}
-        className={`p-1.5 rounded hover:bg-gray-200 ${isBold ? 'bg-primary/10 text-primary' : ''}`}
-        title="Bold"
-      >
-        <Bold size={18} />
-      </button>
-      <button
-        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}
-        className={`p-1.5 rounded hover:bg-gray-200 ${isItalic ? 'bg-primary/10 text-primary' : ''}`}
-        title="Italic"
-      >
-        <Italic size={18} />
-      </button>
-      <button
-        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')}
-        className={`p-1.5 rounded hover:bg-gray-200 ${isUnderline ? 'bg-primary/10 text-primary' : ''}`}
-        title="Underline"
-      >
-        <Underline size={18} />
-      </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}
+            className={`p-1.5 rounded hover:bg-gray-200 ${isBold ? 'bg-primary/10 text-primary' : ''}`}
+          >
+            <Bold size={18} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Bold</p>
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}
+            className={`p-1.5 rounded hover:bg-gray-200 ${isItalic ? 'bg-primary/10 text-primary' : ''}`}
+          >
+            <Italic size={18} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Italic</p>
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')}
+            className={`p-1.5 rounded hover:bg-gray-200 ${isUnderline ? 'bg-primary/10 text-primary' : ''}`}
+          >
+            <Underline size={18} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Underline</p>
+        </TooltipContent>
+      </Tooltip>
 
-      <button
-        onClick={insertLink}
-        className={`p-1.5 rounded hover:bg-gray-200 ${isLink ? 'bg-primary/10 text-primary' : ''}`}
-        title="Link"
-      >
-        <Link size={18} />
-      </button>
-
-      <div className="w-px h-6 bg-gray-300 mx-1" />
-
-      <button
-        onClick={formatBulletList}
-        className={`p-1.5 rounded hover:bg-gray-200 ${blockType === 'bullet' ? 'bg-primary/10 text-primary' : ''}`}
-        title="Bullet List"
-      >
-        <List size={18} />
-      </button>
-      <button
-        onClick={formatNumberedList}
-        className={`p-1.5 rounded hover:bg-gray-200 ${blockType === 'number' ? 'bg-primary/10 text-primary' : ''}`}
-        title="Numbered List"
-      >
-        <ListOrdered size={18} />
-      </button>
-
-      <div className="w-px h-6 bg-gray-300 mx-1" />
-
-      <button
-        onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')}
-        className="p-1.5 rounded hover:bg-gray-200"
-        title="Align Left"
-      >
-        <AlignLeft size={18} />
-      </button>
-      <button
-        onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')}
-        className="p-1.5 rounded hover:bg-gray-200"
-        title="Align Center"
-      >
-        <AlignCenter size={18} />
-      </button>
-      <button
-        onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right')}
-        className="p-1.5 rounded hover:bg-gray-200"
-        title="Align Right"
-      >
-        <AlignRight size={18} />
-      </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={insertLink}
+            className={`p-1.5 rounded hover:bg-gray-200 ${isLink ? 'bg-primary/10 text-primary' : ''}`}
+          >
+            <Link size={18} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Link</p>
+        </TooltipContent>
+      </Tooltip>
 
       <div className="w-px h-6 bg-gray-300 mx-1" />
 
-      <button
-        onClick={onImageUpload}
-        className="p-1.5 rounded hover:bg-gray-200"
-        title="Insert Image"
-      >
-        <ImageIcon size={18} />
-      </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={formatBulletList}
+            className={`p-1.5 rounded hover:bg-gray-200 ${blockType === 'bullet' ? 'bg-primary/10 text-primary' : ''}`}
+          >
+            <List size={18} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Bullet List</p>
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={formatNumberedList}
+            className={`p-1.5 rounded hover:bg-gray-200 ${blockType === 'number' ? 'bg-primary/10 text-primary' : ''}`}
+          >
+            <ListOrdered size={18} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Numbered List</p>
+        </TooltipContent>
+      </Tooltip>
+
+      <div className="w-px h-6 bg-gray-300 mx-1" />
+
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')}
+            className="p-1.5 rounded hover:bg-gray-200"
+          >
+            <AlignLeft size={18} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Align Left</p>
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')}
+            className="p-1.5 rounded hover:bg-gray-200"
+          >
+            <AlignCenter size={18} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Align Center</p>
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right')}
+            className="p-1.5 rounded hover:bg-gray-200"
+          >
+            <AlignRight size={18} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Align Right</p>
+        </TooltipContent>
+      </Tooltip>
+
+      <div className="w-px h-6 bg-gray-300 mx-1" />
+
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={onImageUpload}
+            className="p-1.5 rounded hover:bg-gray-200"
+          >
+            <ImageIcon size={18} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Insert Image</p>
+        </TooltipContent>
+      </Tooltip>
     </div>
   );
 };

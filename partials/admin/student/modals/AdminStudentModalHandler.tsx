@@ -10,6 +10,7 @@ import { AcceptModal } from './AcceptModal'
 import { RejectModal } from './RejectModal'
 import { UnblockModal } from './UnblockModal'
 import { InitiateAiCallModal } from '@partials/common/modal'
+import { BulkScheduleCallModal } from '@partials/common/ai-voice-calls/modals'
 
 export enum AdminStudentModalType {
     ARCHIVE = 'archive',
@@ -23,6 +24,7 @@ export enum AdminStudentModalType {
     REJECT = 'reject',
     UNBLOCK = 'unblock',
     AI_CALL = 'aiCall',
+    BULK_AI_CALL = 'bulkAiCall',
 }
 
 export const getAdminStudentsModal = (
@@ -67,6 +69,9 @@ export const getAdminStudentsModal = (
         ),
         [AdminStudentModalType.AI_CALL]: (
             <InitiateAiCallModal student={student} onClose={onCancel} />
+        ),
+        [AdminStudentModalType.BULK_AI_CALL]: (
+            <BulkScheduleCallModal students={student} onClose={onCancel} />
         ),
     }
     return modals[type]

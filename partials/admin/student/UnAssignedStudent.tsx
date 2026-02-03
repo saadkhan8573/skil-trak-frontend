@@ -20,18 +20,23 @@ import { AdminApi } from '@queries'
 import { Student } from '@types'
 import { checkListLength, setLink } from '@utils'
 import { useRouter } from 'next/router'
-import { ReactElement, useCallback, useEffect, useState } from 'react'
+import { ReactElement, ReactNode, useCallback, useEffect, useState } from 'react'
 import { RiLockPasswordFill } from 'react-icons/ri'
 import { SectorCell, StudentCellInfo, StudentIndustries } from './components'
-import { ChangeStatusModal } from './modals'
+import {
+    AdminStudentModalType,
+    ChangeStatusModal,
+    getAdminStudentsModal,
+} from './modals'
 
 // hooks
 import { useActionModal } from '@hooks'
+import { Phone } from 'lucide-react'
 import moment from 'moment'
 
 export const UnAssignedStudent = () => {
     const router = useRouter()
-    const [modal, setModal] = useState<ReactElement | null>(null)
+    const [modal, setModal] = useState<ReactNode | null>(null)
     const [itemPerPage, setItemPerPage] = useState(30)
     const [page, setPage] = useState(1)
 
@@ -55,6 +60,10 @@ export const UnAssignedStudent = () => {
     const onModalCancelClicked = useCallback(() => {
         setModal(null)
     }, [])
+
+    const handleOpenModal = (type: AdminStudentModalType, student: any) => {
+        setModal(getAdminStudentsModal(type, student, onModalCancelClicked))
+    }
 
     const onChangeStatus = (student: Student) => {
         setModal(
@@ -89,6 +98,13 @@ export const UnAssignedStudent = () => {
                 )
             },
             Icon: FaEdit,
+        },
+        {
+            text: 'AI Voice Call',
+            onClick: (student: Student) => {
+                handleOpenModal(AdminStudentModalType.AI_CALL, student)
+            },
+            Icon: () => <Phone className="w-3 h-3" />,
         },
         {
             text: 'Change Status',
@@ -226,18 +242,18 @@ export const UnAssignedStudent = () => {
                                         <div className="p-6 mb-2 flex justify-between">
                                             {pageSize
                                                 ? pageSize(
-                                                      itemPerPage,
-                                                      setItemPerPage,
-                                                      data?.data?.length
-                                                  )
+                                                    itemPerPage,
+                                                    setItemPerPage,
+                                                    data?.data?.length
+                                                )
                                                 : null}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination
                                                     ? pagination(
-                                                          data?.pagination,
-                                                          setPage
-                                                      )
+                                                        data?.pagination,
+                                                        setPage
+                                                    )
                                                     : null}
                                             </div>
                                         </div>
@@ -253,18 +269,18 @@ export const UnAssignedStudent = () => {
                                             <div className="p-6 mb-2 flex justify-between">
                                                 {pageSize
                                                     ? pageSize(
-                                                          itemPerPage,
-                                                          setItemPerPage,
-                                                          data?.data?.length
-                                                      )
+                                                        itemPerPage,
+                                                        setItemPerPage,
+                                                        data?.data?.length
+                                                    )
                                                     : null}
                                                 <div className="flex gap-x-2">
                                                     {quickActions}
                                                     {pagination
                                                         ? pagination(
-                                                              data?.pagination,
-                                                              setPage
-                                                          )
+                                                            data?.pagination,
+                                                            setPage
+                                                        )
                                                         : null}
                                                 </div>
                                             </div>

@@ -2,6 +2,7 @@ import {
     Button,
     Card,
     Checkbox,
+    InputRichTextEditor,
     Select,
     ShowErrorNotifications,
     TextArea,
@@ -575,7 +576,7 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
 
             return
         }
-        const content = quillRef.current.getEditor().root.innerHTML
+        // const content = quillRef.current.getEditor().root.innerHTML
 
         if (!data.featuredImage || !data.featuredImage[0]) {
             formMethods.setError('featuredImage', {
@@ -601,14 +602,14 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
             })
             return
         }
-        if (content === '<p><br></p>' || content.trim() === '<p><br></p>') {
+        if (data?.content === '<p><br></p>' || data?.content?.trim() === '<p><br></p>') {
             formMethods.setError('content', {
                 type: 'emptyContent',
                 message: 'Content is required',
             })
             return
         }
-        const wordCount = content.trim().split(/\s+/).length
+        const wordCount = data?.content?.trim().split(/\s+/).length
         if (wordCount > 3000) {
             formMethods.setError('content', {
                 type: 'exceedsWordLimit',
@@ -650,7 +651,7 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                 formData.append('featuredImage', data?.featuredImage?.[0])
                 formData.append('title', data?.title)
                 formData.append('metaData', data?.metaData)
-                formData.append('content', content)
+                formData.append('content', data?.content)
                 formData.append('isPublished', publish.toString())
                 formData.append('isFeatured', data?.isFeatured.toString())
                 formData.append('tags', tagIds)
@@ -772,7 +773,7 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                     >
                         {`${shortDescriptionWordCount} / 385 words`}
                     </div>
-                    <div
+                    {/* <div
                         ref={editorWrapperRef}
                         style={{ position: 'relative' }}
                     >
@@ -781,8 +782,13 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                             ref={quillRef}
                             modules={modules}
                         />
-                    </div>
-                    <InputErrorMessage name={'content'} />
+                    </div> */}
+                    <InputRichTextEditor
+                        name="content"
+                        label="Content"
+                        placeholder="Type something amazing..."
+                    />
+                    {/* <InputErrorMessage name={'content'} /> */}
                     <div className="mt-4">
                         <Checkbox
                             onChange={handleChecked}

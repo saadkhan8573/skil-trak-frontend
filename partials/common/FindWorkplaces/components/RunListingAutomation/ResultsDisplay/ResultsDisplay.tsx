@@ -85,6 +85,7 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
                     ?.map((l: any) => ({
                         id: l?.placeId,
                         name: l?.name,
+                        duplicated: l?.duplicated,
                     }))}
             />
         )
@@ -267,7 +268,7 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
                                             <Badge
                                                 variant="secondary"
                                                 text={`${filteredCompanies(companies)
-                                                        ?.length
+                                                    ?.length
                                                     } companies`}
                                             />
                                         </div>

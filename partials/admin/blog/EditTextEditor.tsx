@@ -9,6 +9,7 @@ import {
     UploadFile,
     useShowErrorNotification,
     ShowErrorNotifications,
+    InputRichTextEditor,
 } from '@components'
 import { FileUpload } from '@hoc'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -149,7 +150,7 @@ export default function EditTextEditor({
             author: blogData?.author || '',
             isFeatured: blogData?.isFeatured || false,
             category: [],
-            content: '',
+            content: blogData?.content || '',
             blogQuestions: blogData?.blogQuestions || [
                 { question: '', answer: '' },
             ],
@@ -638,7 +639,7 @@ export default function EditTextEditor({
     // Quill Editor
     useEffect(() => {
         if (blogData && !coverUrl) {
-            quillRef.current.getEditor().root.innerHTML = blogData.content || ''
+            // quillRef.current.getEditor().root.innerHTML = blogData.content || ''
             setCoverUrl(blogData?.featuredImage)
         }
     }, [blogData])
@@ -731,7 +732,7 @@ export default function EditTextEditor({
         answer: question.answer || '',
     }))
     const onSubmit: any = (data: any, publish: boolean) => {
-        const content = quillRef.current.getEditor().root.innerHTML
+        // const content = quillRef.current.getEditor().root.innerHTML
         if (
             !data.featuredImage ||
             (typeof data.featuredImage === 'string' &&
@@ -763,7 +764,7 @@ export default function EditTextEditor({
             return
         }
 
-        if (content === '<p><br></p>' || content.trim() === '<p><br></p>') {
+        if (data?.content === '<p><br></p>' || data?.content?.trim() === '<p><br></p>') {
             formMethods.setError('content', {
                 type: 'emptyContent',
                 message: 'Content is required',
@@ -801,7 +802,7 @@ export default function EditTextEditor({
             title: data?.title,
             author: data?.author,
             metaData: data?.metaData,
-            content: content,
+            content: data?.content,
             isPublished: publish.toString(),
             isFeatured: isFeatured.toString(),
             category: data?.category,
@@ -901,13 +902,13 @@ export default function EditTextEditor({
                         />
                         <div
                             className={`${shortDescriptionWordCount > 385
-                                    ? 'text-red-500'
-                                    : ' text-slate-500'
+                                ? 'text-red-500'
+                                : ' text-slate-500'
                                 } text-sm mb-5`}
                         >
                             {`${shortDescriptionWordCount} / 385 words`}
                         </div>
-                        <div
+                        {/* <div
                             ref={editorWrapperRef}
                             style={{ position: 'relative' }}
                         >
@@ -917,7 +918,12 @@ export default function EditTextEditor({
                                 modules={modules}
                             />
                         </div>
-                        <InputErrorMessage name={'content'} />
+                        <InputErrorMessage name={'content'} /> */}
+                        <InputRichTextEditor
+                            name="content"
+                            label="Content"
+                            placeholder="Type something amazing..."
+                        />
                         <div className="mt-4">
                             <Checkbox
                                 onChange={handleChecked}

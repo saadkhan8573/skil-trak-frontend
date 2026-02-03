@@ -1,11 +1,11 @@
+import { useNotification } from '@hooks';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { DRAG_DROP_PASTE } from '@lexical/rich-text';
+import { mergeRegister } from '@lexical/utils';
+import { AdminApi } from '@queries';
 import { $getNodeByKey, $insertNodes, COMMAND_PRIORITY_LOW, PASTE_COMMAND } from 'lexical';
 import { useEffect } from 'react';
-import { DRAG_DROP_PASTE } from '@lexical/rich-text';
-import { $createImageNode, $isImageNode, ImageNode, ImagePayload } from '../nodes/ImageNode';
-import { AdminApi } from '@queries';
-import { mergeRegister } from '@lexical/utils';
-import { useNotification } from '@hooks';
+import { $createImageNode, $isImageNode } from '../nodes/ImageNode';
 
 export default function DragDropPastePlugin(): JSX.Element | null {
     const [editor] = useLexicalComposerContext();

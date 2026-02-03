@@ -29,6 +29,8 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         return listingResults?.filter((l: any) => !l?.duplicated)
     }, [listingResults])
 
+    console.log({ uniqueResults })
+
     // Duplicate detection map (by ID)
     const duplicateStatus = React.useMemo(() => {
         return listingResults.map((item: any) => {

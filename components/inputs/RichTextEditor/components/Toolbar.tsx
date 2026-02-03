@@ -36,6 +36,7 @@ import {
   $isHeadingNode,
   HeadingTagType,
 } from '@lexical/rich-text';
+import { $isLinkNode, TOGGLE_LINK_COMMAND, LinkNode } from '@lexical/link';
 import { $setBlocksType } from '@lexical/selection';
 import {
   Bold,
@@ -51,6 +52,7 @@ import {
   AlignCenter,
   AlignRight,
   ChevronDown,
+  Link,
 } from 'lucide-react';
 import { INSERT_IMAGE_COMMAND } from '../plugins/ImagePlugin';
 import { $createImageNode, $isImageNode } from '../nodes/ImageNode';
@@ -163,6 +165,8 @@ export const Toolbar = () => {
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
+  const [isLink, setIsLink] = useState(false);
+  const [linkUrl, setLinkUrl] = useState('');
   const [blockType, setBlockType] = useState('paragraph');
   const [showBlockOptions, setShowBlockOptions] = useState(false);
   const [uploadImage] = AdminApi.Blogs.uploadImage();
@@ -175,6 +179,20 @@ export const Toolbar = () => {
       setIsBold(selection.hasFormat('bold'));
       setIsItalic(selection.hasFormat('italic'));
       setIsUnderline(selection.hasFormat('underline'));
+
+      // Update link
+      const node = selection.anchor.getNode();
+      const parent = node.getParent();
+      if ($isLinkNode(parent)) {
+        setIsLink(true);
+        setLinkUrl(parent.getURL());
+      } else if ($isLinkNode(node)) {
+        setIsLink(true);
+        setLinkUrl(node.getURL());
+      } else {
+        setIsLink(false);
+        setLinkUrl('');
+      }
 
       // Update block type
       const anchorNode = selection.anchor.getNode();
@@ -316,6 +334,19 @@ export const Toolbar = () => {
     };
   }, [editor, uploadImage]);
 
+  const insertLink = useCallback(() => {
+    const initialUrl = isLink ? linkUrl : 'https://';
+    const url = prompt('Enter link URL:', initialUrl);
+
+    if (url === null) return;
+
+    if (url === '') {
+      editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+    } else {
+      editor.dispatchCommand(TOGGLE_LINK_COMMAND, url);
+    }
+  }, [editor, isLink, linkUrl]);
+
   return (
     <div className="flex items-center gap-1 p-2 border-b bg-gray-50 sticky top-0 z-10 flex-wrap">
       <button
@@ -383,6 +414,14 @@ export const Toolbar = () => {
         title="Underline"
       >
         <Underline size={18} />
+      </button>
+
+      <button
+        onClick={insertLink}
+        className={`p-1.5 rounded hover:bg-gray-200 ${isLink ? 'bg-primary/10 text-primary' : ''}`}
+        title="Link"
+      >
+        <Link size={18} />
       </button>
 
       <div className="w-px h-6 bg-gray-300 mx-1" />

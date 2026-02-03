@@ -21,6 +21,7 @@ import { ImageNode } from './nodes/ImageNode';
 import ImagePlugin from './plugins/ImagePlugin';
 import DragDropPastePlugin from './plugins/DragDropPastePlugin';
 import ExternalImagePlugin from './plugins/ExternalImagePlugin';
+import FloatingLinkEditorPlugin from './plugins/FloatingLinkEditorPlugin';
 
 import { Typography } from '@components';
 
@@ -136,6 +137,7 @@ export const RichTextEditor = ({
             <ImagePlugin />
             <DragDropPastePlugin />
             <ExternalImagePlugin />
+            <FloatingLinkEditorPlugin />
             <OnChangePlugin onChange={handleOnChange} />
 
             {/* Initial Value Plugin */}

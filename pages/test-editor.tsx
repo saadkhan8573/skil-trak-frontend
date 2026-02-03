@@ -22,7 +22,6 @@ const TestEditor = () => {
     })
 
     const onSubmit = (data: any) => {
-        console.log('Form Submitted:', data)
         setSubmittedData(data)
     }
 

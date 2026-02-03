@@ -2,6 +2,7 @@ import React from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import dynamic from 'next/dynamic'
 import { htmltotext } from '@utils'
+import { InputErrorMessage } from '../components'
 
 const RichTextEditor = dynamic(
     () => import('./RichTextEditor').then((mod) => mod.RichTextEditor),
@@ -15,6 +16,7 @@ const RichTextEditor = dynamic(
 
 interface InputRichTextEditorProps {
     name: string
+    showError?: boolean
     label?: string
     placeholder?: string
     rules?: any
@@ -36,6 +38,7 @@ export const InputRichTextEditor = ({
     rules,
     className,
     onChange,
+    showError = true,
 }: InputRichTextEditorProps) => {
     const {
         control,
@@ -44,22 +47,25 @@ export const InputRichTextEditor = ({
     const error = errors[name]?.message as string
 
     return (
-        <Controller
-            name={name}
-            control={control}
-            rules={rules}
-            render={({ field: { value, onChange: fieldChange } }) => (
-                <RichTextEditor
-                    label={label}
-                    value={value}
-                    onChange={(e: any) => {
-                        onChange?.(e)
-                        fieldChange(e)
-                    }}
-                    placeholder={placeholder}
-                    className={className}
-                />
-            )}
-        />
+        <>
+            <Controller
+                name={name}
+                control={control}
+                rules={rules}
+                render={({ field: { value, onChange: fieldChange } }) => (
+                    <RichTextEditor
+                        label={label}
+                        value={value}
+                        onChange={(e: any) => {
+                            onChange?.(e)
+                            fieldChange(e)
+                        }}
+                        placeholder={placeholder}
+                        className={className}
+                    />
+                )}
+            />
+            {showError && <InputErrorMessage name={name} />}
+        </>
     )
 }

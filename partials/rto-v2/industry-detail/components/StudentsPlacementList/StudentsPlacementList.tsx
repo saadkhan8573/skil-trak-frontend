@@ -23,9 +23,6 @@ export function StudentsPlacementList() {
             <StudentsList />
         </div>
     )
-    const WaitingStudentsWrapper = () => <WaitingStudents />
-    const RejectedStudentsListWrapper = () => <RejectedStudentsList />
-    const CancelledStudentsListWrapper = () => <CancelledStudentsList />
 
     const tabs: TabConfig[] = [
         {
@@ -39,19 +36,19 @@ export function StudentsPlacementList() {
             value: 'waiting_for_industry',
             label: 'Waiting for Industry',
             icon: Clock,
-            component: WaitingStudentsWrapper,
+            component: WaitingStudents,
         },
         {
             value: 'rejected_students',
             label: 'Rejected Students',
             icon: Ban,
-            component: RejectedStudentsListWrapper,
+            component: RejectedStudentsList,
         },
         {
             value: 'cancelled_students',
             label: 'Cancelled Students',
             icon: XCircle,
-            component: CancelledStudentsListWrapper,
+            component: CancelledStudentsList,
         },
     ]
 

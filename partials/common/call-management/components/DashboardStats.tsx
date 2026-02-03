@@ -24,7 +24,7 @@ export function DashboardStats() {
         },
         {
             label: 'Completed Placements',
-            value: statistics?.resoved || 0,
+            value: statistics?.resolved || 0,
             icon: CheckCircle,
             color: 'bg-primaryNew',
             lightColor: 'bg-[#E8F4F6]',

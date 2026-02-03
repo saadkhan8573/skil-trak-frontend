@@ -1,15 +1,14 @@
-import { BaseQueryFn } from '@reduxjs/toolkit/query'
-import { EndpointBuilder } from '@reduxjs/toolkit/query'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
+import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query'
 import {
     ConfirmationSource,
-    Course,
     Industry,
     IndustryCourseApproval,
     IndustryInterviewAvailability,
     PaginatedResponse,
     PaginationWithSearch,
     Student,
-    UserStatus,
+    UserStatus
 } from '@types'
 
 const PREFIX = 'rtos/'
@@ -198,7 +197,7 @@ export const industriesEndpoints = (
     }),
 
     getIndustryCancelledStudents: builder.query<
-        PaginatedResponse<Student>,
+        PaginatedResponse<IWorkplaceIndustries>,
         {
             params: PaginationWithSearch
             industryId: number

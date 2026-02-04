@@ -29,7 +29,7 @@ export const ApprontmentCard = ({
         {
             id: 'location',
             icon: appointment.type?.videoAppointment ? Video : MapPin,
-            value: appointment?.appointmentFor?.student?.addressLine1,
+            value: appointment?.address,
         },
         {
             id: 'attendees',

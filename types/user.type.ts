@@ -473,6 +473,7 @@ export interface Industry extends BaseResponse {
     isAvailabilityProvidedAtRuntime?: boolean
     placementReadyBy: User
     placementReadyAt: string
+    placementUrl?: string
 }
 
 export interface PendingIndustry extends Industry {

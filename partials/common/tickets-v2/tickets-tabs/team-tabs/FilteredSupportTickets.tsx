@@ -71,9 +71,10 @@ export const FilteredSupportTickets = ({
                                             `/portals/rto/communications/tickets/${ticket?.id}`
                                         )
                                     } else if (role === UserRoles.ADMIN) {
-                                        router.push(
-                                            `/portals/admin/support-tickets/${ticket?.id}`
-                                        )
+                                        router.push({
+                                            pathname: `/portals/admin/support-tickets/${ticket.id}`,
+                                            query: router.query,
+                                        })
                                     } else if (role === UserRoles.SUBADMIN) {
                                         router.push(
                                             `/portals/sub-admin/support-tickets/${ticket?.id}`

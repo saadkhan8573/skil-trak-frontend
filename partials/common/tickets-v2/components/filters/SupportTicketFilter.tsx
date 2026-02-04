@@ -6,6 +6,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { useSupportTicketPermissions } from '../../hooks'
 import { FilterSection } from './FilterSection'
 import { FilterToggleButton } from './FilterToggleButton'
+import { useRouter } from 'next/router'
+import { filtersToQuery, queryToFilters } from './ticketFilters'
 
 interface TicketFiltersProps {
     onFilterChange: React.Dispatch<React.SetStateAction<FilterState>>
@@ -54,6 +56,13 @@ const priorityOptions: Array<{
     { value: 'critical', label: 'Critical', color: 'bg-red-500' },
 ]
 
+const ADVANCED_KEYS: (keyof FilterState)[] = [
+    'status',
+    'priority',
+    'dateRange',
+    'assignedTo',
+]
+
 const dateRangeOptions: Array<{
     value: DateRange
     label: string
@@ -70,6 +79,17 @@ export function SupportTicketFilter({
     activeFilters,
 }: TicketFiltersProps) {
     const [mode, setMode] = useState<FilterMode>('basic')
+    const router = useRouter()
+
+    useEffect(() => {
+        const hasAdvancedFilter = ADVANCED_KEYS.some((key) =>
+            Boolean(router.query[key])
+        )
+
+        if (hasAdvancedFilter) {
+            setMode('advanced')
+        }
+    }, [router.query])
 
     const membersList = CommonApi.Teams.useSupportTeamMemberList()
     const memberOptions = useMemo(
@@ -109,6 +129,16 @@ export function SupportTicketFilter({
         })
     }
 
+    // const clearAllFilters = () => {
+    //     onFilterChange({
+    //         title: '',
+    //         status: undefined,
+    //         priority: undefined,
+    //         dateRange: undefined,
+    //         assignedTo: null,
+    //     })
+    //     setMode('basic')
+    // }
     const clearAllFilters = () => {
         onFilterChange({
             title: '',
@@ -117,6 +147,21 @@ export function SupportTicketFilter({
             dateRange: undefined,
             assignedTo: null,
         })
+
+        router.push(
+            {
+                pathname: router.pathname,
+                query: {
+                    // keep non-filter params if needed
+                    tab: router.query.tab,
+                    teamTab: router.query.teamTab,
+                    page: 1,
+                },
+            },
+            undefined,
+            { shallow: true }
+        )
+
         setMode('basic')
     }
 
@@ -124,7 +169,7 @@ export function SupportTicketFilter({
         <div className="space-y-3">
             {/* Search */}
             <div className="flex items-center gap-3 flex-wrap">
-                <div className="flex-1 min-w-[250px] relative">
+                <div className="flex-1 min-w-62.5 relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#0D5468]/40" />
                     <input
                         type="text"

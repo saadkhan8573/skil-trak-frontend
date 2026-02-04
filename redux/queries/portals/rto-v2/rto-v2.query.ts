@@ -138,6 +138,7 @@ export const {
     useUpdateIndustryAvailabilityMutation,
     useGetIndustryWaitingStudentsQuery,
     useGetIndustryRejectedStudentsQuery,
+    useUpdateIndustryPlacementUrlMutation,
     useIndustryPlacementReadyMutation,
     useGenerateIndustryBioMutation,
 
@@ -269,9 +270,10 @@ export const RtoV2Api = {
         assignIndustryToCoordinator: useAssignIndustryToCoordinatorMutation,
         useGetHighlightedTasks: useGetHighlightedTasksQuery,
         updateIndustryAvailability: useUpdateIndustryAvailabilityMutation,
+        updateIndustryPlacementUrl: useUpdateIndustryPlacementUrlMutation,
         getIndustryWaitingStudents: useGetIndustryWaitingStudentsQuery,
-        generateIndustryBio: useGenerateIndustryBioMutation,
         industryPlacementReady: useIndustryPlacementReadyMutation,
+        generateIndustryBio: useGenerateIndustryBioMutation,
 
         useIndustryRejectedStudents: useGetIndustryRejectedStudentsQuery,
     },

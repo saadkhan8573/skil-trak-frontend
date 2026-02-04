@@ -1,9 +1,9 @@
-import { AuthorizedUserComponent, Button, Card, Typography } from '@components'
 import { UserRoles } from '@constants'
-import { ReactNode, useState } from 'react'
-import { Waypoint } from 'react-waypoint'
 import { NotesView } from './components'
+import { Waypoint } from 'react-waypoint'
+import { ReactNode, useState } from 'react'
 import { CreateStudentNote } from './forms'
+import { AuthorizedUserComponent, Button, Card, Typography } from '@components'
 
 export const StudentProfileNotes = ({
     userId,

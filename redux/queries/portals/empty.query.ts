@@ -165,6 +165,7 @@ const commonTagTypes = [
     'StudentAppointments',
     'RunListingAutomation',
     'IndustriesAddProfile',
+    'IndustryWorkplaceType',
 ]
 
 const managementTypes = [

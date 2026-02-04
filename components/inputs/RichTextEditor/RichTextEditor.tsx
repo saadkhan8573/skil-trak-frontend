@@ -11,7 +11,7 @@ import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
-import { $getRoot, EditorState } from 'lexical';
+import { $getRoot, $createParagraphNode, $isElementNode, $isDecoratorNode, EditorState } from 'lexical';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { ListNode, ListItemNode } from '@lexical/list';
 import { LinkNode, AutoLinkNode } from '@lexical/link';
@@ -98,6 +98,7 @@ export const RichTextEditor = ({
   const handleOnChange = (editorState: EditorState, editor: any) => {
     editorState.read(() => {
       const htmlString = $generateHtmlFromNodes(editor, null);
+      console.log('RichTextEditor: handleOnChange firing', { htmlString });
       if (onChange) {
         onChange(htmlString);
       }
@@ -149,22 +150,64 @@ export const RichTextEditor = ({
   )
 }
 
-// Helper plugin to set initial HTML value
+// Helper plugin to set and update HTML value
 function InitialValuePlugin({ value }: { value?: string }) {
   const [editor] = useLexicalComposerContext();
   const [isFirstRender, setIsFirstRender] = useState(true);
 
   useEffect(() => {
-    if (isFirstRender && value) {
+    // console.log('InitialValuePlugin: effect triggered', { value, isFirstRender });
+    const updateContent = () => {
       editor.update(() => {
         const parser = new DOMParser();
-        const dom = parser.parseFromString(value, 'text/html');
+        const dom = parser.parseFromString(value || '', 'text/html');
         const nodes = $generateNodesFromDOM(editor, dom);
         const root = $getRoot();
         root.clear();
-        root.append(...nodes);
+
+        // Wrap text nodes in paragraph if needed to avoid "Only element or decorator nodes" error
+        let currentParagraph: any = null;
+
+        nodes.forEach((node) => {
+          if ($isElementNode(node) || $isDecoratorNode(node)) {
+            if (currentParagraph) {
+              root.append(currentParagraph);
+              currentParagraph = null;
+            }
+            root.append(node);
+          } else {
+            if (!currentParagraph) {
+              currentParagraph = $createParagraphNode();
+            }
+            currentParagraph.append(node);
+          }
+        });
+
+        if (currentParagraph) {
+          root.append(currentParagraph);
+        }
+
+        // If empty, ensure at least one paragraph
+        if (root.isEmpty()) {
+          root.append($createParagraphNode());
+        }
       });
+    };
+
+    if (isFirstRender) {
+      if (value) {
+        updateContent();
+      }
       setIsFirstRender(false);
+    } else if (value !== undefined) {
+      editor.read(() => {
+        const currentHtml = $generateHtmlFromNodes(editor, null);
+        console.log('InitialValuePlugin: checking update', { currentHtml, newValue: value, areEqual: currentHtml === value });
+        if (currentHtml !== value) {
+          console.log('RichTextEditor: Updating external value', { newValue: value });
+          updateContent();
+        }
+      })
     }
   }, [editor, value, isFirstRender]);
 

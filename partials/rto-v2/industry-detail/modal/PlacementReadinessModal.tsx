@@ -8,7 +8,7 @@ import {
     ChevronDown,
     ChevronUp,
 } from 'lucide-react'
-import { Dialog, DialogContent } from '@components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@components/ui/dialog'
 import { Button } from '@components'
 import { ScrollArea } from '@components/ui/scroll-area'
 import { useAppDispatch } from '@redux/hooks'
@@ -74,13 +74,13 @@ export function PlacementReadinessModal({
                     <div className="relative">
                         <div className="flex items-start justify-between mb-1">
                             <div className="flex-1">
-                                <h2 className="text-white text-lg font-bold">
+                                <DialogTitle className="text-white text-lg font-bold">
                                     Placement Readiness Checklist
-                                </h2>
-                                <p className="text-white/80 text-sm">
+                                </DialogTitle>
+                                <DialogDescription className="text-white/80 text-sm">
                                     Complete these steps to become placement
                                     ready
-                                </p>
+                                </DialogDescription>
                             </div>
                             <motion.button
                                 whileHover={{ scale: 1.1, rotate: 90 }}

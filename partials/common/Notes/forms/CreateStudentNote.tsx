@@ -2,35 +2,19 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 
-// const Editor = dynamic<EditorProps>(
-//     () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
-//     {
-//         ssr: false,
-//     }
-// )
-
-const htmlToDraft =
-    typeof window === 'object' && require('html-to-draftjs').default
-
-import { EditorState } from 'draft-js'
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-
 // components
 import {
     ActionButton,
     AuthorizedUserComponent,
-    Badge,
     Button,
     Checkbox,
-    draftToHtmlText,
-    htmlToDraftText,
-    InputContentEditor,
-    inputEditorErrorMessage,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
     RadioGroup,
     Select,
     ShowErrorNotifications,
     TextInput,
-    Typography,
+    Typography
 } from '@components'
 
 // query
@@ -42,14 +26,13 @@ import { CommonApi, SubAdminApi } from '@queries'
 import { OptionType } from '@types'
 import { getUserCredentials, HtmlToPlainText } from '@utils'
 import ClickAwayListener from 'react-click-away-listener'
-import { FaTimes } from 'react-icons/fa'
+import { FaTimes, FaMinus } from 'react-icons/fa'
 import { IoCheckmark } from 'react-icons/io5'
-import { StudentNotesDropdown } from '../components'
-import { ReWritePhrase } from '@pages/api/openai/fixGrammer'
 import { RiShining2Fill } from 'react-icons/ri'
+import { StudentNotesDropdown } from '../components'
 interface onSubmitType {
     title: string
-    body: EditorState
+    body: string
     isPinned: boolean
 }
 
@@ -65,6 +48,8 @@ export const CreateStudentNote = ({
     editValues,
     setEditValues,
     onCancel,
+    onMinimize,
+    externalMethods,
 }: any) => {
     const { notification } = useNotification()
     const [noteContent, setNoteContent] = useState<any>(null)
@@ -184,6 +169,28 @@ export const CreateStudentNote = ({
         }
     }, [workplaceOptions])
 
+    // Sync noteContent from methods when mounting (for minimize/restore persistence)
+    useEffect(() => {
+        const values = methods.getValues()
+
+        if (values?.body && !noteContent) {
+            setNoteContent(values.body)
+        }
+        if (values?.type && !selectedType) {
+            setSelectedType(values.type)
+        }
+        if (values?.workplace && !selectedWorkplace) {
+            setSelectedWorkplace(values.workplace)
+        }
+        if (values?._persistedSelectedContent && !selectedContent) {
+            setSelectedContent(values._persistedSelectedContent)
+        }
+        // Restore status last as it depends on content often
+        if (values?.status && !selectedStatus) {
+            setSelectedStatus(values.status)
+        }
+    }, [])
+
     useEffect(() => {
         if (editValues) {
             setEditing(true)
@@ -193,15 +200,17 @@ export const CreateStudentNote = ({
     const validationSchema = Yup.object({
         title: Yup.string().required('Title is required'),
         body: Yup.mixed().test('Message', 'Must Provide Message', (value) =>
-            inputEditorErrorMessage(value)
+            inputRichTextEditorErrorMessage(value)
         ),
     })
 
-    const methods = useForm({
+    const localMethods = useForm({
         mode: 'all',
         resolver: yupResolver(validationSchema),
-        // defaultValues: { ...editValues, body: bodyData },
+        defaultValues: { ...editValues, body: editValues?.body || '' },
     })
+
+    const methods = externalMethods || localMethods
 
     const noteBodyWordsCount = noteContent
         ? HtmlToPlainText(noteContent)?.trim()?.replace(/\s+/g, ' ')?.split(' ')
@@ -217,7 +226,7 @@ export const CreateStudentNote = ({
             // const body = draftToHtml(
             //     convertToRaw(values?.body.getCurrentContent())
             // )
-            const body = draftToHtmlText(values?.body)
+            const body = values?.body
             if (selectedType !== 'custom' && role !== UserRoles.RTO) {
                 const noteRes: any = await changeNoteStatus({
                     id: Number(selectedContent?.value),
@@ -277,12 +286,14 @@ export const CreateStudentNote = ({
         }
     }
 
-    const onFixGrammerClick = async () => {
+    const onFixGrammarClick = async () => {
         const data = await onRewritePhrase(noteContent)
+
+        console.log({ data })
 
         if (data?.correctedText) {
             setNoteContent(data?.correctedText)
-            methods.setValue('body', htmlToDraftText(data?.correctedText))
+            methods.setValue('body', data?.correctedText)
         }
     }
 
@@ -315,12 +326,27 @@ export const CreateStudentNote = ({
                                 <Typography variant="subtitle">
                                     Add Note
                                 </Typography>
-                                <button
-                                    className="text-lg relative z-50"
-                                    onClick={onCancel}
-                                >
-                                    <FaTimes />
-                                </button>
+                                <div className="flex items-center gap-2">
+                                    {onMinimize && (
+                                        <button
+                                            className="text-lg relative z-50 text-gray-500 hover:text-gray-700"
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                onMinimize()
+                                            }}
+                                            type="button"
+                                        >
+                                            <FaMinus />
+                                        </button>
+                                    )}
+                                    <button
+                                        className="text-lg relative z-50 text-gray-500 hover:text-gray-700"
+                                        onClick={onCancel}
+                                        type="button"
+                                    >
+                                        <FaTimes />
+                                    </button>
+                                </div>
                             </div>
                             <div>
                                 {workplaceRes && workplaceRes?.length > 1 && (
@@ -352,7 +378,7 @@ export const CreateStudentNote = ({
                                         UserRoles.SUBADMIN,
                                     ]}
                                 >
-                                    <div className="relative z-[49]">
+                                    <div className="relative z-49">
                                         <Select
                                             name="type"
                                             options={typeOptions}
@@ -366,13 +392,14 @@ export const CreateStudentNote = ({
                                                 setSelectedStatus(null)
                                                 setSelectedContent(null)
                                                 methods.setValue('body', '')
+                                                methods.setValue('_persistedSelectedContent', null)
                                             }}
                                         />
                                     </div>
                                 </AuthorizedUserComponent>
 
                                 {selectedType && selectedType !== 'custom' && (
-                                    <div className="w-full relative z-[48]">
+                                    <div className="w-full relative z-48">
                                         <StudentNotesDropdown
                                             title="Select Note Template"
                                             onClear={() => {
@@ -442,12 +469,13 @@ export const CreateStudentNote = ({
                                                                         setSelectedContent(
                                                                             template
                                                                         )
+                                                                        methods.setValue('_persistedSelectedContent', template)
                                                                     }
                                                                 }}
                                                                 className={`${selectedContent?.value ===
-                                                                        template?.value
-                                                                        ? 'bg-gray-200'
-                                                                        : ''
+                                                                    template?.value
+                                                                    ? 'bg-gray-200'
+                                                                    : ''
                                                                     } hover:bg-gray-200 py-2 border-b border-secondary-dark px-2 flex items-center justify-between gap-x-2 cursor-pointer`}
                                                             >
                                                                 <div className="flex items-center gap-x-2">
@@ -590,16 +618,12 @@ export const CreateStudentNote = ({
                                                 ) {
                                                     methods.setValue(
                                                         'body',
-                                                        htmlToDraftText(
-                                                            updatedContent?.successContent
-                                                        )
+                                                        updatedContent?.successContent
                                                     )
                                                 } else {
                                                     methods.setValue(
                                                         'body',
-                                                        htmlToDraftText(
-                                                            updatedContent?.failureContent
-                                                        )
+                                                        updatedContent?.failureContent
                                                     )
                                                 }
                                             }}
@@ -642,7 +666,7 @@ export const CreateStudentNote = ({
                                         Icon={RiShining2Fill}
                                         text="Rewrite with AI"
                                         onClick={() => {
-                                            onFixGrammerClick()
+                                            onFixGrammarClick()
                                         }}
                                         disabled={!noteContent?.trim()}
                                         loading={isLoading}
@@ -652,7 +676,7 @@ export const CreateStudentNote = ({
                                         Words Count: {noteBodyWordsCount}
                                     </Typography> */}
                                 </div>
-                                <div className="relative z-[47]">
+                                <div className="relative z-47">
                                     <ClickAwayListener
                                         onClickAway={(e: any) => {
                                             if (
@@ -666,7 +690,7 @@ export const CreateStudentNote = ({
                                             }
                                         }}
                                     >
-                                        <div className="mb-3">
+                                        {/* <div className="mb-3">
                                             <InputContentEditor
                                                 name={'body'}
                                                 onChange={(e: any) => {
@@ -675,7 +699,16 @@ export const CreateStudentNote = ({
                                                     setNoteContent(note)
                                                 }}
                                             />
-                                        </div>
+                                        </div> */}
+                                        <InputRichTextEditor
+                                            name={'body'}
+                                            onChange={(e: any) => {
+                                                console.log({ e })
+                                                // const note =
+                                                //     draftToHtmlText(e)
+                                                setNoteContent(e)
+                                            }}
+                                        />
                                     </ClickAwayListener>
                                 </div>
 

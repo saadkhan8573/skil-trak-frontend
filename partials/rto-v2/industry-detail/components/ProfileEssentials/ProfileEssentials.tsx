@@ -5,6 +5,7 @@ import {
     AssignedAgent,
     QuickNotes,
     PremiumFeatures,
+    PlacementFormUrl,
 } from './components'
 import { AuthorizedUserComponent } from '@components'
 import { UserRoles } from '@constants'
@@ -12,7 +13,7 @@ import { UserRoles } from '@constants'
 export function ProfileEssentials() {
     return (
         <div className="bg-white rounded-2xl shadow-xl border border-[#E2E8F0] -hidden">
-            <div className="rounded-t-2xl bg-gradient-to-r from-[#044866] to-[#0D5468] px-4 py-4 flex items-center justify-between">
+            <div className="rounded-t-2xl bg-linear-to-r from-[#044866] to-[#0D5468] px-4 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center shadow-xl">
                         <Building className="w-5 h-5 text-white" />
@@ -36,6 +37,7 @@ export function ProfileEssentials() {
                     <div className="space-y-3 flex flex-col h-full">
                         <BasicDetails />
                         <InterviewAvailability />
+                        <PlacementFormUrl />
                     </div>
 
                     {/* Right Column */}

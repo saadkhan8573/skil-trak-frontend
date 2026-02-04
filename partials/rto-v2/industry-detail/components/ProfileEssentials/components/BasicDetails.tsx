@@ -29,7 +29,7 @@ const CardItem = ({
 }) => {
     return (
         <div className="flex items-center gap-1 p-1 rounded-lg hover:bg-[#F8FAFB] transition-colors">
-            <div className="w-5 h-5 bg-[#E8F4F8] rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="w-5 h-5 bg-[#E8F4F8] rounded-lg flex items-center justify-center shrink-0">
                 <Icon className="w-4 h-4 text-[#044866]" />
             </div>
             <div>

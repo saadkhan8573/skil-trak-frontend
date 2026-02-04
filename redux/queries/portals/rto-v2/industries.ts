@@ -387,6 +387,17 @@ export const industriesEndpoints = (
         }),
         providesTags: ['RTOIndustries', 'Industry'],
     }),
+    updateIndustryPlacementUrl: builder.mutation<
+        any,
+        { id: number; url: string }
+    >({
+        query: ({ id, ...body }) => ({
+            url: `${INDUSTRIESPREFIX}${id}/placement-url/add`,
+            method: 'PATCH',
+            body,
+        }),
+        invalidatesTags: ['RTOIndustries', 'Industry'],
+    }),
     industryPlacementReady: builder.mutation<any, { id: number }>({
         query: ({ id }) => ({
             url: `${INDUSTRIESPREFIX}${id}/placement-ready`,

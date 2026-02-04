@@ -120,4 +120,13 @@ export const blogsEndpoints = (
         }),
         invalidatesTags: ['Upload-Blog-Image'],
     }),
+
+    uploadImageByUrl: builder.mutation<any, any>({
+        query: (body) => ({
+            url: `${PREFIX}/file/upload/by-url`,
+            method: 'POST',
+            body,
+        }),
+        invalidatesTags: ['Upload-Blog-Image'],
+    }),
 })

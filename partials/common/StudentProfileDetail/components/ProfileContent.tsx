@@ -6,7 +6,6 @@ import { MailsCommunication } from './MailsCommunication'
 import { Schedule } from './Schedule'
 import { Tickets } from './Tickets'
 import { Workplace } from './Workplace'
-import { StudentProfileNotes } from '@partials/common/Notes'
 
 export const WorkplaceNotesSection: React.FC<any> = ({
     profile,
@@ -19,9 +18,9 @@ export const WorkplaceNotesSection: React.FC<any> = ({
 }) => (
     <div
         className={`grid grid-cols-1 h-auto  px-2 gap-x-3`}
-        // className={`grid grid-cols-1 h-auto ${
-        //     isAdminRole ? 'xl:grid-cols-1 gap-3' : `xl:grid-cols-5 `
-        // } px-2 gap-x-3`}
+    // className={`grid grid-cols-1 h-auto ${
+    //     isAdminRole ? 'xl:grid-cols-1 gap-3' : `xl:grid-cols-5 `
+    // } px-2 gap-x-3`}
     >
         <div
             className={`h-[99%] ${getActiveBorder(ProfileIds.Workplace)}`}

@@ -52,18 +52,21 @@ export const InputRichTextEditor = ({
                 name={name}
                 control={control}
                 rules={rules}
-                render={({ field: { value, onChange: fieldChange } }) => (
-                    <RichTextEditor
-                        label={label}
-                        value={value}
-                        onChange={(e: any) => {
-                            onChange?.(e)
-                            fieldChange(e)
-                        }}
-                        placeholder={placeholder}
-                        className={className}
-                    />
-                )}
+                render={({ field: { value, onChange: fieldChange } }) => {
+                    console.log({ havingValue: value })
+                    return (
+                        <RichTextEditor
+                            label={label}
+                            value={value}
+                            onChange={(e: any) => {
+                                onChange?.(e)
+                                fieldChange(e)
+                            }}
+                            placeholder={placeholder}
+                            className={className}
+                        />
+                    )
+                }}
             />
             {showError && <InputErrorMessage name={name} />}
         </>

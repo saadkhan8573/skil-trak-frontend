@@ -4,15 +4,16 @@ import { SubAdminApi } from '@queries'
 import { Student } from '@types'
 import { AuthorizedUserComponent } from '@components'
 import { UserRoles } from '@constants'
-import { DollarSign, Mail, Phone } from 'lucide-react'
+import { DollarSign, Mail, Phone, StickyNote } from 'lucide-react'
 import { ReactElement, useState } from 'react'
 import { ComposeEmailDialog } from '../Communications/modal/ComposeEmailDialog'
 import { ProfileLinks } from '../ProfileLinks'
-import { StudentCallLogModal, ViewPaymentDetailsModal } from './modals'
+import { StudentCallLogModal, ViewPaymentDetailsModal, CreateStudentNoteModal } from './modals'
 
 export const HeaderQuickActions = ({ student }: { student: Student }) => {
     const [modal, setModal] = useState<ReactElement | null>(null)
     const [showEmailDialog, setShowEmailDialog] = useState(false)
+    const [showNoteModal, setShowNoteModal] = useState(false)
 
     const { notification } = useNotification()
 
@@ -67,6 +68,12 @@ export const HeaderQuickActions = ({ student }: { student: Student }) => {
                 </AuthorizedUserComponent>
             )}
             <Button
+                onClick={() => setShowNoteModal(true)}
+            >
+                <StickyNote className="w-3.5 h-3.5 mr-2" />
+                Note
+            </Button>
+            <Button
                 onClick={onMakeCallClicked}
                 className="bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-xl shadow-[#044866]/25 hover:shadow-2xl hover:scale-105 transition-all px-5 py-2"
             >
@@ -84,6 +91,12 @@ export const HeaderQuickActions = ({ student }: { student: Student }) => {
             </Button>
 
             <ProfileLinks profile={student} />
+            <CreateStudentNoteModal
+                open={showNoteModal}
+                onOpenChange={setShowNoteModal}
+                studentId={student?.id}
+                receiverId={student?.user?.id}
+            />
         </div>
     )
 }

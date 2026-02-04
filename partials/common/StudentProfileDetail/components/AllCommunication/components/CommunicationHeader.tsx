@@ -51,7 +51,7 @@ export const CommunicationHeader = ({ user }: CommunicationHeaderProps) => {
                     className={clsx(
                         'bg-[#00000050] flex items-center justify-center gap-x-2 fixed  right-0 z-40',
                         {
-                            '!w-[calc(320px)] !h-full top-[4.4rem]':
+                            'w-[calc(320px)]! h-full! top-[4.4rem]':
                                 isSubadminOrAdmin,
                             'w-full h-screen top-0 overflow-auto':
                                 !isSubadminOrAdmin,

@@ -28,7 +28,7 @@ export function AssignedAgent() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-gradient-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-linear-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center">
                         {assignedAgent?.avatar ? (
                             <img
                                 src={assignedAgent.avatar}
@@ -55,17 +55,17 @@ export function AssignedAgent() {
 
                 {(user?.role === UserRoles.ADMIN ||
                     [78].includes(user?.id)) && (
-                    <div className="flex items-center gap-2">
-                        <Button
-                            fullWidth
-                            onClick={() => setShowAssignModal(true)}
-                            variant="primaryNew"
-                        >
-                            <UserPlus className="w-3 h-3 mr-1" />
-                            {assignedAgent ? 'Reassign' : 'Assign'}
-                        </Button>
-                    </div>
-                )}
+                        <div className="flex items-center gap-2">
+                            <Button
+                                fullWidth
+                                onClick={() => setShowAssignModal(true)}
+                                variant="primaryNew"
+                            >
+                                <UserPlus className="w-3 h-3 mr-1" />
+                                {assignedAgent ? 'Reassign' : 'Assign'}
+                            </Button>
+                        </div>
+                    )}
             </div>
 
             {showAssignModal && industryId && (

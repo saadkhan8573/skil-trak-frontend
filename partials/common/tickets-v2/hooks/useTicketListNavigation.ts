@@ -38,11 +38,20 @@ export const useTicketListNavigation = ({
 
         // Navigate based on role
         if (role === UserRoles.RTO) {
-            router.push(`/portals/rto/communications/tickets/${ticketId}`)
+            router.push({
+                pathname: `/portals/rto/communications/tickets/${ticketId}`,
+                query: router.query,
+            })
         } else if (role === UserRoles.ADMIN) {
-            router.push(`/portals/admin/support-tickets/${ticketId}`)
+            router.push({
+                pathname: `/portals/admin/support-tickets/${ticketId}`,
+                query: router.query,
+            })
         } else if (role === UserRoles.SUBADMIN) {
-            router.push(`/portals/sub-admin/support-tickets/${ticketId}`)
+            router.push({
+                pathname: `/portals/sub-admin/support-tickets/${ticketId}`,
+                query: router.query,
+            })
         }
     }
 

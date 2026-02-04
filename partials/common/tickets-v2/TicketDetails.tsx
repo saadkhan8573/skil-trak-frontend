@@ -33,10 +33,36 @@ export const TicketDetails = () => {
         }
     )
 
-    const handleBack = () => {
-        const savedState = sessionStorage.getItem('ticketListState')
+    // const handleBack = () => {
+    //     const savedState = sessionStorage.getItem('ticketListState')
 
+    //     let basePath = ''
+    //     if (role === UserRoles.RTO) {
+    //         basePath = '/portals/rto/communications/tickets'
+    //     } else if (role === UserRoles.ADMIN) {
+    //         basePath = '/portals/admin/support-tickets'
+    //     } else if (role === UserRoles.SUBADMIN) {
+    //         basePath = '/portals/sub-admin/support-tickets'
+    //     }
+
+    //     if (savedState) {
+    //         const { tab, teamTab, page } = JSON.parse(savedState)
+    //         router.push({
+    //             pathname: basePath,
+    //             query: {
+    //                 tab: tab || 'active',
+    //                 teamTab: teamTab || 'all', // Restore team tab
+    //                 page: page || '1',
+    //             },
+    //         })
+    //         sessionStorage.removeItem('ticketListState')
+    //     } else {
+    //         router.back()
+    //     }
+    // }
+    const handleBack = () => {
         let basePath = ''
+
         if (role === UserRoles.RTO) {
             basePath = '/portals/rto/communications/tickets'
         } else if (role === UserRoles.ADMIN) {
@@ -45,20 +71,10 @@ export const TicketDetails = () => {
             basePath = '/portals/sub-admin/support-tickets'
         }
 
-        if (savedState) {
-            const { tab, teamTab, page } = JSON.parse(savedState)
-            router.push({
-                pathname: basePath,
-                query: {
-                    tab: tab || 'active',
-                    teamTab: teamTab || 'all', // Restore team tab
-                    page: page || '1',
-                },
-            })
-            sessionStorage.removeItem('ticketListState')
-        } else {
-            router.back()
-        }
+        router.push({
+            pathname: basePath,
+            query: router.query, // 👈 restores ALL filters, page, tabs
+        })
     }
 
     return (

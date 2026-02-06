@@ -22,6 +22,7 @@ interface InputRichTextEditorProps {
     rules?: any
     className?: string
     onChange?: (value: any) => void
+    height?: string
 }
 
 export const inputRichTextEditorErrorMessage = (value: string) => {
@@ -39,6 +40,7 @@ export const InputRichTextEditor = ({
     className,
     onChange,
     showError = true,
+    height,
 }: InputRichTextEditorProps) => {
     const {
         control,
@@ -52,21 +54,20 @@ export const InputRichTextEditor = ({
                 name={name}
                 control={control}
                 rules={rules}
-                render={({ field: { value, onChange: fieldChange } }) => {
-                    console.log({ havingValue: value })
-                    return (
-                        <RichTextEditor
-                            label={label}
-                            value={value}
-                            onChange={(e: any) => {
-                                onChange?.(e)
-                                fieldChange(e)
-                            }}
-                            placeholder={placeholder}
-                            className={className}
-                        />
-                    )
-                }}
+                render={({ field: { value, onChange: fieldChange } }) => (
+                    <RichTextEditor
+                        label={label}
+                        value={value}
+                        onChange={(e: any) => {
+                            onChange?.(e)
+                            fieldChange(e)
+                        }}
+                        placeholder={placeholder}
+                        className={className}
+                        height={height}
+                    />
+                )
+                }
             />
             {showError && <InputErrorMessage name={name} />}
         </>

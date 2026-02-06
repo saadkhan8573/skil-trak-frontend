@@ -64,9 +64,8 @@ export const RtoListingDetail = () => {
                     </div>
                 </Card>
                 <div
-                    className={`fixed bottom-0 right-0 z-[333]  ${
-                        isComposeMail ? 'block' : 'hidden'
-                    }`}
+                    className={`fixed bottom-0 right-0 z-333  ${isComposeMail ? 'block' : 'hidden'
+                        }`}
                 >
                     <ComposeListingRtoMail
                         rto={data}

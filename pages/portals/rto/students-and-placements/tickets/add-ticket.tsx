@@ -38,8 +38,7 @@ const AddTicket: NextPageWithLayout = () => {
     }, [createTicketResult])
 
     const onSubmit = (values: any) => {
-        const message = draftToHtmlText(values?.message)
-        createTicket({ ...values, message })
+        createTicket({ ...values })
     }
 
     return (

@@ -1,17 +1,14 @@
 import {
     Button,
-    InputContentEditor,
-    inputEditorErrorMessage,
+    InputRichTextEditor
 } from '@components'
+import { FileUpload } from '@hoc'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { convertToRaw } from 'draft-js'
-import draftToHtml from 'draftjs-to-html'
+import { InputErrorMessage } from '@partials/common/MailsListing'
+import { Attachment } from '@partials/common/Notifications'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as Yup from 'yup'
-import { useEffect, useState } from 'react'
-import { InputErrorMessage } from '@partials/common/MailsListing'
-import { FileUpload } from '@hoc'
-import { Attachment } from '@partials/common/Notifications'
 
 type FormValues = {
     receiver: string
@@ -98,14 +95,8 @@ export const ComposeListingRtoMailForm = ({
                         <InputErrorMessage name="subject" />
 
                         <div className="mt-2">
-                            <InputContentEditor
+                            <InputRichTextEditor
                                 name={'body'}
-                                onChange={(e: any) => {
-                                    const mail = draftToHtml(
-                                        convertToRaw(e.getCurrentContent())
-                                    )
-                                    // setMailContent(mail)
-                                }}
                                 showError={false}
                                 height="h-80"
                             />

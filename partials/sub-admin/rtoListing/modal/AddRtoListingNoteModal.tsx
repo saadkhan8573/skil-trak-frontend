@@ -1,60 +1,46 @@
-import React, { useEffect } from 'react'
 import { SubAdminApi } from '@queries'
 
 import {
     Button,
-    draftToHtmlText,
-    InputContentEditor,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
     ShowErrorNotifications,
-    Typography,
+    Typography
 } from '@components'
-import { FormProvider, useForm } from 'react-hook-form'
-import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useNotification } from '@hooks'
 import { useRouter } from 'next/router'
+import { FormProvider, useForm } from 'react-hook-form'
+import * as yup from 'yup'
 
 export const AddRtoListingNoteModal = ({ onCloseModal }: any) => {
     const router = useRouter()
     const id = router.query.id
     const { notification } = useNotification()
-    // useAddIndustryListingDetailsNote
+
     const [addNote, addNoteResult] =
         SubAdminApi.Rto.useAddRtoListingDetailsNote()
 
-    useEffect(() => {
-        if (addNoteResult.isSuccess) {
+    const validationSchema = yup.object({
+        comment: yup.mixed().test('Message', 'Must Provide Message', (value: any) =>
+            inputRichTextEditorErrorMessage(value)
+        ),
+    })
+
+    const methods = useForm({
+        mode: 'all',
+        resolver: yupResolver(validationSchema),
+    })
+    const onSubmit = async (values: any) => {
+        const res: any = await addNote({ id, body: values })
+        if (res?.data) {
             notification.success({
                 title: 'Note Added',
                 description: 'Note Added Successfully',
             })
             onCloseModal?.()
         }
-    }, [addNoteResult.isSuccess])
 
-    const validationSchema = yup.object({
-        requirements: yup.string().required('Required'),
-    })
-
-    const methods = useForm({
-        mode: 'all',
-        // defaultValues: {
-        //     requirements: getInitialEditorState(),
-        // },
-    })
-    const onSubmit = async (values: any) => {
-        const comment = draftToHtmlText(values?.comment)
-        if (comment === '<p></p>\n' || comment.trim() === '<p></p>') {
-            methods.setError('note', {
-                type: 'note',
-                message: 'Must add note',
-            })
-            return
-        }
-
-        const body = { comment }
-        addNote({ id, body })
-
-        // Use the same submit method for both add and update
     }
     return (
         <div>
@@ -65,7 +51,7 @@ export const AddRtoListingNoteModal = ({ onCloseModal }: any) => {
                     className="mt-6 w-full"
                     onSubmit={methods.handleSubmit(onSubmit)}
                 >
-                    <InputContentEditor label="Note" name="comment" />
+                    <InputRichTextEditor label="Note" name="comment" />
                     <Button
                         submit
                         disabled={addNoteResult.isLoading}

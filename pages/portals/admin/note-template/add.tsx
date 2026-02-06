@@ -20,19 +20,19 @@ const AddNoteTemplate = () => {
     }, [])
 
     const onSubmit = async (values: any) => {
-        let successContent = ''
-        let failureContent = ''
-        if (values?.successContent) {
-            successContent = draftToHtmlText(values?.successContent)
-        }
-        if (values?.failureContent) {
-            failureContent = draftToHtmlText(values?.failureContent)
-        }
+        // let successContent = ''
+        // let failureContent = ''
+        // if (values?.successContent) {
+        //     successContent = draftToHtmlText(values?.successContent)
+        // }
+        // if (values?.failureContent) {
+        //     failureContent = draftToHtmlText(values?.failureContent)
+        // }
 
         const res: any = await add({
             ...values,
-            successContent,
-            failureContent,
+            // successContent,
+            // failureContent,
         })
 
         if (res?.data) {

@@ -7,8 +7,7 @@ import {
     EmptyData,
     LoadingAnimation,
     ShowErrorNotifications,
-    TechnicalError,
-    draftToHtmlText,
+    TechnicalError
 } from '@components'
 import { useNavbar, useNotification } from '@hooks'
 import { ReplyTicketForm, TicketStatus } from '@partials/common/Tickets'
@@ -44,10 +43,9 @@ const TicketDetail: NextPageWithLayout = () => {
     }
 
     const onSubmit = (values: any) => {
-        const message = draftToHtmlText(values?.message)
         addReply({
             ticket: ticketDetail?.data?.id,
-            message,
+            ...values,
         })
     }
 

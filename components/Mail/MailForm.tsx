@@ -11,26 +11,21 @@ import {
     ActionButton,
     Button,
     Card,
-    InputContentEditor,
+    InputRichTextEditor,
     Select,
     SelectOption,
     ShowErrorNotifications,
     TextInput,
     Typography,
-    draftToHtmlText,
-    htmlToDraftText,
 } from '@components'
 import { FileUpload } from '@hoc'
 
 import { useNotification, useRewritePhrase } from '@hooks'
 
-// import { useMessage } from "@hooks"
-
 // functions
 import { Attachment } from '@partials/common'
 import { CommonApi } from '@queries'
 import { AuthUtils } from '@utils'
-import { EditorState } from 'draft-js'
 import ClickAwayListener from 'react-click-away-listener'
 import { RiShining2Fill } from 'react-icons/ri'
 
@@ -38,7 +33,7 @@ interface onSubmitType {
     to?: string
     cc?: string
     subject: string
-    message: EditorState
+    message: string
     template: any
     attachments: FileList | null
 }
@@ -92,8 +87,7 @@ export const MailForm = ({
             if (getEmailDraft?.data?.content) {
                 methods.setValue(
                     'message',
-                    htmlToDraftText(getEmailDraft?.data?.content) as EditorState
-                )
+                    getEmailDraft?.data?.content)
             }
 
             if (getEmailDraft?.data?.title) {
@@ -146,7 +140,7 @@ export const MailForm = ({
             setMailContent(data?.correctedText)
             methods.setValue(
                 'message',
-                htmlToDraftText(data?.correctedText) as EditorState
+                data?.correctedText
             )
         }
     }
@@ -175,7 +169,7 @@ export const MailForm = ({
         // const parent = replyMessage?.id
         const formData = new FormData()
 
-        const message = draftToHtmlText(values.message)
+        const message = values?.message
         const ccEmails = values.cc
             ? values.cc
                 .split(',')
@@ -224,7 +218,7 @@ export const MailForm = ({
         methods.setValue('subject', template?.subject)
         methods.setValue(
             'message',
-            htmlToDraftText(template?.content) as EditorState
+            template?.content
         )
         if (template?.file) {
             setTemplateAttachment(template.file)
@@ -234,13 +228,6 @@ export const MailForm = ({
             setAttachmentFiles([])
         }
     }
-
-    const templates = [
-        {
-            label: 'Template',
-            value: 'template',
-        },
-    ]
 
     return (
         <>
@@ -370,11 +357,10 @@ export const MailForm = ({
                                     }}
                                 >
                                     <div className="mb-3">
-                                        <InputContentEditor
+                                        <InputRichTextEditor
                                             name={'message'}
                                             onChange={(e: any) => {
-                                                const mail = draftToHtmlText(e)
-                                                setMailContent(mail)
+                                                setMailContent(e)
                                             }}
                                         />
                                     </div>

@@ -1,12 +1,11 @@
 import {
     Button,
     Checkbox,
-    InputContentEditor,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
     Select,
     ShowErrorNotifications,
     TextInput,
-    draftToHtmlText,
-    htmlToDraftText,
 } from '@components'
 import { FileUpload } from '@hoc'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -61,8 +60,8 @@ export const ActiveStudents = ({
         selectedStudent === 'With Workplace'
             ? 1
             : selectedStudent === 'Without Workplace'
-            ? 2
-            : undefined
+                ? 2
+                : undefined
 
     const { studentsOptions, bulkMailStudentsResponse } = useStudentsOptions({
         getCourseIds,
@@ -91,9 +90,9 @@ export const ActiveStudents = ({
     const getTemplates = CommonApi.Messages.useAllTemplates()
     const templateOptions = getTemplates?.data?.length
         ? getTemplates?.data?.map((template: any) => ({
-              label: template?.subject,
-              value: template?.id,
-          }))
+            label: template?.subject,
+            value: template?.id,
+        }))
         : []
 
     const findTemplate = (id: any) => {
@@ -139,7 +138,11 @@ export const ActiveStudents = ({
             .array()
             .min(1, 'Must select at least 1 Student')
             .required(),
-        // name : yup.
+        message: yup
+            .mixed()
+            .test('Message', 'Must Provide Message', (value) =>
+                inputRichTextEditorErrorMessage(value)
+            ),
     })
     const formMethods = useForm({
         mode: 'all',
@@ -167,7 +170,7 @@ export const ActiveStudents = ({
         )
     }
     const onSubmit = (data: any) => {
-        let content = draftToHtmlText(data?.message)
+        const content = data?.message
         const formData = new FormData()
         const {
             attachment,
@@ -237,7 +240,9 @@ export const ActiveStudents = ({
     }, [resultSendBulkEmail])
 
     useEffect(() => {
-        formMethods.setValue('message', htmlToDraftText(templateBody))
+        if (templateBody) {
+            formMethods.setValue('message', templateBody)
+        }
     }, [templateBody])
     return (
         <>
@@ -360,10 +365,9 @@ export const ActiveStudents = ({
 
                     <TextInput label={'Subject'} name={'subject'} />
 
-                    <InputContentEditor
+                    <InputRichTextEditor
                         name={'message'}
                         label={'Message'}
-                        content={templateBody}
                     />
                     <div className="my-4 flex justify-between items-center">
                         <FileUpload

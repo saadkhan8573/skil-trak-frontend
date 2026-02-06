@@ -1,12 +1,10 @@
 import {
     Button,
     Checkbox,
-    InputContentEditor,
+    InputRichTextEditor,
     Select,
     ShowErrorNotifications,
-    TextInput,
-    draftToHtmlText,
-    htmlToDraftText,
+    TextInput
 } from '@components'
 import { FileUpload } from '@hoc'
 import { useNotification } from '@hooks'
@@ -38,7 +36,6 @@ export const ActiveIndustries = () => {
             setIsChecked(true)
         }
     }
-    const [storedData, setStoredData] = useState<any>(null)
 
     const [sendBulkEmail, resultSendBulkEmail] =
         CommonApi.Messages.useSendBulkMail()
@@ -47,9 +44,9 @@ export const ActiveIndustries = () => {
 
     const templateOptions = getTemplates.data?.length
         ? getTemplates?.data?.map((template: any) => ({
-              label: template.subject,
-              value: template.id,
-          }))
+            label: template.subject,
+            value: template.id,
+        }))
         : []
 
     const findTemplate = (id: any) => {
@@ -98,7 +95,7 @@ export const ActiveIndustries = () => {
         )
     }
     const onSubmit = (data: any) => {
-        let content = draftToHtmlText(data?.message)
+        const content = data?.message
 
         const formData = new FormData()
         const { attachment, message, industries, template, subject, industry } =
@@ -137,7 +134,9 @@ export const ActiveIndustries = () => {
     }, [attachmentFiles])
     useEffect(() => {
         // htmlToDraftText(formMethods, templateBody, 'message')
-        formMethods.setValue('message', htmlToDraftText(templateBody))
+        if (templateBody) {
+            formMethods.setValue('message', templateBody)
+        }
     }, [templateBody])
 
     useEffect(() => {
@@ -176,7 +175,7 @@ export const ActiveIndustries = () => {
                             options={industryOptions}
                             multi
 
-                            // loading={courseLoading}
+                        // loading={courseLoading}
                         />
                         <Checkbox
                             name="industries"
@@ -207,10 +206,9 @@ export const ActiveIndustries = () => {
                         name={'subject'}
                     />
                     {/* <TextArea rows={10} value={templateBody} label={'Message'} name={'message'} /> */}
-                    <InputContentEditor
+                    <InputRichTextEditor
                         name={'message'}
                         label={'Message'}
-                        content={templateBody}
                     />
 
                     <div className="mb-4 flex justify-between items-center">

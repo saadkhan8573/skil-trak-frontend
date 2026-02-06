@@ -2,48 +2,30 @@ import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 
-// const Editor = dynamic<EditorProps>(
-//     () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
-//     {
-//         ssr: false,
-//     }
-// )
-
-const htmlToDraft =
-    typeof window === 'object' && require('html-to-draftjs').default
-
-import { ContentState, convertFromHTML, EditorState } from 'draft-js'
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-
 // components
 import {
     ActionButton,
     Button,
     Card,
     Checkbox,
-    draftToHtmlText,
-    htmlToDraftText,
-    InputContentEditor,
-    inputEditorErrorMessage,
-    Select,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
     ShowErrorNotifications,
     TextInput,
-    Typography,
+    Typography
 } from '@components'
 
 // query
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNotification, useRewritePhrase } from '@hooks'
 import { CommonApi } from '@queries'
-import { OptionType } from '@types'
 import { HtmlToPlainText } from '@utils'
-import { useRouter } from 'next/router'
 import ClickAwayListener from 'react-click-away-listener'
 import { RiShining2Fill } from 'react-icons/ri'
 
 interface onSubmitType {
     title: string
-    body: EditorState
+    body: string
     isPinned: boolean
 }
 export const CreateNote = ({
@@ -56,7 +38,6 @@ export const CreateNote = ({
 }: any) => {
     const { notification } = useNotification()
     const [noteContent, setNoteContent] = useState<any>(null)
-    const router = useRouter()
 
     const ref = useRef<HTMLDivElement>(null)
 
@@ -71,10 +52,6 @@ export const CreateNote = ({
     })
 
     const [editing, setEditing] = useState(false)
-
-    const [bodyData, setBodyData] = useState<any>(EditorState.createEmpty())
-    const [template, setTemplate] = useState<any | null>(null)
-
     const { onRewritePhrase, isLoading } = useRewritePhrase()
 
     useEffect(() => {
@@ -82,10 +59,6 @@ export const CreateNote = ({
             setEditing(true)
         }
     }, [editValues])
-
-    const templateValue = template
-        ? '<p><strong>Requirements for SITHCCC020 (work effectively as a cook)</strong></p>    <p></p>    <p>This unit describes the performance outcomes, skills and knowledge required to work as a cook. It incorporates all aspects of organising, preparing and cooking a variety of food items across different service periods and menu types; using a range of cooking methods and team coordination skills. The unit integrates key technical and organisational skills required by a qualified commercial cook. It brings together the skills and knowledge covered in individual units and focuses on the way they must be applied in a commercial kitchen.</p>   <p>During your placement, you will be covering unit SITHCC020 Work effectively as a cook, which requires the following: Prepare, cook and present multiple items for a minimum of 48 food service periods (shifts), including</p>    <p>Breakfast, Lunch, dinner and Special functions. (each service a minimum of 4 hours)</p>    <p><strong>Prepare, cook and present multiple items for food service periods (shifts) including:</strong></p>    <p><span style="color: rgb(0,0,0);background-color: rgb(255,255,255);font-size: 14px;font-family: Poppins, sans-serif, monospace;">• Breakfast </span></p>'
-        : ''
 
     useEffect(() => {
         if (createNoteResult.isSuccess) {
@@ -106,47 +79,23 @@ export const CreateNote = ({
         }
     }, [createNoteResult.isSuccess])
 
-    const templates = [
-        {
-            label: 'Template',
-            value: 'template',
-        },
-    ]
-
-    const sa = 'Saad Khan'
-
-    useEffect(() => {
-        setBodyData(
-            EditorState.createWithContent(ContentState.createFromText(sa))
-        )
-    }, [])
-
     const validationSchema = Yup.object({
         title: Yup.string().required('Title is required'),
         body: Yup.mixed().test('Message', 'Must Provide Message', (value) =>
-            inputEditorErrorMessage(value)
+            inputRichTextEditorErrorMessage(value)
         ),
     })
 
     const methods = useForm({
         mode: 'all',
         resolver: yupResolver(validationSchema),
-        defaultValues: { ...editValues, body: bodyData },
+        defaultValues: { ...editValues },
     })
 
     useEffect(() => {
         if (getNoteDraft.isSuccess) {
             if (getNoteDraft?.data?.content) {
-                const blocksFromHTML = convertFromHTML(
-                    getNoteDraft?.data?.content
-                )
-                const bodyValue = EditorState.createWithContent(
-                    ContentState.createFromBlockArray(
-                        blocksFromHTML.contentBlocks,
-                        blocksFromHTML.entityMap
-                    )
-                )
-                methods.setValue('body', bodyValue)
+                methods.setValue('body', getNoteDraft?.data?.content)
             }
             if (getNoteDraft?.data?.title) {
                 methods.setValue('title', getNoteDraft?.data?.title)
@@ -154,25 +103,13 @@ export const CreateNote = ({
         }
     }, [getNoteDraft.isSuccess])
 
-    useEffect(() => {
-        if (templateValue) {
-            const blocksFromHTML = convertFromHTML(templateValue)
-            const bodyValue = EditorState.createWithContent(
-                ContentState.createFromBlockArray(
-                    blocksFromHTML.contentBlocks,
-                    blocksFromHTML.entityMap
-                )
-            )
-            methods.setValue('body', bodyValue)
-        }
-    }, [templateValue, template])
-
     const noteBodyWordsCount = HtmlToPlainText(
-        draftToHtmlText(methods?.watch()?.body)
+        methods?.watch()?.body
     )
         ?.trim()
         ?.replace(/\s+/g, ' ')
         ?.split(' ')?.length
+
 
     const isBodyGreaterThen30 = noteBodyWordsCount > 30
 
@@ -181,7 +118,7 @@ export const CreateNote = ({
 
         if (data?.correctedText) {
             setNoteContent(data?.correctedText)
-            methods.setValue('body', htmlToDraftText(data?.correctedText))
+            methods.setValue('body', data?.correctedText)
         }
     }
 
@@ -194,10 +131,10 @@ export const CreateNote = ({
                 // const body = draftToHtml(
                 //     convertToRaw(values?.body.getCurrentContent())
                 // )
-                const body = draftToHtmlText(values?.body)
+                // const body = draftToHtmlText(values?.body)
                 createNote({
                     ...values,
-                    body,
+                    // body,
                     isPinned: isBodyGreaterThen30 ? false : values?.isPinned,
                     postedFor: receiverId,
                 })
@@ -270,11 +207,10 @@ export const CreateNote = ({
                                     }}
                                 >
                                     <div className="mb-3">
-                                        <InputContentEditor
+                                        <InputRichTextEditor
                                             name={'body'}
                                             onChange={(e: any) => {
-                                                const note = draftToHtmlText(e)
-                                                setNoteContent(note)
+                                                setNoteContent(e)
                                             }}
                                         />
                                     </div>
@@ -301,9 +237,8 @@ export const CreateNote = ({
                                     <Button
                                         submit
                                         fullWidth
-                                        text={`${
-                                            editing ? 'Update' : 'Add'
-                                        } Note`}
+                                        text={`${editing ? 'Update' : 'Add'
+                                            } Note`}
                                         loading={createNoteResult?.isLoading}
                                         disabled={createNoteResult?.isLoading}
                                         variant={

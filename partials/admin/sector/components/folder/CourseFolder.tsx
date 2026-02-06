@@ -16,7 +16,6 @@ export const CourseFolder = ({
     category: any
     result: any
 }) => {
-    const { notification } = useNotification()
 
     const [edit, setEdit] = useState(false)
     const [deleting, setDeleting] = useState(false)

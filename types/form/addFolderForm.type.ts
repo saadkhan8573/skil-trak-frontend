@@ -9,6 +9,8 @@ export interface AddFolderFormType {
     description: string
     isRequired: boolean
     category: string
+    isAgreement: boolean
+    isFacilityCheckList: boolean
 }
 
 export interface AddFolderFormQueryType extends AddFolderFormType {
@@ -21,5 +23,3 @@ export interface AddFolderQueryResponseType extends BaseResponse {
     course: Course
     isCustom: boolean
 }
-
-

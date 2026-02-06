@@ -42,6 +42,8 @@ export const CourseFolderForm = ({
     const validationSchema = yup.object({
         name: yup.string().required('Name is required'),
         capacity: yup.number().required('Capacity is Required'),
+        isAgreement: yup.boolean(),
+        isFacilityCheckList: yup.boolean(),
     })
 
     const methods = useForm<AddFolderFormType>({
@@ -111,12 +113,35 @@ export const CourseFolderForm = ({
                             validationIcons
                         />
 
-                        {/* <Checkbox label={'Is Agreement'} name="isAgreement" />
-                        <Checkbox
-                            label={'Is Facility Checklist'}
-                            name="isFacilityCheckList"
-                        />
-                        <Checkbox
+                        {edit && (
+                            <>
+                                <Checkbox
+                                    label={'Is Agreement'}
+                                    name="isAgreement"
+                                    onChange={(e: any) => {
+                                        if (e.target.checked) {
+                                            methods.setValue(
+                                                'isFacilityCheckList',
+                                                false
+                                            )
+                                        }
+                                    }}
+                                />
+                                <Checkbox
+                                    label={'Is Facility Checklist'}
+                                    name="isFacilityCheckList"
+                                    onChange={(e: any) => {
+                                        if (e.target.checked) {
+                                            methods.setValue(
+                                                'isAgreement',
+                                                false
+                                            )
+                                        }
+                                    }}
+                                />
+                            </>
+                        )}
+                        {/* <Checkbox
                             label={'Is IndustryCheck'}
                             name="isIndustryCheck"
                             defaultChecked={isIndustryCheck}

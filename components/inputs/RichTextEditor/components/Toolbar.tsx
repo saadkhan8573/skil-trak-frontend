@@ -141,6 +141,7 @@ const BlockOptionsDropdownList = ({
       className="bg-white border rounded shadow-lg z-[9999] py-1 animate-in fade-in slide-in-from-top-1 duration-200"
     >
       <button
+        type="button"
         onClick={formatParagraph}
         className={`w-full text-left px-4 py-2 hover:bg-gray-100 text-sm ${blockType === 'paragraph' ? 'bg-primary/5 text-primary font-semibold' : ''}`}
       >
@@ -148,6 +149,7 @@ const BlockOptionsDropdownList = ({
       </button>
       {(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const).map((tag) => (
         <button
+          type="button"
           key={tag}
           onClick={() => formatHeading(tag)}
           className={`w-full text-left px-4 py-2 hover:bg-gray-100 text-sm ${blockType === tag ? 'bg-primary/5 text-primary font-semibold' : ''}`}
@@ -353,6 +355,7 @@ export const Toolbar = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
+            type="button"
             disabled={!canUndo}
             onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}
             className="p-1.5 hover:bg-gray-200 rounded disabled:opacity-30"
@@ -367,6 +370,7 @@ export const Toolbar = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
+            type="button"
             disabled={!canRedo}
             onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}
             className="p-1.5 hover:bg-gray-200 rounded disabled:opacity-30"
@@ -386,6 +390,7 @@ export const Toolbar = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <button
+              type="button"
               onClick={() => setShowBlockOptions(!showBlockOptions)}
               className="flex items-center gap-2 px-3 py-1.5 rounded hover:bg-gray-200 text-sm font-medium transition-colors"
             >
@@ -416,6 +421,7 @@ export const Toolbar = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
+            type="button"
             onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}
             className={`p-1.5 rounded hover:bg-gray-200 ${isBold ? 'bg-primary/10 text-primary' : ''}`}
           >
@@ -429,6 +435,7 @@ export const Toolbar = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
+            type="button"
             onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}
             className={`p-1.5 rounded hover:bg-gray-200 ${isItalic ? 'bg-primary/10 text-primary' : ''}`}
           >
@@ -442,6 +449,7 @@ export const Toolbar = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
+            type="button"
             onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')}
             className={`p-1.5 rounded hover:bg-gray-200 ${isUnderline ? 'bg-primary/10 text-primary' : ''}`}
           >
@@ -456,6 +464,7 @@ export const Toolbar = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
+            type="button"
             onClick={insertLink}
             className={`p-1.5 rounded hover:bg-gray-200 ${isLink ? 'bg-primary/10 text-primary' : ''}`}
           >
@@ -472,6 +481,7 @@ export const Toolbar = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
+            type="button"
             onClick={formatBulletList}
             className={`p-1.5 rounded hover:bg-gray-200 ${blockType === 'bullet' ? 'bg-primary/10 text-primary' : ''}`}
           >
@@ -485,6 +495,7 @@ export const Toolbar = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
+            type="button"
             onClick={formatNumberedList}
             className={`p-1.5 rounded hover:bg-gray-200 ${blockType === 'number' ? 'bg-primary/10 text-primary' : ''}`}
           >
@@ -501,6 +512,7 @@ export const Toolbar = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
+            type="button"
             onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')}
             className="p-1.5 rounded hover:bg-gray-200"
           >
@@ -514,6 +526,7 @@ export const Toolbar = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
+            type="button"
             onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')}
             className="p-1.5 rounded hover:bg-gray-200"
           >
@@ -527,6 +540,7 @@ export const Toolbar = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
+            type="button"
             onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right')}
             className="p-1.5 rounded hover:bg-gray-200"
           >
@@ -543,6 +557,7 @@ export const Toolbar = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
+            type="button"
             onClick={onImageUpload}
             className="p-1.5 rounded hover:bg-gray-200"
           >

@@ -8,8 +8,7 @@ import {
     LoadingAnimation,
     ShowErrorNotifications,
     TechnicalError,
-    Typography,
-    draftToHtmlText,
+    Typography
 } from '@components'
 import { UserRoles } from '@constants'
 import { useContextBar, useNavbar, useNotification } from '@hooks'
@@ -43,10 +42,9 @@ const Tickets: NextPageWithLayout = () => {
     }, [])
 
     const onSubmit = (values: any) => {
-        const message = draftToHtmlText(values?.message)
         addReply({
             ticket: ticketDetail?.data?.id,
-            message,
+            ...values,
         })
     }
 
@@ -121,16 +119,15 @@ const Tickets: NextPageWithLayout = () => {
                                 <div className="flex items-center gap-x-2">
                                     <div className="flex items-center  gap-2">
                                         <div
-                                            className={`rounded-full text-xs ${
-                                                ticketDetail?.data?.status ===
+                                            className={`rounded-full text-xs ${ticketDetail?.data?.status ===
                                                 TicketStatus.OPEN
-                                                    ? 'bg-success'
-                                                    : ticketDetail?.data
-                                                          ?.status ===
-                                                      TicketStatus.CLOSED
+                                                ? 'bg-success'
+                                                : ticketDetail?.data
+                                                    ?.status ===
+                                                    TicketStatus.CLOSED
                                                     ? 'bg-red-700'
                                                     : 'bg-error'
-                                            } uppercase text-[11px] text-white px-1.5 whitespace-pre`}
+                                                } uppercase text-[11px] text-white px-1.5 whitespace-pre`}
                                         >
                                             {ticketDetail?.data?.status}
                                         </div>
@@ -143,7 +140,7 @@ const Tickets: NextPageWithLayout = () => {
                                                 Ticket was{' '}
                                                 {ticketDetail?.data?.status ===
                                                     TicketStatus.OPEN ||
-                                                ticketDetail?.data?.status ===
+                                                    ticketDetail?.data?.status ===
                                                     TicketStatus.REOPENED
                                                     ? 'opened'
                                                     : 'closed'}{' '}
@@ -153,17 +150,17 @@ const Tickets: NextPageWithLayout = () => {
                                         {/* <div className="flex items-center gap-2"> */}
                                         <div className="rounded-full bg-gray-200 uppercase text-black px-2 whitespace-pre text-xs">
                                             {ticketDetail?.data?.status ===
-                                            TicketStatus.OPEN
+                                                TicketStatus.OPEN
                                                 ? ticketDetail?.data?.createdBy
-                                                      ?.role === UserRoles.ADMIN
+                                                    ?.role === UserRoles.ADMIN
                                                     ? 'Admin'
                                                     : ticketDetail?.data
-                                                          ?.createdBy?.name
+                                                        ?.createdBy?.name
                                                 : ticketDetail?.data?.closedBy
-                                                      ?.role === UserRoles.ADMIN
-                                                ? 'Admin'
-                                                : ticketDetail?.data?.closedBy
-                                                      ?.name}
+                                                    ?.role === UserRoles.ADMIN
+                                                    ? 'Admin'
+                                                    : ticketDetail?.data?.closedBy
+                                                        ?.name}
                                         </div>
                                     </div>
                                     <Typography

@@ -1,12 +1,11 @@
 import {
     Button,
     Checkbox,
-    InputContentEditor,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
     Select,
     ShowErrorNotifications,
     TextInput,
-    draftToHtmlText,
-    htmlToDraftText,
 } from '@components'
 import { FileUpload } from '@hoc'
 import { useNotification } from '@hooks'
@@ -45,9 +44,9 @@ export const ActiveRtos = () => {
 
     const templateOptions = getTemplates.data?.length
         ? getTemplates?.data?.map((template: any) => ({
-              label: template.subject,
-              value: template.id,
-          }))
+            label: template.subject,
+            value: template.id,
+        }))
         : []
 
     const findTemplate = (id: any) => {
@@ -94,7 +93,7 @@ export const ActiveRtos = () => {
         )
     }
     const onSubmit = (data: any) => {
-        let content = draftToHtmlText(data?.message)
+        const content = data?.message
 
         const formData = new FormData()
         const { attachment, message, rtos, template, ...rest } = data
@@ -127,8 +126,9 @@ export const ActiveRtos = () => {
         }
     }, [template])
     useEffect(() => {
-        // htmlToDraftText(formMethods, templateBody, 'message')
-        formMethods.setValue('message', htmlToDraftText(templateBody))
+        if (templateBody) {
+            formMethods.setValue('message', templateBody)
+        }
     }, [templateBody])
 
     useEffect(() => {
@@ -171,7 +171,7 @@ export const ActiveRtos = () => {
                             }}
                             options={rtoOptions}
                             multi
-                            // loading={courseLoading}
+                        // loading={courseLoading}
                         />
                         <Checkbox
                             name="rtos"
@@ -207,10 +207,9 @@ export const ActiveRtos = () => {
                         label={'Message'}
                         content={templateBody}
                     /> */}
-                    <InputContentEditor
+                    <InputRichTextEditor
                         name={'message'}
                         label={'Message'}
-                        content={templateBody}
                     />
                     <div className="mb-4 flex justify-between items-center">
                         <FileUpload

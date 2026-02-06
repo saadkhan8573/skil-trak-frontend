@@ -1,18 +1,22 @@
-import { $isAutoLinkNode, $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { $findMatchingParent, mergeRegister } from '@lexical/utils';
+import {
+    $isAutoLinkNode,
+    $isLinkNode,
+    TOGGLE_LINK_COMMAND,
+} from '@lexical/link'
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
+import { $findMatchingParent, mergeRegister } from '@lexical/utils'
 import {
     $getSelection,
     $isRangeSelection,
     COMMAND_PRIORITY_LOW,
     LexicalEditor,
-    SELECTION_CHANGE_COMMAND
-} from 'lexical';
-import { Edit2, ExternalLink } from 'lucide-react';
-import { Dispatch, useCallback, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+    SELECTION_CHANGE_COMMAND,
+} from 'lexical'
+import { Edit2, ExternalLink } from 'lucide-react'
+import { Dispatch, useCallback, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
-const LowPriority = 1;
+const LowPriority = 1
 
 function FloatingLinkEditor({
     editor,
@@ -20,138 +24,140 @@ function FloatingLinkEditor({
     setIsLink,
     anchorElem,
 }: {
-    editor: LexicalEditor;
-    isLink: boolean;
-    setIsLink: Dispatch<React.SetStateAction<boolean>>;
-    anchorElem: HTMLElement;
+    editor: LexicalEditor
+    isLink: boolean
+    setIsLink: Dispatch<React.SetStateAction<boolean>>
+    anchorElem: HTMLElement
 }): JSX.Element | null {
-    const [linkUrl, setLinkUrl] = useState('');
-    const editorRef = useRef<HTMLDivElement | null>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
-    const mouseDownRef = useRef(false);
+    const [linkUrl, setLinkUrl] = useState('')
+    const editorRef = useRef<HTMLDivElement | null>(null)
+    const inputRef = useRef<HTMLInputElement>(null)
+    const mouseDownRef = useRef(false)
 
     const updateLinkEditor = useCallback(() => {
-        const selection = $getSelection();
+        const selection = $getSelection()
         if ($isRangeSelection(selection)) {
-            const node = selection.anchor.getNode();
-            const parent = node.getParent();
+            const node = selection.anchor.getNode()
+            const parent = node.getParent()
             if ($isLinkNode(parent)) {
-                setLinkUrl(parent.getURL());
+                setLinkUrl(parent.getURL())
             } else if ($isLinkNode(node)) {
-                setLinkUrl(node.getURL());
+                setLinkUrl(node.getURL())
             } else {
-                setLinkUrl('');
+                setLinkUrl('')
             }
         }
-    }, [editor]);
+    }, [editor])
 
     useEffect(() => {
-        const scrollerElem = anchorElem.parentElement;
+        const scrollerElem = anchorElem.parentElement
 
         const update = () => {
             editor.getEditorState().read(() => {
-                updateLinkEditor();
-            });
-        };
+                updateLinkEditor()
+            })
+        }
 
-        window.addEventListener('resize', update);
+        window.addEventListener('resize', update)
         if (scrollerElem) {
-            scrollerElem.addEventListener('scroll', update);
+            scrollerElem.addEventListener('scroll', update)
         }
 
         return () => {
-            window.removeEventListener('resize', update);
+            window.removeEventListener('resize', update)
             if (scrollerElem) {
-                scrollerElem.removeEventListener('scroll', update);
+                scrollerElem.removeEventListener('scroll', update)
             }
-        };
-    }, [anchorElem, editor, updateLinkEditor]);
+        }
+    }, [anchorElem, editor, updateLinkEditor])
 
     useEffect(() => {
         return mergeRegister(
             editor.registerUpdateListener(({ editorState }) => {
                 editorState.read(() => {
-                    updateLinkEditor();
-                });
+                    updateLinkEditor()
+                })
             }),
 
             editor.registerCommand(
                 SELECTION_CHANGE_COMMAND,
                 () => {
-                    updateLinkEditor();
-                    return false;
+                    updateLinkEditor()
+                    return false
                 },
-                LowPriority,
-            ),
-        );
-    }, [editor, updateLinkEditor]);
+                LowPriority
+            )
+        )
+    }, [editor, updateLinkEditor])
 
     useEffect(() => {
         editor.getEditorState().read(() => {
-            updateLinkEditor();
-        });
-    }, [editor, updateLinkEditor]);
+            updateLinkEditor()
+        })
+    }, [editor, updateLinkEditor])
 
     useEffect(() => {
         const positionEditor = () => {
             if (isLink && editorRef.current && linkUrl) {
-                const domSelection = window.getSelection();
+                const domSelection = window.getSelection()
                 if (domSelection && domSelection.rangeCount > 0) {
-                    const range = domSelection.getRangeAt(0);
-                    const rect = range.getBoundingClientRect();
+                    const range = domSelection.getRangeAt(0)
+                    const rect = range.getBoundingClientRect()
 
-                    const editorRect = editorRef.current.getBoundingClientRect();
-                    const editorHeight = editorRect.height;
-                    const editorWidth = editorRect.width;
+                    const editorRect = editorRef.current.getBoundingClientRect()
+                    const editorHeight = editorRect.height
+                    const editorWidth = editorRect.width
 
                     // Position above the link
-                    let top = rect.top - editorHeight - 8 + window.scrollY;
-                    let left = rect.left + rect.width / 2 - editorWidth / 2 + window.scrollX;
+                    let top = rect.top - editorHeight - 8 + window.scrollY
+                    let left =
+                        rect.left +
+                        rect.width / 2 -
+                        editorWidth / 2 +
+                        window.scrollX
 
                     // Adjust if off screen (left)
                     if (left < 10) {
-                        left = 10;
+                        left = 10
                     }
 
                     // Adjust if off screen (top) - move below
                     if (rect.top - editorHeight - 8 < 0) {
-                        top = rect.bottom + 8 + window.scrollY;
+                        top = rect.bottom + 8 + window.scrollY
                     }
 
-                    editorRef.current.style.top = `${top}px`;
-                    editorRef.current.style.left = `${left}px`;
-                    editorRef.current.style.opacity = '1';
-                    editorRef.current.style.transform = 'translate(0, 0)';
+                    editorRef.current.style.top = `${top}px`
+                    editorRef.current.style.left = `${left}px`
+                    editorRef.current.style.opacity = '1'
+                    editorRef.current.style.transform = 'translate(0, 0)'
                 }
             }
-        };
+        }
 
         // Defer positioning to ensure DOM is updated and sizes are correct
-        const timeout = setTimeout(positionEditor, 0);
+        const timeout = setTimeout(positionEditor, 0)
 
         // Also re-position on scroll/resize (handled by parent effect roughly, but specific positioning needs this)
-        window.addEventListener('resize', positionEditor);
-        window.addEventListener('scroll', positionEditor);
+        window.addEventListener('resize', positionEditor)
+        window.addEventListener('scroll', positionEditor)
 
         return () => {
-            clearTimeout(timeout);
-            window.removeEventListener('resize', positionEditor);
-            window.removeEventListener('scroll', positionEditor);
+            clearTimeout(timeout)
+            window.removeEventListener('resize', positionEditor)
+            window.removeEventListener('scroll', positionEditor)
         }
-    }, [editor, isLink, linkUrl]);
-
+    }, [editor, isLink, linkUrl])
 
     const handleEdit = () => {
-        const url = prompt("Edit Link URL", linkUrl);
+        const url = prompt('Edit Link URL', linkUrl)
         if (url !== null) {
-            editor.dispatchCommand(TOGGLE_LINK_COMMAND, url);
+            editor.dispatchCommand(TOGGLE_LINK_COMMAND, url)
             // If URL is empty, link is removed, so hide editor
-            if (url === "") setIsLink(false);
+            if (url === '') setIsLink(false)
         }
-    };
+    }
 
-
-    if (!isLink || !linkUrl) return null;
+    if (!isLink || !linkUrl) return null
 
     return (
         <div
@@ -167,7 +173,7 @@ function FloatingLinkEditor({
                 href={linkUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-primary underline truncate max-w-[200px] hover:text-primary/80 flex items-center gap-1"
+                className="text-sm text-primary underline truncate max-w-50 hover:text-primary/80 flex items-center gap-1"
             >
                 <ExternalLink size={14} />
                 {linkUrl}
@@ -181,58 +187,52 @@ function FloatingLinkEditor({
                 <Edit2 size={14} />
             </button>
         </div>
-    );
+    )
 }
 
 function useFloatingLinkEditorToolbar(
     editor: LexicalEditor,
-    anchorElem: HTMLElement,
+    anchorElem: HTMLElement
 ): JSX.Element | null {
-    const [activeEditor, setActiveEditor] = useState(editor);
-    const [isLink, setIsLink] = useState(false);
+    const [activeEditor, setActiveEditor] = useState(editor)
+    const [isLink, setIsLink] = useState(false)
 
     const updateToolbar = useCallback(() => {
-        const selection = $getSelection();
+        const selection = $getSelection()
         if ($isRangeSelection(selection)) {
-            const node = selection.anchor.getNode();
-            const linkParent = $findMatchingParent(
-                node,
-                ($isLinkNode)
-            );
-            const autoLinkParent = $findMatchingParent(
-                node,
-                ($isAutoLinkNode)
-            );
+            const node = selection.anchor.getNode()
+            const linkParent = $findMatchingParent(node, $isLinkNode)
+            const autoLinkParent = $findMatchingParent(node, $isAutoLinkNode)
 
             // We'll treat both link and autolink the same for this editor
             if (linkParent != null || autoLinkParent != null) {
-                setIsLink(true);
+                setIsLink(true)
             } else {
-                setIsLink(false);
+                setIsLink(false)
             }
         } else {
-            setIsLink(false);
+            setIsLink(false)
         }
-    }, []);
+    }, [])
 
     useEffect(() => {
         return editor.registerCommand(
             SELECTION_CHANGE_COMMAND,
             (_payload, newEditor) => {
-                updateToolbar();
-                setActiveEditor(newEditor);
-                return false;
+                updateToolbar()
+                setActiveEditor(newEditor)
+                return false
             },
-            COMMAND_PRIORITY_LOW,
-        );
-    }, [editor, updateToolbar]);
+            COMMAND_PRIORITY_LOW
+        )
+    }, [editor, updateToolbar])
 
     // Initial check
     useEffect(() => {
         editor.getEditorState().read(() => {
-            updateToolbar();
-        });
-    }, [editor, updateToolbar]);
+            updateToolbar()
+        })
+    }, [editor, updateToolbar])
 
     return createPortal(
         <FloatingLinkEditor
@@ -241,15 +241,15 @@ function useFloatingLinkEditorToolbar(
             isLink={isLink}
             setIsLink={setIsLink}
         />,
-        document.body, // Anchor to body to avoid clipping
-    );
+        document.body // Anchor to body to avoid clipping
+    )
 }
 
 export default function FloatingLinkEditorPlugin({
     anchorElem = document.body,
 }: {
-    anchorElem?: HTMLElement;
+    anchorElem?: HTMLElement
 }): JSX.Element | null {
-    const [editor] = useLexicalComposerContext();
-    return useFloatingLinkEditorToolbar(editor, anchorElem);
+    const [editor] = useLexicalComposerContext()
+    return useFloatingLinkEditorToolbar(editor, anchorElem)
 }

@@ -1,14 +1,14 @@
 import {
     Button,
     Card,
-    InputContentEditor,
-    inputEditorErrorMessage,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage
 } from '@components'
-import { useNotification } from '@hooks'
-import React, { useEffect } from 'react'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
-import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useNotification } from '@hooks'
+import { useEffect } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import * as yup from 'yup'
 
 export const ReplyTicketForm = ({
     onSubmit,
@@ -25,7 +25,7 @@ export const ReplyTicketForm = ({
         message: yup
             .mixed()
             .test('Message', 'Must Provide Message', (value) =>
-                inputEditorErrorMessage(value)
+                inputRichTextEditorErrorMessage(value)
             ),
     })
 
@@ -51,7 +51,7 @@ export const ReplyTicketForm = ({
                     className="mt-2 w-full"
                     onSubmit={methods.handleSubmit(onSubmit)}
                 >
-                    <InputContentEditor
+                    <InputRichTextEditor
                         name={'message'}
                         label={'Message'}
                         height={'h-36'}

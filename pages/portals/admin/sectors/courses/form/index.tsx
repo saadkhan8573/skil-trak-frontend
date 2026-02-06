@@ -31,10 +31,10 @@ const CourseAddPage: NextPageWithLayout = () => {
     }, [])
 
     const onSubmit = async (values: any) => {
-        const requirements = draftToHtmlText(values?.requirements)
+        // const requirements = draftToHtmlText(values?.requirements)
         const body = {
             ...values,
-            requirements,
+            // requirements,
         }
         await add(body)
     }

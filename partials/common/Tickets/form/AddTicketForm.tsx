@@ -4,11 +4,11 @@ import {
     Card,
     Checkbox,
     InitialAvatar,
-    InputContentEditor,
+    InputRichTextEditor,
     Select,
     TextInput,
-    inputEditorErrorMessage,
-    useIsRestricted,
+    inputRichTextEditorErrorMessage,
+    useIsRestricted
 } from '@components'
 import { UserRoles } from '@constants'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -71,7 +71,7 @@ export const AddTicketForm = ({
         message: yup
             .mixed()
             .test('Message', 'Must Provide Message', (value) =>
-                inputEditorErrorMessage(value)
+                inputRichTextEditorErrorMessage(value)
             ),
         priority: yup.string().required('Must provide Priority'),
     })
@@ -106,13 +106,13 @@ export const AddTicketForm = ({
         () =>
             students?.data?.length
                 ? students?.data?.map((student: any) => ({
-                      label:
-                          student?.user?.name +
-                          student?.studentId +
-                          student?.familyName,
-                      value: student?.id,
-                      item: student,
-                  }))
+                    label:
+                        student?.user?.name +
+                        student?.studentId +
+                        student?.familyName,
+                    value: student?.id,
+                    item: student,
+                }))
                 : [],
         [students?.data]
     )
@@ -216,19 +216,19 @@ export const AddTicketForm = ({
                                             <div className="px-2 flex items-center gap-x-2">
                                                 {optionItem.data?.item?.user
                                                     ?.name && (
-                                                    <InitialAvatar
-                                                        name={
-                                                            optionItem.data
-                                                                ?.item?.user
-                                                                ?.name
-                                                        }
-                                                        imageUrl={
-                                                            optionItem.data
-                                                                ?.item?.user
-                                                                ?.avatar
-                                                        }
-                                                    />
-                                                )}
+                                                        <InitialAvatar
+                                                            name={
+                                                                optionItem.data
+                                                                    ?.item?.user
+                                                                    ?.name
+                                                            }
+                                                            imageUrl={
+                                                                optionItem.data
+                                                                    ?.item?.user
+                                                                    ?.avatar
+                                                            }
+                                                        />
+                                                    )}
                                                 <div>
                                                     <p className="text-[11px] text-gray-600">
                                                         {' '}
@@ -337,7 +337,7 @@ export const AddTicketForm = ({
                             required
                         />
 
-                        <InputContentEditor
+                        <InputRichTextEditor
                             name={'message'}
                             label={'Message'}
                         />

@@ -63,6 +63,7 @@ interface RichTextEditorProps {
   label?: string
   placeholder?: string
   className?: string
+  height?: string
 }
 
 export const RichTextEditor = ({
@@ -71,6 +72,7 @@ export const RichTextEditor = ({
   label,
   placeholder,
   className,
+  height,
 }: RichTextEditorProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -115,7 +117,7 @@ export const RichTextEditor = ({
         </div>
       )}
 
-      <div className={`border rounded-md overflow-hidden bg-white min-h-[200px] max-h-[500px] flex flex-col border-gray-300`}>
+      <div className={`border rounded-md overflow-hidden bg-white ${height ? height : 'min-h-[200px] max-h-[500px]'} flex flex-col border-gray-300`}>
         <LexicalComposer initialConfig={initialConfig}>
           <Toolbar />
           <div className="relative flex-1 overflow-auto">
@@ -199,11 +201,21 @@ function InitialValuePlugin({ value }: { value?: string }) {
         updateContent();
       }
       setIsFirstRender(false);
-    } else if (value !== undefined) {
+    } else {
       editor.read(() => {
         const currentHtml = $generateHtmlFromNodes(editor, null);
-        console.log('InitialValuePlugin: checking update', { currentHtml, newValue: value, areEqual: currentHtml === value });
-        if (currentHtml !== value) {
+        // Treat undefined/null as empty string specifically for the reset case
+        const expectedValue = value || '';
+
+        // If the editor is functionally empty (just a paragraph) and we expect empty, don't update
+        // (Optional optimization, but let's stick to simple comparison first)
+
+        console.log('InitialValuePlugin: checking update', { currentHtml, newValue: value, expectedValue });
+
+        // We compare against expectedValue (which defaults to '')
+        if (currentHtml !== expectedValue) {
+          // Special check: if expectedValue is empty string, but currentHtml is the default empty paragraph, 
+          // we might not NEED to update, but updating causes no harm other than a re-render.
           console.log('RichTextEditor: Updating external value', { newValue: value });
           updateContent();
         }

@@ -5,14 +5,13 @@ import { AdminLayout } from '@layouts'
 // Types
 import {
     BackButton,
-    ShowErrorNotifications,
-    draftToHtmlText,
+    ShowErrorNotifications
 } from '@components'
 import { PageHeading } from '@components/headings'
 import { useNavbar, useNotification } from '@hooks'
 import { AddTicketForm } from '@partials/common/Tickets'
-import { NextPageWithLayout } from '@types'
 import { AdminApi, CommonApi } from '@queries'
+import { NextPageWithLayout } from '@types'
 import { useRouter } from 'next/router'
 
 const AddTicket: NextPageWithLayout = () => {
@@ -41,8 +40,7 @@ const AddTicket: NextPageWithLayout = () => {
     }, [createTicketResult])
 
     const onSubmit = (values: any) => {
-        const message = draftToHtmlText(values?.message)
-        createTicket({ ...values, message })
+        createTicket({ ...values })
     }
 
     const adminAllStudents =

@@ -1,20 +1,18 @@
 import {
     Button,
     Card,
-    htmlToDraftText,
-    InputContentEditor,
-    inputEditorErrorMessage,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
     Select,
     TextInput,
-    Typography,
+    Typography
 } from '@components'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { NotesTemplateTrigger, OptionType } from '@types'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { NotesTemplateType } from '../enum'
-import { NotesTemplateTrigger } from '@types'
-import { useEffect, useState } from 'react'
-import { OptionType } from '@types'
 type Props = {
     onSubmit: (values: any) => void
     edit?: boolean
@@ -37,12 +35,12 @@ export const NoteTemplateForm = ({
         successContent: yup
             .mixed()
             .test('Message', 'Must Provide Success Message', (value) =>
-                inputEditorErrorMessage(value)
+                inputRichTextEditorErrorMessage(value)
             ),
         failureContent: yup
             .mixed()
             .test('Message', 'Must Provide Failure Message', (value) =>
-                inputEditorErrorMessage(value)
+                inputRichTextEditorErrorMessage(value)
             ),
     })
 
@@ -53,8 +51,8 @@ export const NoteTemplateForm = ({
             subject: initialValues?.subject,
             type: initialValues?.type,
             trigger: initialValues?.trigger,
-            successContent: htmlToDraftText(initialValues?.successContent),
-            failureContent: htmlToDraftText(initialValues?.failureContent),
+            successContent: initialValues?.successContent,
+            failureContent: initialValues?.failureContent,
         },
     })
 
@@ -123,11 +121,11 @@ export const NoteTemplateForm = ({
                             name={'subject'}
                             placeholder="Subject"
                         />
-                        <InputContentEditor
+                        <InputRichTextEditor
                             name="successContent"
                             label="Successfull"
                         />
-                        <InputContentEditor
+                        <InputRichTextEditor
                             name="failureContent"
                             label="Unsuccessfull"
                         />

@@ -1,23 +1,18 @@
 import {
     Button,
-    ContentEditor,
-    InputContentEditor,
+    InputRichTextEditor,
     Select,
-    TextArea,
     TextInput,
-    Typography,
-    htmlToDraftText,
+    Typography
 } from '@components'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { AdminApi } from '@queries'
-import { Course, OptionType, Sector } from '@types'
-import { isBrowser } from '@utils'
-import React, { useEffect, useState } from 'react'
-import { FormProvider, useForm, useFieldArray } from 'react-hook-form'
+import { Course, OptionType } from '@types'
+import { useEffect, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import { MdAdd, MdDelete } from 'react-icons/md'
-import { HighlightedTasksField } from './components/HighlightedTasksField'
 import { ConfirmCourseUpdateModal } from './components/ConfirmCourseUpdateModal'
+import { HighlightedTasksField } from './components/HighlightedTasksField'
 
 interface CourseFormProps {
     result: any
@@ -51,9 +46,7 @@ export const CourseForm = ({
             }
             methods.reset({
                 ...initialValues,
-                requirements: htmlToDraftText(
-                    initialValues?.requirements as string
-                ),
+                requirements: initialValues?.requirements,
                 sector: initialValues?.sector?.id,
                 highlightedTasks:
                     initialValues?.highlightedTasks &&
@@ -85,9 +78,7 @@ export const CourseForm = ({
         resolver: yupResolver(validationSchema),
         defaultValues: {
             ...initialValues,
-            requirements: htmlToDraftText(
-                initialValues?.requirements as string
-            ),
+            requirements: initialValues?.requirements,
             sector: initialValues?.sector?.id,
             highlightedTasks: initialValues?.highlightedTasks || [
                 { statement: '' },
@@ -286,12 +277,7 @@ export const CourseForm = ({
                     </div>
 
                     <div>
-                        {/* <ContentEditor
-                            label="Requirement"
-                            content={requirementFile}
-                            setContent={setRequirementFile}
-                        /> */}
-                        <InputContentEditor
+                        <InputRichTextEditor
                             label="Requirement"
                             name="requirements"
                         />

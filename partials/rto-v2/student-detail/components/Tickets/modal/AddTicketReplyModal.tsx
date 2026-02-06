@@ -1,14 +1,12 @@
 import {
-    draftToHtmlText,
     GlobalModal,
     ShowErrorNotifications,
-    Typography,
+    Typography
 } from '@components'
-import React from 'react'
-import { ReplyTicketForm } from '../form'
+import { useNotification } from '@hooks'
 import { CommonApi } from '@queries'
 import { TicketTypes } from '@types'
-import { useNotification } from '@hooks'
+import { ReplyTicketForm } from '../form'
 
 export const AddTicketReplyModal = ({
     ticket,
@@ -21,10 +19,9 @@ export const AddTicketReplyModal = ({
 
     const { notification } = useNotification()
     const onSubmit = async (values: any) => {
-        const message = draftToHtmlText(values?.message)
         const res: any = await addReply({
             ticket: ticket?.id,
-            message,
+            ...values,
         })
         if (res?.data) {
             onCancel()
@@ -35,7 +32,7 @@ export const AddTicketReplyModal = ({
         }
     }
     return (
-        <GlobalModal onCancel={onCancel} className="!w-[600px]">
+        <GlobalModal onCancel={onCancel} className="w-[600px]!">
             <ShowErrorNotifications result={addReplyResult} />
             <div className="w-full p-4">
                 <Typography variant="title">Add Ticket Reply</Typography>

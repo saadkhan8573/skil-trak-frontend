@@ -1,17 +1,14 @@
 import {
     Button,
-    draftToHtmlText,
-    InputContentEditor,
+    InputRichTextEditor,
     ShowErrorNotifications,
     Typography,
 } from '@components'
-import { yupResolver } from '@hookform/resolvers/yup'
 import React, { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { RtoApi } from '@queries'
 import * as yup from 'yup'
 import { useNotification } from '@hooks'
-import { convertFromHTML, ContentState, EditorState } from 'draft-js'
 
 export const AddCustomCourseRequirements = ({
     onCloseModal,
@@ -22,24 +19,11 @@ export const AddCustomCourseRequirements = ({
     courseId?: any
     initialRequirements?: string
 }) => {
-   
     const [submitCustomReq, submitCustomReqResult] =
         RtoApi.Courses.useAddRtoCustomCourseRequirements()
     const { notification } = useNotification()
 
     const isEditMode = initialRequirements !== undefined
-
-    const getInitialEditorState = () => {
-        if (initialRequirements) {
-            const blocksFromHTML = convertFromHTML(initialRequirements)
-            const contentState = ContentState.createFromBlockArray(
-                blocksFromHTML.contentBlocks,
-                blocksFromHTML.entityMap
-            )
-            return EditorState.createWithContent(contentState)
-        }
-        return EditorState.createEmpty()
-    }
 
     useEffect(() => {
         if (submitCustomReqResult.isSuccess) {
@@ -62,15 +46,17 @@ export const AddCustomCourseRequirements = ({
     const methods = useForm({
         mode: 'all',
         defaultValues: {
-            requirements: getInitialEditorState(),
+            requirements: initialRequirements || '',
         },
     })
 
     const onSubmit = async (values: any) => {
-        const requirements = draftToHtmlText(values?.requirements)
-        if (requirements === '<p></p>\n' || requirements.trim() === '<p></p>') {
+        const { requirements } = values
+
+        // Simple empty check (optional, yup might handle it)
+        if (!requirements || requirements === '<p></p>' || requirements.trim() === '') {
             methods.setError('requirements', {
-                type: 'requirements',
+                type: 'manual',
                 message: 'Must add requirements',
             })
             return
@@ -78,7 +64,6 @@ export const AddCustomCourseRequirements = ({
 
         const body = { requirements }
 
-        // Use the same submit method for both add and update
         await submitCustomReq({
             body,
             id: courseId,
@@ -86,19 +71,20 @@ export const AddCustomCourseRequirements = ({
     }
 
     return (
-        <>
+        <div className="space-y-6">
             <ShowErrorNotifications result={submitCustomReqResult} />
             <Typography variant="title">
                 {isEditMode ? 'Edit' : 'Add'} Custom Course Requirements
             </Typography>
             <FormProvider {...methods}>
                 <form
-                    className="mt-6 w-full"
+                    className="space-y-6"
                     onSubmit={methods.handleSubmit(onSubmit)}
                 >
-                    <InputContentEditor
+                    <InputRichTextEditor
                         label="Requirement"
                         name="requirements"
+                        height="h-64"
                     />
                     <Button
                         submit
@@ -112,6 +98,6 @@ export const AddCustomCourseRequirements = ({
                     />
                 </form>
             </FormProvider>
-        </>
+        </div>
     )
 }

@@ -35,12 +35,7 @@ export const ComposeListingIndustryMail = ({
             formData.append('workplaceId', workplaceId)
         }
         Object.entries(rest)?.forEach(([key, value]: any) => {
-            if (key === 'body') {
-                const body = draftToHtmlText(value)
-                formData.append(key, body)
-            } else {
-                formData.append(key, value)
-            }
+            formData.append(key, value)
         })
         if (attachmentFiles && attachmentFiles?.length > 0) {
             attachmentFiles?.forEach((attched: File) => {

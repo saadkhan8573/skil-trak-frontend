@@ -2,36 +2,39 @@
 
 import {
     Button,
-    InputContentEditorV2,
     NoData,
+    InputRichTextEditor,
     ShowErrorNotifications,
-    TextArea,
-    draftToHtmlTextV2,
-    htmlToDraftTextV2,
 } from '@components'
-// import { Button } from "@components/ui/button";
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
 } from '@components/ui/collapsible'
-import { EditorState } from 'draft-js'
 import { ChevronDown, Edit, Sparkles, Check } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { RtoFileTitle } from '../cards/DocumentsSection'
 import { RtoV2Api } from '@queries'
 import { useNotification } from '@hooks'
 import { countWords } from 'utils/functions/countWords'
+import { FormProvider, useForm } from 'react-hook-form'
 
 export const RtoPlacementRequirements = ({ course }: any) => {
     const [open, setOpen] = useState(true)
     const [isEditing, setIsEditing] = useState(false)
-    const [content, setContent] = useState('')
     const [summaryId, setSummaryId] = useState<any>(undefined)
 
     const { notification } = useNotification()
 
-    const [editorState, setEditorState] = useState<EditorState | null>(null)
+    const methods = useForm({
+        defaultValues: {
+            summary: '',
+        },
+    })
+
+    const { watch, handleSubmit, reset } = methods
+    const summaryContent = watch('summary')
+
     // api call to update summary
     const [updateSummary, updateSummaryResult] =
         RtoV2Api.Courses.useUpdateCourseSummary()
@@ -43,18 +46,9 @@ export const RtoPlacementRequirements = ({ course }: any) => {
                 (f: any) => f.title === RtoFileTitle.LOGBOOK
             )?.rtoLogbookSummary?.[0] || null
 
-        setContent(summaryObj?.summary || '')
+        reset({ summary: summaryObj?.summary || '' })
         setSummaryId(summaryObj?.id || null)
     }, [course])
-
-    // Load DraftJS editor only when editing starts
-    useEffect(() => {
-        if (isEditing) {
-            setEditorState(
-                content ? htmlToDraftTextV2(content) : EditorState.createEmpty()
-            )
-        }
-    }, [isEditing])
 
     useEffect(() => {
         if (updateSummaryResult.isSuccess) {
@@ -65,26 +59,20 @@ export const RtoPlacementRequirements = ({ course }: any) => {
         }
     }, [updateSummaryResult.isSuccess])
 
-    const handleSave = () => {
-        if (editorState) {
-            const html = draftToHtmlTextV2(editorState)
-            setContent(html)
-            // call api to save summary
-            updateSummary({
-                id: summaryId,
-                body: {
-                    summary: html,
-                },
-            })
-        }
+    const onSubmit = (values: any) => {
+        updateSummary({
+            id: summaryId,
+            body: {
+                summary: values.summary,
+            },
+        })
         setIsEditing(false)
     }
-    const wordCount = isEditing
-        ? countWords(editorState ? draftToHtmlTextV2(editorState) : '')
-        : countWords(content)
+
+    const wordCount = countWords(summaryContent)
 
     return (
-        <>
+        <FormProvider {...methods}>
             <ShowErrorNotifications result={updateSummaryResult} />
             <Collapsible open={open} onOpenChange={setOpen}>
                 <div className="bg-gradient-to-br from-accent/5 to-accent/10 rounded-xl border border-accent/20 overflow-hidden">
@@ -105,25 +93,12 @@ export const RtoPlacementRequirements = ({ course }: any) => {
                                 {wordCount} / 5000 words
                             </span>
 
-                            {/* <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    isEditing ? handleSave() : setIsEditing(true);
-                                }}
-                                className="h-8 gap-1.5"
-
-                            >
-                                <Edit className="h-3.5 w-3.5" />
-                                {isEditing ? "Done" : "Edit"}
-                            </Button> */}
                             <Button
                                 Icon={isEditing ? Check : Edit}
                                 onClick={(e) => {
                                     e.stopPropagation()
                                     isEditing
-                                        ? handleSave()
+                                        ? handleSubmit(onSubmit)()
                                         : setIsEditing(true)
                                 }}
                                 variant="info"
@@ -134,9 +109,8 @@ export const RtoPlacementRequirements = ({ course }: any) => {
                             />
 
                             <ChevronDown
-                                className={`h-4 w-4 transition-transform ${
-                                    open ? '' : '-rotate-90'
-                                }`}
+                                className={`h-4 w-4 transition-transform ${open ? '' : '-rotate-90'
+                                    }`}
                             />
                         </div>
                     </CollapsibleTrigger>
@@ -145,18 +119,16 @@ export const RtoPlacementRequirements = ({ course }: any) => {
                     <CollapsibleContent>
                         <div className="px-5 pb-5 space-y-4">
                             {isEditing ? (
-                                <InputContentEditorV2
+                                <InputRichTextEditor
+                                    name="summary"
                                     label="Editable Summary"
-                                    content={content}
-                                    onChange={setEditorState}
                                     height="h-96"
-                                    showError={false}
                                 />
-                            ) : content?.trim() ? (
+                            ) : summaryContent?.trim() ? (
                                 <div
                                     className="prose prose-sm max-w-none bg-background/30 rounded-md p-4 border border-border/40 text-xs h-96 overflow-auto resize-y min-h-52"
                                     dangerouslySetInnerHTML={{
-                                        __html: content,
+                                        __html: summaryContent,
                                     }}
                                 />
                             ) : (
@@ -166,6 +138,6 @@ export const RtoPlacementRequirements = ({ course }: any) => {
                     </CollapsibleContent>
                 </div>
             </Collapsible>
-        </>
+        </FormProvider>
     )
 }

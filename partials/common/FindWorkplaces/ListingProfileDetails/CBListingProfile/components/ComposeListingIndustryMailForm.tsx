@@ -1,12 +1,9 @@
 import {
     Button,
-    InputContentEditor,
-    inputEditorErrorMessage,
+    InputRichTextEditor,
     TextInput,
 } from '@components'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { convertToRaw } from 'draft-js'
-import draftToHtml from 'draftjs-to-html'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 import { useEffect, useState } from 'react'
@@ -17,7 +14,7 @@ import { Attachment } from '@partials/common/Notifications'
 type FormValues = {
     receiver: string
     subject: string
-    body?: any
+    body?: string
 }
 export const ComposeListingIndustryMailForm = ({
     result,
@@ -40,9 +37,7 @@ export const ComposeListingIndustryMailForm = ({
             .email('Invalid Email')
             .required('Must provide email'),
         subject: Yup.string().required('Must provide subject'),
-        // body: Yup.mixed().test('body', 'Must Provide Body', (value) =>
-        //     inputEditorErrorMessage(value)
-        // ),
+        body: Yup.string().required('Must provide body'),
     })
 
     const methods = useForm<FormValues>({
@@ -93,7 +88,6 @@ export const ComposeListingIndustryMailForm = ({
                 >
                     <div className="flex flex-col px-3">
                         <input
-                            // name={'receiver'}
                             {...methods.register('receiver')}
                             className={inputClasses}
                             placeholder="To"
@@ -107,21 +101,14 @@ export const ComposeListingIndustryMailForm = ({
                         <InputErrorMessage name="subject" />
 
                         <div className="mt-2">
-                            <InputContentEditor
+                            <InputRichTextEditor
                                 name={'body'}
-                                onChange={(e: any) => {
-                                    const mail = draftToHtml(
-                                        convertToRaw(e.getCurrentContent())
-                                    )
-                                    // setMailContent(mail)
-                                }}
                                 showError={false}
                                 height="h-80"
                             />
                         </div>
                         <InputErrorMessage name="body" />
 
-                        {/*  */}
                         <div className="mt-3 flex gap-x-3 items-center justify-between">
                             <div className="min-w-32">
                                 <Button

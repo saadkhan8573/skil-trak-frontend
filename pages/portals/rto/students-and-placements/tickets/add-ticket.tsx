@@ -3,7 +3,7 @@ import { ReactElement, useEffect } from 'react'
 // Layouts
 import { RtoLayoutV2 } from '@layouts'
 // Types
-import { BackButton, draftToHtmlText } from '@components'
+import { BackButton } from '@components'
 import { PageHeading } from '@components/headings'
 import { useNavbar, useNotification } from '@hooks'
 import { AddTicketForm } from '@partials/common/Tickets'

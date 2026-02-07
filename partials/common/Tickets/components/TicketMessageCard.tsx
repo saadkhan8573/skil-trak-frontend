@@ -1,11 +1,9 @@
 import {
     ActionButton,
-    InputContentEditor,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
     Modal,
     Typography,
-    draftToHtmlText,
-    htmlToDraftText,
-    inputEditorErrorMessage,
 } from '@components'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNotification } from '@hooks'
@@ -47,8 +45,8 @@ export const TicketMessageCard = ({
     const validationSchema = yup.object({
         message: yup
             .mixed()
-            .test('Message', 'Must Provide Message', (value) =>
-                inputEditorErrorMessage(value)
+            .test('Message', 'Must Provide Message', (value: any) =>
+                inputRichTextEditorErrorMessage(value)
             ),
     })
     const methods = useForm({
@@ -56,7 +54,7 @@ export const TicketMessageCard = ({
         resolver: yupResolver(validationSchema),
     })
     const onSubmit = async (values: any) => {
-        const message = draftToHtmlText(values?.message)
+        const message = values?.message
 
         try {
             if (message) {
@@ -91,14 +89,14 @@ export const TicketMessageCard = ({
                                 name="message"
                                 control={methods.control}
                                 defaultValue={
-                                    htmlToDraftText(message?.message) || ''
+                                    message?.message || ''
                                 }
                                 render={({ field }) => (
-                                    <InputContentEditor
+                                    <InputRichTextEditor
                                         name={field?.name}
                                         label={'Message'}
                                         height={'h-44'}
-                                        // {...field}
+                                    // {...field}
                                     />
                                 )}
                             />
@@ -129,9 +127,8 @@ export const TicketMessageCard = ({
         <>
             {modal && modal}
             <div
-                className={`${
-                    id === message?.author?.id ? 'bg-gray-200' : 'bg-white'
-                } border-2 border-dashed border-gray-400 shadow px-4 py-2`}
+                className={`${id === message?.author?.id ? 'bg-gray-200' : 'bg-white'
+                    } border-2 border-dashed border-gray-400 shadow px-4 py-2`}
             >
                 {forwarded?.action === StatusEnum.FORWARDED && (
                     <div className="flex justify-end">

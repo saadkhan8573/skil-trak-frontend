@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-
 import {
     ActionButton,
     Button,
-    draftToHtmlText,
-    htmlToDraftText,
-    InputContentEditor,
-    inputEditorErrorMessage,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
     ShowErrorNotifications,
     TagInput,
-    TextArea,
     Typography,
     UploadFile,
 } from '@components'
@@ -24,6 +17,9 @@ import * as yup from 'yup'
 import { FileUpload } from '@hoc'
 import Link from 'next/link'
 import { RiShining2Fill } from 'react-icons/ri'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 export const EditCourseModal = ({
     course,
@@ -44,15 +40,15 @@ export const EditCourseModal = ({
     const validationSchema = yup.object().shape({
         description: yup
             .mixed()
-            .test('Message', 'Description is required', (value) =>
-                inputEditorErrorMessage(value)
+            .test('Message', 'Description is required', (value: any) =>
+                inputRichTextEditorErrorMessage(value)
             ),
     })
     const methods = useForm({
         resolver: yupResolver(validationSchema),
         mode: 'all',
         defaultValues: {
-            description: htmlToDraftText(course.description ?? ''),
+            description: course.description ?? '',
         },
     })
 
@@ -69,14 +65,13 @@ export const EditCourseModal = ({
     }, [updateCourseResult.isSuccess])
     useEffect(() => {
         if (generateContentResult.isSuccess) {
+            methods.setValue('description', generateContentResult.data?.content || generateContentResult.data)
             notification.success({
                 title: 'Course content generated',
                 description: 'Course content generated successfully',
             })
-
-            onCloseModal()
         }
-    }, [generateContentResult.isSuccess])
+    }, [generateContentResult.isSuccess, generateContentResult.data])
 
     const handleTagEnter = (name: string, newTag: string) => {
         setTags((prevTags: any) => ({
@@ -97,7 +92,7 @@ export const EditCourseModal = ({
         const { reference } = tags
 
         const formData = new FormData()
-        formData.append('description', draftToHtmlText(description))
+        formData.append('description', description)
         formData.append('reference', reference.join(','))
 
         if (file && Array.isArray(file) && file[0] instanceof File) {
@@ -124,9 +119,8 @@ export const EditCourseModal = ({
 
     return (
         <>
-            <ShowErrorNotifications
-                result={updateCourseResult || generateContentResult}
-            />
+            <ShowErrorNotifications result={updateCourseResult} />
+            <ShowErrorNotifications result={generateContentResult} />
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
                     <div className="flex justify-center  flex-col gap-y-2 px-2 py-2">
@@ -157,10 +151,10 @@ export const EditCourseModal = ({
                                     required
                                 /> */}
                                 <div className="">
-                                    <InputContentEditor
+                                    <InputRichTextEditor
                                         name="description"
-                                        // label="Description"
-                                        // height="300px"
+                                    // label="Description"
+                                    // height="300px"
                                     />
                                 </div>
                                 {!course?.isContentVerified &&

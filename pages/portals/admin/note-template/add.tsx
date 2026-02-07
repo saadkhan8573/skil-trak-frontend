@@ -1,4 +1,4 @@
-import { draftToHtmlText, ShowErrorNotifications } from '@components'
+import { ShowErrorNotifications } from '@components'
 import { useNavbar, useNotification } from '@hooks'
 import { AdminLayout } from '@layouts'
 import { NoteTemplateForm } from '@partials'
@@ -20,14 +20,6 @@ const AddNoteTemplate = () => {
     }, [])
 
     const onSubmit = async (values: any) => {
-        // let successContent = ''
-        // let failureContent = ''
-        // if (values?.successContent) {
-        //     successContent = draftToHtmlText(values?.successContent)
-        // }
-        // if (values?.failureContent) {
-        //     failureContent = draftToHtmlText(values?.failureContent)
-        // }
 
         const res: any = await add({
             ...values,

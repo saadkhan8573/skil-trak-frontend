@@ -1,6 +1,7 @@
 import {
     Button,
-    InputRichTextEditor
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage
 } from '@components'
 import { FileUpload } from '@hoc'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -32,9 +33,9 @@ export const ComposeListingRtoMailForm = ({
             .email('Invalid Email')
             .required('Must provide email'),
         subject: Yup.string().required('Must provide subject'),
-        // body: Yup.mixed().test('body', 'Must Provide Body', (value) =>
-        //     inputEditorErrorMessage(value)
-        // ),
+        body: Yup.mixed().test('body', 'Must Provide Body', (value: string) =>
+            inputRichTextEditorErrorMessage(value)
+        ),
     })
     const methods = useForm<FormValues>({
         resolver: yupResolver(validationSchema),

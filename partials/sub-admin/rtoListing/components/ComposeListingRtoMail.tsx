@@ -1,7 +1,6 @@
 import {
     ShowErrorNotifications,
     Typography,
-    draftToHtmlText,
 } from '@components'
 import { useNotification } from '@hooks'
 import { SubAdminApi } from '@queries'
@@ -29,8 +28,7 @@ export const ComposeListingRtoMail = ({
         const { attachments, ...rest } = values
         Object.entries(rest)?.forEach(([key, value]: any) => {
             if (key === 'body') {
-                const body = draftToHtmlText(value)
-                formData.append(key, body)
+                formData.append(key, value)
             } else {
                 formData.append(key, value)
             }
@@ -63,13 +61,6 @@ export const ComposeListingRtoMail = ({
             })
         }
     }
-    // const onSubmit = (values: any) => {
-    //     const { message, subject } = values
-    //     const body = {
-    //         subject: subject,
-    //         body: draftToHtmlText(message),
-    //         // type: 'email',
-    //     }
 
     //     if (id) {
     //         sendMessage({ id: id, body: body }).then((res: any) => {

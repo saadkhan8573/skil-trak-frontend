@@ -1,7 +1,6 @@
 import {
     ShowErrorNotifications,
     Typography,
-    draftToHtmlText,
 } from '@components'
 import { useNotification } from '@hooks'
 import { CommonApi } from '@queries'
@@ -27,12 +26,8 @@ export const ComposeMail = ({
 
         const { attachment, ...rest } = values
         Object.entries(rest)?.forEach(([key, value]: any) => {
-            if (key === 'message') {
-                const message = draftToHtmlText(value)
-                formData.append(key, message)
-            } else {
-                formData.append(key, value)
-            }
+
+            formData.append(key, value)
         })
         if (attachment && attachment?.length > 0) {
             attachment?.forEach((attched: File) => {

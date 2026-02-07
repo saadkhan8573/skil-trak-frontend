@@ -1,5 +1,4 @@
 import {
-    draftToHtmlText,
     InitialAvatar,
     LoadingAnimation,
     NoData,

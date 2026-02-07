@@ -6,7 +6,6 @@ import {
     LoadingAnimation,
     Popup,
     ShowErrorNotifications,
-    draftToHtmlText,
 } from '@components'
 import { PageHeading } from '@components/headings'
 import { useAlert, useNavbar, useNotification } from '@hooks'

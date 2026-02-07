@@ -4,10 +4,8 @@ import { useEffect, useState } from 'react'
 
 import {
     Button,
-    draftToHtmlText,
-    htmlToDraftText,
-    InputContentEditor,
-    inputEditorErrorMessage,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
     ShowErrorNotifications,
     TagInput,
     Typography,
@@ -43,8 +41,8 @@ export const ApproveEditCourseModal = ({
         // courses: yup.number().required('Course is required'),
         description: yup
             .mixed()
-            .test('Message', 'Description is required', (value) =>
-                inputEditorErrorMessage(value)
+            .test('Message', 'Description is required', (value: any) =>
+                inputRichTextEditorErrorMessage(value)
             ),
         // reference: yup.string().url('Invalid URL format'),
     })
@@ -52,7 +50,7 @@ export const ApproveEditCourseModal = ({
         resolver: yupResolver(validationSchema),
         mode: 'all',
         defaultValues: {
-            description: htmlToDraftText(course.description ?? ''),
+            description: course.description ?? '',
         },
     })
 
@@ -96,7 +94,7 @@ export const ApproveEditCourseModal = ({
         const { reference } = tags
 
         const formData = new FormData()
-        formData.append('description', draftToHtmlText(description))
+        formData.append('description', description)
         formData.append('reference', JSON.stringify(reference))
 
         if (file?.[0]) {
@@ -157,10 +155,10 @@ export const ApproveEditCourseModal = ({
                                     required
                                 /> */}
                                 <div className="">
-                                    <InputContentEditor
+                                    <InputRichTextEditor
                                         name="description"
-                                        // label="Description"
-                                        // height="300px"
+                                    // label="Description"
+                                    // height="300px"
                                     />
                                 </div>
                             </div>

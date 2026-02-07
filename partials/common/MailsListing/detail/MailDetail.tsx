@@ -1,6 +1,5 @@
 import {
     Button,
-    draftToHtmlText,
     EmptyData,
     LoadingAnimation,
     TechnicalError,
@@ -46,7 +45,7 @@ export const MailDetail = () => {
     }, [router?.query, mailDetail])
 
     const onReplySubmit = (values: any) => {
-        const reply = draftToHtmlText(values?.reply)
+        const reply = values?.reply
         setIsReply(false)
     }
     const toggleRepliesExpansion = () => {
@@ -196,12 +195,11 @@ export const MailDetail = () => {
                                                         <span
                                                             className={`
                                                     px-2 py-1 rounded-full text-xs font-medium
-                                                    ${
-                                                        reply.status ===
-                                                        'delivered'
-                                                            ? 'bg-green-100 text-green-800'
-                                                            : 'bg-yellow-100 text-yellow-800'
-                                                    }
+                                                    ${reply.status ===
+                                                                    'delivered'
+                                                                    ? 'bg-green-100 text-green-800'
+                                                                    : 'bg-yellow-100 text-yellow-800'
+                                                                }
                                                 `}
                                                         >
                                                             {reply?.status}
@@ -265,9 +263,8 @@ export const MailDetail = () => {
                         </div>
                     ) : null} */}
                     <div
-                        className={`fixed bottom-0 right-20 z-[333]  ${
-                            isComposeMail ? 'block' : 'hidden'
-                        }`}
+                        className={`fixed bottom-0 right-20 z-[333]  ${isComposeMail ? 'block' : 'hidden'
+                            }`}
                     >
                         <ComposeMail
                             onCancelComposeMail={onCancelComposeMail}

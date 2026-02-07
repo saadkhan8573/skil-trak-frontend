@@ -10,10 +10,8 @@ import { useDispatch } from 'react-redux'
 import {
     Button,
     Card,
-    InputContentEditor,
     Select,
     TextInput,
-    inputEditorErrorMessage,
 } from '@components'
 
 export const ForwardTicket = ({ ticketDetail }: any) => {

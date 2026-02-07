@@ -4,7 +4,6 @@ import {
     BackButton,
     Card,
     ShowErrorNotifications,
-    draftToHtmlText,
 } from '@components'
 import { PageHeading } from '@components/headings'
 import { useAlert, useNavbar } from '@hooks'

@@ -6,7 +6,6 @@ import { NoteTemplateForm } from '@partials'
 import {
     BackButton,
     Card,
-    draftToHtmlText,
     LoadingAnimation,
     Popup,
     ShowErrorNotifications,

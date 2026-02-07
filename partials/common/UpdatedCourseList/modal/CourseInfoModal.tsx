@@ -2,11 +2,9 @@ import React from 'react'
 import * as Yup from 'yup'
 import {
     Modal,
-    draftToHtmlText,
-    InputContentEditor,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
     ShowErrorNotifications,
-    inputEditorErrorMessage,
-    htmlToDraftText,
 } from '@components'
 import { RtoApi } from '@queries'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -29,21 +27,21 @@ export const CourseInfoModal = ({
     const { notification } = useNotification()
 
     const validationSchema = Yup.object({
-        body: Yup.mixed().test('Message', 'Must Provide Message', (value) =>
-            inputEditorErrorMessage(value)
+        body: Yup.mixed().test('Message', 'Must Provide Message', (value: any) =>
+            inputRichTextEditorErrorMessage(value)
         ),
     })
 
     const methods = useForm({
         mode: 'all',
         resolver: yupResolver(validationSchema),
-        defaultValues: { body: htmlToDraftText(courseInfo?.[0]?.info) },
+        defaultValues: { body: courseInfo?.[0]?.info || '' },
     })
 
     const isCourseInfo = courseInfo && courseInfo?.length > 0
 
     const onSubmit = async (values: any) => {
-        const courseInfo = draftToHtmlText(values?.body)
+        const courseInfo = values?.body
 
         const res: any = await add({
             id: courseId,
@@ -54,13 +52,13 @@ export const CourseInfoModal = ({
         if (res?.data) {
             isCourseInfo
                 ? notification.info({
-                      title: 'Course Info Updated',
-                      description: 'Course Info Updated Successfully',
-                  })
+                    title: 'Course Info Updated',
+                    description: 'Course Info Updated Successfully',
+                })
                 : notification.success({
-                      title: 'Course Info Added',
-                      description: 'Course Info Added Successfully',
-                  })
+                    title: 'Course Info Added',
+                    description: 'Course Info Added Successfully',
+                })
             onCancel()
         }
     }
@@ -79,7 +77,7 @@ export const CourseInfoModal = ({
                     <form className="mt-2 w-full md:w-[600px] lg:w-[700px]">
                         <div>
                             <div className="mb-3">
-                                <InputContentEditor
+                                <InputRichTextEditor
                                     name={'body'}
                                     label={
                                         isCourseInfo ? 'Edit Info' : 'Add Info'

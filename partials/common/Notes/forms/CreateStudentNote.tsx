@@ -690,24 +690,9 @@ export const CreateStudentNote = ({
                                             }
                                         }}
                                     >
-                                        {/* <div className="mb-3">
-                                            <InputContentEditor
-                                                name={'body'}
-                                                onChange={(e: any) => {
-                                                    const note =
-                                                        draftToHtmlText(e)
-                                                    setNoteContent(note)
-                                                }}
-                                            />
-                                        </div> */}
                                         <InputRichTextEditor
                                             name={'body'}
-                                            onChange={(e: any) => {
-                                                console.log({ e })
-                                                // const note =
-                                                //     draftToHtmlText(e)
-                                                setNoteContent(e)
-                                            }}
+                                            onChange={(e: any) => setNoteContent(e)}
                                         />
                                     </ClickAwayListener>
                                 </div>

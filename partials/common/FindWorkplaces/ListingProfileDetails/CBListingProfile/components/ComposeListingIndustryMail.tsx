@@ -1,7 +1,6 @@
 import {
     ShowErrorNotifications,
     Typography,
-    draftToHtmlText,
 } from '@components'
 import { useNotification } from '@hooks'
 import { CommonApi } from '@queries'

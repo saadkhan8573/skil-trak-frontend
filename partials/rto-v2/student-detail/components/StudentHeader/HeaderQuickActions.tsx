@@ -1,24 +1,16 @@
-import { Button } from '@components'
-import { useNotification } from '@hooks'
-import { SubAdminApi } from '@queries'
-import { Student } from '@types'
-import { AuthorizedUserComponent } from '@components'
+import { AuthorizedUserComponent, Button } from '@components'
 import { UserRoles } from '@constants'
+import { Student } from '@types'
 import { DollarSign, Mail, Phone, StickyNote } from 'lucide-react'
 import { ReactElement, useState } from 'react'
 import { ComposeEmailDialog } from '../Communications/modal/ComposeEmailDialog'
 import { ProfileLinks } from '../ProfileLinks'
-import { StudentCallLogModal, ViewPaymentDetailsModal, CreateStudentNoteModal } from './modals'
+import { CreateStudentNoteModal, StudentCallLogModal, ViewPaymentDetailsModal } from './modals'
 
 export const HeaderQuickActions = ({ student }: { student: Student }) => {
     const [modal, setModal] = useState<ReactElement | null>(null)
     const [showEmailDialog, setShowEmailDialog] = useState(false)
     const [showNoteModal, setShowNoteModal] = useState(false)
-
-    const { notification } = useNotification()
-
-
-    const onCancelClicked = () => setModal(null)
 
     const onComposeMailClicked = () => {
         setShowEmailDialog(true)

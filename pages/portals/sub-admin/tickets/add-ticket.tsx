@@ -6,7 +6,6 @@ import { SubAdminLayout } from '@layouts'
 import {
     BackButton,
     ShowErrorNotifications,
-    draftToHtmlText,
 } from '@components'
 import { PageHeading } from '@components/headings'
 import { useNavbar, useNotification } from '@hooks'

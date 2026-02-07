@@ -1,11 +1,9 @@
 import {
     Button,
-    InputContentEditor,
-    inputEditorErrorMessage,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
 } from '@components'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { convertToRaw } from 'draft-js'
-import draftToHtml from 'draftjs-to-html'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 import { InputErrorMessage } from '../components'
@@ -31,8 +29,8 @@ export const ComposeMailForm = ({
             .email('Invalid Email')
             .required('Must provide email'),
         subject: Yup.string().required('Must provide subject'),
-        message: Yup.mixed().test('Message', 'Must Provide Message', (value) =>
-            inputEditorErrorMessage(value)
+        message: Yup.mixed().test('Message', 'Must Provide Message', (value: any) =>
+            inputRichTextEditorErrorMessage(value)
         ),
     })
     const methods = useForm({
@@ -41,6 +39,7 @@ export const ComposeMailForm = ({
         defaultValues: {
             receiver: senderEmail || '',
             subject: '',
+            message: '',
         },
     })
 
@@ -93,12 +92,9 @@ export const ComposeMailForm = ({
                         <InputErrorMessage name="subject" />
 
                         <div className="mt-2">
-                            <InputContentEditor
+                            <InputRichTextEditor
                                 name={'message'}
-                                onChange={(e: any) => {
-                                    const mail = draftToHtml(
-                                        convertToRaw(e.getCurrentContent())
-                                    )
+                                onChange={(html: string) => {
                                     // setMailContent(mail)
                                 }}
                                 showError={false}

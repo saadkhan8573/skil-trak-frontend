@@ -1,9 +1,7 @@
 import {
     Button,
-    draftToHtmlText,
-    htmlToDraftText,
-    InputContentEditor,
-    inputEditorErrorMessage,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
     ShowErrorNotifications,
     TagInput,
     TextArea,
@@ -63,15 +61,15 @@ export const ApproveCourseModal = ({ onCloseModal, request }: any) => {
     const validationSchema = yup.object().shape({
         description: yup
             .mixed()
-            .test('Message', 'Description is required', (value) =>
-                inputEditorErrorMessage(value)
+            .test('Message', 'Description is required', (value: any) =>
+                inputRichTextEditorErrorMessage(value)
             ),
     })
     const methods = useForm({
         resolver: yupResolver(validationSchema),
         mode: 'all',
         defaultValues: {
-            description: htmlToDraftText(request?.description ?? ''),
+            description: request?.description ?? '',
             file: request?.file,
         },
     })
@@ -82,7 +80,7 @@ export const ApproveCourseModal = ({ onCloseModal, request }: any) => {
         const { reference } = tags
 
         const formData = new FormData()
-        formData.append('description', draftToHtmlText(description))
+        formData.append('description', description)
         // formData.append('reference', JSON.stringify(reference))
         formData.append('reference', reference.join(','))
 
@@ -143,7 +141,7 @@ export const ApproveCourseModal = ({ onCloseModal, request }: any) => {
                             <div className="flex flex-col gap-y-2 w-full mt-4">
                                 <div className=" min-w-96">
                                     <div className="">
-                                        <InputContentEditor name="description" />
+                                        <InputRichTextEditor name="description" />
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-y-2">

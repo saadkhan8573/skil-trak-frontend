@@ -1,7 +1,7 @@
 import {
     Button,
-    InputContentEditor,
-    inputEditorErrorMessage,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
 } from '@components'
 import React from 'react'
 import * as Yup from 'yup'
@@ -16,8 +16,8 @@ export const ReplyEmailForm = ({
     result: any
 }) => {
     const validationSchema = Yup.object({
-        reply: Yup.mixed().test('Message', 'Must Provide Reply', (value) =>
-            inputEditorErrorMessage(value)
+        reply: Yup.mixed().test('Message', 'Must Provide Reply', (value: any) =>
+            inputRichTextEditorErrorMessage(value)
         ),
     })
 
@@ -32,7 +32,7 @@ export const ReplyEmailForm = ({
                     className="mt-2 w-full"
                     onSubmit={methods.handleSubmit(onSubmit)}
                 >
-                    <InputContentEditor name={'reply'} label={'Reply'} />
+                    <InputRichTextEditor name={'reply'} label={'Reply'} />
 
                     <div className="mt-4 flex items-center justify-between">
                         <Button

@@ -8,13 +8,11 @@ import {
 import { Button } from '@components'
 import { Label } from '@components/ui/label'
 import { cn } from '@utils'
-import { InputContentEditor, Select, TextInput, AttachmentUpload } from '@components'
+import { InputRichTextEditor, Select, TextInput, AttachmentUpload } from '@components'
 import { useNotification, useRewritePhrase } from '@hooks'
 import { CommonApi } from '@queries'
 import { AuthUtils } from '@utils'
-import { draftToHtmlText, htmlToDraftText } from '@components'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { EditorState } from 'draft-js'
 import { Loader2, Send, Sparkles } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -33,7 +31,7 @@ interface onSubmitType {
     to?: string
     cc?: string
     subject: string
-    message: EditorState
+    message: string
     template: any
     attachments: File[] | null
 }
@@ -46,7 +44,7 @@ export const ComposeEmailDialog = ({
     workplaceId,
 }: ComposeEmailDialogProps) => {
     const { notification } = useNotification()
-    const [mailContent, setMailContent] = useState<any>('')
+    const [mailContent, setMailContent] = useState<string>('')
     const [templateAttachment, setTemplateAttachment] = useState<File | null>(null)
     const [showCC, setShowCC] = useState(false)
 
@@ -84,7 +82,7 @@ export const ComposeEmailDialog = ({
             if (getEmailDraft?.data?.content) {
                 setValue(
                     'message',
-                    htmlToDraftText(getEmailDraft?.data?.content) as EditorState
+                    getEmailDraft?.data?.content
                 )
                 setMailContent(getEmailDraft?.data?.content) // Sync local state
             }
@@ -123,7 +121,7 @@ export const ComposeEmailDialog = ({
             setMailContent(data?.correctedText)
             setValue(
                 'message',
-                htmlToDraftText(data?.correctedText) as EditorState
+                data?.correctedText
             )
         }
     }
@@ -142,7 +140,7 @@ export const ComposeEmailDialog = ({
         const userCredentials = AuthUtils.getUserCredentials()
         const formData = new FormData()
 
-        const message = draftToHtmlText(values.message)
+        const message = values.message
         const ccEmails = values.cc
             ? values.cc
                 .split(',')
@@ -188,7 +186,7 @@ export const ComposeEmailDialog = ({
             setValue('subject', template?.subject)
             setValue(
                 'message',
-                htmlToDraftText(template?.content) as EditorState
+                template?.content
             )
             setMailContent(template?.content)
 
@@ -278,10 +276,10 @@ export const ComposeEmailDialog = ({
                                     </Button>
                                 </div>
                                 <div className="">
-                                    <InputContentEditor
+                                    <InputRichTextEditor
                                         name="message"
-                                        onChange={(editorState: any) => {
-                                            setMailContent(draftToHtmlText(editorState))
+                                        onChange={(html: string) => {
+                                            setMailContent(html)
                                         }}
                                     />
                                 </div>

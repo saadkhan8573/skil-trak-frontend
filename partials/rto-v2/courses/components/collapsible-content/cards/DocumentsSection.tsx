@@ -1,38 +1,38 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { FileCheck, Sparkles } from "lucide-react";
-import { DocumentItem } from "./DocumentItem";
-import { ShowErrorNotifications } from "@components";
-import { useNotification } from "@hooks";
-import { RtoV2Api } from "@queries";
+import { useEffect, useState } from 'react'
+import { FileCheck, Sparkles } from 'lucide-react'
+import { DocumentItem } from './DocumentItem'
+import { ShowErrorNotifications } from '@components'
+import { useNotification } from '@hooks'
+import { RtoV2Api } from '@queries'
 
 // ============================================================================
 // Types & Constants
 // ============================================================================
 
 export enum RtoFileTitle {
-    PLACEMENT_AGREEMENT = "placementAgreement",
-    LOGBOOK = "logBook",
-    FACILITY_CHECKLIST = "facilityChecklist",
+    PLACEMENT_AGREEMENT = 'placementAgreement',
+    LOGBOOK = 'logBook',
+    FACILITY_CHECKLIST = 'facilityChecklist',
 }
 
 interface DocumentConfig {
-    label: string;
-    description: string;
-    fileType: string;
-    multiple: boolean;
-    Icon: typeof FileCheck;
-    apiTitle: RtoFileTitle;
+    label: string
+    description: string
+    fileType: string
+    multiple: boolean
+    Icon: typeof FileCheck
+    apiTitle: RtoFileTitle
 }
 
 interface UploadedFileStatus {
-    isUploaded: boolean;
-    files: any[];
+    isUploaded: boolean
+    files: any[]
 }
 
 interface DocumentsSectionProps {
-    course: any;
+    course: any
 }
 
 // ============================================================================
@@ -41,44 +41,48 @@ interface DocumentsSectionProps {
 
 const DOCUMENT_CONFIGS: DocumentConfig[] = [
     {
-        label: "Facility Checklist",
-        description: "Facility-Checklist.docx",
-        fileType: ".docx",
-        multiple: false,
+        label: 'Facility Checklist',
+        description: 'Facility-Checklist.docx',
+        fileType: '.docx',
+        multiple: true,
         Icon: FileCheck,
         apiTitle: RtoFileTitle.FACILITY_CHECKLIST,
     },
     {
-        label: "Placement Agreement",
-        description: "Placement-Agreement-Template.docx",
-        fileType: ".docx",
-        multiple: false,
+        label: 'Placement Agreement',
+        description: 'Placement-Agreement-Template.docx',
+        fileType: '.docx',
+        multiple: true,
         Icon: FileCheck,
         apiTitle: RtoFileTitle.PLACEMENT_AGREEMENT,
     },
     {
-        label: "Logbook",
-        description: "Upload logbooks (.docx only)",
-        fileType: ".docx",
+        label: 'Logbook',
+        description: 'Upload logbooks (.docx only)',
+        fileType: '.docx',
         multiple: true,
         Icon: Sparkles,
         apiTitle: RtoFileTitle.LOGBOOK,
     },
-];
+]
 
 // ============================================================================
 // Main Component
 // ============================================================================
 
 export function DocumentsSection({ course }: DocumentsSectionProps) {
-    const [loadingType, setLoadingType] = useState<string | null>(null);
-    const { notification } = useNotification();
+    const [loadingType, setLoadingType] = useState<string | null>(null)
+    const { notification } = useNotification()
 
     // API hooks
-    const [addDocument, addDocumentResult] = RtoV2Api.Courses.useAddCourseDocument();
-    const [updateAgreementFile, updateAgreementResult] = RtoV2Api.Courses.useUpdateAgreementFile();
-    const [updateLogbookFile, updateLogbookResult] = RtoV2Api.Courses.useUpdateLogbookFile();
-    const [updateFacilityChecklist, updateFacilityChecklistResult] = RtoV2Api.Courses.useUpdateFacilityChecklist();
+    const [addDocument, addDocumentResult] =
+        RtoV2Api.Courses.useAddCourseDocument()
+    const [updateAgreementFile, updateAgreementResult] =
+        RtoV2Api.Courses.useUpdateAgreementFile()
+    const [updateLogbookFile, updateLogbookResult] =
+        RtoV2Api.Courses.useUpdateLogbookFile()
+    const [updateFacilityChecklist, updateFacilityChecklistResult] =
+        RtoV2Api.Courses.useUpdateFacilityChecklist()
 
     // ============================================================================
     // Success Notifications
@@ -87,44 +91,44 @@ export function DocumentsSection({ course }: DocumentsSectionProps) {
     useEffect(() => {
         if (addDocumentResult.isSuccess) {
             notification.success({
-                title: "Document uploaded",
-                description: "Document uploaded successfully",
-            });
+                title: 'Document uploaded',
+                description: 'Document uploaded successfully',
+            })
         }
-    }, [addDocumentResult.isSuccess]);
+    }, [addDocumentResult.isSuccess])
 
     useEffect(() => {
         if (updateAgreementResult.isSuccess) {
             notification.success({
-                title: "Agreement updated",
-                description: "Agreement updated successfully",
-            });
+                title: 'Agreement updated',
+                description: 'Agreement updated successfully',
+            })
         }
-    }, [updateAgreementResult.isSuccess]);
+    }, [updateAgreementResult.isSuccess])
 
     useEffect(() => {
         if (updateLogbookResult.isSuccess) {
             notification.success({
-                title: "Logbook updated",
-                description: "Logbook updated successfully",
-            });
+                title: 'Logbook updated',
+                description: 'Logbook updated successfully',
+            })
         }
-    }, [updateLogbookResult.isSuccess]);
+    }, [updateLogbookResult.isSuccess])
 
     useEffect(() => {
         if (updateFacilityChecklistResult.isSuccess) {
             notification.success({
-                title: "Facility Checklist updated",
-                description: "Facility Checklist updated successfully",
-            });
+                title: 'Facility Checklist updated',
+                description: 'Facility Checklist updated successfully',
+            })
         }
-    }, [updateFacilityChecklistResult.isSuccess]);
+    }, [updateFacilityChecklistResult.isSuccess])
 
     // ============================================================================
     // Computed Values
     // ============================================================================
 
-    const uploadedStatus = getUploadedStatus(course);
+    const uploadedStatus = getUploadedStatus(course)
 
     // ============================================================================
     // Handlers
@@ -135,34 +139,39 @@ export function DocumentsSection({ course }: DocumentsSectionProps) {
         config: DocumentConfig,
         fileId?: string
     ): Promise<void> => {
-        setLoadingType(config.apiTitle);
+        setLoadingType(config.apiTitle)
 
         try {
-            const formData = buildFormData(files, config, course?.id);
-            const isAlreadyUploaded = uploadedStatus?.[config.apiTitle]?.isUploaded;
+            const formData = buildFormData(files, config, course?.id)
+            const isAlreadyUploaded =
+                uploadedStatus?.[config.apiTitle]?.isUploaded
 
             if (!isAlreadyUploaded) {
-                await performInitialUpload(formData, config.apiTitle, addDocument);
+                await performInitialUpload(
+                    formData,
+                    config.apiTitle,
+                    addDocument
+                )
             } else {
                 await performUpdate(formData, config.apiTitle, fileId, {
                     updateLogbookFile,
                     updateAgreementFile,
                     updateFacilityChecklist,
-                });
+                })
             }
         } catch (error) {
-            console.error(`Error uploading ${config.apiTitle}:`, error);
+            console.error(`Error uploading ${config.apiTitle}:`, error)
         } finally {
-            setLoadingType(null);
+            setLoadingType(null)
         }
-    };
+    }
 
     const handleEdit = (files: FileList, config: DocumentConfig): void => {
         const fileToUpdate = course.rtoCourseFiles?.find(
             (file: any) => file.title === config.apiTitle
-        );
-        handleUpload(files, config, fileToUpdate?.id);
-    };
+        )
+        handleUpload(files, config, fileToUpdate?.id)
+    }
 
     // ============================================================================
     // Render
@@ -180,7 +189,7 @@ export function DocumentsSection({ course }: DocumentsSectionProps) {
             />
             <div className="grid grid-cols-3 gap-4 w-full">
                 {DOCUMENT_CONFIGS.map((config) => {
-                    const status = uploadedStatus?.[config.apiTitle];
+                    const status = uploadedStatus?.[config.apiTitle]
 
                     return (
                         <DocumentItem
@@ -193,14 +202,18 @@ export function DocumentsSection({ course }: DocumentsSectionProps) {
                             isUploading={loadingType === config.apiTitle}
                             isUploaded={status?.isUploaded ?? false}
                             uploadedFiles={status?.files ?? []}
-                            onUpload={(files: FileList) => handleUpload(files, config)}
-                            onEdit={(files: FileList) => handleEdit(files, config)}
+                            onUpload={(files: FileList) =>
+                                handleUpload(files, config)
+                            }
+                            onEdit={(files: FileList) =>
+                                handleEdit(files, config)
+                            }
                         />
-                    );
+                    )
                 })}
             </div>
         </>
-    );
+    )
 }
 
 // ============================================================================
@@ -211,13 +224,15 @@ export function DocumentsSection({ course }: DocumentsSectionProps) {
  * Extracts uploaded file status from course data
  */
 function getUploadedStatus(course: any): Record<string, UploadedFileStatus> {
-    return course?.rtoCourseFiles?.reduce((acc: any, file: any) => {
-        acc[file.title] = {
-            isUploaded: Boolean(file.files?.length),
-            files: file.files || [],
-        };
-        return acc;
-    }, {}) ?? {};
+    return (
+        course?.rtoCourseFiles?.reduce((acc: any, file: any) => {
+            acc[file.title] = {
+                isUploaded: Boolean(file.files?.length),
+                files: file.files || [],
+            }
+            return acc
+        }, {}) ?? {}
+    )
 }
 
 /**
@@ -228,19 +243,19 @@ function buildFormData(
     config: DocumentConfig,
     courseId?: string
 ): FormData {
-    const formData = new FormData();
+    const formData = new FormData()
 
     if (config.multiple) {
-        Array.from(files).forEach((file) => formData.append("file", file));
+        Array.from(files).forEach((file) => formData.append('file', file))
     } else {
-        formData.append("file", files[0]);
+        formData.append('file', files[0])
     }
 
     if (courseId) {
-        formData.append("course", courseId);
+        formData.append('course', courseId)
     }
 
-    return formData;
+    return formData
 }
 
 /**
@@ -254,7 +269,7 @@ async function performInitialUpload(
     await addDocument({
         body: formData,
         params: { title },
-    }).unwrap();
+    }).unwrap()
 }
 
 /**
@@ -265,24 +280,28 @@ async function performUpdate(
     fileType: RtoFileTitle,
     fileId: string | undefined,
     updateMethods: {
-        updateLogbookFile: any;
-        updateAgreementFile: any;
-        updateFacilityChecklist: any;
+        updateLogbookFile: any
+        updateAgreementFile: any
+        updateFacilityChecklist: any
     }
 ): Promise<void> {
-    const { updateLogbookFile, updateAgreementFile, updateFacilityChecklist } = updateMethods;
+    const { updateLogbookFile, updateAgreementFile, updateFacilityChecklist } =
+        updateMethods
 
     switch (fileType) {
         case RtoFileTitle.LOGBOOK:
-            await updateLogbookFile({ body: formData, id: fileId }).unwrap();
-            break;
+            await updateLogbookFile({ body: formData, id: fileId }).unwrap()
+            break
         case RtoFileTitle.PLACEMENT_AGREEMENT:
-            await updateAgreementFile({ body: formData, id: fileId }).unwrap();
-            break;
+            await updateAgreementFile({ body: formData, id: fileId }).unwrap()
+            break
         case RtoFileTitle.FACILITY_CHECKLIST:
-            await updateFacilityChecklist({ body: formData, id: fileId }).unwrap();
-            break;
+            await updateFacilityChecklist({
+                body: formData,
+                id: fileId,
+            }).unwrap()
+            break
         default:
-            throw new Error(`Unknown file type: ${fileType}`);
+            throw new Error(`Unknown file type: ${fileType}`)
     }
 }

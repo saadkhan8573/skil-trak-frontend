@@ -206,7 +206,7 @@ export const ComposeEmailDialog = ({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="!max-w-2xl max-h-[90vh] overflow-y-auto flex flex-col p-0 gap-0">
+            <DialogContent className="max-w-2xl! max-h-[90vh] overflow-y-auto flex flex-col p-0 gap-0">
                 <DialogHeader className="px-6 py-4 border-b">
                     <DialogTitle>Compose Email</DialogTitle>
                     <div className="text-sm text-muted-foreground mt-1">
@@ -268,7 +268,7 @@ export const ComposeEmailDialog = ({
                                     <Button
                                         variant="action"
                                         outline
-                                        className="py-1.5 text-xs gap-1.5 !border !border-gray-300"
+                                        className="py-1.5 text-xs gap-1.5 border! border-gray-300!"
                                         onClick={(e) => { e.preventDefault(); onFixGrammerClick(); }}
                                         disabled={!mailContent?.trim() || isRewriting}
                                         loading={isRewriting}

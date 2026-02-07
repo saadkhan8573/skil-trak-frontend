@@ -1,26 +1,22 @@
 import React, { useEffect } from 'react'
 import { CommonApi } from '@queries'
-
 import {
     Button,
-    draftToHtmlText,
-    InputContentEditor,
+    InputRichTextEditor,
     ShowErrorNotifications,
     Typography,
 } from '@components'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
-import { RtoApi } from '@queries'
 import * as yup from 'yup'
 import { useNotification } from '@hooks'
-import { convertFromHTML, ContentState, EditorState } from 'draft-js'
 import { useRouter } from 'next/router'
 
 export const AddNoteModal = ({ onCloseModal }: any) => {
     const router = useRouter()
     const id = router.query.id
     const { notification } = useNotification()
-    // useAddIndustryListingDetailsNote
+
     const [addNote, addNoteResult] =
         CommonApi.FindWorkplace.useAddIndustryListingDetailsNote()
 
@@ -35,20 +31,23 @@ export const AddNoteModal = ({ onCloseModal }: any) => {
     }, [addNoteResult.isSuccess])
 
     const validationSchema = yup.object({
-        requirements: yup.string().required('Required'),
+        comment: yup.string().required('Required'),
     })
 
     const methods = useForm({
+        resolver: yupResolver(validationSchema),
         mode: 'all',
-        // defaultValues: {
-        //     requirements: getInitialEditorState(),
-        // },
+        defaultValues: {
+            comment: '',
+        },
     })
+
     const onSubmit = async (values: any) => {
-        const comment = draftToHtmlText(values?.comment)
-        if (comment === '<p></p>\n' || comment.trim() === '<p></p>') {
-            methods.setError('note', {
-                type: 'note',
+        const { comment } = values
+
+        if (!comment || comment === '<p></p>' || comment.trim() === '') {
+            methods.setError('comment', {
+                type: 'manual',
                 message: 'Must add note',
             })
             return
@@ -56,19 +55,22 @@ export const AddNoteModal = ({ onCloseModal }: any) => {
 
         const body = { comment }
         addNote({ id, body })
-
-        // Use the same submit method for both add and update
     }
+
     return (
-        <div>
+        <div className="space-y-6">
             <ShowErrorNotifications result={addNoteResult} />
             <Typography variant="title">Add note</Typography>
             <FormProvider {...methods}>
                 <form
-                    className="mt-6 w-full"
+                    className="space-y-6"
                     onSubmit={methods.handleSubmit(onSubmit)}
                 >
-                    <InputContentEditor label="Note" name="comment" />
+                    <InputRichTextEditor
+                        label="Note"
+                        name="comment"
+                        height="h-64"
+                    />
                     <Button
                         submit
                         disabled={addNoteResult.isLoading}

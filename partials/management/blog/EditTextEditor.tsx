@@ -2,14 +2,14 @@ import {
     Button,
     Card,
     Checkbox,
+    InputRichTextEditor,
     Select,
+    ShowErrorNotifications,
     TextArea,
     TextInput,
     Typography,
     UploadFile,
     useShowErrorNotification,
-    ShowErrorNotifications,
-    InputRichTextEditor,
 } from '@components'
 import { FileUpload } from '@hoc'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -17,9 +17,7 @@ import { useNotification } from '@hooks'
 import { adminApi, AdminApi } from '@queries'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useMemo, useRef, useState } from 'react'
-import { FormProvider, useFieldArray, useForm, SubmitHandler, FieldValues } from 'react-hook-form'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
+import { FieldValues, FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 interface BlogQuestion {

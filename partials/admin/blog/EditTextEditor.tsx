@@ -17,9 +17,7 @@ import { useNotification } from '@hooks'
 import { adminApi, AdminApi } from '@queries'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useMemo, useRef, useState } from 'react'
-import { FormProvider, useFieldArray, useForm, SubmitHandler, FieldValues } from 'react-hook-form'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
+import { FieldValues, FormProvider, useFieldArray, useForm, SubmitHandler } from 'react-hook-form'
 import * as yup from 'yup'
 
 interface BlogQuestion {

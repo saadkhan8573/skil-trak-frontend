@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic'
 
 // Dynamically import Lottie with no SSR
-const Lottie = dynamic(() => import('react-lottie'), {
+const Lottie = dynamic(() => import('lottie-react'), {
     ssr: false,
 })
 
@@ -9,8 +9,8 @@ interface LottieAnimationProps {
     loop?: boolean
     autoplay?: boolean
     animation: any
-    height?: number
-    width?: number
+    height?: number | string
+    width?: number | string
 }
 
 export const LottieAnimation = ({
@@ -20,15 +20,13 @@ export const LottieAnimation = ({
     height = 120,
     width = 120,
 }: LottieAnimationProps) => {
-    const animationOptions = {
-        loop,
-        autoplay,
-        animationData: animation,
-    }
-
     return (
-        <div>
-            <Lottie options={animationOptions} height={height} width={width} />
+        <div style={{ height, width }}>
+            <Lottie
+                animationData={animation}
+                loop={loop}
+                autoplay={autoplay}
+            />
         </div>
     )
 }

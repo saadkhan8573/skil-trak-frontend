@@ -6,7 +6,7 @@ import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
 // Dynamically import Lottie with no SSR
-const Lottie = dynamic(() => import('react-lottie'), {
+const Lottie = dynamic(() => import('lottie-react'), {
     ssr: false,
 })
 
@@ -26,11 +26,6 @@ export const EmptyData = ({
     height,
     imageUrl,
 }: EmptyDataProps) => {
-    const animationOptions = {
-        loop: true,
-        autoplay: true,
-        animationData: Animations.Common.ShakeEmptyBox,
-    }
 
     // const Icon = icon || GiCardboardBox;
     return (
@@ -52,9 +47,10 @@ export const EmptyData = ({
                         />
                     ) : (
                         <Lottie
-                            options={animationOptions}
-                            height={250}
-                            width={250}
+                            animationData={Animations.Common.ShakeEmptyBox}
+                            loop={true}
+                            autoplay={true}
+                            style={{ height: 250, width: 250 }}
                         />
                     )}
                 </div>

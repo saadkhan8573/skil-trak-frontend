@@ -31,7 +31,7 @@ export const AddCoordinatorFeedbackForm = ({
     const validationObject = () => {
         let data: any = {}
         Object.keys(feedbackQuestions).forEach((key) => {
-            data[key] = yup.string().nullable(true).required('Required!')
+            data[key] = yup.string().nullable().required('Required!')
         })
         return data
     }

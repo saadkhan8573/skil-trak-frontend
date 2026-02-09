@@ -4,8 +4,6 @@ import Image from 'next/image'
 
 import { SiteLayout } from '@layouts'
 import axios from 'axios'
-import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en.json'
 import { NextPage } from 'next'
 import Marquee from 'react-fast-marquee'
 import { Button } from '../components/site/Button'
@@ -17,9 +15,6 @@ import { JobSlider } from '../components/site/slider/JobSlider'
 import { NewsSlider } from '../components/site/slider/NewsSlider'
 import { ReviewSlider } from '../components/site/slider/ReviewSlider'
 import { Wrapper } from '../components/site/wrapper'
-
-TimeAgo.addDefaultLocale(en)
-TimeAgo.addLocale(en)
 
 const packageCards = [
     {
@@ -278,7 +273,7 @@ const Page: NextPage = () => {
             <section
                 className="
           section section-reviews
-          bg-gradient-to-b
+          bg-linear-to-b
           from-primary
           to-primary-dark
         "

@@ -83,14 +83,14 @@ export const RtoSignUpForm = ({
         const abc =
             sectors?.length > 0
                 ? sectorResponse.data
-                      .find(
-                          (sector: any) =>
-                              sector.id === sectors[sectors?.length - 1].value
-                      )
-                      ?.courses?.map((c: any) => ({
-                          label: c?.title,
-                          value: c?.id,
-                      }))
+                    .find(
+                        (sector: any) =>
+                            sector.id === sectors[sectors?.length - 1].value
+                    )
+                    ?.courses?.map((c: any) => ({
+                        label: c?.title,
+                        value: c?.id,
+                    }))
                 : []
         const abcIds = abc?.map((a: any) => a?.value)
 
@@ -137,7 +137,7 @@ export const RtoSignUpForm = ({
             .required('Must provide password'),
         confirmPassword: yup
             .string()
-            .oneOf([yup.ref('password'), null], 'Passwords must match')
+            .oneOf([yup.ref('password')], 'Passwords must match')
             .required('Must confirm entered password'),
 
         // Business Information
@@ -378,8 +378,8 @@ export const RtoSignUpForm = ({
                                 label={'Sector'}
                                 {...(storedData
                                     ? {
-                                          defaultValue: storedData.sectors,
-                                      }
+                                        defaultValue: storedData.sectors,
+                                    }
                                     : {})}
                                 name={'sectors'}
                                 options={sectorOptions}

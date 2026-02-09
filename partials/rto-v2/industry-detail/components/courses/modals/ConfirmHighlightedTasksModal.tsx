@@ -22,16 +22,16 @@ interface ConfirmHighlightedTasksModalProps {
     isOpen: boolean
     onClose: () => void
     courseId?: number
-    taskId: number
+    taskIds: number[]
     industryId: number
     showNotAvailable?: boolean
-    confirmationDetailId?: number
+    confirmationDetailId?: number // Note: This might need adjustment for bulk, usually only for single edit
 }
 
 export function ConfirmHighlightedTasksModal({
     isOpen,
     onClose,
-    taskId,
+    taskIds,
     industryId,
     showNotAvailable = true,
     confirmationDetailId
@@ -46,16 +46,26 @@ export function ConfirmHighlightedTasksModal({
 
     const handleConfirm = async (isConfirmed: boolean = true) => {
         try {
-            await confirmHighlightedTask({
-                industryId,
-                taskId,
-                confirmationSource,
-                isConfirmed,
-                confirmationDetailId
-            }).unwrap()
+            // Bulk confirmation by iterating (if API is single)
+            const promises = taskIds.map(id =>
+                confirmHighlightedTask({
+                    industryId,
+                    taskId: id,
+                    confirmationSource,
+                    isConfirmed,
+                    confirmationDetailId: taskIds.length === 1 ? confirmationDetailId : undefined
+                }).unwrap()
+            );
+
+            await Promise.all(promises);
+
             notification.success({
-                title: 'Task Confirmed',
-                description: 'Highlighted task has been successfully confirmed.',
+                title: isConfirmed
+                    ? (taskIds.length > 1 ? 'Tasks Confirmed' : 'Task Confirmed')
+                    : (taskIds.length > 1 ? 'Tasks Marked Not Available' : 'Task Marked Not Available'),
+                description: isConfirmed
+                    ? (taskIds.length > 1 ? `${taskIds.length} tasks have been successfully confirmed.` : 'Highlighted task has been successfully confirmed.')
+                    : (taskIds.length > 1 ? `${taskIds.length} tasks have been marked as Not Available.` : 'Highlighted task has been marked as Not Available.'),
             })
             onClose()
         } catch (error) {
@@ -66,14 +76,14 @@ export function ConfirmHighlightedTasksModal({
         <>
             <ShowErrorNotifications result={confirmHighlightedTaskResult} />
             <Dialog open={isOpen} onOpenChange={onClose}>
-                <DialogContent className="!max-w-xl">
+                <DialogContent className="max-w-xl!">
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
                             <CheckSquare className="w-5 h-5 text-primary" />
-                            Confirm Task
+                            {taskIds.length > 1 ? `Confirm ${taskIds.length} Tasks` : 'Confirm Task'}
                         </DialogTitle>
                         <DialogDescription>
-                            How did you confirm this highlighted task?
+                            How did you confirm {taskIds.length > 1 ? 'these tasks' : 'this highlighted task'}?
                             Please select a confirmation method below.
                         </DialogDescription>
                     </DialogHeader>
@@ -142,7 +152,7 @@ export function ConfirmHighlightedTasksModal({
                                 className="border-red-200 text-red-600 hover:bg-red-50"
                                 disabled={confirmHighlightedTaskResult.isLoading}
                             >
-                                Mark as Not Available
+                                {taskIds.length > 1 ? `Mark ${taskIds.length} as Not Available` : 'Mark as Not Available'}
                             </Button>
                         )}
                         <Button
@@ -151,7 +161,7 @@ export function ConfirmHighlightedTasksModal({
                             disabled={confirmHighlightedTaskResult.isLoading}
                             loading={confirmHighlightedTaskResult.isLoading}
                         >
-                            Confirm Method
+                            Confirm {taskIds.length > 1 ? `All ${taskIds.length}` : 'Method'}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

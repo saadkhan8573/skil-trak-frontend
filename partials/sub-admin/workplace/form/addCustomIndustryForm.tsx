@@ -146,7 +146,7 @@ export const AddCustomIndustryForm = ({ workplaceId }: any) => {
         phoneNumber: yup.string().required('Must provide phone number'),
 
         // Sector Information
-        sectors: yup.object().nullable(true).required(),
+        sectors: yup.object().nullable().required(),
         courses: yup.number().required(),
         // sectors: yup.array().min(1, 'Must select at least 1 sector'),
         // courses: yup.array().min(1, 'Must select at least 1 course'),
@@ -202,7 +202,7 @@ export const AddCustomIndustryForm = ({ workplaceId }: any) => {
 
     const formMethods = useForm({
         mode: 'all',
-        resolver: yupResolver(validationSchema),
+        resolver: yupResolver(validationSchema) as any,
     })
 
     useEffect(() => {

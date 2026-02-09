@@ -36,7 +36,7 @@ export const requiredQuestionsValidation = () => {
                 })
                 .required('This field is required')
         } else {
-            fields[field] = yup.string().nullable(true).required('Required!')
+            fields[field] = yup.string().nullable().required('Required!')
         }
     })
     return fields

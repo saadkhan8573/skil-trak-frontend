@@ -36,14 +36,16 @@ export const SidebarCalendar = ({
             <Calendar
                 {...(enabledDays
                     ? {
-                          tileDisabled: ({ date }) =>
-                              !enabledDays?.includes(date.getDay()) ||
-                              date < todayDate,
-                      }
+                        tileDisabled: ({ date }) =>
+                            !enabledDays?.includes(date.getDay()) ||
+                            date < todayDate,
+                    }
                     : {})}
-                onChange={(e: Date) => {
-                    setDate(e)
-                    setIsDateChange(true)
+                onChange={(value) => {
+                    if (value instanceof Date) {
+                        setDate(value)
+                        setIsDateChange(true)
+                    }
                 }}
                 value={selectedDate || date}
             />

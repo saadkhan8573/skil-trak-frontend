@@ -6,7 +6,7 @@ import {
 } from '@components'
 import { useNotification } from '@hooks'
 import { CommonApi } from '@queries'
-import jwt from 'jwt-decode'
+import { jwtDecode as jwt } from 'jwt-decode'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useRef, useState } from 'react'
 import { MdCancel } from 'react-icons/md'
@@ -88,8 +88,8 @@ export const EsignSignatureModal = ({
                 documentId: Number(router.query?.id),
                 ...(action
                     ? {
-                          id: token?.id,
-                      }
+                        id: token?.id,
+                    }
                     : {}),
             }).then((res: any) => {
                 if (res?.data) {

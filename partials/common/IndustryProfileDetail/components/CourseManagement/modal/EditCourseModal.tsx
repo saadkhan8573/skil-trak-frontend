@@ -39,13 +39,12 @@ export const EditCourseModal = ({
 
     const validationSchema = yup.object().shape({
         description: yup
-            .mixed()
-            .test('Message', 'Description is required', (value: any) =>
-                inputRichTextEditorErrorMessage(value)
-            ),
+            .string()
+            .ensure()
+            .test('Message', 'Description is required', inputRichTextEditorErrorMessage),
     })
-    const methods = useForm({
-        resolver: yupResolver(validationSchema),
+    const methods = useForm<any>({
+        resolver: yupResolver(validationSchema as any),
         mode: 'all',
         defaultValues: {
             description: course.description ?? '',

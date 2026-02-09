@@ -109,7 +109,7 @@ export const ExtendStudentExpiryDialog = ({
                                     submit
                                     loading={updateExpiryDateResult.isLoading}
                                     disabled={updateExpiryDateResult.isLoading}
-                                    className="bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866]"
+                                    className="bg-linear-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866]"
                                 >
                                     Extend Deadline
                                 </Button>

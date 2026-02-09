@@ -8,16 +8,41 @@ import { PageHeading } from '@components/headings'
 import { EmailDraftForm } from '@partials/common/AdminEmails/emailDraft'
 import { CommonApi } from '@queries'
 import { useRouter } from 'next/router'
-import { Button, Card, EmptyData, LoadingAnimation, TechnicalError, TextInput, Typography } from '@components'
-import { FormProvider, useForm } from 'react-hook-form'
-import { BulkEmailEditor } from '@partials/common/AdminEmails/bulkEmail'
-import { FileUpload } from '@hoc'
-import draftToHtml from 'draftjs-to-html'
+import {
+    Button,
+    Card,
+    EmptyData,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
+    LoadingAnimation,
+    TechnicalError,
+    TextInput,
+    Typography,
+} from '@components'
+import { FormProvider, useForm, SubmitHandler, FieldValues } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Attachment } from '@partials/common'
 import { useNotification } from '@hooks'
-import { ContentState, EditorState, convertFromHTML, convertToRaw } from 'draft-js'
+
+interface FormValues extends FieldValues {
+    subject: string
+    content: string
+    attachment?: any[]
+}
+
+const validationSchema = yup.object({
+    subject: yup.string().required('Subject is required'),
+    content: yup
+        .string()
+        .required('Email Content is required')
+        .test(
+            'Content',
+            'Email Content is required',
+            inputRichTextEditorErrorMessage
+        ),
+    attachment: yup.array().optional(),
+})
 
 const CreateEmailDraftDetail: NextPageWithLayout = () => {
     const router = useRouter()
@@ -27,12 +52,8 @@ const CreateEmailDraftDetail: NextPageWithLayout = () => {
     })
     const { notification } = useNotification()
     const [attachmentFiles, setAttachmentFiles] = useState<any>([])
-    const [updateNewDraft, resultUpdateNewDraft] = CommonApi.Messages.useUpdateEmailDraft()
-
-
-    const validationSchema = yup.object().shape({
-        subject: yup.string().required('Subject is required'),
-    })
+    const [updateNewDraft, resultUpdateNewDraft] =
+        CommonApi.Messages.useUpdateEmailDraft()
     const onRemoveFile = (fileId: number) => {
         setAttachmentFiles((preVal: any) => [
             ...preVal?.filter((file: File) => file?.lastModified !== fileId),
@@ -56,21 +77,16 @@ const CreateEmailDraftDetail: NextPageWithLayout = () => {
     }
     const formMethods = useForm({
         mode: 'all',
-        resolver: yupResolver(validationSchema),
+        resolver: yupResolver(validationSchema) as any,
+        defaultValues: {
+            subject: '',
+            content: '',
+            attachment: [],
+        } as FormValues,
     })
     const onSubmit = (values: any) => {
-        let content = ''
-        if (values?.content) {
-            content = draftToHtml(
-                convertToRaw(values?.content?.getCurrentContent())
-            )
-        }
         const formData = new FormData()
-        const {
-            attachment,
-            subject,
-            ...rest
-        } = values
+        const { attachment, subject, content, ...rest } = values as any
         Object.entries(rest)?.forEach(([key, value]: any) => {
             formData.append(key, value)
         })
@@ -95,17 +111,9 @@ const CreateEmailDraftDetail: NextPageWithLayout = () => {
     }, [attachmentFiles])
 
     useEffect(() => {
-        if (data?.content) {
-            const blocksFromHTML = convertFromHTML(data.content)
-            const bodyValue = EditorState.createWithContent(
-                ContentState.createFromBlockArray(
-                    blocksFromHTML.contentBlocks,
-                    blocksFromHTML.entityMap
-                )
-
-            )
+        if (data) {
             formMethods.setValue('subject', data?.subject)
-            formMethods.setValue('content', bodyValue)
+            formMethods.setValue('content', data?.content)
         }
     }, [data])
 
@@ -147,11 +155,14 @@ const CreateEmailDraftDetail: NextPageWithLayout = () => {
                             className="flex flex-col"
                             onSubmit={formMethods.handleSubmit(onSubmit)}
                         >
-                            <TextInput label={'Subject'} name={'subject'} placeholder='Subject' />
-                            <BulkEmailEditor
+                            <TextInput
+                                label={'Subject'}
+                                name={'subject'}
+                                placeholder="Subject"
+                            />
+                            <InputRichTextEditor
                                 name={'content'}
                                 label={'Email Content'}
-                            // content={data?.content}
                             />
                             <div className='flex justify-between items-center py-2'>
                                 {/* <FileUpload

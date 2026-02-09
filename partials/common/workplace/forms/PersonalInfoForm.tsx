@@ -65,16 +65,12 @@ export const PersonalInfoForm = ({
                 label: yup.string().required(),
                 value: yup.string().required(),
             })
-            .nullable(true)
+            .nullable()
             .test(
-                (
-                    course: SelectOption,
-                    { createError }: { createError: any }
-                ) => {
-                    if (!course?.value) {
-                        return createError({ message: 'Course is Required' })
-                    }
-                    return true
+                'course-required',
+                'Course is Required',
+                (course: any) => {
+                    return !!course?.value
                 }
             ),
         ...requiredQuestionsValidation(),

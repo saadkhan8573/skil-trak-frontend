@@ -17,10 +17,67 @@ import { useNotification } from '@hooks'
 import { adminApi, AdminApi } from '@queries'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useMemo, useRef, useState } from 'react'
-import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
+import { FormProvider, useFieldArray, useForm, SubmitHandler, FieldValues } from 'react-hook-form'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import * as yup from 'yup'
+
+interface BlogQuestion {
+    id?: number
+    question: string
+    answer: string
+}
+
+interface FormValues extends FieldValues {
+    featuredImage: string | FileList | File | null
+    title: string
+    metaData?: string
+    shortDescription: string
+    author: string
+    isFeatured: boolean
+    category: number[]
+    content: string
+    blogQuestions: BlogQuestion[]
+}
+
+const validationSchema = yup.object({
+    title: yup
+        .string()
+        .required('Title is required')
+        .matches(/^[\w\s!@#$%^&*()\-+=_{}|:"<>?,./;'[\]]{5,160}$/, {
+            message:
+                'Title must be between 5 and 160 characters and only contain special characters',
+            excludeEmptyString: true,
+        }),
+    author: yup
+        .string()
+        .required('Author is required')
+        .matches(/^[^\d]+$/, 'Author name cannot contain numbers')
+        .min(3, 'Author must be at least 3 characters')
+        .max(20, 'Author cannot exceed 20 characters'),
+    category: yup
+        .array()
+        .of(yup.number().required())
+        .min(1, 'Must select at least 1 category')
+        .required(),
+    shortDescription: yup
+        .string()
+        .required('Short description is required'),
+    metaData: yup.string().optional(),
+    featuredImage: yup.mixed<any>().nullable().optional(),
+    isFeatured: yup.boolean().required(),
+    content: yup.string().required('Content is required'),
+    blogQuestions: yup
+        .array()
+        .of(
+            yup.object({
+                id: yup.number().optional(),
+                question: yup.string().required('FAQ question should not be empty'),
+                answer: yup.string().required('FAQ answer should not be empty'),
+            })
+        )
+        .required(),
+}) as any
 
 import { InputErrorMessage } from '@components/inputs/components'
 import { UserRoles } from '@constants'
@@ -100,52 +157,10 @@ export default function EditTextEditor({
         setIsFeatured(!isFeatured)
     }
 
-    // Validation
-    const validationSchema = yup.object({
-        title: yup
-            .string()
-            .required('Title is required')
-            .matches(/^[\w\s!@#$%^&*()\-+=_{}|:"<>?,./;'[\]]{5,160}$/, {
-                message:
-                    'Title must be between 5 and 160 characters and only contain special characters',
-                excludeEmptyString: true,
-            }),
 
-        author: yup
-            .string()
-            .required('Author is required')
-            .matches(/^[^\d]+$/, 'Author name cannot contain numbers')
-            .min(3, 'Author must be at least 3 characters')
-            .max(20, 'Author cannot exceed 20 characters'),
-        category: yup
-            .array()
-            .min(1, 'Must select at least 1 category')
-            .required(),
-        // shortDescription: yup
-        //     .string()
-        //     .required('Short description is required')
-        //     .test(
-        //         'max-words',
-        //         'Short description must be at most 385 words',
-        //         (value) => {
-        //             if (!value) {
-        //                 return true // Allow empty string (required validation will handle it)
-        //             }
-        //             const wordCount = value
-        //                 .split(/\s+/)
-        //                 .filter((word) => word !== '').length
-        //             return wordCount <= 385
-        //         }
-        //     ),
-        // content: yup.string().required('Content is required'),
-        // blogQuestions: yup.object().shape({
-        //     question: yup.string().required('FAQ question should not be empty'),
-        //     answer: yup.string().required('FAQ answer should not be empty'),
-        // }).required(),
-    })
-    const formMethods: any = useForm({
+    const formMethods = useForm<FormValues>({
         mode: 'all',
-        resolver: yupResolver(validationSchema),
+        resolver: yupResolver(validationSchema) as any,
         defaultValues: {
             featuredImage: blogData?.featuredImage || null,
             title: blogData?.title || '',
@@ -158,11 +173,11 @@ export default function EditTextEditor({
             blogQuestions: blogData?.blogQuestions || [
                 { question: '', answer: '' },
             ],
-        },
+        } as FormValues,
     })
 
     const { fields, append, remove } = useFieldArray({
-        control: formMethods.control,
+        control: formMethods.control as any,
         name: 'blogQuestions',
     })
 
@@ -737,9 +752,9 @@ export default function EditTextEditor({
         }
     }, [])
 
-    const onSubmit: any = (
-        data: any,
-        publish: boolean,
+    const onSubmit = (
+        data: FormValues,
+        publish: any,
         blogPost: blogPostEnum
     ) => {
         if (uploadImageResult?.isLoading) {
@@ -753,10 +768,11 @@ export default function EditTextEditor({
 
         // const content = quillRef.current.getEditor().root.innerHTML
 
+        const featuredImage = data.featuredImage as any
         if (
-            !data.featuredImage ||
-            (typeof data.featuredImage === 'string' &&
-                data.featuredImage.trim() === '')
+            !featuredImage ||
+            (typeof featuredImage === 'string' &&
+                featuredImage.trim() === '')
         ) {
             formMethods.setError('featuredImage', {
                 type: 'emptyImage',
@@ -765,11 +781,11 @@ export default function EditTextEditor({
             return
         }
 
-        const imageSizeError = imageSizeErrorMessage(data.featuredImage[0])
+        const imageSizeError = imageSizeErrorMessage(featuredImage?.[0] || featuredImage)
         if (imageSizeError !== true) {
             formMethods.setError('featuredImage', {
                 type: 'imageSizeError',
-                message: imageSizeError,
+                message: imageSizeError as string,
             })
             return
         }
@@ -905,8 +921,8 @@ export default function EditTextEditor({
                 <FormProvider {...formMethods}>
                     <form
                         onSubmit={formMethods.handleSubmit((data: any) =>
-                            onSubmit(data, isPublish)
-                        )}
+                            onSubmit(data, isPublish, blogPost)
+                        ) as any}
                     >
                         <FileUpload
                             required
@@ -1076,7 +1092,7 @@ export default function EditTextEditor({
                         </div>
                     </form>
                 </FormProvider>
-            </div>
+            </div >
         </>
     )
 }

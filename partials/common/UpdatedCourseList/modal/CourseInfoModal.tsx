@@ -26,10 +26,10 @@ export const CourseInfoModal = ({
 
     const { notification } = useNotification()
 
-    const validationSchema = Yup.object({
-        body: Yup.mixed().test('Message', 'Must Provide Message', (value: any) =>
-            inputRichTextEditorErrorMessage(value)
-        ),
+    const validationSchema = Yup.object().shape({
+        body: Yup.string()
+            .ensure()
+            .test('Message', 'Must Provide Message', inputRichTextEditorErrorMessage),
     })
 
     const methods = useForm({

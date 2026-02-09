@@ -57,7 +57,7 @@ export const ViewProgressByCourseChart = ({
 
     return (
         <div className="w-full max-w-4xl mx-auto space-y-2.5">
-            <div className="w-full h-[20rem] bg-white rounded-lg p-4 shadow-sm">
+            <div className="w-full h-80 bg-white rounded-lg p-4 shadow-sm">
                 {isError && <NoData isError text={'Something went wrong!'} />}
                 {isLoading ? (
                     <LoadingAnimation size={40} />

@@ -40,10 +40,9 @@ export const ApproveEditCourseModal = ({
         // sector: yup.number().required('Sector is required'),
         // courses: yup.number().required('Course is required'),
         description: yup
-            .mixed()
-            .test('Message', 'Description is required', (value: any) =>
-                inputRichTextEditorErrorMessage(value)
-            ),
+            .string()
+            .ensure()
+            .test('Message', 'Description is required', inputRichTextEditorErrorMessage),
         // reference: yup.string().url('Invalid URL format'),
     })
     const methods = useForm({

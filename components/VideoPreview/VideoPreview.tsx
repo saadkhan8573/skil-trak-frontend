@@ -89,15 +89,14 @@ export const VideoPreview = ({ url }: { url: any }) => {
             {isBrowser() && (
                 <ReactPlayer
                     onReady={onReady}
-                    url={tempUrl}
+                    src={tempUrl}
                     width="100%"
                     height="100%"
                     playing={video.playing}
-                    currenttime={1}
                     volume={video.volume}
                     config={{
                         file: { attributes: { controlsList: 'nodownload' } },
-                    }}
+                    } as any}
                     controls
                     playIcon={
                         <div className="w-full h-full flex justify-center items-center relative">

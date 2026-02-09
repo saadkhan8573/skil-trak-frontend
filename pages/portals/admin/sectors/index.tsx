@@ -36,14 +36,14 @@ const SectorList: NextPageWithLayout = () => {
             },
             element: <WorkplaceTypes />,
         },
-        {
-            label: 'Sector Documents',
-            href: {
-                pathname: 'sectors',
-                query: { tab: 'sector-documents', page: 1, pageSize: 50 },
-            },
-            element: <SectorDocuments />,
-        },
+        // {
+        //     label: 'Sector Documents',
+        //     href: {
+        //         pathname: 'sectors',
+        //         query: { tab: 'sector-documents', page: 1, pageSize: 50 },
+        //     },
+        //     element: <SectorDocuments />,
+        // },
     ]
 
     return (

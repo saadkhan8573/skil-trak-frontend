@@ -39,7 +39,7 @@ export const EditPassword = ({
     const validationSchema = Yup.object({
         password: Yup.string().required('Password is required'),
         confirmPassword: Yup.string()
-            .oneOf([Yup.ref('password'), null], 'Passwords must match')
+            .oneOf([Yup.ref('password')], 'Passwords must match')
             .required('Confirm Password is required'),
     })
 
@@ -60,11 +60,11 @@ export const EditPassword = ({
                 onConfirmClick={methods.handleSubmit(onSubmit)}
                 onCancelClick={onCancel}
                 loading={changePasswordResult.isLoading}
-                // disabled={
-                //     !password.password ||
-                //     !password.confirmPassword ||
-                //     password.password !== password.confirmPassword
-                // }
+            // disabled={
+            //     !password.password ||
+            //     !password.confirmPassword ||
+            //     password.password !== password.confirmPassword
+            // }
             >
                 <FormProvider {...methods}>
                     <form className="mt-2 w-full">

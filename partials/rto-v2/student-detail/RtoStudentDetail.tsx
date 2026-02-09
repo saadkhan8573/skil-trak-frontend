@@ -152,7 +152,7 @@ export const RtoStudentDetail = () => {
             {profile?.isError ? <TechnicalError /> : null}
 
             {profile?.isLoading ? (
-                <div className="bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 min-h-screen">
+                <div className="bg-linear-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 min-h-screen">
                     <StudentTopBarSkeleton />
                     <main className="w-full mx-auto px-[13.25px] sm:px-[19.87px] lg:px-[26.5px] py-[19.87px] space-y-6">
                         <StudentProfileHeaderSkeleton />
@@ -170,7 +170,7 @@ export const RtoStudentDetail = () => {
                     </main>
                 </div>
             ) : profile?.data && profile?.isSuccess ? (
-                <div className="bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40">
+                <div className="bg-linear-to-br from-slate-50 via-blue-50/30 to-indigo-50/40">
                     {/* Header */}
                     <RtoInfo />
 

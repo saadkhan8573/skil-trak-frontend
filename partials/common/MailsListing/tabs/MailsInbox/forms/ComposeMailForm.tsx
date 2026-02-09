@@ -24,14 +24,14 @@ export const ComposeMailForm = ({
 
     const inputClasses =
         'placeholder:text-[#686868] border-b border-secondary-dark outline-none h-8 placeholder:text-[11px] px-1.5 text-[13px] text-gray-700'
-    const validationSchema = Yup.object({
+    const validationSchema = Yup.object().shape({
         receiver: Yup.string()
             .email('Invalid Email')
             .required('Must provide email'),
         subject: Yup.string().required('Must provide subject'),
-        message: Yup.mixed().test('Message', 'Must Provide Message', (value: any) =>
-            inputRichTextEditorErrorMessage(value)
-        ),
+        message: Yup.string()
+            .ensure()
+            .test('Message', 'Must Provide Message', inputRichTextEditorErrorMessage),
     })
     const methods = useForm({
         resolver: yupResolver(validationSchema),

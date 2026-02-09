@@ -43,7 +43,7 @@ const SMS: NextPageWithLayout = () => {
     const validationSchema = yup.object({
         number: yup
             .string()
-            .nullable(true)
+            .nullable()
             .required('Contact Number is Required'),
         message: yup.string().required('Message is required'),
     })

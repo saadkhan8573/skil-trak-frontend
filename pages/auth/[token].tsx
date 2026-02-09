@@ -33,7 +33,7 @@ const ResetPassword: NextPage = () => {
     const validationSchema = Yup.object({
         newPassword: Yup.string().required('Password is required!'),
         confirmPassword: Yup.string()
-            .oneOf([Yup.ref('newPassword'), null], 'Passwords must match!')
+            .oneOf([Yup.ref('newPassword')], 'Passwords must match!')
             .required('Confirm your password!'),
     })
     const methods = useForm({
@@ -75,7 +75,7 @@ const ResetPassword: NextPage = () => {
             </Head>
             <div className="flex justify-center items-center choose-portal-type-bg">
                 <div className="mx-auto flex items-center justify-between">
-                    <div className="flex flex-col flex-grow">
+                    <div className="flex flex-col grow">
                         <div className="w-full mb-8 flex flex-col justify-center items-center">
                             <Link href={'/'}>
                                 <Image

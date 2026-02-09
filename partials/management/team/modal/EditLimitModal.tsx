@@ -13,7 +13,7 @@ export const EditLimitModal = ({ onCancel, targetId }: any) => {
         target: yup
             .number()
             .positive('Number cannot be negative')
-            .nullable(true),
+            .nullable(),
     })
     const methods = useForm({
         mode: 'all',
@@ -37,7 +37,7 @@ export const EditLimitModal = ({ onCancel, targetId }: any) => {
             id: targetId,
         }
         updateKpiTarget(values)
-        
+
     }
 
     return (

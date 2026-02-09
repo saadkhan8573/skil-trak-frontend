@@ -95,7 +95,7 @@ export const FolderFiles = ({
                         <button
                             onClick={() => setViewType('active')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${viewType === 'active'
-                                ? 'bg-gradient-to-r from-white to-blue-50/80 text-[#044866] shadow-sm ring-1 ring-[#044866]/10'
+                                ? 'bg-linear-to-r from-white to-blue-50/80 text-[#044866] shadow-sm ring-1 ring-[#044866]/10'
                                 : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
                                 }`}
                         >
@@ -120,7 +120,7 @@ export const FolderFiles = ({
                         <button
                             onClick={() => setViewType('archived')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${viewType === 'archived'
-                                ? 'bg-gradient-to-r from-white to-red-50/80 text-red-600 shadow-sm ring-1 ring-red-100'
+                                ? 'bg-linear-to-r from-white to-red-50/80 text-red-600 shadow-sm ring-1 ring-red-100'
                                 : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
                                 }`}
                         >

@@ -125,7 +125,7 @@ export const CourseCard = ({
                     <div className="flex flex-col gap-y-3">
                         {[...sectorData?.courses]?.map((approval: any) => {
                             const rawText = approval?.description || ''
-                            const parsedHtml = marked.parse(rawText)
+                            const parsedHtml = String(marked.parse(rawText))
                             return (
                                 <div
                                     key={approval.id}
@@ -347,14 +347,13 @@ export const CourseCard = ({
                                             </div>
                                         )}
                                         <div
-                                            className={`${
-                                                isPreviousCourses ||
+                                            className={`${isPreviousCourses ||
                                                 !approval?.isVerifiedByHod
-                                                    ? 'bg-red-500'
-                                                    : isPending
+                                                ? 'bg-red-500'
+                                                : isPending
                                                     ? 'bg-indigo-500'
                                                     : 'bg-emerald-700'
-                                            } relative text-white p-4 w-full mb-4 flex gap-x-5 items-start max-h-56 overflow-auto custom-scrollbar`}
+                                                } relative text-white p-4 w-full mb-4 flex gap-x-5 items-start max-h-56 overflow-auto custom-scrollbar`}
                                         >
                                             <div>
                                                 {/* <Typography variant="label" color="white">
@@ -363,7 +362,7 @@ export const CourseCard = ({
 
                                                 <div className="w-full min-w-80">
                                                     <div
-                                                        className="w-full customTailwingStyles-inline-style customTailwingStyles text-xs text-white !bg-transparent leading-relaxed"
+                                                        className="w-full customTailwingStyles-inline-style customTailwingStyles text-xs text-white bg-transparent! leading-relaxed"
                                                         dangerouslySetInnerHTML={{
                                                             __html:
                                                                 parsedHtml ||
@@ -452,9 +451,9 @@ export const CourseCard = ({
                                                 <span>
                                                     {approval?.updatedAt
                                                         ? approval?.updatedAt?.slice(
-                                                              0,
-                                                              10
-                                                          )
+                                                            0,
+                                                            10
+                                                        )
                                                         : 'N/A'}
                                                 </span>
                                             </div>
@@ -475,7 +474,7 @@ export const CourseCard = ({
             <div className="flex flex-col gap-4 mt-4">
                 {[...approvals]?.map((approval: any) => {
                     const rawText = approval?.description || ''
-                    const parsedHtml = marked.parse(rawText)
+                    const parsedHtml = String(marked.parse(rawText))
                     return (
                         <div
                             key={approval.id}
@@ -612,13 +611,12 @@ export const CourseCard = ({
                                         )}
                                 </div>
                                 <div
-                                    className={`${
-                                        isPreviousCourses
-                                            ? 'bg-red-500'
-                                            : approval?.status === 'pending'
+                                    className={`${isPreviousCourses
+                                        ? 'bg-red-500'
+                                        : approval?.status === 'pending'
                                             ? 'bg-indigo-500'
                                             : 'bg-emerald-700'
-                                    } relative text-white p-4 rounded-md w-full mb-4 flex gap-x-5 items-start max-h-56 overflow-auto custom-scrollbar`}
+                                        } relative text-white p-4 rounded-md w-full mb-4 flex gap-x-5 items-start max-h-56 overflow-auto custom-scrollbar`}
                                 >
                                     <div>
                                         {/* <Typography variant="label" color="white">
@@ -627,7 +625,7 @@ export const CourseCard = ({
 
                                         <div className="w-full min-w-80">
                                             <div
-                                                className="w-full customTailwingStyles-inline-style customTailwingStyles text-xs text-white !bg-transparent leading-relaxed"
+                                                className="w-full customTailwingStyles-inline-style customTailwingStyles text-xs text-white bg-transparent! leading-relaxed"
                                                 dangerouslySetInnerHTML={{
                                                     __html:
                                                         parsedHtml ||
@@ -696,9 +694,9 @@ export const CourseCard = ({
                                         <span>
                                             {approval?.updatedAt
                                                 ? approval?.updatedAt?.slice(
-                                                      0,
-                                                      10
-                                                  )
+                                                    0,
+                                                    10
+                                                )
                                                 : 'N/A'}
                                         </span>
                                     </div>

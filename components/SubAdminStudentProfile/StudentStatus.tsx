@@ -20,7 +20,7 @@ import { ShowErrorNotifications } from '@components/ShowErrorNotifications'
 
 interface onSubmitType {
     status: StudentStatusEnum
-    comment: string
+    comment?: string
 }
 export const StudentStatus = ({
     id,
@@ -41,10 +41,13 @@ export const StudentStatus = ({
         SubAdminApi.Student.changeCurrentStatus()
 
     const validationSchema = Yup.object({
-        status: Yup.string().required('Status is required!'),
+        status: Yup.mixed<StudentStatusEnum>()
+            .oneOf(Object.values(StudentStatusEnum))
+            .required('Status is required!'),
+        comment: Yup.string().optional(),
     })
 
-    const methods = useForm<onSubmitType>({
+    const methods = useForm<any>({
         resolver: yupResolver(validationSchema),
         mode: 'all',
     })
@@ -147,7 +150,7 @@ export const StudentStatus = ({
                                         onStatusChange
                                     )}
                                 >
-                                    <div className="flex-grow w-full mb-3">
+                                    <div className="grow w-full mb-3">
                                         <Select
                                             name="status"
                                             options={studentStatusOptions}

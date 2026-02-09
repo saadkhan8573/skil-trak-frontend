@@ -14,7 +14,7 @@ import * as Yup from 'yup'
 type FormValues = {
     receiver: string
     subject: string
-    body?: any
+    body: string
 }
 export const ComposeListingRtoMailForm = ({
     result,
@@ -28,14 +28,14 @@ export const ComposeListingRtoMailForm = ({
     const [attachmentFiles, setAttachmentFiles] = useState<any>([])
     const inputClasses =
         'placeholder:text-[#686868] border-b border-secondary-dark outline-none h-8 placeholder:text-[11px] px-1.5 text-[13px] text-gray-700'
-    const validationSchema = Yup.object({
+    const validationSchema = Yup.object().shape({
         receiver: Yup.string()
             .email('Invalid Email')
             .required('Must provide email'),
         subject: Yup.string().required('Must provide subject'),
-        body: Yup.mixed().test('body', 'Must Provide Body', (value: string) =>
-            inputRichTextEditorErrorMessage(value)
-        ),
+        body: Yup.string()
+            .ensure()
+            .test('body', 'Must Provide Body', inputRichTextEditorErrorMessage),
     })
     const methods = useForm<FormValues>({
         resolver: yupResolver(validationSchema),

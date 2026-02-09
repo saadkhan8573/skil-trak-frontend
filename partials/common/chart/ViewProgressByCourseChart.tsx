@@ -1,16 +1,13 @@
-import React from 'react'
+import { LoadingAnimation, NoData, Select, Typography } from '@components'
 import {
-    BarChart,
     Bar,
-    XAxis,
-    YAxis,
+    BarChart,
     CartesianGrid,
-    Tooltip,
-    Legend,
     ResponsiveContainer,
-    Scatter,
+    Tooltip,
+    XAxis,
+    YAxis
 } from 'recharts'
-import { Select, Typography, LoadingAnimation, NoData } from '@components'
 
 export const ViewProgressByCourseChart = ({
     courses,
@@ -43,7 +40,7 @@ export const ViewProgressByCourseChart = ({
                 </div>
             </div>
 
-            <div className="w-full h-[30rem]">
+            <div className="w-full h-120">
                 {isError && <NoData text={'Something went wrong!'} />}
                 {isLoading ? (
                     <LoadingAnimation size={60} />

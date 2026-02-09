@@ -127,7 +127,7 @@ export const StudentForm = ({ onSubmit }: { onSubmit: any }) => {
             .required('Must provide password'),
         confirmPassword: yup
             .string()
-            .oneOf([yup.ref('password'), null], 'Passwords must match')
+            .oneOf([yup.ref('password')], 'Passwords must match')
             .required('Must confirm entered password'),
 
         // Business Information
@@ -295,8 +295,8 @@ export const StudentForm = ({ onSubmit }: { onSubmit: any }) => {
                             label={'Sector'}
                             {...(storedData
                                 ? {
-                                      defaultValue: storedData.sectors,
-                                  }
+                                    defaultValue: storedData.sectors,
+                                }
                                 : {})}
                             name={'sectors'}
                             options={sectorOptions}

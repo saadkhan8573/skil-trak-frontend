@@ -1,23 +1,16 @@
 import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { EditorProps } from 'react-draft-wysiwyg'
-import draftToHtml from 'draftjs-to-html'
-// import htmlToDraft from 'html-to-draftjs'
-import { EditorState, ContentState, convertToRaw } from 'draft-js'
-const Editor = dynamic<EditorProps>(
-    () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
+import { Button } from '@components'
+
+const RichTextEditor = dynamic<any>(
+    () => import('@components/inputs/RichTextEditor/RichTextEditor').then((mod) => mod.RichTextEditor),
     {
         ssr: false,
+        loading: () => (
+            <div className="h-80 w-full bg-gray-50 animate-pulse rounded-md border" />
+        ),
     }
 )
-
-const htmlToDraft =
-    typeof window === 'object' && require('html-to-draftjs').default
-
-// styles
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-import { Button } from '@components'
-import { isBrowser } from '@utils'
 
 export const MouEditor = ({
     content,
@@ -25,34 +18,15 @@ export const MouEditor = ({
     setEditMou,
     setSaveContentButton,
 }: any) => {
-    const blocksFromHtml = htmlToDraft(content || '')
-    const { contentBlocks, entityMap } = blocksFromHtml
-    const contentState = ContentState.createFromBlockArray(
-        contentBlocks,
-        entityMap
-    )
+    const [htmlContent, setHtmlContent] = useState(content || '')
 
-    const [editor, setEditor] = useState<boolean>(false)
-    useEffect(() => {
-        setEditor(true)
-    }, [])
-
-    const raw = convertToRaw(contentState)
-
-    const [editorState, setEditorState] = useState(raw)
-    const [newContentState, setNewContentState] = useState(
-        EditorState.createEmpty()
-    )
-    const [isContentChange, setIsContentChange] = useState(false)
-
-    const _html = draftToHtml(convertToRaw(newContentState.getCurrentContent()))
     useEffect(() => {
         if (setSaveContentButton) {
             setSaveContentButton(
                 <>
                     <Button
                         onClick={() => {
-                            saveContent(isContentChange ? _html : content)
+                            saveContent(htmlContent)
                             setEditMou(false)
                         }}
                         text={'Save'}
@@ -61,32 +35,19 @@ export const MouEditor = ({
             )
         }
     }, [
-        _html,
-        content,
+        htmlContent,
         setEditMou,
         saveContent,
-        newContentState,
-        isContentChange,
         setSaveContentButton,
     ])
 
-    const onEditorStateChange = (editorState: any) => {
-        setEditorState(editorState)
-        setNewContentState(editorState)
-        setIsContentChange(true)
-    }
-
     return (
-        <>
-            {isBrowser() && editor && (
-                <Editor
-                    defaultContentState={editorState}
-                    toolbarClassName="border"
-                    wrapperClassName="border"
-                    editorClassName="h-80 px-5 remove-scrollbar"
-                    onEditorStateChange={onEditorStateChange}
-                />
-            )}
-        </>
+        <div className="bg-white">
+            <RichTextEditor
+                value={htmlContent}
+                onChange={(value: string) => setHtmlContent(value)}
+                height="h-80"
+            />
+        </div>
     )
 }

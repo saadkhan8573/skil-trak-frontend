@@ -11,16 +11,14 @@ import {
     UploadFile,
     useShowErrorNotification,
 } from '@components'
+import { InputErrorMessage } from '@components/inputs/components'
 import { FileUpload } from '@hoc'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNotification } from '@hooks'
-import { InputErrorMessage } from '@components/inputs/components'
 import { AdminApi, adminApi } from '@queries'
 import { useRouter } from 'next/router'
-import { useEffect, useRef, useState, useMemo } from 'react'
-import { FormProvider, useFieldArray, useForm, SubmitHandler, FieldValues } from 'react-hook-form'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { FieldValues, FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 interface BlogQuestion {

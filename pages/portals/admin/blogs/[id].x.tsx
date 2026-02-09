@@ -4,12 +4,10 @@ import { EmptyData, LoadingAnimation, TechnicalError } from '@components'
 import { useContextBar, useNavbar } from '@hooks'
 import { AdminLayout } from '@layouts'
 import { NextPageWithLayout } from '@types'
-// import ReactQuill from 'react-quill'
 import { BlogContextBar } from '@partials/admin/blog'
 import { adminApi } from '@queries'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-import 'react-quill/dist/quill.snow.css'
 
 const EditBlog: NextPageWithLayout = () => {
     const contextBar = useContextBar()
@@ -93,9 +91,9 @@ const EditBlog: NextPageWithLayout = () => {
                 <>
                     <TextEditor
                         blogData={data}
-                        // onSubmit={() => {
-                        //     onSubmit()
-                        // }}
+                    // onSubmit={() => {
+                    //     onSubmit()
+                    // }}
                     />
                 </>
             ) : (

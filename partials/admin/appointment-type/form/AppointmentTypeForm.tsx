@@ -1,7 +1,7 @@
 import {
     Button,
     Checkbox,
-    ContentEditor,
+    InputRichTextEditor,
     RadioButton,
     RadioGroup,
     TextInput,
@@ -38,7 +38,10 @@ export const AppointmentTypeForm = ({
 
     const methods = useForm({
         resolver: yupResolver(validationSchema),
-        defaultValues: initialValues,
+        defaultValues: {
+            ...initialValues,
+            emailContent,
+        },
         mode: 'all',
     })
 
@@ -130,10 +133,12 @@ export const AppointmentTypeForm = ({
 
                     <div className="">
                         {isBrowser() && (
-                            <ContentEditor
+                            <InputRichTextEditor
                                 label="Email Content"
-                                content={emailContent}
-                                setContent={setEmailContent}
+                                name="emailContent"
+                                onChange={(value: string) =>
+                                    setEmailContent(value)
+                                }
                             />
                         )}
                     </div>

@@ -78,7 +78,7 @@ export const LoginForm = ({
                     <Link legacyBehavior href="/auth/forgot-password">
                         <a
                             className={
-                                'text-sm font-semibold underline text-red-500 text-muted hover:text-link transition-all duration-300'
+                                'text-sm font-semibold underline text-muted hover:text-link transition-all duration-300'
                             }
                         >
                             Forgot Password?

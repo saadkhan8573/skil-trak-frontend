@@ -6,7 +6,7 @@ import React, {
     ReactNode,
 } from 'react'
 import { useRouter } from 'next/router'
-import jwt from 'jwt-decode'
+import { jwtDecode as jwt } from 'jwt-decode'
 import {
     Card,
     EmptyData,
@@ -277,9 +277,9 @@ const ESign = () => {
                 (data: any) =>
                     data?.type === FieldsTypeEnum.Checkbox
                         ? {
-                              ...data,
-                              fieldValue: e.target.checked,
-                          }
+                            ...data,
+                            fieldValue: e.target.checked,
+                        }
                         : data
             )
             dispatch({
@@ -521,8 +521,8 @@ const ESign = () => {
                                     <div
                                         key={i}
                                         ref={(el: any) =>
-                                            (scrollTargetRef.current[i] =
-                                                el as any)
+                                        (scrollTargetRef.current[i] =
+                                            el as any)
                                         }
                                         className="relative"
                                     >

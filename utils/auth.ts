@@ -1,5 +1,5 @@
 import { User, UserStatus } from '@types'
-import jwt from 'jwt-decode'
+import { jwtDecode as jwt } from 'jwt-decode'
 import { getSession } from 'next-auth/react'
 import { isBrowser } from './browser-supported'
 const KEYS = {

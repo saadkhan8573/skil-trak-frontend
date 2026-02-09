@@ -42,12 +42,11 @@ export const TicketMessageCard = ({
     const [updateReply, updateReplyResult] = CommonApi.Tickets.useUpdateReply()
     // const plainText: any = message?.message?.replace(/<[^>]+>/g, '')
 
-    const validationSchema = yup.object({
+    const validationSchema = yup.object().shape({
         message: yup
-            .mixed()
-            .test('Message', 'Must Provide Message', (value: any) =>
-                inputRichTextEditorErrorMessage(value)
-            ),
+            .string()
+            .ensure()
+            .test('Message', 'Must Provide Message', inputRichTextEditorErrorMessage),
     })
     const methods = useForm({
         mode: 'all',
@@ -87,7 +86,7 @@ export const TicketMessageCard = ({
                         <form className="mt-2 w-full">
                             <Controller
                                 name="message"
-                                control={methods.control}
+                                control={methods.control as any}
                                 defaultValue={
                                     message?.message || ''
                                 }

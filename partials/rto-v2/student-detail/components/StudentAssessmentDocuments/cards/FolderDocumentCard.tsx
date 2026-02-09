@@ -74,9 +74,9 @@ export const FolderDocumentCard = ({
                                     } rounded-lg`}
                             >
                                 {doc?.status === 'rejected' ? (
-                                    <AlertCircle className="w-3 h-3 text-red-600 mt-0.5 flex-shrink-0" />
+                                    <AlertCircle className="w-3 h-3 text-red-600 mt-0.5 shrink-0" />
                                 ) : (
-                                    <CheckCircle className="w-3 h-3 text-green-600 mt-0.5 flex-shrink-0" />
+                                    <CheckCircle className="w-3 h-3 text-green-600 mt-0.5 shrink-0" />
                                 )}
                                 <p
                                     className={`text-xs ${doc?.status === 'rejected'

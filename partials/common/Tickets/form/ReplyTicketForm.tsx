@@ -21,12 +21,11 @@ export const ReplyTicketForm = ({
 }) => {
     const { notification } = useNotification()
 
-    const validationSchema = yup.object({
+    const validationSchema = yup.object().shape({
         message: yup
-            .mixed()
-            .test('Message', 'Must Provide Message', (value) =>
-                inputRichTextEditorErrorMessage(value)
-            ),
+            .string()
+            .ensure()
+            .test('Message', 'Must Provide Message', inputRichTextEditorErrorMessage),
     })
 
     const methods = useForm({

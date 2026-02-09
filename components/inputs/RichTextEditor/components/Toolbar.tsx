@@ -138,7 +138,7 @@ const BlockOptionsDropdownList = ({
         maxHeight: '600px',
         overflowY: 'auto',
       }}
-      className="bg-white border rounded shadow-lg z-[9999] py-1 animate-in fade-in slide-in-from-top-1 duration-200"
+      className="bg-white border rounded shadow-lg z-9999 py-1 animate-in fade-in slide-in-from-top-1 duration-200"
     >
       <button
         type="button"

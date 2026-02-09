@@ -1,9 +1,10 @@
 import { Badge, Button } from '@components'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui'
 import { RtoV2Api } from '@queries'
 import { useAppSelector } from '@redux'
 import { ConfirmationSource } from '@types'
 import { motion } from 'framer-motion'
-import { CheckCircle2, CheckSquare, Circle, Mail, Phone } from 'lucide-react'
+import { CheckCircle2, CheckSquare, Circle, Mail, Phone, X } from 'lucide-react'
 import { useState } from 'react'
 import { ConfirmHighlightedTasksModal } from '../../modals/ConfirmHighlightedTasksModal'
 
@@ -12,6 +13,8 @@ interface HighlightedTaskItemProps {
     index: number
     onRefresh: () => void
     isDeleted?: boolean
+    isSelected?: boolean
+    onToggleSelection?: () => void
 }
 
 export function HighlightedTaskItem({
@@ -19,6 +22,8 @@ export function HighlightedTaskItem({
     index,
     onRefresh,
     isDeleted,
+    isSelected,
+    onToggleSelection,
 }: HighlightedTaskItemProps) {
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
 
@@ -38,90 +43,110 @@ export function HighlightedTaskItem({
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="p-4 rounded-xl border border-gray-100 bg-white/50 space-y-2 hover:shadow-sm transition-shadow"
+                onClick={() => {
+                    if (!confirmationDetail?.isConfirmed && !task.deletedAt && !isDeleted && onToggleSelection) {
+                        onToggleSelection()
+                    }
+                }}
+                className={`p-2.5 rounded-lg border transition-all duration-200 group border-gray-400/80 ${isSelected
+                    ? 'border-[#044866] bg-[#044866]/5 shadow-sm ring-1 ring-[#044866]/20'
+                    : 'border-gray-100 bg-white/60 hover:shadow-sm'
+                    } ${(!confirmationDetail?.isConfirmed && !task.deletedAt && !isDeleted) ? 'cursor-pointer' : ''}`}
             >
                 {/* Top Section: Statement */}
-                <div className="flex items-start gap-3">
-                    <div className="mt-1 flex-shrink-0">
-                        <div
-                            className={`w-5 h-5 rounded-full flex items-center justify-center shadow-sm ${confirmationDetail
-                                ? confirmationDetail.isConfirmed
-                                    ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
-                                    : 'bg-gradient-to-br from-red-500 to-red-600'
-                                : 'bg-gray-100'
-                                }`}
-                        >
-                            {confirmationDetail ? (
-                                confirmationDetail.isConfirmed ? (
-                                    <CheckCircle2 className="w-3 h-3 text-white" />
-                                ) : (
-                                    <Circle className="w-3 h-3 text-white" />
-                                )
-                            ) : (
-                                <Circle className="w-3 h-3 text-gray-400" />
-                            )}
-                        </div>
-                    </div>
-                    <p className="text-[13.5px] text-gray-800 leading-relaxed font-semibold">
-                        {task.statement}
-                    </p>
-                </div>
-
-                {/* Bottom Section: Actions/Details */}
-                <div className="flex flex-col gap-3 border-t border-gray-50">
-                    {(!confirmationDetail || !confirmationDetail.isConfirmed) && !task.deletedAt && !isDeleted ? (
-                        <div className="flex flex-col gap-2 pt-3">
-                            <Button
-                                onClick={() => setIsConfirmModalOpen(true)}
-                                variant="primaryNew"
-                                className="w-full h-9 text-[11px] gap-2 shadow-sm rounded-lg"
-                            >
-                                <CheckSquare className="w-3.5 h-3.5" />
-                                {confirmationDetail ? 'Confirm Task (Now Available)' : 'Confirm This Task'}
-                            </Button>
-                        </div>
-                    ) : null}
-
-                    {confirmationDetail && (
-                        <div className={`flex flex-col gap-3 ${!confirmationDetail.isConfirmed ? 'bg-gray-50/50 p-2 rounded-xl border border-gray-100' : 'pt-2'}`}>
-                            <div className="flex items-center justify-between">
-                                <Badge
-                                    variant={confirmationDetail.isConfirmed ? "success" : "error"}
-                                    className="uppercase tracking-wider font-bold text-[9px] px-2"
-                                >
-                                    {confirmationDetail.isConfirmed ? 'Confirmed' : 'Not Available'}
-                                </Badge>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-2 text-[11px]">
-                                {confirmationDetail.isConfirmed && (
-                                    <div className="flex flex-col gap-1 p-2 rounded-lg bg-gray-50 border border-gray-100">
-                                        <span className="text-gray-400 font-medium uppercase text-[9px]">Source</span>
-                                        {confirmationDetail.confirmationSource === ConfirmationSource.EMAIL ? (
-                                            <div className="flex items-center gap-1.5 text-blue-600 font-bold">
-                                                <Mail className="w-3 h-3" />
-                                                Email
-                                            </div>
-                                        ) : (
-                                            <div className="flex items-center gap-1.5 text-orange-600 font-bold">
-                                                <Phone className="w-3 h-3" />
-                                                Phone
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-                                <div className={`flex flex-col gap-1 p-2 rounded-lg bg-gray-50 border border-gray-100 ${!confirmationDetail.isConfirmed ? 'col-span-2' : ''}`}>
-                                    <span className="text-gray-400 font-medium uppercase text-[9px]">
-                                        {confirmationDetail.isConfirmed ? 'Confirmed By' : 'Marked By'}
-                                    </span>
-                                    <span className="capitalize font-bold text-gray-700 truncate">
-                                        {confirmationDetail.confirmedBy?.name || 'Admin'}
-                                    </span>
-                                </div>
+                <div className="flex items-start gap-2.5">
+                    {(!confirmationDetail || !confirmationDetail.isConfirmed) && !task.deletedAt && !isDeleted && (
+                        <div className="mt-0.5 shrink-0">
+                            <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${isSelected ? 'bg-[#044866] border-[#044866]' : 'border-gray-300'}`}>
+                                {isSelected && <CheckSquare className="w-3 h-3 text-white" />}
                             </div>
                         </div>
                     )}
+
+                    {confirmationDetail?.isConfirmed && (
+                        <div className="mt-0.5 shrink-0">
+                            <div className="w-4 h-4 rounded-full flex items-center justify-center bg-linear-to-br from-[#10B981] to-[#059669] shadow-sm">
+                                <CheckCircle2 className="w-2.5 h-2.5 text-white" />
+                            </div>
+                        </div>
+                    )}
+
+                    {!confirmationDetail && !task.deletedAt && !isDeleted && !isSelected && (
+                        <div className="mt-0.5 shrink-0">
+                            <div className="w-4 h-4 rounded-full flex items-center justify-center bg-gray-100">
+                                <Circle className="w-2.5 h-2.5 text-gray-400" />
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="flex-1 min-w-0">
+                        <p className={`text-[12px] leading-tight font-semibold line-clamp-2 ${isSelected ? 'text-[#044866]' : 'text-gray-800'}`}>
+                            {task.statement}
+                        </p>
+                    </div>
+
+                    {(!confirmationDetail || !confirmationDetail.isConfirmed) && !task.deletedAt && !isDeleted && (
+                        <div className="flex items-center gap-1 ml-auto">
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Badge
+                                        variant="primaryNew"
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            setIsConfirmModalOpen(true)
+                                        }}
+                                        Icon={CheckSquare}
+                                        text='Confirm Task'
+                                    />
+                                </TooltipTrigger>
+                                <TooltipContent>Confirm this task</TooltipContent>
+                            </Tooltip>
+                        </div>
+                    )}
                 </div>
+
+                {/* Bottom Section: Compact Details */}
+                {confirmationDetail && (
+                    <div className="flex items-center gap-2 pt-1 border-t border-gray-100/50">
+                        <Badge
+                            variant={confirmationDetail.isConfirmed ? "success" : "error"}
+                            className="uppercase tracking-wider font-bold text-[8px] px-1.5 py-0 h-4"
+                        >
+                            {confirmationDetail.isConfirmed ? 'Confirmed' : 'Not Available'}
+                        </Badge>
+
+                        <div className="flex items-center flex-wrap gap-1.5 text-[10px] text-gray-500 min-w-0">
+                            {confirmationDetail.isConfirmed && (
+                                <>
+                                    <span>via</span>
+                                    {confirmationDetail.confirmationSource === ConfirmationSource.EMAIL ? (
+                                        <div className="flex items-center gap-1 bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded transition-colors group-hover:bg-blue-100">
+                                            <Mail className="w-2.5 h-2.5" />
+                                            <span className="font-medium">Email</span>
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center gap-1 bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded transition-colors group-hover:bg-orange-100">
+                                            <Phone className="w-2.5 h-2.5" />
+                                            <span className="font-medium">Phone</span>
+                                        </div>
+                                    )}
+                                    <span className="text-gray-400">by:</span>
+                                    <span className="font-bold text-[#044866]">
+                                        {confirmationDetail.confirmedBy?.name?.split(' ')[0] || 'Admin'}
+                                    </span>
+                                </>
+                            )}
+                            {!confirmationDetail.isConfirmed && (
+                                <>
+                                    <span className="text-gray-400">by:</span>
+                                    <span className="font-bold text-gray-600">
+                                        {confirmationDetail.confirmedBy?.name?.split(' ')[0] || 'Admin'}
+                                    </span>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                )}
             </motion.div>
 
             {isConfirmModalOpen && (
@@ -131,7 +156,7 @@ export function HighlightedTaskItem({
                         setIsConfirmModalOpen(false)
                         onRefresh()
                     }}
-                    taskId={task.id}
+                    taskIds={[task.id]}
                     industryId={industryId!}
                     confirmationDetailId={confirmationDetail?.id}
                     showNotAvailable={!confirmationDetail}

@@ -29,7 +29,7 @@ export const AddIndustryFeedbackForm = ({
     const validationObject = () => {
         let data: any = {}
         Object.keys(industryFeedbackQuestions).forEach((key) => {
-            data[key] = yup.string().nullable(true).required('Required!')
+            data[key] = yup.string().nullable().required('Required!')
         })
         return data
     }

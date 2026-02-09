@@ -17,7 +17,7 @@ export const AddInsuaranceTypeForm = ({
         title: Yup.string().required('Title is required'),
     })
 
-    const methods = useForm({
+    const methods = useForm<any>({
         mode: 'all',
         resolver: yupResolver(validationSchema),
         defaultValues: {

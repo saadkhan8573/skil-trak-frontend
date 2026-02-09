@@ -2,8 +2,7 @@ import { ActionModal, ShowErrorNotifications } from '@components'
 import { UserRoles } from '@constants'
 import { useNotification } from '@hooks'
 import { CommonApi } from '@queries'
-import { getUserCredentials } from '@utils'
-import jwt from 'jwt-decode'
+import { jwtDecode as jwt } from 'jwt-decode'
 
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -61,16 +60,15 @@ export const FinishEmailSignModal = ({
     return (
         <>
             <ShowErrorNotifications result={addCustomFieldsDataResult} />
-            <div className="relative z-[11111111]">
+            <div className="relative z-11111111">
                 <ActionModal
                     Icon={IoWarningOutline}
                     variant="success"
                     title="Are you sure!"
-                    description={`${
-                        decodeData?.role === UserRoles?.RTO
-                            ? 'Please review the e-sign document before finishing. Once completed, the document will be approved.'
-                            : 'You are about to finish Esign Do you wish to continue?'
-                    }`}
+                    description={`${decodeData?.role === UserRoles?.RTO
+                        ? 'Please review the e-sign document before finishing. Once completed, the document will be approved.'
+                        : 'You are about to finish Esign Do you wish to continue?'
+                        }`}
                     onConfirm={onConfirmUClicked}
                     // onCancel={onCancel}
                     input

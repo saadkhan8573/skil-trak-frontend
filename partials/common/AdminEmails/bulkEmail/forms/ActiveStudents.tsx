@@ -22,11 +22,24 @@ import {
     useRtoOptions,
     useStudentsOptions,
 } from '../hooks'
-type Props = {
+
+interface Props {
     selectedUser: any
-    setSelectedUser: any
+    setSelectedUser: (user: any) => void
     selectedStudent: any
-    setSelectedStudent: any
+    setSelectedStudent: (student: any) => void
+}
+
+interface FormValues {
+    rtos?: any
+    industries?: any
+    course?: any
+    student: any[]
+    students?: boolean
+    template?: any
+    subject?: string
+    message: string
+    attachment?: any
 }
 
 export const ActiveStudents = ({
@@ -133,18 +146,26 @@ export const ActiveStudents = ({
         },
     ]
 
-    const validationSchema = yup.object({
+    const validationSchema = yup.object().shape({
         student: yup
             .array()
+            .of(yup.mixed())
             .min(1, 'Must select at least 1 Student')
-            .required(),
+            .required() as any, // Array casting in Yup v1 is sometimes problematic with ObjectSchema
         message: yup
-            .mixed()
-            .test('Message', 'Must Provide Message', (value) =>
-                inputRichTextEditorErrorMessage(value)
-            ),
+            .string()
+            .ensure()
+            .test('Message', 'Must Provide Message', inputRichTextEditorErrorMessage)
+            .required(),
+        subject: yup.string().optional(),
+        rtos: yup.mixed().optional(),
+        industries: yup.mixed().optional(),
+        course: yup.mixed().optional(),
+        students: yup.boolean().optional(),
+        template: yup.mixed().optional(),
+        attachment: yup.mixed().optional(),
     })
-    const formMethods = useForm({
+    const formMethods = useForm<FormValues>({
         mode: 'all',
         resolver: yupResolver(validationSchema),
     })

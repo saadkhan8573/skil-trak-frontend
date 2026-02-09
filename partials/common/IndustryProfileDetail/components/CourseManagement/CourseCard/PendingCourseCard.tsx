@@ -20,8 +20,8 @@ export const PendingCourseCard = ({ pendingCourse }: any) => {
         }
     )
     const rawText = pendingCourse?.description || ''
-    const parsedHtml = marked.parse(rawText)
-    
+    const parsedHtml = String(marked.parse(rawText))
+
     return (
         <div>
             <div
@@ -30,7 +30,7 @@ export const PendingCourseCard = ({ pendingCourse }: any) => {
                 <div>
                     <div className="w-full min-w-80">
                         <div
-                            className="w-full customTailwingStyles-inline-style customTailwingStyles text-xs text-white !bg-transparent leading-relaxed"
+                            className="w-full customTailwingStyles-inline-style customTailwingStyles text-xs text-white bg-transparent! leading-relaxed"
                             dangerouslySetInnerHTML={{
                                 __html:
                                     parsedHtml || 'No description available',

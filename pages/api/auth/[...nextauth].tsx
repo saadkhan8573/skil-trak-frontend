@@ -1,5 +1,5 @@
 import axios from 'axios'
-import jwt from 'jwt-decode'
+import { jwtDecode as jwt } from 'jwt-decode'
 import mem from 'mem'
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import { JWT } from 'next-auth/jwt'
@@ -109,8 +109,7 @@ export const authOptions: NextAuthOptions = {
 
                 try {
                     const response = await axios.post(
-                        `${process.env.NEXT_PUBLIC_END_POINT}/auth/${
-                            url || 'login'
+                        `${process.env.NEXT_PUBLIC_END_POINT}/auth/${url || 'login'
                         }`,
                         restCredentials
                     )
@@ -158,7 +157,7 @@ export const authOptions: NextAuthOptions = {
             if (
                 token.accessTokenExpires &&
                 Date.now() <
-                    token.accessTokenExpires - REFRESH_TOKEN_THRESHOLD * 1000
+                token.accessTokenExpires - REFRESH_TOKEN_THRESHOLD * 1000
             ) {
                 return token
             }

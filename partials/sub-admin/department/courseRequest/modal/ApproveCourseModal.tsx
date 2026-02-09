@@ -60,10 +60,10 @@ export const ApproveCourseModal = ({ onCloseModal, request }: any) => {
     }
     const validationSchema = yup.object().shape({
         description: yup
-            .mixed()
-            .test('Message', 'Description is required', (value: any) =>
-                inputRichTextEditorErrorMessage(value)
-            ),
+            .string()
+            .ensure()
+            .test('Message', 'Description is required', inputRichTextEditorErrorMessage),
+        file: yup.mixed().optional(),
     })
     const methods = useForm({
         resolver: yupResolver(validationSchema),

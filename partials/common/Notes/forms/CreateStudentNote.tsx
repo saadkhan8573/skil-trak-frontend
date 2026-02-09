@@ -197,16 +197,16 @@ export const CreateStudentNote = ({
         }
     }, [editValues])
 
-    const validationSchema = Yup.object({
+    const validationSchema = Yup.object().shape({
         title: Yup.string().required('Title is required'),
-        body: Yup.mixed().test('Message', 'Must Provide Message', (value) =>
-            inputRichTextEditorErrorMessage(value)
-        ),
+        body: Yup.string()
+            .ensure()
+            .test('Message', 'Must Provide Message', inputRichTextEditorErrorMessage),
     })
 
-    const localMethods = useForm({
+    const localMethods = useForm<onSubmitType>({
         mode: 'all',
-        resolver: yupResolver(validationSchema),
+        resolver: yupResolver(validationSchema as any),
         defaultValues: { ...editValues, body: editValues?.body || '' },
     })
 

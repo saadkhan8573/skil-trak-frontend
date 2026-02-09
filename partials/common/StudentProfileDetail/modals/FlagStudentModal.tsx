@@ -53,7 +53,7 @@ export const FlagStudentModal = ({
         comment: Yup.string().required('Please provide the note'),
 
         isReported: Yup.string()
-            .nullable(true)
+            .nullable()
             .required('Please select the option Yes/No'),
 
         title: Yup.string().when('isReported', {
@@ -76,7 +76,7 @@ export const FlagStudentModal = ({
     })
 
     const methods = useForm({
-        resolver: yupResolver(validationSchema),
+        resolver: yupResolver(validationSchema) as any,
         mode: 'all',
     })
     const { watch } = methods
@@ -94,12 +94,10 @@ export const FlagStudentModal = ({
         problematicStudent({ studentId, body }).then((res: any) => {
             if (res?.data) {
                 notification?.[hasPermission ? 'success' : 'warning']({
-                    title: `Mark As Flaged ${
-                        !hasPermission ? 'request sent' : ''
-                    }`,
-                    description: `Marked As Flaged ${
-                        !hasPermission ? 'request sent to manager' : ''
-                    } successfully!`,
+                    title: `Mark As Flaged ${!hasPermission ? 'request sent' : ''
+                        }`,
+                    description: `Marked As Flaged ${!hasPermission ? 'request sent to manager' : ''
+                        } successfully!`,
                 })
                 onCancel()
             }
@@ -164,7 +162,7 @@ export const FlagStudentModal = ({
                                     name="title"
                                     placeholder="Issue title"
                                 />
-                                <div className="flex items-center gap-x-2 w-[40rem]">
+                                <div className="flex items-center gap-x-2 w-160">
                                     <div className="w-1/2">
                                         <Select
                                             label={'Priority'}

@@ -102,7 +102,7 @@ export const FolderCard = ({
 
     return (
         <div
-            className={`border-2 ${config.border} rounded-lg overflow-hidden hover:shadow-lg transition-all bg-gradient-to-r ${config.bg} to-white`}
+            className={`border-2 ${config.border} rounded-lg overflow-hidden hover:shadow-lg transition-all bg-linear-to-r ${config.bg} to-white`}
         >
             {modal}
             <div className="p-2.5">
@@ -179,9 +179,9 @@ export const FolderCard = ({
                                     )}
                                 >
                                     {folderStatus === 'rejected' ? (
-                                        <AlertCircle className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" />
+                                        <AlertCircle className="w-4 h-4 text-red-600 mt-0.5 shrink-0" />
                                     ) : (
-                                        <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                                        <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
                                     )}
                                     <p
                                         className={cn('text-sm', {

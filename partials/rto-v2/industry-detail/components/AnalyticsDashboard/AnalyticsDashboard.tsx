@@ -3,6 +3,9 @@ import { useAppDispatch, useAppSelector } from '@redux/hooks'
 import { AnalyticsCard, AnalyticsHeader } from './components'
 import { Calendar, Clock, Layers, Star, Users } from 'lucide-react'
 import { AnalyticsSkeleton } from '../../skeletonLoader'
+import { CoursesQuickView } from '../CoursesQuickView'
+
+import { MasonryGrid } from '@components'
 
 export function AnalyticsDashboard() {
     const { industryDetail: industry } = useAppSelector(
@@ -105,28 +108,36 @@ export function AnalyticsDashboard() {
             {/* Section Header - Enhanced */}
             <AnalyticsHeader />
 
-            {/* Stats Grid - Enhanced Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                {analyticsCards.map((card, index) => (
-                    <div
-                        key={index}
-                        onClick={() => {
-                            if (
-                                (card as any).targetTab ||
-                                (card as any).targetSection
-                            ) {
-                                dispatch(
-                                    setNavigationTarget({
-                                        tab: (card as any).targetTab,
-                                        section: (card as any).targetSection,
-                                    })
-                                )
-                            }
-                        }}
-                    >
-                        <AnalyticsCard card={card as any} index={index} />
-                    </div>
-                ))}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                {/* Left Side: Stats Cards - Spans 2 columns on LG using MasonryGrid */}
+                <div className="lg:col-span-2">
+                    <MasonryGrid columnWidth="50%" gutterWidth={10} gutterHeight={10}>
+                        {analyticsCards.map((card, index) => (
+                            <div
+                                key={index}
+                                className="cursor-pointer"
+                                onClick={() => {
+                                    if (
+                                        (card as any).targetTab ||
+                                        (card as any).targetSection
+                                    ) {
+                                        dispatch(
+                                            setNavigationTarget({
+                                                tab: (card as any).targetTab,
+                                                section: (card as any).targetSection,
+                                            })
+                                        )
+                                    }
+                                }}
+                            >
+                                <AnalyticsCard card={card as any} index={index} />
+                            </div>
+                        ))}
+                    </MasonryGrid>
+                </div>
+
+                {/* Right Side: Courses Quick View - Spans 1 column on LG */}
+                <CoursesQuickView />
             </div>
         </div>
     )

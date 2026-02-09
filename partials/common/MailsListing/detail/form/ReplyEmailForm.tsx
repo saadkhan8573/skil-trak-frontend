@@ -15,14 +15,14 @@ export const ReplyEmailForm = ({
     onSubmit: (values: any) => void
     result: any
 }) => {
-    const validationSchema = Yup.object({
-        reply: Yup.mixed().test('Message', 'Must Provide Reply', (value: any) =>
-            inputRichTextEditorErrorMessage(value)
-        ),
+    const validationSchema = Yup.object().shape({
+        reply: Yup.string()
+            .ensure()
+            .test('Message', 'Must Provide Reply', inputRichTextEditorErrorMessage),
     })
 
-    const methods = useForm({
-        resolver: yupResolver(validationSchema),
+    const methods = useForm<any>({
+        resolver: yupResolver(validationSchema as any),
         mode: 'all',
     })
     return (

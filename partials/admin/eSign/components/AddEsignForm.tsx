@@ -13,8 +13,46 @@ import { CommonApi } from '@queries'
 import { Course, Folder, OptionType, Rto } from '@types'
 import { CourseSelectOption, formatOptionLabel } from '@utils'
 import { ReactNode, useEffect, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm, SubmitHandler, FieldValues } from 'react-hook-form'
 import * as Yup from 'yup'
+
+interface FormValues extends FieldValues {
+    name: string
+    user: number | string
+    course: number | string
+    folder: number | string
+    recipients: string[]
+    deadline: number | null
+    file: any
+}
+
+const validationSchema = Yup.object({
+    name: Yup.string()
+        .max(40, 'Name must not exceed 40 characters')
+        .required('Name is required!'),
+    user: Yup.mixed<number | string>().required('Rto is required'),
+    course: Yup.mixed<number | string>().required('Course is required'),
+    folder: Yup.mixed<number | string>().required('Folder is required'),
+    recipients: Yup.array().of(Yup.string().required()).min(1, 'Must select at least 1 Recipient').required(),
+    deadline: Yup.number()
+        .positive('Deadline Must be positive')
+        .max(180, 'Deadline must not exceed 180')
+        .required('Deadline is required')
+        .nullable(),
+    file: Yup.mixed()
+        .test(
+            'fileSize',
+            'File is required',
+            (value: any, context: any) => {
+                const { edit, fileUrl } = context.options.context || {}
+                if (edit) {
+                    return fileUrl ? true : value && [...value]?.length > 0
+                }
+                return value && [...value]?.length > 0
+            }
+        )
+        .required('File is required!'),
+}) as any
 
 export const AddEsignForm = ({
     edit,
@@ -37,45 +75,33 @@ export const AddEsignForm = ({
 
     const getRtos = CommonApi.ESign.useGetEsignRtos()
 
-    const validationSchema = Yup.object({
-        name: Yup.string()
-            .max(40, 'Name must not exceed 40 characters')
-            .required('Name is required!'),
-        user: Yup.number().required('Rto is required'),
-        course: Yup.number().required('Course is required'),
-        folder: Yup.number().required('Folder is required'),
-        recipients: Yup.array().min(1, 'Must select at least 1 Recipient'),
-        deadline: Yup.number()
-            .positive('Deadline Must be positive')
-            .max(180, 'Deadline must not exceed 180')
-            .required('Deadline is required')
-            .nullable(true),
-        file: Yup.mixed()
-            .test(
-                'fileSize',
-                // 'File size is too large',
-                (value: any) => {
-                    return edit
-                        ? fileUrl
-                            ? true
-                            : value && [...value]?.length > 0
-                                ? true
-                                : false
-                        : value && [...value]?.length > 0
-                            ? true
-                            : false
-                }
-            )
-            .required('File is required!'),
-    })
 
-    const methods = useForm<any>({
-        resolver: yupResolver(validationSchema),
+
+    const methods = useForm<FormValues>({
+        resolver: yupResolver(validationSchema) as any,
+        context: { edit, fileUrl },
         defaultValues: {
             recipients: ['student'],
-        },
+            name: '',
+            user: '',
+            course: '',
+            folder: '',
+            deadline: 7,
+            file: null,
+        } as FormValues,
         mode: 'all',
     })
+
+    const onHandleSubmit: SubmitHandler<FormValues> = (values) => {
+        if (values?.file?.[0] || values?.file) {
+            onSubmit(values)
+        } else {
+            methods.setError('file', {
+                type: 'Required',
+                message: 'File is required',
+            })
+        }
+    }
 
     useEffect(() => {
         if (data) {
@@ -177,16 +203,7 @@ export const AddEsignForm = ({
             <FormProvider {...methods}>
                 <form
                     className="mt-2 w-full"
-                    onSubmit={methods.handleSubmit((values) => {
-                        if (values?.file?.[0] || values?.file) {
-                            onSubmit(values)
-                        } else {
-                            methods.setError('file', {
-                                type: 'Required',
-                                message: 'File is required',
-                            })
-                        }
-                    })}
+                    onSubmit={methods.handleSubmit(onHandleSubmit as any) as any}
                 >
                     <div className="grid grid-cols-2 divide-x-2">
                         <div>

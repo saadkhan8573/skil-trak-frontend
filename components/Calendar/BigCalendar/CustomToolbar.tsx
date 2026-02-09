@@ -2,8 +2,9 @@ import classNames from 'classnames'
 import moment from 'moment'
 import { ToolbarProps } from 'react-big-calendar'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { CalendarEvent } from './BigCalendar'
 
-export const CustomToolbar = (toolbar: ToolbarProps) => {
+export const CustomToolbar = (toolbar: ToolbarProps<CalendarEvent, object>) => {
     const goToBack = () => {
         toolbar.onNavigate('PREV')
     }

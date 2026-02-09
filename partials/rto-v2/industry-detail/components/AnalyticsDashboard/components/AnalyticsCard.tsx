@@ -1,6 +1,4 @@
-import { ArrowUp } from 'lucide-react'
-import { ResponsiveContainer, AreaChart, Area } from 'recharts'
-import { Button, Typography } from '@components'
+import { Typography } from '@components'
 import { LucideIcon } from 'lucide-react'
 
 interface AnalyticsCardProps {
@@ -33,7 +31,7 @@ export function AnalyticsCard({ card, index }: AnalyticsCardProps) {
         >
             {/* Gradient Glow Effect on Hover */}
             <div
-                className={`absolute -inset-px bg-gradient-to-r ${card.gradient} rounded-xl opacity-0 group-hover:opacity-10 blur-sm transition-all duration-300`}
+                className={`absolute -inset-px bg-linear-to-r ${card.gradient} rounded-xl opacity-0 group-hover:opacity-10 blur-sm transition-all duration-300`}
             />
 
             {/* Card Content */}
@@ -41,7 +39,7 @@ export function AnalyticsCard({ card, index }: AnalyticsCardProps) {
                 {/* Background Pattern */}
                 <div className="absolute top-0 right-0 w-12 h-12 opacity-[0.03]">
                     <div
-                        className={`absolute inset-0 bg-gradient-to-br ${card.gradient}`}
+                        className={`absolute inset-0 bg-linear-to-br ${card.gradient}`}
                         style={{
                             clipPath: 'circle(50% at 100% 0)',
                         }}
@@ -53,7 +51,7 @@ export function AnalyticsCard({ card, index }: AnalyticsCardProps) {
                         <div className="flex items-center gap-2">
                             {/* Icon with Gradient */}
                             <div
-                                className={`w-5 h-5 bg-gradient-to-br ${card.gradient} bg-opacity-10 rounded flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-300 ring-1 ring-white/50`}
+                                className={`w-5 h-5 bg-linear-to-br ${card.gradient} bg-opacity-10 rounded flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-300 ring-1 ring-white/50`}
                             >
                                 <Icon
                                     className="w-3 h-3 text-white"
@@ -116,7 +114,7 @@ export function AnalyticsCard({ card, index }: AnalyticsCardProps) {
                             </div>
                             <div className="h-1 bg-slate-100 rounded-full overflow-hidden border border-slate-50">
                                 <div
-                                    className={`h-full bg-gradient-to-r ${card.gradient} rounded-full transition-all duration-1000`}
+                                    className={`h-full bg-linear-to-r ${card.gradient} rounded-full transition-all duration-1000`}
                                     style={{
                                         width: `${card.percentage || 0}%`,
                                     }}
@@ -127,7 +125,7 @@ export function AnalyticsCard({ card, index }: AnalyticsCardProps) {
 
                     {/* Action Button */}
                     {card.showButton && (
-                        <div className="mt-2 w-full px-2 py-1 bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-md transition-all text-[9px] font-bold shadow-sm text-center hover:shadow-md hover:from-amber-600 hover:to-orange-700 active:scale-95 cursor-pointer">
+                        <div className="mt-2 w-full px-2 py-1 bg-linear-to-r from-amber-500 to-orange-600 text-white rounded-md transition-all text-[9px] font-bold shadow-sm text-center hover:shadow-md hover:from-amber-600 hover:to-orange-700 active:scale-95 cursor-pointer">
                             {card.buttonText}
                         </div>
                     )}

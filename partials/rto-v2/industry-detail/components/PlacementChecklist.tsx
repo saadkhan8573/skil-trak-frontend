@@ -55,7 +55,7 @@ export function PlacementChecklist() {
 
     return (
         <div className="bg-white rounded-2xl shadow-xl border border-[#E2E8F0] overflow-hidden">
-            <div className="bg-gradient-to-r from-[#044866] to-[#0D5468] px-4 py-4 flex items-center justify-between">
+            <div className="bg-linear-to-r from-[#044866] to-[#0D5468] px-4 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center shadow-xl">
                         <Target className="w-5 h-5 text-white" />
@@ -74,7 +74,7 @@ export function PlacementChecklist() {
                     <div className="flex items-center gap-2">
                         <div className="flex-1 h-1.5 bg-white/20 rounded-full overflow-hidden min-w-[80px]">
                             <div
-                                className="h-full bg-gradient-to-r from-white to-[#10B981] rounded-full transition-all duration-1000"
+                                className="h-full bg-linear-to-r from-white to-[#10B981] rounded-full transition-all duration-1000"
                                 style={{ width: `${progressPercentage}%` }}
                             />
                         </div>
@@ -87,7 +87,7 @@ export function PlacementChecklist() {
 
             <div className="p-4">
                 {/* Progress Section - Compact */}
-                <div className="p-4 bg-gradient-to-br from-[#044866]/5 via-transparent to-[#F7A619]/5">
+                <div className="p-4 bg-linear-to-br from-[#044866]/5 via-transparent to-[#F7A619]/5">
                     <div className="flex items-center justify-between mb-2.5">
                         <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1.5">
@@ -105,9 +105,9 @@ export function PlacementChecklist() {
                             </div>
 
                             {/* Animated Progress Bar */}
-                            <div className="relative h-2.5 bg-gradient-to-r from-[#E8F4F8] to-[#F8FAFB] rounded-full overflow-hidden shadow-inner">
+                            <div className="relative h-2.5 bg-linear-to-r from-[#E8F4F8] to-[#F8FAFB] rounded-full overflow-hidden shadow-inner">
                                 <div
-                                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#044866] via-[#0D5468] to-[#044866] rounded-full transition-all duration-1000 ease-out flex items-center justify-end px-2 bg-[length:200%_100%] animate-gradient"
+                                    className="absolute inset-y-0 left-0 bg-linear-to-r from-[#044866] via-[#0D5468] to-[#044866] rounded-full transition-all duration-1000 ease-out flex items-center justify-end px-2 bg-size-[200%_100%] animate-gradient"
                                     style={{ width: `${progressPercentage}%` }}
                                 >
                                     {progressPercentage > 25 && (
@@ -117,7 +117,7 @@ export function PlacementChecklist() {
                                     )}
                                 </div>
                                 {/* Shimmer Effect */}
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer" />
+                                <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/40 to-transparent animate-shimmer" />
                             </div>
                         </div>
 
@@ -187,7 +187,7 @@ export function PlacementChecklist() {
                                             }
                                             key={index}
                                             className={`relative group overflow-hidden rounded-xl transition-all duration-300 ${isDone
-                                                ? 'bg-gradient-to-br from-[#10B981]/10 to-transparent border border-[#10B981]/30 hover:border-[#10B981]/50 hover:shadow-lg'
+                                                ? 'bg-linear-to-br from-[#10B981]/10 to-transparent border border-[#10B981]/30 hover:border-[#10B981]/50 hover:shadow-lg'
                                                 : 'bg-white border border-[#E2E8F0] hover:border-[#044866]/30 hover:shadow-xl hover:scale-105'
                                                 }`}
                                             style={{
@@ -197,7 +197,7 @@ export function PlacementChecklist() {
                                         >
                                             {/* Gradient Glow */}
                                             {!isDone && (
-                                                <div className="absolute -inset-0.5 bg-gradient-to-r from-[#044866] to-[#F7A619] rounded-xl opacity-0 group-hover:opacity-10 blur transition-all duration-300" />
+                                                <div className="absolute -inset-0.5 bg-linear-to-r from-[#044866] to-[#F7A619] rounded-xl opacity-0 group-hover:opacity-10 blur transition-all duration-300" />
                                             )}
 
                                             <div className="relative p-3">
@@ -205,8 +205,8 @@ export function PlacementChecklist() {
                                                     {/* Icon */}
                                                     <div
                                                         className={`relative w-8 h-8 rounded-lg flex items-center justify-center shadow-lg transition-all duration-300 ${isDone
-                                                            ? 'bg-gradient-to-br from-[#10B981] to-[#059669] group-hover:scale-110 group-hover:rotate-6'
-                                                            : 'bg-gradient-to-br from-[#E8F4F8] to-[#F8FAFB] group-hover:scale-110'
+                                                            ? 'bg-linear-to-br from-[#10B981] to-[#059669] group-hover:scale-110 group-hover:rotate-6'
+                                                            : 'bg-linear-to-br from-[#E8F4F8] to-[#F8FAFB] group-hover:scale-110'
                                                             }`}
                                                     >
                                                         {isDone ? (
@@ -281,7 +281,7 @@ export function PlacementChecklist() {
                         {/* Call to Action */}
                         <div className="px-5 pb-5 animate-in fade-in slide-in-from-top-2 duration-300">
                             {progressPercentage < 100 ? (
-                                <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#F7A619] to-[#EA580C] p-4 text-white">
+                                <div className="relative overflow-hidden rounded-xl bg-linear-to-br from-[#F7A619] to-[#EA580C] p-4 text-white">
                                     {/* Animated Background */}
                                     <div className="absolute inset-0 opacity-20">
                                         <div className="absolute top-0 right-0 w-48 h-48 bg-white rounded-full blur-3xl animate-pulse" />
@@ -292,7 +292,7 @@ export function PlacementChecklist() {
                                     </div>
 
                                     <div className="relative flex items-start gap-3">
-                                        <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center flex-shrink-0 shadow-xl">
+                                        <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center shrink-0 shadow-xl">
                                             <Target className="w-4 h-4 text-white" />
                                         </div>
                                         <div className="flex-1 space-y-1">
@@ -314,14 +314,14 @@ export function PlacementChecklist() {
                                     </div>
                                 </div>
                             ) : (
-                                <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#10B981] to-[#059669] p-4 text-white">
+                                <div className="relative overflow-hidden rounded-xl bg-linear-to-br from-[#10B981] to-[#059669] p-4 text-white">
                                     {/* Confetti Effect */}
                                     <div className="absolute inset-0 opacity-20">
                                         <div className="absolute top-0 right-0 w-48 h-48 bg-white rounded-full blur-3xl animate-pulse" />
                                     </div>
 
                                     <div className="relative flex items-start gap-3">
-                                        <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center flex-shrink-0 shadow-xl">
+                                        <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center shrink-0 shadow-xl">
                                             <Sparkles className="w-4 h-4 text-white" />
                                         </div>
                                         <div className="flex-1">

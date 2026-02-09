@@ -14,6 +14,9 @@ export function CompanyBadges({ industry }: CompanyBadgesProps) {
                 skip: !industry?.id,
             }
         )
+
+    if (!industry?.user?.isEmailVerified && !industry?.isPremium && overAllRating?.data?.averageRating! <= 4) return null
+
     return (
         <div className="flex items-center gap-1 flex-wrap mb-1">
             {industry?.user?.isEmailVerified && (

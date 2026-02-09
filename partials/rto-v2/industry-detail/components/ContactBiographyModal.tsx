@@ -61,7 +61,7 @@ export function ContactBiographyModal({
                             onClick={(e: any) => e.stopPropagation()}
                         >
                             {/* Header */}
-                            <div className="bg-gradient-to-r from-[#044866] to-[#0D5468] px-6 py-5 relative overflow-hidden">
+                            <div className="bg-linear-to-r from-[#044866] to-[#0D5468] px-6 py-5 relative overflow-hidden">
                                 <div className="absolute inset-0 opacity-10">
                                     <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')]"></div>
                                 </div>
@@ -136,7 +136,7 @@ export function ContactBiographyModal({
 
                                             <div className="p-3">
                                                 <div className="flex items-center gap-3 p-3 rounded-lg bg-[#F8FAFB] border border-[#E2E8F0]">
-                                                    <div className="w-10 h-10 bg-[#E2E8F0] rounded-lg flex items-center justify-center flex-shrink-0">
+                                                    <div className="w-10 h-10 bg-[#E2E8F0] rounded-lg flex items-center justify-center shrink-0">
                                                         <Briefcase className="w-5 h-5 text-[#64748B]" />
                                                     </div>
                                                     <div>
@@ -172,7 +172,7 @@ export function ContactBiographyModal({
                             <div className="px-6 py-2 bg-[#F8FAFB] border-t border-[#E2E8F0] flex items-center justify-end gap-3">
                                 <Button
                                     onClick={onClose}
-                                    className="px-4 py-2 bg-gradient-to-br from-[#044866] to-[#0D5468] text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all h-auto"
+                                    className="px-4 py-2 bg-linear-to-br from-[#044866] to-[#0D5468] text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all h-auto"
                                 >
                                     Done
                                 </Button>

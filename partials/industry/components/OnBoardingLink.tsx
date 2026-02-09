@@ -1,14 +1,6 @@
 import { Typography } from '@components'
-import { MdCheckCircle } from 'react-icons/md'
 import { IoIosCheckmark } from 'react-icons/io'
 import Image from 'next/image'
-
-import dynamic from 'next/dynamic'
-
-// Dynamically import Lottie with no SSR
-const Lottie = dynamic(() => import('react-lottie'), {
-    ssr: false,
-})
 
 type Props = {
     text: any
@@ -32,23 +24,20 @@ export const OnBoardingLink = ({
         animationData: animation,
     }
 
-    const iconClass = `text-2xl ${
-        selected
-            ? 'opacity-100 text-white bg-teal-500 rounded-lg'
-            : 'opacity-100 text-gray-400 bg-white border rounded-lg '
-    } `
+    const iconClass = `text-2xl ${selected
+        ? 'opacity-100 text-white bg-teal-500 rounded-lg'
+        : 'opacity-100 text-gray-400 bg-white border rounded-lg '
+        } `
     const checkIconClass = vertical ? `absolute top-5 right-4` : `relative`
 
     return (
         <div
             onClick={() => onClick(value)}
-            className={`flex ${
-                vertical
-                    ? 'flex-col relative justify-center items-center'
-                    : 'h-16'
-            } items-center w-full cursor-pointer border ${
-                selected ? 'border-teal-600' : 'border-transparent'
-            } bg-white rounded-lg shadow-md px-14 py-6 `}
+            className={`flex ${vertical
+                ? 'flex-col relative justify-center items-center'
+                : 'h-16'
+                } items-center w-full cursor-pointer border ${selected ? 'border-teal-600' : 'border-transparent'
+                } bg-white rounded-lg shadow-md px-14 py-6 `}
         >
             <div>
                 <Image

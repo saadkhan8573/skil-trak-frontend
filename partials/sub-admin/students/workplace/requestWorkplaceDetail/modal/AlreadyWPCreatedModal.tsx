@@ -4,27 +4,23 @@ import { Animations } from '@animations'
 import dynamic from 'next/dynamic'
 
 // Dynamically import Lottie with no SSR
-const Lottie = dynamic(() => import('react-lottie'), {
+const Lottie = dynamic(() => import('lottie-react'), {
     ssr: false,
 })
 
 export const AlreadyWPCreatedModal = () => {
     const router = useRouter()
 
-    const animationOptions = {
-        loop: true,
-        autoplay: true,
-        animationData: Animations.Common.WorkplaceInfo,
-    }
 
     return (
         <GlobalModal>
             <div className="max-w-2xl p-5 relative flex flex-col gap-y-2 py-10">
                 <div className="flex flex-col gap-y-2 justify-between items-center">
                     <Lottie
-                        options={animationOptions}
-                        height={180}
-                        width={180}
+                        animationData={Animations.Common.WorkplaceInfo}
+                        loop={true}
+                        autoplay={true}
+                        style={{ height: 180, width: 180 }}
                     />
                     {/* <GiCheckMark className="text-success-dark text-8xl" /> */}
                 </div>

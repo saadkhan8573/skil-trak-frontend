@@ -1,10 +1,10 @@
-import { Card } from '@components'
+import { Card, OutsideClickHandler } from '@components'
 import { CalendarStyles } from '@components/Calendar/style'
 import { useState } from 'react'
 import Calendar from 'react-calendar'
 import { AiTwotoneFilter } from 'react-icons/ai'
 import { RiTimerLine } from 'react-icons/ri'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 
 type Props = {
     startDate: Date
@@ -168,10 +168,10 @@ export const FilterInvoices = ({
                                 {dateRange
                                     ? dateRange
                                     : selectedFilter === 'Monthly'
-                                    ? `${month?.label} - ${year?.value}`
-                                    : selectedFilter === 'Annually'
-                                    ? `${year?.value}`
-                                    : selectedFilter}
+                                        ? `${month?.label} - ${year?.value}`
+                                        : selectedFilter === 'Annually'
+                                            ? `${year?.value}`
+                                            : selectedFilter}
                             </button>
                         </div>
                         {showCalendars && (

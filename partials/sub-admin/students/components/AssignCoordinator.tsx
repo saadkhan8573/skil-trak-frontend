@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Select } from '@components'
+import { OutsideClickHandler, Select } from '@components'
 import { SubAdminApi } from '@queries'
 import { AssignCoordinatorModal } from '../modals'
 import { Course, Student, SubAdmin } from '@types'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 
 export const AssignCoordinator = ({ student }: { student: Student }) => {
     const departmentCoordinators =
@@ -62,9 +62,8 @@ export const AssignCoordinator = ({ student }: { student: Student }) => {
         <>
             {modal && modal}{' '}
             <div
-                className={`min-w-48 ${
-                    !checkRow ? 'relative z-10' : ' relative z-50'
-                }`}
+                className={`min-w-48 ${!checkRow ? 'relative z-10' : ' relative z-50'
+                    }`}
             >
                 {!changeCoordinator && !student.subadmin ? (
                     <OutsideClickHandler onOutsideClick={() => setRowId(null)}>

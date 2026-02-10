@@ -3,11 +3,10 @@ import { Card, Checkbox, Select, TextInput } from '@components'
 import { useEffect, useState } from 'react'
 
 //
+import { useContextBar } from '@hooks'
 import { SubAdminApi } from '@queries'
 import dynamic from 'next/dynamic'
 import { fromAddress, geocode, GeocodeOptions, setKey } from 'react-geocode'
-import { useContextBar } from '@hooks'
-import { MapBoxDetails } from './components'
 const SubAdminDashboardMapDetail = dynamic(
     () => import('./SubAdminDashboardMapDetail')
 )

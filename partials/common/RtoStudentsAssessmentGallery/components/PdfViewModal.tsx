@@ -7,7 +7,8 @@ import { useState } from 'react'
 import { Document, Page } from 'react-pdf'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { Typography } from '@components/Typography'
-import OutsideClickHandler from 'react-outside-click-handler'
+import { OutsideClickHandler } from '@components'
+
 
 interface PdfViewModalProps {
     url: string

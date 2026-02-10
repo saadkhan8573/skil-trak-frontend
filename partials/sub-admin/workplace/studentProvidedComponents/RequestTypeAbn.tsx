@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react'
 import { IoMdArrowDropdown } from 'react-icons/io'
 
 // components
-import { Typography } from '@components'
+import { OutsideClickHandler, Typography } from '@components'
 
 // query
 import { useNotification } from '@hooks'
 import { UserStatus } from '@types'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import {
     ApproveRequestModal,
     CompleteWorkplaceModal,
@@ -96,7 +96,7 @@ export const RequestTypeAbn = ({
             primaryText: 'Request Sent',
             secondaryText: 'No Case Officer',
             color: 'text-primary-dark',
-            onClick: () => {},
+            onClick: () => { },
             status: 'applied',
             date: appliedIndustry?.appliedDate,
         },
@@ -104,7 +104,7 @@ export const RequestTypeAbn = ({
             primaryText: 'Assigned',
             secondaryText: 'Case Officer',
             color: 'text-primary',
-            onClick: () => {},
+            onClick: () => { },
             status: 'caseOfficerAssigned',
             date: appliedIndustry?.caseOfficerAssignedDate,
         },
@@ -215,7 +215,7 @@ export const RequestTypeAbn = ({
             primaryText: 'Cancelled',
             secondaryText: 'Cancelled',
             color: 'text-error',
-            onClick: () => {},
+            onClick: () => { },
             status: 'cancelled',
             date: appliedIndustry?.cancelledDate,
         },
@@ -223,7 +223,7 @@ export const RequestTypeAbn = ({
             primaryText: 'Rejected',
             secondaryText: 'Rejected',
             color: 'text-error',
-            onClick: () => {},
+            onClick: () => { },
             status: 'rejected',
         },
         {
@@ -297,13 +297,12 @@ export const RequestTypeAbn = ({
                 }}
             >
                 <div
-                    className={`${
-                        appliedIndustry?.terminated ||
-                        appliedIndustry?.isCompleted ||
-                        appliedIndustry?.cancelled
+                    className={`${appliedIndustry?.terminated ||
+                            appliedIndustry?.isCompleted ||
+                            appliedIndustry?.cancelled
                             ? 'bg-gray-100 cursor-default'
                             : ''
-                    }  border border-dashed border-gray-400 rounded-lg w-56 px-4 py-1 flex items-center justify-between gap-x-1 cursor-pointer relative`}
+                        }  border border-dashed border-gray-400 rounded-lg w-56 px-4 py-1 flex items-center justify-between gap-x-1 cursor-pointer relative`}
                     onClick={onRequestClicked}
                 >
                     <div>
@@ -327,29 +326,27 @@ export const RequestTypeAbn = ({
                         </Typography>
                         {requestTypeActions[selectedRequestType as any]
                             ?.date && (
-                            <Typography>
-                                <span className="text-[10px] font-semibold">
-                                    {moment(
-                                        requestTypeActions[
-                                            selectedRequestType as any
-                                        ]?.date
-                                    ).format('Do MMM YYYY')}
-                                </span>
-                            </Typography>
-                        )}
+                                <Typography>
+                                    <span className="text-[10px] font-semibold">
+                                        {moment(
+                                            requestTypeActions[
+                                                selectedRequestType as any
+                                            ]?.date
+                                        ).format('Do MMM YYYY')}
+                                    </span>
+                                </Typography>
+                            )}
                     </div>
                     <IoMdArrowDropdown
-                        className={`${
-                            visibleRequestType ? 'rotate-180' : 'rotate-0'
-                        } transition-all`}
+                        className={`${visibleRequestType ? 'rotate-180' : 'rotate-0'
+                            } transition-all`}
                     />
                 </div>
 
                 {visibleRequestType && (
                     <div
-                        className={`shadow absolute z-10 w-full bg-white rounded-md py-2 mt-1 ${
-                            isOpen ? 'h-96' : 'h-32 xl:h-36'
-                        } overflow-auto custom-scrollbar`}
+                        className={`shadow absolute z-10 w-full bg-white rounded-md py-2 mt-1 ${isOpen ? 'h-96' : 'h-32 xl:h-36'
+                            } overflow-auto custom-scrollbar`}
                     >
                         {requestTypeActions.map((type, i) => (
                             <div

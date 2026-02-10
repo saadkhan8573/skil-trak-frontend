@@ -7,7 +7,7 @@ export const EmailsCard = () => {
     const { data, isError, isLoading } = CommonApi.Messages.useRecentMails()
 
     return (
-        <div className="bg-gradient-to-r from-[#2DD8FD] to-[#0E71E6] p-4 rounded-2xl">
+        <div className="bg-linear-to-r from-[#2DD8FD] to-[#0E71E6] p-4 rounded-2xl">
             <Typography variant={'subtitle'} color={'text-white'}>
                 New Emails
             </Typography>
@@ -33,7 +33,7 @@ export const EmailsCard = () => {
                                     32
                                 ) || 'N/A'}
                             </Typography> */}
-                           
+
                         </div>
                         <div className="border border-white rounded-2xl p-2">
                             <Typography

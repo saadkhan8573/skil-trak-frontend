@@ -8,13 +8,14 @@ import {
     workplaceProgressOptions,
     Typography,
     Button,
+    OutsideClickHandler,
 } from '@components'
 import { CalendarStyles } from '@components/Calendar/style'
 import Calendar from 'react-calendar'
 
 import { CommonApi } from '@queries'
 import { NextPageWithLayout, OptionType } from '@types'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { RiTimerLine } from 'react-icons/ri'
 import {
     QueryType,

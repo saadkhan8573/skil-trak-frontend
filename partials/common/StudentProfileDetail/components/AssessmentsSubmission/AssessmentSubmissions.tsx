@@ -1,8 +1,8 @@
-import { AuthorizedUserComponent, Card, Typography } from '@components'
+import { AuthorizedUserComponent, Card, OutsideClickHandler, Typography } from '@components'
 import { Student } from '@types'
 import { useCallback, useState } from 'react'
 import { IoIosArrowDown } from 'react-icons/io'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { Waypoint } from 'react-waypoint'
 import {
     ArchivedAssessments,
@@ -40,7 +40,7 @@ export const AssessmentSubmissions = ({ student }: { student: Student }) => {
                                 Assessment Evidence{' '}
                                 <span className="text-[11px] text-gray-600 font-normal">
                                     {selectedAssessment ===
-                                    AssessmentType.Archived
+                                        AssessmentType.Archived
                                         ? ' - Archived Assessment'
                                         : ''}
                                 </span>
@@ -73,11 +73,10 @@ export const AssessmentSubmissions = ({ student }: { student: Student }) => {
                                                 <IoIosArrowDown />
                                             </div>
                                             <div
-                                                className={`w-full  bg-white shadow-md rounded-md z-10 absolute top-full left-0 overflow-auto custom-scrollbar transition-all duration-500 ${
-                                                    isOpened
+                                                className={`w-full  bg-white shadow-md rounded-md z-10 absolute top-full left-0 overflow-auto custom-scrollbar transition-all duration-500 ${isOpened
                                                         ? 'max-h-72'
                                                         : 'max-h-0'
-                                                }`}
+                                                    }`}
                                             >
                                                 {Object.values(
                                                     AssessmentType
@@ -91,12 +90,11 @@ export const AssessmentSubmissions = ({ student }: { student: Student }) => {
                                                                 !isOpened
                                                             )
                                                         }}
-                                                        className={`px-2 border-b border-gray-100 py-2 w-full cursor-pointer ${
-                                                            selectedAssessment ===
-                                                            type
+                                                        className={`px-2 border-b border-gray-100 py-2 w-full cursor-pointer ${selectedAssessment ===
+                                                                type
                                                                 ? 'bg-gray-200'
                                                                 : 'bg-white'
-                                                        } hover:bg-gray-100 `}
+                                                            } hover:bg-gray-100 `}
                                                         key={index}
                                                     >
                                                         <Typography
@@ -127,7 +125,7 @@ export const AssessmentSubmissions = ({ student }: { student: Student }) => {
                                     isEntered={isEntered}
                                 />
                             ) : selectedAssessment ===
-                              AssessmentType.Archived ? (
+                                AssessmentType.Archived ? (
                                 <ArchivedAssessments
                                     student={student}
                                     isEntered={isEntered}

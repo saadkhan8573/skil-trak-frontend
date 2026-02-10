@@ -1,10 +1,10 @@
-import { Card } from '@components'
+import { Card, OutsideClickHandler } from '@components'
 import { CalendarStyles } from '@components/Calendar/style'
 import { useState } from 'react'
 import Calendar from 'react-calendar'
 import { AiTwotoneFilter } from 'react-icons/ai'
 import { RiTimerLine } from 'react-icons/ri'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { AnnualDropdown } from './AnnualDropdown'
 
 type Props = {
@@ -185,14 +185,14 @@ export const FilterReport = ({
                                 {dateRange
                                     ? dateRange
                                     : selectedFilter === 'Monthly'
-                                    ? `${startDate
-                                          .toISOString()
-                                          .slice(0, 10)} to ${endDate
-                                          .toISOString()
-                                          .slice(0, 10)}`
-                                    : selectedFilter === 'Annually'
-                                    ? `${year?.value}`
-                                    : selectedFilter}
+                                        ? `${startDate
+                                            .toISOString()
+                                            .slice(0, 10)} to ${endDate
+                                                .toISOString()
+                                                .slice(0, 10)}`
+                                        : selectedFilter === 'Annually'
+                                            ? `${year?.value}`
+                                            : selectedFilter}
                             </button>
                         </div>
                         {showCalendars && (

@@ -12,7 +12,8 @@ import { BsFillPlayCircleFill } from 'react-icons/bs'
 
 // utills
 import { isBrowser } from '@utils'
-import OutsideClickHandler from 'react-outside-click-handler'
+import { OutsideClickHandler } from '@components'
+
 
 interface VideoPlayModalProps {
     url: string

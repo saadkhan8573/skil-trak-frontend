@@ -1,7 +1,7 @@
 import moment from 'moment'
 import React, { useState } from 'react'
 import { InitialAvatar, Typography } from '@components'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { MdOutlineArrowDropDown } from 'react-icons/md'
 import { HiOutlineReply } from 'react-icons/hi'
 
@@ -12,17 +12,15 @@ export const TitleAndDate = ({ mailDetail }: { mailDetail: any }) => {
     const shortDetail = [
         {
             text: 'from',
-            data: `${
-                mailDetail?.sender?.role === 'admin'
+            data: `${mailDetail?.sender?.role === 'admin'
                     ? `Admin`
                     : mailDetail?.sender?.name
-            } (${
-                mailDetail?.sender?.email === 'admin.stagging@skiltrak.com'
+                } (${mailDetail?.sender?.email === 'admin.stagging@skiltrak.com'
                     ? 'admin.stagging@skiltrak.com'
                     : mailDetail?.sender?.email === 'admin@skiltrak.com.au'
-                    ? 'admin@skiltrak.com.au'
-                    : mailDetail?.sender?.email
-            })`,
+                        ? 'admin@skiltrak.com.au'
+                        : mailDetail?.sender?.email
+                })`,
         },
         {
             text: 'to',

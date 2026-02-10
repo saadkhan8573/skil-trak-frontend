@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 
 // Icons
 import { MdKeyboardArrowDown } from 'react-icons/md'
 
 // components
-import { Typography, LoadingAnimation } from '@components'
+import { Typography, LoadingAnimation, OutsideClickHandler } from '@components'
 
 export const ActionDropDown = ({ text, dropDown, loading, lastIndex }: any) => {
     const [expanded, setExpanded] = useState(false) // expanded
@@ -41,9 +41,8 @@ export const ActionDropDown = ({ text, dropDown, loading, lastIndex }: any) => {
 
                     {expanded && (
                         <div
-                            className={`w-40 px-2 absolute ${
-                                lastIndex ? 'bottom-full mb-2' : 'top-full mt-2'
-                            }  right-0 z-10  bg-white rounded-lg border border-secondary shadow-2`}
+                            className={`w-40 px-2 absolute ${lastIndex ? 'bottom-full mb-2' : 'top-full mt-2'
+                                }  right-0 z-10  bg-white rounded-lg border border-secondary shadow-2`}
                         >
                             {dropDown.map(
                                 ({ text, Icon, action, color }: any) => (

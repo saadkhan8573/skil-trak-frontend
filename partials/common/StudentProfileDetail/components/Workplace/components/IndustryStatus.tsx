@@ -1,11 +1,11 @@
 import moment from 'moment'
 import { useRouter } from 'next/router'
-import { Typography } from '@components'
+import { OutsideClickHandler, Typography } from '@components'
 import { useNotification } from '@hooks'
 import { useEffect, useState } from 'react'
 import { getUserCredentials, WorkplaceCurrentStatus } from '@utils'
 import { IoIosArrowDown } from 'react-icons/io'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { useRequestType } from '@partials/common/StudentProfileDetail/hooks'
 import { UserRoles } from '@constants'
 import { Appointment, Student } from '@types'
@@ -124,25 +124,24 @@ export const IndustryStatus = ({
                                 }
                             }
                         }}
-                        className={`${
-                            workplace?.currentStatus ===
-                            WorkplaceCurrentStatus.PlacementStarted
+                        className={`${workplace?.currentStatus ===
+                                WorkplaceCurrentStatus.PlacementStarted
                                 ? 'bg-success-dark'
                                 : 'bg-white'
-                        } w-full relative cursor-pointer p-2.5 flex justify-evenly gap-x-2 rounded-md border border-[#128C7E] overflow-hidden`}
+                            } w-full relative cursor-pointer p-2.5 flex justify-evenly gap-x-2 rounded-md border border-[#128C7E] overflow-hidden`}
                     >
                         <Typography
                             variant="xs"
                             color={
                                 workplace?.currentStatus ===
-                                WorkplaceCurrentStatus.PlacementStarted
+                                    WorkplaceCurrentStatus.PlacementStarted
                                     ? 'text-white'
                                     : types[
-                                          selectedRequestType &&
-                                          selectedRequestType > 0
-                                              ? selectedRequestType
-                                              : (0 as any)
-                                      ]?.color
+                                        selectedRequestType &&
+                                            selectedRequestType > 0
+                                            ? selectedRequestType
+                                            : (0 as any)
+                                    ]?.color
                             }
                             semibold
                             uppercase
@@ -150,7 +149,7 @@ export const IndustryStatus = ({
                             {
                                 types[
                                     selectedRequestType &&
-                                    selectedRequestType > 0
+                                        selectedRequestType > 0
                                         ? selectedRequestType
                                         : (0 as any)
                                 ]?.primaryText
@@ -161,7 +160,7 @@ export const IndustryStatus = ({
                             <IoIosArrowDown
                                 className={
                                     workplace?.currentStatus ===
-                                    WorkplaceCurrentStatus.PlacementStarted
+                                        WorkplaceCurrentStatus.PlacementStarted
                                         ? 'text-white'
                                         : 'text-[#128C7E]'
                                 }
@@ -169,17 +168,15 @@ export const IndustryStatus = ({
                         ) : null}
                     </div>
                     <div
-                        className={`w-auto  bg-white shadow-md rounded-md z-10 absolute top-full left-0 overflow-auto custom-scrollbar transition-all duration-500 ${
-                            isOpened ? 'max-h-72' : 'max-h-0'
-                        }`}
+                        className={`w-auto  bg-white shadow-md rounded-md z-10 absolute top-full left-0 overflow-auto custom-scrollbar transition-all duration-500 ${isOpened ? 'max-h-72' : 'max-h-0'
+                            }`}
                     >
                         {types.map((status, index) => (
                             <div
-                                className={`px-2 border-b border-gray-100 py-2 w-full cursor-pointer hover:bg-gray-100 ${
-                                    workplace?.currentStatus === status?.status
+                                className={`px-2 border-b border-gray-100 py-2 w-full cursor-pointer hover:bg-gray-100 ${workplace?.currentStatus === status?.status
                                         ? 'bg-gray-200'
                                         : 'bg-white'
-                                }`}
+                                    }`}
                                 key={index}
                                 onClick={() => {
                                     setIsOpened(false)

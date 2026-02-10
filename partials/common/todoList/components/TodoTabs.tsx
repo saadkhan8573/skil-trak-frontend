@@ -1,4 +1,4 @@
-import { ActionButton, Button, SidebarCalendar, Typography } from '@components'
+import { ActionButton, Button, OutsideClickHandler, SidebarCalendar, Typography } from '@components'
 import { UserRoles } from '@constants'
 import { getUserCredentials } from '@utils'
 import moment, { Moment } from 'moment'
@@ -12,7 +12,7 @@ import {
     QuarterlyRecurringTasks,
     WeeklyRecurringTasks,
 } from '../tabs'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { RemoveAllTodosModal } from '../modal/RemoveAllTodosModal'
 import { AddAllTodosModal } from '../modal/AddAllTodosModal'
 
@@ -121,15 +121,13 @@ export const TodoTabs = ({ baseUrl }: { baseUrl?: string }) => {
                     <button
                         key={tab.slug}
                         onClick={() => handleTabChangee(tab.slug)}
-                        className={` py-1.5 rounded-lg ${
-                            role === UserRoles.ADMIN
+                        className={` py-1.5 rounded-lg ${role === UserRoles.ADMIN
                                 ? 'text-[13px] px-9'
                                 : 'text-sm px-14'
-                        }  ${
-                            index === activeTabIndex
+                            }  ${index === activeTabIndex
                                 ? 'bg-white shadow-sm text-link border border-[#1436B033]/20'
                                 : ' text-gray-600'
-                        }`}
+                            }`}
                     >
                         {tab.label}
                     </button>

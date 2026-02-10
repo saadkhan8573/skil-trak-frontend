@@ -1,8 +1,8 @@
-import { Typography } from '@components'
+import { OutsideClickHandler, Typography } from '@components'
 import { useEffect, useState } from 'react'
 import { MdKeyboardArrowDown } from 'react-icons/md'
 import { TiTimes } from 'react-icons/ti'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { CustomDropdownPositionEnum } from './dropdown.enum'
 
 export const CustomDropdown = ({
@@ -56,9 +56,8 @@ export const CustomDropdown = ({
                         onClick={() => {
                             setIsOpened(!isOpened)
                         }}
-                        className={`cursor-pointer border border-secondary-dark rounded-md flex items-center gap-x-2 justify-between px-2 py-2.5 bg-gray-100 ${
-                            width ? width : 'w-60'
-                        }`}
+                        className={`cursor-pointer border border-secondary-dark rounded-md flex items-center gap-x-2 justify-between px-2 py-2.5 bg-gray-100 ${width ? width : 'w-60'
+                            }`}
                     >
                         <Typography
                             variant="xxs"
@@ -79,15 +78,13 @@ export const CustomDropdown = ({
                         </div>
                     </div>
                     <div
-                        className={`absolute ${
-                            position === CustomDropdownPositionEnum.bottom
-                                ? 'bottom-full'
-                                : position === CustomDropdownPositionEnum.top
+                        className={`absolute ${position === CustomDropdownPositionEnum.bottom
+                            ? 'bottom-full'
+                            : position === CustomDropdownPositionEnum.top
                                 ? 'top-full'
                                 : 'top-full'
-                        }  left-0 w-full shadow-md transition-all duration-500 bg-white overflow-auto custom-scrollbar ${
-                            isOpened ? 'max-h-52' : 'max-h-0'
-                        }`}
+                            }  left-0 w-full shadow-md transition-all duration-500 bg-white overflow-auto custom-scrollbar ${isOpened ? 'max-h-52' : 'max-h-0'
+                            }`}
                     >
                         <div
                             onClick={() => {
@@ -101,9 +98,8 @@ export const CustomDropdown = ({
                                         option.onClick(data)
                                         setSelectedData(option)
                                     }}
-                                    className={`${
-                                        false ? 'bg-gray-200' : ''
-                                    } hover:bg-gray-200 py-2 border-b border-secondary-dark px-2 cursor-pointer`}
+                                    className={`${false ? 'bg-gray-200' : ''
+                                        } hover:bg-gray-200 py-2 border-b border-secondary-dark px-2 cursor-pointer`}
                                 >
                                     <Typography
                                         variant="small"

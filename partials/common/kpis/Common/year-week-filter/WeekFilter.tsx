@@ -1,9 +1,9 @@
 import { ChevronDown } from 'lucide-react'
 import moment, { Moment } from 'moment'
 import { useEffect, useState } from 'react'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { getMonthDates, getWeeksOfCurrentMonth } from './functions'
-import { Typography } from '@components'
+import { OutsideClickHandler, Typography } from '@components'
 
 export const WeekFilter = ({
     handleDatesChange,
@@ -170,9 +170,8 @@ export const WeekFilter = ({
 
                 <div className="flex items-center gap-x-2">
                     <div
-                        className={`bg-info text-white ${
-                            cMonthsDates?.length > 4 ? 'px-1.5' : 'px-3'
-                        }  py-3 rounded`}
+                        className={`bg-info text-white ${cMonthsDates?.length > 4 ? 'px-1.5' : 'px-3'
+                            }  py-3 rounded`}
                     >
                         <Typography variant="label" color="text-white">
                             Select Weekly Filter
@@ -191,24 +190,21 @@ export const WeekFilter = ({
                                         onClick={() =>
                                             toggleWeekSelection(index)
                                         }
-                                        className={`inline-flex flex-col items-start px-3 py-1.5 ${
-                                            cMonthsDates?.length > 4
+                                        className={`inline-flex flex-col items-start px-3 py-1.5 ${cMonthsDates?.length > 4
                                                 ? 'text-[13px]'
                                                 : 'text-sm'
-                                        } font-medium border rounded-lg transition-colors
-              ${
-                  selectedWeek === index
-                      ? 'bg-blue-600 text-white border-blue-600'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-              }`}
+                                            } font-medium border rounded-lg transition-colors
+              ${selectedWeek === index
+                                                ? 'bg-blue-600 text-white border-blue-600'
+                                                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                            }`}
                                     >
                                         <span>Week {index + 1}</span>
                                         <span
-                                            className={`${
-                                                cMonthsDates?.length > 4
+                                            className={`${cMonthsDates?.length > 4
                                                     ? 'text-[11px]'
                                                     : 'text-xs'
-                                            } mt-0.5 opacity-80`}
+                                                } mt-0.5 opacity-80`}
                                         >
                                             {moment(week?.startDate).format(
                                                 'DD MMM'

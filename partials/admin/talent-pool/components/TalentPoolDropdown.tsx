@@ -1,8 +1,8 @@
-import { Typography } from '@components'
+import { OutsideClickHandler, Typography } from '@components'
 import React, { ReactNode, useState } from 'react'
 import { MdKeyboardArrowDown } from 'react-icons/md'
 import { TiTimes } from 'react-icons/ti'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 
 export const TalentPoolDropdown = ({
     title,
@@ -49,9 +49,8 @@ export const TalentPoolDropdown = ({
                         </div>
                     </div>
                     <div
-                        className={`absolute top-full left-0 w-full shadow-md transition-all duration-500 bg-white overflow-auto custom-scrollbar ${
-                            isOpened ? 'max-h-52' : 'max-h-0'
-                        }`}
+                        className={`absolute top-full left-0 w-full shadow-md transition-all duration-500 bg-white overflow-auto custom-scrollbar ${isOpened ? 'max-h-52' : 'max-h-0'
+                            }`}
                     >
                         <div
                             onClick={() => {

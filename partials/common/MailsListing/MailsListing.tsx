@@ -30,7 +30,11 @@ export const MailsListing = () => {
             case UserRoles.STUDENT:
                 return '/portals/student/mails'
             case UserRoles.RTO:
-                return '/portals/rto/communications/e-mails'
+                if (router.pathname.includes('/portals/rto/communications')) {
+                    return '/portals/rto/communications/e-mails'
+                } else {
+                    return '/portals/rto/notifications/e-mails'
+                }
             // case UserRoles.RTO:
 
             default:

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import {
     Button,
     Card,
+    OutsideClickHandler,
     Select,
     StatusOptions,
     Typography,
@@ -17,7 +18,7 @@ import { OptionType } from '@types'
 import { WorkplaceCurrentStatus, queryToUrl, removeEmptyValues } from '@utils'
 import moment from 'moment'
 import { RiTimerLine } from 'react-icons/ri'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 
 export const AllStudentsReport = () => {
     const weekEnd = new Date()

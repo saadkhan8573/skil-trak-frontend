@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { IoMdArrowDropdown } from 'react-icons/io'
 
 // components
-import { LoadingAnimation, Typography } from '@components'
+import { LoadingAnimation, OutsideClickHandler, Typography } from '@components'
 
 // query
 import { useNotification } from '@hooks'
@@ -17,7 +17,7 @@ import {
 } from '@partials/sub-admin/workplace/modals'
 import { useGetSubAdminStudentWorkplaceQuery } from '@queries'
 import { WorkplaceCurrentStatus } from '@utils'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 
 export const ChangeWorkplaceStatus = ({
     studentId,
@@ -46,8 +46,8 @@ export const ChangeWorkplaceStatus = ({
     const appliedIndustry =
         workplace?.data && workplace?.data?.length > 0
             ? workplace?.data[0]?.industries?.find(
-                  (industry: any) => industry?.applied
-              )
+                (industry: any) => industry?.applied
+            )
             : {}
 
     const { notification } = useNotification()
@@ -112,14 +112,14 @@ export const ChangeWorkplaceStatus = ({
             primaryText: 'Request Sent',
             secondaryText: 'No Case Officer',
             color: 'text-primary-dark',
-            onClick: () => {},
+            onClick: () => { },
             status: 'applied',
         },
         {
             primaryText: 'Assigned',
             secondaryText: 'Case Officer',
             color: 'text-primary',
-            onClick: () => {},
+            onClick: () => { },
             status: 'caseOfficerAssigned',
         },
         {
@@ -146,7 +146,7 @@ export const ChangeWorkplaceStatus = ({
             primaryText: 'Meeting',
             secondaryText: 'with Workplace Supervisor (Orientation)',
             color: 'text-info-dark',
-            onClick: () => {},
+            onClick: () => { },
             status: 'appointmentBooked',
         },
         // {
@@ -237,14 +237,14 @@ export const ChangeWorkplaceStatus = ({
             primaryText: 'Cancelled',
             secondaryText: 'Cancelled',
             color: 'text-error',
-            onClick: () => {},
+            onClick: () => { },
             status: 'cancelled',
         },
         {
             primaryText: 'Rejected',
             secondaryText: 'Rejected',
             color: 'text-error',
-            onClick: () => {},
+            onClick: () => { },
             status: 'rejected',
         },
         {
@@ -332,9 +332,8 @@ export const ChangeWorkplaceStatus = ({
                         </Typography>
                     </div>
                     <IoMdArrowDropdown
-                        className={`${
-                            visibleRequestType ? 'rotate-180' : 'rotate-0'
-                        } transition-all`}
+                        className={`${visibleRequestType ? 'rotate-180' : 'rotate-0'
+                            } transition-all`}
                     />
                 </div>
 

@@ -1,7 +1,7 @@
-import { Button } from '@components'
+import { Button, OutsideClickHandler } from '@components'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { CompleteProfileBeforeWpModal } from '../modals'
 import { useWorkplace } from '@hooks'
 

@@ -5,8 +5,8 @@ import { AiTwotoneFilter } from 'react-icons/ai'
 import { RiTimerLine } from 'react-icons/ri'
 import { MonthlyDropdown } from './MonthlyDropdown'
 import { AnnualDropdown } from './AnnualDropdown'
-import OutsideClickHandler from 'react-outside-click-handler'
-import { Card } from '@components'
+
+import { Card, OutsideClickHandler } from '@components'
 import moment from 'moment'
 
 type Props = {
@@ -171,14 +171,14 @@ export const FilterReport = ({
                                 {dateRange
                                     ? dateRange
                                     : selectedFilter === 'Monthly'
-                                    ? `${startDate
-                                          .toISOString()
-                                          .slice(0, 10)} to ${endDate
-                                          .toISOString()
-                                          .slice(0, 10)}`
-                                    : selectedFilter === 'Annually'
-                                    ? `${year?.value}`
-                                    : selectedFilter}
+                                        ? `${startDate
+                                            .toISOString()
+                                            .slice(0, 10)} to ${endDate
+                                                .toISOString()
+                                                .slice(0, 10)}`
+                                        : selectedFilter === 'Annually'
+                                            ? `${year?.value}`
+                                            : selectedFilter}
                             </button>
                         </div>
                         {showCalendars && (

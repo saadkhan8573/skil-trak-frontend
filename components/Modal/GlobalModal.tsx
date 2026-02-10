@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react'
 import { Portal } from '@components/Portal'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { MdCancel } from 'react-icons/md'
+import { OutsideClickHandler } from '@components/OutsideClickHandler'
 
 export const GlobalModal = ({
     children,
@@ -14,9 +15,9 @@ export const GlobalModal = ({
 }) => {
     return (
         <Portal>
-            <div className="bg-[#00000050] w-full h-screen  flex items-center justify-center fixed top-0 left-0 px-2 z-[99999]">
+            <div className="bg-[#00000050] w-full h-screen  flex items-center justify-center fixed top-0 left-0 px-2 z-99999">
                 <OutsideClickHandler
-                    onOutsideClick={(e) => {
+                    onOutsideClick={(e: any) => {
                         const target = e.target as HTMLElement
                         if (
                             target.closest('.modal-animation') ||

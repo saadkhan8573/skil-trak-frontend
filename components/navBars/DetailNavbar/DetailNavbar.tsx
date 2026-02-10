@@ -6,7 +6,7 @@ import { IoMdNotifications } from 'react-icons/io'
 
 // components
 import { useRouter } from 'next/router'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import {
     BadgeButton,
     PlacementNotificationDropDown,
@@ -25,6 +25,7 @@ import { useMediaQuery } from 'react-responsive'
 import { NavLinkItem } from '../NavLinkItem'
 import { ProfileOptionsDropDown } from './components'
 import { ProfileOptionButton } from './components/profileOption/ProfileOptionButton'
+import { OutsideClickHandler } from '@components/OutsideClickHandler'
 export const DetailNavbar = () => {
     const router = useRouter()
 
@@ -109,11 +110,10 @@ export const DetailNavbar = () => {
                 <AuthorizedUserComponent roles={[UserRoles.STUDENT]}>
                     <Link legacyBehavior href={'/portals/student/history'}>
                         <a
-                            className={` ${
-                                router.pathname === '/portals/student/history'
+                            className={` ${router.pathname === '/portals/student/history'
                                     ? 'bg-green-100 text-green-700'
                                     : 'text-slate-700'
-                            } transition-all duration-300 px-4 py-2 flex gap-x-2 items-center rounded-md hover:bg-green-100 hover:text-green-700`}
+                                } transition-all duration-300 px-4 py-2 flex gap-x-2 items-center rounded-md hover:bg-green-100 hover:text-green-700`}
                         >
                             <span>
                                 <BsFillTicketDetailedFill />
@@ -132,12 +132,11 @@ export const DetailNavbar = () => {
                             href={'/portals/rto/tickets?tab=all-tickets'}
                         >
                             <a
-                                className={` ${
-                                    router.pathname ===
-                                    '/portals/sub-admin/tickets'
+                                className={` ${router.pathname ===
+                                        '/portals/sub-admin/tickets'
                                         ? 'bg-green-100 text-green-700'
                                         : 'text-slate-700'
-                                } transition-all duration-300 px-4 py-2 flex gap-x-2 items-center rounded-md hover:bg-green-100 hover:text-green-700`}
+                                    } transition-all duration-300 px-4 py-2 flex gap-x-2 items-center rounded-md hover:bg-green-100 hover:text-green-700`}
                             >
                                 <span>
                                     <BsFillTicketDetailedFill />

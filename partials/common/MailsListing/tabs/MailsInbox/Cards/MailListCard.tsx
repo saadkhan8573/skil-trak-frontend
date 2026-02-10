@@ -64,9 +64,15 @@ export const MailListCard = ({
                 break
 
             case UserRoles.RTO:
-                router.push(
-                    `/portals/rto/communications/e-mails/${mailDetail?.id}`
-                )
+                if (router.pathname.includes('/portals/rto/communications')) {
+                    router.push(
+                        `/portals/rto/communications/e-mails/${mailDetail?.id}`
+                    )
+                } else {
+                    router.push(
+                        `/portals/rto/notifications/e-mails/${mailDetail?.id}`
+                    )
+                }
                 break
 
             default:
@@ -89,9 +95,8 @@ export const MailListCard = ({
                         roleUrl()
                     }
                 }}
-                className={`flex flex-col lg:flex-row lg:items-center gap-1 py-2 px-3 ${
-                    mailDetail?.isSeen ? 'bg-gray-200' : 'bg-white'
-                }  border-b border-secondary-dark hover:bg-[#FCDEC5] rounded-lg cursor-pointer mt-1`}
+                className={`flex flex-col lg:flex-row lg:items-center gap-1 py-2 px-3 ${mailDetail?.isSeen ? 'bg-gray-200' : 'bg-white'
+                    }  border-b border-secondary-dark hover:bg-[#FCDEC5] rounded-lg cursor-pointer mt-1`}
             >
                 <div className="flex gap-x- items-center">
                     <Checkbox
@@ -170,9 +175,8 @@ export const MailListCard = ({
 
                     {/*  */}
                     <div
-                        className={` overflow-hidden transition-all duration-500 absolute top-1/2 -translate-y-1/2 right-0 h-full pl-3 ${
-                            mouseEntered ? 'max-w-20 bg-gray-200' : 'max-w-0'
-                        }`}
+                        className={` overflow-hidden transition-all duration-500 absolute top-1/2 -translate-y-1/2 right-0 h-full pl-3 ${mouseEntered ? 'max-w-20 bg-gray-200' : 'max-w-0'
+                            }`}
                     >
                         <MdDelete
                             className="text-[#0000008A] text-lg"

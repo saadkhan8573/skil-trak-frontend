@@ -4,8 +4,8 @@ import { MdCancel, MdDownload } from 'react-icons/md'
 // components
 import { ReactNode } from 'react'
 import { FileDetail } from './FileDetail'
-import { Button } from '@components'
-import OutsideClickHandler from 'react-outside-click-handler'
+import { Button, OutsideClickHandler } from '@components'
+
 
 interface FileViewModalProps {
     title: string

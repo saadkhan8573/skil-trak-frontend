@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Select, TextInput, Typography } from '@components'
+import { Badge, Button, Card, OutsideClickHandler, Select, TextInput, Typography } from '@components'
 import { CalendarStyles } from '@components/Calendar/style'
 import { AdminApi } from '@queries'
 import { debounce } from 'lodash'
@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import { FilterType } from '@pages/portals/sub-admin/history'
 import { useCallback } from 'react'
 import Calendar from 'react-calendar'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 
 export const HistoryFilters = ({
     filterType,

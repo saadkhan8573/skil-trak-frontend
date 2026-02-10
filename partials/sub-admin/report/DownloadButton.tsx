@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { IoMdDownload } from 'react-icons/io'
 import { AiFillPrinter } from 'react-icons/ai'
-import { Button } from '@components'
+import { Button, OutsideClickHandler } from '@components'
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { RtoApi } from '@queries'
 
 import Link from 'next/link'
@@ -11,10 +11,10 @@ import { getUserCredentials } from '@utils'
 type Props = {}
 
 export const DownloadButton = (props: Props) => {
-    
+
     const [showDropDown, setShowDropDown] = useState(false);
     const userId = getUserCredentials()?.id;
-    
+
 
     return (
         <div className="flex items-center gap-x-2">

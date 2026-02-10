@@ -1,7 +1,2 @@
-export * from './MailListCard'
-export * from './MailDetail'
-export * from './UnReadMails'
-export * from './ReadMails'
-export * from './Messaging'
 export * from './EmailsCard'
 export * from './NotificationCard'

@@ -1,7 +1,7 @@
-import { Button } from '@components'
+import { Button, OutsideClickHandler } from '@components'
 import { ReactElement, useState } from 'react'
 import { IoMdDownload } from 'react-icons/io'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 
 import { getUserCredentials } from '@utils'
 import { ReportListModal } from '../components/ReportListModal'

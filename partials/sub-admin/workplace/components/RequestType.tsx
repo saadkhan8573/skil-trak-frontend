@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react'
 import { IoMdArrowDropdown } from 'react-icons/io'
 
 // components
-import { LoadingAnimation, Typography } from '@components'
+import { LoadingAnimation, OutsideClickHandler, Typography } from '@components'
 
 // query
 import { useNotification } from '@hooks'
 import { WorkplaceCurrentStatus } from '@utils'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import {
     CompleteWorkplaceModal,
     ForwardModal,
@@ -114,7 +114,7 @@ export const RequestType = ({
             primaryText: 'Request Sent',
             secondaryText: 'No Case Officer',
             color: 'text-primary-dark',
-            onClick: () => {},
+            onClick: () => { },
             status: WorkplaceCurrentStatus.Applied,
             date: appliedIndustry?.appliedDate,
         },
@@ -122,7 +122,7 @@ export const RequestType = ({
             primaryText: 'Assigned',
             secondaryText: 'Case Officer',
             color: 'text-primary',
-            onClick: () => {},
+            onClick: () => { },
             status: WorkplaceCurrentStatus.CaseOfficerAssigned,
             date: appliedIndustry?.caseOfficerAssignedDate,
         },
@@ -269,7 +269,7 @@ export const RequestType = ({
             primaryText: 'Cancelled',
             secondaryText: 'Cancelled',
             color: 'text-error',
-            onClick: () => {},
+            onClick: () => { },
             status: WorkplaceCurrentStatus.Cancelled,
             date: appliedIndustry?.cancelledDate,
         },
@@ -277,7 +277,7 @@ export const RequestType = ({
             primaryText: 'Rejected',
             secondaryText: 'Rejected',
             color: 'text-error',
-            onClick: () => {},
+            onClick: () => { },
             status: WorkplaceCurrentStatus.Rejected,
             date: industryResponse?.industryResponseDate,
         },
@@ -295,7 +295,7 @@ export const RequestType = ({
             primaryText: 'No Response',
             secondaryText: 'No Response',
             color: 'text-error',
-            onClick: () => {},
+            onClick: () => { },
             status: WorkplaceCurrentStatus.NoResponse,
             date: industryResponse?.industryResponseDate,
         },
@@ -374,30 +374,28 @@ export const RequestType = ({
                         </Typography>
                         {requestTypeActions[selectedRequestType as any]
                             ?.date && (
-                            <Typography>
-                                <span className="text-[10px] font-semibold">
-                                    {' '}
-                                    {moment(
-                                        requestTypeActions[
-                                            selectedRequestType as any
-                                        ]?.date
-                                    ).format('Do MMM YYYY')}
-                                </span>
-                            </Typography>
-                        )}
+                                <Typography>
+                                    <span className="text-[10px] font-semibold">
+                                        {' '}
+                                        {moment(
+                                            requestTypeActions[
+                                                selectedRequestType as any
+                                            ]?.date
+                                        ).format('Do MMM YYYY')}
+                                    </span>
+                                </Typography>
+                            )}
                     </div>
                     <IoMdArrowDropdown
-                        className={`${
-                            visibleRequestType ? 'rotate-180' : 'rotate-0'
-                        } transition-all`}
+                        className={`${visibleRequestType ? 'rotate-180' : 'rotate-0'
+                            } transition-all`}
                     />
                 </div>
 
                 {visibleRequestType && (
                     <div
-                        className={`shadow absolute z-10 w-full bg-white rounded-md py-2 mt-1 ${
-                            isOpen ? 'h-96' : 'h-32 xl:h-36'
-                        } overflow-auto custom-scrollbar`}
+                        className={`shadow absolute z-10 w-full bg-white rounded-md py-2 mt-1 ${isOpen ? 'h-96' : 'h-32 xl:h-36'
+                            } overflow-auto custom-scrollbar`}
                     >
                         {requestTypeActions.map((type, i) => (
                             <div

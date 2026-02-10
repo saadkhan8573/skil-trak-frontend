@@ -10,7 +10,7 @@ import {
 import { Bell, ChevronDown, Menu, Plus, Search, Sparkles } from 'lucide-react'
 import { NotificationDropDown } from '../AdminNavbar/components'
 import { useEffect, useState } from 'react'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import {
     commonApi,
     CommonApi,
@@ -25,6 +25,7 @@ import { useDispatch } from 'react-redux'
 import { useContextBar } from '@hooks'
 import { Typography } from '@components/Typography'
 import { Title } from '@partials'
+import { OutsideClickHandler } from '@components/OutsideClickHandler'
 
 export const RtoNavbarV2 = ({ onOpenSidebar, titleProps }: any) => {
     const [mount, setMount] = useState(false)

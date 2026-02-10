@@ -31,7 +31,11 @@ export const RtoEmails = () => {
             case UserRoles.STUDENT:
                 return '/portals/student/mails'
             case UserRoles.RTO:
-                return '/portals/rto/communications/e-mails'
+                if (router.pathname.includes('/portals/rto/communications')) {
+                    return '/portals/rto/communications/e-mails'
+                } else {
+                    return '/portals/rto/notifications/e-mails'
+                }
             default:
                 return null
         }
@@ -94,7 +98,7 @@ export const RtoEmails = () => {
     return (
         <Card className="shadow-premium-lg" noPadding>
             <div className="w-full">
-                <div className="flex items-center justify-between px-6 py-2 border-b bg-gradient-to-r from-white to-primary/5">
+                <div className="flex items-center justify-between px-6 py-2 border-b bg-linear-to-r from-white to-primary/5">
                     <Tabs
                         value={activeTab}
                         onValueChange={handleTabChange}
@@ -151,9 +155,8 @@ export const RtoEmails = () => {
                 )}
 
                 <div
-                    className={`fixed bottom-0 right-20 z-[333]  ${
-                        isComposeMail ? 'block' : 'hidden'
-                    }`}
+                    className={`fixed bottom-0 right-20 z-333  ${isComposeMail ? 'block' : 'hidden'
+                        }`}
                 >
                     <ComposeMail onCancelComposeMail={onComposeMail} />
                 </div>

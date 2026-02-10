@@ -1,4 +1,4 @@
-import { ShowErrorNotifications, TextInput, Typography } from '@components'
+import { OutsideClickHandler, ShowErrorNotifications, TextInput, Typography } from '@components'
 import { DashedCountCard } from '@partials/management/components'
 import Link from 'next/link'
 import React, { useState, ReactElement, useEffect } from 'react'
@@ -7,7 +7,7 @@ import { MdDeleteOutline } from 'react-icons/md'
 import { CiEdit } from 'react-icons/ci'
 import { ManagementApi } from '@queries'
 import { useNotification } from '@hooks'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 
 export const TeamCard = ({ team }: any) => {
     const [modal, setModal] = useState<ReactElement | null>(null)

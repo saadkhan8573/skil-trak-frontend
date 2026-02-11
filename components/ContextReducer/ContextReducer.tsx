@@ -23,7 +23,7 @@ import AOS from 'aos'
 import { ReactNode, useEffect } from 'react'
 import { Provider } from 'react-redux'
 import { ErrorBoundaryContext } from 'react-use-error-boundary'
-import { store } from 'redux/store'
+import { store } from '@redux/store'
 
 // styles
 import 'aos/dist/aos.css'

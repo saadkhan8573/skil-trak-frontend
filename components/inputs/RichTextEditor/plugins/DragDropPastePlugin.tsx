@@ -16,13 +16,9 @@ export default function DragDropPastePlugin(): JSX.Element | null {
         const handleFiles = (files: File[]) => {
             if (files.length === 0) return false;
 
-            console.log(`DragDropPastePlugin: Handling ${files.length} files`);
-
             (async () => {
                 for (const file of files) {
                     if (file.type.startsWith('image/')) {
-                        console.log(`DragDropPastePlugin: 🔄 Starting sequential process for: ${file.name}`);
-
                         try {
                             // 1. Read file as DataURL (Promise-based)
                             const temporarySrc = await new Promise<string>((resolve, reject) => {
@@ -50,14 +46,12 @@ export default function DragDropPastePlugin(): JSX.Element | null {
                             }
 
                             // 3. Upload to server
-                            console.log(`DragDropPastePlugin: 📤 Uploading ${file.name}...`);
                             const formData = new FormData();
                             formData.append('file', file);
 
                             const res: any = await uploadImage(formData);
 
                             if (res?.data?.url) {
-                                console.log(`DragDropPastePlugin: ✅ Upload success for ${file.name}: ${res.data.url}`);
                                 editor.update(() => {
                                     const node = $getNodeByKey(nodeKey!);
                                     if ($isImageNode(node)) {
@@ -80,7 +74,6 @@ export default function DragDropPastePlugin(): JSX.Element | null {
                         }
                     }
                 }
-                console.log('DragDropPastePlugin: ✨ All images processed.');
             })();
             return true;
         };
@@ -96,7 +89,6 @@ export default function DragDropPastePlugin(): JSX.Element | null {
                 (event: ClipboardEvent) => {
                     const files = Array.from(event.clipboardData?.files || []);
                     if (files.length > 0) {
-                        console.log('DragDropPastePlugin: Intercepted PASTE with files');
                         return handleFiles(files);
                     }
                     return false;

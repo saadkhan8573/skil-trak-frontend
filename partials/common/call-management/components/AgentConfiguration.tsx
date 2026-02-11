@@ -1,60 +1,36 @@
-import React, { useState } from 'react'
-import { Table, Badge, Button } from '@components'
-import { Plus, Power, Trash2, Search, Bot } from 'lucide-react'
+import { Badge, Button, EmptyData, LoadingAnimation, Table, TableChildrenProps, TechnicalError } from '@components'
+import { CommonApi } from '@queries/common/common.query'
 import { ColumnDef } from '@tanstack/react-table'
-import { AgentConfiguration as IAgentConfiguration } from './types'
+import { Bot, Plus, Power, Search, Trash2 } from 'lucide-react'
+import { useState } from 'react'
 import { AddAgentModal } from './modal/AddAgentModal'
+import { AgentConfigurationTypes } from '@types'
 
 export const AgentConfiguration = () => {
-    const [agents, setAgents] = useState<IAgentConfiguration[]>([
-        {
-            id: '1',
-            agentId: 'AI_Maria_1',
-            name: 'Maria - Workplace Collection',
-            callReason: 'Workplace Details Collection',
-            actions: ['Collect Workplace Information', 'Request Missing Documents', 'Update Contact Information'],
-            isActive: true,
-        },
-        {
-            id: '2',
-            agentId: 'AI_Maria_2',
-            name: 'Maria - Document Follow-up',
-            callReason: 'Document Verification',
-            actions: ['Request Missing Documents', 'Schedule Follow-up Call', 'Update Contact Information'],
-            isActive: true,
-        },
-    ])
-
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState('')
+    const [itemPerPage, setItemPerPage] = useState(50)
+    const [page, setPage] = useState(1)
 
+    const agents = CommonApi.CallManagement.useGetAgentsListQuery({
+        search: `name:${searchTerm}`,
+        skip: itemPerPage * page - itemPerPage,
+        limit: itemPerPage,
+    },
+        {
+            refetchOnMountOrArgChange: true,
+        })
+
+    // TODO: Implement toggle and delete APIs
     const toggleAgent = (id: string) => {
-        setAgents(prev => prev.map(a => a.id === id ? { ...a, isActive: !a.isActive } : a))
+        // setAgents(prev => prev.map(a => a.id === id ? { ...a, isActive: !a.isActive } : a))
     }
 
     const deleteAgent = (id: string) => {
-        setAgents(prev => prev.filter(a => a.id !== id))
+        // setAgents(prev => prev.filter(a => a.id !== id))
     }
 
-    const handleAddAgent = (data: any) => {
-        const newAgent: IAgentConfiguration = {
-            id: Date.now().toString(),
-            agentId: `AI_Agent_${Math.floor(Math.random() * 1000)}`,
-            name: data.name,
-            callReason: data.callReason,
-            actions: data.actions,
-            isActive: true
-        }
-        setAgents([newAgent, ...agents])
-    }
-
-    const filteredAgents = agents.filter(a =>
-        a.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        a.agentId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        a.callReason.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-
-    const columns: ColumnDef<IAgentConfiguration>[] = [
+    const columns: ColumnDef<AgentConfigurationTypes>[] = [
         {
             id: 'agent',
             header: 'Agent',
@@ -64,32 +40,19 @@ export const AgentConfiguration = () => {
                         {row.original.name.charAt(0)}
                     </div>
                     <div>
+                        <div className="text-xs text-gray-500 uppercase font-medium">ID: {row.original.vapiAgentId}</div>
                         <div className="text-sm font-semibold text-gray-900">{row.original.name}</div>
-                        <div className="text-[10px] text-gray-400 uppercase font-medium">ID: {row.original.agentId}</div>
                     </div>
                 </div>
             )
         },
         {
-            accessorKey: 'callReason',
-            header: 'Call Reason',
+            accessorKey: 'responsibility',
+            header: 'Responsibility',
             cell: ({ row }) => (
                 <Badge variant="accent" outline className="lowercase first-letter:uppercase">
-                    {row.original.callReason}
+                    {row.original.responsibility}
                 </Badge>
-            )
-        },
-        {
-            accessorKey: 'actions',
-            header: 'Actions',
-            cell: ({ row }) => (
-                <div className="flex flex-wrap gap-1 max-w-[300px]">
-                    {row.original.actions.map((action, i) => (
-                        <Badge key={i} variant="success" outline className="text-[10px] normal-case py-0 h-5">
-                            {action}
-                        </Badge>
-                    ))}
-                </div>
             )
         },
         {
@@ -110,14 +73,14 @@ export const AgentConfiguration = () => {
             cell: ({ row }) => (
                 <div className="flex justify-end gap-1">
                     <button
-                        onClick={() => toggleAgent(row.original.id)}
+                        onClick={() => toggleAgent(row.original.id.toString())}
                         title={row.original.isActive ? 'Deactivate' : 'Activate'}
                         className={`p-2 rounded-lg transition-all ${row.original.isActive ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'}`}
                     >
                         <Power className={`w-4 h-4 ${row.original.isActive ? 'fill-green-600' : ''}`} />
                     </button>
                     <button
-                        onClick={() => deleteAgent(row.original.id)}
+                        onClick={() => deleteAgent(row.original.id.toString())}
                         title="Delete Agent"
                         className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                     >
@@ -162,26 +125,80 @@ export const AgentConfiguration = () => {
             </div>
 
             <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-                <Table columns={columns} data={filteredAgents} pagination={false} pageSize={false}>
-                    {({ table }) => (
-                        <div className="overflow-x-auto">
-                            {table}
-                        </div>
-                    )}
-                </Table>
-
-                {filteredAgents.length === 0 && (
-                    <div className="py-20 flex flex-col items-center justify-center text-gray-400">
-                        <Bot className="w-12 h-12 mb-3 opacity-20" />
-                        <p className="text-sm">No agents found matching your search</p>
-                    </div>
+                {agents?.isError && <TechnicalError />}
+                {agents?.isLoading || agents?.isFetching ? (
+                    <LoadingAnimation height="h-[60vh]" />
+                ) : agents?.data?.data && agents?.data?.data?.length ? (
+                    <Table
+                        columns={columns}
+                        data={agents?.data?.data}
+                    >
+                        {({
+                            table,
+                            pagination,
+                            pageSize,
+                            quickActions,
+                        }: TableChildrenProps) => {
+                            return (
+                                <div>
+                                    <div className="p-6 mb-2 flex justify-between">
+                                        {pageSize &&
+                                            pageSize(
+                                                itemPerPage,
+                                                setItemPerPage,
+                                                agents?.data?.data?.length
+                                            )}
+                                        <div className="flex gap-x-2">
+                                            {quickActions}
+                                            {pagination &&
+                                                pagination(
+                                                    agents?.data?.pagination!,
+                                                    setPage
+                                                )}
+                                        </div>
+                                    </div>
+                                    <div className="px-6 overflow-auto custom-scrollbar">
+                                        {table}
+                                    </div>
+                                    {agents?.data?.data && agents?.data?.data?.length > 10 && (
+                                        <div className="p-6 mb-2 flex justify-between">
+                                            {pageSize &&
+                                                pageSize(
+                                                    itemPerPage,
+                                                    setItemPerPage,
+                                                    agents?.data?.data?.length
+                                                )}
+                                            <div className="flex gap-x-2">
+                                                {quickActions}
+                                                {pagination &&
+                                                    pagination(
+                                                        agents?.data?.pagination,
+                                                        setPage
+                                                    )}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )
+                        }}
+                    </Table>
+                ) : (
+                    !agents?.isError && (
+                        <EmptyData
+                            title={'No Approved Student!'}
+                            description={
+                                'You have not approved any Student request yet'
+                            }
+                            height={'50vh'}
+                        />
+                    )
                 )}
+
             </div>
 
             <AddAgentModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                onAdd={handleAddAgent}
             />
         </div>
     )

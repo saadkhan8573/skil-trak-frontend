@@ -122,9 +122,9 @@ export const IndustryProfileFrom = ({
 
     const sectorOptions = sectorResponse?.data
         ? sectorResponse.data?.map((sector: any) => ({
-              label: sector.name,
-              value: sector.id,
-          }))
+            label: sector.name,
+            value: sector.id,
+        }))
         : []
 
     useEffect(() => {
@@ -425,7 +425,7 @@ export const IndustryProfileFrom = ({
                                     placeholder={'Select Sectors...'}
                                     multi
                                     loading={sectorResponse.isLoading}
-                                    disabled={role === UserRoles.SUBADMIN}
+                                    disabled
                                     onChange={onSectorChanged}
                                     validationIcons
                                 />
@@ -438,10 +438,11 @@ export const IndustryProfileFrom = ({
                                     options={courseOptions}
                                     value={courseValues}
                                     multi
-                                    disabled={
-                                        courseOptions?.length === 0 ||
-                                        role === UserRoles.SUBADMIN
-                                    }
+                                    disabled
+                                    // disabled={
+                                    //     courseOptions?.length === 0 ||
+                                    //     role === UserRoles.SUBADMIN
+                                    // }
                                     validationIcons
                                     onChange={(e: any) => {
                                         setCourseValues(e)

@@ -7,7 +7,7 @@ export * from './option.type'
 export * from './layout.type'
 export * from './response.type'
 export * from './supervisor.type'
-
+export * from './agent-configuration'
 export * from './user.type'
 export * from './subscriber.type'
 export * from './note.type'

@@ -21,6 +21,7 @@ import {
     CompletedStudents,
     FilteredStudents,
     FlaggedStudentsList,
+    NoWorkplaceStudents,
     PendingStudent,
     PlacementStartedStudents,
     RejectedStudent,
@@ -143,6 +144,14 @@ const StudentList: NextPageWithLayout = () => {
                 loading: isLoading,
             },
             element: <ApprovedStudent />,
+        },
+        {
+            label: 'No Workplace Students',
+            href: {
+                pathname: 'student',
+                query: { tab: 'no-workplace-students', page: 1, pageSize: 50 },
+            },
+            element: <NoWorkplaceStudents />,
         },
         // VerifiedEmailStudent
         // {

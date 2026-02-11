@@ -17,15 +17,6 @@ export type AgentAction =
     | 'Leave Voicemail'
     | 'Update Contact Information'
 
-export interface AgentConfiguration {
-    id: string
-    agentId: string
-    name: string
-    callReason: CallReason
-    actions: AgentAction[]
-    isActive: boolean
-}
-
 export const CALL_REASON_ACTIONS: Record<CallReason, AgentAction[]> = {
     'Workplace Details Collection': [
         'Collect Workplace Information',

@@ -52,7 +52,6 @@
         "@tanstack/react-table": "^8.21.3",
         "@tawk.to/tawk-messenger-react": "^2.0.1",
         "@types/pdfjs-dist": "^2.10.378",
-        "@zoomus/websdk": "^2.13.0",
         "aos": "^2.3.4",
         "axios": "^1.13.5",
         "base-64": "^1.0.0",

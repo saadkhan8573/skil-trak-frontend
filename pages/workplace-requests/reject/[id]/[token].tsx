@@ -51,10 +51,10 @@ const DynamicPageData = () => {
     })
 
     const methods = useForm({
-        resolver: yupResolver(validationSchema),
+        resolver: yupResolver(validationSchema) as any,
         mode: 'all',
         defaultValues: {
-            reason: null,
+            reason: null as any,
             note: '',
         },
     })

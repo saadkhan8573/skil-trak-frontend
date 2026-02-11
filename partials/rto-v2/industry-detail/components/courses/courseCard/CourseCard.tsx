@@ -51,7 +51,7 @@ export function CourseCard({
     courseIndex,
     hasInitiatedESign,
 }: CourseCardProps) {
-    const [isCourseExpanded, setIsCourseExpanded] = useState(true)
+    const [isCourseExpanded, setIsCourseExpanded] = useState(false)
     const [uploadFacilityChecklist, setUploadFacilityChecklist] =
         useState(false)
     const [isReassignCourse, setIsReassignCourse] = useState(false)
@@ -83,15 +83,14 @@ export function CourseCard({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: courseIndex * 0.05 }}
-            className={`rounded-xl overflow-hidden transition-all duration-300 ${
-                isApproved
+            className={`rounded-xl overflow-hidden transition-all duration-300 ${isApproved
                     ? 'bg-linear-to-br from-[#10B981]/10 via-white to-[#059669]/10 border-2 border-[#10B981]/30 shadow-lg'
                     : needsApproval
-                      ? 'bg-linear-to-br from-[#F7A619]/10 via-white to-[#EA580C]/10 border-2 border-[#F7A619]/40 shadow-lg animate-pulse-slow'
-                      : isRejected
-                        ? 'bg-linear-to-br from-[#EF4444]/5 via-white to-[#DC2626]/5 border-2 border-[#EF4444]/30'
-                        : 'bg-white border border-[#E2E8F0] hover:shadow-md hover:border-[#044866]/20'
-            }`}
+                        ? 'bg-linear-to-br from-[#F7A619]/10 via-white to-[#EA580C]/10 border-2 border-[#F7A619]/40 shadow-lg animate-pulse-slow'
+                        : isRejected
+                            ? 'bg-linear-to-br from-[#EF4444]/5 via-white to-[#DC2626]/5 border-2 border-[#EF4444]/30'
+                            : 'bg-white border border-[#E2E8F0] hover:shadow-md hover:border-[#044866]/20'
+                }`}
         >
             {/* Course Header */}
             <div className="p-4">
@@ -100,11 +99,10 @@ export function CourseCard({
                         {/* Course Title & Code */}
                         <div className="flex items-center gap-2 mb-2">
                             <div
-                                className={`px-2 py-1 rounded-md text-[10px] font-bold ${
-                                    isApproved
+                                className={`px-2 py-1 rounded-md text-[10px] font-bold ${isApproved
                                         ? 'bg-[#10B981]/20 text-[#10B981]'
                                         : 'bg-[#044866]/10 text-[#044866]'
-                                }`}
+                                    }`}
                             >
                                 {approval?.course.code}
                             </div>
@@ -153,15 +151,14 @@ export function CourseCard({
                                 {/* Facility Checklist Status */}
                                 {!isDeletedInternal && (
                                     <div
-                                        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-medium ${
-                                            isApproved
+                                        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-medium ${isApproved
                                                 ? 'bg-[#10B981]/10 text-[#10B981]'
                                                 : needsApproval
-                                                  ? 'bg-[#F7A619]/20 text-[#F7A619]'
-                                                  : isRejected
-                                                    ? 'bg-[#EF4444]/10 text-[#EF4444]'
-                                                    : 'bg-[#64748B]/10 text-[#64748B]'
-                                        }`}
+                                                    ? 'bg-[#F7A619]/20 text-[#F7A619]'
+                                                    : isRejected
+                                                        ? 'bg-[#EF4444]/10 text-[#EF4444]'
+                                                        : 'bg-[#64748B]/10 text-[#64748B]'
+                                            }`}
                                     >
                                         <FileCheck className="w-3 h-3" />
                                         {isApproved && 'Checklist Approved'}
@@ -213,13 +210,12 @@ export function CourseCard({
                             }
                             animate={{ rotate: isCourseExpanded ? 180 : 0 }}
                             transition={{ duration: 0.3 }}
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                                isApproved
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isApproved
                                     ? 'bg-[#10B981]/10 hover:bg-[#10B981]/20 text-[#10B981]'
                                     : needsApproval
-                                      ? 'bg-[#F7A619]/10 hover:bg-[#F7A619]/20 text-[#F7A619]'
-                                      : 'bg-[#F8FAFB] hover:bg-[#E8F4F8] text-[#044866]'
-                            }`}
+                                        ? 'bg-[#F7A619]/10 hover:bg-[#F7A619]/20 text-[#F7A619]'
+                                        : 'bg-[#F8FAFB] hover:bg-[#E8F4F8] text-[#044866]'
+                                }`}
                         >
                             <ChevronDown className="w-4 h-4" />
                         </motion.button>

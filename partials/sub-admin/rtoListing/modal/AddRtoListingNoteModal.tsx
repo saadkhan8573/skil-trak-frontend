@@ -21,10 +21,11 @@ export const AddRtoListingNoteModal = ({ onCloseModal }: any) => {
     const [addNote, addNoteResult] =
         SubAdminApi.Rto.useAddRtoListingDetailsNote()
 
-    const validationSchema = yup.object({
-        comment: yup.mixed().test('Message', 'Must Provide Message', (value: any) =>
-            inputRichTextEditorErrorMessage(value)
-        ),
+    const validationSchema = yup.object().shape({
+        comment: yup
+            .string()
+            .ensure()
+            .test('Message', 'Must Provide Message', inputRichTextEditorErrorMessage),
     })
 
     const methods = useForm({

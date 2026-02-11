@@ -1,13 +1,11 @@
 import {
     Button,
     GlobalModal,
-    ShowErrorNotifications,
     TextInput,
-    Typography,
+    Typography
 } from '@components'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useNotification } from '@hooks'
-import { AdminApi } from '@queries'
+import { useRouter } from 'next/router'
 import { FormProvider, useForm } from 'react-hook-form'
 import { LiaTimesSolid } from 'react-icons/lia'
 import * as Yup from 'yup'
@@ -17,6 +15,7 @@ export const AuthenticateUserModal = ({
 }: {
     onCancel: () => void
 }) => {
+    const router = useRouter()
     const password = process.env.NEXT_PUBLIC_UPDATE_DATE
 
     const validationSchema = Yup.object({
@@ -48,6 +47,15 @@ export const AuthenticateUserModal = ({
                             Authenticate
                         </Typography>
                     </div>
+                    <div className="flex justify-end">
+                        <Button
+                            onClick={() => router.back()}
+                            Icon={LiaTimesSolid}
+                            variant='primaryNew'
+                            mini
+                            outline
+                        />
+                    </div>
                 </div>
 
                 {/*  */}
@@ -64,7 +72,12 @@ export const AuthenticateUserModal = ({
                                 validationIcons
                                 required
                             />
-                            <div className="ml-auto flex justify-end">
+                            <div className="flex justify-end gap-3 mt-4">
+                                <Button
+                                    text="Cancel"
+                                    variant="secondary"
+                                    onClick={() => router.back()}
+                                />
                                 <Button text="Submit" submit />
                             </div>
                         </form>

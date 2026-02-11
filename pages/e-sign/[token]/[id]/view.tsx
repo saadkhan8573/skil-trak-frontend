@@ -18,7 +18,7 @@ import {
 } from '@partials/eSign/modal'
 import { FinishDocumentModal, SVGView } from '@partials/eSign/components'
 import { CommonApi } from '@queries'
-import jwt from 'jwt-decode'
+import { jwtDecode as jwt } from 'jwt-decode'
 import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 
@@ -235,9 +235,9 @@ const ESign = () => {
             customFields?.map((data: any) =>
                 data?.type === FieldsTypeEnum.Checkbox
                     ? {
-                          ...data,
-                          fieldValue: e.target.checked,
-                      }
+                        ...data,
+                        fieldValue: e.target.checked,
+                    }
                     : data
             )
         )
@@ -384,7 +384,7 @@ const ESign = () => {
         } else {
             setIsLastSelected(
                 sortedPositions?.[customFieldsSelectedId]?.id ===
-                    sortedPositions?.[sortedPositions?.length - 1]?.id
+                sortedPositions?.[sortedPositions?.length - 1]?.id
             )
             setSelectedFillDataField(sortedPositions?.[0]?.id)
             scrollToPage(-1, documentsTotalPages?.data?.pageCount - 1, 'end')
@@ -524,8 +524,8 @@ const ESign = () => {
                                     <div
                                         key={i}
                                         ref={(el: any) =>
-                                            (scrollTargetRef.current[i] =
-                                                el as any)
+                                        (scrollTargetRef.current[i] =
+                                            el as any)
                                         }
                                         className="relative"
                                     >

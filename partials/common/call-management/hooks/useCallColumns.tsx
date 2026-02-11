@@ -1,6 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { PlacementCall } from '@types'
-import { CheckCircle, Clock, Eye, Headphones, TicketPlus, Trash2 } from 'lucide-react'
+import { Bot, CheckCircle, Clock, Eye, Flag, Headphones, TicketPlus, Trash2 } from 'lucide-react'
 import moment from 'moment'
 import React, { useState } from 'react'
 import { StatusBadge } from '../components/StatusBadge'
@@ -128,11 +128,58 @@ export const useCallColumns = () => {
                 )
             }
         },
+        // {
+        //     header: 'Call Type',
+        //     accessorKey: 'callType',
+        //     cell: ({ row }) => (
+        //         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${row.original.callType === 'inbound'
+        //             ? 'bg-blue-100 text-blue-700 border border-blue-200'
+        //             : 'bg-gray-100 text-gray-600 border border-gray-200'
+        //             }`}>
+        //             {row.original.callType}
+        //         </span>
+        //     ),
+        //     size: 100
+        // },
+        // {
+        //     header: 'Call Reason',
+        //     accessorKey: 'callReason',
+        //     cell: ({ row }) => (
+        //         <span className="px-2.5 py-1 rounded bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-medium whitespace-nowrap">
+        //             {row.original.callReason || '-'}
+        //         </span>
+        //     ),
+        //     size: 180
+        // },
+        // {
+        //     header: 'Action',
+        //     accessorKey: 'agentAction',
+        //     cell: ({ row }) => (
+        //         <span className="px-2.5 py-1 rounded bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-medium whitespace-nowrap">
+        //             {row.original.agentAction || '-'}
+        //         </span>
+        //     ),
+        //     size: 180
+        // },
+        // {
+        //     header: 'Agent',
+        //     accessorKey: 'agentType',
+        //     cell: ({ row }) => (
+        //         <div className="flex items-center gap-2">
+        //             <div className={`w-6 h-6 rounded flex items-center justify-center ${row.original.agentType === 'AI (Maria)' ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600'
+        //                 }`}>
+        //                 <Bot className="w-3.5 h-3.5" />
+        //             </div>
+        //             <span className="text-xs font-medium text-gray-700">{row.original.agentType || '-'}</span>
+        //         </div>
+        //     ),
+        //     size: 120
+        // },
         {
             header: 'Status',
             accessorKey: 'status',
             cell: ({ row }) => <StatusBadge status={row.original.status} size="sm" />,
-            size: 150
+            size: 130
         },
         {
             header: 'Answered',

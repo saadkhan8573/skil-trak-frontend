@@ -1,8 +1,8 @@
-import { Typography } from '@components'
+import { OutsideClickHandler, Typography } from '@components'
 import React, { ReactNode, useState } from 'react'
 import { MdKeyboardArrowDown } from 'react-icons/md'
 import { TiTimes } from 'react-icons/ti'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { PulseLoader } from 'react-spinners'
 
 export const StudentNotesDropdown = ({
@@ -32,14 +32,13 @@ export const StudentNotesDropdown = ({
                     setIsOpened(false)
                 }}
             >
-                <div className="relative z-[48] w-full">
+                <div className="relative z-48 w-full">
                     <div
                         onClick={() => {
                             setIsOpened(!isOpened)
                         }}
-                        className={`${
-                            disabled ? 'bg-gray-300' : ''
-                        } w-full cursor-pointer border border-secondary-dark rounded-md flex items-center justify-between px-2 py-2.5`}
+                        className={`${disabled ? 'bg-gray-300' : ''
+                            } w-full cursor-pointer border border-secondary-dark rounded-md flex items-center justify-between px-2 py-2.5`}
                     >
                         <div className="flex justify-between items-center w-full">
                             <Typography
@@ -63,9 +62,8 @@ export const StudentNotesDropdown = ({
                         </div>
                     </div>
                     <div
-                        className={`absolute top-full left-0 w-full shadow-md transition-all duration-500 bg-white overflow-auto custom-scrollbar ${
-                            isOpened && !disabled ? 'max-h-52' : 'max-h-0'
-                        }`}
+                        className={`absolute top-full left-0 w-full shadow-md transition-all duration-500 bg-white overflow-auto custom-scrollbar ${isOpened && !disabled ? 'max-h-52' : 'max-h-0'
+                            }`}
                     >
                         <div
                             onClick={() => {

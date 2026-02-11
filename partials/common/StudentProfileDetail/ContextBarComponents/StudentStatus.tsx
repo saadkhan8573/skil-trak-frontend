@@ -1,4 +1,4 @@
-import { ShowErrorNotifications, Typography } from '@components'
+import { OutsideClickHandler, ShowErrorNotifications, Typography } from '@components'
 import { UserRoles } from '@constants'
 import { useNotification } from '@hooks'
 import { SubAdminApi } from '@queries'
@@ -6,7 +6,7 @@ import { StudentStatusEnum } from '@types'
 import { getUserCredentials } from '@utils'
 import React, { useEffect, useState } from 'react'
 import { IoIosArrowDown } from 'react-icons/io'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { PuffLoader } from 'react-spinners'
 
 export const StudentStatus = ({
@@ -110,9 +110,8 @@ export const StudentStatus = ({
                                 <IoIosArrowDown />
                             </div>
                             <div
-                                className={`w-auto px-2 bg-white shadow-md rounded-md absolute bottom-full left-0 overflow-hidden transition-all duration-500 ${
-                                    isOpened ? 'max-h-40' : 'max-h-0'
-                                }`}
+                                className={`w-auto px-2 bg-white shadow-md rounded-md absolute bottom-full left-0 overflow-hidden transition-all duration-500 ${isOpened ? 'max-h-40' : 'max-h-0'
+                                    }`}
                             >
                                 {studentStatusOptions
                                     ?.slice(

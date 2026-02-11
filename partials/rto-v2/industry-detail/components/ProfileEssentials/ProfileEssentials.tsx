@@ -35,7 +35,6 @@ export function ProfileEssentials() {
                 >
                     {/* Left Column */}
                     <div className="space-y-3 flex flex-col h-full">
-                        <BasicDetails />
                         <InterviewAvailability />
                         <PlacementFormUrl />
                     </div>

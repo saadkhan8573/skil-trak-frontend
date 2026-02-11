@@ -1,19 +1,12 @@
 import { useEffect, useState } from 'react'
 
 import {
-    EmptyData,
     InitialAvatar,
-    LoadingAnimation,
-    Mail,
-    NoData,
-    TechnicalError,
-    Typography,
+    Typography
 } from '@components'
 
 import { CommonApi } from '@queries'
 import moment from 'moment'
-import InfiniteScroll from 'react-infinite-scroller'
-import { PulseLoader } from 'react-spinners'
 type Props = {
     selectedMessage: any
 }

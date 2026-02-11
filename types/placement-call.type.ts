@@ -20,4 +20,10 @@ export interface PlacementCall extends BaseResponse {
     hasTicket?: boolean
     recordingUrl?: string
     placementCompany?: string
+    isFlagged?: boolean
+    callReason?: string
+    agentAction?: string
+    agentType?: 'AI (Maria)' | 'Human Agent'
+    dataCompleteness?: 'Complete' | 'Partial'
+    followUpRequired?: boolean
 }

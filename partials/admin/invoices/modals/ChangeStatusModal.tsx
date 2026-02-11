@@ -30,12 +30,12 @@ export const ChangeStatusModal = ({
         payment: Yup.string().required('Payment is required!'),
     })
 
-    const methods = useForm<onSubmitType>({
+    const methods = useForm<any>({
         resolver: yupResolver(validationSchema),
         mode: 'all',
     })
 
-    const onSubmit = async (values: onSubmitType) => {
+    const onSubmit = async (values: any) => {
         const res: any = await changePaymentStatus({
             id,
             status: values?.payment,

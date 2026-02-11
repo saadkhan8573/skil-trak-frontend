@@ -1,7 +1,7 @@
-import { Button } from '@components'
+import { Button, OutsideClickHandler } from '@components'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 
 export const AddWorkplace = ({ id }: { id: number }) => {
     const router = useRouter()

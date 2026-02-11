@@ -4,6 +4,7 @@ import {
     InitialAvatar,
     LoadingAnimation,
     NoData,
+    OutsideClickHandler,
     Select,
     ShowErrorNotifications,
     TextInput,
@@ -22,7 +23,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { ImPhone } from 'react-icons/im'
 import { IoLocation } from 'react-icons/io5'
 import { MdEmail } from 'react-icons/md'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 
 export const FindWorkplaceByName = ({
     setWorkplaceData,
@@ -70,10 +71,10 @@ export const FindWorkplaceByName = ({
     const courseOptions =
         courses?.data && courses?.data?.length > 0
             ? courses?.data?.map((course: Course) => ({
-                  item: course,
-                  value: course?.id,
-                  label: course?.title,
-              }))
+                item: course,
+                value: course?.id,
+                label: course?.title,
+            }))
             : []
 
     const delayedSearch = useCallback(
@@ -131,8 +132,8 @@ export const FindWorkplaceByName = ({
                                 {industries.isLoading ? (
                                     <LoadingAnimation />
                                 ) : industries?.data &&
-                                  industries?.data?.length > 0 &&
-                                  industries?.isSuccess ? (
+                                    industries?.data?.length > 0 &&
+                                    industries?.isSuccess ? (
                                     <div className="flex flex-col gap-y-1 p-3 h-80 overflow-auto custom-scrollbar">
                                         {industries?.data?.map(
                                             (industry: Industry) => (

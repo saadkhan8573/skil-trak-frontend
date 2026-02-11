@@ -79,16 +79,17 @@ export const CreateNote = ({
         }
     }, [createNoteResult.isSuccess])
 
-    const validationSchema = Yup.object({
+    const validationSchema = Yup.object().shape({
         title: Yup.string().required('Title is required'),
-        body: Yup.mixed().test('Message', 'Must Provide Message', (value) =>
-            inputRichTextEditorErrorMessage(value)
-        ),
+        body: Yup.string()
+            .ensure()
+            .test('Message', 'Must Provide Message', inputRichTextEditorErrorMessage),
+        isPinned: Yup.boolean().default(false),
     })
 
-    const methods = useForm({
+    const methods = useForm<onSubmitType>({
         mode: 'all',
-        resolver: yupResolver(validationSchema),
+        resolver: yupResolver(validationSchema as any),
         defaultValues: { ...editValues },
     })
 

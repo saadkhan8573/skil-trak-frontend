@@ -1,8 +1,9 @@
 import Image from 'next/image'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { LogoutDropDown, ManagementNavLink } from './components'
 // import { linksData } from './linksData'
 import { getUserCredentials } from '@utils'
+import { OutsideClickHandler } from '@components/OutsideClickHandler'
 
 type ManagementNavbarProps = {
     // handleTabChange: any

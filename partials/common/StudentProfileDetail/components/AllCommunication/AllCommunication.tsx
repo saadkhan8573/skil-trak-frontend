@@ -11,7 +11,7 @@ export const AllCommunication = ({
     isEntered?: boolean
 }) => {
     return (
-        <div className="h-[40rem] overflow-auto flex flex-col">
+        <div className="h-160 overflow-auto flex flex-col">
             <CommunicationHeader user={user} />
             <AllCommunicationComponent user={user} isEntered={isEntered} />
         </div>

@@ -5,7 +5,7 @@ import { MdCancel } from 'react-icons/md'
 
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
-const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
+const ReactPlayer = dynamic<any>(() => import('react-player'), { ssr: false })
 // import ReactPlayer from 'react-player'
 
 // Icons
@@ -86,7 +86,7 @@ export const VideoPlayModal = ({
                             <div>
                                 <ReactPlayer
                                     onReady={onReady}
-                                    url={url}
+                                    src={url}
                                     playing
                                     config={{
                                         file: {
@@ -94,14 +94,13 @@ export const VideoPlayModal = ({
                                                 controlsList: 'nodownload',
                                             },
                                         },
-                                    }}
+                                    } as any}
                                     controls
                                     playIcon={
                                         <div className="w-full h-full flex justify-center items-center relative">
                                             <BsFillPlayCircleFill className="text-4xl text-white absolute top-12 left-1/2 -translate-x-1/2 -translate-y-1/2" />
                                         </div>
                                     }
-                                    stopOnUnmount
                                 />
                             </div>
                         )}

@@ -3,14 +3,12 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useContextBar, useNavbar } from '@hooks'
 import { ManagementLayout } from '@layouts'
 import { NextPageWithLayout } from '@types'
-// import ReactQuill from 'react-quill'
 
 import { adminApi } from '@queries'
 import dynamic from 'next/dynamic'
-import 'react-quill/dist/quill.snow.css'
 import { BlogContextBar } from '@partials/management/blog'
 import { Card } from '@components'
-// import { TextEditor } from '@partials'
+
 const TextEditor = dynamic(
     () => import('../../../../partials/management/blog/TextEditor'),
     { ssr: false }

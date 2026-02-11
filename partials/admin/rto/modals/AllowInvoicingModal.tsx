@@ -50,11 +50,13 @@ export const AllowInvoicingModal = ({
     const validationSchema = Yup.object({
         invoicingType: Yup.string()
             // .oneOf(Object.values(InvoiceTypeEnum))
-            .required('Invoice type is required'),
+            .required('Invoice type is required')
+            .defined(),
         invoiceAction: Yup.array()
-            .of(Yup.number())
+            .of(Yup.number().defined())
             .min(1, 'At least one invoice category must be selected')
-            .required('Please select at least one invoice category'),
+            .required('Please select at least one invoice category')
+            .defined(),
         startDate: Yup.mixed()
             .transform((value, originalValue) => {
                 // Return null if value is an empty string or invalid date
@@ -91,13 +93,15 @@ export const AllowInvoicingModal = ({
         allowInvoicing: Yup.boolean(),
     })
 
-    const methods = useForm<{
-        allowInvoicing: boolean
-        invoicingType: InvoiceTypeEnum
+    interface AllowInvoicingFormData {
+        invoicingType: string
         invoiceAction: number[]
-        startDate: Date
-    }>({
-        resolver: yupResolver(validationSchema),
+        startDate?: Date | null
+        allowInvoicing?: boolean
+    }
+
+    const methods = useForm<AllowInvoicingFormData>({
+        resolver: yupResolver(validationSchema) as any,
         defaultValues: {
             allowInvoicing: rto?.allowInvoicing,
             invoicingType: rto?.invoiceSettings?.[0]?.type,
@@ -136,10 +140,10 @@ export const AllowInvoicingModal = ({
         setInvoiceSettingData(
             invoiceSettingData?.includes(Number(value))
                 ? [
-                      ...invoiceSettingData?.filter(
-                          (invSetting) => invSetting !== Number(value)
-                      ),
-                  ]
+                    ...invoiceSettingData?.filter(
+                        (invSetting) => invSetting !== Number(value)
+                    ),
+                ]
                 : [...invoiceSettingData, Number(value)]
         )
     }
@@ -215,8 +219,8 @@ export const AllowInvoicingModal = ({
                                                 disabled={
                                                     allowPermissionsResult?.isLoading
                                                 }
-                                                // defaultChecked={rto?.allowInvoicing}
-                                                // value={rto?.allowInvoicing}
+                                            // defaultChecked={rto?.allowInvoicing}
+                                            // value={rto?.allowInvoicing}
                                             />
                                         </div>
                                     </div>
@@ -229,23 +233,22 @@ export const AllowInvoicingModal = ({
                                         disabled={
                                             !methods?.watch()?.allowInvoicing
                                         }
-                                        // showError={false}
+                                    // showError={false}
                                     />
                                 </div>
 
                                 {methods?.watch()?.invoicingType !==
                                     InvoiceTypeEnum.Monthly && (
-                                    <div className="w-60 mx-auto">
-                                        <TextInput
-                                            name={'startDate'}
-                                            label={`Start ${
-                                                methods?.watch()?.invoicingType
-                                            } Date`}
-                                            type={'date'}
+                                        <div className="w-60 mx-auto">
+                                            <TextInput
+                                                name={'startDate'}
+                                                label={`Start ${methods?.watch()?.invoicingType
+                                                    } Date`}
+                                                type={'date'}
                                             // showError={false}
-                                        />
-                                    </div>
-                                )}
+                                            />
+                                        </div>
+                                    )}
 
                                 {categoriesOptions &&
                                     categoriesOptions?.length > 0 && (

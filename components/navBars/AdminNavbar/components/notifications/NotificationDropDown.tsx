@@ -44,13 +44,12 @@ export const NotificationDropDown = ({
     return (
         <>
             <div
-                className={`absolute top-10 -right-5 z-40 bg-white w-80 transition-all rounded-lg ${
-                    !expanded ? 'max-h-0 hidden' : 'max-h-96 shadow-md border'
-                } `}
+                className={`absolute top-10 -right-5 z-40 bg-white w-80 transition-all rounded-lg ${!expanded ? 'max-h-0 hidden' : 'max-h-96 shadow-md border'
+                    } `}
             >
                 <div className="relative">
                     {showArrow && (
-                        <div className="absolute -top-5 right-20 !z-50">
+                        <div className="absolute -top-5 right-20 z-50!">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="27"
@@ -104,8 +103,8 @@ export const NotificationDropDown = ({
                                     getRole?.role === 'admin'
                                         ? `/portals/admin/all-notifications`
                                         : `/portals/${role(
-                                              getRole?.role
-                                          )}/notifications/all-notifications`
+                                            getRole?.role
+                                        )}/notifications/all-notifications`
                                 )
                                 setNotificationsExpanded(false)
                             }}

@@ -39,7 +39,7 @@ export function AnalyticsEditDialog({
             <DialogContent className="max-w-2xl p-0 gap-0 bg-white border-none">
                 {/* Header */}
                 <div
-                    className={`bg-gradient-to-br ${selectedCard.gradient} p-6 text-white relative overflow-hidden rounded-t-2xl`}
+                    className={`bg-linear-to-br ${selectedCard.gradient} p-6 text-white relative overflow-hidden rounded-t-2xl`}
                 >
                     <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjAzIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20" />
 
@@ -66,7 +66,7 @@ export function AnalyticsEditDialog({
                 <ScrollArea className="h-[calc(100vh-200px)]">
                     <div className="p-6 space-y-6">
                         {/* Current Value */}
-                        <div className="bg-gradient-to-br from-[#F8FAFB] to-[#E8F4F8] rounded-xl p-6 border border-[#E2E8F0]">
+                        <div className="bg-linear-to-br from-[#F8FAFB] to-[#E8F4F8] rounded-xl p-6 border border-[#E2E8F0]">
                             <div className="flex items-center justify-between mb-4">
                                 <h4 className="font-bold text-[#1A2332]">
                                     Current Value
@@ -165,7 +165,7 @@ export function AnalyticsEditDialog({
                                         placeholder="Enter new value"
                                     />
                                 </div>
-                                <div className="bg-gradient-to-br from-[#FEF3C7] to-[#FDE68A] rounded-lg p-4 border border-[#FDE68A]">
+                                <div className="bg-linear-to-br from-[#FEF3C7] to-[#FDE68A] rounded-lg p-4 border border-[#FDE68A]">
                                     <p className="text-xs text-[#92400E] leading-relaxed">
                                         <strong>Note:</strong> Updating this
                                         value will affect all related reports
@@ -178,7 +178,7 @@ export function AnalyticsEditDialog({
 
                         {/* Detailed Stats */}
                         <div className="grid grid-cols-3 gap-4">
-                            <div className="bg-gradient-to-br from-[#F8FAFB] to-[#E8F4F8] rounded-xl p-4 border border-[#E2E8F0]">
+                            <div className="bg-linear-to-br from-[#F8FAFB] to-[#E8F4F8] rounded-xl p-4 border border-[#E2E8F0]">
                                 <p className="text-xs font-medium text-[#64748B] mb-2 uppercase tracking-wide">
                                     Last Week
                                 </p>
@@ -189,7 +189,7 @@ export function AnalyticsEditDialog({
                                     Previous period
                                 </p>
                             </div>
-                            <div className="bg-gradient-to-br from-[#F8FAFB] to-[#E8F4F8] rounded-xl p-4 border border-[#E2E8F0]">
+                            <div className="bg-linear-to-br from-[#F8FAFB] to-[#E8F4F8] rounded-xl p-4 border border-[#E2E8F0]">
                                 <p className="text-xs font-medium text-[#64748B] mb-2 uppercase tracking-wide">
                                     Average
                                 </p>
@@ -200,7 +200,7 @@ export function AnalyticsEditDialog({
                                     Monthly avg
                                 </p>
                             </div>
-                            <div className="bg-gradient-to-br from-[#F8FAFB] to-[#E8F4F8] rounded-xl p-4 border border-[#E2E8F0]">
+                            <div className="bg-linear-to-br from-[#F8FAFB] to-[#E8F4F8] rounded-xl p-4 border border-[#E2E8F0]">
                                 <p className="text-xs font-medium text-[#64748B] mb-2 uppercase tracking-wide">
                                     Goal
                                 </p>
@@ -224,7 +224,7 @@ export function AnalyticsEditDialog({
                             </Button>
                             <Button
                                 onClick={onClose}
-                                className="flex-1 px-6 py-3 bg-gradient-to-br from-[#044866] to-[#0D5468] hover:shadow-xl text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 h-auto"
+                                className="flex-1 px-6 py-3 bg-linear-to-br from-[#044866] to-[#0D5468] hover:shadow-xl text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 h-auto"
                             >
                                 <Edit2 className="w-4 h-4" />
                                 Save Changes

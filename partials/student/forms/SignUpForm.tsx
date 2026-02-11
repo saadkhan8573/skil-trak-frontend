@@ -156,7 +156,7 @@ export const StudentSignUpForm = ({
         password: yup.string().required('Must provide password'),
         confirmPassword: yup
             .string()
-            .oneOf([yup.ref('password'), null], 'Passwords must match')
+            .oneOf([yup.ref('password')], 'Passwords must match')
             .required('Must confirm entered password'),
         rto: yup.mixed().nullable(),
         rtoInfo: yup.string().when('rto', {
@@ -166,7 +166,7 @@ export const StudentSignUpForm = ({
         }),
         phone: yup
             .string()
-            .nullable(true)
+            .nullable()
             .min(12, 'Phone Number must be 9 numbers')
             .required('Must provide phone number'),
         courseDescription: yup.string().when('rto', {

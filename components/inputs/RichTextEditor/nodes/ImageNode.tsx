@@ -108,7 +108,6 @@ function ImageComponent({ src, altText, width, height, maxWidth, nodeKey, alignm
             if (response.ok) {
                 const blob = await response.blob();
                 fileToUpload = blobToFile(blob, src);
-                console.log('ImageNode: ✅ Phase 1 (Direct Fetch) Success');
             }
         } catch (err) {
             console.warn('ImageNode: ⚠️ Phase 1 (Direct Fetch) failed due to CORS.');
@@ -147,7 +146,6 @@ function ImageComponent({ src, altText, width, height, maxWidth, nodeKey, alignm
 
                     if (blob) {
                         fileToUpload = blobToFile(blob, src);
-                        console.log('ImageNode: ✅ Phase 2 (Direct Capture) Success');
                     }
                 }
             } catch (canvasErr) {
@@ -157,14 +155,12 @@ function ImageComponent({ src, altText, width, height, maxWidth, nodeKey, alignm
 
         // Phase 3: Deep Proxy Fallback (Server-Side Fetch)
         if (!fileToUpload) {
-            console.log('ImageNode: 🔄 Trying Phase 3 (Server-Side Proxy)...');
             try {
                 // Use our new local proxy
                 const response = await fetch(`/api/proxy-image?url=${encodeURIComponent(src)}`);
                 if (response.ok) {
                     const blob = await response.blob();
                     fileToUpload = blobToFile(blob, src);
-                    console.log('ImageNode: ✅ Phase 3 (Proxy) Success');
                 } else {
                     console.warn('ImageNode: ⚠️ Phase 3 (Proxy) failed.', response.statusText);
                 }
@@ -175,7 +171,6 @@ function ImageComponent({ src, altText, width, height, maxWidth, nodeKey, alignm
 
         // Phase 4: Ultimate Fallback - Manual Modal (if everything else failed)
         if (!fileToUpload) {
-            console.log('ImageNode: 💡 [Deep Result] All phases (Direct, Canvas, Proxy) failed. Source is locked down. Opening manual modal.');
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = 'image/*';

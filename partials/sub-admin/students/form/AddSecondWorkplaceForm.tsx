@@ -78,7 +78,7 @@ export const AddSecondWorkplaceForm = ({
         phoneNumber: yup.string().required('Must provide phone number'),
 
         // Sector Information
-        // sectors: yup.object().nullable(true).required(),
+        // sectors: yup.object().nullable().required(),
         courses: yup.number().required(),
 
         // Contact Person Information
@@ -94,7 +94,7 @@ export const AddSecondWorkplaceForm = ({
     })
     const formMethods = useForm<ProvideIndustryDetail>({
         mode: 'all',
-        resolver: yupResolver(validationSchema),
+        resolver: yupResolver(validationSchema) as any,
     })
 
     const onBlur = (e: any) => {
@@ -102,7 +102,7 @@ export const AddSecondWorkplaceForm = ({
         removeEmptySpaces(formMethods, abn)
     }
 
-    const onHandleSubmit = (values: ProvideIndustryDetail) => {
+    const onHandleSubmit = (values: any) => {
         if (!onSuburbClicked) {
             notification.error({
                 title: 'You must select on Address Dropdown',

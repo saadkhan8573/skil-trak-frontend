@@ -57,7 +57,7 @@ export const AddTaskForm = ({ publishTask, DraftTask }: any) => {
     const validationSchema = yup.object().shape({
         selectEmployee: yup
             .number()
-            .nullable(true)
+            .nullable()
             .required('Employee is a required field'),
         // Validation for each day
         email: yup
@@ -105,7 +105,7 @@ export const AddTaskForm = ({ publishTask, DraftTask }: any) => {
         }
     }
     const { fields, append, remove } = useFieldArray({
-        control: methods.control,
+        control: methods.control as any,
         name: 'tasks',
     })
 
@@ -207,15 +207,15 @@ export const AddTaskForm = ({ publishTask, DraftTask }: any) => {
                             options={
                                 EmployeeData.isSuccess
                                     ? EmployeeData?.data?.data?.map(
-                                          ({
-                                              id,
-                                              firstName,
-                                              lastName,
-                                          }: any) => ({
-                                              value: id,
-                                              label: `${firstName} ${lastName}`,
-                                          })
-                                      )
+                                        ({
+                                            id,
+                                            firstName,
+                                            lastName,
+                                        }: any) => ({
+                                            value: id,
+                                            label: `${firstName} ${lastName}`,
+                                        })
+                                    )
                                     : []
                             }
                             loading={EmployeeData?.isLoading}
@@ -276,7 +276,7 @@ export const AddTaskForm = ({ publishTask, DraftTask }: any) => {
                                             name={`tasks[${index}].endTime`}
                                             placeholder={'End Time...'}
                                             type={'time'}
-                                            // min={getDate()}
+                                        // min={getDate()}
                                         />
                                         <InputErrorMessage
                                             name={`tasks[${index}].endTime`}

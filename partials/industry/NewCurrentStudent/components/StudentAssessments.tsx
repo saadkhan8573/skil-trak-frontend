@@ -2,7 +2,7 @@ import { Button, Card, Typography } from '@components'
 import { Course, Student } from '@types'
 import { ReactElement, useCallback, useState } from 'react'
 import { IoIosArrowDown } from 'react-icons/io'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { StudentAssessmentsCourses } from './StudentAssessmentsCourses'
 
 export const StudentAssessments = ({ profile }: { profile: any }) => {

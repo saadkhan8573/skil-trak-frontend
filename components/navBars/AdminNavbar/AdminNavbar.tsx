@@ -5,12 +5,11 @@ import { IoMdNotifications } from 'react-icons/io'
 import { MdMessage } from 'react-icons/md'
 
 // components
-import { Typography } from '@components'
+import { OutsideClickHandler, Typography } from '@components'
 
 // components
 import { useNavbar } from '@hooks'
 import { useRouter } from 'next/router'
-import OutsideClickHandler from 'react-outside-click-handler'
 import { BadgeButton, MessageDropDown, NavbarBreadCrumbs } from './components'
 import { NotificationDropDown } from './components/notifications'
 

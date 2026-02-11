@@ -120,7 +120,7 @@ export function ViewDocumentModal({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="!max-w-3xl p-0 overflow-hidden border-none shadow-2xl">
+            <DialogContent className="max-w-3xl! p-0 overflow-hidden border-none shadow-2xl">
                 <DialogHeader className="w-full bg-primaryNew p-6 text-white sm:text-left">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center shadow-inner">
@@ -193,7 +193,7 @@ export function ViewDocumentModal({
                     </div>
                 </div>
 
-                <div className="min-w-[595px] h-auto relative z-[9999]">
+                <div className="min-w-[595px] h-auto relative z-9999">
                     <div>
                         <div className="max-h-[55vh] overflow-auto custom-scrollbar flex justify-center">
                             {mounted && !error ? (

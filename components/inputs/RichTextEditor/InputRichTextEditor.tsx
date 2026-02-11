@@ -25,11 +25,9 @@ interface InputRichTextEditorProps {
     height?: string
 }
 
-export const inputRichTextEditorErrorMessage = (value: string) => {
-    if (htmltotext(value)?.length > 1) {
-        return true
-    }
-    return false
+export const inputRichTextEditorErrorMessage = (value: unknown): boolean => {
+    if (typeof value !== 'string') return false;
+    return htmltotext(value)?.trim().length > 1;
 }
 
 export const InputRichTextEditor = ({
@@ -52,7 +50,7 @@ export const InputRichTextEditor = ({
         <>
             <Controller
                 name={name}
-                control={control}
+                control={control as any}
                 rules={rules}
                 render={({ field: { value, onChange: fieldChange } }) => (
                     <RichTextEditor

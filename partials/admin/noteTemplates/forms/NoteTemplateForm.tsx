@@ -33,20 +33,18 @@ export const NoteTemplateForm = ({
         trigger: yup.string().required('Trigger is required'),
         subject: yup.string().required('Subject is required'),
         successContent: yup
-            .mixed()
-            .test('Message', 'Must Provide Success Message', (value) =>
-                inputRichTextEditorErrorMessage(value)
-            ),
+            .string()
+            .ensure()
+            .test('Message', 'Must Provide Success Message', inputRichTextEditorErrorMessage),
         failureContent: yup
-            .mixed()
-            .test('Message', 'Must Provide Failure Message', (value) =>
-                inputRichTextEditorErrorMessage(value)
-            ),
+            .string()
+            .ensure()
+            .test('Message', 'Must Provide Failure Message', inputRichTextEditorErrorMessage),
     })
 
-    const formMethods = useForm({
+    const formMethods = useForm<any>({
         mode: 'all',
-        resolver: yupResolver(validationSchema),
+        resolver: yupResolver(validationSchema as any),
         defaultValues: {
             subject: initialValues?.subject,
             type: initialValues?.type,

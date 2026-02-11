@@ -3,7 +3,7 @@ import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
 // Dynamically import Lottie with no SSR
-const Lottie = dynamic(() => import('react-lottie'), {
+const Lottie = dynamic(() => import('lottie-react'), {
     ssr: false,
 })
 
@@ -18,12 +18,6 @@ export const TechnicalError = ({
     description?: boolean
     imageUrl?: string
 }) => {
-    const animationOptions = {
-        loop: true,
-        autoplay: true,
-        animationData: Animations.Common.NoConnection,
-    }
-
     return (
         <div
             className="flex flex-col items-center justify-center w-3/5 mx-auto py-8 rounded-lg my-8"
@@ -39,9 +33,10 @@ export const TechnicalError = ({
                     />
                 ) : (
                     <Lottie
-                        options={animationOptions}
-                        height={250}
-                        width={250}
+                        animationData={Animations.Common.NoConnection}
+                        loop={true}
+                        autoplay={true}
+                        style={{ height: 250, width: 250 }}
                     />
                 )}
             </div>

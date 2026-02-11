@@ -100,7 +100,6 @@ export const RichTextEditor = ({
   const handleOnChange = (editorState: EditorState, editor: any) => {
     editorState.read(() => {
       const htmlString = $generateHtmlFromNodes(editor, null);
-      console.log('RichTextEditor: handleOnChange firing', { htmlString });
       if (onChange) {
         onChange(htmlString);
       }
@@ -210,13 +209,10 @@ function InitialValuePlugin({ value }: { value?: string }) {
         // If the editor is functionally empty (just a paragraph) and we expect empty, don't update
         // (Optional optimization, but let's stick to simple comparison first)
 
-        console.log('InitialValuePlugin: checking update', { currentHtml, newValue: value, expectedValue });
-
         // We compare against expectedValue (which defaults to '')
         if (currentHtml !== expectedValue) {
           // Special check: if expectedValue is empty string, but currentHtml is the default empty paragraph, 
           // we might not NEED to update, but updating causes no harm other than a re-render.
-          console.log('RichTextEditor: Updating external value', { newValue: value });
           updateContent();
         }
       })

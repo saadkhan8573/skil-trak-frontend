@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 
 interface MasonryGridProps {
     children: ReactNode
@@ -29,7 +29,7 @@ export const MasonryGrid: React.FC<MasonryGridProps> = ({
 
     const columns = getColumnCount()
 
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -39,11 +39,11 @@ export const MasonryGrid: React.FC<MasonryGridProps> = ({
         },
     }
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: {
             opacity: 0,
             scale: 0.8,
-            y: 20
+            y: 20,
         },
         visible: {
             opacity: 1,

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import {
     Button,
     Card,
+    OutsideClickHandler,
     Select,
     StatusOptions,
     Typography,
@@ -17,7 +18,7 @@ import { OptionType } from '@types'
 import { WorkplaceCurrentStatus, queryToUrl, removeEmptyValues } from '@utils'
 import moment from 'moment'
 import { RiTimerLine } from 'react-icons/ri'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 
 export const AllStudentsReport = () => {
     const weekEnd = new Date()
@@ -118,32 +119,36 @@ export const AllStudentsReport = () => {
                                         <div className="flex justify-between w-full">
                                             <CalendarStyles>
                                                 <Calendar
-                                                    onChange={(date: Date) => {
-                                                        setStartDate(date)
-                                                        setDateRange({
-                                                            ...dateRange,
-                                                            startDate:
-                                                                date.toLocaleDateString(),
-                                                        })
+                                                    onChange={(value) => {
+                                                        if (value instanceof Date) {
+                                                            setStartDate(value)
+                                                            setDateRange({
+                                                                ...dateRange,
+                                                                startDate:
+                                                                    value.toLocaleDateString(),
+                                                            })
+                                                        }
                                                     }}
                                                     value={startDate}
                                                 />
                                             </CalendarStyles>
                                             <CalendarStyles>
                                                 <Calendar
-                                                    onChange={(date: Date) => {
-                                                        const monthEnd =
-                                                            new Date(date)
-                                                        monthEnd.setDate(
-                                                            monthEnd.getDate() +
+                                                    onChange={(value) => {
+                                                        if (value instanceof Date) {
+                                                            const monthEnd =
+                                                                new Date(value)
+                                                            monthEnd.setDate(
+                                                                monthEnd.getDate() +
                                                                 30
-                                                        )
-                                                        setEndDate(date)
-                                                        setDateRange({
-                                                            ...dateRange,
-                                                            endDate:
-                                                                date.toLocaleDateString(),
-                                                        })
+                                                            )
+                                                            setEndDate(value)
+                                                            setDateRange({
+                                                                ...dateRange,
+                                                                endDate:
+                                                                    value.toLocaleDateString(),
+                                                            })
+                                                        }
                                                     }}
                                                     value={endDate}
                                                 />
@@ -179,18 +184,17 @@ export const AllStudentsReport = () => {
 
                 <div className="flex justify-end items-center">
                     <a
-                        href={`${
-                            process.env.NEXT_PUBLIC_END_POINT
-                        }/admin/students/all/download/csv?${queryToUrl(
-                            removeEmptyValues({
-                                ...formValues,
-                                startDate:
-                                    moment(startDate).format('YYYY-MM-DD'),
-                                endDate: moment(endDate)
-                                    .add(1, 'days')
-                                    .format('YYYY-MM-DD'),
-                            })
-                        )}`}
+                        href={`${process.env.NEXT_PUBLIC_END_POINT
+                            }/admin/students/all/download/csv?${queryToUrl(
+                                removeEmptyValues({
+                                    ...formValues,
+                                    startDate:
+                                        moment(startDate).format('YYYY-MM-DD'),
+                                    endDate: moment(endDate)
+                                        .add(1, 'days')
+                                        .format('YYYY-MM-DD'),
+                                })
+                            )}`}
                         target="_blank"
                         rel="noreferrer"
                     >

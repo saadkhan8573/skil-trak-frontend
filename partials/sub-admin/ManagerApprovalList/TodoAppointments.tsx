@@ -1,4 +1,4 @@
-import { Button, SidebarCalendar, Typography, UserCreatedAt } from '@components'
+import { Button, OutsideClickHandler, SidebarCalendar, Typography, UserCreatedAt } from '@components'
 import {
     ApprovedBy,
     CompleteTask,
@@ -10,7 +10,7 @@ import { User } from '@types'
 import moment from 'moment'
 import Link from 'next/link'
 import React, { useState } from 'react'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 
 export const TodoAppointments = () => {
     const [currentPage, setCurrentPage] = useState(1)
@@ -30,7 +30,7 @@ export const TodoAppointments = () => {
         skip: itemsPerPage * currentPage - itemsPerPage,
     })
 
-    const columns: TableColumn<any>[] = [   
+    const columns: TableColumn<any>[] = [
         {
             key: 'studentId',
             header: 'Student ID',

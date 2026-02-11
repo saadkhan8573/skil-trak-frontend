@@ -8,13 +8,14 @@ import {
     workplaceProgressOptions,
     Typography,
     Button,
+    OutsideClickHandler,
 } from '@components'
 import { CalendarStyles } from '@components/Calendar/style'
 import Calendar from 'react-calendar'
 
 import { CommonApi } from '@queries'
 import { NextPageWithLayout, OptionType } from '@types'
-import OutsideClickHandler from 'react-outside-click-handler'
+
 import { RiTimerLine } from 'react-icons/ri'
 import {
     QueryType,
@@ -116,28 +117,32 @@ const MyStudentsReport: NextPageWithLayout = () => {
                                         <div className="flex justify-between w-full">
                                             <CalendarStyles>
                                                 <Calendar
-                                                    onChange={(date: Date) => {
-                                                        setStartDate(date)
-                                                        setDateRange(
-                                                            `${date.toLocaleDateString()} - ${weekEnd.toLocaleDateString()}`
-                                                        )
+                                                    onChange={(value) => {
+                                                        if (value instanceof Date) {
+                                                            setStartDate(value)
+                                                            setDateRange(
+                                                                `${value.toLocaleDateString()} - ${weekEnd.toLocaleDateString()}`
+                                                            )
+                                                        }
                                                     }}
                                                     value={startDate}
                                                 />
                                             </CalendarStyles>
                                             <CalendarStyles>
                                                 <Calendar
-                                                    onChange={(date: Date) => {
-                                                        const monthEnd =
-                                                            new Date(date)
-                                                        monthEnd.setDate(
-                                                            monthEnd.getDate() +
+                                                    onChange={(value) => {
+                                                        if (value instanceof Date) {
+                                                            const monthEnd =
+                                                                new Date(value)
+                                                            monthEnd.setDate(
+                                                                monthEnd.getDate() +
                                                                 30
-                                                        )
-                                                        setEndDate(date)
-                                                        setDateRange(
-                                                            `${startDate.toLocaleDateString()} - ${date.toLocaleDateString()}`
-                                                        )
+                                                            )
+                                                            setEndDate(value)
+                                                            setDateRange(
+                                                                `${startDate.toLocaleDateString()} - ${value.toLocaleDateString()}`
+                                                            )
+                                                        }
                                                     }}
                                                     value={endDate}
                                                 />
@@ -163,20 +168,18 @@ const MyStudentsReport: NextPageWithLayout = () => {
                 <div></div>
                 <div className="flex justify-end items-center">
                     <a
-                        href={`${
-                            process.env.NEXT_PUBLIC_END_POINT
-                        }/subadmin/students/download/csv/${
-                            getUserCredentials()?.id
-                        }?${queryToUrl(
-                            removeEmptyValues({
-                                ...formValues,
-                                startDate:
-                                    moment(startDate).format('YYYY-MM-DD'),
-                                endDate: moment(endDate)
-                                    .add(1, 'days')
-                                    .format('YYYY-MM-DD'),
-                            })
-                        )}`}
+                        href={`${process.env.NEXT_PUBLIC_END_POINT
+                            }/subadmin/students/download/csv/${getUserCredentials()?.id
+                            }?${queryToUrl(
+                                removeEmptyValues({
+                                    ...formValues,
+                                    startDate:
+                                        moment(startDate).format('YYYY-MM-DD'),
+                                    endDate: moment(endDate)
+                                        .add(1, 'days')
+                                        .format('YYYY-MM-DD'),
+                                })
+                            )}`}
                         target="_blank"
                         rel="noreferrer"
                     >

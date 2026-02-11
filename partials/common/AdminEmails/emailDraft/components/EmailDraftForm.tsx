@@ -1,15 +1,14 @@
 import {
     Button,
     Card,
+    InputRichTextEditor,
+    inputRichTextEditorErrorMessage,
     ShowErrorNotifications,
     TextInput,
     Typography,
 } from '@components'
 import React, { useEffect, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
-import { BulkEmailEditor } from '../../bulkEmail'
-import draftToHtml from 'draftjs-to-html'
-import { convertToRaw } from 'draft-js'
+import { FormProvider, useForm, SubmitHandler, FieldValues } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { CommonApi } from '@queries'
@@ -17,6 +16,25 @@ import { Attachment } from '@partials/common/Notifications'
 import { FileUpload } from '@hoc'
 import { useNotification } from '@hooks'
 import { useRouter } from 'next/router'
+
+interface FormValues extends FieldValues {
+    subject: string
+    content: string
+    attachment?: any[]
+}
+
+const validationSchema = yup.object({
+    subject: yup.string().required('Subject is required'),
+    content: yup
+        .string()
+        .required('Email Content is required')
+        .test(
+            'Content',
+            'Email Content is required',
+            inputRichTextEditorErrorMessage
+        ),
+    attachment: yup.array().optional(),
+})
 type Props = {}
 
 export const EmailDraftForm = (props: Props) => {
@@ -27,22 +45,7 @@ export const EmailDraftForm = (props: Props) => {
     const [createNewDraft, resultCreateNewDraft] =
         CommonApi.Messages.useCreateDraft()
 
-    const validationSchema = yup.object().shape({
-        subject: yup.string().required('Subject is required'),
-        // content: yup.object()
-        //     .test(
-        //         'has text',
-        //         'Cannot save an empty note',
-        //         (value: any) => {
-        //             let content = ''
-        //             if (!value?.content) {
-        //                 content = draftToHtml(
-        //                     convertToRaw(value?.content?.getCurrentContent())
-        //                 )
-        //             }
-        //         }
-        //     ).required('This field is required.'),
-    })
+
     const onRemoveFile = (fileId: number) => {
         setAttachmentFiles((preVal: any) => [
             ...preVal?.filter((file: File) => file?.lastModified !== fileId),
@@ -64,19 +67,18 @@ export const EmailDraftForm = (props: Props) => {
             />
         )
     }
-    const formMethods = useForm({
+    const formMethods = useForm<FormValues>({
         mode: 'all',
-        resolver: yupResolver(validationSchema),
+        resolver: yupResolver(validationSchema) as any,
+        defaultValues: {
+            subject: '',
+            content: '',
+            attachment: [],
+        } as FormValues,
     })
-    const onSubmit = (data: any) => {
-        let content = ''
-        if (data?.content) {
-            content = draftToHtml(
-                convertToRaw(data?.content?.getCurrentContent())
-            )
-        }
+    const onSubmit: SubmitHandler<FormValues> = (data) => {
         const formData = new FormData()
-        const { attachment, subject, content: cu, ...rest } = data
+        const { attachment, subject, content, ...rest } = data as any
         Object.entries(rest)?.forEach(([key, value]: any) => {
             formData.append(key, value)
         })
@@ -124,7 +126,7 @@ export const EmailDraftForm = (props: Props) => {
                             name={'subject'}
                             placeholder="Subject"
                         />
-                        <BulkEmailEditor
+                        <InputRichTextEditor
                             name={'content'}
                             label={'Email Content'}
                         />

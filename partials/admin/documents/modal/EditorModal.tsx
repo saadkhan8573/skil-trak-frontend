@@ -1,4 +1,18 @@
-import { ContentEditor, Modal, ShowErrorNotifications } from '@components'
+import { Modal, ShowErrorNotifications } from '@components'
+import dynamic from 'next/dynamic'
+
+const RichTextEditor = dynamic<any>(
+    () =>
+        import('@components/inputs/RichTextEditor/RichTextEditor').then(
+            (mod) => mod.RichTextEditor
+        ),
+    {
+        ssr: false,
+        loading: () => (
+            <div className="h-60 w-full bg-gray-50 animate-pulse rounded-md border" />
+        ),
+    }
+)
 import React, { ReactElement, useEffect, useState } from 'react'
 
 // queries
@@ -48,7 +62,10 @@ export const EditorModal = ({
                 onConfirmClick={onConfirmClick}
             >
                 <div className="max-w-[70vw]">
-                    <ContentEditor content={content} setContent={setContent} />
+                    <RichTextEditor
+                        value={content}
+                        onChange={(value: string) => setContent(value)}
+                    />
                 </div>
             </Modal>
         </div>

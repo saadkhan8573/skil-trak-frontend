@@ -1,5 +1,4 @@
 export * from './forms'
-export * from './detail'
 export * from './components'
 export * from './NotificationList'
 export * from './AllNotifications'

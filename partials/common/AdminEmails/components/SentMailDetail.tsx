@@ -1,97 +1,15 @@
-import { useEffect, useState } from 'react'
 
 import {
-    EmptyData,
     InitialAvatar,
-    LoadingAnimation,
-    Mail,
-    NoData,
-    TechnicalError,
-    Typography,
+    Typography
 } from '@components'
 
-import { CommonApi } from '@queries'
 import moment from 'moment'
-import InfiniteScroll from 'react-infinite-scroller'
-import { PulseLoader } from 'react-spinners'
 type Props = {
     selectedMessage: any
 }
 
 export const SentMailDetail = ({ selectedMessage }: Props) => {
-    const [itemPerPage, setItemPerPage] = useState(20)
-    const [page, setPage] = useState(1)
-    const [hasNext, setHasNext] = useState(false)
-
-    const [mailDetail, setMailDetail] = useState<any>([])
-
-    // const message = CommonApi.Messages.useSingleChat(
-    //     {
-    //         id: selectedMessage?.id,
-    //         skip: itemPerPage * page - itemPerPage,
-    //         limit: itemPerPage,
-    //     },
-    //     {
-    //         skip: !selectedMessage?.id,
-    //     }
-    // )
-
-
-    // useEffect(() => {
-    //     setPage(1)
-    //     setMailDetail([])
-    // }, [selectedMessage])
-
-    // useEffect(() => {
-    //     if (selectedMessage) {
-    //         setHasNext(true)
-    //     }
-    // }, [selectedMessage])
-
-    // useEffect(() => {
-    //     if (message.data?.pagination && message.isSuccess) {
-    //         setHasNext(message.data?.pagination?.hasNext)
-    //     }
-    //     if (message?.isError) {
-    //         setHasNext(false)
-    //     }
-    // }, [message])
-
-    // useEffect(() => {
-    //     if (
-    //         !message?.isFetching &&
-    //         !message?.isLoading &&
-    //         message?.isSuccess &&
-    //         message?.data?.data &&
-    //         message?.data?.data?.length > 0
-    //     ) {
-    //         setMailDetail([...mailDetail, ...message?.data?.data])
-    //     }
-    // }, [message])
-
-    // const fetchMoreData = () => {
-    //     setPage(
-    //         mailDetail?.length > 0
-    //             ? Math.floor(mailDetail?.length / itemPerPage) + 1
-    //             : 1
-    //     )
-    //     // setTimeout(() => {
-    //     //     setPage(
-    //     //         mailDetail?.length > 0
-    //     //             ? Math.floor(mailDetail?.length / itemPerPage) + 1
-    //     //             : 1
-    //     //     )
-    //     // }, 1500)
-    // }
-    // const [seenMessage, resultSeenMessage] = CommonApi.Messages.useIsSeen()
-    // useEffect(() => {
-    //     if (selectedMessage?.id) {
-    //             if (selectedMessage?.isSeen === false) {
-    //                 seenMessage(selectedMessage?.id)
-    //             }
-    //     }
-    // }, [selectedMessage])
-
     return (
         <div className="w-full h-full">
             {selectedMessage && (
@@ -115,14 +33,14 @@ export const SentMailDetail = ({ selectedMessage }: Props) => {
                         </div>
                     </div>
                     <div className='px-4 py-2'>
-                    <span
-                                className="break-all block mr-6"
-                                dangerouslySetInnerHTML={{
-                                    __html: selectedMessage?.message,
-                                }}
-                            >
-                                {/* {message?.message} */}
-                            </span>
+                        <span
+                            className="break-all block mr-6"
+                            dangerouslySetInnerHTML={{
+                                __html: selectedMessage?.message,
+                            }}
+                        >
+                            {/* {message?.message} */}
+                        </span>
                         {/* {selectedMessage?.message} */}
                     </div>
                 </>

@@ -65,14 +65,13 @@ export const AddTicketForm = ({
         [sectorResponse?.data]
     )
 
-    const validationSchema = yup.object({
+    const validationSchema = yup.object().shape({
         assignedTo: yup.number().required('Must provide Assign To'),
         subject: yup.string().required('Must provide Subject'),
         message: yup
-            .mixed()
-            .test('Message', 'Must Provide Message', (value) =>
-                inputRichTextEditorErrorMessage(value)
-            ),
+            .string()
+            .ensure()
+            .test('Message', 'Must Provide Message', inputRichTextEditorErrorMessage),
         priority: yup.string().required('Must provide Priority'),
     })
 

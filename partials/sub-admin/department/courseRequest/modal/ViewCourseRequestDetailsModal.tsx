@@ -23,7 +23,7 @@ export const ViewCourseRequestDetailsModal = ({
     reference,
 }: any) => {
     const rawText = description || ''
-    const parsedHtml = marked.parse(rawText)
+    const parsedHtml = String(marked.parse(rawText))
 
     return (
         <div className="flex flex-col gap-y-4 min-w-96 min-h-48">

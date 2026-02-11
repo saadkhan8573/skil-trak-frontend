@@ -1,17 +1,17 @@
 import {
     Button,
     Checkbox,
-    ContentEditor,
+    InputRichTextEditor,
     RadioButton,
     TextInput,
     Typography,
 } from '@components'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { AppointmentType, Sector } from '@types'
+import { AppointmentType } from '@types'
 import { isBrowser } from '@utils'
-import React, { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
+import dynamic from 'next/dynamic'
 
 interface AppointmentTypeFormProps {
     onSubmit: any
@@ -35,7 +35,10 @@ export const AppointmentTypeForm = ({
 
     const methods = useForm({
         resolver: yupResolver(validationSchema),
-        defaultValues: initialValues,
+        defaultValues: {
+            ...initialValues,
+            emailContent,
+        },
         mode: 'all',
     })
 
@@ -129,10 +132,10 @@ export const AppointmentTypeForm = ({
                     </div>
 
                     <div className="">
-                        {isBrowser() && <ContentEditor
+                        {isBrowser() && <InputRichTextEditor
                             label="Email Content"
-                            content={emailContent}
-                            setContent={setEmailContent}
+                            name="emailContent"
+                            onChange={(value: string) => setEmailContent(value)}
                         />}
                     </div>
 
@@ -146,8 +149,8 @@ export const AppointmentTypeForm = ({
                     <div className="mt-4">
                         <Button
                             submit
-                            // disabled={!(isValid && dirty)}
-                            // loading={loginResult.isLoading}
+                        // disabled={!(isValid && dirty)}
+                        // loading={loginResult.isLoading}
                         >
                             {edit ? 'Update' : 'Add'} Appointment Type
                         </Button>

@@ -33,9 +33,9 @@ interface onSubmitType {
     to?: string
     cc?: string
     subject: string
-    message: string
-    template: any
-    attachments: FileList | null
+    message?: string
+    template?: any
+    attachments?: FileList | null
 }
 
 export const MailForm = ({

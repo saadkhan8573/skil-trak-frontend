@@ -1,7 +1,7 @@
 import {
     Button,
     Checkbox,
-    ContentEditor,
+    InputRichTextEditor,
     RadioButton,
     RadioGroup,
     TextInput,
@@ -15,7 +15,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 interface AppointmentTypeFormProps {
-    onSubmit: (values: AppointmentType) => void
+    onSubmit: (values: any) => void
     edit?: boolean
     initialValues?: AppointmentType
     emailContent: string
@@ -36,9 +36,12 @@ export const AppointmentTypeForm = ({
         title: yup.string().required('Title is required'),
     })
 
-    const methods = useForm<AppointmentType>({
+    const methods = useForm({
         resolver: yupResolver(validationSchema),
-        defaultValues: initialValues,
+        defaultValues: {
+            ...initialValues,
+            emailContent,
+        },
         mode: 'all',
     })
 
@@ -130,10 +133,12 @@ export const AppointmentTypeForm = ({
 
                     <div className="">
                         {isBrowser() && (
-                            <ContentEditor
+                            <InputRichTextEditor
                                 label="Email Content"
-                                content={emailContent}
-                                setContent={setEmailContent}
+                                name="emailContent"
+                                onChange={(value: string) =>
+                                    setEmailContent(value)
+                                }
                             />
                         )}
                     </div>

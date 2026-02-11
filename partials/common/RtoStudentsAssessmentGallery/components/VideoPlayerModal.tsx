@@ -12,7 +12,8 @@ import { BsFillPlayCircleFill } from 'react-icons/bs'
 
 // utills
 import { isBrowser } from '@utils'
-import OutsideClickHandler from 'react-outside-click-handler'
+import { OutsideClickHandler } from '@components'
+
 
 interface VideoPlayModalProps {
     url: string
@@ -81,7 +82,7 @@ export const VideoPlayerModal = ({
                         {isBrowser() && (
                             <ReactPlayer
                                 onReady={onReady}
-                                url={url}
+                                src={url}
                                 playing
                                 config={{
                                     file: {
@@ -89,14 +90,13 @@ export const VideoPlayerModal = ({
                                             controlsList: 'nodownload',
                                         },
                                     },
-                                }}
+                                } as any}
                                 controls
                                 playIcon={
                                     <div className="w-full h-full flex justify-center items-center relative">
                                         <BsFillPlayCircleFill className="text-4xl text-white absolute top-12 left-1/2 -translate-x-1/2 -translate-y-1/2" />
                                     </div>
                                 }
-                                stopOnUnmount
                             />
                         )}
                     </div>

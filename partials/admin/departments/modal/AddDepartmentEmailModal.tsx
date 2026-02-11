@@ -98,7 +98,7 @@ export const AddDepartmentEmailModal = ({
         name: Yup.string().required('Name is required'),
     })
 
-    const methods = useForm({
+    const methods = useForm<any>({
         resolver: yupResolver(validationSchema),
         mode: 'all',
         defaultValues: {

@@ -41,12 +41,12 @@ export const CreateKpiTargetModal = ({ onCancel }: any) => {
         target: yup
             .number()
             .positive('Number cannot be negative')
-            .nullable(true),
+            .nullable(),
         data: yup.array().min(4, 'Must select 4 statuses'),
     })
     const methods = useForm({
         mode: 'all',
-        resolver: yupResolver(validationSchema),
+        resolver: yupResolver(validationSchema) as any,
         // defaultValues: { ...editValues, body: bodyData },
     })
     useEffect(() => {

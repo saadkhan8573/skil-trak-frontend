@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ConfigTabs, TabConfig, NoData } from '@components'
 import { DashboardStats } from './DashboardStats'
 import { AgentConfiguration } from './AgentConfiguration'
@@ -8,6 +8,14 @@ import { AuthenticateUserModal } from '@partials/admin/generateKey/modal'
 export const AiCallsManagement = () => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
     const [showAuthModal, setShowAuthModal] = useState<boolean>(true)
+
+    useEffect(() => {
+        if (process.env.NEXT_PUBLIC_NODE_ENV === "local") {
+            setIsAuthenticated(true)
+            setShowAuthModal(false)
+        }
+    }, [])
+
 
     const tabs: TabConfig[] = [
         {

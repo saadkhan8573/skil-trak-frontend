@@ -32,7 +32,7 @@ type CurrentStatus = {
 const WorkplaceRequestProgress = (appliedIndustry?: any) => {
     return {
         '1-NotRequested': {
-            status: 'Not Requested',
+            status: 'No Progress',
             description: 'Pending',
             color: 'text-gray-400',
             image: 'not-requested.png',
@@ -166,26 +166,26 @@ export const ProgressCell = ({
     studentId?: number
     status?: WorkplaceRequestStatus
     step:
-        | 1
-        | 2
-        | 3
-        | 4
-        | 5
-        | 6
-        | 7
-        | 8
-        | 9
-        | 10
-        | 11
-        | 12
-        | 13
-        | 14
-        | 15
-        | 16
-        | 17
-        | number
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6
+    | 7
+    | 8
+    | 9
+    | 10
+    | 11
+    | 12
+    | 13
+    | 14
+    | 15
+    | 16
+    | 17
+    | number
     assigned?: SubAdmin
-    appliedIndustry: any
+    appliedIndustry?: any
     studentProvidedWorkplace?: boolean
     documentInitiates?: boolean
 }) => {

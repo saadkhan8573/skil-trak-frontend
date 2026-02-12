@@ -35,7 +35,7 @@ export function ProfileEssentials() {
                 >
                     {/* Left Column */}
                     <div className="space-y-3 flex flex-col h-full">
-                        <InterviewAvailability />
+                        <InterviewAvailability checkRuntime />
                         <PlacementFormUrl />
                     </div>
 
@@ -56,7 +56,7 @@ export function ProfileEssentials() {
                     {/* Right Column */}
                     <div className="space-y-3 flex flex-col h-full">
                         {/* <QuickNotes /> */}
-                        <InterviewAvailability />
+                        <InterviewAvailability checkRuntime />
                     </div>
                 </AuthorizedUserComponent>
             </div>

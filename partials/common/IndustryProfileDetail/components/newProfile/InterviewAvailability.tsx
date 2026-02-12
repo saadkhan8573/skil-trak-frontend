@@ -151,7 +151,7 @@ export function InterviewAvailability({ data }: any) {
     return (
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-all">
             {/* Header */}
-            <div className="bg-gradient-to-r from-[#044866] to-[#0D5468] px-4 py-2 flex items-center justify-between">
+            <div className="bg-linear-to-r from-[#044866] to-[#0D5468] px-4 py-2 flex items-center justify-between">
                 <h3 className="text-white flex items-center gap-2 text-sm font-semibold tracking-wide">
                     <Calendar className="w-4 h-4" />
                     Interview Availability
@@ -171,7 +171,7 @@ export function InterviewAvailability({ data }: any) {
                     onValueChange={(val: string) => {
                         setAvailabilityType(val as 'weekly' | 'monthly')
                     }}
-                    className={'!rounded'}
+                    className={'rounded!'}
                     tabsClasses="!p-1 !rounded-md"
                     tabsTriggerClasses="!py-1 !rounded-md"
                 />
@@ -179,7 +179,7 @@ export function InterviewAvailability({ data }: any) {
                 {/* Action Footer */}
                 <div className="border-t border-slate-100 flex items-center justify-between">
                     <div className="flex items-start gap-2 max-w-[70%]">
-                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
                         <p className="text-slate-500 text-xs leading-relaxed">
                             Changes will be immediately reflected in the student
                             booking portal.

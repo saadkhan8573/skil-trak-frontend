@@ -167,7 +167,7 @@ export function WeeklySchedule({ schedule, onChange }: WeeklyScheduleProps) {
                             >
                                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                                     <div className="flex items-center gap-3 w-32">
-                                        <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs uppercase flex-shrink-0">
+                                        <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs uppercase shrink-0">
                                             {dayLabel?.substring(0, 3)}
                                         </div>
                                         <h4 className="font-semibold text-slate-800 text-sm">

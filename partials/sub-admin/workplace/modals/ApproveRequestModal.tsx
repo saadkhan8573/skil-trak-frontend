@@ -55,6 +55,7 @@ export const ApproveRequestModal = ({
                 errorMessage?.includes('No interview availability found') ||
                 errorData?.type === 'INTERVIEW_AVAILABILITY_MISSING'
             ) {
+                showErrorNotifications({ isError: true, error })
                 setShowAvailabilityModal(true)
                 return
             }
@@ -80,7 +81,7 @@ export const ApproveRequestModal = ({
                 open={showAvailabilityModal}
                 onOpenChange={setShowAvailabilityModal}
             >
-                <DialogContent className="max-w-2xl max-h-[90vh] bg-[#F8FAFC] border-none shadow-2xl p-0 flex flex-col">
+                <DialogContent className="max-w-3xl! max-h-[90vh] bg-[#F8FAFC] border-none shadow-2xl p-0 flex flex-col">
                     <DialogHeader className="bg-primaryNew p-6 border-b border-white/10 rounded-t-lg `flex-shrink-0`">
                         <DialogTitle className="text-xl font-bold text-white flex items-center gap-3">
                             <FaGraduationCap className="w-6 h-6 opacity-80" />
@@ -94,10 +95,12 @@ export const ApproveRequestModal = ({
 
                     <div className="p-6 overflow-y-auto flex-1">
                         <InterviewAvailability
-                            onSuccess={async () => {
+                            isTemporary
+                            workplaceId={workplaceId}
+                            onSuccess={() => {
                                 setShowAvailabilityModal(false)
                                 // Retry the approval after setting availability
-                                await handleApprove()
+                                handleApprove()
                             }}
                         />
                     </div>

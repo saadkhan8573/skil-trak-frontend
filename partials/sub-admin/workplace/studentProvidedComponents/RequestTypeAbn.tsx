@@ -298,10 +298,10 @@ export const RequestTypeAbn = ({
             >
                 <div
                     className={`${appliedIndustry?.terminated ||
-                            appliedIndustry?.isCompleted ||
-                            appliedIndustry?.cancelled
-                            ? 'bg-gray-100 cursor-default'
-                            : ''
+                        appliedIndustry?.isCompleted ||
+                        appliedIndustry?.cancelled
+                        ? 'bg-gray-100 cursor-default'
+                        : ''
                         }  border border-dashed border-gray-400 rounded-lg w-56 px-4 py-1 flex items-center justify-between gap-x-1 cursor-pointer relative`}
                     onClick={onRequestClicked}
                 >

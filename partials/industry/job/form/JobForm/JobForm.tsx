@@ -1,4 +1,4 @@
-import { Button, Select, TextArea, TextInput, Typography } from '@components'
+import { AddressFieldInput, Button, Select, TextArea, TextInput, Typography } from '@components'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { IndustryApi } from '@queries'
 import { useEffect, useState } from 'react'
@@ -88,9 +88,9 @@ export const JobForm = ({ initialValues, onSubmit, edit }: any) => {
             .when('salaryFrom', (salaryFrom, schema) =>
                 salaryFrom
                     ? schema.min(
-                          salaryFrom,
-                          'Salary to must be greater than Salary from'
-                      )
+                        salaryFrom,
+                        'Salary to must be greater than Salary from'
+                    )
                     : schema
             ),
         sectors: yup.array().min(1, 'Must select at least 1 sector'),
@@ -247,23 +247,22 @@ export const JobForm = ({ initialValues, onSubmit, edit }: any) => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
                         <div className="md:col-span-2">
-                            <TextInput
+                            {/* <TextInput
                                 label={'Address'}
                                 name={'addressLine1'}
                                 placeholder={'Address Line...'}
                                 validationIcons
                                 required
+                            /> */}
+                            <AddressFieldInput
+                                placesSuggetions={{
+                                    placesSuggetions: true,
+                                    setIsPlaceSelected: () => { }
+                                }}
                             />
                         </div>
 
-                        <TextInput
-                            label={'Suburb'}
-                            name={'suburb'}
-                            placeholder={'Suburb...'}
-                            validationIcons
-                            placesSuggetions
-                            required
-                        />
+
                         <TextInput
                             label={'Zip Code'}
                             name={'zipCode'}
@@ -271,13 +270,7 @@ export const JobForm = ({ initialValues, onSubmit, edit }: any) => {
                             validationIcons
                             required
                         />
-                        <TextInput
-                            label={'State'}
-                            name={'state'}
-                            placeholder={'State...'}
-                            validationIcons
-                            required
-                        />
+
                     </div>
                 </div>
 

@@ -1,4 +1,5 @@
 import { IWorkplaceIndustries } from '@redux/queryTypes'
+import { providesTagsOnSuccess } from '@redux/utils'
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query'
 import {
     ConfirmationSource,
@@ -7,6 +8,7 @@ import {
     IndustryInterviewAvailability,
     PaginatedResponse,
     PaginationWithSearch,
+    RtoApprovalWorkplaceRequest,
     Student,
     UserStatus,
 } from '@types'
@@ -31,7 +33,7 @@ export const industriesEndpoints = (
             params: { userId },
             body,
         }),
-        invalidatesTags: ['RTOIndustries'],
+        invalidatesTags: providesTagsOnSuccess(['RTOIndustriessss']),
     }),
     addBulkRtoIndustries: builder.mutation<any, any>({
         query: (body) => ({
@@ -99,6 +101,7 @@ export const industriesEndpoints = (
             overAllRating: number
             totalEnrolledStudents: number
             totalSectorCapacity: number
+            waitingForRtoCount: number
         },
         number
     >({
@@ -178,6 +181,20 @@ export const industriesEndpoints = (
     >({
         query: ({ params, industryId }) => ({
             url: `${INDUSTRIESPREFIX}${industryId}/waiting-for-industry-list`,
+            params,
+        }),
+        providesTags: ['WaitingForStudents'],
+    }),
+
+    getIndustryWaitingForRtoStudents: builder.query<
+        RtoApprovalWorkplaceRequest[],
+        {
+            params: PaginationWithSearch
+            industryId: number
+        }
+    >({
+        query: ({ params, industryId }) => ({
+            url: `students/workplace-requests/waiting/rto-approval/${industryId}`,
             params,
         }),
         providesTags: ['RTOIndustries'],

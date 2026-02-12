@@ -3,9 +3,10 @@ import { createPortal } from 'react-dom'
 
 interface PortalProps {
     children: ReactNode
+    zIndex?: number
 }
 
-export const Portal = ({ children }: PortalProps) => {
+export const Portal = ({ children, zIndex = 99999 }: PortalProps) => {
     const ref = useRef<Element | null>(null)
     const [mounted, setMounted] = useState(false)
 
@@ -16,10 +17,10 @@ export const Portal = ({ children }: PortalProps) => {
 
     return mounted && ref.current
         ? createPortal(
-              <div style={{ zIndex: 99999, position: 'relative' }}>
-                  {children}
-              </div>,
-              ref.current
-          )
+            <div style={{ zIndex: zIndex, position: 'relative' }}>
+                {children}
+            </div>,
+            ref.current
+        )
         : null
 }

@@ -110,7 +110,7 @@ export function SectorCapacityModal({
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[425px] p-0 overflow-hidden bg-white rounded-2xl border-none shadow-2xl">
                 {/* Header with Gradient */}
-                <div className="bg-gradient-to-r from-[#044866] to-[#0D5468] p-6 text-white pb-8">
+                <div className="bg-linear-to-r from-[#044866] to-[#0D5468] p-6 text-white pb-8">
                     <DialogHeader>
                         <DialogTitle className="text-xl font-bold flex items-center gap-2 text-white">
                             <Users className="w-5 h-5 opacity-80" />
@@ -161,8 +161,8 @@ export function SectorCapacityModal({
                                                 utilization >= 100
                                                     ? 'bg-red-500'
                                                     : utilization >= 80
-                                                    ? 'bg-amber-500'
-                                                    : 'bg-teal-500'
+                                                        ? 'bg-amber-500'
+                                                        : 'bg-teal-500'
                                             )}
                                         />
                                     </div>
@@ -197,7 +197,7 @@ export function SectorCapacityModal({
                                     onChange={(e) =>
                                         setCapacity(e.target.value)
                                     }
-                                    className="flex w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10 h-11 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium text-lg"
+                                    className="flex w-full rounded-md border border-slate-200 bg-white px-3 py-2 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10 h-11 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium text-lg"
                                 />
                                 <Users className="absolute left-3 top-3 w-5 h-5 text-slate-400" />
                             </div>

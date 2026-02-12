@@ -1,5 +1,6 @@
 import { WorkplaceRequestWarningEnum } from '@partials/common/StudentProfileDetail/components'
 import { WPApprovalStatus } from '@partials/student/workplace/components/WorkplaceApproval/enum'
+import { providesTagsOnSuccess } from '@redux/utils'
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
 import {
@@ -234,11 +235,13 @@ export const workplaceEndpoints = (
             body: { comment },
             method: 'POST',
         }),
-        invalidatesTags: [
+        invalidatesTags: providesTagsOnSuccess([
             'SubAdminWorkplace',
             'SubAdminStudents',
             'IndustryWorkplace',
-        ],
+            'RTOIndustries',
+            'WaitingForStudents'
+        ]),
     }),
 
     updateWpAppliedIndustry: builder.mutation<any, number>({

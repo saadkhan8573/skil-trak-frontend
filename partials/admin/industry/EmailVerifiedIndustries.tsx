@@ -29,7 +29,6 @@ export const EmailVerifiedIndustries = () => {
             'businessName',
             'branches',
             'abn',
-            'studentCount',
             'contactPerson',
             'suburb',
             'address',

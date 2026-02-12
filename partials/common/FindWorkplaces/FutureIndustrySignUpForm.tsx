@@ -41,14 +41,14 @@ export const FutureIndustrySignUpForm = ({
     industryABN,
     onSubmit,
 }: // setActive,
-// courses,
-{
-    result?: any
-    industryABN?: string | null
-    onSubmit: any
-    // setActive: any
-    // courses?: Course[]
-}) => {
+    // courses,
+    {
+        result?: any
+        industryABN?: string | null
+        onSubmit: any
+        // setActive: any
+        // courses?: Course[]
+    }) => {
     const router = useRouter()
     const { notification } = useNotification()
     const [onSuburbClicked, setOnSuburbClicked] = useState<boolean>(true)
@@ -329,7 +329,7 @@ export const FutureIndustrySignUpForm = ({
             questions.push({
                 question:
                     industryQuestions[
-                        IndustryQuestionsEnum.SECTORS_BASE_CAPACITY
+                    IndustryQuestionsEnum.SECTORS_BASE_CAPACITY
                     ],
                 answer: sectorBaseCapacity,
             })
@@ -345,7 +345,7 @@ export const FutureIndustrySignUpForm = ({
                 ...values,
                 state: values.state,
                 country: values.country,
-                suburb: 'NA',
+                suburb: values?.suburb || 'N/A',
                 isAddressUpdated: true,
                 questions,
             })
@@ -358,9 +358,9 @@ export const FutureIndustrySignUpForm = ({
                 className={
                     'group max-w-max transition-all text-xs flex justify-start items-center py-2.5 text-muted hover:text-muted-dark rounded-lg cursor-pointer'
                 }
-                // onClick={() => {
-                //     setActive((active: number) => active - 1)
-                // }}
+            // onClick={() => {
+            //     setActive((active: number) => active - 1)
+            // }}
             >
                 {/* <IoIosArrowRoundBack className="transition-all inline-flex text-base group-hover:-translate-x-1" />
                 <span className="ml-2">{'Back To Previous'}</span> */}
@@ -433,8 +433,8 @@ export const FutureIndustrySignUpForm = ({
                                 label={'Sector'}
                                 {...(storedData
                                     ? {
-                                          defaultValue: storedData.sectors,
-                                      }
+                                        defaultValue: storedData.sectors,
+                                    }
                                     : {})}
                                 value={selectedSector}
                                 name={'sectors'}
@@ -536,45 +536,7 @@ export const FutureIndustrySignUpForm = ({
                                             setOnSuburbClicked(false)
                                         }}
                                     />
-                                    {/* <TextInput
-                                        label={'Primary Address'}
-                                        name={'addressLine1'}
-                                        placeholder={'Your Primary Address...'}
-                                        validationIcons
-                                        placesSuggetions
-                                        onChange={async (e: any) => {
-                                            setOnSuburbClicked(false)
-                                            if (e?.target?.value?.length > 4) {
-                                                try {
-                                                    const latLng =
-                                                        await getLatLng(
-                                                            e?.target?.value
-                                                        )
-                                                    const postalCode =
-                                                        await getPostalCode(
-                                                            latLng
-                                                        )
 
-                                                    if (postalCode) {
-                                                        formMethods.setValue(
-                                                            'zipCode',
-                                                            postalCode
-                                                        )
-                                                    }
-                                                } catch (error) {
-                                                    console.error(
-                                                        'Error fetching postal code:',
-                                                        error
-                                                    )
-                                                }
-                                            }
-                                        }}
-                                        onPlaceSuggetions={{
-                                            placesSuggetions: onSuburbClicked,
-                                            setIsPlaceSelected:
-                                                setOnSuburbClicked,
-                                        }}
-                                    /> */}
                                 </div>
                                 <TextInput
                                     label={'Zip Code'}

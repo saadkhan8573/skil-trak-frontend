@@ -4,6 +4,7 @@ import {
     ShowErrorNotifications,
     TabConfig,
     Switch,
+    AuthorizedUserComponent,
 } from '@components'
 import { useNotification } from '@hooks/useNotification'
 import { RtoV2Api } from '@queries/portals/rto-v2/rto-v2.query'
@@ -13,13 +14,20 @@ import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { MonthlySchedule, MonthlyScheduleData } from './MonthlySchedule'
 import { DaySchedule, WeeklySchedule } from './WeeklySchedule'
+import { UserRoles } from '@constants'
 
 interface InterviewAvailabilityProps {
+    workplaceId?: number
+    isTemporary?: boolean
     onSuccess?: () => void
+    checkRuntime?: boolean
 }
 
 export function InterviewAvailability({
     onSuccess,
+    workplaceId,
+    checkRuntime,
+    isTemporary
 }: InterviewAvailabilityProps = {}) {
     const [createAvailability, createAvailabilityResult] =
         RtoV2Api.Industries.createAvailability()
@@ -218,6 +226,8 @@ export function InterviewAvailability({
                     type: 'weekly',
                     slots,
                     userId: industryDetail?.user?.id,
+                    workplaceRequest: workplaceId,
+                    isTemporary
                     // interviewer: selectedInterviewer,
                 }
             } else {
@@ -241,6 +251,8 @@ export function InterviewAvailability({
                     dates: monthlyData.dates,
                     slots: monthlyData.slots,
                     userId: industryDetail?.user?.id,
+                    workplaceRequest: workplaceId,
+                    isTemporary
                     // interviewer: selectedInterviewer,
                 }
             }
@@ -286,36 +298,38 @@ export function InterviewAvailability({
                 className="bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-all"
             >
                 {/* Header */}
-                <div className="bg-gradient-to-r rounded-t-xl from-[#044866] to-[#0D5468] px-4 py-2 flex items-center justify-between">
+                <div className="bg-linear-to-r rounded-t-xl from-[#044866] to-[#0D5468] px-4 py-2 flex items-center justify-between">
                     <h3 className="text-white flex items-center gap-2 text-sm font-semibold tracking-wide">
                         <Calendar className="w-4 h-4" />
                         Interview Availability
                     </h3>
-                    <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 bg-white/10 px-2 py-1 rounded-lg backdrop-blur-sm">
-                            <span className="text-[10px] text-white font-medium">
-                                {industryDetail?.isAvailabilityProvidedAtRuntime
-                                    ? 'Inactive'
-                                    : 'Active'}
-                            </span>
-                            <Switch
-                                name="interviewAvailability"
-                                customStyleClass="profileSwitch"
-                                isChecked={
-                                    industryDetail?.isAvailabilityProvidedAtRuntime ?? false
-                                }
-                                onChange={(e: any) =>
-                                    handleUpdateAvailabilityStatus()
-                                }
-                                loading={updateIndustryAvailabilityResult.isLoading}
-                                disabled={updateIndustryAvailabilityResult.isLoading}
-                            />
-                        </div>
-                    </div>
+                    <AuthorizedUserComponent roles={[UserRoles.ADMIN, UserRoles.SUBADMIN, UserRoles.RTO]}>
+                        {checkRuntime && <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2 bg-white/10 px-2 py-1 rounded-lg backdrop-blur-sm">
+                                <span className="text-[10px] text-white font-medium">
+                                    {industryDetail?.isAvailabilityProvidedAtRuntime
+                                        ? 'Inactive'
+                                        : 'Active'}
+                                </span>
+                                <Switch
+                                    name="interviewAvailability"
+                                    customStyleClass="profileSwitch"
+                                    isChecked={
+                                        industryDetail?.isAvailabilityProvidedAtRuntime ?? false
+                                    }
+                                    onChange={(e: any) =>
+                                        handleUpdateAvailabilityStatus()
+                                    }
+                                    loading={updateIndustryAvailabilityResult.isLoading}
+                                    disabled={updateIndustryAvailabilityResult.isLoading}
+                                />
+                            </div>
+                        </div>}
+                    </AuthorizedUserComponent>
                 </div>
 
                 <div className="px-4 py-2 space-y-3">
-                    {!industryDetail?.isAvailabilityProvidedAtRuntime ? (
+                    {!checkRuntime || !industryDetail?.isAvailabilityProvidedAtRuntime ? (
                         <>
                             <ConfigTabs
                                 tabs={tabs}
@@ -325,7 +339,7 @@ export function InterviewAvailability({
                                         val as 'weekly' | 'monthly'
                                     )
                                 }
-                                className={'!rounded'}
+                                className={'rounded!'}
                                 tabsClasses="!p-1 !rounded-md"
                                 tabsTriggerClasses="!py-1 !rounded-md"
                             />
@@ -360,7 +374,7 @@ export function InterviewAvailability({
 
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-start gap-2 max-w-[70%]">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
                                         <p className="text-slate-500 text-xs leading-relaxed">
                                             Changes will be immediately
                                             reflected in the student booking

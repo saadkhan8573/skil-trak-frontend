@@ -91,8 +91,8 @@ export const IndustryCellInfoProgressbar = ({
             legacyBehavior
             href={
                 profile?.data?.isAssociatedWithRto &&
-                profile?.isSuccess &&
-                profile?.data
+                    profile?.isSuccess &&
+                    profile?.data
                     ? '#'
                     : `/portals/sub-admin/users/industries/${industry?.id}?tab=students`
             }
@@ -155,7 +155,7 @@ export const IndustryCellInfoProgressbar = ({
                                             completedItems={completedCount}
                                             totalItems={10}
                                         />
-                                        <div className="absolute !z-50 top-4 left-0 group-hover:block hidden w-full">
+                                        <div className="absolute z-50! top-4 left-0 group-hover:block hidden w-full">
                                             <IndustryProfileChecklist
                                                 profileFields={profileFields}
                                                 industry={industry}

@@ -320,13 +320,6 @@ const SubAdminDashboard: NextPageWithLayout = () => {
                                         My Sector &amp; Courses
                                     </p>
                                 </div>
-
-                                {/* Action */}
-                                {/* <Link legacyBehavior href="#">
-                            <a className="inline-block uppercase text-xs font-medium bg-indigo-100 text-indigo-600 px-4 py-2 rounded">
-                                See Details
-                            </a>
-                        </Link> */}
                             </div>
 
                             <div className="mt-4 h-[89%] overflow-auto custom-scrollbar">

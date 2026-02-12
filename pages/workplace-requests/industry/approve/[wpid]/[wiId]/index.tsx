@@ -91,7 +91,7 @@ const ApproveRequestPage = () => {
     return (
         <div>
             {checkIsIndustryPerformedAction?.isLoading ||
-            approveRequest?.isLoading ? (
+                approveRequest?.isLoading ? (
                 <LoadingAnimation />
             ) : approveRequest?.isError ? (
                 <div
@@ -154,10 +154,10 @@ const ApproveRequestPage = () => {
                     </Card>
                 </div>
             ) : checkIsIndustryPerformedAction?.isSuccess &&
-              checkIsIndustryPerformedAction?.data &&
-              checkIsIndustryPerformedAction?.data?.currentStatus !==
-                  WorkplaceCurrentStatus?.AwaitingWorkplaceResponse &&
-              industryResponsed ? (
+                checkIsIndustryPerformedAction?.data &&
+                checkIsIndustryPerformedAction?.data?.currentStatus !==
+                WorkplaceCurrentStatus?.AwaitingWorkplaceResponse &&
+                industryResponsed ? (
                 <div
                     className="max-w-5xl mx-auto py-10 flex items-center justify-center p-4"
                     style={{ backgroundColor: '#f8fafc' }}
@@ -330,7 +330,7 @@ const ApproveRequestPage = () => {
                 onOpenChange={setShowAvailabilityModal}
             >
                 <DialogContent className="max-w-2xl max-h-[90vh] bg-[#F8FAFC] border-none shadow-2xl p-0 flex flex-col">
-                    <DialogHeader className="bg-primaryNew p-6 border-b border-white/10 rounded-t-lg flex-shrink-0">
+                    <DialogHeader className="bg-primaryNew p-6 border-b border-white/10 rounded-t-lg shrink-0">
                         <DialogTitle className="text-xl font-bold text-white flex items-center gap-3">
                             <FaGraduationCap className="w-6 h-6 opacity-80" />
                             Setup Interview Availability
@@ -343,6 +343,8 @@ const ApproveRequestPage = () => {
 
                     <div className="p-6 overflow-y-auto flex-1">
                         <InterviewAvailability
+                            isTemporary
+                            workplaceId={Number(router?.query?.wpid)}
                             onSuccess={() => {
                                 setShowAvailabilityModal(false)
                                 approveRequest.refetch()

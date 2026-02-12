@@ -1,4 +1,4 @@
-import { ReactNode, ReactNodeArray } from 'react'
+import { ReactNode } from 'react'
 
 export const InitialAvatarContainer = ({
     children,
@@ -11,10 +11,10 @@ export const InitialAvatarContainer = ({
         <div className="relative flex items-center">
             {children?.length > 0
                 ? children?.map((child: any, idx: number) => {
-                      if (idx < show) {
-                          return child
-                      }
-                  })
+                    if (idx < show) {
+                        return child
+                    }
+                })
                 : children}
 
             {children?.length > show && (
@@ -30,11 +30,10 @@ export const InitialAvatarContainer = ({
                                 return (
                                     <span
                                         key={idx}
-                                        className={`whitespace-nowrap p-1 ${
-                                            idx !== children.length - 1
+                                        className={`whitespace-nowrap p-1 ${idx !== children.length - 1
                                                 ? 'border-b border-slate-700'
                                                 : ''
-                                        }`}
+                                            }`}
                                     >
                                         {child.props.name}
                                     </span>

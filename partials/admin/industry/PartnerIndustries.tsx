@@ -29,7 +29,6 @@ export const PartnerIndustries = () => {
         columnKeys: [
             'businessName',
             'abn',
-            'studentCount',
             'contactPerson',
             'placementStatus',
             'favoriteBy',

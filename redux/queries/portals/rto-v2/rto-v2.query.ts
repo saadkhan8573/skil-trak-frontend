@@ -141,6 +141,7 @@ export const {
     useUpdateIndustryPlacementUrlMutation,
     useIndustryPlacementReadyMutation,
     useGenerateIndustryBioMutation,
+    useGetIndustryWaitingForRtoStudentsQuery,
 
     // ---- RTO Credits ---- //
     useGetRtoCreditsQuery,
@@ -272,6 +273,8 @@ export const RtoV2Api = {
         updateIndustryAvailability: useUpdateIndustryAvailabilityMutation,
         updateIndustryPlacementUrl: useUpdateIndustryPlacementUrlMutation,
         getIndustryWaitingStudents: useGetIndustryWaitingStudentsQuery,
+        getIndustryWaitingForRtoStudents:
+            useGetIndustryWaitingForRtoStudentsQuery,
         industryPlacementReady: useIndustryPlacementReadyMutation,
         generateIndustryBio: useGenerateIndustryBioMutation,
 

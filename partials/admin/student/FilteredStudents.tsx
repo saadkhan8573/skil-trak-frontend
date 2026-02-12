@@ -225,17 +225,13 @@ export const FilteredStudents = ({
             },
             Icon: FaEdit,
         },
-        ...(filter?.courseId
-            ? [
-                {
-                    text: 'AI Voice Call',
-                    onClick: (student: any) => {
-                        handleOpenModal(AdminStudentModalType.AI_CALL, student)
-                    },
-                    Icon: () => <Phone className="w-3 h-3" />,
-                },
-            ]
-            : []),
+        {
+            text: 'AI Voice Call',
+            onClick: (student: any) => {
+                handleOpenModal(AdminStudentModalType.AI_CALL, student)
+            },
+            Icon: () => <Phone className="w-3 h-3" />,
+        },
         {
             text: 'View Password',
             onClick: (student: Student) => onViewPassword(student),

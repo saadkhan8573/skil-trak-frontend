@@ -19,6 +19,7 @@ import {
 } from '@utils'
 
 import {
+    AddressFieldInput,
     Button,
     Checkbox,
     Select,
@@ -342,15 +343,24 @@ export const AddCustomIndustryForm = ({ workplaceId }: any) => {
                     />
 
                     {/* Address Information */}
-                    <TextInput
+                    {/* <TextInput
                         label={'Primary Address'}
                         name={'addressLine1'}
                         placeholder={'Your Primary Address...'}
                         validationIcons
                         placesSuggetions
+                    /> */}
+                    <AddressFieldInput
+                        placesSuggetions={{
+                            placesSuggetions: onSuburbClicked,
+                            setIsPlaceSelected: setOnSuburbClicked
+                        }}
+                        onChange={() => {
+                            setOnSuburbClicked(false)
+                        }}
                     />
 
-                    <TextInput
+                    {/* <TextInput
                         label={'Suburb'}
                         name={'suburb'}
                         placeholder={'Suburb...'}
@@ -363,7 +373,7 @@ export const AddCustomIndustryForm = ({ workplaceId }: any) => {
                             placesSuggetions: onSuburbClicked,
                             setIsPlaceSelected: setOnSuburbClicked,
                         }}
-                    />
+                    /> */}
 
                     {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <Select

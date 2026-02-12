@@ -6,10 +6,11 @@ import {
     WaitingStudents,
     RejectedStudentsList,
     CancelledStudentsList,
+    WaitingForRtoStudents,
 } from './components'
 
 import { ConfigTabs, TabConfig } from '@components'
-import { Users, Clock, Ban, XCircle } from 'lucide-react'
+import { Users, Clock, Ban, XCircle, FileCheck } from 'lucide-react'
 import { useState } from 'react'
 
 export function StudentsPlacementList() {
@@ -37,6 +38,12 @@ export function StudentsPlacementList() {
             label: 'Waiting for Industry',
             icon: Clock,
             component: WaitingStudents,
+        },
+        {
+            value: 'waiting_for_rto',
+            label: 'Waiting for RTO',
+            icon: FileCheck,
+            component: WaitingForRtoStudents,
         },
         {
             value: 'rejected_students',

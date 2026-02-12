@@ -169,7 +169,7 @@ export const AddCustomIndustryForm = ({
             onSubmit({
                 ...values,
                 state: values.state,
-                suburb: 'NA',
+                suburb: values?.suburb || 'N/A',
                 country: values.country,
                 isAddressUpdated: true,
             })

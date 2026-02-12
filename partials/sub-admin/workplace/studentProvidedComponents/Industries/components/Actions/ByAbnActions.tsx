@@ -177,7 +177,7 @@ export const ByAbnActions = ({
             ) : null}
 
             {workplace?.industryStatus === UserStatus.Approved &&
-            workplace?.approvalStatus === UserStatus.Approved ? (
+                workplace?.approvalStatus === UserStatus.Approved ? (
                 <div className="flex items-center gap-x-2">
                     {!appliedIndustry?.AgreementSigned &&
                         appliedIndustry?.awaitingAgreementSigned && (
@@ -198,7 +198,7 @@ export const ByAbnActions = ({
                         )}
                     {!appliedIndustry?.placementStarted &&
                         appliedIndustry?.awaitingAgreementSigned && (
-                            <div className="flex-shrink-0">
+                            <div className="shrink-0">
                                 <Button
                                     text={'START PLACEMENT'}
                                     variant={'primary'}
@@ -224,10 +224,10 @@ export const ByAbnActions = ({
                 {(appliedIndustry?.isCompleted ||
                     appliedIndustry?.cancelled ||
                     appliedIndustry?.terminated) && (
-                    <Typography variant={'small'} color={'text-gray-700'}>
-                        Status of student placement
-                    </Typography>
-                )}
+                        <Typography variant={'small'} color={'text-gray-700'}>
+                            Status of student placement
+                        </Typography>
+                    )}
                 {appliedIndustry?.isCompleted && (
                     <Button
                         submit
@@ -258,25 +258,25 @@ export const ByAbnActions = ({
 
                 {workplace?.currentStatus ===
                     WorkplaceCurrentStatus.AwaitingWorkplaceResponse && (
-                    <div className="flex items-center gap-x-2">
-                        <Button
-                            variant={'secondary'}
-                            onClick={() => {
-                                onApproveModal()
-                            }}
-                            loading={
-                                updateStatusResult?.isLoading &&
-                                actionStatus === userStatus.APPROVED
-                            }
-                            disabled={
-                                updateStatusResult?.isLoading &&
-                                actionStatus === userStatus.APPROVED
-                            }
-                        >
-                            <span className="text-success">Approve</span>
-                        </Button>
-                    </div>
-                )}
+                        <div className="flex items-center gap-x-2">
+                            <Button
+                                variant={'secondary'}
+                                onClick={() => {
+                                    onApproveModal()
+                                }}
+                                loading={
+                                    updateStatusResult?.isLoading &&
+                                    actionStatus === userStatus.APPROVED
+                                }
+                                disabled={
+                                    updateStatusResult?.isLoading &&
+                                    actionStatus === userStatus.APPROVED
+                                }
+                            >
+                                <span className="text-success">Approve</span>
+                            </Button>
+                        </div>
+                    )}
             </div>
         </div>
     )

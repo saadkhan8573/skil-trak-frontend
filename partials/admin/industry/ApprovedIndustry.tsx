@@ -32,7 +32,6 @@ export const ApprovedIndustry = () => {
         columnKeys: [
             'businessName',
             'abn',
-            'studentCount',
             'contactPerson',
             'favoriteBy',
             'sectors',

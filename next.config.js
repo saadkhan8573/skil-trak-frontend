@@ -2,7 +2,6 @@
 
 const nextConfig = {
     // reactStrictMode: true,
-    swcMinify: true,
     env: {
         googleDirectionApi: process.env.NEXT_PUBLIC_GOOGLE_DIRECTION_API || '',
         mapBoxApi: process.env.NEXT_PUBLIC_MAPBOX_API || '',

@@ -4,11 +4,10 @@ const nextConfig = {
     // reactStrictMode: true,
     env: {
         googleDirectionApi: 'AIzaSyB3Q7z-z5t-MYrBqXaqk7E24cxjaXABJdk',
-        mapBoxApi:
-            'pk.eyJ1Ijoic2tpbHRyYWsiLCJhIjoiY20zMm1oZG9wMTRzMTJrc2N2dHluN3ZjOCJ9.J0XKK9V8faX1iTWj1ED3Kg',
-        cloudflareSiteKey: '0x4AAAAAAA73xTWozjUM9dfN',
-        cloudflareSecretKey: '0x4AAAAAAA73xYgrG3oQzGEeAweXaFz81Gs',
-        //cloudflareSiteKey: "0x4AAAAAAA73mSspLw7n7Egj" ,
+        mapBoxApi:process.env.NEXT_PUBLIC_GOOGLE_DIRECTION_API || '',
+        mapBoxApi: process.env.NEXT_PUBLIC_MAPBOX_API || '',
+        cloudflareSiteKey: process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY || '',
+        cloudflareSecretKey: process.env.CLOUDFLARE_SECRET_KEY || '
         //cloudflareSecretKey: "0x4AAAAAAA73mQWvz8YzYY5jlZW3U1jCtv4"
     },
     async rewrites() {

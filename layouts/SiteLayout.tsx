@@ -61,6 +61,21 @@ export const SiteLayout = ({ children, title }: any) => {
                     propertyId={'61b1f52ec82c976b71c091e2'}
                     widgetId={'1fmfibg61'}
                     useRef={tawkMessengerRef}
+                    onBeforeLoad={() => { }}
+                    onStatusChange={() => { }}
+                    onChatMaximized={() => { }}
+                    onChatMinimized={() => { }}
+                    onChatHidden={() => { }}
+                    onChatStarted={() => { }}
+                    onChatEnded={() => { }}
+                    onPrechatSubmit={() => { }}
+                    onOfflineFormSubmit={() => { }}
+                    onChatMessageVisitor={() => { }}
+                    onChatMessageAgent={() => { }}
+                    onChatMessageSystem={() => { }}
+                    onAgentJoinChat={() => { }}
+                    onAgentLeaveChat={() => { }}
+                    onChatUnreadCountChange={() => { }}
                 />
             </div>
         </div>

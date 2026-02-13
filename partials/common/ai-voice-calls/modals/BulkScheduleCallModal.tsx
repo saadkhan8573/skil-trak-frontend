@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/ui/dialog'
-import { Student } from '@types'
+import { Student, OptionType } from '@types'
 import { Calendar, CheckCircle2, Users, X } from 'lucide-react'
 import { CommonApi } from '@queries'
-import { Button, TextInput, Switch } from '@components'
+import { Button, TextInput, Switch, Select } from '@components'
 import { useNotification } from '@hooks'
 import { cn } from '@utils'
 import moment from 'moment'
@@ -16,10 +16,16 @@ interface BulkScheduleCallModalProps {
 export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallModalProps) => {
     const [currentStudents, setCurrentStudents] = useState<Student[]>(students)
     const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null)
+    const [selectedAgentId, setSelectedAgentId] = useState<number | null>(null)
     const [isScheduled, setIsScheduled] = useState(true)
     const [scheduledDate, setScheduledDate] = useState<string>(moment().format('YYYY-MM-DD'))
 
     const [bulkScheduleCall, { isLoading }] = CommonApi.CallManagement.useBulkScheduleAiCallMutation()
+    const { data: agentsData, isLoading: isAgentsLoading } = CommonApi.CallManagement.useGetAgentsListQuery({
+        limit: 100,
+        skip: 0,
+        search: ''
+    })
     const { notification } = useNotification()
 
     // Find common courses among all selected students
@@ -42,12 +48,23 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
         }
     }, [commonCourses])
 
+    useEffect(() => {
+        if (agentsData?.data && agentsData.data.length > 0) {
+            const activeAgent = agentsData.data.find(a => a.isActive)
+            if (activeAgent) {
+                setSelectedAgentId(activeAgent.id)
+            } else {
+                setSelectedAgentId(agentsData.data[0].id)
+            }
+        }
+    }, [agentsData])
+
     const handleRemoveStudent = (studentId: number) => {
         setCurrentStudents(prev => prev.filter(s => s.id !== studentId))
     }
 
     const handleBulkSchedule = async () => {
-        if (!currentStudents.length || !selectedCourseId || (isScheduled && !scheduledDate)) return
+        if (!currentStudents.length || !selectedCourseId || !selectedAgentId || (isScheduled && !scheduledDate)) return
 
         const scheduledAt = isScheduled ? `${scheduledDate}T00:00:00` : moment().format('YYYY-MM-DDTHH:mm:ss')
         const studentIds = currentStudents.map(s => s.id)
@@ -57,7 +74,8 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
                 studentIds,
                 courseId: selectedCourseId,
                 scheduledAt,
-                isScheduled: isScheduled
+                isScheduled: isScheduled,
+                agent: selectedAgentId
             }).unwrap()
 
             notification.success({
@@ -137,6 +155,22 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
                     )}
 
                     <div className="space-y-3">
+                        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Select Agent</span>
+                        <Select
+                            name="agent"
+                            placeholder="Select an agent"
+                            loading={isAgentsLoading}
+                            options={agentsData?.data?.map(agent => ({
+                                label: `${agent.name} (${agent.responsibility})`,
+                                value: agent.id
+                            })) || []}
+                            value={selectedAgentId}
+                            onChange={(val: any) => setSelectedAgentId(val)}
+                            onlyValue
+                        />
+                    </div>
+
+                    <div className="space-y-3">
                         <div className="flex items-center justify-between">
                             <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Select Common Course</span>
                             <span className="text-[10px] text-gray-500">Only courses common to all selected students are shown</span>
@@ -194,7 +228,7 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
                         className="flex-1 bg-[#044866] hover:bg-[#095a7d] text-white"
                         onClick={handleBulkSchedule}
                         loading={isLoading}
-                        disabled={!selectedCourseId || (isScheduled && !scheduledDate) || !currentStudents.length}
+                        disabled={!selectedCourseId || !selectedAgentId || (isScheduled && !scheduledDate) || !currentStudents.length}
                     >
                         {isScheduled ? `Schedule Calls (${currentStudents.length})` : `Call Now (${currentStudents.length})`}
                     </Button>

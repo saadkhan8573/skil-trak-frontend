@@ -115,7 +115,7 @@ export const AddSecondWorkplaceForm = ({
                 studentId: studentUserId,
                 courses: [Number(values?.courses)],
                 isAddressUpdated: true,
-                suburb: 'NA',
+                suburb: values?.suburb || 'N/A',
                 state: 'NA',
             })
         }

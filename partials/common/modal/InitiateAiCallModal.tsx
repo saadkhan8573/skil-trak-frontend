@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/ui/dialog'
-import { Student } from '@types'
+import { Student, OptionType } from '@types'
 import { CheckCircle2 } from 'lucide-react'
 import { CommonApi } from '@queries'
-import { Button, TextInput, Switch } from '@components'
+import { Button, TextInput, Switch, Select } from '@components'
 import { useNotification } from '@hooks'
 import { cn } from '@utils'
 import moment from 'moment'
@@ -15,11 +15,16 @@ interface InitiateAiCallModalProps {
 
 export const InitiateAiCallModal = ({ student, onClose }: InitiateAiCallModalProps) => {
     const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null)
+    const [selectedAgentId, setSelectedAgentId] = useState<number | null>(null)
     const [isScheduled, setIsScheduled] = useState(false)
     const [scheduledDate, setScheduledDate] = useState<string>(moment().format('YYYY-MM-DD'))
 
     const [scheduleCall, { isLoading }] = CommonApi.CallManagement.useScheduleAiCallMutation()
-
+    const { data: agentsData, isLoading: isAgentsLoading } = CommonApi.CallManagement.useGetAgentsListQuery({
+        limit: 100,
+        skip: 0,
+        search: ''
+    })
     const { notification } = useNotification()
 
     useEffect(() => {
@@ -29,6 +34,17 @@ export const InitiateAiCallModal = ({ student, onClose }: InitiateAiCallModalPro
             setSelectedCourseId(null)
         }
     }, [student])
+
+    useEffect(() => {
+        if (agentsData?.data && agentsData.data.length > 0) {
+            const activeAgent = agentsData.data.find(a => a.isActive)
+            if (activeAgent) {
+                setSelectedAgentId(activeAgent.id)
+            } else {
+                setSelectedAgentId(agentsData.data[0].id)
+            }
+        }
+    }, [agentsData])
 
     const handleAction = async () => {
         if (!student || !selectedCourseId) return
@@ -41,7 +57,8 @@ export const InitiateAiCallModal = ({ student, onClose }: InitiateAiCallModalPro
                 course: selectedCourseId,
                 scheduledAt,
                 phone: student.phone || '',
-                isScheduled: isScheduled
+                isScheduled: isScheduled,
+                agent: selectedAgentId ?? undefined
             }).unwrap()
 
             notification.success({
@@ -124,6 +141,22 @@ export const InitiateAiCallModal = ({ student, onClose }: InitiateAiCallModalPro
                     )}
 
                     <div className="space-y-3">
+                        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Select Agent</span>
+                        <Select
+                            name="agent"
+                            placeholder="Select an agent"
+                            loading={isAgentsLoading}
+                            options={agentsData?.data?.map(agent => ({
+                                label: `${agent.name} (${agent.responsibility})`,
+                                value: agent.id
+                            })) || []}
+                            value={selectedAgentId}
+                            onChange={(val: any) => setSelectedAgentId(val)}
+                            onlyValue
+                        />
+                    </div>
+
+                    <div className="space-y-3">
                         <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Select Course</span>
                         <div className="grid grid-cols-1 gap-2 max-h-[250px] overflow-y-auto pr-1">
                             {courses.length > 0 ? (
@@ -174,7 +207,7 @@ export const InitiateAiCallModal = ({ student, onClose }: InitiateAiCallModalPro
                         className="flex-1 bg-[#044866] hover:bg-[#095a7d] text-white"
                         onClick={handleAction}
                         loading={isLoading}
-                        disabled={!selectedCourseId || (isScheduled && !scheduledDate)}
+                        disabled={!selectedCourseId || !selectedAgentId || (isScheduled && !scheduledDate)}
                     >
                         {isScheduled ? 'Schedule' : 'Call Now'}
                     </Button>

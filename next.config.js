@@ -2,14 +2,33 @@
 
 const nextConfig = {
     // reactStrictMode: true,
+    swcMinify: true,
     env: {
-        googleDirectionApi: 'AIzaSyB3Q7z-z5t-MYrBqXaqk7E24cxjaXABJdk',
-        mapBoxApi:
-            'pk.eyJ1Ijoic2tpbHRyYWsiLCJhIjoiY20zMm1oZG9wMTRzMTJrc2N2dHluN3ZjOCJ9.J0XKK9V8faX1iTWj1ED3Kg',
-        cloudflareSiteKey: '0x4AAAAAAA73xTWozjUM9dfN',
-        cloudflareSecretKey: '0x4AAAAAAA73xYgrG3oQzGEeAweXaFz81Gs',
-        //cloudflareSiteKey: "0x4AAAAAAA73mSspLw7n7Egj" ,
-        //cloudflareSecretKey: "0x4AAAAAAA73mQWvz8YzYY5jlZW3U1jCtv4"
+        googleDirectionApi: process.env.NEXT_PUBLIC_GOOGLE_DIRECTION_API || '',
+        mapBoxApi: process.env.NEXT_PUBLIC_MAPBOX_API || '',
+        cloudflareSiteKey: process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY || '',
+        cloudflareSecretKey: process.env.CLOUDFLARE_SECRET_KEY || '',
+    },
+    async headers() {
+        return [
+            {
+                source: '/:path*',
+                headers: [
+                    {
+                        key: 'X-Content-Type-Options',
+                        value: 'nosniff',
+                    },
+                    {
+                        key: 'X-Frame-Options',
+                        value: 'SAMEORIGIN',
+                    },
+                    {
+                        key: 'X-XSS-Protection',
+                        value: '1; mode=block',
+                    },
+                ],
+            },
+        ]
     },
     async rewrites() {
         return {
@@ -40,21 +59,35 @@ const nextConfig = {
         }
     },
     images: {
-        unoptimized: true,
-        domains: [
-            'skiltrak.org',
-            'placeimg.com',
-            'picsum.photos',
-            'loremflickr.com',
-            'skiltrak.com.au',
-            'www.skiltrak.com.au',
-            'images.unsplash.com',
-            'hivedinn.s3.amazonaws.com',
-            'skiltrak-dev.s3.amazonaws.com',
-            'skiltrak-dev.s3.ap-southeast-2.amazonaws.com',
+        unoptimized: false,
+        remotePatterns: [
+            { protocol: 'https', hostname: 'skiltrak.org' },
+            { protocol: 'https', hostname: 'placeimg.com' },
+            { protocol: 'https', hostname: 'picsum.photos' },
+            { protocol: 'https', hostname: 'loremflickr.com' },
+            { protocol: 'https', hostname: 'skiltrak.com.au' },
+            { protocol: 'https', hostname: 'www.skiltrak.com.au' },
+            { protocol: 'https', hostname: 'images.unsplash.com' },
+            { protocol: 'https', hostname: 'hivedinn.s3.amazonaws.com' },
+            { protocol: 'https', hostname: 'skiltrak-dev.s3.amazonaws.com' },
+            {
+                protocol: 'https',
+                hostname: 'skiltrak-dev.s3.ap-southeast-2.amazonaws.com',
+            },
         ],
+        formats: ['image/avif', 'image/webp'],
+        deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+        imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+        minimumCacheTTL: 60,
     },
     output: 'standalone',
+    experimental: {
+        optimizePackageImports: [
+            '@radix-ui/react-*',
+            'lodash-es',
+            'lucide-react',
+        ],
+    },
     serverExternalPackages: [
         '@zoomus/websdk',
         'pdfjs-dist',

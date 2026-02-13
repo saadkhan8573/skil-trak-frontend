@@ -59,10 +59,9 @@ export const InvoiceRtoList = () => {
         {
             accessorKey: 'user.name',
             cell: (info) => (
-                <Link
-                    legacyBehavior
-                    href={`/portals/admin/invoices/${info?.row?.original?.id}`}
-                >
+                <Link href={`/portals/admin/invoices/${info?.row?.original?.id}`}>
+                    {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
+                    }
                     <div className="flex items-center gap-x-2 relative z-10">
                         {info?.row?.original?.user?.name && (
                             <InitialAvatar

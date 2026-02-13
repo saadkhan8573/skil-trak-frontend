@@ -26,24 +26,22 @@ export const IndustryStudentsLayout = ({
                 <ul className="flex gap-x-2 pb-4">
                     <li className={``}>
                         <Link
-                            legacyBehavior
                             href="/portals/industry/students/current-students"
+                            className={`${
+                                router.pathname.split('/')[4] ===
+                                'current-students'
+                                    ? 'bg-indigo-100 text-indigo-700 rounded-md'
+                                    : 'text-slate-700'
+                            } ${defaultClasses} hover:bg-indigo-100 hover:text-indigo-700`}
                         >
-                            <a
-                                className={`${
-                                    router.pathname.split('/')[4] ===
-                                    'current-students'
-                                        ? 'bg-indigo-100 text-indigo-700 rounded-md'
-                                        : 'text-slate-700'
-                                } ${defaultClasses} hover:bg-indigo-100 hover:text-indigo-700`}
-                            >
-                                <span>
-                                    <MdSpaceDashboard />
-                                </span>
-                                <span className="text-sm font-semibold">
-                                    Current Students
-                                </span>
-                            </a>
+
+                            <span>
+                                <MdSpaceDashboard />
+                            </span>
+                            <span className="text-sm font-semibold">
+                                Current Students
+                            </span>
+
                         </Link>
                     </li>
 
@@ -68,24 +66,22 @@ export const IndustryStudentsLayout = ({
 
                     <li className={``}>
                         <Link
-                            legacyBehavior
                             href="/portals/industry/students/appointments"
+                            className={`${
+                                router.pathname.split('/')[4] ===
+                                'appointments'
+                                    ? 'bg-green-100 text-green-700 rounded-md'
+                                    : 'text-slate-700'
+                            } ${defaultClasses} hover:bg-green-100 hover:text-green-700`}
                         >
-                            <a
-                                className={`${
-                                    router.pathname.split('/')[4] ===
-                                    'appointments'
-                                        ? 'bg-green-100 text-green-700 rounded-md'
-                                        : 'text-slate-700'
-                                } ${defaultClasses} hover:bg-green-100 hover:text-green-700`}
-                            >
-                                <span>
-                                    <HiInformationCircle />
-                                </span>
-                                <span className="text-sm font-semibold">
-                                    Appointments
-                                </span>
-                            </a>
+
+                            <span>
+                                <HiInformationCircle />
+                            </span>
+                            <span className="text-sm font-semibold">
+                                Appointments
+                            </span>
+
                         </Link>
                     </li>
                 </ul>
@@ -101,5 +97,5 @@ export const IndustryStudentsLayout = ({
                 {children}
             </div>
         </IndustryLayout>
-    )
+    );
 }

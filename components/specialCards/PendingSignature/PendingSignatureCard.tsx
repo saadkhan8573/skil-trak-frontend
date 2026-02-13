@@ -9,10 +9,10 @@ export const PendingSignatureCard = () => {
                     Pending E-Signatures
                 </div>
                 <div>
-                    <Link legacyBehavior href="#">
-                        <a className="text-xs rounded-full bg-white px-2 py-1 text-indigo-800">
+                    <Link href="#" className="text-xs rounded-full bg-white px-2 py-1 text-indigo-800">
+                        
                             View All
-                        </a>
+                        
                     </Link>
                 </div>
             </div>
@@ -33,5 +33,5 @@ export const PendingSignatureCard = () => {
                 </div>
             </div>
         </div>
-    )
+    );
 }

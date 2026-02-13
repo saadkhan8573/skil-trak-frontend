@@ -59,78 +59,76 @@ export const IndustryCellProgressbar = ({ industry }: any) => {
         .map((field) => field.label)
 
     return (
-        <Link legacyBehavior href={`/portals/admin/industry/${industry?.id}`}>
-            <a
-                onClick={() => {
-                    sessionStorage.setItem(
-                        'industry',
-                        `${router.pathname}?${query}`
-                    )
-                }}
-            >
-                <div className="flex items-center gap-x-2">
-                    <div className="shadow-inner-image rounded-full relative z-40">
-                        {industry?.user?.name && (
-                            <InitialAvatar
-                                name={industry?.user?.name}
-                                imageUrl={industry?.user?.avatar}
-                                socketId={industry?.user?.socketId}
-                            />
-                        )}
-                        {industry?.isPartner ? (
-                            <div className="absolute -bottom-1 -right-1 w-5 h-5 flex items-center justify-center bg-green-500 rounded-full text-white">
-                                <FaHandshake size={14} />
-                            </div>
-                        ) : null}
-                    </div>
-                    <div>
-                        {industry?.snoozedDate &&
-                        industry?.snoozedDate !== null ? (
-                            <MdSnooze size={14} className="text-red-500" />
-                        ) : null}
-                        <div className="flex gap-x-2">
-                            <div className="flex flex-col gap-y-1">
-                                <div className="group flex items-center gap-x-1 relative z-40">
-                                    <p
-                                        className="font-semibold"
-                                        title={industry?.user?.name}
-                                    >
-                                        {ellipsisText(industry?.user?.name, 20)}
-                                    </p>
-                                    <CopyData
-                                        text={industry?.user?.name}
-                                        type={'Industry Name'}
-                                    />
-                                </div>
-                                <div className="relative group">
-                                    <ProfileCompletionProgress
-                                        completedItems={completedCount}
-                                        totalItems={10}
-                                    />
-                                    <div className="absolute !z-50 top-4 left-0 group-hover:block hidden w-full">
-                                        <IndustryProfileChecklist
-                                            profileFields={profileFields}
-                                            industry={industry}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+        <Link href={`/portals/admin/industry/${industry?.id}`} onClick={() => {
+            sessionStorage.setItem(
+                'industry',
+                `${router.pathname}?${query}`
+            )
+        }}>
 
-                            {industry?.isHiring ? (
-                                <div>
-                                    <HiBriefcase
-                                        size={20}
-                                        className="text-blue-500"
+            <div className="flex items-center gap-x-2">
+                <div className="shadow-inner-image rounded-full relative z-40">
+                    {industry?.user?.name && (
+                        <InitialAvatar
+                            name={industry?.user?.name}
+                            imageUrl={industry?.user?.avatar}
+                            socketId={industry?.user?.socketId}
+                        />
+                    )}
+                    {industry?.isPartner ? (
+                        <div className="absolute -bottom-1 -right-1 w-5 h-5 flex items-center justify-center bg-green-500 rounded-full text-white">
+                            <FaHandshake size={14} />
+                        </div>
+                    ) : null}
+                </div>
+                <div>
+                    {industry?.snoozedDate &&
+                    industry?.snoozedDate !== null ? (
+                        <MdSnooze size={14} className="text-red-500" />
+                    ) : null}
+                    <div className="flex gap-x-2">
+                        <div className="flex flex-col gap-y-1">
+                            <div className="group flex items-center gap-x-1 relative z-40">
+                                <p
+                                    className="font-semibold"
+                                    title={industry?.user?.name}
+                                >
+                                    {ellipsisText(industry?.user?.name, 20)}
+                                </p>
+                                <CopyData
+                                    text={industry?.user?.name}
+                                    type={'Industry Name'}
+                                />
+                            </div>
+                            <div className="relative group">
+                                <ProfileCompletionProgress
+                                    completedItems={completedCount}
+                                    totalItems={10}
+                                />
+                                <div className="absolute !z-50 top-4 left-0 group-hover:block hidden w-full">
+                                    <IndustryProfileChecklist
+                                        profileFields={profileFields}
+                                        industry={industry}
                                     />
                                 </div>
-                            ) : (
-                                ''
-                            )}
+                            </div>
                         </div>
-                        {/* snoozedDate */}
+
+                        {industry?.isHiring ? (
+                            <div>
+                                <HiBriefcase
+                                    size={20}
+                                    className="text-blue-500"
+                                />
+                            </div>
+                        ) : (
+                            ''
+                        )}
                     </div>
+                    {/* snoozedDate */}
                 </div>
-            </a>
+            </div>
+
         </Link>
-    )
+    );
 }

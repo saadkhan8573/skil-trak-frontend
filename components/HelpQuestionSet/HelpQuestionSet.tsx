@@ -44,7 +44,6 @@ export const HelpQuestionSet = ({
             ) : (
                 <Typography variant="label">{title}</Typography>
             )}
-
             {mounted ? (
                 <ul>
                     {questions.map((question, i) =>
@@ -65,10 +64,10 @@ export const HelpQuestionSet = ({
                             </li>
                         ) : (
                             <li key={i}>
-                                <Link legacyBehavior href={question.link}>
-                                    <a className="text-blue-400 cursor-pointer text-sm hover:text-blue-500">
-                                        {question.text}
-                                    </a>
+                                <Link href={question.link} className="text-blue-400 cursor-pointer text-sm hover:text-blue-500">
+
+                                    {question.text}
+
                                 </Link>
                             </li>
                         )
@@ -76,5 +75,5 @@ export const HelpQuestionSet = ({
                 </ul>
             ) : null}
         </div>
-    )
+    );
 }

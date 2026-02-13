@@ -51,24 +51,22 @@ export const AssignedCoordinators = () => {
                 } = row.original
                 return (
                     <Link
-                        legacyBehavior
                         href={`/portals/rto/coordinators/${row.original.id}`}
-                        className="flex items-center gap-x-2 relative"
-                    >
-                        <a className="flex items-center gap-x-1">
-                            <InitialAvatar name={name} imageUrl={avatar} />
-                            <div>
-                                <Typography color={'black'}>
-                                    {' '}
-                                    {name}{' '}
-                                </Typography>
-                                <Typography variant={'muted'} color={'gray'}>
-                                    {email}
-                                </Typography>
-                            </div>
-                        </a>
+                        className="flex items-center gap-x-2 relative">
+
+                        <InitialAvatar name={name} imageUrl={avatar} />
+                        <div>
+                            <Typography color={'black'}>
+                                {' '}
+                                {name}{' '}
+                            </Typography>
+                            <Typography variant={'muted'} color={'gray'}>
+                                {email}
+                            </Typography>
+                        </div>
+
                     </Link>
-                )
+                );
             },
         },
         {

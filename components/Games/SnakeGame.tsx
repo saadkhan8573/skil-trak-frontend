@@ -81,7 +81,7 @@ export const SnakeGame: React.FC = () => {
                     ) ||
                     (existingBonus
                         ? newFood.x === existingBonus.x &&
-                          newFood.y === existingBonus.y
+                        newFood.y === existingBonus.y
                         : false)
             }
 
@@ -457,56 +457,108 @@ export const SnakeGame: React.FC = () => {
                                 {(showSpeedSelect ||
                                     !isGameStarted ||
                                     isGameOver) && (
-                                    <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-30 p-8">
-                                        {showSpeedSelect && (
-                                            <div className="text-center w-full max-w-xs">
-                                                <Typography
-                                                    variant="h2"
-                                                    bold
-                                                    color="text-white"
-                                                    className="mb-6"
-                                                >
-                                                    Select Speed
-                                                </Typography>
-                                                <div className="flex flex-col gap-3 mb-8">
-                                                    {(
-                                                        [
-                                                            'SLOW',
-                                                            'MEDIUM',
-                                                            'FAST',
-                                                        ] as GameSpeed[]
-                                                    ).map((speed) => (
-                                                        <button
-                                                            key={speed}
-                                                            onClick={() =>
-                                                                setSelectedSpeed(
-                                                                    speed
-                                                                )
-                                                            }
-                                                            className={`py-3 rounded-xl font-bold transition-all border-2
-                                                                ${
-                                                                    selectedSpeed ===
-                                                                    speed
+                                        <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-30 p-8">
+                                            {showSpeedSelect && (
+                                                <div className="text-center w-full max-w-xs">
+                                                    <Typography
+                                                        variant="h2"
+                                                        bold
+                                                        color="text-white"
+                                                        className="mb-6"
+                                                    >
+                                                        Select Speed
+                                                    </Typography>
+                                                    <div className="flex flex-col gap-3 mb-8">
+                                                        {(
+                                                            [
+                                                                'SLOW',
+                                                                'MEDIUM',
+                                                                'FAST',
+                                                            ] as GameSpeed[]
+                                                        ).map((speed) => (
+                                                            <button
+                                                                key={speed}
+                                                                onClick={() =>
+                                                                    setSelectedSpeed(
+                                                                        speed
+                                                                    )
+                                                                }
+                                                                className={`py-3 rounded-xl font-bold transition-all border-2
+                                                                ${selectedSpeed ===
+                                                                        speed
                                                                         ? 'bg-emerald-500 border-emerald-400 text-white scale-105'
                                                                         : 'bg-slate-800 border-slate-700 text-slate-400 hover:bg-slate-700'
-                                                                }`}
-                                                        >
-                                                            {speed}
-                                                        </button>
-                                                    ))}
+                                                                    }`}
+                                                            >
+                                                                {speed}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                    <Button
+                                                        onClick={resetGame}
+                                                        variant="primary"
+                                                        fullWidth
+                                                        className="!h-14 uppercase font-bold tracking-widest"
+                                                        text="Start Mission"
+                                                        Icon={Play}
+                                                    />
                                                 </div>
-                                                <Button
-                                                    onClick={resetGame}
-                                                    variant="primary"
-                                                    fullWidth
-                                                    className="!h-14 uppercase font-bold tracking-widest"
-                                                    text="Start Mission"
-                                                    Icon={Play}
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
+                                            )}
+
+                                            {isGameOver && !showSpeedSelect && (
+                                                <div className="text-center w-full max-w-xs animate-in fade-in zoom-in duration-300">
+                                                    <div className="mb-6">
+                                                        <div className="w-20 h-20 bg-rose-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                            <RotateCcw className="w-10 h-10 text-rose-500" />
+                                                        </div>
+                                                        <Typography
+                                                            variant="h2"
+                                                            bold
+                                                            color="text-white"
+                                                        >
+                                                            Game Over
+                                                        </Typography>
+                                                        <Typography
+                                                            color="text-slate-400"
+                                                            className="mt-2"
+                                                        >
+                                                            Your final score
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="h1"
+                                                            bold
+                                                            color="text-rose-500"
+                                                            className="mt-1"
+                                                        >
+                                                            {score}
+                                                        </Typography>
+                                                    </div>
+                                                    <div className="flex flex-col gap-3">
+                                                        <Button
+                                                            onClick={resetGame}
+                                                            variant="primary"
+                                                            fullWidth
+                                                            className="!h-14 uppercase font-bold tracking-widest"
+                                                            text="Try Again"
+                                                            Icon={RotateCcw}
+                                                        />
+                                                        <Button
+                                                            onClick={() =>
+                                                                setShowSpeedSelect(
+                                                                    true
+                                                                )
+                                                            }
+                                                            variant="primary"
+                                                            fullWidth
+                                                            className="!h-14 uppercase font-bold tracking-widest bg-slate-700 border-slate-600 hover:bg-slate-600"
+                                                            text="Change Speed"
+                                                            Icon={Settings}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                             </div>
                         </div>
                     </div>

@@ -36,10 +36,9 @@ export const SideBar = ({
     return (
         <div className="w-56 flex-shrink-0 h-screen pb-24 bg-white border-r border-secondary-dark px-2 py-2 relative overflow-y-scroll remove-scrollbar">
             {/* <IoMdArrowDroprightCircle className="absolute top-12 scale-150 opacity-50" /> */}
-            <Link
-                legacyBehavior
-                href={`/portals/${role === 'subadmin' ? 'sub-admin' : role}`}
-            >
+            <Link href={`/portals/${role === 'subadmin' ? 'sub-admin' : role}`}>
+                {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
+                }
                 <div className="relative w-fit mx-auto pt-2 mb-2">
                     <Image
                         src={'/images/skiltrak_logo.svg'}
@@ -53,9 +52,7 @@ export const SideBar = ({
                     <PortalTypeBadge type={portalType} />
                 </div>
             </Link>
-
             <UserActions />
-
             <div className="px-2">
                 {/* Before Ad Routes */}
                 <div className="overflow-hidden">
@@ -142,10 +139,9 @@ export const SideBar = ({
                     </div>
                 </div>
             </div>
-
             <div className="fixed bottom-0 left-0 w-[223px]">
                 <Footer />
             </div>
         </div>
-    )
+    );
 }

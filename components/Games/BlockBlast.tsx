@@ -52,6 +52,7 @@ export const BlockBlast: React.FC = () => {
     } | null>(null)
     const [particles, setParticles] = useState<Particle[]>([])
     const [gameOver, setGameOver] = useState<boolean>(false)
+    const [clearingRows, setClearingRows] = useState<number[]>([])
 
     const gridRef = useRef<HTMLDivElement>(null)
 
@@ -138,12 +139,82 @@ export const BlockBlast: React.FC = () => {
         return true
     }
 
+    const checkAndClearLines = (currentGrid: Grid): Grid => {
+        let newGrid = currentGrid.map((row) => [...row])
+        let rowsCleared = 0
+
+        // Find full rows
+        const fullRows: number[] = []
+        for (let r = 0; r < 10; r++) {
+            if (newGrid[r].every((cell) => cell !== null)) {
+                fullRows.push(r)
+            }
+        }
+
+        if (fullRows.length > 0) {
+            rowsCleared = fullRows.length
+
+            // Remove full rows and add empty ones at the top (Gravity)
+            const remainingRows = newGrid.filter((_, index) => !fullRows.includes(index))
+            const emptyRows = Array(rowsCleared).fill(null).map(() => Array(14).fill(null))
+            newGrid = [...emptyRows, ...remainingRows]
+
+            setCombo((prev) => prev + 1)
+            setScore((prev) => prev + rowsCleared * 100 * (combo + 1))
+        } else {
+            setCombo(0)
+        }
+
+        return newGrid
+    }
+
+    const checkGameOver = (currentGrid: Grid, shapes: Shape[]): boolean => {
+        // 1. Check if top row has any blocks
+        if (currentGrid[0].some((cell) => cell !== null)) {
+            return true
+        }
+
+        // 2. Check if any shape can still fit
+        if (shapes.length === 0) return false
+
+        for (const shape of shapes) {
+            for (let r = 0; r <= 10 - shape.pattern.length; r++) {
+                for (let c = 0; c <= 14 - shape.pattern[0].length; c++) {
+                    if (canPlaceShapeInGrid(shape, r, c, currentGrid)) {
+                        return false
+                    }
+                }
+            }
+        }
+        return true
+    }
+
+    const canPlaceShapeInGrid = (
+        shape: Shape,
+        startRow: number,
+        startCol: number,
+        currentGrid: Grid
+    ): boolean => {
+        for (let r = 0; r < shape.pattern.length; r++) {
+            for (let c = 0; c < shape.pattern[r].length; c++) {
+                if (shape.pattern[r][c] === 1) {
+                    const gridRow = startRow + r
+                    const gridCol = startCol + c
+                    if (gridRow >= 10 || gridCol >= 14 || currentGrid[gridRow][gridCol] !== null) {
+                        return false
+                    }
+                }
+            }
+        }
+        return true
+    }
+
     const placeShape = (
         shape: Shape,
         startRow: number,
         startCol: number
     ): void => {
-        const newGrid = grid.map((row) => [...row])
+        let newGrid = grid.map((row) => [...row])
 
         for (let r = 0; r < shape.pattern.length; r++) {
             for (let c = 0; c < shape.pattern[r].length; c++) {
@@ -155,19 +226,45 @@ export const BlockBlast: React.FC = () => {
 
         setGrid(newGrid)
 
-        const updatedShapes = currentShapes.filter((s) => s.id !== shape.id)
-        setCurrentShapes(updatedShapes)
+        // Identify rows to clear
+        const fullRows: number[] = []
+        for (let r = 0; r < 10; r++) {
+            if (newGrid[r].every((cell) => cell !== null)) {
+                fullRows.push(r)
+            }
+        }
 
-        const baseScore = shape.points * 10
-        const comboMultiplier = combo > 0 ? 1 + combo * 0.5 : 1
-        const earnedScore = Math.floor(baseScore * comboMultiplier)
-        setScore((prev) => prev + earnedScore)
+        const finalizeTurn = (currentGrid: Grid, shapes: Shape[]) => {
+            const updatedShapes = currentShapes.filter((s) => s.id !== shape.id)
+            setCurrentShapes(updatedShapes)
 
-        if (updatedShapes.length === 0) {
-            setTimeout(() => {
+            if (updatedShapes.length === 0) {
                 generateNewShapes()
-                setCombo(0)
-            }, 800)
+            }
+
+            // Check Game Over after potential new shapes
+            const nextShapes = updatedShapes.length > 0
+                ? updatedShapes
+                : shapes.slice(0, 3).map((s, i) => ({ ...s, id: Date.now() + i }))
+
+            if (checkGameOver(currentGrid, nextShapes)) {
+                setGameOver(true)
+            }
+        }
+
+        if (fullRows.length > 0) {
+            setClearingRows(fullRows)
+
+            // Wait for animation
+            setTimeout(() => {
+                const clearedGrid = checkAndClearLines(newGrid)
+                setGrid(clearedGrid)
+                setClearingRows([])
+                finalizeTurn(clearedGrid, currentShapes)
+            }, 500)
+        } else {
+            setScore((prev) => prev + shape.points * 10)
+            finalizeTurn(newGrid, currentShapes)
         }
     }
 
@@ -295,17 +392,57 @@ export const BlockBlast: React.FC = () => {
                                 }}
                             >
                                 {grid.map((row, ri) =>
-                                    row.map((cell, ci) => (
-                                        <div
-                                            key={`${ri}-${ci}`}
-                                            className={`w-10 h-10 rounded-md transition-all duration-200
-                                                ${cell ? 'shadow-sm border border-white/20' : 'bg-white border border-slate-100'}`}
-                                            style={{
-                                                backgroundColor:
-                                                    cell || undefined,
-                                            }}
-                                        />
-                                    ))
+                                    row.map((cell, ci) => {
+                                        const isLanding =
+                                            previewPosition &&
+                                            draggedShape &&
+                                            ri >= previewPosition.row &&
+                                            ri <
+                                            previewPosition.row +
+                                            draggedShape.pattern.length &&
+                                            ci >= previewPosition.col &&
+                                            ci <
+                                            previewPosition.col +
+                                            draggedShape.pattern[0]
+                                                .length &&
+                                            draggedShape.pattern[
+                                            ri - previewPosition.row
+                                            ][ci - previewPosition.col] === 1
+
+                                        const isClearing = clearingRows.includes(ri)
+
+                                        return (
+                                            <div
+                                                key={`${ri}-${ci}`}
+                                                className={`w-10 h-10 rounded-md transition-all duration-150 relative
+                                                    ${cell ? 'shadow-sm border border-white/20' : 'bg-white border border-slate-100'}
+                                                    ${isLanding ? (previewPosition.valid ? 'border-slate-800 border-2 z-10' : 'border-red-400 border-2 z-10 opacity-50') : ''}
+                                                    ${isClearing ? 'animate-pulse brightness-150 scale-110 z-20 !border-white' : ''}`}
+                                                style={{
+                                                    backgroundColor:
+                                                        isClearing
+                                                            ? '#ffffff'
+                                                            : cell ||
+                                                            (isLanding &&
+                                                                previewPosition.valid
+                                                                ? `${draggedShape.color}33`
+                                                                : undefined),
+                                                }}
+                                            >
+                                                {isLanding &&
+                                                    previewPosition.valid && !isClearing && (
+                                                        <div
+                                                            className="absolute inset-0 rounded-md border border-white/30"
+                                                            style={{
+                                                                backgroundColor:
+                                                                    draggedShape.color,
+                                                                opacity: 0.3,
+                                                            }}
+                                                        />
+                                                    )}
+                                            </div>
+                                        )
+                                    })
                                 )}
                             </div>
 

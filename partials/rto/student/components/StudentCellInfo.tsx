@@ -34,100 +34,100 @@ export const StudentCellInfo = ({
     const isDateExist = createdAt.isBetween(startDate, endDate, 'day')
     return (
         <Link
-            legacyBehavior
             href={link || `/portals/rto/students/${student?.id}`}
+            className="flex items-center gap-x-2"
         >
-            <a className="flex items-center gap-x-2">
-                <div className="shadow-inner-image rounded-full">
-                    {student?.user?.name && (
-                        <InitialAvatar
-                            name={student?.user?.name}
-                            imageUrl={student?.user?.avatar}
-                        />
-                    )}
-                </div>
-                <div>
-                    <div className="flex items-center gap-x-2">
-                        <div className="flex items-center gap-x-2">
-                            <p className="flex items-center gap-x-1 text-xs">
-                                {student?.studentId}
-                            </p>
-                            {student?.nonContactable && (
-                                <div className="group relative bg-red-600 p-1 rounded-full flex items-center justify-center">
-                                    <FiPhoneOff className="text-white text-[10px]" />
-                                    <Tooltip position={TooltipPosition.left}>
-                                        Not Contactable
-                                    </Tooltip>
-                                </div>
-                            )}
 
-                            {student?.isHighPriority && (
-                                <div className="rounded-md whitespace-nowrap px-1 py-0.5 border border-red-400 text-red-400 text-xs font-medium">
-                                    High Priority
-                                </div>
-                            )}
-                        </div>
-                        {call &&
-                            isDateExist &&
-                            (callLog.isAnswered ? (
-                                <div className="rounded-full bg-success p-0.5">
-                                    <ImPhone
-                                        title={'Call Made and Answered'}
-                                        className="text-white text-[10px]"
-                                    />
-                                </div>
-                            ) : callLog.isAnswered === false ? (
-                                <div className="rounded-full bg-red-700 p-0.5">
-                                    <ImPhoneHangUp
-                                        title={'Call Made and Not Answered'}
-                                        className="text-white text-[10px]"
-                                    />
-                                </div>
-                            ) : null)}
-                        {student?.hasIssue && (
-                            <div className="group relative ">
-                                <LuFlagTriangleRight className="text-red-600 text-xl" />
+            <div className="shadow-inner-image rounded-full">
+                {student?.user?.name && (
+                    <InitialAvatar
+                        name={student?.user?.name}
+                        imageUrl={student?.user?.avatar}
+                    />
+                )}
+            </div>
+            <div>
+                <div className="flex items-center gap-x-2">
+                    <div className="flex items-center gap-x-2">
+                        <p className="flex items-center gap-x-1 text-xs">
+                            {student?.studentId}
+                        </p>
+                        {student?.nonContactable && (
+                            <div className="group relative bg-red-600 p-1 rounded-full flex items-center justify-center">
+                                <FiPhoneOff className="text-white text-[10px]" />
                                 <Tooltip position={TooltipPosition.left}>
-                                    Flagged Issue
+                                    Not Contactable
                                 </Tooltip>
                             </div>
                         )}
-                    </div>
-                    <div className="flex items-center gap-x-1.5">
-                        <p className="font-semibold">
-                            {student?.user?.name}{' '}
-                            {student?.familyName?.toLowerCase() === 'na'
-                                ? ''
-                                : student?.familyName}
-                        </p>
-                        {student?.tickets && student?.tickets?.length > 0 ? (
-                            <div className="w-5 h-5 flex items-center justify-center rounded relative group">
-                                <BiMessageRoundedDots className="text-primary text-lg" />
-                                <Tooltip>Ticket Created</Tooltip>
+
+                        {student?.isHighPriority && (
+                            <div className="rounded-md whitespace-nowrap px-1 py-0.5 border border-red-400 text-red-400 text-xs font-medium">
+                                High Priority
                             </div>
-                        ) : null}
-                        {student?.isSnoozed ? (
-                            <MdSnooze size={14} className="text-red-500" />
-                        ) : null}
+                        )}
                     </div>
-                    <div className="font-medium text-xs text-gray-500">
-                        <p className="flex items-center gap-x-1">
-                            <span>
-                                <MdEmail />
-                            </span>
-                            {student?.user?.email}
-                        </p>
-                    </div>
-                    <div className="font-medium text-xs text-gray-500">
-                        <p className="flex items-center gap-x-1">
-                            <span>
-                                <MdPhone />
-                            </span>
-                            {student?.phone}
-                        </p>
-                    </div>
+                    {call &&
+                        isDateExist &&
+                        (callLog.isAnswered ? (
+                            <div className="rounded-full bg-success p-0.5">
+                                <ImPhone
+                                    title={'Call Made and Answered'}
+                                    className="text-white text-[10px]"
+                                />
+                            </div>
+                        ) : callLog.isAnswered === false ? (
+                            <div className="rounded-full bg-red-700 p-0.5">
+                                <ImPhoneHangUp
+                                    title={'Call Made and Not Answered'}
+                                    className="text-white text-[10px]"
+                                />
+                            </div>
+                        ) : null)}
+                    {student?.hasIssue && (
+                        <div className="group relative ">
+                            <LuFlagTriangleRight className="text-red-600 text-xl" />
+                            <Tooltip position={TooltipPosition.left}>
+                                Flagged Issue
+                            </Tooltip>
+                        </div>
+                    )}
                 </div>
-            </a>
+                <div className="flex items-center gap-x-1.5">
+                    <p className="font-semibold">
+                        {student?.user?.name}{' '}
+                        {student?.familyName?.toLowerCase() === 'na'
+                            ? ''
+                            : student?.familyName}
+                    </p>
+                    {student?.tickets && student?.tickets?.length > 0 ? (
+                        <div className="w-5 h-5 flex items-center justify-center rounded relative group">
+                            <BiMessageRoundedDots className="text-primary text-lg" />
+                            <Tooltip>Ticket Created</Tooltip>
+                        </div>
+                    ) : null}
+                    {student?.isSnoozed ? (
+                        <MdSnooze size={14} className="text-red-500" />
+                    ) : null}
+                </div>
+                <div className="font-medium text-xs text-gray-500">
+                    <p className="flex items-center gap-x-1">
+                        <span>
+                            <MdEmail />
+                        </span>
+                        {student?.user?.email}
+                    </p>
+                </div>
+                <div className="font-medium text-xs text-gray-500">
+                    <p className="flex items-center gap-x-1">
+                        <span>
+                            <MdPhone />
+                        </span>
+                        {student?.phone}
+                    </p>
+                </div>
+            </div>
+
         </Link>
-    )
+    );
 }

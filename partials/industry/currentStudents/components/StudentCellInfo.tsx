@@ -14,35 +14,35 @@ export const StudentCellInfo = ({
 }) => {
     return (
         <Link
-            legacyBehavior
             href={`/portals/industry/students/current-students/${id}/detail`}
+            className="flex items-center gap-x-2"
         >
-            <a className="flex items-center gap-x-2">
-                {student?.user?.name && (
-                    <div className="">
-                        <InitialAvatar
-                            name={student?.user?.name || ''}
-                            imageUrl={student?.user?.avatar || ''}
-                        />
+
+            {student?.user?.name && (
+                <div className="">
+                    <InitialAvatar
+                        name={student?.user?.name || ''}
+                        imageUrl={student?.user?.avatar || ''}
+                    />
+                </div>
+            )}
+            <div>
+                <p className="flex items-center gap-x-1 text-xs">
+                    {student?.studentId}
+                </p>
+                <p className="font-semibold">{student?.user?.name}</p>
+                {wpIndustry?.awaitingAgreementSigned && (
+                    <div className="font-medium text-xs text-gray-500">
+                        <p className="flex items-center gap-x-1">
+                            <span>
+                                <MdEmail />
+                            </span>
+                            {student?.user?.email}
+                        </p>
                     </div>
                 )}
-                <div>
-                    <p className="flex items-center gap-x-1 text-xs">
-                        {student?.studentId}
-                    </p>
-                    <p className="font-semibold">{student?.user?.name}</p>
-                    {wpIndustry?.awaitingAgreementSigned && (
-                        <div className="font-medium text-xs text-gray-500">
-                            <p className="flex items-center gap-x-1">
-                                <span>
-                                    <MdEmail />
-                                </span>
-                                {student?.user?.email}
-                            </p>
-                        </div>
-                    )}
-                </div>
-            </a>
+            </div>
+
         </Link>
-    )
+    );
 }

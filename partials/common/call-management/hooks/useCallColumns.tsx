@@ -1,18 +1,34 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { PlacementCall } from '@types'
-import { Bot, CheckCircle, Clock, Eye, Flag, Headphones, TicketPlus, Trash2 } from 'lucide-react'
+import {
+    Bot,
+    CheckCircle,
+    Clock,
+    Eye,
+    Flag,
+    Headphones,
+    TicketPlus,
+    Trash2,
+    AlertCircle,
+} from 'lucide-react'
 import moment from 'moment'
 import React, { useState } from 'react'
 import { StatusBadge } from '../components/StatusBadge'
+import { cn } from '@utils'
 
-import { TableAction } from '@components'
+import { TableAction, UserCreatedAt, Badge } from '@components'
 
 export const useCallColumns = () => {
     const [selectedCall, setSelectedCall] = useState<PlacementCall | null>(null)
-    const [ticketModalCall, setTicketModalCall] = useState<PlacementCall | null>(null)
-    const [audioModalCall, setAudioModalCall] = useState<PlacementCall | null>(null)
-    const [completeModalCall, setCompleteModalCall] = useState<PlacementCall | null>(null)
-    const [deleteModalCall, setDeleteModalCall] = useState<PlacementCall | null>(null)
+    const [ticketModalCall, setTicketModalCall] =
+        useState<PlacementCall | null>(null)
+    const [audioModalCall, setAudioModalCall] = useState<PlacementCall | null>(
+        null
+    )
+    const [completeModalCall, setCompleteModalCall] =
+        useState<PlacementCall | null>(null)
+    const [deleteModalCall, setDeleteModalCall] =
+        useState<PlacementCall | null>(null)
 
     const handleMarkCompleted = (call: PlacementCall) => {
         setCompleteModalCall(call)
@@ -53,35 +69,56 @@ export const useCallColumns = () => {
             {
                 text: 'View Details',
                 Icon: Eye,
-                onClick: () => setSelectedCall(call)
+                onClick: () => setSelectedCall(call),
             },
             {
                 text: 'Recording',
                 Icon: Headphones,
                 onClick: () => handleListenAudio(call),
-                hidden: isScheduled
+                hidden: isScheduled,
             },
             {
                 text: isCompleted ? 'Completed' : 'Mark Completed',
                 Icon: isCompleted ? CheckCircle : Clock,
                 onClick: () => handleMarkCompleted(call),
                 hidden: isScheduled,
-                color: isCompleted ? 'text-green-600' : ''
+                color: isCompleted ? 'text-green-600' : '',
             },
             {
                 text: hasTicket ? 'Ticket Created' : 'Create Ticket',
                 Icon: TicketPlus,
                 onClick: () => handleCreateTicket(String(call.id), call),
                 hidden: isScheduled,
-                color: hasTicket ? 'text-purple-600' : ''
+                color: hasTicket ? 'text-purple-600' : '',
             },
             {
                 text: 'Delete',
                 Icon: Trash2,
                 onClick: () => setDeleteModalCall(call),
-                color: 'text-red-500'
-            }
+                color: 'text-red-500',
+            },
         ]
+    }
+
+    const getActionColor = (action: string) => {
+        switch (action) {
+            case 'Collect Workplace Information':
+                return 'bg-green-50 border-green-200 text-green-700'
+            case 'Request Missing Documents':
+                return 'bg-green-50 border-green-300 text-green-600'
+            case 'Create Workplace Request':
+                return 'bg-blue-50 border-blue-200 text-blue-700'
+            case 'Provide App Guidance':
+                return 'bg-blue-50 border-blue-300 text-blue-600'
+            case 'Schedule Follow-up Call':
+                return 'bg-purple-50 border-purple-200 text-purple-700'
+            case 'Leave Voicemail':
+                return 'bg-orange-50 border-orange-200 text-orange-700'
+            case 'Update Contact Information':
+                return 'bg-slate-50 border-slate-200 text-slate-600'
+            default:
+                return 'bg-gray-50 border-gray-200 text-gray-600'
+        }
     }
 
     const columns: ColumnDef<PlacementCall>[] = [
@@ -94,12 +131,13 @@ export const useCallColumns = () => {
                 return (
                     <div className="flex items-center gap-3">
                         <div
-                            className={`w-1 h-8 rounded-full shrink-0 ${call.priority === 'high' && !isCompleted
-                                ? 'bg-red-500'
-                                : call.priority === 'medium' && !isCompleted
-                                    ? 'bg-yellow-500'
-                                    : 'bg-gray-200'
-                                }`}
+                            className={`w-1 h-8 rounded-full shrink-0 ${
+                                call.priority === 'high' && !isCompleted
+                                    ? 'bg-red-500'
+                                    : call.priority === 'medium' && !isCompleted
+                                      ? 'bg-yellow-500'
+                                      : 'bg-gray-200'
+                            }`}
                         />
                         <div className="relative shrink-0">
                             <div className="w-9 h-9 rounded-lg bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-sm">
@@ -117,7 +155,9 @@ export const useCallColumns = () => {
                             )}
                         </div>
                         <div className="min-w-0">
-                            <p className={`text-sm font-medium text-gray-900 truncate ${isCompleted ? 'opacity-60' : ''}`}>
+                            <p
+                                className={`text-sm font-medium text-gray-900 truncate ${isCompleted ? 'opacity-60' : ''}`}
+                            >
                                 {call?.student?.user?.name}
                             </p>
                             <p className="text-xs text-gray-500 truncate">
@@ -126,21 +166,9 @@ export const useCallColumns = () => {
                         </div>
                     </div>
                 )
-            }
+            },
         },
-        // {
-        //     header: 'Call Type',
-        //     accessorKey: 'callType',
-        //     cell: ({ row }) => (
-        //         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${row.original.callType === 'inbound'
-        //             ? 'bg-blue-100 text-blue-700 border border-blue-200'
-        //             : 'bg-gray-100 text-gray-600 border border-gray-200'
-        //             }`}>
-        //             {row.original.callType}
-        //         </span>
-        //     ),
-        //     size: 100
-        // },
+
         // {
         //     header: 'Call Reason',
         //     accessorKey: 'callReason',
@@ -176,44 +204,106 @@ export const useCallColumns = () => {
         //     size: 120
         // },
         {
-            header: 'Status',
-            accessorKey: 'status',
-            cell: ({ row }) => <StatusBadge status={row.original.status} size="sm" />,
-            size: 130
+            header: 'Agent',
+            accessorKey: 'agent.name',
+            cell: ({ row }) => {
+                const agent = row.original.agent
+                if (!agent) return <span className="text-gray-400">-</span>
+                return (
+                    <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded flex items-center justify-center bg-purple-100 text-purple-600">
+                            <Bot className="w-3.5 h-3.5" />
+                        </div>
+                        <span className="text-xs font-medium text-gray-700">
+                            {agent.name}
+                        </span>
+                    </div>
+                )
+            },
+            size: 140,
+        },
+        {
+            header: 'Call Reason',
+            accessorKey: 'callReason',
+            cell: ({ row }) => (
+                <span className="px-2.5 py-1 rounded bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-medium whitespace-nowrap">
+                    {row.original.callOutcome || '-'}
+                </span>
+            ),
+            size: 140,
+        },
+        {
+            header: 'Action',
+            accessorKey: 'responsibility',
+            cell: ({ row }) => {
+                const action = row.original?.agent?.responsibility || ''
+                return (
+                    <span
+                        className={cn(
+                            'px-2.5 py-1 rounded border text-[10px] font-bold uppercase tracking-wider whitespace-nowrap',
+                            getActionColor(action)
+                        )}
+                    >
+                        {action || '-'}
+                    </span>
+                )
+            },
+            size: 140,
+        },
+        {
+            header: 'Call Type',
+            accessorKey: 'callType',
+            cell: ({ row }) => {
+                const callType = row.original.callType
+                return (
+                    <Badge
+                        variant={callType === 'inbound' ? 'info' : 'success'}
+                        text={callType}
+                        size="xs"
+                        shape="pill"
+                    />
+                )
+            },
+            size: 100,
         },
         {
             header: 'Answered',
             accessorKey: 'isAnswered',
             cell: ({ row }) => {
                 const isAnswered = row.original.isAnswered
-                if (isAnswered === null) return <span className="text-gray-400">-</span>
+                if (isAnswered === null)
+                    return <span className="text-gray-400">-</span>
                 return (
                     <span
-                        className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${isAnswered
-                            ? 'bg-green-100 text-green-700 border border-green-200'
-                            : 'bg-red-100 text-red-700 border border-red-200'
-                            }`}
+                        className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            isAnswered
+                                ? 'bg-green-100 text-green-700 border border-green-200'
+                                : 'bg-red-100 text-red-700 border border-red-200'
+                        }`}
                     >
                         {isAnswered ? 'Yes' : 'No'}
                     </span>
                 )
-            }
+            },
         },
         {
             header: 'Course',
             accessorKey: 'course.title',
-            cell: ({ row }) => <span className="text-sm text-gray-700">{row.original.course?.title}</span>
+            cell: ({ row }) => (
+                <span className="text-sm text-gray-700">
+                    {row.original.course?.title}
+                </span>
+            ),
         },
+
         {
             header: 'Date',
             accessorKey: 'createdAt',
             cell: ({ row }) => (
                 <div className="flex items-center gap-2">
-                    <p className="text-sm text-gray-700">
-                        {moment(row.original.scheduledAt || row.original.createdAt).format('MMM D, YYYY')}
-                    </p>
+                    <UserCreatedAt createdAt={row.original?.createdAt} />
                 </div>
-            )
+            ),
         },
         {
             header: 'Duration',
@@ -226,7 +316,7 @@ export const useCallColumns = () => {
                             .format('mm:ss')}
                     </span>
                 </div>
-            )
+            ),
         },
         {
             header: 'Actions',
@@ -240,8 +330,8 @@ export const useCallColumns = () => {
                         options={getTableActions(call)}
                     />
                 )
-            }
-        }
+            },
+        },
     ]
 
     return {
@@ -257,6 +347,6 @@ export const useCallColumns = () => {
         deleteModalCall,
         setDeleteModalCall,
         handleCreateTicket,
-        handleActionClick
+        handleActionClick,
     }
 }

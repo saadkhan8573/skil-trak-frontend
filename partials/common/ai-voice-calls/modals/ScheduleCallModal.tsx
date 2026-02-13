@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/ui/dialog'
-import { Student } from '@types'
+import { Student, OptionType } from '@types'
 import { Calendar, CheckCircle2 } from 'lucide-react'
 import { CommonApi } from '@queries'
-import { Button, TextInput } from '@components'
+import { Button, TextInput, Select } from '@components'
 import { useNotification } from '@hooks'
 import { cn } from '@utils'
 import moment from 'moment'
@@ -15,9 +15,15 @@ interface ScheduleCallModalProps {
 
 export const ScheduleCallModal = ({ student, onClose }: ScheduleCallModalProps) => {
     const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null)
+    const [selectedAgentId, setSelectedAgentId] = useState<number | null>(null)
     const [scheduledDate, setScheduledDate] = useState<string>(moment().format('YYYY-MM-DD'))
 
     const [scheduleCall, { isLoading }] = CommonApi.CallManagement.useScheduleAiCallMutation()
+    const { data: agentsData, isLoading: isAgentsLoading } = CommonApi.CallManagement.useGetAgentsListQuery({
+        limit: 100,
+        skip: 0,
+        search: ''
+    })
     const { notification } = useNotification()
 
     useEffect(() => {
@@ -28,8 +34,19 @@ export const ScheduleCallModal = ({ student, onClose }: ScheduleCallModalProps) 
         }
     }, [student])
 
+    useEffect(() => {
+        if (agentsData?.data && agentsData.data.length > 0) {
+            const activeAgent = agentsData.data.find(a => a.isActive)
+            if (activeAgent) {
+                setSelectedAgentId(activeAgent.id)
+            } else {
+                setSelectedAgentId(agentsData.data[0].id)
+            }
+        }
+    }, [agentsData])
+
     const handleScheduleCall = async () => {
-        if (!student || !selectedCourseId || !scheduledDate) return
+        if (!student || !selectedCourseId || !selectedAgentId || !scheduledDate) return
 
         const scheduledAt = `${scheduledDate}T00:00:00`
 
@@ -39,7 +56,8 @@ export const ScheduleCallModal = ({ student, onClose }: ScheduleCallModalProps) 
                 course: selectedCourseId,
                 scheduledAt,
                 phone: student.phone || '',
-                isScheduled: true
+                isScheduled: true,
+                agent: selectedAgentId
             }).unwrap()
 
             notification.success({
@@ -87,7 +105,7 @@ export const ScheduleCallModal = ({ student, onClose }: ScheduleCallModalProps) 
 
                     <div className="space-y-3">
                         <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Schedule Details</span>
-                        <div className="grid grid-cols-1 gap-4">
+                        <div className="grid grid-cols-2 gap-4">
                             <TextInput
                                 name="date"
                                 label="Date"
@@ -97,6 +115,21 @@ export const ScheduleCallModal = ({ student, onClose }: ScheduleCallModalProps) 
                                 onChange={(e: any) => setScheduledDate(e.target.value)}
                                 min={moment().format('YYYY-MM-DD')}
                             />
+                            <div className="space-y-1">
+                                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">Select Agent</span>
+                                <Select
+                                    name="agent"
+                                    placeholder="Select an agent"
+                                    loading={isAgentsLoading}
+                                    options={agentsData?.data?.map(agent => ({
+                                        label: `${agent.name}`,
+                                        value: agent.id
+                                    })) || []}
+                                    value={selectedAgentId}
+                                    onChange={(val: any) => setSelectedAgentId(val)}
+                                    onlyValue
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -151,7 +184,7 @@ export const ScheduleCallModal = ({ student, onClose }: ScheduleCallModalProps) 
                         className="flex-1 bg-[#044866] hover:bg-[#095a7d] text-white"
                         onClick={handleScheduleCall}
                         loading={isLoading}
-                        disabled={!selectedCourseId || !scheduledDate}
+                        disabled={!selectedCourseId || !selectedAgentId || !scheduledDate}
                     >
                         Schedule
                     </Button>

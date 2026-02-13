@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/ui/dialog'
-import { Student } from '@types'
+import { Student, OptionType } from '@types'
 import { Phone, User, X, CheckCircle2 } from 'lucide-react'
 import { CommonApi } from '@queries'
-import { Button } from '@components'
+import { Button, Select } from '@components'
 import { useNotification } from '@hooks'
 import { cn } from '@utils'
 
@@ -14,7 +14,13 @@ interface InitiateCallModalProps {
 
 export const InitiateCallModal = ({ student, onClose }: InitiateCallModalProps) => {
     const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null)
+    const [selectedAgentId, setSelectedAgentId] = useState<number | null>(null)
     const [initiateCall, { isLoading }] = CommonApi.CallManagement.useInitiateAiCallMutation()
+    const { data: agentsData, isLoading: isAgentsLoading } = CommonApi.CallManagement.useGetAgentsListQuery({
+        limit: 100,
+        skip: 0,
+        search: ''
+    })
     const { notification } = useNotification()
 
     useEffect(() => {
@@ -25,11 +31,22 @@ export const InitiateCallModal = ({ student, onClose }: InitiateCallModalProps) 
         }
     }, [student])
 
+    useEffect(() => {
+        if (agentsData?.data && agentsData.data.length > 0) {
+            const activeAgent = agentsData.data.find(a => a.isActive)
+            if (activeAgent) {
+                setSelectedAgentId(activeAgent.id)
+            } else {
+                setSelectedAgentId(agentsData.data[0].id)
+            }
+        }
+    }, [agentsData])
+
     const handleInitiateCall = async () => {
-        if (!student || !selectedCourseId) return
+        if (!student || !selectedCourseId || !selectedAgentId) return
 
         try {
-            await initiateCall({ studentId: student.id, courseId: selectedCourseId }).unwrap()
+            await initiateCall({ studentId: student.id, courseId: selectedCourseId, agent: selectedAgentId }).unwrap()
             notification.success({
                 title: 'Success',
                 description: 'Call initiated successfully!',
@@ -70,6 +87,22 @@ export const InitiateCallModal = ({ student, onClose }: InitiateCallModalProps) 
                             <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Phone</span>
                             <p className="text-sm font-medium text-gray-900">{student?.phone || 'N/A'}</p>
                         </div>
+                    </div>
+
+                    <div className="space-y-3">
+                        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Select Agent</span>
+                        <Select
+                            name="agent"
+                            placeholder="Select an agent"
+                            loading={isAgentsLoading}
+                            options={agentsData?.data?.map(agent => ({
+                                label: `${agent.name} (${agent.responsibility})`,
+                                value: agent.id
+                            })) || []}
+                            value={selectedAgentId}
+                            onChange={(val: any) => setSelectedAgentId(val)}
+                            onlyValue
+                        />
                     </div>
 
                     <div className="space-y-3">
@@ -123,7 +156,7 @@ export const InitiateCallModal = ({ student, onClose }: InitiateCallModalProps) 
                         className="flex-1 bg-[#044866] hover:bg-[#095a7d] text-white"
                         onClick={handleInitiateCall}
                         loading={isLoading}
-                        disabled={!selectedCourseId}
+                        disabled={!selectedCourseId || !selectedAgentId}
                     >
                         Proceed
                     </Button>

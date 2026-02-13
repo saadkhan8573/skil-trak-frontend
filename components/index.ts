@@ -50,6 +50,7 @@ export * from './ErrorBoundary'
 export * from './MasonryGrid'
 export * from './StarRating'
 export * from './OutsideClickHandler'
+export * from './Games'
 
 // export * from './Pagination'
 export * from './PopUp'

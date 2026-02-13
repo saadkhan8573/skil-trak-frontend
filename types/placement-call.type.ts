@@ -1,8 +1,10 @@
 import { Course } from '@redux/queryTypes'
 import { BaseResponse } from './base.type'
 import { Student } from './user.type'
+import { AgentConfigurationTypes } from './agent-configuration'
 
 export interface PlacementCall extends BaseResponse {
+    agent: AgentConfigurationTypes
     id: number
     summary: string
     isAnswered: boolean | null
@@ -10,10 +12,10 @@ export interface PlacementCall extends BaseResponse {
     placementType: string
     status: 'pending' | 'completed' | 'scheduled'
     scheduledAt: string
-    callOutcome: string | null
+    callOutcome: string
     callType: 'outbound' | 'inbound'
     callDuration: number
-    errorMessage: string | null
+    errorMessage: string
     student: Student
     course: Course
     priority?: 'low' | 'medium' | 'high'

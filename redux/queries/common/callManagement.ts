@@ -65,12 +65,12 @@ export const callManagementLoginEndpoints = (
 
     initiateAiCall: builder.mutation<
         any,
-        { studentId: number; courseId: number }
+        { studentId: number; courseId: number; agent?: number }
     >({
-        query: ({ studentId, courseId }) => ({
+        query: ({ studentId, courseId, agent }) => ({
             url: `ai-voice-calls/student/${studentId}/make-call`,
             method: 'POST',
-            body: { courseId },
+            body: { courseId, agent },
         }),
         invalidatesTags: ['CallManagement'],
     }),
@@ -83,12 +83,13 @@ export const callManagementLoginEndpoints = (
             scheduledAt: string
             phone: string
             isScheduled: boolean
+            agent?: number
         }
     >({
-        query: ({ studentId, course, scheduledAt, phone, isScheduled }) => ({
+        query: ({ studentId, course, scheduledAt, phone, isScheduled, agent }) => ({
             url: `ai-voice-calls/student/${studentId}/schedule-call`,
             method: 'POST',
-            body: { course, scheduledAt, phone, isScheduled },
+            body: { course, scheduledAt, phone, isScheduled, agent },
         }),
         invalidatesTags: ['CallManagement'],
     }),
@@ -100,6 +101,7 @@ export const callManagementLoginEndpoints = (
             courseId: number
             scheduledAt: string
             isScheduled: boolean
+            agent?: number
         }
     >({
         query: (body) => ({
@@ -128,10 +130,13 @@ export const callManagementLoginEndpoints = (
         invalidatesTags: ['CallManagement'],
     }),
 
-    getAgentsList: builder.query<PaginatedResponse<AgentConfigurationTypes>, PaginationWithSearch>({
+    getAgentsList: builder.query<
+        PaginatedResponse<AgentConfigurationTypes>,
+        PaginationWithSearch
+    >({
         query: (params) => ({
             url: `ai-voice-calls/agents`,
-            params
+            params,
         }),
         providesTags: ['CallManagement'],
     }),

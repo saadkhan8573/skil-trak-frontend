@@ -252,7 +252,7 @@ export function SectorCard({
                                                     ? 'Supervisor'
                                                     : 'Supervisors'}
                                             </motion.button>
-                                            {initiatedESign &&
+                                            {/* {initiatedESign &&
                                                 !hasPendingActions && (
                                                     <motion.button
                                                         whileHover={{
@@ -273,7 +273,7 @@ export function SectorCard({
                                                         <Trash2 className="w-3.5 h-3.5" />
                                                         CANCEL E-SIGN
                                                     </motion.button>
-                                                )}
+                                                )} */}
                                         </>
                                     )}
                                 </>

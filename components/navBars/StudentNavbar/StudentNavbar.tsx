@@ -99,7 +99,6 @@ export const StudentNavbar = () => {
                     ))}
                 </ul>
             </Desktop>
-
             <Mobile>
                 <ul
                     className="w-screen overflow-auto custom-scrollbar flex justify-evenly py-1.5 fixed bottom-0 left-0 right-0 bg-white z-30"
@@ -108,94 +107,86 @@ export const StudentNavbar = () => {
                     }}
                 >
                     <li>
-                        <Link legacyBehavior href="/portals/student">
-                            <a
-                                className={`${
-                                    router.pathname == '/student'
-                                        ? 'bg-indigo-100 text-indigo-700'
-                                        : 'text-slate-700'
-                                } ${defaultClasses} hover:bg-indigo-100 hover:text-indigo-700`}
-                            >
-                                <div>
-                                    <MdSpaceDashboard size={19} />
-                                </div>
-                                <div className="text-[11px] font-semibold">
-                                    Dashboard
-                                </div>
-                            </a>
-                        </Link>
-                    </li>
+                        <Link href="/portals/student" className={`${
+                            router.pathname == '/student'
+                                ? 'bg-indigo-100 text-indigo-700'
+                                : 'text-slate-700'
+                        } ${defaultClasses} hover:bg-indigo-100 hover:text-indigo-700`}>
 
-                    <li>
-                        <Link legacyBehavior href="/portals/student/workplace">
-                            <a
-                                className={`${
-                                    router.pathname ==
-                                    '/portals/student/workplace'
-                                        ? 'bg-green-100 text-green-700'
-                                        : 'text-slate-700'
-                                } ${defaultClasses} hover:bg-green-100 hover:text-green-700`}
-                                id="workplace"
-                            >
-                                <span>
-                                    <FaBriefcase size={19} />
-                                </span>
-                                <span className="text-[11px] font-semibold">
-                                    Workplace
-                                </span>
-                            </a>
+                            <div>
+                                <MdSpaceDashboard size={19} />
+                            </div>
+                            <div className="text-[11px] font-semibold">
+                                Dashboard
+                            </div>
+
                         </Link>
                     </li>
 
                     <li>
                         <Link
-                            legacyBehavior
+                            href="/portals/student/workplace"
+                            className={`${
+                                router.pathname ==
+                                '/portals/student/workplace'
+                                    ? 'bg-green-100 text-green-700'
+                                    : 'text-slate-700'
+                            } ${defaultClasses} hover:bg-green-100 hover:text-green-700`}
+                            id="workplace">
+
+                            <span>
+                                <FaBriefcase size={19} />
+                            </span>
+                            <span className="text-[11px] font-semibold">
+                                Workplace
+                            </span>
+
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link
                             href="/portals/student/assessments"
-                        >
-                            <a
-                                className={`${
-                                    router.pathname ==
-                                    '/portals/student/assessments'
-                                        ? 'bg-orange-100 text-orange-700'
-                                        : 'text-slate-700'
-                                } ${defaultClasses} hover:bg-orange-100 hover:text-orange-700`}
-                                id="assessments"
-                            >
-                                <span>
-                                    <MdAssessment size={19} />
-                                </span>
-                                <span className="text-[11px] font-semibold">
-                                    Assessments
-                                </span>
-                            </a>
+                            className={`${
+                                router.pathname ==
+                                '/portals/student/assessments'
+                                    ? 'bg-orange-100 text-orange-700'
+                                    : 'text-slate-700'
+                            } ${defaultClasses} hover:bg-orange-100 hover:text-orange-700`}
+                            id="assessments">
+
+                            <span>
+                                <MdAssessment size={19} />
+                            </span>
+                            <span className="text-[11px] font-semibold">
+                                Assessments
+                            </span>
+
                         </Link>
                     </li>
 
                     <li>
                         <Link
-                            legacyBehavior
                             href="/portals/student/talent-pool"
-                        >
-                            <a
-                                className={`${
-                                    router.pathname ==
-                                    '/portals/student/talent-pool'
-                                        ? 'bg-orange-100 text-orange-700'
-                                        : 'text-slate-700'
-                                } ${defaultClasses} hover:bg-orange-100 hover:text-orange-700`}
-                                id="talent-pool"
-                            >
-                                <span>
-                                    <LiaCertificateSolid size={19} />
-                                </span>
-                                <span className="text-[11px] font-semibold whitespace-pre">
-                                    Talent Pool
-                                </span>
-                            </a>
+                            className={`${
+                                router.pathname ==
+                                '/portals/student/talent-pool'
+                                    ? 'bg-orange-100 text-orange-700'
+                                    : 'text-slate-700'
+                            } ${defaultClasses} hover:bg-orange-100 hover:text-orange-700`}
+                            id="talent-pool">
+
+                            <span>
+                                <LiaCertificateSolid size={19} />
+                            </span>
+                            <span className="text-[11px] font-semibold whitespace-pre">
+                                Talent Pool
+                            </span>
+
                         </Link>
                     </li>
                 </ul>
             </Mobile>
         </>
-    )
+    );
 }

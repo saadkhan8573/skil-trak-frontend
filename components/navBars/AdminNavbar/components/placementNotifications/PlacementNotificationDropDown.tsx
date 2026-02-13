@@ -48,12 +48,12 @@ export const PlacementNotificationDropDown = ({
             <div className="py-2 px-4 border-b flex justify-between items-center">
                 <Typography variant="label">Placement Notifications</Typography>
                 <Link
-                    legacyBehavior
                     href={`/portals/rto/notifications/placement-notifications`}
+                    className="text-sm text-primary font-semibold cursor-pointer"
                 >
-                    <a className="text-sm text-primary font-semibold cursor-pointer">
+                    
                         View All
-                    </a>
+                    
                 </Link>
             </div>
             {data?.isLoading ? (
@@ -86,5 +86,5 @@ export const PlacementNotificationDropDown = ({
                 <NoData text="No New Placement Notifications were Found" />
             )}
         </div>
-    )
+    );
 }

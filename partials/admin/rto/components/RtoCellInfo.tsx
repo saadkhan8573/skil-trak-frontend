@@ -21,28 +21,28 @@ export const RtoCellInfo = ({ rto, short }: { rto: Rto; short?: boolean }) => {
         isHod: subadmin?.departmentMember?.isHod,
     })
     return (
-        <Link legacyBehavior href={`/portals/admin/rto/${rto?.id}?tab=sectors`}>
-            <a
-                onClick={() => {
-                    sessionStorage.setItem('rto', `${router.pathname}?${query}`)
-                }}
-                className="flex items-center gap-x-2 relative z-10"
-            >
-                <div className="shadow-inner-image rounded-full">
-                    {rto?.user?.name && (
-                        <InitialAvatar
-                            name={rto?.user?.name}
-                            imageUrl={rto?.user?.avatar}
-                            socketId={rto?.user?.socketId}
-                        />
-                    )}
-                </div>
-                <div>
-                    <p className={`${short ? 'font-medium' : 'font-semibold'}`}>
-                        {rto?.user?.name}
-                    </p>
-                </div>
-            </a>
+        <Link
+            href={`/portals/admin/rto/${rto?.id}?tab=sectors`}
+            onClick={() => {
+                sessionStorage.setItem('rto', `${router.pathname}?${query}`)
+            }}
+            className="flex items-center gap-x-2 relative z-10">
+
+            <div className="shadow-inner-image rounded-full">
+                {rto?.user?.name && (
+                    <InitialAvatar
+                        name={rto?.user?.name}
+                        imageUrl={rto?.user?.avatar}
+                        socketId={rto?.user?.socketId}
+                    />
+                )}
+            </div>
+            <div>
+                <p className={`${short ? 'font-medium' : 'font-semibold'}`}>
+                    {rto?.user?.name}
+                </p>
+            </div>
+
         </Link>
-    )
+    );
 }

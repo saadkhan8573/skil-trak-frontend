@@ -12,58 +12,55 @@ export const HodCoordinatorCell = ({ subAdmin }: { subAdmin: SubAdmin }) => {
     const query = queryToUrl(router.query as QueryType)
     return (
         <Link
-            legacyBehavior
             href={`/portals/sub-admin/department/${subAdmin?.id}`}
-        >
-            <a
-                onClick={() => {
-                    sessionStorage.setItem(
-                        'subadmin',
-                        `${router.pathname}?${query}`
-                    )
-                }}
-                className="flex items-center gap-x-2"
-            >
-                <div className="shadow-inner-image rounded-full relative">
-                    {subAdmin?.user?.name && (
-                        <InitialAvatar
-                            name={subAdmin?.user.name}
-                            imageUrl={subAdmin?.user?.avatar}
-                        />
+            onClick={() => {
+                sessionStorage.setItem(
+                    'subadmin',
+                    `${router.pathname}?${query}`
+                )
+            }}
+            className="flex items-center gap-x-2">
+
+            <div className="shadow-inner-image rounded-full relative">
+                {subAdmin?.user?.name && (
+                    <InitialAvatar
+                        name={subAdmin?.user.name}
+                        imageUrl={subAdmin?.user?.avatar}
+                    />
+                )}
+            </div>
+            <div>
+                <div className="flex items-center gap-x-2">
+                    <p className="font-semibold">{subAdmin?.user?.name}</p>
+                    {subAdmin?.canAdmin && (
+                        <RiAdminLine className="text-red-500" size={18} />
+                    )}
+                    {!subAdmin?.user?.after_hours_access && (
+                        <div className="relative group">
+                            <TbLogin className="text-error" size={18} />
+                            <Tooltip position={TooltipPosition.left}>
+                                Login disabled after business hours
+                            </Tooltip>
+                        </div>
                     )}
                 </div>
-                <div>
-                    <div className="flex items-center gap-x-2">
-                        <p className="font-semibold">{subAdmin?.user?.name}</p>
-                        {subAdmin?.canAdmin && (
-                            <RiAdminLine className="text-red-500" size={18} />
-                        )}
-                        {!subAdmin?.user?.after_hours_access && (
-                            <div className="relative group">
-                                <TbLogin className="text-error" size={18} />
-                                <Tooltip position={TooltipPosition.left}>
-                                    Login disabled after business hours
-                                </Tooltip>
-                            </div>
-                        )}
-                    </div>
 
-                    <div className="font-medium text-xs text-gray-500">
-                        <p className="flex items-center gap-x-1">
-                            <span>
-                                <MdEmail />
-                            </span>
-                            {subAdmin?.user?.email}
-                        </p>
-                        <p className="flex items-center gap-x-1">
-                            <span>
-                                <MdPhoneIphone />
-                            </span>
-                            {subAdmin?.phone}
-                        </p>
-                    </div>
+                <div className="font-medium text-xs text-gray-500">
+                    <p className="flex items-center gap-x-1">
+                        <span>
+                            <MdEmail />
+                        </span>
+                        {subAdmin?.user?.email}
+                    </p>
+                    <p className="flex items-center gap-x-1">
+                        <span>
+                            <MdPhoneIphone />
+                        </span>
+                        {subAdmin?.phone}
+                    </p>
                 </div>
-            </a>
+            </div>
+
         </Link>
-    )
+    );
 }

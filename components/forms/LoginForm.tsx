@@ -75,17 +75,15 @@ export const LoginForm = ({
                         Login
                     </Button>
 
-                    <Link legacyBehavior href="/auth/forgot-password">
-                        <a
-                            className={
-                                'text-sm font-semibold underline text-muted hover:text-link transition-all duration-300'
-                            }
-                        >
+                    <Link href="/auth/forgot-password" className={
+                        'text-sm font-semibold underline text-muted hover:text-link transition-all duration-300'
+                    }>
+                        
                             Forgot Password?
-                        </a>
+                        
                     </Link>
                 </div>
             </form>
         </FormProvider>
-    )
+    );
 }

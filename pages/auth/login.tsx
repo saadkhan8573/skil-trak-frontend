@@ -146,7 +146,6 @@ const Login: NextPage = () => {
             {rejected && <AccountStatus status={UserStatus.Rejected} />}
             {archived && <AccountStatus status={UserStatus.Archived} />}
             {blocked && <AccountStatus status={UserStatus.Blocked} />}
-
             <Head>
                 <title>Login</title>
                 <meta
@@ -157,7 +156,7 @@ const Login: NextPage = () => {
             </Head>
             {!requested && !rejected && !archived && !blocked && (
                 // <div className="w-4/5 mx-auto flex items-center justify-between">
-                <div className="flex flex-col-reverse md:flex-row gap-y-6 md:items-center gap-x-6 w-full ">
+                (<div className="flex flex-col-reverse md:flex-row gap-y-6 md:items-center gap-x-6 w-full ">
                     <div className="signup-bg overflow-hidden  w-full md:w-1/2">
                         {/* QR CODE */}
                         <div className="flex flex-col items-center justify-center gap-1.5 w-full mt-8">
@@ -268,19 +267,19 @@ const Login: NextPage = () => {
                             <div className="mt-16">
                                 <Typography variant="small" medium>
                                     Don&apos;t have account?{' '}
-                                    <Link legacyBehavior href="/auth/signup">
-                                        <a className="text-link">
+                                    <Link href="/auth/signup" className="text-link">
+                                        
                                             Create Account
-                                        </a>
+                                        
                                     </Link>
                                 </Typography>
                             </div>
                         ) : null}
                     </div>
-                </div>
+                </div>)
             )}
         </>
-    )
+    );
 }
 
 export default Login

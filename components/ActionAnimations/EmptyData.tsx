@@ -64,11 +64,7 @@ export const EmptyData = ({
                 </p>
                 {actionLink && (
                     <div className="text-sm mt-4">
-                        <Link
-                            legacyBehavior
-                            href={actionLink}
-                            className="text-blue-500"
-                        >
+                        <Link href={actionLink} className="text-blue-500">
                             Click Here
                         </Link>
                         {`to ${actionText || 'add now'}`}
@@ -76,5 +72,5 @@ export const EmptyData = ({
                 )}
             </div>
         </div>
-    )
+    );
 }

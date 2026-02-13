@@ -48,7 +48,6 @@ export const MessageDropDown = ({
             <div className="py-2 px-4 border-b flex justify-between items-center">
                 <Typography variant="label">Your Messages</Typography>
                 <Link
-                    legacyBehavior
                     href={
                         getRole?.role === 'admin'
                             ? `/portals/admin/e-mails?tab=all-mails`
@@ -58,13 +57,13 @@ export const MessageDropDown = ({
                                   getRole?.role
                               )}/notifications/e-mails?tab=all-mails`
                     }
+                    className="text-sm text-primary font-semibold cursor-pointer"
                 >
-                    <a className="text-sm text-primary font-semibold cursor-pointer">
+                    
                         View All
-                    </a>
+                    
                 </Link>
             </div>
-
             {data.isLoading ? (
                 <PulseLoader color={'white'} size={10} />
             ) : data?.data?.length > 0 ? (
@@ -92,5 +91,5 @@ export const MessageDropDown = ({
                 <NoData text="No New Emails were Found" />
             )}
         </div>
-    )
+    );
 }

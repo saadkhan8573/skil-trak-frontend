@@ -46,10 +46,10 @@ const RecentJobs = () => {
                                 Recent Jobs From Our Partners
                             </Typography>
                             <div className="flex justify-end">
-                                <Link href={'/jobs'} legacyBehavior>
-                                    <a className="underline text-primary text-[15px] font-bold">
+                                <Link href={'/jobs'} className="underline text-primary text-[15px] font-bold">
+                                    
                                         View All Job
-                                    </a>
+                                    
                                 </Link>
                             </div>
                         </div>
@@ -62,7 +62,7 @@ const RecentJobs = () => {
                 </div>
             ) : null}
         </Waypoint>
-    )
+    );
 }
 
 export default RecentJobs

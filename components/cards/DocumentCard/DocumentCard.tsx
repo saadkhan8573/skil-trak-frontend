@@ -12,24 +12,24 @@ export const DocumentCard = ({
     idx,
 }: DocumentCardProps) => {
     return (
-        <Link legacyBehavior href="#">
-            <a className="rounded-2xl bg-white shadow-xl inline-block overflow-hidden">
-                {/* <Image
-                    src={`https://loremflickr.com/180/100/work?random=${idx}`}
-                    width={180}
-                    height={100}
-                /> */}
-                <div
-                    className="w-full h-32"
-                    style={{
-                        backgroundImage: `url(https://loremflickr.com/180/100/work?random=${idx})`,
-                    }}
-                ></div>
-                <div className="px-2 pb-2">
-                    <p className="text-sm font-medium">{title}</p>
-                    <p className="text-[11px]">{description}</p>
-                </div>
-            </a>
+        <Link href="#" className="rounded-2xl bg-white shadow-xl inline-block overflow-hidden">
+
+            {/* <Image
+                src={`https://loremflickr.com/180/100/work?random=${idx}`}
+                width={180}
+                height={100}
+            /> */}
+            <div
+                className="w-full h-32"
+                style={{
+                    backgroundImage: `url(https://loremflickr.com/180/100/work?random=${idx})`,
+                }}
+            ></div>
+            <div className="px-2 pb-2">
+                <p className="text-sm font-medium">{title}</p>
+                <p className="text-[11px]">{description}</p>
+            </div>
+
         </Link>
-    )
+    );
 }

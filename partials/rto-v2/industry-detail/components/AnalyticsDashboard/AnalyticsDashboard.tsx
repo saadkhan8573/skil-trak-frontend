@@ -99,6 +99,15 @@ export function AnalyticsDashboard() {
             percentage: 2.1,
             color: '#F7A619',
         },
+        {
+            title: 'Waiting For RTO',
+            value: counts?.waitingForRtoCount || 0,
+            icon: Calendar,
+            gradient: 'from-[#8B5CF6] to-[#7C3AED]',
+            trend: 'neutral',
+            color: '#8B5CF6',
+            targetTab: 'students',
+        },
     ]
 
     const dispatch = useAppDispatch()
@@ -110,30 +119,28 @@ export function AnalyticsDashboard() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 {/* Left Side: Stats Cards - Spans 2 columns on LG using MasonryGrid */}
-                <div className="lg:col-span-2">
-                    <MasonryGrid columnWidth="50%" gutterWidth={10} gutterHeight={10}>
-                        {analyticsCards.map((card, index) => (
-                            <div
-                                key={index}
-                                className="cursor-pointer"
-                                onClick={() => {
-                                    if (
-                                        (card as any).targetTab ||
-                                        (card as any).targetSection
-                                    ) {
-                                        dispatch(
-                                            setNavigationTarget({
-                                                tab: (card as any).targetTab,
-                                                section: (card as any).targetSection,
-                                            })
-                                        )
-                                    }
-                                }}
-                            >
-                                <AnalyticsCard card={card as any} index={index} />
-                            </div>
-                        ))}
-                    </MasonryGrid>
+                <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2.5">
+                    {analyticsCards.map((card, index) => (
+                        <div
+                            key={index}
+                            className="cursor-pointer"
+                            onClick={() => {
+                                if (
+                                    (card as any).targetTab ||
+                                    (card as any).targetSection
+                                ) {
+                                    dispatch(
+                                        setNavigationTarget({
+                                            tab: (card as any).targetTab,
+                                            section: (card as any).targetSection,
+                                        })
+                                    )
+                                }
+                            }}
+                        >
+                            <AnalyticsCard card={card as any} index={index} />
+                        </div>
+                    ))}
                 </div>
 
                 {/* Right Side: Courses Quick View - Spans 1 column on LG */}

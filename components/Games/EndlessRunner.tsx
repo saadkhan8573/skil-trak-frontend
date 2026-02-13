@@ -67,6 +67,7 @@ export const EndlessRunner: React.FC = () => {
         setIsGameStarted(true)
         setIsGameOver(false)
         setScore(0)
+        scoreRef.current = 0
         setPlayerY(0)
         setObstacles([])
         setIsJumping(false)
@@ -103,27 +104,86 @@ export const EndlessRunner: React.FC = () => {
         return () => window.removeEventListener('keydown', handleKeyPress)
     }, [jump])
 
-    // Game loop
+    const scoreRef = useRef(0)
+
+    // Game loop using requestAnimationFrame
     useEffect(() => {
-        const gameLoop = setInterval(() => {
-            frameRef.current += 1
+        let animationFrameId: number
 
-            setPlayerY((prevY) => {
-                let newY = prevY + velocityRef.current
-                velocityRef.current -= GRAVITY
-                if (newY <= 0) {
-                    newY = 0
-                    velocityRef.current = 0
-                    setIsJumping(false)
-                }
-                return newY
-            })
-
+        const update = () => {
             if (isGameStarted && !isGameOver) {
+                frameRef.current += 1
+
+                // Update score
+                scoreRef.current += 1
+                const currentScore = Math.floor(scoreRef.current / 6)
+                setScore(scoreRef.current)
+
+                // Increase speed every 200 points
+                if (currentScore > 0 && currentScore % 200 === 0) {
+                    setGameSpeed((prev) => {
+                        const newSpeed = 4 + Math.floor(currentScore / 200) * 1.0
+                        return Math.min(newSpeed, 12) // Slightly higher cap too
+                    })
+                }
+
+                // Update Player Y
+                setPlayerY((prevY) => {
+                    let newY = prevY + velocityRef.current
+                    velocityRef.current -= GRAVITY
+                    if (newY <= 0) {
+                        newY = 0
+                        velocityRef.current = 0
+                        setIsJumping(false)
+                    }
+                    return newY
+                })
+
+                // Update Obstacles and check collision
                 setObstacles((prev) => {
                     const updated = prev
                         .map((obs) => ({ ...obs, x: obs.x - gameSpeed }))
                         .filter((obs) => obs.x > -100)
+
+                    // Collision Detection (current values from refs/state inside the update loop)
+                    // Note: playerY here is from the "prev" render, so we use a small buffer
+                    const pY = playerY
+                    const playerRect = {
+                        left: 100 + 15,
+                        right: 100 + PLAYER_SIZE - 15,
+                        top: GAME_HEIGHT - GROUND_HEIGHT - pY - PLAYER_SIZE + 10,
+                        bottom: GAME_HEIGHT - GROUND_HEIGHT - pY - 5,
+                    }
+
+                    for (const obs of updated) {
+                        const obsRect = {
+                            left: obs.x + 5,
+                            right: obs.x + 40 - 5,
+                            top: GAME_HEIGHT - GROUND_HEIGHT - obs.height,
+                            bottom: GAME_HEIGHT - GROUND_HEIGHT,
+                        }
+
+                        if (
+                            playerRect.right > obsRect.left &&
+                            playerRect.left < obsRect.right &&
+                            playerRect.bottom > obsRect.top &&
+                            playerRect.top < obsRect.bottom
+                        ) {
+                            setIsGameOver(true)
+                            const finalScore = Math.floor(scoreRef.current / 6)
+                            setHighScore((current) => {
+                                if (finalScore > current) {
+                                    localStorage.setItem(
+                                        'endlessRunnerHighScore',
+                                        finalScore.toString()
+                                    )
+                                    return finalScore
+                                }
+                                return current
+                            })
+                        }
+                    }
+
                     return updated
                 })
 
@@ -137,14 +197,14 @@ export const EndlessRunner: React.FC = () => {
                             height,
                         },
                     ])
-                    const minGap = 50
-                    const maxGap = 100
+                    const minGap = 85 // Reduced by 30% from 120
+                    const maxGap = 175 // Reduced by 30% from 250
                     const randomGap = minGap + Math.random() * (maxGap - minGap)
                     nextObstacleFrameRef.current = frameRef.current + randomGap
                 }
-                setScore((prev) => prev + 1)
             }
 
+            // Always update clouds
             setClouds((prev) => {
                 const moved = prev.map((c) => ({
                     ...c,
@@ -163,10 +223,20 @@ export const EndlessRunner: React.FC = () => {
                 }
                 return filtered
             })
-        }, 1000 / 60)
 
-        return () => clearInterval(gameLoop)
-    }, [isGameStarted, isGameOver, gameSpeed])
+            animationFrameId = requestAnimationFrame(update)
+        }
+
+        animationFrameId = requestAnimationFrame(update)
+        return () => cancelAnimationFrame(animationFrameId)
+    }, [isGameStarted, isGameOver, gameSpeed, playerY])
+
+    // Sync score ref with start game
+    useEffect(() => {
+        if (isGameStarted && !isGameOver && score === 0) {
+            scoreRef.current = 0
+        }
+    }, [isGameStarted, isGameOver, score])
 
     const displayScore = Math.floor(score / 6)
 
@@ -250,7 +320,7 @@ export const EndlessRunner: React.FC = () => {
                         {obstacles.map((obstacle) => (
                             <div
                                 key={obstacle.id}
-                                className="absolute bg-rose-500 rounded-lg shadow-lg border-2 border-rose-300"
+                                className="absolute flex flex-col items-center justify-end"
                                 style={{
                                     width: 40,
                                     height: obstacle.height,
@@ -258,7 +328,23 @@ export const EndlessRunner: React.FC = () => {
                                     bottom: GROUND_HEIGHT,
                                     zIndex: 15,
                                 }}
-                            />
+                            >
+                                {/* Crystal Shape */}
+                                <div
+                                    className="w-full h-full bg-gradient-to-t from-rose-600 to-rose-400 relative"
+                                    style={{
+                                        clipPath:
+                                            'polygon(50% 0%, 100% 20%, 100% 100%, 0% 100%, 0% 20%)',
+                                        boxShadow:
+                                            'inset 0 0 15px rgba(255,255,255,0.3)',
+                                    }}
+                                >
+                                    <div className="absolute inset-0 bg-white/10 w-1/2 h-full skew-x-[-10deg] translate-x-[-20%]" />
+                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[2px] bg-rose-200 opacity-50" />
+                                </div>
+                                {/* Base glow */}
+                                <div className="absolute -bottom-1 w-full h-2 bg-rose-500/40 blur-sm rounded-full" />
+                            </div>
                         ))}
 
                         <div

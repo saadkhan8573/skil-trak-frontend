@@ -148,7 +148,7 @@ export const AssessmentTools = ({
             </div>
             <div>
                 <Typography variant="label" color="text-blue-500">
-                    <Link legacyBehavior href="#">
+                    <Link href="#">
                         I want to access my assessment tool for enrolled course
                     </Link>
                 </Typography>
@@ -156,5 +156,5 @@ export const AssessmentTools = ({
         </div>
     ) : (
         <EmptyData />
-    )
+    );
 }

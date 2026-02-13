@@ -27,54 +27,54 @@ export const FigureCard = ({
     Icon,
 }: FigureCardProps) => {
     return (
-        <Link legacyBehavior href={link || '#'}>
-            <a
-                className="w-full"
-                onClick={() => {
-                    if (onClick) {
-                        onClick()
-                    }
-                }}
-            >
-                <Card>
-                    <div className="flex justify-between">
-                        {Icon && !imageUrl && (
-                            <Icon
-                                className={`${
-                                    iconClassName || 'text-gray-400'
-                                } `}
-                                size={40}
-                            />
-                        )}
-                        {imageUrl && !Icon && (
-                            <div className="flex items-center gap-x-2 justify-between">
-                                <Image
-                                    src={imageUrl || ''}
-                                    alt={title}
-                                    width={48}
-                                    height={48}
-                                />
-                            </div>
-                        )}
+        <Link
+            href={link || '#'}
+            className="w-full"
+            onClick={() => {
+                if (onClick) {
+                    onClick()
+                }
+            }}>
 
-                        <div className="flex flex-col items-end">
-                            {loading ? (
-                                <div className="h-[36px]">
-                                    <PuffLoader size={28} />
-                                </div>
-                            ) : (
-                                <p className="text-3xl font-bold">
-                                    {/* <CountUp end={count} /> */}
-                                    {count || 0}
-                                </p>
-                            )}
-                            <p className="text-xs text-gray-500 leading-3 uppercase">
-                                {title}
-                            </p>
+            <Card>
+                <div className="flex justify-between">
+                    {Icon && !imageUrl && (
+                        <Icon
+                            className={`${
+                                iconClassName || 'text-gray-400'
+                            } `}
+                            size={40}
+                        />
+                    )}
+                    {imageUrl && !Icon && (
+                        <div className="flex items-center gap-x-2 justify-between">
+                            <Image
+                                src={imageUrl || ''}
+                                alt={title}
+                                width={48}
+                                height={48}
+                            />
                         </div>
+                    )}
+
+                    <div className="flex flex-col items-end">
+                        {loading ? (
+                            <div className="h-[36px]">
+                                <PuffLoader size={28} />
+                            </div>
+                        ) : (
+                            <p className="text-3xl font-bold">
+                                {/* <CountUp end={count} /> */}
+                                {count || 0}
+                            </p>
+                        )}
+                        <p className="text-xs text-gray-500 leading-3 uppercase">
+                            {title}
+                        </p>
                     </div>
-                </Card>
-            </a>
+                </div>
+            </Card>
+
         </Link>
-    )
+    );
 }

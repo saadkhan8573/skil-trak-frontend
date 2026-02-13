@@ -608,16 +608,16 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
                                 <>
                                     I agree with{' '}
                                     <Link
-                                        legacyBehavior
                                         href="/terms-and-conditions"
+                                        className="text-link"
                                     >
-                                        <a className="text-link">Terms</a>
+                                        Terms
                                     </Link>{' '}
                                     {'&'}{' '}
-                                    <Link legacyBehavior href="/privacy-policy">
-                                        <a className="text-link">
+                                    <Link href="/privacy-policy" className="text-link">
+                                        
                                             Privacy Policy
-                                        </a>
+                                        
                                     </Link>
                                 </>
                             }
@@ -637,5 +637,5 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
                 </div>
             </form>
         </FormProvider>
-    )
+    );
 }

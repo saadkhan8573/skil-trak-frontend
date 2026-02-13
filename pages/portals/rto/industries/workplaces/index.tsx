@@ -73,19 +73,19 @@ const RtoWorkplaces: NextPageWithLayout = (props: Props) => {
 
                 return (
                     <Link
-                        legacyBehavior
                         href={`/portals/rto/industries/workplaces/${row?.original?.id}`}
+                        className="flex items-center gap-x-2"
                     >
-                        <a className="flex items-center gap-x-2">
-                            <div className="shadow-inner-image rounded-full relative">
-                                <InitialAvatar name={name} imageUrl={avatar} />
-                            </div>
-                            <div>
-                                <p className="font-semibold">{name}</p>
-                            </div>
-                        </a>
+
+                        <div className="shadow-inner-image rounded-full relative">
+                            <InitialAvatar name={name} imageUrl={avatar} />
+                        </div>
+                        <div>
+                            <p className="font-semibold">{name}</p>
+                        </div>
+
                     </Link>
-                )
+                );
             },
         },
         {

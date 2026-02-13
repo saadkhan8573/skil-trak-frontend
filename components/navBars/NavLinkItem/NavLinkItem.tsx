@@ -25,22 +25,22 @@ export const NavLinkItem = ({ nav, PREFIX }: { PREFIX: string; nav: any }) => {
 
     return (
         <li className="relative ">
-            <Link legacyBehavior href={nav.link}>
-                <a
-                    className={`${
-                        isActive ? nav.activeClasses : nav.inActiveClasses
-                    } ${defaultClasses} hover:bg-indigo-100 hover:text-indigo-700`}
-                    aria-label={`${nav.link}`}
-                >
-                    <span>
-                        <nav.Icon size={isMobile || nav?.mini ? 24 : 14} />
+            <Link
+                href={nav.link}
+                className={`${
+                    isActive ? nav.activeClasses : nav.inActiveClasses
+                } ${defaultClasses} hover:bg-indigo-100 hover:text-indigo-700`}
+                aria-label={`${nav.link}`}>
+
+                <span>
+                    <nav.Icon size={isMobile || nav?.mini ? 24 : 14} />
+                </span>
+                {nav?.text ? (
+                    <span className="text-xs 2xl:text-[13] font-semibold whitespace-pre">
+                        {nav?.text}
                     </span>
-                    {nav?.text ? (
-                        <span className="text-xs 2xl:text-[13] font-semibold whitespace-pre">
-                            {nav?.text}
-                        </span>
-                    ) : null}
-                </a>
+                ) : null}
+
             </Link>
             {nav?.count > 0 && (
                 <div
@@ -54,5 +54,5 @@ export const NavLinkItem = ({ nav, PREFIX }: { PREFIX: string; nav: any }) => {
                 </div>
             )}
         </li>
-    )
+    );
 }

@@ -23,7 +23,6 @@ export const AssessmentCellInfo = ({ item }: { item: any }) => {
                 )}
 
                 <Link
-                    legacyBehavior
                     href={
                         item?.student?.subadmin?.user?.id === subadminId ||
                         subadmin?.isManager ||
@@ -34,18 +33,17 @@ export const AssessmentCellInfo = ({ item }: { item: any }) => {
                               }
                             : '#'
                     }
+                    onClick={() => {
+                        setLink('subadmin-student', router)
+                    }}
                 >
-                    <a
-                        onClick={() => {
-                            setLink('subadmin-student', router)
-                        }}
-                    >
-                        <p className="text-gray-800 font-medium">
-                            {item?.student?.user?.name}
-                        </p>
-                    </a>
+
+                    <p className="text-gray-800 font-medium">
+                        {item?.student?.user?.name}
+                    </p>
+
                 </Link>
             </div>
         </div>
-    )
+    );
 }

@@ -105,46 +105,41 @@ export const DetailNavbar = () => {
             <div className="flex justify-between items-center">
                 <HeaderLogo />
             </div>
-
             <div className="flex items-center gap-x-4 md:gap-x-8">
                 <AuthorizedUserComponent roles={[UserRoles.STUDENT]}>
-                    <Link legacyBehavior href={'/portals/student/history'}>
-                        <a
-                            className={` ${router.pathname === '/portals/student/history'
-                                    ? 'bg-green-100 text-green-700'
-                                    : 'text-slate-700'
-                                } transition-all duration-300 px-4 py-2 flex gap-x-2 items-center rounded-md hover:bg-green-100 hover:text-green-700`}
-                        >
-                            <span>
-                                <BsFillTicketDetailedFill />
-                            </span>
-                            <span className="text-sm font-semibold">
-                                History
-                            </span>
-                        </a>
+                    <Link href={'/portals/student/history'} className={` ${router.pathname === '/portals/student/history'
+                            ? 'bg-green-100 text-green-700'
+                            : 'text-slate-700'
+                        } transition-all duration-300 px-4 py-2 flex gap-x-2 items-center rounded-md hover:bg-green-100 hover:text-green-700`}>
+
+                        <span>
+                            <BsFillTicketDetailedFill />
+                        </span>
+                        <span className="text-sm font-semibold">
+                            History
+                        </span>
+
                     </Link>
                 </AuthorizedUserComponent>
 
                 <AuthorizedUserComponent roles={[UserRoles.RTO]}>
                     <div className="relative">
                         <Link
-                            legacyBehavior
                             href={'/portals/rto/tickets?tab=all-tickets'}
+                            className={` ${router.pathname ===
+                                    '/portals/sub-admin/tickets'
+                                    ? 'bg-green-100 text-green-700'
+                                    : 'text-slate-700'
+                                } transition-all duration-300 px-4 py-2 flex gap-x-2 items-center rounded-md hover:bg-green-100 hover:text-green-700`}
                         >
-                            <a
-                                className={` ${router.pathname ===
-                                        '/portals/sub-admin/tickets'
-                                        ? 'bg-green-100 text-green-700'
-                                        : 'text-slate-700'
-                                    } transition-all duration-300 px-4 py-2 flex gap-x-2 items-center rounded-md hover:bg-green-100 hover:text-green-700`}
-                            >
-                                <span>
-                                    <BsFillTicketDetailedFill />
-                                </span>
-                                <span className="text-sm font-semibold">
-                                    Tickets
-                                </span>
-                            </a>
+
+                            <span>
+                                <BsFillTicketDetailedFill />
+                            </span>
+                            <span className="text-sm font-semibold">
+                                Tickets
+                            </span>
+
                         </Link>
                         <span className="w-5 h-5 flex items-center justify-center text-center text-white absolute -top-2 -right-2 bg-error rounded-full text-xs">
                             {ticketCount?.data}
@@ -299,5 +294,5 @@ export const DetailNavbar = () => {
             </div>
             <DisplayNotifications />
         </div>
-    )
+    );
 }

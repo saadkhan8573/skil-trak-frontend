@@ -1,4 +1,4 @@
-import { Button } from '@components'
+import { Button, ShowErrorNotifications } from '@components'
 import { AddCourseProgramIndustry } from '@partials/common/IndustryProfileDetail/components/CourseManagement/components/AddCourseProgramIndustry'
 import { Industry, IndustryCourseApproval } from '@types'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -19,6 +19,9 @@ import { DeleteCourseDialog } from '../modals'
 import { getUserCredentials } from '@utils'
 import { UserRoles } from '@constants'
 import moment from 'moment'
+import { Switch } from '@components/inputs'
+import { useToggleIndustryCourseStatusMutation } from '@redux/queries/portals/rto-v2/rto-v2.query'
+import { useNotification } from '@hooks'
 
 export interface PlacementWorkflow {
     currentStep: number
@@ -57,6 +60,25 @@ export function CourseCard({
     const [isReassignCourse, setIsReassignCourse] = useState(false)
     const [isDeleteOpen, setIsDeleteOpen] = useState(false)
 
+    const [toggleStatus, toggleStatusResult] =
+        useToggleIndustryCourseStatusMutation()
+    const { notification } = useNotification()
+
+    const handleToggleStatus = async (isActive: boolean) => {
+        try {
+            await toggleStatus(approval?.id).unwrap()
+            notification.success({
+                title: "Success",
+                description: `Course ${isActive ? 'enabled' : 'disabled'} successfully`,
+            })
+        } catch (error) {
+            notification.error({
+                title: "Error",
+                description: 'Failed to update course status',
+            })
+        }
+    }
+
     const userCredentials = useMemo(() => getUserCredentials(), [])
 
     const isDeletedInternal = !!approval?.deletedAt
@@ -84,14 +106,15 @@ export function CourseCard({
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: courseIndex * 0.05 }}
             className={`rounded-xl overflow-hidden transition-all duration-300 ${isApproved
-                    ? 'bg-linear-to-br from-[#10B981]/10 via-white to-[#059669]/10 border-2 border-[#10B981]/30 shadow-lg'
-                    : needsApproval
-                        ? 'bg-linear-to-br from-[#F7A619]/10 via-white to-[#EA580C]/10 border-2 border-[#F7A619]/40 shadow-lg animate-pulse-slow'
-                        : isRejected
-                            ? 'bg-linear-to-br from-[#EF4444]/5 via-white to-[#DC2626]/5 border-2 border-[#EF4444]/30'
-                            : 'bg-white border border-[#E2E8F0] hover:shadow-md hover:border-[#044866]/20'
+                ? 'bg-linear-to-br from-[#10B981]/10 via-white to-[#059669]/10 border-2 border-[#10B981]/30 shadow-lg'
+                : needsApproval
+                    ? 'bg-linear-to-br from-[#F7A619]/10 via-white to-[#EA580C]/10 border-2 border-[#F7A619]/40 shadow-lg animate-pulse-slow'
+                    : isRejected
+                        ? 'bg-linear-to-br from-[#EF4444]/5 via-white to-[#DC2626]/5 border-2 border-[#EF4444]/30'
+                        : 'bg-white border border-[#E2E8F0] hover:shadow-md hover:border-[#044866]/20'
                 }`}
         >
+            <ShowErrorNotifications result={toggleStatusResult} />
             {/* Course Header */}
             <div className="p-4">
                 <div className="flex items-start justify-between gap-3 mb-3">
@@ -100,8 +123,8 @@ export function CourseCard({
                         <div className="flex items-center gap-2 mb-2">
                             <div
                                 className={`px-2 py-1 rounded-md text-[10px] font-bold ${isApproved
-                                        ? 'bg-[#10B981]/20 text-[#10B981]'
-                                        : 'bg-[#044866]/10 text-[#044866]'
+                                    ? 'bg-[#10B981]/20 text-[#10B981]'
+                                    : 'bg-[#044866]/10 text-[#044866]'
                                     }`}
                             >
                                 {approval?.course.code}
@@ -152,12 +175,12 @@ export function CourseCard({
                                 {!isDeletedInternal && (
                                     <div
                                         className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-medium ${isApproved
-                                                ? 'bg-[#10B981]/10 text-[#10B981]'
-                                                : needsApproval
-                                                    ? 'bg-[#F7A619]/20 text-[#F7A619]'
-                                                    : isRejected
-                                                        ? 'bg-[#EF4444]/10 text-[#EF4444]'
-                                                        : 'bg-[#64748B]/10 text-[#64748B]'
+                                            ? 'bg-[#10B981]/10 text-[#10B981]'
+                                            : needsApproval
+                                                ? 'bg-[#F7A619]/20 text-[#F7A619]'
+                                                : isRejected
+                                                    ? 'bg-[#EF4444]/10 text-[#EF4444]'
+                                                    : 'bg-[#64748B]/10 text-[#64748B]'
                                             }`}
                                     >
                                         <FileCheck className="w-3 h-3" />
@@ -204,6 +227,27 @@ export function CourseCard({
                                     <Trash2 className="w-4 h-4" />
                                 </button>
                             )}
+
+                        {/* {showActionButtons && (
+                            <div className="flex items-center gap-2 mr-2 bg-gray-50 px-2 py-1 rounded-lg border border-gray-100">
+                                <span className="text-[10px] font-bold text-gray-500 uppercase">
+                                    {approval.isDisabled
+                                        ? 'Disabled'
+                                        : 'Enabled'}
+                                </span>
+                                <Switch
+                                    name="s"
+                                    customStyleClass='profileSwitch'
+                                    isChecked={!approval?.isDisabled}
+                                    onChange={(e: any) =>
+                                        handleToggleStatus(e.target.checked)
+                                    }
+                                    disabled={toggleStatusResult?.isLoading}
+                                    loading={toggleStatusResult?.isLoading}
+                                />
+                            </div>
+                        )} */}
+
                         <motion.button
                             onClick={() =>
                                 setIsCourseExpanded(!isCourseExpanded)
@@ -211,10 +255,10 @@ export function CourseCard({
                             animate={{ rotate: isCourseExpanded ? 180 : 0 }}
                             transition={{ duration: 0.3 }}
                             className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isApproved
-                                    ? 'bg-[#10B981]/10 hover:bg-[#10B981]/20 text-[#10B981]'
-                                    : needsApproval
-                                        ? 'bg-[#F7A619]/10 hover:bg-[#F7A619]/20 text-[#F7A619]'
-                                        : 'bg-[#F8FAFB] hover:bg-[#E8F4F8] text-[#044866]'
+                                ? 'bg-[#10B981]/10 hover:bg-[#10B981]/20 text-[#10B981]'
+                                : needsApproval
+                                    ? 'bg-[#F7A619]/10 hover:bg-[#F7A619]/20 text-[#F7A619]'
+                                    : 'bg-[#F8FAFB] hover:bg-[#E8F4F8] text-[#044866]'
                                 }`}
                         >
                             <ChevronDown className="w-4 h-4" />

@@ -77,31 +77,30 @@ export const EsignTabsView = ({
                                 s?.type === FieldsTypeEnum.Checkbox
                                     ? 13
                                     : s?.type === FieldsTypeEnum.Date
-                                    ? String(Number(width) + 10)
-                                    : width
+                                        ? String(Number(width) + 10)
+                                        : width
                             }
                             height={
                                 s?.type === FieldsTypeEnum.Checkbox
                                     ? 13
                                     : s?.type === FieldsTypeEnum.Date
-                                    ? String(Number(height) + 10)
-                                    : height
+                                        ? String(Number(height) + 10)
+                                        : height
                             }
                         >
-                            {!s?.responses?.length ? (
+                            {true ? (
                                 s?.type === FieldsTypeEnum.Text &&
-                                s?.isCustom ? (
+                                    s?.isCustom ? (
                                     <input
                                         onKeyDown={onHandleKeyDown}
                                         type="text"
                                         name=""
                                         id={`tabs-view-${s?.id}`}
                                         value={s?.fieldValue}
-                                        className={`w-full h-full border-2 rounded-md placeholder:text-xs ${
-                                            selectedFillDataField === s?.id
-                                                ? 'border-primary'
-                                                : 'border-gray-500'
-                                        } text-sm p-1 outline-none`}
+                                        className={`w-full h-full border-2 rounded-md placeholder:text-xs ${selectedFillDataField === s?.id
+                                            ? 'border-primary'
+                                            : 'border-gray-500'
+                                            } text-sm p-1 outline-none`}
                                         placeholder={s?.placeholder}
                                         onChange={(e: any) => {
                                             onAddCustomFieldsData({
@@ -111,7 +110,7 @@ export const EsignTabsView = ({
                                         }}
                                     />
                                 ) : s?.type === FieldsTypeEnum.TextArea &&
-                                  s?.isCustom ? (
+                                    s?.isCustom ? (
                                     <textarea
                                         onKeyDown={(e: any) => {
                                             onHandleKeyDown(e)
@@ -119,11 +118,10 @@ export const EsignTabsView = ({
                                         name=""
                                         id={`tabs-view-${s?.id}`}
                                         value={s?.fieldValue}
-                                        className={`w-full h-full border-2 rounded-md placeholder:text-xs ${
-                                            selectedFillDataField === s?.id
-                                                ? 'border-primary'
-                                                : 'border-gray-500'
-                                        } text-sm p-1 outline-none`}
+                                        className={`w-full h-full border-2 rounded-md placeholder:text-xs ${selectedFillDataField === s?.id
+                                            ? 'border-primary'
+                                            : 'border-gray-500'
+                                            } text-sm p-1 outline-none`}
                                         placeholder={s?.placeholder}
                                         onChange={(e: any) => {
                                             onAddCustomFieldsData({
@@ -151,11 +149,10 @@ export const EsignTabsView = ({
                                                 outline: 'none',
                                             }}
                                             value={s?.fieldValue}
-                                            className={`noDefault z-10  ${
-                                                selectedFillDataField === s?.id
-                                                    ? 'border-primary border-2'
-                                                    : 'border-gray-500 border'
-                                            } !w-full !h-full rounded-sm text-sm p-1 outline-none`}
+                                            className={`noDefault z-10  ${selectedFillDataField === s?.id
+                                                ? 'border-primary border-2'
+                                                : 'border-gray-500 border'
+                                                } w-full! h-full! rounded-sm text-sm p-1 outline-none`}
                                             placeholder={s?.label}
                                             onChange={(e: any) => {
                                                 onAddCustomFieldsData({
@@ -226,8 +223,8 @@ export const EsignTabsView = ({
                                 )
                             ) : null}
                             {s?.type === FieldsTypeEnum.Date &&
-                            s?.responses &&
-                            s?.responses?.length > 0 ? (
+                                s?.responses &&
+                                s?.responses?.length > 0 ? (
                                 <AuthorizedUserComponent
                                     roles={[UserRoles.SUBADMIN]}
                                 >

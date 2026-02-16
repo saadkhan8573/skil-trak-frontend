@@ -34,7 +34,7 @@ export const SideBar = ({
     const role = getUserCredentials()?.role
 
     return (
-        <div className="w-56 flex-shrink-0 h-screen pb-24 bg-white border-r border-secondary-dark px-2 py-2 relative overflow-y-scroll remove-scrollbar">
+        <div className="w-56 shrink-0 h-screen pb-24 bg-white border-r border-secondary-dark px-2 py-2 relative overflow-y-scroll remove-scrollbar">
             {/* <IoMdArrowDroprightCircle className="absolute top-12 scale-150 opacity-50" /> */}
             <Link href={`/portals/${role === 'subadmin' ? 'sub-admin' : role}`}>
                 {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */

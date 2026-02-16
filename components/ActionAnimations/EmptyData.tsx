@@ -1,11 +1,8 @@
-// import { GiCardboardBox } from "react-icons/gi";
-
 import { Animations } from '@animations'
 import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
-// Dynamically import Lottie with no SSR
 const Lottie = dynamic(() => import('lottie-react'), {
     ssr: false,
 })

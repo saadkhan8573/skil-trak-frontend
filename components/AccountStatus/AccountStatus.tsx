@@ -1,17 +1,15 @@
-// import { ReactElement, ReactNode, useEffect, useState } from 'react'
 import { Animations } from '@animations'
 import {
     Button,
     LottieAnimation,
-    ShowErrorNotifications,
-    GlobalModal,
+    ShowErrorNotifications
 } from '@components'
 import {
     useCreateCheckoutSessionMutation,
     useGetStudentProfileDetailQuery,
 } from '@queries'
 import { StatusType, UserStatus } from '@types'
-import { AuthUtils, getStripe } from '@utils'
+import { AuthUtils } from '@utils'
 import { useRouter } from 'next/router'
 import { uuid } from 'uuidv4'
 
@@ -60,43 +58,16 @@ const getStatusComponent = ({
     )
 }
 export const AccountStatus = ({ status }: AccountStatusProps) => {
-    // const [modal, setModal] = useState<ReactElement | null>(null)
-
     const router = useRouter()
     const role = AuthUtils.getUserCredentials().role
-    const { data, isSuccess, isLoading } = useGetStudentProfileDetailQuery()
-    const isRtoSelfPayment = data?.rto?.allowStudentSelfPayment
-    const isSelfRegistered = data?.isSelfRegistered
+    const { data } = useGetStudentProfileDetailQuery()
     const [checkoutSession, checkoutSessionResult] =
         useCreateCheckoutSessionMutation()
 
     const onAgreeAndContinueClicked = async () => {
         const idempotency = uuid()
         await checkoutSession({ idempotency })
-            .then(async (res: any) => {
-                if (res.data?.id) {
-                    const stripe = await getStripe()
-                    const { error } = await stripe!.redirectToCheckout({
-                        // Make the id field from the Checkout Session creation API response
-                        // available to this file, so you can provide it as parameter here
-                        // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-                        sessionId: res.data.id,
-                    })
-                }
-            })
-            .catch((err) => {})
     }
-    // useEffect(() => {
-    //     if (
-    //         status === UserStatus.Pending &&
-    //         (isRtoSelfPayment || isSelfRegistered)
-    //     )
-    //         setModal(
-    //             <GlobalModal>
-    //                 <div className="w-96 h-96">Hello make payment</div>
-    //             </GlobalModal>
-    //         )
-    // }, [status, data])
 
     switch (status) {
         case UserStatus.Pending:
@@ -198,7 +169,7 @@ export const AccountStatus = ({ status }: AccountStatusProps) => {
                 description: `Please contact regarding authority to re-open`,
                 action: {
                     text: 'Request To Re-Open',
-                    onClick: () => {},
+                    onClick: () => { },
                 },
             })
 

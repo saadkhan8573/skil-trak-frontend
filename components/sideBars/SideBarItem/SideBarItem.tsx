@@ -95,7 +95,7 @@ export const SideBarItem = ({
     }, [talentPoolCount])
 
     return link ? (
-        <Link href={link}>
+        <Link href={link} className='w-full!'>
             {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
             }
             <div className={classes}>
@@ -103,9 +103,8 @@ export const SideBarItem = ({
                 {children}
                 {count ? (
                     <span
-                        className={`w-5 h-5 flex items-center justify-center text-center ${
-                            !count?.loading ? 'bg-error' : ''
-                        } text-white absolute top-1 right-2  rounded-full text-xs`}
+                        className={`w-5 h-5 flex items-center justify-center text-center ${!count?.loading ? 'bg-error' : ''
+                            } text-white absolute top-1 right-2  rounded-full text-xs`}
                     >
                         {count?.loading ? (
                             <PulseLoader size={4} color={'black'} />

@@ -1,9 +1,12 @@
 import { BlockBlast } from '@components'
-import React from 'react'
+import Head from 'next/head'
 
 const BlockBlastPage = () => {
     return (
         <div>
+            <Head>
+                <meta name="robots" content="noindex, nofollow" />
+            </Head>
             <BlockBlast />
         </div>
     )

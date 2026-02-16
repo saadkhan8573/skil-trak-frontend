@@ -417,7 +417,7 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
                 <div className="flex w-full h-screen overflow-hidden bg-layout">
                     <SideBar portalType={UserRoles.ADMIN} routes={routes} />
                     {/* <div className="flex-grow flex flex-col justify-between"> */}
-                    <div className="flex-grow w-[calc(100vh-224px)]  justify-between">
+                    <div className="grow w-[calc(100vh-224px)]  justify-between">
                         <div className="border-b border-gray-200 bg-white">
                             <AdminNavbar />
                         </div>

@@ -3,15 +3,14 @@ import { Animations } from '@animations'
 import {
     Button,
     LottieAnimation,
-    ShowErrorNotifications,
-    GlobalModal,
+    ShowErrorNotifications
 } from '@components'
 import {
     useCreateCheckoutSessionMutation,
     useGetStudentProfileDetailQuery,
 } from '@queries'
 import { StatusType, UserStatus } from '@types'
-import { AuthUtils, getStripe } from '@utils'
+import { AuthUtils } from '@utils'
 import { useRouter } from 'next/router'
 import { uuid } from 'uuidv4'
 
@@ -73,18 +72,6 @@ export const AccountStatus = ({ status }: AccountStatusProps) => {
     const onAgreeAndContinueClicked = async () => {
         const idempotency = uuid()
         await checkoutSession({ idempotency })
-            .then(async (res: any) => {
-                if (res.data?.id) {
-                    const stripe = await getStripe()
-                    const { error } = await stripe!.redirectToCheckout({
-                        // Make the id field from the Checkout Session creation API response
-                        // available to this file, so you can provide it as parameter here
-                        // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-                        sessionId: res.data.id,
-                    })
-                }
-            })
-            .catch((err) => {})
     }
     // useEffect(() => {
     //     if (
@@ -198,7 +185,7 @@ export const AccountStatus = ({ status }: AccountStatusProps) => {
                 description: `Please contact regarding authority to re-open`,
                 action: {
                     text: 'Request To Re-Open',
-                    onClick: () => {},
+                    onClick: () => { },
                 },
             })
 

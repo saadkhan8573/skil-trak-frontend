@@ -17,6 +17,7 @@ import { StatusBadge } from '../components/StatusBadge'
 import { cn } from '@utils'
 
 import { TableAction, UserCreatedAt, Badge } from '@components'
+import Link from 'next/link'
 
 export const useCallColumns = () => {
     const [selectedCall, setSelectedCall] = useState<PlacementCall | null>(null)
@@ -129,15 +130,14 @@ export const useCallColumns = () => {
                 const call = row.original
                 const isCompleted = call?.status === 'completed'
                 return (
-                    <div className="flex items-center gap-3">
+                    <Link href={`/portals/admin/student/${call?.student?.id}/detail`} className="flex items-center gap-3">
                         <div
-                            className={`w-1 h-8 rounded-full shrink-0 ${
-                                call.priority === 'high' && !isCompleted
+                            className={`w-1 h-8 rounded-full shrink-0 ${call.priority === 'high' && !isCompleted
                                     ? 'bg-red-500'
                                     : call.priority === 'medium' && !isCompleted
-                                      ? 'bg-yellow-500'
-                                      : 'bg-gray-200'
-                            }`}
+                                        ? 'bg-yellow-500'
+                                        : 'bg-gray-200'
+                                }`}
                         />
                         <div className="relative shrink-0">
                             <div className="w-9 h-9 rounded-lg bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-sm">
@@ -164,7 +164,7 @@ export const useCallColumns = () => {
                                 {call?.student?.phone}
                             </p>
                         </div>
-                    </div>
+                    </Link>
                 )
             },
         },
@@ -275,11 +275,10 @@ export const useCallColumns = () => {
                     return <span className="text-gray-400">-</span>
                 return (
                     <span
-                        className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            isAnswered
+                        className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${isAnswered
                                 ? 'bg-green-100 text-green-700 border border-green-200'
                                 : 'bg-red-100 text-red-700 border border-red-200'
-                        }`}
+                            }`}
                     >
                         {isAnswered ? 'Yes' : 'No'}
                     </span>

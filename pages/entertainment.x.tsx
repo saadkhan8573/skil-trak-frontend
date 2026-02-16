@@ -1,7 +1,7 @@
-import React, { ReactElement } from 'react'
-import { Entertainment } from '@partials'
 import { SiteLayout } from '@layouts'
+import { Entertainment } from '@partials'
 import Head from 'next/head'
+import { ReactElement } from 'react'
 
 const EntertainmentPage = () => {
     return (

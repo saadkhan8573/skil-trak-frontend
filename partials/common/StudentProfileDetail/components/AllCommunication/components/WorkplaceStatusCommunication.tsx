@@ -148,7 +148,7 @@ export function WorkplaceStatusCommunication({
     status = 'Agreement Signed',
     item,
 }: PlacementStatusProps) {
-    const [showComments, setShowComments] = useState(false)
+    const [showComments, setShowComments] = useState(true)
     const isRejection =
         item?.title?.toLowerCase()?.includes('rejected') ||
         item?.title?.toLowerCase()?.includes('cancelled')
@@ -255,7 +255,7 @@ export function WorkplaceStatusCommunication({
                     {item?.body && showComments && (
                         <div className="border-t pt-3 animate-in slide-in-from-top-2 duration-200">
                             <div className="flex items-start gap-2">
-                                <MessageSquare className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                                <MessageSquare className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                                 <div className="flex-1">
                                     <span className="text-[13px] font-medium text-muted-foreground">
                                         Comments:

@@ -13,18 +13,6 @@ export const PaymentModal = ({ onCancel }: any) => {
     const onAgreeAndContinueClicked = async () => {
         const idempotency = uuid()
         await checkoutSession({ idempotency })
-            .then(async (res: any) => {
-                if (res.data?.id) {
-                    const stripe = await getStripe()
-                    const { error } = await stripe!.redirectToCheckout({
-                        // Make the id field from the Checkout Session creation API response
-                        // available to this file, so you can provide it as parameter here
-                        // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-                        sessionId: res.data.id,
-                    })
-                }
-            })
-            .catch((err) => {})
     }
     useEffect(() => {
         if (checkoutSessionResult.isSuccess) {

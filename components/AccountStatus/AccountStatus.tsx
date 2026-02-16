@@ -1,4 +1,3 @@
-// import { ReactElement, ReactNode, useEffect, useState } from 'react'
 import { Animations } from '@animations'
 import {
     Button,
@@ -59,13 +58,9 @@ const getStatusComponent = ({
     )
 }
 export const AccountStatus = ({ status }: AccountStatusProps) => {
-    // const [modal, setModal] = useState<ReactElement | null>(null)
-
     const router = useRouter()
     const role = AuthUtils.getUserCredentials().role
-    const { data, isSuccess, isLoading } = useGetStudentProfileDetailQuery()
-    const isRtoSelfPayment = data?.rto?.allowStudentSelfPayment
-    const isSelfRegistered = data?.isSelfRegistered
+    const { data } = useGetStudentProfileDetailQuery()
     const [checkoutSession, checkoutSessionResult] =
         useCreateCheckoutSessionMutation()
 
@@ -73,17 +68,6 @@ export const AccountStatus = ({ status }: AccountStatusProps) => {
         const idempotency = uuid()
         await checkoutSession({ idempotency })
     }
-    // useEffect(() => {
-    //     if (
-    //         status === UserStatus.Pending &&
-    //         (isRtoSelfPayment || isSelfRegistered)
-    //     )
-    //         setModal(
-    //             <GlobalModal>
-    //                 <div className="w-96 h-96">Hello make payment</div>
-    //             </GlobalModal>
-    //         )
-    // }, [status, data])
 
     switch (status) {
         case UserStatus.Pending:

@@ -422,4 +422,11 @@ export const industriesEndpoints = (
         }),
         invalidatesTags: ['RTOIndustries', 'Industry'],
     }),
+    toggleIndustryCourseStatus: builder.mutation<any, number>({
+        query: (id) => ({
+            url: `${INDUSTRIESPREFIX}course-request/${id}/update`,
+            method: 'PATCH',
+        }),
+        invalidatesTags: ['RTOIndustries', 'Industry'],
+    }),
 })

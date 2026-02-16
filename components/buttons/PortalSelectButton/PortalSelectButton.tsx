@@ -25,17 +25,17 @@ export const PortalSelectButton = ({
                 <Typography variant={'h4'} color="text-[#24556D]" center>
                     {children}
                 </Typography>
-                <Link legacyBehavior href={link}>
-                    <a
-                        className={`group transition-all text-center text-sm font-semibold flex justify-center items-center px-4 py-2 rounded-lg text-white bg-primary`}
-                        onMouseEnter={() => {
-                            onMouseEnter()
-                        }}
-                    >
+                <Link
+                    href={link}
+                    className={`group transition-all text-center text-sm font-semibold flex justify-center items-center px-4 py-2 rounded-lg text-white bg-primary`}
+                    onMouseEnter={() => {
+                        onMouseEnter()
+                    }}>
+                    
                         Choose
-                    </a>
+                    
                 </Link>
             </div>
         </Card>
-    )
+    );
 }

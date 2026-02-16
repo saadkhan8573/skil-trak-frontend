@@ -160,8 +160,8 @@ const ForgotPassword: NextPage = () => {
                         <div className="md:mt-16 mt-0 flex justify-center">
                             <Typography variant="body">
                                 Already have account?{' '}
-                                <Link legacyBehavior href="/auth/login">
-                                    <a className="text-link">Login</a>
+                                <Link href="/auth/login" className="text-link">
+                                    Login
                                 </Link>
                             </Typography>
                         </div>
@@ -170,7 +170,7 @@ const ForgotPassword: NextPage = () => {
             </div>
             <DisplayNotifications />
         </>
-    )
+    );
 }
 
 export default ForgotPassword

@@ -96,33 +96,33 @@ export const BlackListIndustries = () => {
                 } = row.original?.industry
                 return (
                     <Link
-                        legacyBehavior
                         href={`/portals/rto/industries/workplaces/${row?.original?.industry?.id}`}
+                        className="flex items-center gap-x-2"
                     >
-                        <a className="flex items-center gap-x-2">
-                            <div className="shadow-inner-image rounded-full relative">
-                                <InitialAvatar name={name} imageUrl={avatar} />
+
+                        <div className="shadow-inner-image rounded-full relative">
+                            <InitialAvatar name={name} imageUrl={avatar} />
+                        </div>
+                        <div>
+                            <p className="font-semibold">{name}</p>
+                            <div className="font-medium text-xs text-gray-500">
+                                <p className="flex items-center gap-x-1">
+                                    <span>
+                                        <MdEmail />
+                                    </span>
+                                    {email}
+                                </p>
+                                <p className="flex items-center gap-x-1">
+                                    <span>
+                                        <MdPhoneIphone />
+                                    </span>
+                                    {phoneNumber}
+                                </p>
                             </div>
-                            <div>
-                                <p className="font-semibold">{name}</p>
-                                <div className="font-medium text-xs text-gray-500">
-                                    <p className="flex items-center gap-x-1">
-                                        <span>
-                                            <MdEmail />
-                                        </span>
-                                        {email}
-                                    </p>
-                                    <p className="flex items-center gap-x-1">
-                                        <span>
-                                            <MdPhoneIphone />
-                                        </span>
-                                        {phoneNumber}
-                                    </p>
-                                </div>
-                            </div>
-                        </a>
+                        </div>
+
                     </Link>
-                )
+                );
             },
         },
         {

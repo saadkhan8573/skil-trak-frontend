@@ -66,19 +66,16 @@ export const StudentWorkplaceCellInfo = ({
                 {student?.addressLine1 ?? 'N/A'}
             </Typography>
             <Link
-                legacyBehavior
                 href={`/portals/admin/workplaces/${wpId}/${student?.id}`}
                 className="text-blue-500 text-xs"
+                onClick={() => {
+                    setLink('student', router)
+                }}
             >
-                <a
-                    onClick={() => {
-                        setLink('student', router)
-                    }}
-                >
-                    {' '}
-                    View Details
-                </a>
+
+                {' '}View Details
+                                
             </Link>
         </div>
-    )
+    );
 }

@@ -1,11 +1,8 @@
-// import { GiCardboardBox } from "react-icons/gi";
-
 import { Animations } from '@animations'
 import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
-// Dynamically import Lottie with no SSR
 const Lottie = dynamic(() => import('lottie-react'), {
     ssr: false,
 })
@@ -64,11 +61,7 @@ export const EmptyData = ({
                 </p>
                 {actionLink && (
                     <div className="text-sm mt-4">
-                        <Link
-                            legacyBehavior
-                            href={actionLink}
-                            className="text-blue-500"
-                        >
+                        <Link href={actionLink} className="text-blue-500">
                             Click Here
                         </Link>
                         {`to ${actionText || 'add now'}`}
@@ -76,5 +69,5 @@ export const EmptyData = ({
                 )}
             </div>
         </div>
-    )
+    );
 }

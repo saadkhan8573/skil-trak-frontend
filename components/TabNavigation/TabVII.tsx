@@ -36,7 +36,9 @@ export const TabVII = ({
     href,
 }: TabVIIProps) => {
     return (
-        <Link legacyBehavior href={href}>
+        <Link href={href}>
+            {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
+            }
             <div
                 onClick={onClick}
                 className={`cursor-pointer ${
@@ -75,5 +77,5 @@ export const TabVII = ({
                 </Card>
             </div>
         </Link>
-    )
+    );
 }

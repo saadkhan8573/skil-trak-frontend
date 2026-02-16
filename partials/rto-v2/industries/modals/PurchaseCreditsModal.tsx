@@ -79,7 +79,7 @@ export const PurchaseCreditsModal = ({
                 }
             }}
         >
-            <DialogContent className="!max-w-2xl !w-full max-h-[90vh] flex flex-col p-0 overflow-hidden border-primaryNew/20 bg-white shadow-premium-lg">
+            <DialogContent className="max-w-2xl! w-full! max-h-[90vh] flex flex-col p-0 overflow-hidden border-primaryNew/20 bg-white shadow-premium-lg">
                 {!showSuccess && (
                     <DialogHeader className="p-4 pb-0">
                         <DialogTitle className="text-lg flex items-center gap-2 text-primaryNew">

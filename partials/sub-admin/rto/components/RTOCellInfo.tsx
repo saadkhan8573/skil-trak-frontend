@@ -19,48 +19,45 @@ export const RTOCellInfo = ({
 
     return (
         <Link
-            legacyBehavior
             href={
                 canAccessRtoProfile
                     ? `/portals/sub-admin/users/rtos/${rto?.id}?tab=overview`
                     : '#'
             }
-        >
-            <a
-                className="flex items-center gap-x-2 relative z-10"
-                onClick={() => {
-                    setLink('subadmin-rtos', router)
-                }}
-            >
-                <div className="shadow-inner-image rounded-full">
-                    {rto?.user?.name && (
-                        <InitialAvatar
-                            name={rto?.user?.name}
-                            imageUrl={rto?.user?.avatar}
-                            socketId={rto?.user?.socketId}
-                        />
-                    )}
-                </div>
-                <div>
-                    <p className={'font-semibold'}>{rto?.user?.name}</p>
-                    {onlyName && (
-                        <div className="font-medium text-xs text-gray-500">
-                            <p className="flex items-center gap-x-1">
-                                <span>
-                                    <MdEmail />
-                                </span>
-                                {maskText(rto?.user?.email, 3)}
-                            </p>
-                            <p className="flex items-center gap-x-1">
-                                <span>
-                                    <MdPhoneIphone />
-                                </span>
-                                {maskText(rto?.phone, 2)}
-                            </p>
-                        </div>
-                    )}
-                </div>
-            </a>
+            className="flex items-center gap-x-2 relative z-10"
+            onClick={() => {
+                setLink('subadmin-rtos', router)
+            }}>
+
+            <div className="shadow-inner-image rounded-full">
+                {rto?.user?.name && (
+                    <InitialAvatar
+                        name={rto?.user?.name}
+                        imageUrl={rto?.user?.avatar}
+                        socketId={rto?.user?.socketId}
+                    />
+                )}
+            </div>
+            <div>
+                <p className={'font-semibold'}>{rto?.user?.name}</p>
+                {onlyName && (
+                    <div className="font-medium text-xs text-gray-500">
+                        <p className="flex items-center gap-x-1">
+                            <span>
+                                <MdEmail />
+                            </span>
+                            {maskText(rto?.user?.email, 3)}
+                        </p>
+                        <p className="flex items-center gap-x-1">
+                            <span>
+                                <MdPhoneIphone />
+                            </span>
+                            {maskText(rto?.phone, 2)}
+                        </p>
+                    </div>
+                )}
+            </div>
+
         </Link>
-    )
+    );
 }

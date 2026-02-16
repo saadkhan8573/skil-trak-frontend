@@ -18,22 +18,22 @@ export const AuthBreadCrumb = ({
         <div className="flex items-center gap-x-2 remove-scrollbar overflow-x-scroll">
             {breadcrumbs.map((breadcrumb, i) => (
                 <div key={i} className="flex items-center gap-x-2">
-                    <Link legacyBehavior href={breadcrumb.link}>
-                        <a>
-                            <Typography
-                                variant={'label'}
-                                color={
-                                    breadcrumb.active
-                                        ? 'text-primary'
-                                        : 'text-muted'
-                                }
-                                capitalize
-                            >
-                                <span className="cursor-pointer first-letter:text-orange-900">
-                                    {breadcrumb.text}
-                                </span>
-                            </Typography>
-                        </a>
+                    <Link href={breadcrumb.link}>
+
+                        <Typography
+                            variant={'label'}
+                            color={
+                                breadcrumb.active
+                                    ? 'text-primary'
+                                    : 'text-muted'
+                            }
+                            capitalize
+                        >
+                            <span className="cursor-pointer first-letter:text-orange-900">
+                                {breadcrumb.text}
+                            </span>
+                        </Typography>
+
                     </Link>
                     {!breadcrumb.active && (
                         <Typography variant={'title'} color={'text-muted'}>
@@ -43,5 +43,5 @@ export const AuthBreadCrumb = ({
                 </div>
             ))}
         </div>
-    )
+    );
 }

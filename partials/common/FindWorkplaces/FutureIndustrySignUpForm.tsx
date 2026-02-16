@@ -619,21 +619,21 @@ export const FutureIndustrySignUpForm = ({
                                         <>
                                             I agree with{' '}
                                             <Link
-                                                legacyBehavior
                                                 href="/terms-and-conditions"
+                                                className="text-link"
                                             >
-                                                <a className="text-link">
+                                                
                                                     Terms
-                                                </a>
+                                                
                                             </Link>{' '}
                                             {'&'}{' '}
                                             <Link
-                                                legacyBehavior
                                                 href="/privacy-policy"
+                                                className="text-link"
                                             >
-                                                <a className="text-link">
+                                                
                                                     Privacy Policy
-                                                </a>
+                                                
                                             </Link>
                                         </>
                                     }
@@ -660,5 +660,5 @@ export const FutureIndustrySignUpForm = ({
                 </FormProvider>
             </div>
         </Card>
-    )
+    );
 }

@@ -69,20 +69,21 @@ export interface IndustryCourseApproval extends BaseResponse {
     actionBy: User
     course: Course
     industry?: Industry
+    isDisabled: boolean
 }
 
 export interface AssessmentResult extends BaseResponse {
-    id: number;
-    finalComment: string;
-    isSubmitted: boolean;
-    isManualSubmission: boolean;
-    isAssessed: boolean;
-    totalSubmission: number;
-    result: Result;
-    assessor: User;
-    student: Student;
-    comments: string[];
-  }
+    id: number
+    finalComment: string
+    isSubmitted: boolean
+    isManualSubmission: boolean
+    isAssessed: boolean
+    totalSubmission: number
+    result: Result
+    assessor: User
+    student: Student
+    comments: string[]
+}
 
 export interface Course extends BaseResponse {
     id: number

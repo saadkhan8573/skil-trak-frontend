@@ -6,29 +6,29 @@ import { MdEmail, MdPhoneIphone } from 'react-icons/md'
 
 export const JobCell = ({ job }: { job: Job }) => {
     return (
-        <Link legacyBehavior href={`/portals/industry/jobs/${job?.id}`}>
-            <a className="flex items-center gap-x-2">
-                <div className="shadow-inner-image rounded-full relative">
-                    <InitialAvatar name={job?.title} />
+        <Link href={`/portals/industry/jobs/${job?.id}`} className="flex items-center gap-x-2">
+
+            <div className="shadow-inner-image rounded-full relative">
+                <InitialAvatar name={job?.title} />
+            </div>
+            <div>
+                <p className="font-semibold">{job?.title}</p>
+                <div className="font-medium text-xs text-gray-500">
+                    <p className="flex items-center gap-x-1">
+                        <span>
+                            <MdEmail />
+                        </span>
+                        {job?.email}
+                    </p>
+                    <p className="flex items-center gap-x-1">
+                        <span>
+                            <MdPhoneIphone />
+                        </span>
+                        {job?.phone}
+                    </p>
                 </div>
-                <div>
-                    <p className="font-semibold">{job?.title}</p>
-                    <div className="font-medium text-xs text-gray-500">
-                        <p className="flex items-center gap-x-1">
-                            <span>
-                                <MdEmail />
-                            </span>
-                            {job?.email}
-                        </p>
-                        <p className="flex items-center gap-x-1">
-                            <span>
-                                <MdPhoneIphone />
-                            </span>
-                            {job?.phone}
-                        </p>
-                    </div>
-                </div>
-            </a>
+            </div>
+
         </Link>
-    )
+    );
 }

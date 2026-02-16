@@ -1,5 +1,4 @@
 import { GlobalModal, Typography } from '@components'
-import React from 'react'
 import { MdCancel } from 'react-icons/md'
 import { FillEsignFields } from '../components'
 
@@ -30,7 +29,7 @@ export const FillEsignFieldsModal = ({
                     />
                 </div>
 
-                <div className=" p-10 h-[75vh] min-w-[100%] lg:min-w-[1000px] overflow-auto custom-scrollbar">
+                <div className=" p-10 h-[75vh] min-w-full lg:min-w-[1000px] overflow-auto custom-scrollbar">
                     <FillEsignFields
                         signerId={signerId}
                         onCancel={onCancel}

@@ -38,19 +38,19 @@ export const ImportantDocument = ({
         }
     }, [])
     return href ? (
-        <Link legacyBehavior href={href ? href : '#'}>
-            <a id="important-docs" className="w-full">
-                <div className={detailContainerClasses}>
-                    <Image
-                        width={detail ? 60 : 200}
-                        height={detail ? 50 : 150}
-                        src={imageUrl}
-                        alt={title}
-                        className="rounded-t w-full"
-                    />
-                    <p className={titleClasses}>{title}</p>
-                </div>
-            </a>
+        <Link href={href ? href : '#'} id="important-docs" className="w-full">
+
+            <div className={detailContainerClasses}>
+                <Image
+                    width={detail ? 60 : 200}
+                    height={detail ? 50 : 150}
+                    src={imageUrl}
+                    alt={title}
+                    className="rounded-t w-full"
+                />
+                <p className={titleClasses}>{title}</p>
+            </div>
+
         </Link>
     ) : (
         <div id="important-docs" className="w-full" onClick={onClick}>
@@ -65,5 +65,5 @@ export const ImportantDocument = ({
                 <p className={titleClasses}>{title}</p>
             </div>
         </div>
-    )
+    );
 }

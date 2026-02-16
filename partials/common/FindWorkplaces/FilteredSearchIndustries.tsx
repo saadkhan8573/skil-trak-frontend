@@ -23,6 +23,10 @@ export const FilteredSearchIndustries = ({
 
     const industriesData =
         industries?.data?.paginatedResults?.data || industries?.data?.data
+    const industriesPagination =
+        industries?.data?.paginatedResults?.pagination || industries?.data?.pagination
+
+    console.log({ industriesData })
 
     return (
         <>
@@ -61,8 +65,7 @@ export const FilteredSearchIndustries = ({
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination(
-                                                    industries?.data
-                                                        ?.pagination,
+                                                    industriesPagination,
                                                     setPage
                                                 )}
                                             </div>
@@ -80,8 +83,7 @@ export const FilteredSearchIndustries = ({
                                                 <div className="flex gap-x-2">
                                                     {quickActions}
                                                     {pagination(
-                                                        industries?.data
-                                                            ?.pagination,
+                                                        industriesPagination,
                                                         setPage
                                                     )}
                                                 </div>

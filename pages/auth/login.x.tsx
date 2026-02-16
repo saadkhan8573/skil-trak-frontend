@@ -162,7 +162,7 @@ const Login: NextPage = () => {
             {!requested && !rejected && !archived && !blocked && (
                 // <div className="w-4/5 mx-auto flex items-center justify-between">
 
-                <div className="mx-auto max-w-7xl flex flex-col sm:flex-row justify-between md:mb-0 mb-10">
+                (<div className="mx-auto max-w-7xl flex flex-col sm:flex-row justify-between md:mb-0 mb-10">
                     <div className="flex flex-col items-center flex-grow mt-8 md:w-1/2 md:px-12 px-4">
                         <div className="w-full mb-8">
                             <Typography variant={'h3'}>
@@ -182,18 +182,16 @@ const Login: NextPage = () => {
                             <div className="mt-16">
                                 <Typography variant="muted">
                                     Don&apos;t have account?{' '}
-                                    <Link legacyBehavior href="/auth/signup">
-                                        <a className="text-link">
+                                    <Link href="/auth/signup" className="text-link">
+                                        
                                             Create Account
-                                        </a>
+                                        
                                     </Link>
                                 </Typography>
                             </div>
                         ) : null}
                     </div>
-
                     <div className="hidden md:block h-48 my-auto w-px bg-gray-300 mx-16"></div>
-
                     <div className="md:w-1/2 md:-mr-32 ">
                         <div className="flex md:flex-row flex-col gap-y-3 md:items-start items-center  justify-between gap-x-28 mt-8 ">
                             <div className="flex flex-col gap-0.5 whitespace-nowrap">
@@ -256,13 +254,13 @@ const Login: NextPage = () => {
                             className="w-auto h-full object-cover"
                         />
                     </div>
-                </div>
+                </div>)
             )}
             <div className="w-full fixed bottom-0 left-0">
                 <Footer />
             </div>
         </>
-    )
+    );
 }
 
 export default Login

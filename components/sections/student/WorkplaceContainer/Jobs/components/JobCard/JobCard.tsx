@@ -31,18 +31,15 @@ export const JobCard = ({ savedJobs, job }: Props) => {
                 <div className="p-4">
                     <div className="flex justify-between items-center">
                         <div>
-                            <Link
-                                legacyBehavior
-                                href={`/portals/student/jobs/${job?.id}`}
-                            >
-                                <a>
-                                    <Typography
-                                        variant="subtitle"
-                                        color="text-black"
-                                    >
-                                        {job?.title}
-                                    </Typography>
-                                </a>
+                            <Link href={`/portals/student/jobs/${job?.id}`}>
+
+                                <Typography
+                                    variant="subtitle"
+                                    color="text-black"
+                                >
+                                    {job?.title}
+                                </Typography>
+
                             </Link>
 
                             <div className="flex items-center gap-x-2 mb-2">
@@ -155,5 +152,5 @@ export const JobCard = ({ savedJobs, job }: Props) => {
                 </div>
             </div>
         </>
-    )
+    );
 }

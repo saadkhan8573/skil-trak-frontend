@@ -193,42 +193,40 @@ export const EsignSVGView = ({
                 <div className="relative">
                     {((sortedPositions &&
                         sortedPositions?.[customFieldsSelectedId]?.number -
-                            1 ===
-                            index) ||
+                        1 ===
+                        index) ||
                         customFieldsSelectedId === -1) && (
-                        <div
-                            className={` absolute lg:-left-24 z-[111] ${
-                                customFieldsSelectedId < 0 ? 'rotate-90' : ''
-                            } transition-all duration-500`}
-                            style={{
-                                top:
-                                    customFieldsSelectedId >= 0
-                                        ? `${
-                                              (Number(
-                                                  sortedPositions?.[
-                                                      customFieldsSelectedId
-                                                  ]?.position?.split(',')?.[1]
-                                              ) *
-                                                  100) /
-                                              Number(height)
-                                          }%`
-                                        : 0,
-                                ...(isMobile
-                                    ? {
-                                          left:
-                                              (Number(position) /
-                                                  Number(width)) *
-                                              100,
-                                      }
-                                    : {}),
-                            }}
-                            onClick={() => {
-                                onDocumentScrollArrow()
-                            }}
-                        >
-                            <DocumentScrollArrow />
-                        </div>
-                    )}
+                            <div
+                                className={` absolute lg:-left-24 z-111 ${customFieldsSelectedId < 0 ? 'rotate-90' : ''
+                                    } transition-all duration-500`}
+                                style={{
+                                    top:
+                                        customFieldsSelectedId >= 0
+                                            ? `${(Number(
+                                                sortedPositions?.[
+                                                    customFieldsSelectedId
+                                                ]?.position?.split(',')?.[1]
+                                            ) *
+                                                100) /
+                                            Number(height)
+                                            }%`
+                                            : 0,
+                                    ...(isMobile
+                                        ? {
+                                            left:
+                                                (Number(position) /
+                                                    Number(width)) *
+                                                100,
+                                        }
+                                        : {}),
+                                }}
+                                onClick={() => {
+                                    onDocumentScrollArrow()
+                                }}
+                            >
+                                <DocumentScrollArrow />
+                            </div>
+                        )}
 
                     {documentSvgData.isError && <TechnicalError />}
                     {documentSvgData?.data ? (
@@ -239,8 +237,8 @@ export const EsignSVGView = ({
                             // height="842"
                             height="100%"
                             viewBox={viewport || '0 0 596 842'}
-                            // dangerouslySetInnerHTML={{ __html: svgContent }}
-                            // onClick={handleSvgClick}
+                        // dangerouslySetInnerHTML={{ __html: svgContent }}
+                        // onClick={handleSvgClick}
                         >
                             <g>
                                 {/* <g

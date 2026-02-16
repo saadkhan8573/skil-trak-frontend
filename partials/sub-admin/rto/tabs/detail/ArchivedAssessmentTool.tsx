@@ -188,7 +188,7 @@ export const ArchivedAssessmentTool = ({
                                         </div>
                                     </div>
                                 </div>
-                                <div className="p-2 min-h-[260px]">
+                                <div className="p-2 min-h-65">
                                     {getAssessmentTools.isError && (
                                         <NoData
                                             text={
@@ -234,7 +234,7 @@ export const ArchivedAssessmentTool = ({
             </div>
             <div>
                 <Typography variant="label" color="text-blue-500">
-                    <Link legacyBehavior href="#">
+                    <Link href="#">
                         I want to access my assessment tool for enrolled course
                     </Link>
                 </Typography>

@@ -19,7 +19,9 @@ export const NavItem = ({
     onClick,
 }: NavItemProps) => {
     return link ? (
-        <Link legacyBehavior href={link}>
+        <Link href={link}>
+            {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
+            }
             <div
                 className={`${
                     active ? 'bg-primary text-white' : 'bg-transparent'
@@ -39,5 +41,5 @@ export const NavItem = ({
             <Icon className="inline-flex mr-3.5 text-sm" />
             {children}
         </div>
-    )
+    );
 }

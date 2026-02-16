@@ -23,42 +23,42 @@ export const RecentEmailCard = ({ emails }: RecentEmailCardProps) => {
                     </p>
                 </div>
                 <div>
-                    <Link legacyBehavior href="#">
-                        <a className="text-xs rounded-full bg-white px-2 py-1 text-indigo-800">
+                    <Link href="#" className="text-xs rounded-full bg-white px-2 py-1 text-indigo-800">
+                        
                             View All
-                        </a>
+                        
                     </Link>
                 </div>
             </div>
             <div className="flex justify-between gap-x-8 items-center">
                 <div className="w-full">
                     {emails.map((email, i) => (
-                        <Link legacyBehavior href="#" key={i}>
-                            <a>
-                                <div
-                                    key={email.subject}
-                                    className="transition-all duration-200 w-full bg-sky-300 p-2 mb-1 rounded-lg hover:bg-sky-400"
-                                >
-                                    <div className="flex justify-between">
-                                        <div className="flex items-center space-x-2">
-                                            <p className="font-semibold text-cyan-700 text-sm">
-                                                {email.subject}
-                                            </p>
-                                            <p className="font-medium text-xs text-cyan-100">
-                                                {email.sender}
-                                            </p>
-                                        </div>
+                        <Link href="#" key={i}>
 
-                                        <p className="text-[9px] text-cyan-800">
-                                            {email.dated}
+                            <div
+                                key={email.subject}
+                                className="transition-all duration-200 w-full bg-sky-300 p-2 mb-1 rounded-lg hover:bg-sky-400"
+                            >
+                                <div className="flex justify-between">
+                                    <div className="flex items-center space-x-2">
+                                        <p className="font-semibold text-cyan-700 text-sm">
+                                            {email.subject}
+                                        </p>
+                                        <p className="font-medium text-xs text-cyan-100">
+                                            {email.sender}
                                         </p>
                                     </div>
 
-                                    <p className="text-xs text-cyan-600">
-                                        {email.body.slice(0, 60)} ...
+                                    <p className="text-[9px] text-cyan-800">
+                                        {email.dated}
                                     </p>
                                 </div>
-                            </a>
+
+                                <p className="text-xs text-cyan-600">
+                                    {email.body.slice(0, 60)} ...
+                                </p>
+                            </div>
+
                         </Link>
                     ))}
                 </div>
@@ -72,5 +72,5 @@ export const RecentEmailCard = ({ emails }: RecentEmailCardProps) => {
                 </div>
             </div>
         </div>
-    )
+    );
 }

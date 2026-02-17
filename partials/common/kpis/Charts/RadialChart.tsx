@@ -122,9 +122,9 @@ export const RadialChart = ({
 
     const firstValues = employeeProgressCounts?.data
         ? Object.entries(employeeProgressCounts?.data)
-              ?.filter(([key]) => key !== 'overAll' && key !== 'previousMonth')
-              .map(([key, value]) => ({ key, value }))
-              .sort((a, b) => kpiKeys?.indexOf(a.key) - kpiKeys?.indexOf(b.key))
+            ?.filter(([key]) => key !== 'overAll' && key !== 'previousMonth')
+            .map(([key, value]) => ({ key, value }))
+            .sort((a, b) => kpiKeys?.indexOf(a.key) - kpiKeys?.indexOf(b.key))
         : []
 
     // firstValues.reverse()
@@ -143,7 +143,7 @@ export const RadialChart = ({
         <>
             <div className="flex items-center mb-4">
                 <div className="p-2 border border-[#1436B033] rounded-lg">
-                    <GiSpeedometer className="text-[#1436B0] text-base" />
+                    <GiSpeedometer className="text-[#1436B0]" />
                 </div>
                 <h2 className="ml-3 text-base font-medium">Overall Employee</h2>
             </div>
@@ -154,7 +154,7 @@ export const RadialChart = ({
             {employeeProgressCounts?.isLoading ? (
                 <LoadingAnimation />
             ) : employeeProgressCounts?.data &&
-              employeeProgressCounts?.isSuccess ? (
+                employeeProgressCounts?.isSuccess ? (
                 <div className="flex flex-col items-center">
                     <div className="relative h-64">
                         <Doughnut data={datas} options={options} />
@@ -167,7 +167,7 @@ export const RadialChart = ({
                                 )}
                                 %
                             </Typography>
-                            <p className="flex flex-row items-center gap-1 text-base text-gray-500">
+                            <p className="flex flex-row items-center gap-1 text-gray-500">
                                 <BsArrowUpRightCircleFill />
                                 Average
                             </p>

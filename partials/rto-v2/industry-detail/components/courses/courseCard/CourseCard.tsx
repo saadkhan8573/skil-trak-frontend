@@ -228,15 +228,15 @@ export function CourseCard({
                                 </button>
                             )}
 
-                        {/* {showActionButtons && (
+                        {showActionButtons && (
                             <div className="flex items-center gap-2 mr-2 bg-gray-50 px-2 py-1 rounded-lg border border-gray-100">
                                 <span className="text-[10px] font-bold text-gray-500 uppercase">
-                                    {approval.isDisabled
+                                    {approval?.isDisabled
                                         ? 'Disabled'
                                         : 'Enabled'}
                                 </span>
                                 <Switch
-                                    name="s"
+                                    name="isDisabled"
                                     customStyleClass='profileSwitch'
                                     isChecked={!approval?.isDisabled}
                                     onChange={(e: any) =>
@@ -246,7 +246,7 @@ export function CourseCard({
                                     loading={toggleStatusResult?.isLoading}
                                 />
                             </div>
-                        )} */}
+                        )}
 
                         <motion.button
                             onClick={() =>

@@ -43,6 +43,7 @@ export const CompletedAppointmentCard = ({
             })
         }
     }
+
     return (
         <>
             <ShowErrorNotifications result={updateStatusResult} />
@@ -107,20 +108,21 @@ export const CompletedAppointmentCard = ({
                             className="bg-emerald-100 text-emerald-700 border border-emerald-200"
                             text="✓ Completed"
                         />
-                        {appointment?.isSuccessfull ? (
+                        {appointment?.isSuccessfull === true ? (
                             <Badge
                                 variant="success"
                                 text="Successful"
                                 Icon={CheckCircle}
                                 size="xs"
                             />
+                        ) : appointment?.isSuccessfull === false ? (
+                            <Badge
+                                variant="error"
+                                text="Not Successful"
+                                Icon={XCircle}
+                                size="xs"
+                            />
                         ) : (
-                            // <Badge
-                            //     variant="error"
-                            //     text="Unsuccessful"
-                            //     Icon={XCircle}
-                            //     size="xs"
-                            // />
                             <SelectAppointmentStatus
                                 onSubmit={onSubmit}
                                 result={updateStatusResult}

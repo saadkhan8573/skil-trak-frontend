@@ -24,14 +24,17 @@ interface CancelWorkplaceModalProps {
     open: boolean
     onOpenChange: (open: boolean) => void
     workplaceId: number
+    onSuccess?: (note: string) => void
 }
 
 export const CancelWorkplaceModal = ({
     open,
     onOpenChange,
     workplaceId,
+    onSuccess,
 }: CancelWorkplaceModalProps) => {
     const { notification } = useNotification()
+    const [submittedNote, setSubmittedNote] = React.useState('')
 
     const [cancelWorkplace, cancelWorkplaceResult] =
         SubAdminApi.Workplace.useCancelWorkplaceStatusMutation()
@@ -43,8 +46,11 @@ export const CancelWorkplaceModal = ({
                 description: 'Workplace has been cancelled successfully.',
             })
             onOpenChange(false)
+            if (onSuccess && submittedNote) {
+                onSuccess(submittedNote)
+            }
         }
-    }, [cancelWorkplaceResult])
+    }, [cancelWorkplaceResult, submittedNote, onSuccess])
 
     const validationSchema = Yup.object({
         note: Yup.string().required('Please provide a reason for cancellation'),
@@ -60,6 +66,7 @@ export const CancelWorkplaceModal = ({
             id: Number(workplaceId),
             comment: values?.note,
         })
+        setSubmittedNote(values?.note)
     }
 
     return (

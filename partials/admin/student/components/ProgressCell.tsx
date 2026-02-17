@@ -73,7 +73,7 @@ const WorkplaceRequestProgress = (appliedIndustry?: any) => {
             image: 'waiting.png',
             date: appliedIndustry?.awaitingWorkplaceResponseDate,
         },
-        '7-Interview': {
+        '7-Industry sourcing': {
             status: 'Interview',
             description: 'with Case Officer',
             color: 'text-orange-500',

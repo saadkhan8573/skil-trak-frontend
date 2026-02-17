@@ -103,6 +103,6 @@ export const studentsEndpoints = (
             method: 'POST',
             body,
         }),
-        invalidatesTags: ['RTO'],
+        invalidatesTags: ['RTO', 'RTOIndustries', 'StudentsWorkplace'],
     }),
 })

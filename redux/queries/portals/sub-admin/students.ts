@@ -955,4 +955,11 @@ export const studentsEndpoints = (
             `subadmin/course/${courseId}/rto/${rtoId}/workplace-types`,
         providesTags: ['SubAdminStudents', 'Industries'],
     }),
+    resendWorkplaceApprovalEmail: builder.mutation<any, number>({
+        query: (id) => ({
+            url: `students/workplace-requests/approval-request/${id}/email-resend`,
+            method: 'PATCH',
+        }),
+        invalidatesTags: ['SubAdminStudents', 'SubAdminWorkplace'],
+    }),
 })

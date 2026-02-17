@@ -38,7 +38,7 @@ export function AllWorkplaces({ studentId }: { studentId: number }) {
                     <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200/60 shadow-xl p-5">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-lg shadow-[#044866]/30">
+                                <div className="w-11 h-11 rounded-2xl bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-lg shadow-[#044866]/30">
                                     <Building2 className="w-5 h-5 text-white" />
                                 </div>
                                 <div>

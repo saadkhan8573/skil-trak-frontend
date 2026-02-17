@@ -41,7 +41,7 @@ export const workplaceProgressOptions = [
         value: WorkplaceCurrentStatus.CaseOfficerAssigned,
     },
     {
-        label: 'Interview',
+        label: 'Industry sourcing',
         value: WorkplaceCurrentStatus.Interview,
     },
     {
@@ -53,7 +53,7 @@ export const workplaceProgressOptions = [
         value: WorkplaceCurrentStatus.AwaitingRtoResponse,
     },
     {
-        label: 'Waiting',
+        label: 'Waiting For Industry',
         value: WorkplaceCurrentStatus.AwaitingWorkplaceResponse,
     },
     {

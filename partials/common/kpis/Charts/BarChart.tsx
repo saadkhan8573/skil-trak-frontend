@@ -87,10 +87,10 @@ export const BarChart = ({
                 beginAtZero: true,
                 max: employeeCounts?.data?.finalCounts
                     ? Math.max(
-                          ...(Object?.values(
-                              employeeCounts?.data?.finalCounts
-                          ) as number[])
-                      )
+                        ...(Object?.values(
+                            employeeCounts?.data?.finalCounts
+                        ) as number[])
+                    )
                     : 0,
             },
         },
@@ -125,7 +125,7 @@ export const BarChart = ({
         <>
             <div className="flex items-center mb-4">
                 <div className="p-2 border border-[#1436B033] rounded-lg">
-                    <RiUserLine className="text-[#1436B0] text-base" />
+                    <RiUserLine className="text-[#1436B0]" />
                 </div>
                 <h2 className="ml-3 text-base font-medium">{title}</h2>
             </div>
@@ -142,7 +142,7 @@ export const BarChart = ({
                 </div> */}
             </div>
 
-            <p className="text-[#9A9A9A] text-base font-normal">
+            <p className="text-[#9A9A9A] font-normal">
                 Total employee
             </p>
 

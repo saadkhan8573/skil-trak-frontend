@@ -177,7 +177,7 @@ export const useRequestType = ({
             date: appliedIndustry?.caseOfficerAssignedDate,
         },
         {
-            primaryText: 'Interview',
+            primaryText: 'Industry sourcing',
             secondaryText: 'with Case Officer',
             color: 'text-primary-light',
             onClick: (isCleared: (bool: boolean) => void) => {

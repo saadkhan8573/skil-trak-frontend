@@ -310,6 +310,7 @@ export const {
     useGetAddedByStudentsWorkplacesQuery,
     useCheckIsIndustryPerformedActionQuery,
     useUpdateWorkplaceIndustryStatusMutation,
+    useUpdateWorkplaceIndustryStatusFromEmailMutation,
     useUpdateWpAppliedIndustryMutation,
     useBlockedStudentsWorkplacesListQuery,
     useSubAdminApplyStudentWorkplaceMutation,
@@ -421,6 +422,7 @@ export const {
     useSkipWorkplaceAndApplyAnotherMutation,
     useSkippedIndustriesListQuery,
     useGetStudentPreferredCallTimeQuery,
+    useResendWorkplaceApprovalEmailMutation,
 
     // ---- LOGBOOK ---- //
     useSaveLogbookMutation,
@@ -728,6 +730,7 @@ export const SubAdminApi = {
         skipWpAndApplyAnother: useSkipWorkplaceAndApplyAnotherMutation,
         skippedIndustriesList: useSkippedIndustriesListQuery,
         useStudentPreferredCallTime: useGetStudentPreferredCallTimeQuery,
+        resendWorkplaceApprovalEmail: useResendWorkplaceApprovalEmailMutation,
     },
     LogBook: {
         useSaveLogbook: useSaveLogbookMutation,
@@ -837,6 +840,7 @@ export const SubAdminApi = {
         useCancelRequestWP: useCancelRequestWorkplaceMutation,
         blockedStudentsWpList: useBlockedStudentsWorkplacesListQuery,
         updateWpAppliedIndustry: useUpdateWpAppliedIndustryMutation,
+        updateWorkplaceIndustryStatusFromEmail: useUpdateWorkplaceIndustryStatusFromEmailMutation,
         subadminCancelationRequest: useSubadminWpCancellationRequestsListQuery,
         useSendMeetingNotification: useSendMeetingNotificationMutation,
         contactWorkplaceIndustry: useContactWorkplaceIndustryMutation,

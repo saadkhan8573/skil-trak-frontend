@@ -5,6 +5,9 @@ import { WorkplaceApprovalActions } from './WorkplaceApprovalActions'
 import { WorkplaceAvailableSlots } from './WorkplaceAvailableSlots'
 import { WorkplaceDetail } from './WorkplaceDetail'
 import { WorkplaceMapBoxView } from './WorkplaceMapBoxView'
+import { UploadIndustryRequiredDocs } from './UploadIndustryRequiredDocs'
+import { StudentApi } from '@queries'
+import { PrePlacementForm } from './PrePlacementForm'
 
 export const WorkplaceApproval = ({
     onCancel,
@@ -13,11 +16,32 @@ export const WorkplaceApproval = ({
     wpApprovalData: any
     onCancel?: () => void
 }) => {
+    const { data, isLoading, isError } =
+        StudentApi.Workplace.useWpApprovalRequestIndustryChecks(
+            wpApprovalData.id,
+            { skip: !wpApprovalData?.id }
+        )
+
+    const allArrays = [
+        ...(data?.assessmentEvidence || []),
+        ...(data?.otherDocs || []),
+    ]
+
+    const anyDocumentUploaded = allArrays
+        .filter((doc: any) => doc.id)
+        .every((doc: any) => doc.studentResponse?.[0]?.files?.length > 0)
+    const placementUrl = wpApprovalData?.industry?.placementUrl
+
+    const hasExternalLink =
+        typeof placementUrl === 'string' && placementUrl.trim().length > 0
+    const shouldDisableApprove =
+        !anyDocumentUploaded ||
+        (hasExternalLink && !wpApprovalData?.isMarkedComplete)
     return (
         <div className="px-4 py-2 w-full max-w-[inherit] h-full bg-white rounded-[10px]">
             <div className="grid grid-cols-5 gap-x-5">
                 <div className="col-span-2">
-                    <WorkplaceDetail />
+                    <WorkplaceDetail student={wpApprovalData?.student} />
                 </div>
 
                 <div className="">
@@ -58,8 +82,16 @@ export const WorkplaceApproval = ({
                     </div>
                 </div>
             </div>
+            {data?.assessmentEvidence?.length > 0 && (
+                <UploadIndustryRequiredDocs
+                    data={data}
+                    workplaceRequest={wpApprovalData}
+                />
+            )}
+            {hasExternalLink && (
+                <PrePlacementForm wpApprovalData={wpApprovalData} />
+            )}
 
-            {/*  */}
             <div className="w-full border border-[#D5D5D5] rounded-md p-3 grid grid-cols-5 gap-x-2.5 mt-3">
                 <div className="col-span-2">
                     <StudentWorkplaceInfo industry={wpApprovalData} />
@@ -73,6 +105,7 @@ export const WorkplaceApproval = ({
             </div>
 
             {/*  */}
+            {/* {allRequiredDocumentsUploaded && ( */}
             <WorkplaceApprovalActions
                 onCancel={() => {
                     if (onCancel) {
@@ -83,7 +116,9 @@ export const WorkplaceApproval = ({
                 wpApprovalId={wpApprovalData?.id}
                 dates={wpApprovalData?.dates}
                 subAdminUserId={wpApprovalData?.student?.subadmin?.user?.id}
+                shouldDisableApprove={shouldDisableApprove}
             />
+            {/* )} */}
         </div>
     )
 }

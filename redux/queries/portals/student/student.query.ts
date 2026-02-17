@@ -93,6 +93,8 @@ export const {
     useUploadWPContractMutation,
     useChangeStatusWpApprrovalReqQuery,
     useApplyWorkplaceWithAbnIndustryMutation,
+    useGetWpApprovalRequestIndustryChecksQuery,
+    useCompleteWorkplaceApprovalRequestMutation,
 
     // ----- SCHEDULE ----- //
     useRescheduleShiftMutation,
@@ -184,6 +186,10 @@ export const StudentApi = {
         changeStatusWpApprroval: useChangeStatusWpApprrovalReqQuery,
         useApplyWorkplaceWithAbnIndustryMutation,
         useGetIndustryFoldersQuery,
+        useWpApprovalRequestIndustryChecks:
+            useGetWpApprovalRequestIndustryChecksQuery,
+        useCompleteWorkplaceApprovalRequest:
+            useCompleteWorkplaceApprovalRequestMutation,
     },
     Schedule: {
         useAddScheduleNote: useAddScheduleNoteMutation,

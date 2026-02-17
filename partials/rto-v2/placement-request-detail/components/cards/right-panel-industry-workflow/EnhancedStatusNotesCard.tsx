@@ -14,7 +14,7 @@ export const EnhancedStatusNotesCard = () => {
         })
     return (
         <Card noPadding className="border-0 shadow-xl overflow-hidden">
-            <div className="bg-gradient-to-r from-[#044866] to-[#0D5468] px-5 py-4">
+            <div className="bg-linear-to-r from-[#044866] to-[#0D5468] px-5 py-4">
                 <div className="flex items-center gap-2.5 text-white">
                     <ClipboardCheck className="h-5 w-5" />
                     <h3 className="font-semibold">Status Check Notes</h3>
@@ -56,17 +56,17 @@ export const EnhancedStatusNotesCard = () => {
                                           }}
                                           className={`relative p-4 rounded-xl border-l-4 shadow-sm hover:shadow-md transition-all ${
                                               isManualNote
-                                                  ? 'bg-gradient-to-br from-blue-50 to-indigo-50/50 border-blue-500'
+                                                  ? 'bg-linear-to-br from-blue-50 to-indigo-50/50 border-blue-500'
                                                   : isAppointmentMissed
-                                                  ? 'bg-gradient-to-br from-red-50 to-rose-50/50 border-red-500'
-                                                  : isQuickAction
-                                                  ? 'bg-gradient-to-br from-amber-50 to-orange-50/50 border-amber-500'
-                                                  : 'bg-gradient-to-br from-slate-50 to-blue-50/50 border-[#044866]'
+                                                    ? 'bg-linear-to-br from-red-50 to-rose-50/50 border-red-500'
+                                                    : isQuickAction
+                                                      ? 'bg-linear-to-br from-amber-50 to-orange-50/50 border-amber-500'
+                                                      : 'bg-linear-to-br from-slate-50 to-blue-50/50 border-[#044866]'
                                           }`}
                                       >
                                           <div className="flex items-start justify-between mb-3">
                                               {/* <Badge
-                                                  text={note?.title}
+                                                  text={note?.author?.name}
                                                   Icon={
                                                       isManualNote
                                                           ? MessageSquare
@@ -76,17 +76,19 @@ export const EnhancedStatusNotesCard = () => {
                                                   }
                                                   className={`border-0 shadow-sm ${
                                                       isManualNote
-                                                          ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white'
+                                                          ? 'bg-linear-to-r from-blue-500 to-indigo-500 text-white'
                                                           : isAppointmentMissed
-                                                          ? 'bg-gradient-to-r from-red-500 to-rose-500 text-white'
+                                                          ? 'bg-linear-to-r from-red-500 to-rose-500 text-white'
                                                           : isQuickAction
-                                                          ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white'
-                                                          : 'bg-gradient-to-r from-[#044866] to-[#0D5468] text-white'
+                                                          ? 'bg-linear-to-r from-amber-500 to-orange-500 text-white'
+                                                          : 'bg-linear-to-r from-[#044866] to-[#0D5468] text-white'
                                                   }`}
                                               /> */}
+
                                               <span className="font-medium text-slate-900 capitalize">
                                                   {note?.title ?? '---'}
                                               </span>
+
                                               <div className="flex items-center gap-1.5 text-slate-500 text-xs">
                                                   <Clock className="h-3 w-3" />
                                                   {note?.updatedAt.slice(
@@ -101,6 +103,14 @@ export const EnhancedStatusNotesCard = () => {
                                               }}
                                               className="text-slate-900 text-sm leading-relaxed max-h-56 overflow-auto"
                                           />
+                                          {note?.author && (
+                                              <div className="flex justify-end">
+                                                  <Badge
+                                                      text={note?.author?.name}
+                                                      variant="info"
+                                                  />
+                                              </div>
+                                          )}
                                           {/* <div
                                               className={`flex items-center gap-2 mt-3 pt-3 border-t ${
                                                   isManualNote

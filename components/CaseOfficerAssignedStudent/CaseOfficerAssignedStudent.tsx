@@ -94,7 +94,7 @@ export const CaseOfficerAssignedStudent = ({
             date: appliedIndustry?.caseOfficerAssignedDate,
         },
         {
-            text: 'Interview',
+            text: 'Industry sourcing',
             date: updatedAlliedIndustry?.interviewDate,
         },
         {
@@ -133,7 +133,7 @@ export const CaseOfficerAssignedStudent = ({
             : false
 
     return (
-        <div className="w-[280px]">
+        <div className="w-70">
             {modal}
             {workplaceFilter ? (
                 <ProgressCell

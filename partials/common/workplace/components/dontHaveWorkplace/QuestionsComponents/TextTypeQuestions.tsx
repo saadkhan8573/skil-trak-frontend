@@ -38,6 +38,25 @@ export const TextTypeQuestions = ({
         refetchOnMountOrArgChange: true,
         skip: role !== UserRoles.STUDENT,
     })
+
+    useEffect(() => {
+        const address = student?.data?.addressLine1 || studentProfile?.data?.addressLine1
+        const zip = student?.data?.zipCode || studentProfile?.data?.zipCode
+
+        if (address) {
+            formMethods.setValue('suburb', address, {
+                shouldValidate: true,
+                shouldDirty: true,
+            })
+        }
+        if (zip) {
+            formMethods.setValue('zip', zip, {
+                shouldValidate: true,
+                shouldDirty: true,
+            })
+        }
+    }, [student?.data, studentProfile?.data])
+
     const getDateAfterDays = (daysAhead: number) => {
         const date = new Date()
         date.setDate(date.getDate() + daysAhead)
@@ -52,9 +71,8 @@ export const TextTypeQuestions = ({
     return (
         <>
             <div
-                className={`${
-                    ques?.fullWidth ? 'col-span-2' : ''
-                } flex flex-col gap-y-1`}
+                className={`${ques?.fullWidth ? 'col-span-2' : ''
+                    } flex flex-col gap-y-1`}
             >
                 <div>
                     <Typography variant="label" semibold block>
@@ -64,18 +82,17 @@ export const TextTypeQuestions = ({
                     <Typography variant="label" block>
                         {
                             workplaceQuestions[
-                                ques?.name as keyof typeof workplaceQuestions
+                            ques?.name as keyof typeof workplaceQuestions
                             ]
                         }
                     </Typography>
                 </div>
                 {ques?.inputValues && ques?.inputValues?.length > 0 ? (
                     <div
-                        className={`grid grid-cols-1 ${
-                            ques?.inputValues?.length > 1
-                                ? 'lg:grid-cols-2'
-                                : 'lg:grid-cols-1'
-                        }  gap-3`}
+                        className={`grid grid-cols-1 ${ques?.inputValues?.length > 1
+                            ? 'lg:grid-cols-2'
+                            : 'lg:grid-cols-1'
+                            }  gap-3`}
                     >
                         {ques?.inputValues?.map((inp: any) => {
                             return inp?.name === 'suburb' ||
@@ -123,7 +140,11 @@ export const TextTypeQuestions = ({
                                                                             ) {
                                                                                 formMethods.setValue(
                                                                                     'zip',
-                                                                                    component.long_name
+                                                                                    component.long_name,
+                                                                                    {
+                                                                                        shouldValidate: true,
+                                                                                        shouldDirty: true,
+                                                                                    }
                                                                                 )
 
                                                                                 break
@@ -145,15 +166,20 @@ export const TextTypeQuestions = ({
                                                     .catch(console.error)
                                             }
                                         }
+
+                                        formMethods.setValue(inp?.name, e?.target?.value, {
+                                            shouldValidate: true,
+                                            shouldDirty: true,
+                                        })
                                     }}
                                     defaultValue={
                                         inp.name === 'suburb'
                                             ? student?.data?.addressLine1 ||
-                                              studentProfile?.data?.addressLine1
+                                            studentProfile?.data?.addressLine1
                                             : inp.name === 'zip'
-                                            ? student?.data?.zipCode ||
-                                              studentProfile?.data?.zipCode
-                                            : ''
+                                                ? student?.data?.zipCode ||
+                                                studentProfile?.data?.zipCode
+                                                : ''
                                     }
                                 />
                             ) : inp.type === 'date' ? (
@@ -209,7 +235,11 @@ export const TextTypeQuestions = ({
                                                                             ) {
                                                                                 formMethods.setValue(
                                                                                     'zip',
-                                                                                    component.long_name
+                                                                                    component.long_name,
+                                                                                    {
+                                                                                        shouldValidate: true,
+                                                                                        shouldDirty: true,
+                                                                                    }
                                                                                 )
 
                                                                                 break
@@ -231,6 +261,11 @@ export const TextTypeQuestions = ({
                                                     .catch(console.error)
                                             }
                                         }
+
+                                        formMethods.setValue(inp?.name, e?.target?.value, {
+                                            shouldValidate: true,
+                                            shouldDirty: true,
+                                        })
                                     }}
                                 />
                             )
@@ -238,9 +273,6 @@ export const TextTypeQuestions = ({
                     </div>
                 ) : null}
             </div>
-            {textTypeLength % 2 === 1 && index === textTypeLength - 1 ? (
-                <div />
-            ) : null}
         </>
     )
 }

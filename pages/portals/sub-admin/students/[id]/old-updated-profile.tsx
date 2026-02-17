@@ -4,14 +4,12 @@ import { ReactElement } from 'react'
 import { SubAdminLayout } from '@layouts'
 import { NextPageWithLayout } from '@types'
 import { StudentProfileDetail } from '@partials/common'
+import { useAdminLocalAccess } from '@hooks'
 
 const StudentsProfileDetail: NextPageWithLayout = () => {
+    useAdminLocalAccess()
     return (
-        <div
-        // style={{
-        //     fontSize: '88%',
-        // }}
-        >
+        <div>
             <StudentProfileDetail />
         </div>
     )

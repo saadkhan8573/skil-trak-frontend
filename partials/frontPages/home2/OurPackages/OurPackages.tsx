@@ -41,7 +41,7 @@ const OurPackages = () => {
         <div className="sticky top-0">
             <div className="py-10 relative z-10">
                 <Image
-                    src={'images/site/packages/packagesShadow.png'}
+                    src={'/images/site/packages/packagesShadow.png'}
                     alt={'Shadow'}
                     width={0}
                     height={0}

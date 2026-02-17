@@ -371,6 +371,7 @@ export const {
     useGetSubAdminStudentWorkplaceDetailQuery,
     useUpdateSubAdminCourseDurationMutation,
     useGetSubAdminMyStudentsQuery,
+    useGetFavouriteIndustryStudentsQuery,
     useGetUpcomingAppointmentsStudentsQuery,
     useMyStudentsWeeklyCallsListQuery,
     useGetWpTypeByRtoAndCourseQuery,
@@ -659,6 +660,8 @@ export const SubAdminApi = {
         useGetRtoCoordinatorStudents: useGetRtoCoordinatorStudentsQuery,
         useMysStudentsCallLog: useGetSubAdminMyStudentsCallLogQuery,
         studentWeeklyCallsList: useMyStudentsWeeklyCallsListQuery,
+        useGetSubAdminMyStudents: useGetSubAdminMyStudentsQuery,
+        useGetFavouriteIndustryStudents: useGetFavouriteIndustryStudentsQuery,
         getUpcomingAppointmentsStudents:
             useGetUpcomingAppointmentsStudentsQuery,
         getWpTypeByRtoAndCourse: useGetWpTypeByRtoAndCourseQuery,

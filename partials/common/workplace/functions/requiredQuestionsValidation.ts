@@ -3,9 +3,8 @@ import * as yup from 'yup'
 
 const requiredFields = [
     workplaceQuestionsKeys.suburb,
-    workplaceQuestionsKeys.placementStartDate,
-    workplaceQuestionsKeys.preferredContactTime,
-    workplaceQuestionsKeys.possession,
+    // workplaceQuestionsKeys.preferredContactTime,
+    // workplaceQuestionsKeys.possession,
     workplaceQuestionsKeys.medicalCondition,
     workplaceQuestionsKeys.commutePlan,
     workplaceQuestionsKeys.awarenessOfUnpaidPlacement,

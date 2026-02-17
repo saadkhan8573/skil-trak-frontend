@@ -1,6 +1,7 @@
 export * from './tabs'
 export * from './workplace'
 export * from './MyStudents'
+export * from './FavouriteIndustryStudents'
 export * from './components'
 export * from './AllStudents'
 export * from './UrgentStudents'

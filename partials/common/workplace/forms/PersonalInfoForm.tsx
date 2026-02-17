@@ -12,6 +12,7 @@ import {
     questionsDefaultValues,
     requiredQuestionsValidation,
 } from '../functions'
+import { workplaceQuestionsKeys } from '@partials/common/workplace/enum'
 
 type PersonalInfoProps = {
     onSubmit: any
@@ -28,6 +29,8 @@ export const PersonalInfoForm = ({
 }: PersonalInfoProps) => {
     const [selectedCourse, setSelectedCourse] = useState<any>(null)
     const [onLocationClicked, setOnLocationClicked] = useState<boolean>(true)
+
+    console.log({ personalInfoData })
 
     const { notification } = useNotification()
 
@@ -83,10 +86,14 @@ export const PersonalInfoForm = ({
         mode: 'all',
         resolver: yupResolver(validationSchema),
         defaultValues: {
+            [workplaceQuestionsKeys.placementPreferences]: 'Default',
+            [workplaceQuestionsKeys.autoTalentPool]: 'yes',
             ...personalInfoData,
             ...questionsDefaultValues(personalInfoData?.questions),
         },
     })
+
+    console.log({ formMethods })
 
     const onHandleSubmit = (values: any) => {
         // onSubmit(values)

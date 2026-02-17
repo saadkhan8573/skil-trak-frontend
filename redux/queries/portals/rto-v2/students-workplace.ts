@@ -39,4 +39,8 @@ export const studentsWorkplaceEndpoints = (
             `${PREFIX}${id}/course/${courseId}/workplaces-list`,
         providesTags: ['StudentsWorkplace'],
     }),
+    getStudentProfileWorkplaceApprovalRequest: builder.query<any, any>({
+        query: (id) => `students/${id}/workplace/approval-request/get`,
+        providesTags: ['Workplace'],
+    }),
 })

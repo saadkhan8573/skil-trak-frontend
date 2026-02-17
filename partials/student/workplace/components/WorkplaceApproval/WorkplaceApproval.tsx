@@ -41,7 +41,7 @@ export const WorkplaceApproval = ({
         <div className="px-4 py-2 w-full max-w-[inherit] h-full bg-white rounded-[10px]">
             <div className="grid grid-cols-5 gap-x-5">
                 <div className="col-span-2">
-                    <WorkplaceDetail />
+                    <WorkplaceDetail student={wpApprovalData?.student} />
                 </div>
 
                 <div className="">

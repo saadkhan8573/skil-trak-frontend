@@ -87,6 +87,7 @@ export const {
     useGetStudentWorkplaceCountQuery,
     useGetStudentWorkplacesByCourseQuery,
     useGetIndustryAvailabilityForStudentQuery,
+    useGetStudentProfileWorkplaceApprovalRequestQuery,
 
     // ---- Approval Requests ---- //
     useGetWpProgramsQuery,
@@ -223,6 +224,8 @@ export const RtoV2Api = {
         getStudentWorkplacesByCourse: useGetStudentWorkplacesByCourseQuery,
         useIndustryAvailabilityForStudent:
             useGetIndustryAvailabilityForStudentQuery,
+        useStudentProfileWorkplaceApprovalRequest:
+            useGetStudentProfileWorkplaceApprovalRequestQuery,
     },
     ApprovalRequest: {
         getWpPrograms: useGetWpProgramsQuery,

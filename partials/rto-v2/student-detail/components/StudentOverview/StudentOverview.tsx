@@ -18,6 +18,7 @@ import {
 import { GlobalModal, LoadingAnimation, NoData } from '@components'
 import { UserRoles } from '@constants'
 import { getUserCredentials } from '@utils'
+import { WorkplaceApprovalModal } from '@partials/student/workplace/modal'
 
 export const StudentOverview = () => {
     const [modal, setModal] = useState<ReactNode | null>(null)
@@ -33,6 +34,23 @@ export const StudentOverview = () => {
     const handleAddNewWorkplace = () => {
         setAddNewWorkplace(true)
     }
+    const wpApprovalRequest =
+        RtoV2Api.StudentsWorkplace.useStudentProfileWorkplaceApprovalRequest(
+            studentDetail?.id,
+            {
+                skip: !studentDetail?.id,
+            }
+        )
+    useEffect(() => {
+        if (wpApprovalRequest?.data) {
+            setModal(
+                <WorkplaceApprovalModal
+                    onCancel={onClose}
+                    wpApprovalRequest={wpApprovalRequest?.data}
+                />
+            )
+        }
+    }, [wpApprovalRequest])
 
     const studentWorkplaces =
         RtoV2Api.StudentsWorkplace.getStudentWorkplacesByCourse(
@@ -55,6 +73,7 @@ export const StudentOverview = () => {
     )
     useEffect(() => {
         if (
+            industryAvailability &&
             !industryAvailability?.existingAppointment &&
             role !== UserRoles.RTO
         ) {
@@ -63,22 +82,26 @@ export const StudentOverview = () => {
                     <div className="min-w-200">
                         {isIndustryAvailabilityLoading ? (
                             <LoadingAnimation />
-                        ) : industryAvailability ? (
-                            <AppointmentBookingModalV2
-                                // isOpen={true}
-                                onClose={onClose}
-                                wprId={industryAvailability?.workplaceRequestId}
-                                indId={industryAvailability?.industryId}
-                                availability={industryAvailability}
-                                // resultBookAppointment={resultBookAppointment}
-                                // bookAppointment={bookAppointment}
-                            />
-                        ) : null}
+                        ) : (
+                            industryAvailability && (
+                                <AppointmentBookingModalV2
+                                    // isOpen={true}
+                                    onClose={onClose}
+                                    wprId={
+                                        industryAvailability?.workplaceRequestId
+                                    }
+                                    indId={industryAvailability?.industryId}
+                                    availability={industryAvailability}
+                                    // resultBookAppointment={resultBookAppointment}
+                                    // bookAppointment={bookAppointment}
+                                />
+                            )
+                        )}
                     </div>
                 </GlobalModal>
             )
         }
-    }, [industryAvailability?.existingAppointment])
+    }, [industryAvailability?.existingAppointment, selectedWorkplace])
     const [bookAppointment, resultBookAppointment] =
         RtoV2Api.Students.useBookAppointmentExternally()
     const sortedWorkplaces = useMemo(

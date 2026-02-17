@@ -9,6 +9,8 @@ import {
     Upload,
 } from 'lucide-react'
 import { useNotification } from '@hooks'
+import { getUserCredentials } from '@utils'
+import { UserRoles } from '@constants'
 
 type Props = {
     data: {
@@ -34,7 +36,7 @@ export const UploadIndustryRequiredDocs = ({
     console.log('workplaceRequest', workplaceRequest)
     const { notification } = useNotification()
     const [uploadingKey, setUploadingKey] = useState<string | null>(null)
-
+    const role = getUserCredentials()?.role
     const [uploadEvidence, uploadEvidenceResult] = useUploadFolderDocsMutation()
 
     const [uploadOtherDoc, uploadOtherDocResult] =
@@ -96,6 +98,8 @@ export const UploadIndustryRequiredDocs = ({
 
         const formData = new FormData()
         formData.append('file', file)
+        const isNotStudent = role !== UserRoles.STUDENT
+        const userRole = role !== UserRoles.STUDENT
 
         try {
             setUploadingKey(doc.name)
@@ -107,10 +111,17 @@ export const UploadIndustryRequiredDocs = ({
                     studentId: workplaceRequest?.student?.id,
                 }).unwrap()
             } else {
-                await uploadEvidence({
+                const payload: any = {
                     id: doc.id,
                     body: formData,
-                }).unwrap()
+                    ...(isNotStudent && {
+                        params: {
+                            userId: workplaceRequest?.student?.user?.id,
+                        },
+                    }),
+                }
+
+                await uploadEvidence(payload).unwrap()
             }
         } catch (err) {
             console.error('Upload failed', err)

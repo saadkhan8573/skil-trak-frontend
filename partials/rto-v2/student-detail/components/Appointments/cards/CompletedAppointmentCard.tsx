@@ -44,7 +44,6 @@ export const CompletedAppointmentCard = ({
         }
     }
 
-    console.log('appointment?.isSuccessfull', appointment?.isSuccessfull)
     return (
         <>
             <ShowErrorNotifications result={updateStatusResult} />

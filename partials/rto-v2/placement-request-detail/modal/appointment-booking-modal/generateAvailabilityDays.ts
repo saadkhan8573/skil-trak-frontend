@@ -21,7 +21,7 @@ interface ApiSlot {
     endTime: string
 }
 
-interface AvailabilityData {
+export interface AvailabilityData {
     id: number
     type: string
     isActive: boolean

@@ -116,7 +116,18 @@ export const workplaceEndpoints = (
 
     getWorkplaceApprovalRequest: builder.query<any, void>({
         query: () => `${PREFIX}/workplace/approval-request/get`,
-        providesTags: ['Rating'],
+        providesTags: ['Workplace'],
+    }),
+    getWpApprovalRequestIndustryChecks: builder.query<any, any>({
+        query: (id) => ({
+            url: `${PREFIX}/approval/${id}/industry-checks/get`,
+        }),
+        providesTags: [
+            'Workplace',
+            'StudentAssessmentEvidence',
+            'AssessmentEvidence',
+            'SubAdminStudents',
+        ],
     }),
 
     changeStatusWpApprrovalReq: builder.query<
@@ -138,7 +149,6 @@ export const workplaceEndpoints = (
         }),
         invalidatesTags: ['Workplace-Apply'],
     }),
-
     getWPContract: builder.query<any, void>({
         query: () => 'employment-documents',
         providesTags: ['Workplace'],
@@ -159,5 +169,13 @@ export const workplaceEndpoints = (
     getWpIndustryChecks: builder.query<any, void>({
         query: () => `${PREFIX}/assessment-evidence/view/by-student`,
         providesTags: ['StudentAssessmentEvidence', 'AssessmentEvidence'],
+    }),
+    // workplace/approval-request/:id/complete
+    completeWorkplaceApprovalRequest: builder.mutation<any, any>({
+        query: (id) => ({
+            url: `${PREFIX}/workplace/approval-request/${id}/complete`,
+            method: 'PATCH',
+        }),
+        invalidatesTags: ['Workplace'],
     }),
 })

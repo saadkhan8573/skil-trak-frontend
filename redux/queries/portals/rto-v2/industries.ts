@@ -285,7 +285,8 @@ export const industriesEndpoints = (
         number
     >({
         query: (id) => ({
-            url: `students/workplace-requests/workplace/${id}/interview-availability/get`,
+            // url: `students/workplace-requests/workplace/${id}/interview-availability/get`,
+            url: `students/workplace-requests/${id}/interview-availability/get`
         }),
         providesTags: ['RTOIndustries'],
     }),

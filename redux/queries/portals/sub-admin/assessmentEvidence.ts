@@ -220,7 +220,12 @@ export const assessmentEvidenceEndpoints = (
             method: 'POST',
             body,
         }),
-        invalidatesTags: ['AssessmentEvidence', 'SubAdminStudents'],
+        invalidatesTags: [
+            'AssessmentEvidence',
+            'StudentAssessmentEvidence',
+            'SubAdminStudents',
+            'Workplace',
+        ],
     }),
     getDocuSignStatus: builder.query<any, any>({
         query: (id) => `docusign/envelope/get-info/${id}`,

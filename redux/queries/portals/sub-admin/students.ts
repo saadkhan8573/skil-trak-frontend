@@ -145,6 +145,13 @@ export const studentsEndpoints = (
         }),
         providesTags: ['SubAdminStudents'],
     }),
+    getFavouriteIndustryStudents: builder.query<any, any>({
+        query: (params) => ({
+            url: `${PREFIX}/students/placed/favorite-industries`,
+            params,
+        }),
+        providesTags: ['SubAdminStudents'],
+    }),
     getUpcomingAppointmentsStudents: builder.query<any, any>({
         query: (params) => ({
             url: `${PREFIX}/students/appointment-list`,

@@ -26,9 +26,8 @@ export const DaysQuestions = ({
     return (
         <>
             <div
-                className={`${
-                    ques?.fullWidth ? 'col-span-2' : ''
-                } flex flex-col gap-y-1`}
+                className={`${ques?.fullWidth ? 'col-span-2' : ''
+                    } flex flex-col gap-y-1`}
             >
                 <div>
                     <Typography variant="label" semibold block>
@@ -38,26 +37,25 @@ export const DaysQuestions = ({
                     <Typography variant="label" block>
                         {
                             workplaceQuestions[
-                                ques?.name as keyof typeof workplaceQuestions
+                            ques?.name as keyof typeof workplaceQuestions
                             ]
                         }
                     </Typography>
                 </div>
                 {ques?.inputValues?.length > 0 && (
                     <div
-                        className={`grid grid-cols-1 ${
-                            ques?.inputValues?.length > 1
+                        className={`grid grid-cols-1 ${ques?.inputValues?.length > 1
                                 ? 'lg:grid-cols-2'
                                 : 'lg:grid-cols-1'
-                        } gap-3`}
+                            } gap-3`}
                     >
                         {ques?.inputValues?.map((inp: any, idx: number) => {
                             const disableDay =
                                 inp?.name === 'supervisorMeetingDate1'
                                     ? date2
                                     : inp?.name === 'supervisorMeetingDate2'
-                                    ? date1
-                                    : ''
+                                        ? date1
+                                        : ''
                             return (
                                 <div key={inp?.name} className="mt-1">
                                     <Typography variant="label" medium>
@@ -78,9 +76,6 @@ export const DaysQuestions = ({
                     </div>
                 )}
             </div>
-            {textTypeLength % 2 === 1 && index === textTypeLength - 1 && (
-                <div />
-            )}
         </>
     )
 }

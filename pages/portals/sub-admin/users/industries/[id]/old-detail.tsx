@@ -1,5 +1,5 @@
 import { EmptyData, LoadingAnimation, TechnicalError } from '@components'
-import { useSubadminProfile } from '@hooks'
+import { useAdminLocalAccess, useSubadminProfile } from '@hooks'
 import { SubAdminLayout } from '@layouts'
 import { IndustryProfileDetail } from '@partials/common'
 import { useGetSubAdminIndustryProfileQuery } from '@queries'
@@ -9,20 +9,13 @@ import { ReactElement } from 'react'
 
 const IndustryDetail: NextPageWithLayout = () => {
     const router = useRouter()
-    // const id = useMemo(() => Number(router.query?.id), [router.query?.id])
     const id = router.query?.id
 
     const industry = useGetSubAdminIndustryProfileQuery(Number(id), {
         skip: id === null || id === undefined,
-        // refetchOnMountOrArgChange: true,
     })
     const subadmin = useSubadminProfile()
-
-    // useEffect(() => {
-    //     if (subadmin?.isAssociatedWithRto && subadmin) {
-    //         router.back()
-    //     }
-    // }, [subadmin])
+    useAdminLocalAccess()
 
     return (
         <div>

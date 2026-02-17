@@ -13,7 +13,7 @@ import { CreateStudentNote } from '@partials/common/Notes/forms/CreateStudentNot
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import { inputRichTextEditorErrorMessage } from '@components'
+import { inputRichTextEditorErrorMessage, Portal } from '@components'
 
 interface CreateStudentNoteModalProps {
     open: boolean
@@ -101,34 +101,36 @@ export const CreateStudentNoteModal = ({
                 </DialogContent>
             </Dialog>
 
-            <AnimatePresence>
-                {isMinimized && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.8, y: 20 }}
-                        className="fixed bottom-6 right-[50px] z-[9999]"
-                    >
-                        <button
-                            onClick={handleMaximize}
-                            className="bg-[#044866] text-white pl-4 pr-6 py-3 rounded-full shadow-premium-lg hover:shadow-premium-xl hover:scale-105 transition-all flex items-center gap-3 group border-2 border-white/20"
+            <Portal>
+                <AnimatePresence>
+                    {isMinimized && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+                            className="fixed bottom-6 right-[50px] z-9999"
                         >
-                            <div className="bg-white/20 p-2 rounded-full">
-                                <StickyNote className="w-5 h-5 text-white" />
-                            </div>
-                            <div className="flex flex-col items-start">
-                                <span className="text-[10px] font-bold uppercase tracking-widest text-white/60 leading-tight">
-                                    Minimized
-                                </span>
-                                <span className="text-sm font-semibold text-white leading-tight">
-                                    Restore Student Note
-                                </span>
-                            </div>
-                            <Maximize2 className="w-4 h-4 ml-2 opacity-60 group-hover:opacity-100 transition-opacity" />
-                        </button>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                            <button
+                                onClick={handleMaximize}
+                                className="bg-[#044866] text-white pl-4 pr-6 py-3 rounded-full shadow-premium-lg hover:shadow-premium-xl hover:scale-105 transition-all flex items-center gap-3 group border-2 border-white/20"
+                            >
+                                <div className="bg-white/20 p-2 rounded-full">
+                                    <StickyNote className="w-5 h-5 text-white" />
+                                </div>
+                                <div className="flex flex-col items-start">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/60 leading-tight">
+                                        Minimized
+                                    </span>
+                                    <span className="text-sm font-semibold text-white leading-tight">
+                                        Restore Student Note
+                                    </span>
+                                </div>
+                                <Maximize2 className="w-4 h-4 ml-2 opacity-60 group-hover:opacity-100 transition-opacity" />
+                            </button>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </Portal>
         </>
     )
 }

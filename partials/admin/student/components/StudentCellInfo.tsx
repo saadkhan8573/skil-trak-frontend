@@ -9,7 +9,7 @@ import { ErrorBoundary } from '@components/ErrorBoundary/ErrorBoundary'
 import { UserRoles } from '@constants'
 import { useScrollIntoView, useSubadminProfile } from '@hooks'
 import { CopyData } from '@partials/common/FindWorkplaces/components'
-import { Student } from '@types'
+import { Student, StudentStatusEnum } from '@types'
 import { isBrowser, maskText, setLink } from '@utils'
 import moment from 'moment'
 import Link from 'next/link'
@@ -19,7 +19,7 @@ import { BsFillSendArrowUpFill } from 'react-icons/bs'
 import { FiPhoneOff } from 'react-icons/fi'
 import { ImPhone, ImPhoneHangUp } from 'react-icons/im'
 import { LuFlagTriangleRight, LuPhoneOutgoing } from 'react-icons/lu'
-import { MdEmail, MdPhone, MdSnooze } from 'react-icons/md'
+import { MdEmail, MdPhone, MdSnooze, MdTimerOff } from 'react-icons/md'
 
 export const StudentCellInfo = ({
     call,
@@ -215,6 +215,14 @@ export const StudentCellInfo = ({
                             <Tooltip>Snoozed Student</Tooltip>
                         </div>
                     ) : null}
+                    {student?.studentStatus === StudentStatusEnum.EXPIRED &&
+                        student?.expiryDate &&
+                        moment(student.expiryDate).isBefore(moment(), 'day') && (
+                            <div className="w-5 h-5 flex items-center justify-center rounded relative group">
+                                <MdTimerOff size={20} className="text-red-500" />
+                                <Tooltip>Student Expired</Tooltip>
+                            </div>
+                        )}
                 </div>
                 {/* <AuthorizedUserComponent
                     roles={[

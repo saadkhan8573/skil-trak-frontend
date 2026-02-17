@@ -96,7 +96,7 @@ const RequestWorkplaceDetail: NextPageWithLayout = () => {
                     {/* Main Card */}
                     <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden relative">
                         {/* Decorative Background */}
-                        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#044866]/5 to-[#F7A619]/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+                        <div className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-[#044866]/5 to-[#F7A619]/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
 
                         {/* Progress Steps (Visual Only) */}
                         <div className="bg-slate-50/50 border-b border-slate-100 px-8 py-4">

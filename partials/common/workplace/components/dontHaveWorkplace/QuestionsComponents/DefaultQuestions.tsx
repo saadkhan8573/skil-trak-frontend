@@ -22,9 +22,8 @@ export const DefaultQuestions = ({
 
     return (
         <div
-            className={`${
-                ques?.fullWidth ? 'col-span-2' : ''
-            } flex flex-col gap-y-2`}
+            className={`${ques?.fullWidth ? 'col-span-2' : ''
+                } flex flex-col gap-y-2`}
         >
             <div className="flex gap-x-1">
                 <Typography variant="label" semibold block>
@@ -39,7 +38,7 @@ export const DefaultQuestions = ({
                     height="lg:h-28"
                     title={
                         workplaceQuestions[
-                            ques?.name as keyof typeof workplaceQuestions
+                        ques?.name as keyof typeof workplaceQuestions
                         ]
                     }
                     onClick={(answer: string) => {
@@ -54,7 +53,7 @@ export const DefaultQuestions = ({
 
             {(ques?.name === workplaceQuestionsKeys.currentEmploymentStatus ||
                 ques?.name === workplaceQuestionsKeys.medicalCondition) &&
-            value !== 'No' ? (
+                value !== 'No' ? (
                 <TextInput
                     label={'Provide Details'}
                     name={ques?.name}

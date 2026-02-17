@@ -45,15 +45,20 @@ export const PersonalInfoQuestions = ({
     )
 
     const visibleQuestions = useMemo(() => {
+        let filtered = questionList
         if (
             getSectorByCourseId?.isSuccess &&
             getSectorByCourseId?.data?.id !== 1
         ) {
-            return questionList.filter(
+            filtered = filtered.filter(
                 (q) => q?.name !== workplaceQuestionsKeys.serviceOffered
             )
         }
-        return questionList
+        return filtered.filter(
+            (q) =>
+                q?.name !== workplaceQuestionsKeys.placementPreferences &&
+                q?.name !== workplaceQuestionsKeys.autoTalentPool
+        )
     }, [getSectorByCourseId?.data?.id])
 
     const wpTypesOptions =
@@ -101,7 +106,7 @@ export const PersonalInfoQuestions = ({
                                 <Typography variant="label">
                                     {
                                         workplaceQuestions[
-                                            ques?.name as keyof typeof workplaceQuestions
+                                        ques?.name as keyof typeof workplaceQuestions
                                         ]
                                     }
                                 </Typography>
@@ -120,7 +125,7 @@ export const PersonalInfoQuestions = ({
                                 <Typography variant="label">
                                     {
                                         workplaceQuestions[
-                                            ques?.name as keyof typeof workplaceQuestions
+                                        ques?.name as keyof typeof workplaceQuestions
                                         ]
                                     }
                                 </Typography>

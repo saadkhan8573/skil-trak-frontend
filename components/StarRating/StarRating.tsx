@@ -22,7 +22,7 @@ interface StarRatingProps {
 }
 
 export const StarRating: React.FC<StarRatingProps> = ({
-    value,
+    value = 0,
     count = 5,
     size = 20,
     activeColor = '#ffd700',
@@ -116,7 +116,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
                 </div>
                 {(showValue || edit) && (
                     <span className="text-sm font-semibold text-gray-600">
-                        {value.toFixed(1)}
+                        {value?.toFixed(1)}
                     </span>
                 )}
             </div>

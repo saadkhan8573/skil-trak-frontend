@@ -224,7 +224,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
             {documents.isError && (
                 <NoData text={'There is some technical issue!'} isError />
             )}
-            {documents.isLoading || documents.isFetching ? (
+            {documents.isLoading ? (
                 <StudentDocumentsTabSkeleton />
             ) : (
                 documents?.isSuccess &&

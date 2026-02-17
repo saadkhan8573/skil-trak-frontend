@@ -128,7 +128,7 @@ const SubAdminUsers: NextPageWithLayout = () => {
         <div className="flex flex-col">
             <div className="flex gap-x-6">
                 {/* Primary Actions */}
-                <div className="bg-white p-4 rounded-2xl shadow-xl flex-shrink-0">
+                <div className="bg-white p-4 rounded-2xl shadow-xl shrink-0">
                     <DisplayPrimaryActions actions={PrimaryLinks} />
                 </div>
 

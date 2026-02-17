@@ -1,7 +1,7 @@
 import { InitialAvatar, Tooltip, TooltipPosition } from '@components'
 import { useScrollIntoView, useSubadminProfile } from '@hooks'
 import { CopyData } from '@partials/common/FindWorkplaces/components'
-import { Student } from '@types'
+import { Student, StudentStatusEnum } from '@types'
 import { ellipsisText, isBrowser, setLink } from '@utils'
 import moment from 'moment'
 import Link from 'next/link'
@@ -11,7 +11,7 @@ import { FaEnvelope, FaPhone } from 'react-icons/fa'
 import { FiPhoneOff } from 'react-icons/fi'
 import { ImPhone, ImPhoneHangUp } from 'react-icons/im'
 import { LuFlagTriangleRight } from 'react-icons/lu'
-import { MdSnooze } from 'react-icons/md'
+import { MdSnooze, MdTimerOff } from 'react-icons/md'
 
 export const StudentCellInfo = ({
     student,
@@ -58,11 +58,10 @@ export const StudentCellInfo = ({
                 </div>
 
                 <Link
-                    href={`${
-                        router.pathname === '/portals/sub-admin/talent-pool'
-                            ? '#'
-                            : `/portals/sub-admin/students/${student?.id}/detail`
-                    }`}
+                    href={`${router.pathname === '/portals/sub-admin/talent-pool'
+                        ? '#'
+                        : `/portals/sub-admin/students/${student?.id}/detail`
+                        }`}
                     onClick={() => {
                         setLink('subadmin-student', router)
                         if (isBrowser()) {
@@ -155,14 +154,13 @@ export const StudentCellInfo = ({
                                 {student?.user?.name} {student?.familyName}{' '}
                             </p>
                             <CopyData
-                                text={`${student?.user?.name} ${
-                                    student?.familyName ?? ''
-                                }`}
+                                text={`${student?.user?.name} ${student?.familyName ?? ''
+                                    }`}
                                 type={'Student Name'}
                             />
                         </div>
                         {student?.tickets &&
-                        student?.tickets?.length > 0 ? (
+                            student?.tickets?.length > 0 ? (
                             <div className="w-4 h-4 rounded  relative group">
                                 <BsTicketDetailed className="text-black text-lg" />
                                 <Tooltip>Ticket Created</Tooltip>
@@ -177,6 +175,17 @@ export const StudentCellInfo = ({
                                 <Tooltip>Student Snoozed</Tooltip>
                             </div>
                         ) : null}
+                        {student?.studentStatus === StudentStatusEnum.EXPIRED &&
+                            student?.expiryDate &&
+                            moment(student.expiryDate).isBefore(moment(), 'day') && (
+                                <div className="w-4 h-4 flex items-center justify-center rounded relative group">
+                                    <MdTimerOff
+                                        size={17}
+                                        className="text-red-500"
+                                    />
+                                    <Tooltip>Student Expired</Tooltip>
+                                </div>
+                            )}
                     </div>
                     {subadmin?.isAssociatedWithRto && (
                         <>
@@ -205,7 +214,6 @@ export const StudentCellInfo = ({
                             )}
                         </>
                     )}
-
                 </Link>
             </div>
         </div>

@@ -10,7 +10,7 @@ type WorkplaceRequestStatus =
     | '1-NotRequested'
     | '2-Requested'
     | '3-Assigned'
-    | '4-Interview'
+    | '4-Industry sourcing'
     | '5-Waiting'
     | '6-Meeting'
     | '7-AgreementPending'
@@ -74,7 +74,7 @@ const WorkplaceRequestProgress = (appliedIndustry?: any) => {
             date: appliedIndustry?.awaitingWorkplaceResponseDate,
         },
         '7-Industry sourcing': {
-            status: 'Interview',
+            status: 'Industry sourcing',
             description: 'with Case Officer',
             color: 'text-orange-500',
             image: 'interview.png',
@@ -166,24 +166,24 @@ export const ProgressCell = ({
     studentId?: number
     status?: WorkplaceRequestStatus
     step:
-    | 1
-    | 2
-    | 3
-    | 4
-    | 5
-    | 6
-    | 7
-    | 8
-    | 9
-    | 10
-    | 11
-    | 12
-    | 13
-    | 14
-    | 15
-    | 16
-    | 17
-    | number
+        | 1
+        | 2
+        | 3
+        | 4
+        | 5
+        | 6
+        | 7
+        | 8
+        | 9
+        | 10
+        | 11
+        | 12
+        | 13
+        | 14
+        | 15
+        | 16
+        | 17
+        | number
     assigned?: SubAdmin
     appliedIndustry?: any
     studentProvidedWorkplace?: boolean
@@ -197,8 +197,7 @@ export const ProgressCell = ({
     const contextBar = useContextBar()
 
     const classes = classNames({
-        'px-2 py-1 z-20 relative rounded-md flex items-center gap-x-2 min-w-max':
-            true,
+        'px-2 py-1 z-20 relative rounded-md flex items-center gap-x-2 min-w-max': true,
         'bg-white':
             currentStatus.status !==
             WorkplaceRequestProgress()['11-PlacementStarted'].status,

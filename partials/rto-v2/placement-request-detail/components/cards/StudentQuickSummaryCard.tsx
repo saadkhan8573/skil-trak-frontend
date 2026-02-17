@@ -46,7 +46,6 @@ export const StudentQuickSummaryCard = ({
             skip: !wpId,
         }
     )
-    console.log({ data })
     const {
         data: courseWpTypesData,
         isLoading,
@@ -95,7 +94,6 @@ export const StudentQuickSummaryCard = ({
         data?.rtoCourseFiles?.[0]?.rtoLogbookSummary?.length > 0
             ? data.rtoCourseFiles[0].rtoLogbookSummary[0]?.summary
             : data?.requirements
-    console.log('courseWpTypesData', courseWpTypesData)
     return (
         <Card
             noPadding
@@ -265,7 +263,7 @@ export const StudentQuickSummaryCard = ({
                                         Error loading data
                                     </p>
                                 ) : courseWpTypesData &&
-                                    courseWpTypesData?.length > 0 ? (
+                                  courseWpTypesData?.length > 0 ? (
                                     <ul className="list-disc list-inside text-xs text-slate-900 font-medium">
                                         {courseWpTypesData?.map(
                                             (type: any, index: number) => (

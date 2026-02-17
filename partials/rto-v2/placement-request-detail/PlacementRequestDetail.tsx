@@ -15,7 +15,7 @@ import {
     EnhancedStatusNotesCard,
     EnhancedStudentPreferencesChecklistCard,
     PremiumCurrentActionsCard,
-    StudentQuickSummaryCard
+    StudentQuickSummaryCard,
 } from './components/cards'
 import { CleanHeader } from './components/CleanHeader'
 import { FindWorkplaceSection } from './components/FindWorkplaceSection'
@@ -101,8 +101,6 @@ export const PlacementRequestDetail = () => {
             skip: !studentId,
         })
 
-    console.log({ studentDetails })
-
     // Workflow for students who need a workplace
     const workplaceType = placementRequestsDetails?.data
         ?.studentProvidedWorkplace
@@ -133,7 +131,6 @@ export const PlacementRequestDetail = () => {
     //     ?.lastIndexOf(true)
     // const wpCurrentStatus = progress?.data[lastTrueIndex]
 
-
     useEffect(() => {
         if (studentDetails?.isSuccess && studentDetails?.data) {
             dispatch(setStudentDetail(studentDetails?.data))
@@ -143,7 +140,6 @@ export const PlacementRequestDetail = () => {
             dispatch(setStudentDetail(null as unknown as Student))
         }
     }, [studentDetails])
-
 
     const getCurrentStageIndex = () => {
         const index = progressData?.data?.findIndex(
@@ -398,7 +394,7 @@ export const PlacementRequestDetail = () => {
                     <CardsSkeleton />
                 </div>
             ) : placementRequestsDetails?.isSuccess &&
-                placementRequestsDetails?.data ? (
+              placementRequestsDetails?.data ? (
                 <>
                     {/* Clean Modern Header */}
                     <CleanHeader
@@ -434,10 +430,11 @@ export const PlacementRequestDetail = () => {
                                         duration: 0.5,
                                         ease: 'easeOut',
                                     }}
-                                    className={`space-y-7 ${leftPanelSticky
-                                        ? 'sticky top-24 self-start'
-                                        : ''
-                                        }`}
+                                    className={`space-y-7 ${
+                                        leftPanelSticky
+                                            ? 'sticky top-24 self-start'
+                                            : ''
+                                    }`}
                                 >
                                     <StudentQuickSummaryCard
                                         studentDetails={studentDetails?.data}
@@ -477,10 +474,11 @@ export const PlacementRequestDetail = () => {
                                         duration: 0.5,
                                         ease: 'easeOut',
                                     }}
-                                    className={`space-y-7 ${rightPanelSticky
-                                        ? 'sticky top-24 self-start'
-                                        : ''
-                                        }`}
+                                    className={`space-y-7 ${
+                                        rightPanelSticky
+                                            ? 'sticky top-24 self-start'
+                                            : ''
+                                    }`}
                                 >
                                     {/* Industry Match Validation - Shown from workflow start through completion */}
                                     {/* {workplaceType === 'needs' && (

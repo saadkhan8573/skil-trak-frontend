@@ -9,6 +9,7 @@ import {
     GlobalModal,
     InitialAvatar,
     InitialAvatarContainer,
+    LoadingAnimation,
     Modal,
     NoData,
     Typography,
@@ -30,19 +31,21 @@ import {
 
 import {
     CommonApi,
+    RtoV2Api,
     StudentApi,
-    useGetStudentProfileDetailQuery
+    useGetStudentProfileDetailQuery,
 } from '@queries'
 
 import { Desktop, Mobile } from '@components/Responsive'
-import { MediaQueries } from '@constants'
+import { MediaQueries, UserRoles } from '@constants'
 import { UponAppointmentCompletionModal } from '@partials/common/StudentProfileDetail/components'
 import { FeedbackForm } from '@partials/common/StudentProfileDetail/feedbackForm/FeedbackForm'
 import { processSubmission } from '@partials/common/StudentProfileDetail/feedbackForm/utils/getAnswersWithQuestions'
 import { StudentWpScheduleModal } from '@partials/student/Schedule/modal'
-import { getSectors } from '@utils'
+import { getSectors, getUserCredentials } from '@utils'
 import Link from 'next/link'
 import { useMediaQuery } from 'react-responsive'
+import { AppointmentBookingModalV2 } from '@partials/rto-v2/placement-request-detail/modal'
 
 const StudentDashboard: NextPageWithLayout = () => {
     const [modal, setModal] = useState<any | null>(null)
@@ -51,7 +54,17 @@ const StudentDashboard: NextPageWithLayout = () => {
     const { data: courseSchedules } = CommonApi.Feedback.useGetCourseSchedules(
         {}
     )
+    const role = getUserCredentials()?.role
     const getPlacementFeedback = CommonApi.Feedback.useGetPlacementFeedback({})
+    const { data, isLoading } = useGetStudentProfileDetailQuery()
+    const {
+        data: industryAvailability,
+        isLoading: isIndustryAvailabilityLoading,
+        isError: isIndustryAvailabilityError,
+        isSuccess: isIndustryAvailabilitySuccess,
+    } = RtoV2Api.StudentsWorkplace.useIndustryAvailabilityForStudent(data?.id, {
+        skip: !data?.id,
+    })
 
     const processedFeedback = processSubmission(getPlacementFeedback?.data)
 
@@ -62,12 +75,39 @@ const StudentDashboard: NextPageWithLayout = () => {
     const onClose = () => {
         setModal(null)
     }
-    const { data, isLoading } = useGetStudentProfileDetailQuery()
     const appointmentCompletion =
         CommonApi.Appointments.useAppointmentCompletionStatus({})
     const agreementSignedAndSchedule =
         CommonApi.Appointments.useStudentAgreementAndScheduleStatus()
     // agreementSignedAndSchedule?.data
+    // const [bookAppointment, resultBookAppointment] =
+    //     RtoV2Api.Students.useBookAppointmentExternally()
+    useEffect(() => {
+        if (
+            !industryAvailability?.existingAppointment &&
+            role !== UserRoles.RTO
+        ) {
+            setModal(
+                <GlobalModal>
+                    <div className="min-w-200">
+                        {isIndustryAvailabilityLoading ? (
+                            <LoadingAnimation />
+                        ) : industryAvailability ? (
+                            <AppointmentBookingModalV2
+                                // isOpen={true}
+                                onClose={onClose}
+                                wprId={industryAvailability?.workplaceRequestId}
+                                indId={industryAvailability?.industryId}
+                                availability={industryAvailability}
+                                // resultBookAppointment={resultBookAppointment}
+                                // bookAppointment={bookAppointment}
+                            />
+                        ) : null}
+                    </div>
+                </GlobalModal>
+            )
+        }
+    }, [industryAvailability])
     const uponAgreementSignedAndNoSchedule = () => {
         setModal(<StudentWpScheduleModal student={data} onClose={onClose} />)
     }
@@ -216,16 +256,6 @@ const StudentDashboard: NextPageWithLayout = () => {
             </div>
         </Modal>
     )
-    // const onClickFeedbackCoordinator = () => {
-    //     setModal(
-    //         <GlobalModal>
-    //             <RateCoordinatorModal
-    //                 userId={data?.subadmin?.user?.id}
-    //                 onCloseModal={onCancel}
-    //             />
-    //         </GlobalModal>
-    //     )
-    // }
 
     return (
         <>
@@ -251,13 +281,6 @@ const StudentDashboard: NextPageWithLayout = () => {
                                         My Sector &amp; Courses
                                     </p>
                                 </div>
-
-                                {/* Action */}
-                                {/* <Link legacyBehavior href="#">
-                        <a className="inline-block uppercase text-xs font-medium bg-indigo-100 text-indigo-600 px-4 py-2 rounded">
-                            See Details
-                        </a>
-                    </Link> */}
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 mt-4">
@@ -344,20 +367,13 @@ const StudentDashboard: NextPageWithLayout = () => {
                                     Education Provider
                                 </p>
                             </div>
-
-                            {/* Action */}
-                            {/* <Link legacyBehavior href="#">
-                            <a className="inline-block uppercase text-xs font-medium bg-orange-100 text-orange-600 px-4 py-2 rounded">
-                                See Details
-                            </a>
-                        </Link> */}
                         </div>
 
                         {/* Card Body */}
                         {data?.rto ? (
                             <div className="flex items-center gap-x-6 py-4">
                                 {!isMobile && (
-                                    <div className="flex-shrink-0">
+                                    <div className="shrink-0">
                                         {data?.rto?.user.avatar ? (
                                             <Image
                                                 src={data?.rto?.user.avatar}
@@ -443,38 +459,38 @@ const StudentDashboard: NextPageWithLayout = () => {
                                                 1,
                                                 data?.rto?.subadmin?.length
                                             ).length > 0 && (
-                                                    <InitialAvatarContainer
-                                                        show={2}
-                                                    >
-                                                        {data?.rto.subadmin
-                                                            .slice(
-                                                                1,
-                                                                data?.rto?.subadmin
-                                                                    .length
+                                                <InitialAvatarContainer
+                                                    show={2}
+                                                >
+                                                    {data?.rto.subadmin
+                                                        .slice(
+                                                            1,
+                                                            data?.rto?.subadmin
+                                                                .length
+                                                        )
+                                                        .map(
+                                                            (
+                                                                subAdmin: SubAdmin,
+                                                                idx: number
+                                                            ) => (
+                                                                <InitialAvatar
+                                                                    key={
+                                                                        subAdmin.id
+                                                                    }
+                                                                    name={
+                                                                        subAdmin
+                                                                            ?.user
+                                                                            ?.name
+                                                                    }
+                                                                    first={
+                                                                        idx ===
+                                                                        0
+                                                                    }
+                                                                />
                                                             )
-                                                            .map(
-                                                                (
-                                                                    subAdmin: SubAdmin,
-                                                                    idx: number
-                                                                ) => (
-                                                                    <InitialAvatar
-                                                                        key={
-                                                                            subAdmin.id
-                                                                        }
-                                                                        name={
-                                                                            subAdmin
-                                                                                ?.user
-                                                                                ?.name
-                                                                        }
-                                                                        first={
-                                                                            idx ===
-                                                                            0
-                                                                        }
-                                                                    />
-                                                                )
-                                                            )}
-                                                    </InitialAvatarContainer>
-                                                )}
+                                                        )}
+                                                </InitialAvatarContainer>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -507,42 +523,8 @@ const StudentDashboard: NextPageWithLayout = () => {
                                     <p className="font-medium text-xs">
                                         {data?.subadmin?.user?.name ?? 'NA'}
                                     </p>
-                                    {/* <p className="text-xs font-medium text-slate-400">
-                                        {data?.subadmin?.user?.email ?? 'NA'}
-                                    </p> */}
                                 </div>
-                                {/* <div className="">
-                                    {data && data?.subadmin && (
-                                        <>
-                                            {averageRating &&
-                                            Object?.keys(averageRating)
-                                                ?.length > 0 ? (
-                                                <MapStarRating
-                                                    rating={
-                                                        averageRating?.rating
-                                                    }
-                                                />
-                                            ) : (
-                                                <button
-                                                    onClick={
-                                                        onClickFeedbackCoordinator
-                                                    }
-                                                    className="text-xs text-link border border-link rounded-md p-1"
-                                                >
-                                                    Rate Coordinator
-                                                </button>
-                                            )}
-                                        </>
-                                    )}
-                                </div> */}
                             </div>
-
-                            {/* Action */}
-                            {/* <Link legacyBehavior href="#">
-                            <a className="inline-block uppercase text-xs font-medium bg-green-100 text-green-600 px-4 py-2 rounded">
-                                See Details
-                            </a>
-                        </Link> */}
                         </div>
 
                         {/* Card Body */}
@@ -553,7 +535,7 @@ const StudentDashboard: NextPageWithLayout = () => {
                                         <div key={workplace.id}>
                                             <div className="flex items-center gap-x-6 mb-4">
                                                 <div className="hidden md:block">
-                                                    <div className="flex-shrink-0">
+                                                    <div className="shrink-0">
                                                         {workplace?.user
                                                             ?.avatar ? (
                                                             <Image

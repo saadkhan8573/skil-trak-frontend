@@ -1,5 +1,6 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
+import { IndustryInterviewAvailability } from '@types'
 import { IWorkplaceIndustries } from 'redux/queryTypes'
 
 const PREFIX = 'students/'
@@ -22,7 +23,14 @@ export const studentsWorkplaceEndpoints = (
         query: (id) => `${PREFIX}${id}/workplaces/count`,
         providesTags: ['StudentsWorkplace'],
     }),
-
+    // students/workplace-requests/student/${id}/interview-availability/get
+    getIndustryAvailabilityForStudent: builder.query<any, any>({
+        query: (id) => ({
+            // url: `students/workplace-requests/workplace/${id}/interview-availability/get`,
+            url: `students/workplace-requests/student/${id}/interview-availability/get`,
+        }),
+        providesTags: ['RTOIndustries', 'StudentsWorkplace'],
+    }),
     getStudentWorkplacesByCourse: builder.query<
         IWorkplaceIndustries[],
         { id: number; courseId: number }

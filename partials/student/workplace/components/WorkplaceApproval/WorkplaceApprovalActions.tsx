@@ -9,12 +9,14 @@ export const WorkplaceApprovalActions = ({
     wpApprovalId,
     dates,
     subAdminUserId,
+    shouldDisableApprove,
 }: {
     declaration: string
     onCancel?: () => void
     wpApprovalId: number
     dates: any
     subAdminUserId?: any
+    shouldDisableApprove: boolean
 }) => {
     const onCancelModal = () => setModal(null)
     const [modal, setModal] = useState<ReactElement | null>(null)
@@ -61,7 +63,7 @@ export const WorkplaceApprovalActions = ({
     return (
         <>
             {modal}
-            <div className="w-full md:w-[400px] flex flex-col gap-y-1 items-center justify-center mx-auto py-2">
+            <div className="w-full md:w-100 flex flex-col gap-y-1 items-center justify-center mx-auto py-2">
                 {Object.values(dates)?.filter((date) => {
                     if (date) {
                         return date
@@ -94,18 +96,21 @@ export const WorkplaceApprovalActions = ({
                             ))}
                     </div>
                 ) : (
-                    <div className="h-10 w-full">
-                        <Button
-                            fullWidth
-                            fullHeight
-                            onClick={() => {
-                                // onChangeStatusClicked(WPApprovalStatus.Approved)
-                                onApprovalClicked(declaration)
-                            }}
-                            text="Approve"
-                            variant="success"
-                        />
-                    </div>
+                    <>
+                        <div className="h-10 w-full">
+                            <Button
+                                fullWidth
+                                fullHeight
+                                onClick={() => {
+                                    // onChangeStatusClicked(WPApprovalStatus.Approved)
+                                    onApprovalClicked(declaration)
+                                }}
+                                text="Approve"
+                                variant="success"
+                                disabled={shouldDisableApprove}
+                            />
+                        </div>
+                    </>
                 )}
                 <div className="h-10 w-full">
                     <Button
@@ -116,7 +121,7 @@ export const WorkplaceApprovalActions = ({
                             onRejectedClicked()
                         }}
                         text="Reject"
-                        variant="action"
+                        variant="error"
                     />
                 </div>
             </div>

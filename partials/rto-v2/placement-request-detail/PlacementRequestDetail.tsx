@@ -15,7 +15,7 @@ import {
     EnhancedStatusNotesCard,
     EnhancedStudentPreferencesChecklistCard,
     PremiumCurrentActionsCard,
-    StudentQuickSummaryCard
+    StudentQuickSummaryCard,
 } from './components/cards'
 import { CleanHeader } from './components/CleanHeader'
 import { FindWorkplaceSection } from './components/FindWorkplaceSection'
@@ -24,10 +24,7 @@ import {
     needsWorkplaceStages,
     providedWorkplaceStages,
 } from './components/workplaceStages'
-import {
-    RejectionModal,
-    ScheduleModal,
-} from './modal'
+import { RejectionModal, ScheduleModal } from './modal'
 import {
     CardsSkeleton,
     HeaderSkeleton,
@@ -130,7 +127,6 @@ export const PlacementRequestDetail = () => {
             dispatch(setStudentDetail(null as unknown as Student))
         }
     }, [studentDetails])
-
 
     const getCurrentStageIndex = () => {
         const index = progressData?.data?.findIndex(
@@ -272,7 +268,6 @@ export const PlacementRequestDetail = () => {
         requestStatusChange('Request Generated')
     }
 
-
     const toggleRequirement = (id: string) => {
         setSelectedRequirements((prev) =>
             prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]
@@ -371,7 +366,7 @@ export const PlacementRequestDetail = () => {
                     <CardsSkeleton />
                 </div>
             ) : placementRequestsDetails?.isSuccess &&
-                placementRequestsDetails?.data ? (
+              placementRequestsDetails?.data ? (
                 <>
                     {/* Clean Modern Header */}
                     <CleanHeader
@@ -383,7 +378,9 @@ export const PlacementRequestDetail = () => {
                         currentStatus={wpCurrentStatus}
                         getCurrentStageIndex={getCurrentStageIndex}
                         student={studentDetails?.data}
-                        wpCurrStatus={placementRequestsDetails?.data?.currentStatus}
+                        wpCurrStatus={
+                            placementRequestsDetails?.data?.currentStatus
+                        }
                     />
 
                     {/* Premium Workflow Tracker */}
@@ -407,10 +404,11 @@ export const PlacementRequestDetail = () => {
                                         duration: 0.5,
                                         ease: 'easeOut',
                                     }}
-                                    className={`space-y-7 ${leftPanelSticky
-                                        ? 'sticky top-24 self-start'
-                                        : ''
-                                        }`}
+                                    className={`space-y-7 ${
+                                        leftPanelSticky
+                                            ? 'sticky top-24 self-start'
+                                            : ''
+                                    }`}
                                 >
                                     <StudentQuickSummaryCard
                                         studentDetails={studentDetails?.data}
@@ -450,10 +448,11 @@ export const PlacementRequestDetail = () => {
                                         duration: 0.5,
                                         ease: 'easeOut',
                                     }}
-                                    className={`space-y-7 ${rightPanelSticky
-                                        ? 'sticky top-24 self-start'
-                                        : ''
-                                        }`}
+                                    className={`space-y-7 ${
+                                        rightPanelSticky
+                                            ? 'sticky top-24 self-start'
+                                            : ''
+                                    }`}
                                 >
                                     {/* Industry Match Validation - Shown from workflow start through completion */}
                                     {/* {workplaceType === 'needs' && (

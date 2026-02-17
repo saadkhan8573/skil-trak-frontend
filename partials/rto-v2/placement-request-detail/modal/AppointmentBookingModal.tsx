@@ -11,6 +11,7 @@ import {
 import { useRouter } from 'next/router'
 import { Button, ShowErrorNotifications } from '@components'
 import { useNotification } from '@hooks'
+import moment from 'moment'
 
 interface TimeSlot {
     time: string
@@ -84,8 +85,17 @@ const generateAvailabilityDays = (
         availability?.dates?.forEach((dateItem: any) => {
             if (!dateItem.isActive) return
 
+            // FIX: Create the date object
             const currentDate = new Date(dateItem.date)
             const dayOfWeek = currentDate.getDay()
+
+            // FIX: Manually format YYYY-MM-DD instead of using .toISOString()
+            const year = currentDate.getFullYear()
+            const month = (currentDate.getMonth() + 1)
+                .toString()
+                .padStart(2, '0')
+            const day = currentDate.getDate().toString().padStart(2, '0')
+            const formattedDate = `${year}-${month}-${day}`
 
             const timeSlots: TimeSlot[] = []
 
@@ -95,7 +105,7 @@ const generateAvailabilityDays = (
                 const [startHour] = slot.startTime.split(':').map(Number)
                 const [endHour] = slot.endTime.split(':').map(Number)
 
-                for (let hour = startHour; hour < endHour; hour++) {
+                for (let hour = startHour; hour <= endHour; hour++) {
                     const period = hour >= 12 ? 'PM' : 'AM'
                     const displayHour =
                         hour > 12 ? hour - 12 : hour === 0 ? 12 : hour
@@ -112,7 +122,7 @@ const generateAvailabilityDays = (
 
             if (timeSlots.length) {
                 availableDays.push({
-                    date: currentDate.toISOString().split('T')[0],
+                    date: formattedDate,
                     dayName: dayNames[dayOfWeek],
                     dayNumber: currentDate.getDate(),
                     month: monthNames[currentDate.getMonth()],
@@ -144,6 +154,12 @@ const generateAvailabilityDays = (
 
     for (let day = today.getDate(); day <= daysInMonth; day++) {
         const currentDate = new Date(currentYear, currentMonth, day)
+        const year = currentDate.getFullYear()
+        const monthStr = (currentDate.getMonth() + 1)
+            .toString()
+            .padStart(2, '0')
+        const dayStr = currentDate.getDate().toString().padStart(2, '0')
+        const formattedDate = `${year}-${monthStr}-${dayStr}`
         const dayOfWeek = currentDate.getDay()
 
         const dayName = Object.keys(dayMap).find(
@@ -162,7 +178,7 @@ const generateAvailabilityDays = (
             const [startHour] = slot.startTime.split(':').map(Number)
             const [endHour] = slot.endTime.split(':').map(Number)
 
-            for (let hour = startHour; hour < endHour; hour++) {
+            for (let hour = startHour; hour <= endHour; hour++) {
                 const period = hour >= 12 ? 'PM' : 'AM'
                 const displayHour =
                     hour > 12 ? hour - 12 : hour === 0 ? 12 : hour
@@ -179,7 +195,7 @@ const generateAvailabilityDays = (
 
         if (timeSlots?.length) {
             availableDays.push({
-                date: currentDate.toISOString().split('T')[0],
+                date: formattedDate,
                 dayName: dayNames[dayOfWeek],
                 dayNumber: day,
                 month: monthNames[currentMonth],
@@ -249,6 +265,18 @@ export const AppointmentBookingModal = ({
 
     const selectedDay = availableDays.find((day) => day.date === selectedDate)
 
+    console.log('selectedDay.slots', availableDays)
+    const isPastAppointment =
+        selectedDate && selectedTime
+            ? moment(
+                  `${selectedDate} ${selectedTime}`,
+                  'YYYY-MM-DD hh:mm A'
+              ).isBefore(moment())
+            : false
+    const isPastSchedule = availableDays.every((day) =>
+        moment(day.date).endOf('day').isBefore(moment())
+    )
+    const isDisabledUI = isPastSchedule || isPastAppointment
     return (
         <>
             {resultBookAppointment && (
@@ -263,7 +291,7 @@ export const AppointmentBookingModal = ({
                 onClick={onClose}
             >
                 <div
-                    className="bg-white w-full overflow-hidden transition-all duration-500 transform sm:max-w-[480px] md:max-w-[720px] lg:max-w-[880px]"
+                    className="bg-white w-full overflow-hidden transition-all duration-500 transform sm:max-w-120 md:max-w-180 lg:max-w-220"
                     style={{
                         animation: 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                         borderRadius: '20px',
@@ -369,7 +397,7 @@ export const AppointmentBookingModal = ({
                             <div className="flex items-start justify-between">
                                 <div className="flex items-start gap-2.5 sm:gap-3 flex-1">
                                     <div
-                                        className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg flex-shrink-0"
+                                        className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg shrink-0"
                                         style={{
                                             background:
                                                 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%)',
@@ -401,7 +429,7 @@ export const AppointmentBookingModal = ({
                                 </div>
                                 <button
                                     onClick={onClose}
-                                    className="w-8 h-8 rounded-lg flex items-center justify-center transition-all active:scale-95 sm:hover:rotate-90 flex-shrink-0 ml-2"
+                                    className="w-8 h-8 rounded-lg flex items-center justify-center transition-all active:scale-95 sm:hover:rotate-90 shrink-0 ml-2"
                                     style={{
                                         backgroundColor:
                                             'rgba(255,255,255,0.1)',
@@ -423,7 +451,7 @@ export const AppointmentBookingModal = ({
                                 <div>
                                     <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
                                         <div
-                                            className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0"
+                                            className="w-8 h-8 rounded-lg flex items-center justify-center text-white shrink-0"
                                             style={{
                                                 backgroundColor: '#044866',
                                             }}
@@ -451,6 +479,11 @@ export const AppointmentBookingModal = ({
 
                                             return (
                                                 <button
+                                                    title={
+                                                        isDisabledUI
+                                                            ? 'Selected time is in the past'
+                                                            : `${availableCount} slots available`
+                                                    }
                                                     key={day.date}
                                                     onClick={() => {
                                                         setSelectedDate(
@@ -458,7 +491,8 @@ export const AppointmentBookingModal = ({
                                                         )
                                                         setSelectedTime(null)
                                                     }}
-                                                    className="day-card group relative p-3 sm:p-4 rounded-lg sm:rounded-xl text-center touch-manipulation"
+                                                    disabled={isDisabledUI}
+                                                    className={`${isDisabledUI ? 'cursor-not-allowed' : ''} day-card group relative p-3 sm:p-4 rounded-lg sm:rounded-xl text-center touch-manipulation`}
                                                     style={{
                                                         backgroundColor:
                                                             isSelected
@@ -577,7 +611,7 @@ export const AppointmentBookingModal = ({
                                 >
                                     <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
                                         <div
-                                            className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0"
+                                            className="w-8 h-8 rounded-lg flex items-center justify-center text-white shrink-0"
                                             style={{
                                                 backgroundColor: selectedDate
                                                     ? '#F7A619'
@@ -627,21 +661,21 @@ export const AppointmentBookingModal = ({
                                                                     !slot.available
                                                                         ? '#F9FAFB'
                                                                         : isSelected
-                                                                        ? '#F7A619'
-                                                                        : '#fff',
+                                                                          ? '#F7A619'
+                                                                          : '#fff',
                                                                 border: `2px solid ${
                                                                     !slot.available
                                                                         ? '#E5E7EB'
                                                                         : isSelected
-                                                                        ? '#F7A619'
-                                                                        : '#E5E7EB'
+                                                                          ? '#F7A619'
+                                                                          : '#E5E7EB'
                                                                 }`,
                                                                 boxShadow:
                                                                     isSelected
                                                                         ? '0 6px 12px -3px rgba(247, 166, 25, 0.4)'
                                                                         : !slot.available
-                                                                        ? 'none'
-                                                                        : '0 1px 6px -1px rgba(0, 0, 0, 0.1)',
+                                                                          ? 'none'
+                                                                          : '0 1px 6px -1px rgba(0, 0, 0, 0.1)',
                                                                 cursor: !slot.available
                                                                     ? 'not-allowed'
                                                                     : 'pointer',
@@ -659,8 +693,8 @@ export const AppointmentBookingModal = ({
                                                                     !slot.available
                                                                         ? 'text-gray-400'
                                                                         : isSelected
-                                                                        ? 'text-white'
-                                                                        : 'text-gray-900'
+                                                                          ? 'text-white'
+                                                                          : 'text-gray-900'
                                                                 }`}
                                                             >
                                                                 {slot.time}
@@ -792,7 +826,7 @@ export const AppointmentBookingModal = ({
                                 {selectedDate && selectedTime ? (
                                     <div className="flex items-center gap-2 sm:gap-2.5">
                                         <div
-                                            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                                            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
                                             style={{
                                                 backgroundColor: '#E8F3F7',
                                             }}
@@ -826,7 +860,7 @@ export const AppointmentBookingModal = ({
                                     </div>
                                 ) : (
                                     <div className="flex items-center gap-2 sm:gap-2.5">
-                                        <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                        <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">
                                             <Sparkles className="w-4 h-4 text-gray-400" />
                                         </div>
                                         <div>

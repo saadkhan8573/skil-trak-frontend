@@ -22,7 +22,8 @@ import {
     RtoTeamTab,
     StudentServicesTab,
 } from '../tickets-tabs'
-import { SupportTicketFilter } from './filters'
+import { FilterState, SupportTicketFilter } from './filters'
+import { filtersToQuery, queryToFilters } from './filters/ticketFilters'
 
 export enum TAGS {
     STUDENT_SERVICES = 'student services',
@@ -40,7 +41,7 @@ const TAG_TO_TAB_ID_MAP: Record<TAGS, string> = {
 }
 
 export const TeamTabsList = () => {
-    const [filters, setFilters] = useState<any>()
+    // const [filters, setFilters] = useState<any>()
     const [itemPerPage, setItemPerPage] = useState(30)
     const [page, setPage] = useState(1)
     const router = useRouter()
@@ -48,6 +49,35 @@ export const TeamTabsList = () => {
     const teamTabQuery = router.query.teamTab as string
     const role = getUserCredentials()?.role
     const { canSeeAdminTabs } = useSupportTicketPermissions()
+
+    const [filters, setFilters] = useState<FilterState>(() =>
+        queryToFilters(router.query)
+    )
+
+    useEffect(() => {
+        setFilters(queryToFilters(router.query))
+    }, [router.query])
+
+    const updateFilters = (updater: any) => {
+        setFilters((prev: any) => {
+            const next = typeof updater === 'function' ? updater(prev) : updater
+
+            router.push(
+                {
+                    pathname: router.pathname,
+                    query: {
+                        ...router.query,
+                        ...filtersToQuery(next),
+                        page: 1, // reset page on filter change
+                    },
+                },
+                undefined,
+                { shallow: true }
+            )
+
+            return next
+        })
+    }
 
     const buildSearchParams = (filter: any) => {
         if (!filter || typeof filter !== 'object') {
@@ -77,7 +107,9 @@ export const TeamTabsList = () => {
         })
 
     const subadmin = useSubadminProfile()
-    const getAllowedTabIdsForSubadmin = (supportTeam: SupportTeamType[] = []) => {
+    const getAllowedTabIdsForSubadmin = (
+        supportTeam: SupportTeamType[] = []
+    ) => {
         const tabIds = new Set<string>()
 
         supportTeam.forEach((team) => {
@@ -148,8 +180,8 @@ export const TeamTabsList = () => {
     const defaultTab = canSeeAdminTabs
         ? 'all'
         : role === UserRoles.RTO
-            ? 'rto'
-            : visibleTabs[0]?.id
+          ? 'rto'
+          : visibleTabs[0]?.id
 
     // Use teamTab from URL query if exists, otherwise use defaultTab
     const [activeTeamTab, setActiveTeamTab] = useState(
@@ -197,7 +229,8 @@ export const TeamTabsList = () => {
             >
                 <SupportTicketFilter
                     activeFilters={filters}
-                    onFilterChange={setFilters}
+                    // onFilterChange={setFilters}
+                    onFilterChange={updateFilters}
                 />
                 {hasActiveFilters(filters) ? (
                     <>

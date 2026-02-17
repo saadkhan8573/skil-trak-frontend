@@ -29,11 +29,22 @@ export const studentAssessmentEvidenceEndpoints = (
             `industry-checks/student/other-document/${selectedFolder}/response/list-all`,
         providesTags: ['AssessmentEvidence', 'Agreement', 'SubAdminWorkplace'],
     }),
+    // uploadFolderDocs: builder.mutation({
+    //     query: ({ id, body }) => ({
+    //         url: `${PREFIX}/assessment-evidence/response`,
+    //         method: 'POST',
+    //         params: id ? { id: id } : undefined,
+    //         body,
+    //     }),
+    //     invalidatesTags: ['StudentAssessmentEvidence'],
+    // }),
+
     uploadFolderDocs: builder.mutation({
-        query: ({ id, body }) => ({
+        query: ({ id, body, params }) => ({
             url: `${PREFIX}/assessment-evidence/response/${id}`,
             method: 'POST',
             body,
+            ...(params && { params }),
         }),
         invalidatesTags: ['StudentAssessmentEvidence'],
     }),

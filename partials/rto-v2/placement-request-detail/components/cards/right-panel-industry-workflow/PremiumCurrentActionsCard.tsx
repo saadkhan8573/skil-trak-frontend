@@ -75,13 +75,6 @@ export const PremiumCurrentActionsCard = ({
     const handleAppointmentSuccessful = () => {
         requestStatusChange('Agreement Pending')
     }
-    const handleCompleteSchedule = () => {
-        requestStatusChange('Schedule Completed')
-    }
-
-    const handleMarkCompleted = () => {
-        requestStatusChange('Completed')
-    }
 
     const getStatusActions = () => {
         // If cancelled or placement started, show appropriate message

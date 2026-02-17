@@ -24,12 +24,7 @@ import {
     needsWorkplaceStages,
     providedWorkplaceStages,
 } from './components/workplaceStages'
-import {
-    CancelRequestModal,
-    ManualNoteModal,
-    RejectionModal,
-    ScheduleModal,
-} from './modal'
+import { RejectionModal, ScheduleModal } from './modal'
 import {
     CardsSkeleton,
     HeaderSkeleton,
@@ -82,13 +77,8 @@ export const PlacementRequestDetail = () => {
     const [verifiedPreferences, setVerifiedPreferences] = useState<number[]>([])
 
     const [isCancelled, setIsCancelled] = useState(false)
-    const [isPlacementStarted, setIsPlacementStarted] = useState(false)
-    const [showCancelDialog, setShowCancelDialog] = useState(false)
     const [cancellationReason, setCancellationReason] = useState('')
-
-    // Manual Notes & Quick Actions
-    const [showManualNoteDialog, setShowManualNoteDialog] = useState(false)
-    const [requestCreatedTime] = useState(new Date('2025-11-19T10:00:00')) // Simulated creation time
+    const [isPlacementStarted, setIsPlacementStarted] = useState(false)
 
     // Sticky scroll state
     const leftPanelRef = useRef<HTMLDivElement>(null)
@@ -116,6 +106,7 @@ export const PlacementRequestDetail = () => {
             skip: !wpId,
         }
     )
+
     const highlightedAndRtoReq =
         RtoV2Api.PlacementRequests.useIndustryPlacementHighlightedTasks(wpId, {
             skip: !wpId,
@@ -126,10 +117,6 @@ export const PlacementRequestDetail = () => {
         ?.map((s: any) => s.completed)
         ?.lastIndexOf(true)
     const wpCurrentStatus = progress[lastTrueIndex]
-    // const lastTrueIndex = progress?.data
-    //     ?.map((s: any) => s?.completed)
-    //     ?.lastIndexOf(true)
-    // const wpCurrentStatus = progress?.data[lastTrueIndex]
 
     useEffect(() => {
         if (studentDetails?.isSuccess && studentDetails?.data) {
@@ -281,14 +268,6 @@ export const PlacementRequestDetail = () => {
         requestStatusChange('Request Generated')
     }
 
-    // Check if cancellation is within 48 hours
-    const canCancelRequest = () => {
-        const now = new Date()
-        const hoursSinceCreation =
-            (now.getTime() - requestCreatedTime.getTime()) / (1000 * 60 * 60)
-        return hoursSinceCreation <= 48
-    }
-
     const toggleRequirement = (id: string) => {
         setSelectedRequirements((prev) =>
             prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]
@@ -311,18 +290,13 @@ export const PlacementRequestDetail = () => {
                 req?.rtoApprovalStatus !== 'rejected'
         )
 
-    const handleCancelRequest = () => {
-        if (!cancellationReason.trim()) {
-            // Please provide a reason for cancellation
-            return
-        }
-
+    const handleCancelRequest = (reason: string) => {
         setIsCancelled(true)
-        setShowCancelDialog(false)
+        setCancellationReason(reason)
 
         const cancelNote: StatusNote = {
             status: 'Request Cancelled',
-            note: `Placement request cancelled. Reason: ${cancellationReason}`,
+            note: `Placement request cancelled. Reason: ${reason}`,
             timestamp: new Date().toLocaleString('en-AU', {
                 day: 'numeric',
                 month: 'short',
@@ -335,8 +309,6 @@ export const PlacementRequestDetail = () => {
         }
 
         setStatusNotes((prev) => [...prev, cancelNote])
-
-        // Placement request has been cancelled - All workflow actions are now disabled
     }
 
     // Sticky scroll detection
@@ -401,12 +373,14 @@ export const PlacementRequestDetail = () => {
                         isCancelled={isCancelled}
                         isPlacementStarted={isPlacementStarted}
                         workplaceType={workplaceType}
-                        canCancelRequest={canCancelRequest}
-                        setShowCancelDialog={setShowCancelDialog}
-                        setShowManualNoteDialog={setShowManualNoteDialog}
+                        onCancelSuccess={handleCancelRequest}
                         workflowStages={progress}
                         currentStatus={wpCurrentStatus}
                         getCurrentStageIndex={getCurrentStageIndex}
+                        student={studentDetails?.data}
+                        wpCurrStatus={
+                            placementRequestsDetails?.data?.currentStatus
+                        }
                     />
 
                     {/* Premium Workflow Tracker */}
@@ -602,26 +576,6 @@ export const PlacementRequestDetail = () => {
                         reason={rejectionReason}
                         onReasonChange={setRejectionReason}
                         onConfirm={handleSubmitRejection}
-                    />
-
-                    {/* Cancel Request Modal */}
-                    <CancelRequestModal
-                        open={showCancelDialog}
-                        onClose={() => {
-                            setShowCancelDialog(false)
-                            setCancellationReason('')
-                        }}
-                        cancellationReason={cancellationReason}
-                        onCancellationReasonChange={setCancellationReason}
-                        onConfirm={handleCancelRequest}
-                    />
-
-                    {/* Manual Note Modal */}
-                    <ManualNoteModal
-                        open={showManualNoteDialog}
-                        onClose={() => {
-                            setShowManualNoteDialog(false)
-                        }}
                     />
                 </>
             ) : placementRequestsDetails?.isSuccess ? (

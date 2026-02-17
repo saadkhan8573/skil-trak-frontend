@@ -101,10 +101,10 @@ export const LineChart = ({ employeeProgress }: { employeeProgress: any }) => {
                 data:
                     employeeProgress?.data && employeeProgress?.data?.length > 0
                         ? [
-                              ...employeeProgress?.data?.map((item: any) =>
-                                  Math.round(item?.overall)
-                              ),
-                          ]
+                            ...employeeProgress?.data?.map((item: any) =>
+                                Math.round(item?.overall)
+                            ),
+                        ]
                         : [],
                 borderColor: '#2563eb',
                 backgroundColor: 'rgba(37, 99, 235, 0.2)',
@@ -123,8 +123,8 @@ export const LineChart = ({ employeeProgress }: { employeeProgress: any }) => {
         ctx.index === 0
             ? ctx.chart.scales.y.getPixelForValue(100)
             : ctx.chart
-                  .getDatasetMeta(ctx.datasetIndex)
-                  .data[ctx.index - 1].getProps(['y'], true).y
+                .getDatasetMeta(ctx.datasetIndex)
+                .data[ctx.index - 1].getProps(['y'], true).y
 
     const animation = {
         x: {
@@ -166,7 +166,7 @@ export const LineChart = ({ employeeProgress }: { employeeProgress: any }) => {
                 padding: 8,
                 displayColors: false,
                 callbacks: {
-                    label: (context) => `${context.parsed.y.toFixed(1)}%`,
+                    label: (context) => `${(context.parsed?.y ?? 0).toFixed(1)}%`,
                 },
             },
             datalabels: {
@@ -209,7 +209,7 @@ export const LineChart = ({ employeeProgress }: { employeeProgress: any }) => {
             <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center">
                     <div className="p-2 border border-[#1436B033] rounded-lg">
-                        <FaArrowTrendUp className="text-[#1436B0] text-base" />
+                        <FaArrowTrendUp className="text-[#1436B0]" />
                     </div>
                     <h2 className="ml-3 text-base font-medium">
                         Overall Employee

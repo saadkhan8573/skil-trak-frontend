@@ -69,19 +69,19 @@ export const StudentHeader = ({ student }: { student: Student }) => {
     return (
         <div className="relative">
             {/* Main Card with Gradient Border Effect */}
-            <div className="relative bg-gradient-to-r from-[#044866] via-[#0D5468] to-[#044866] p-0.5 rounded-xl shadow-2xl">
+            <div className="relative bg-linear-to-r from-[#044866] via-[#0D5468] to-[#044866] p-0.5 rounded-xl shadow-2xl">
                 <div className="bg-white rounded-xl overflow-hidden space-y-2.5">
                     <StudentStatusBanner />
 
                     {/* Top Section - Profile & Contact */}
-                    <div className="relative bg-gradient-to-br from-slate-50 via-white to-blue-50/30 px-3 py-2">
+                    <div className="relative bg-linear-to-br from-slate-50 via-white to-blue-50/30 px-3 py-2">
                         <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6 xl:gap-2">
                             {/* Left: Avatar + Name + Badges */}
                             <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2.5">
                                 {/* Avatar */}
                                 <div className="relative">
-                                    <div className="absolute -inset-2 bg-gradient-to-br from-[#F7A619] via-[#F7A619]/50 to-transparent rounded-full blur-2xl opacity-60"></div>
-                                    <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-[#F7A619] to-[#F7A619]/80 flex items-center justify-center text-white text-xl uppercase shadow-2xl ring-4 ring-white">
+                                    <div className="absolute -inset-2 bg-linear-to-br from-[#F7A619] via-[#F7A619]/50 to-transparent rounded-full blur-2xl opacity-60"></div>
+                                    <div className="relative w-14 h-14 rounded-full bg-linear-to-br from-[#F7A619] to-[#F7A619]/80 flex items-center justify-center text-white text-xl uppercase shadow-2xl ring-4 ring-white">
                                         {student?.user?.name?.substring(0, 2)}
                                     </div>
 
@@ -90,9 +90,9 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                         <div
                                             key={badge.id}
                                             className={`absolute ${badge.position ===
-                                                    'bottom-right'
-                                                    ? 'bottom-0 right-0'
-                                                    : 'bottom-0 left-0'
+                                                'bottom-right'
+                                                ? 'bottom-0 right-0'
+                                                : 'bottom-0 left-0'
                                                 } w-4.5 h-4.5 ${badge.className
                                                 } rounded-full border-3 border-white shadow-lg flex items-center justify-center`}
                                         >
@@ -116,8 +116,8 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                             <div
                                                 key={badge.id}
                                                 className={`inline-flex items-center gap-${badge.icon || badge.emoji
-                                                        ? '1.5'
-                                                        : '2'
+                                                    ? '1.5'
+                                                    : '2'
                                                     } px-${badge.icon || badge.emoji
                                                         ? '2'
                                                         : '2.5'
@@ -137,8 +137,8 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                                 )}
                                                 <span
                                                     className={`text-sm ${badge.uppercase
-                                                            ? 'uppercase'
-                                                            : ''
+                                                        ? 'uppercase'
+                                                        : ''
                                                         }`}
                                                 >
                                                     {badge.label}
@@ -152,12 +152,12 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                             <div
                                                 key={contact.id}
                                                 className={`inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-slate-200 px-2.5 py-1 rounded-full shadow-sm ${contact.hasHover
-                                                        ? 'hover:shadow-md transition-all group cursor-pointer'
-                                                        : ''
+                                                    ? 'hover:shadow-md transition-all group cursor-pointer'
+                                                    : ''
                                                     }`}
                                             >
                                                 <div
-                                                    className={`w-4.5 h-4.5 rounded-full bg-gradient-to-br ${contact.bgGradient
+                                                    className={`w-4.5 h-4.5 rounded-full bg-linear-to-br ${contact.bgGradient
                                                         } flex items-center justify-center ${contact.hasHover
                                                             ? 'group-hover:scale-110 transition-transform'
                                                             : ''

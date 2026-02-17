@@ -10,7 +10,7 @@ export const requestType = [
         color: 'text-primary',
     },
     {
-        primaryText: 'Interview',
+        primaryText: 'Industry sourcing',
         secondaryText: 'with Case Officer',
         color: 'text-primary-light',
     },

@@ -1,9 +1,10 @@
 import { AuthorizedUserComponent, Button } from '@components'
 import { UserRoles } from '@constants'
 import { Student } from '@types'
-import { DollarSign, Mail, Phone, StickyNote } from 'lucide-react'
+import { DollarSign, Mail, Phone, StickyNote, UserMinus, UserPlus } from 'lucide-react'
 import { ReactElement, useState } from 'react'
 import { ComposeEmailDialog } from '../Communications/modal/ComposeEmailDialog'
+import { AssignStudentModal } from '../../modals/AssignStudentModal'
 import { ProfileLinks } from '../ProfileLinks'
 import { CreateStudentNoteModal, StudentCallLogModal, ViewPaymentDetailsModal } from './modals'
 
@@ -11,6 +12,7 @@ export const HeaderQuickActions = ({ student }: { student: Student }) => {
     const [modal, setModal] = useState<ReactElement | null>(null)
     const [showEmailDialog, setShowEmailDialog] = useState(false)
     const [showNoteModal, setShowNoteModal] = useState(false)
+    const [showAssignModal, setShowAssignModal] = useState(false)
 
     const onComposeMailClicked = () => {
         setShowEmailDialog(true)
@@ -59,6 +61,19 @@ export const HeaderQuickActions = ({ student }: { student: Student }) => {
                     </Button>
                 </AuthorizedUserComponent>
             )}
+            <AuthorizedUserComponent roles={[UserRoles.SUBADMIN]}>
+                <Button
+                    onClick={() => setShowAssignModal(true)}
+                    variant={student?.subadmin ? 'error' : 'action'}
+                >
+                    {student?.subadmin ? (
+                        <UserMinus className="w-3.5 h-3.5 mr-2" />
+                    ) : (
+                        <UserPlus className="w-3.5 h-3.5 mr-2" />
+                    )}
+                    {student?.subadmin ? 'Unassign Student' : 'Assign Student'}
+                </Button>
+            </AuthorizedUserComponent>
             <Button
                 onClick={() => setShowNoteModal(true)}
             >
@@ -67,7 +82,7 @@ export const HeaderQuickActions = ({ student }: { student: Student }) => {
             </Button>
             <Button
                 onClick={onMakeCallClicked}
-                className="bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-xl shadow-[#044866]/25 hover:shadow-2xl hover:scale-105 transition-all px-5 py-2"
+                className="bg-linear-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-xl shadow-[#044866]/25 hover:shadow-2xl hover:scale-105 transition-all px-5 py-2"
             >
                 <Phone className="w-3.5 h-3.5 mr-2" />
                 Call
@@ -89,6 +104,12 @@ export const HeaderQuickActions = ({ student }: { student: Student }) => {
                 studentId={student?.id}
                 receiverId={student?.user?.id}
             />
+            {showAssignModal && (
+                <AssignStudentModal
+                    student={student}
+                    onCancel={() => setShowAssignModal(false)}
+                />
+            )}
         </div>
     )
 }

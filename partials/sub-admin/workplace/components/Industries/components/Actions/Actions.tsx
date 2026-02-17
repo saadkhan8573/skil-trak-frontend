@@ -144,7 +144,7 @@ export const Actions = ({
                                 </Typography>
                             </div>
                             <div className="flex flex-wrap items-center gap-2">
-                                <div className="flex-shrink-0">
+                                <div className="shrink-0">
                                     {!student?.user?.appointmentFor?.length && (
                                         <Button
                                             text={'Book Appointment'}
@@ -179,7 +179,7 @@ export const Actions = ({
                                     </div>
                                 )}
                                 {!appliedIndustry.placementStarted && (
-                                    <div className="flex-shrink-0">
+                                    <div className="shrink-0">
                                         <Button
                                             text={'START PLACEMENT'}
                                             variant={'primary'}

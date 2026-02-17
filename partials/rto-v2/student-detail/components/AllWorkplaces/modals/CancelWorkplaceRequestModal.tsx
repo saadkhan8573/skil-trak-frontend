@@ -11,6 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Button, ShowErrorNotifications, TextArea } from '@components'
 import { XCircle, Send, Clock, X } from 'lucide-react'
+import React from 'react'
 
 // queries
 import { useNotification } from '@hooks'
@@ -24,14 +25,17 @@ interface CancelWorkplaceRequestModalProps {
     open: boolean
     onOpenChange: (open: boolean) => void
     workplaceId: number
+    onSuccess?: (note: string) => void
 }
 
 export const CancelWorkplaceRequestModal = ({
     open,
     onOpenChange,
     workplaceId,
+    onSuccess,
 }: CancelWorkplaceRequestModalProps) => {
     const { notification } = useNotification()
+    const [submittedNote, setSubmittedNote] = React.useState('')
 
     const [cancelWorkplace, cancelWorkplaceResult] =
         SubAdminApi.Workplace.useCancelRequestWP()
@@ -45,8 +49,11 @@ export const CancelWorkplaceRequestModal = ({
                 position: 'bottomleft',
             })
             onOpenChange(false)
+            if (onSuccess && submittedNote) {
+                onSuccess(submittedNote)
+            }
         }
-    }, [cancelWorkplaceResult])
+    }, [cancelWorkplaceResult, submittedNote, onSuccess])
 
     const validationSchema = Yup.object({
         note: Yup.string().required(
@@ -64,6 +71,7 @@ export const CancelWorkplaceRequestModal = ({
             id: Number(workplaceId),
             comment: values?.note,
         })
+        setSubmittedNote(values?.note)
     }
 
     return (

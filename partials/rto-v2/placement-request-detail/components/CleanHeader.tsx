@@ -17,33 +17,44 @@ import {
     Target,
     XCircle,
 } from 'lucide-react'
+import { Student } from '@types'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
+import { CreateStudentNoteModal } from '@partials/rto-v2/student-detail/components/StudentHeader/modals'
+import { CancelWpRequest } from '@partials/rto-v2/student-detail/components/AllWorkplaces/components/CancelWpRequest'
+import {
+    CancelWorkplaceModal,
+    CancelWorkplaceRequestModal,
+} from '@partials/rto-v2/student-detail/components/AllWorkplaces/modals'
+import { WorkplaceCurrentStatus } from '@utils'
 
 interface CleanHeaderProps {
     isCancelled: boolean
     isPlacementStarted: boolean
     workplaceType: 'needs' | 'provided' | null
-    canCancelRequest: () => boolean
-    setShowCancelDialog: (show: boolean) => void
-    setShowManualNoteDialog: (show: boolean) => void
+    onCancelSuccess: (reason: string) => void
     workflowStages: any[]
     currentStatus: any
     getCurrentStageIndex: () => number
+    student: Student
+    wpCurrStatus: WorkplaceCurrentStatus
 }
 
 export function CleanHeader({
     isCancelled,
+    wpCurrStatus,
     isPlacementStarted,
     workplaceType,
-    canCancelRequest,
-    setShowCancelDialog,
-    setShowManualNoteDialog,
+    onCancelSuccess,
     workflowStages,
     currentStatus,
     getCurrentStageIndex,
+    student,
 }: CleanHeaderProps) {
     const [modal, setModal] = useState<ReactElement | null>(null)
+
+    console.log({ wpCurrStatus })
+
     const [isWorkflowOpen, setIsWorkflowOpen] = useState(false)
     const router = useRouter()
     const wpId = router.query.id
@@ -58,6 +69,53 @@ export function CleanHeader({
                 wpId={Number(wpId)}
             />
         )
+    }
+
+    const onAddNote = () => {
+        setModal(
+            <CreateStudentNoteModal
+                open={true}
+                onOpenChange={(val) => !val && setModal(null)}
+                studentId={student?.id}
+                receiverId={Number(student?.user?.id)}
+            />
+        )
+    }
+
+    const onCancelClick = () => {
+        setModal(null)
+    }
+
+    const onCancelWPClicked = () => {
+        setModal(
+            <CancelWorkplaceModal
+                open={true}
+                onOpenChange={onCancelClick}
+                workplaceId={Number(wpId)}
+                onSuccess={(reason) => {
+                    onCancelSuccess(reason)
+                    setModal(null)
+                }}
+            />
+        )
+    }
+
+    const onCancelWPRequestClicked = () => {
+        setModal(
+            <CancelWorkplaceRequestModal
+                open={true}
+                onOpenChange={onCancelClick}
+                workplaceId={Number(wpId)}
+                onSuccess={(reason) => {
+                    onCancelSuccess(reason)
+                    setModal(null)
+                }}
+            />
+        )
+    }
+
+    const onShowGuide = () => {
+        setIsWorkflowOpen(true)
     }
 
     return (
@@ -140,41 +198,27 @@ export function CleanHeader({
                                         </div> */}
 
                                         {/* Cancel Request */}
-                                        {canCancelRequest() ? (
-                                            <Button
-                                                variant="error"
-                                                outline
-                                                onClick={() =>
-                                                    setShowCancelDialog(true)
-                                                }
-                                                Icon={XCircle}
-                                                text="Cancel"
-                                                className="h-8 border-red-400 text-red-400 hover:bg-red-50"
-                                            />
-                                        ) : (
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <div>
-                                                        <Button
-                                                            variant="secondary"
-                                                            disabled
-                                                            Icon={XCircle}
-                                                            text="Cancel"
-                                                            className="h-8"
-                                                        />
-                                                    </div>
-                                                </TooltipTrigger>
-                                                <TooltipContent>
-                                                    <Typography
-                                                        variant="small"
-                                                        className="text-xs"
-                                                    >
-                                                        Only available within 48
-                                                        hours
-                                                    </Typography>
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        )}
+                                        {[
+                                            WorkplaceCurrentStatus.Applied,
+                                            WorkplaceCurrentStatus.CaseOfficerAssigned,
+                                            WorkplaceCurrentStatus.Interview,
+                                            WorkplaceCurrentStatus.IndustryEligibility,
+                                            WorkplaceCurrentStatus.AwaitingStudentResponse,
+                                            WorkplaceCurrentStatus.AwaitingRtoResponse,
+                                            WorkplaceCurrentStatus.AwaitingWorkplaceResponse,
+                                            WorkplaceCurrentStatus.AppointmentBooked,
+                                            WorkplaceCurrentStatus.AwaitingAgreementSigned,
+                                        ].includes(wpCurrStatus) && (
+                                                <CancelWpRequest
+                                                    fullWidth={false}
+                                                    onCancelWPClicked={
+                                                        onCancelWPClicked
+                                                    }
+                                                    onCancelWPRequestClicked={
+                                                        onCancelWPRequestClicked
+                                                    }
+                                                />
+                                            )}
                                     </>
                                 )}
 
@@ -182,7 +226,7 @@ export function CleanHeader({
                             <Button
                                 variant="secondary"
                                 outline
-                                onClick={() => setShowManualNoteDialog(true)}
+                                onClick={onAddNote}
                                 Icon={Plus}
                                 text="Note"
                                 className="h-8 border-gray-300 hover:border-primaryNew hover:bg-primaryNew/5 hover:text-primaryNew"
@@ -192,7 +236,7 @@ export function CleanHeader({
                             <Button
                                 variant="primaryNew"
                                 outline
-                                onClick={() => setIsWorkflowOpen(true)}
+                                onClick={onShowGuide}
                                 Icon={BookOpen}
                                 text="Guide"
                                 className="h-8"
@@ -252,17 +296,16 @@ export function CleanHeader({
                                                 {workplaceType === 'provided'
                                                     ? 'Student Has Provided Workplace'
                                                     : workplaceType === 'needs'
-                                                    ? 'Student Needs Workplace'
-                                                    : 'Not Selected'}
+                                                        ? 'Student Needs Workplace'
+                                                        : 'Not Selected'}
                                             </Typography>
                                         </div>
                                     </div>
                                     {workplaceType && (
                                         <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-lg">
                                             <Badge
-                                                text={`Stage ${
-                                                    lastTrueIndex + 1
-                                                } of ${workflowStages.length}`}
+                                                text={`Stage ${lastTrueIndex + 1
+                                                    } of ${workflowStages.length}`}
                                                 variant="primaryNew"
                                                 size="xs"
                                             />
@@ -294,23 +337,21 @@ export function CleanHeader({
                                             return (
                                                 <div
                                                     key={stage.id}
-                                                    className={`p-3 rounded-lg border transition-all ${
-                                                        isCurrent
-                                                            ? 'bg-primaryNew/5 border-primaryNew'
-                                                            : isPast
+                                                    className={`p-3 rounded-lg border transition-all ${isCurrent
+                                                        ? 'bg-primaryNew/5 border-primaryNew'
+                                                        : isPast
                                                             ? 'bg-emerald-50 border-emerald-200'
                                                             : 'bg-white border-gray-200'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     <div className="flex items-center gap-3">
                                                         <div
-                                                            className={`p-2 rounded-lg ${
-                                                                isCurrent
-                                                                    ? 'bg-primaryNew'
-                                                                    : isPast
+                                                            className={`p-2 rounded-lg ${isCurrent
+                                                                ? 'bg-primaryNew'
+                                                                : isPast
                                                                     ? 'bg-emerald-500'
                                                                     : 'bg-gray-300'
-                                                            }`}
+                                                                }`}
                                                         >
                                                             <CircleCheckBig className="h-4 w-4 text-white" />
                                                         </div>
@@ -318,13 +359,12 @@ export function CleanHeader({
                                                         <div className="flex-1 flex items-center justify-between">
                                                             <Typography
                                                                 variant="small"
-                                                                className={`font-medium ${
-                                                                    isCurrent
-                                                                        ? 'text-primaryNew'
-                                                                        : isPast
+                                                                className={`font-medium ${isCurrent
+                                                                    ? 'text-primaryNew'
+                                                                    : isPast
                                                                         ? 'text-emerald-700'
                                                                         : 'text-gray-600'
-                                                                }`}
+                                                                    }`}
                                                             >
                                                                 {index + 1}.{' '}
                                                                 {stage.stage}

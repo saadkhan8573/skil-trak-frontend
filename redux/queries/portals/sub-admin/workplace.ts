@@ -244,6 +244,25 @@ export const workplaceEndpoints = (
         ]),
     }),
 
+    updateWorkplaceIndustryStatusFromEmail: builder.mutation<
+        any,
+        { id: number; status: string; comment?: string }
+    >({
+        query: ({ id, comment, ...params }) => ({
+            url: `students/workplace-requests/${id}/response/add`,
+            params,
+            body: { comment },
+            method: 'POST',
+        }),
+        invalidatesTags: providesTagsOnSuccess([
+            'SubAdminWorkplace',
+            'SubAdminStudents',
+            'IndustryWorkplace',
+            'RTOIndustries',
+            'WaitingForStudents'
+        ]),
+    }),
+
     updateWpAppliedIndustry: builder.mutation<any, number>({
         query: (id) => ({
             url: `students/workplace-requests/${id}/update`,

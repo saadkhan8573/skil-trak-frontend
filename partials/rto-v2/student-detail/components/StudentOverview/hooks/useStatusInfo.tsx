@@ -15,7 +15,7 @@ export const useStatusInfo = ({
         [WorkplaceCurrentStatus.NotRequested]: 'Student Added',
         [WorkplaceCurrentStatus.Applied]: 'Request Generated',
         [WorkplaceCurrentStatus.CaseOfficerAssigned]: 'Coordinator Assigned',
-        [WorkplaceCurrentStatus.Interview]: 'Interview',
+        [WorkplaceCurrentStatus.Interview]: 'Industry sourcing',
         [WorkplaceCurrentStatus.AwaitingStudentResponse]: 'Waiting for Student',
         [WorkplaceCurrentStatus.AwaitingRtoResponse]: 'Waiting for RTO',
         [WorkplaceCurrentStatus.AwaitingWorkplaceResponse]:

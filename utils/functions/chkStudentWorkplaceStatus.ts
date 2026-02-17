@@ -27,7 +27,7 @@ export const WorkplaceStatusLabels: Record<WorkplaceCurrentStatus, string> = {
     [WorkplaceCurrentStatus.NotRequested]: 'Not Requested',
     [WorkplaceCurrentStatus.Applied]: 'Applied',
     [WorkplaceCurrentStatus.CaseOfficerAssigned]: 'Case Officer Assigned',
-    [WorkplaceCurrentStatus.Interview]: 'Interview Scheduled',
+    [WorkplaceCurrentStatus.Interview]: 'Industry Sourcing',
     [WorkplaceCurrentStatus.IndustryEligibility]: 'Industry Eligibility Check',
     [WorkplaceCurrentStatus.AwaitingWorkplaceResponse]: 'Waiting For Industry',
     [WorkplaceCurrentStatus.AwaitingStudentResponse]: 'Waiting For Student',

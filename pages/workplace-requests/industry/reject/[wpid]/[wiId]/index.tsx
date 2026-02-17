@@ -27,7 +27,7 @@ export default function DeclinedRequestPage() {
     const { notification } = useNotification()
 
     const [updateStatus, updateStatusResult] =
-        SubAdminApi.Workplace.updateWpIndustryStatus()
+        SubAdminApi.Workplace.updateWorkplaceIndustryStatusFromEmail()
     const checkIsIndustryPerformedAction =
         SubAdminApi.Workplace.checkIsIndustryPerformedAction(
             {
@@ -75,9 +75,9 @@ export default function DeclinedRequestPage() {
             {checkIsIndustryPerformedAction?.isLoading ? (
                 <LoadingAnimation />
             ) : checkIsIndustryPerformedAction?.isSuccess &&
-              checkIsIndustryPerformedAction?.data &&
-              checkIsIndustryPerformedAction?.data?.currentStatus !==
-                  WorkplaceCurrentStatus?.AwaitingWorkplaceResponse ? (
+                checkIsIndustryPerformedAction?.data &&
+                checkIsIndustryPerformedAction?.data?.currentStatus !==
+                WorkplaceCurrentStatus?.AwaitingWorkplaceResponse ? (
                 <div
                     className="max-w-5xl mx-auto py-10 flex items-center justify-center p-4"
                     style={{ backgroundColor: '#f8fafc' }}

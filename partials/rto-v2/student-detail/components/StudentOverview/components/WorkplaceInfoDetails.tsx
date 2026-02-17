@@ -96,7 +96,7 @@ export const WorkplaceInfoDetails = ({
         [WorkplaceCurrentStatus.NotRequested]: 'Student Added',
         [WorkplaceCurrentStatus.Applied]: 'Request Generated',
         [WorkplaceCurrentStatus.CaseOfficerAssigned]: 'Coordinator Assigned',
-        [WorkplaceCurrentStatus.Interview]: 'Interview',
+        [WorkplaceCurrentStatus.Interview]: 'Industry Sourcing',
         [WorkplaceCurrentStatus.AwaitingStudentResponse]: 'Waiting for Student',
         [WorkplaceCurrentStatus.AwaitingRtoResponse]: 'Waiting for RTO',
         [WorkplaceCurrentStatus.AwaitingWorkplaceResponse]:
@@ -211,9 +211,9 @@ export const WorkplaceInfoDetails = ({
                                                 statusCategory === 'in-progress'
                                                     ? 'info'
                                                     : statusCategory ===
-                                                      'pending'
-                                                    ? 'warning'
-                                                    : 'success'
+                                                        'pending'
+                                                        ? 'warning'
+                                                        : 'success'
                                             }
                                             text={statusCategory}
                                             Icon={StatusIcon}

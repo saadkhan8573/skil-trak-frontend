@@ -130,10 +130,10 @@ export function FlagStudentDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[480px] p-0 overflow-hidden border-none shadow-2xl">
+            <DialogContent className="sm:max-w-[480px] space-0! gap-0! p-0 overflow-hidden border-none shadow-2xl">
                 <ShowErrorNotifications result={problematicStudentResult} />
 
-                <div className="px-5 py-3.5 border-b bg-white">
+                <div className="px-5 py-1.5 border-b bg-white">
                     <DialogHeader>
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center shrink-0">
@@ -153,7 +153,7 @@ export function FlagStudentDialog({
 
                 <FormProvider {...methods}>
                     <form onSubmit={methods.handleSubmit(onSubmit)} className="flex flex-col">
-                        <div className="p-5 space-y-4 max-h-[60vh] overflow-y-auto custom-scrollbar">
+                        <div className="p-5 space-y-2 max-h-[60vh] overflow-y-auto custom-scrollbar">
                             <TextArea
                                 label={<span className="text-xs font-semibold text-slate-700">Reason for Flagging</span>}
                                 required
@@ -174,11 +174,12 @@ export function FlagStudentDialog({
                                         { value: 'no', label: 'No' },
                                     ]}
                                     className="flex gap-4"
+                                    showError={false}
                                 />
                             </div>
 
                             {isReported === 'yes' && (
-                                <div className="space-y-3 pt-2 border-t border-slate-100 animate-in fade-in slide-in-from-top-1">
+                                <div className="border-t border-slate-100 animate-in fade-in slide-in-from-top-1">
                                     <TextInput
                                         name="title"
                                         label={<span className="text-xs font-semibold text-slate-700">Issue Title</span>}
@@ -192,6 +193,7 @@ export function FlagStudentDialog({
                                             options={priorityOptions}
                                             onlyValue
                                             className="h-9 text-xs"
+                                            menuPlacement='top'
                                         />
                                         <Select
                                             label={<span className="text-xs font-semibold text-slate-700">Category</span>}
@@ -199,6 +201,7 @@ export function FlagStudentDialog({
                                             options={categoryOptions}
                                             onlyValue
                                             className="h-9 text-xs"
+                                            menuPlacement='top'
                                         />
                                     </div>
                                 </div>

@@ -6,23 +6,19 @@ import { AdminApi, AuthApi, CommonApi } from '@queries'
 import {
     Course,
     Industry,
-    OptionType,
     Rto,
     StudentsFilterType,
-    SubAdmin,
-    UserStatus,
+    SubAdmin
 } from '@types'
 import {
     AuthUtils,
     CourseSelectOption,
-    WorkplaceCurrentStatus,
-    formatOptionLabel,
+    formatOptionLabel
 } from '@utils'
-import { SetQueryFilters } from './SetQueryFilters'
-import { StatusOptions } from './StatusOptions'
-import { SelectOption } from './types'
 import { useMemo } from 'react'
+import { SetQueryFilters } from './SetQueryFilters'
 import { workplaceProgressOptions } from './StudentFilters'
+import { SelectOption } from './types'
 
 interface ItemFilterProps {
     onFilterChange: (values: StudentsFilterType) => void

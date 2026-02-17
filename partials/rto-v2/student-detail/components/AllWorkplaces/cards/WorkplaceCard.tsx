@@ -78,7 +78,7 @@ export const WorkplaceCard = ({
                         variant="warning"
                         text="Pending Approval"
                         Icon={Hourglass}
-                        className="gap-[1.35px] !bg-white !font-semibold border border-amber-300"
+                        className="gap-[1.35px] bg-white! font-semibold! border border-amber-300"
                         size="xs"
                     />
                 )
@@ -202,7 +202,7 @@ export const WorkplaceCard = ({
 
             {/* Header Banner */}
             <div
-                className={`bg-gradient-to-r ${getStatusIcon(
+                className={`bg-linear-to-r ${getStatusIcon(
                     status
                 )} px-5 py-3 flex items-center justify-between`}
             >
@@ -222,11 +222,10 @@ export const WorkplaceCard = ({
                                         e.stopPropagation()
                                         router.push(industryLink)
                                     }}
-                                    className={`cursor-pointer p-1 rounded-md bg-white/20 hover:bg-white/30 text-white transition-colors border border-white/10 ${
-                                        status === 'active'
-                                            ? 'animate-pulse'
-                                            : ''
-                                    }`}
+                                    className={`cursor-pointer p-1 rounded-md bg-white/20 hover:bg-white/30 text-white transition-colors border border-white/10 ${status === 'active'
+                                        ? 'animate-pulse'
+                                        : ''
+                                        }`}
                                     title="View Industry Profile"
                                 >
                                     <Eye className="w-4 h-4" />
@@ -245,7 +244,7 @@ export const WorkplaceCard = ({
                         text={WorkplaceStatusLabels[workplace?.currentStatus]}
                         Icon={Clock}
                         size="xs"
-                        className="!bg-white/20 !text-white border-white/30"
+                        className="bg-white/20! text-white! border-white/30"
                     />
                 </div>
             </div>
@@ -255,7 +254,7 @@ export const WorkplaceCard = ({
                 {/* Key Info Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div className="flex items-start gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-[#044866]/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-9 h-9 rounded-lg bg-[#044866]/10 flex items-center justify-center shrink-0">
                             <MapPin className="w-4 h-4 text-[#044866]" />
                         </div>
                         <div>
@@ -269,7 +268,7 @@ export const WorkplaceCard = ({
                     </div>
 
                     <div className="flex items-start gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-[#0D5468]/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-9 h-9 rounded-lg bg-[#0D5468]/10 flex items-center justify-center shrink-0">
                             <Award className="w-4 h-4 text-[#0D5468]" />
                         </div>
                         <div>
@@ -283,7 +282,7 @@ export const WorkplaceCard = ({
                     </div>
 
                     <div className="flex items-start gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-[#F7A619]/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-9 h-9 rounded-lg bg-[#F7A619]/10 flex items-center justify-center shrink-0">
                             <Calendar className="w-4 h-4 text-[#F7A619]" />
                         </div>
                         <div>
@@ -304,7 +303,7 @@ export const WorkplaceCard = ({
 
                 {/* Course Information Section */}
                 {workplace?.courses && workplace?.courses?.length > 0 && (
-                    <div className="bg-gradient-to-br from-[#044866]/5 to-[#0D5468]/5 border border-slate-200/60 rounded-xl p-4 mb-4">
+                    <div className="bg-linear-to-br from-[#044866]/5 to-[#0D5468]/5 border border-slate-200/60 rounded-xl p-4 mb-4">
                         <div className="flex items-center gap-3 mb-3">
                             <div className="w-8 h-8 rounded-lg bg-[#044866] flex items-center justify-center">
                                 <BookOpen className="w-4 h-4 text-white" />
@@ -340,7 +339,7 @@ export const WorkplaceCard = ({
                 )}
 
                 {/* Supervisor Info */}
-                <div className="bg-gradient-to-br from-slate-50 to-blue-50/30 rounded-xl p-4 mb-4">
+                <div className="bg-linear-to-br from-slate-50 to-blue-50/30 rounded-xl p-4 mb-4">
                     <div className="flex items-center gap-3">
                         {supervisor?.name && (
                             <InitialAvatar name={supervisor?.name} />
@@ -420,7 +419,7 @@ export const WorkplaceCard = ({
                                 <span className="font-medium">Status:</span>{' '}
                                 {
                                     WorkplaceStatusLabels[
-                                        workplace?.currentStatus
+                                    workplace?.currentStatus
                                     ]
                                 }
                             </p>
@@ -434,21 +433,21 @@ export const WorkplaceCard = ({
 
                 {workplace?.currentStatus ===
                     WorkplaceCurrentStatus.AwaitingRtoResponse && (
-                    <AuthorizedUserComponent roles={[UserRoles.RTO]}>
-                        <Button
-                            outline
-                            fullWidth
-                            variant="primaryNew"
-                            text="View Details"
-                            className="mt-3"
-                            onClick={() =>
-                                router.push(
-                                    `/portals/rto/action-required/approve-placement/${latestWorkplaceApprovaleRequest?.id}`
-                                )
-                            }
-                        />
-                    </AuthorizedUserComponent>
-                )}
+                        <AuthorizedUserComponent roles={[UserRoles.RTO]}>
+                            <Button
+                                outline
+                                fullWidth
+                                variant="primaryNew"
+                                text="View Details"
+                                className="mt-3"
+                                onClick={() =>
+                                    router.push(
+                                        `/portals/rto/action-required/approve-placement/${latestWorkplaceApprovaleRequest?.id}`
+                                    )
+                                }
+                            />
+                        </AuthorizedUserComponent>
+                    )}
 
                 {/* Cancel Section */}
                 {/* {[
@@ -500,7 +499,7 @@ export const WorkplaceCard = ({
                 <div className="flex items-center gap-2 pt-4 border-t border-slate-100">
                     <Button
                         variant="primaryNew"
-                        className="flex-1 bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-lg shadow-[#044866]/30 h-10 text-xs font-semibold"
+                        className="flex-1 bg-linear-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-lg shadow-[#044866]/30 h-10 text-xs font-semibold"
                         onClick={onViewDetailedClicked}
                     >
                         View Detailed Workplace

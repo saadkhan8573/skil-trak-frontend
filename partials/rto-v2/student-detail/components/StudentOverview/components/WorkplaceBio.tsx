@@ -11,12 +11,14 @@ import {
     Phone,
     Plus,
     Star,
+    Send
 } from 'lucide-react'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
 } from 'redux/queryTypes'
+import { ResendApprovalEmailModal } from '../modal/ResendApprovalEmailModal'
 
 export function WorkplaceBio({
     workplace,
@@ -25,6 +27,7 @@ export function WorkplaceBio({
     workplace: IWorkplaceIndustries
     handleAddNewWorkplace: () => void
 }) {
+    const [isResendModalOpen, setIsResendModalOpen] = useState(false)
     const latestWorkplaceApprovaleRequest = useMemo(() => {
         return latestWpApprovalRequest(
             workplace?.workplaceApprovaleRequest || []
@@ -56,7 +59,7 @@ export function WorkplaceBio({
             <div className="flex items-center justify-between">
                 <div className="flex items-start gap-3.5 mb-5">
                     <div className="relative group">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primaryNew to-primaryNew flex items-center justify-center text-white shadow-xl shadow-primaryNew/30 group-hover:scale-110 transition-transform">
+                        <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-primaryNew to-primaryNew flex items-center justify-center text-white shadow-xl shadow-primaryNew/30 group-hover:scale-110 transition-transform">
                             <Building2 className="w-6 h-6" />
                         </div>
                         <div className="absolute -bottom-1 -right-1 w-4.5 h-4.5 bg-[#F7A619] rounded-lg border-2 border-white flex items-center justify-center shadow-lg">
@@ -88,7 +91,7 @@ export function WorkplaceBio({
             {industry ? (
                 <>
                     {/* Organization Name */}
-                    <div className="mb-5 bg-gradient-to-br from-primaryNew/5 to-primaryNew/5 rounded-xl p-4 border border-primaryNew/10">
+                    <div className="mb-5 bg-linear-to-br from-primaryNew/5 to-primaryNew/5 rounded-xl p-4 border border-primaryNew/10">
                         <div className="flex items-center gap-2">
                             <h3 className="text-slate-900">
                                 {industry?.user?.name}
@@ -99,7 +102,7 @@ export function WorkplaceBio({
 
                     {/* Approval Status */}
                     {latestWorkplaceApprovaleRequest && (
-                        <div className="mb-5 bg-gradient-to-br from-secondary to-white rounded-xl p-4 border border-secondary">
+                        <div className="mb-5 bg-linear-to-br from-secondary to-white rounded-xl p-4 border border-secondary">
                             <div className="flex items-center gap-2 mb-2">
                                 <Typography variant="title" medium>
                                     Student  Approval Status
@@ -119,6 +122,16 @@ export function WorkplaceBio({
                                         latestWorkplaceApprovaleRequest?.status?.slice(1)
                                     }
                                 />
+                                {latestWorkplaceApprovaleRequest.status === 'pending' && (
+                                    <Button
+                                        variant="info"
+                                        onClick={() => setIsResendModalOpen(true)}
+                                        className="ml-auto"
+                                    >
+                                        <Send className="w-3 h-3 mr-1" />
+                                        Resend Email
+                                    </Button>
+                                )}
                             </div>
                             {latestWorkplaceApprovaleRequest?.status === 'rejected' &&
                                 latestWorkplaceApprovaleRequest.comment && (
@@ -136,8 +149,8 @@ export function WorkplaceBio({
 
                     {/* Key Information Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 mb-5">
-                        <div className="group flex items-start gap-2.5 p-2.5 rounded-xl bg-gradient-to-br from-secondary to-white border border-secondary hover:border-primaryNew/30 hover:shadow-lg transition-all cursor-pointer">
-                            <MapPin className="w-3.5 h-3.5 text-primaryNew mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                        <div className="group flex items-start gap-2.5 p-2.5 rounded-xl bg-linear-to-br from-secondary to-white border border-secondary hover:border-primaryNew/30 hover:shadow-lg transition-all cursor-pointer">
+                            <MapPin className="w-3.5 h-3.5 text-primaryNew mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
                             <div>
                                 <p className="text-sm text-slate-600 mb-0.5">
                                     Address
@@ -148,8 +161,8 @@ export function WorkplaceBio({
                             </div>
                         </div>
 
-                        <div className="group flex items-start gap-2.5 p-2.5 rounded-xl bg-gradient-to-br from-secondary to-white border border-secondary hover:border-primaryNew/30 hover:shadow-lg transition-all cursor-pointer">
-                            <Phone className="w-3.5 h-3.5 text-primaryNew mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                        <div className="group flex items-start gap-2.5 p-2.5 rounded-xl bg-linear-to-br from-secondary to-white border border-secondary hover:border-primaryNew/30 hover:shadow-lg transition-all cursor-pointer">
+                            <Phone className="w-3.5 h-3.5 text-primaryNew mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
                             <div>
                                 <p className="text-sm text-slate-600 mb-0.5">
                                     Contact
@@ -160,8 +173,8 @@ export function WorkplaceBio({
                             </div>
                         </div>
 
-                        <div className="group flex items-start gap-2.5 p-2.5 rounded-xl bg-gradient-to-br from-secondary to-white border border-secondary hover:border-primaryNew/30 hover:shadow-lg transition-all cursor-pointer">
-                            <Mail className="w-3.5 h-3.5 text-primaryNew mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                        <div className="group flex items-start gap-2.5 p-2.5 rounded-xl bg-linear-to-br from-secondary to-white border border-secondary hover:border-primaryNew/30 hover:shadow-lg transition-all cursor-pointer">
+                            <Mail className="w-3.5 h-3.5 text-primaryNew mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
                             <div>
                                 <p className="text-sm text-slate-600 mb-0.5">
                                     Email
@@ -172,8 +185,8 @@ export function WorkplaceBio({
                             </div>
                         </div>
 
-                        <div className="group flex items-start gap-2.5 p-2.5 rounded-xl bg-gradient-to-br from-secondary to-white border border-secondary hover:border-primaryNew/30 hover:shadow-lg transition-all cursor-pointer">
-                            <Globe className="w-3.5 h-3.5 text-primaryNew mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                        <div className="group flex items-start gap-2.5 p-2.5 rounded-xl bg-linear-to-br from-secondary to-white border border-secondary hover:border-primaryNew/30 hover:shadow-lg transition-all cursor-pointer">
+                            <Globe className="w-3.5 h-3.5 text-primaryNew mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
                             <div>
                                 <p className="text-sm text-slate-600 mb-0.5">
                                     Website
@@ -185,7 +198,7 @@ export function WorkplaceBio({
                         </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-secondary to-white rounded-xl p-4 border border-secondary mb-5">
+                    <div className="bg-linear-to-br from-secondary to-white rounded-xl p-4 border border-secondary mb-5">
                         <h4 className="text-slate-900 mb-2.5 flex items-center gap-2">
                             About the Organization
                         </h4>
@@ -279,8 +292,8 @@ export function WorkplaceBio({
             </div> */}
 
                         {/* Supervisor Information */}
-                        <div className="relative overflow-hidden bg-gradient-to-br from-primaryNew/5 via-primaryNew/5 to-transparent rounded-2xl p-4 border border-primaryNew/20 shadow-inner">
-                            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primaryNew/10 to-transparent rounded-full blur-2xl"></div>
+                        <div className="relative overflow-hidden bg-linear-to-br from-primaryNew/5 via-primaryNew/5 to-transparent rounded-2xl p-4 border border-primaryNew/20 shadow-inner">
+                            <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-br from-primaryNew/10 to-transparent rounded-full blur-2xl"></div>
                             <h4 className="text-slate-900 mb-2.5 relative">
                                 Workplace Supervisor
                             </h4>
@@ -326,6 +339,11 @@ export function WorkplaceBio({
                     <NoData text="No workplace industry found!" />
                 </div>
             )}
+            <ResendApprovalEmailModal
+                open={isResendModalOpen}
+                onOpenChange={setIsResendModalOpen}
+                approvalId={latestWorkplaceApprovaleRequest?.id}
+            />
         </div>
     )
 }

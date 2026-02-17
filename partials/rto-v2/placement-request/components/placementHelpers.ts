@@ -68,7 +68,7 @@ export const statusConfig: any = {
         borderColor: 'border-purple-200 ',
     },
     interview: {
-        label: 'Interview',
+        label: 'Industry sourcing',
         icon: MessageSquare,
         color: 'text-indigo-600',
         bgColor: 'bg-indigo-50',

@@ -12,7 +12,7 @@ export const WorkplaceApprovalModal = ({
 }) => {
     return (
         <GlobalModal>
-            <div className="relative max-w-[1076px] w-full">
+            <div className="relative max-w-269 w-full">
                 <MdCancel
                     onClick={onCancel}
                     className="absolute -top-3 -right-3 transition-all duration-500 text-black hover:text-black text-3xl cursor-pointer hover:rotate-90"

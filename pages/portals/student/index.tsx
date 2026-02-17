@@ -84,6 +84,7 @@ const StudentDashboard: NextPageWithLayout = () => {
     //     RtoV2Api.Students.useBookAppointmentExternally()
     useEffect(() => {
         if (
+            industryAvailability &&
             !industryAvailability?.existingAppointment &&
             role !== UserRoles.RTO
         ) {
@@ -92,17 +93,21 @@ const StudentDashboard: NextPageWithLayout = () => {
                     <div className="min-w-200">
                         {isIndustryAvailabilityLoading ? (
                             <LoadingAnimation />
-                        ) : industryAvailability ? (
-                            <AppointmentBookingModalV2
-                                // isOpen={true}
-                                onClose={onClose}
-                                wprId={industryAvailability?.workplaceRequestId}
-                                indId={industryAvailability?.industryId}
-                                availability={industryAvailability}
-                                // resultBookAppointment={resultBookAppointment}
-                                // bookAppointment={bookAppointment}
-                            />
-                        ) : null}
+                        ) : (
+                            industryAvailability && (
+                                <AppointmentBookingModalV2
+                                    // isOpen={true}
+                                    onClose={onClose}
+                                    wprId={
+                                        industryAvailability?.workplaceRequestId
+                                    }
+                                    indId={industryAvailability?.industryId}
+                                    availability={industryAvailability}
+                                    // resultBookAppointment={resultBookAppointment}
+                                    // bookAppointment={bookAppointment}
+                                />
+                            )
+                        )}
                     </div>
                 </GlobalModal>
             )

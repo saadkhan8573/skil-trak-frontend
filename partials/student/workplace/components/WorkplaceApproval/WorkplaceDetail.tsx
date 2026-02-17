@@ -1,10 +1,16 @@
 import { Typography } from '@components'
+import { Student } from '@types'
 import { getUserCredentials } from '@utils'
 import Image from 'next/image'
 import React from 'react'
 
-export const WorkplaceDetail = () => {
-    const name = getUserCredentials()?.name
+export const WorkplaceDetail = ({ student }: { student?: Student }) => {
+    const credentials = getUserCredentials()
+    const name = credentials?.name
+    const role = credentials?.role
+
+    const displayName =
+        role === 'student' ? name : (student?.user?.name ?? name ?? 'User')
 
     return (
         <div className="flex flex-col gap-y-2.5">
@@ -23,7 +29,7 @@ export const WorkplaceDetail = () => {
                 eligible workplace option for placement
             </Typography>
             <Typography capitalize bold variant="label" color="text-[#333]">
-                Dear {name},
+                Dear {displayName},
             </Typography>
             <Typography capitalize color="text-[#24556D]" variant="label">
                 We are excited to inform you that Skiltrak has successfully

@@ -40,10 +40,11 @@ export const studentAssessmentEvidenceEndpoints = (
     // }),
 
     uploadFolderDocs: builder.mutation({
-        query: ({ id, body }) => ({
+        query: ({ id, body, params }) => ({
             url: `${PREFIX}/assessment-evidence/response/${id}`,
             method: 'POST',
             body,
+            ...(params && { params }),
         }),
         invalidatesTags: ['StudentAssessmentEvidence'],
     }),

@@ -719,6 +719,8 @@ const {
     useDeleteAiCallMutation,
     useGetAgentsListQuery,
     useCreateAgentMutation,
+    useUpdateAgentMutation,
+    useDeleteAgentMutation,
 } = commonApi
 
 export const CommonApi = {
@@ -1112,5 +1114,7 @@ export const CommonApi = {
         useDeleteAiCallMutation: useDeleteAiCallMutation,
         useGetAgentsListQuery,
         useCreateAgentMutation,
+        useUpdateAgentMutation,
+        useDeleteAgentMutation,
     },
 }

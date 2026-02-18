@@ -1,9 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import { SubAdminApi } from '@queries'
-import { AssessmentEvidenceDetailType, Folder, Rto } from '@types'
+import React from 'react'
+import { CommonApi } from '@queries'
+import {
+    AssessmentEvidenceDetailType,
+    AssessmentEvidenceFolder,
+    Rto,
+} from '@types'
 import { DocumentView } from './DocumentView'
-import { BackButton, LoadingAnimation, NoData } from '@components'
-import { queryToUrl } from '@utils'
+import { LoadingAnimation, NoData, Button } from '@components'
+import { ChevronLeft } from 'lucide-react'
+
+interface PreviewAsSignerTemplateProps {
+    rto: Rto
+    userIds: any
+    template: any
+    folder: AssessmentEvidenceDetailType | AssessmentEvidenceFolder | null
+    goBack: () => void
+}
 
 export const PreviewAsSignerTemplate = ({
     rto,
@@ -11,54 +23,59 @@ export const PreviewAsSignerTemplate = ({
     goBack,
     userIds,
     template,
-}: {
-    rto: Rto
-    userIds: any
-    template: any
-    folder: AssessmentEvidenceDetailType | null
-    goBack: () => void
-}) => {
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [isError, setIsError] = useState<boolean>(false)
-    const [isSuccess, setIsSuccess] = useState<boolean>(false)
-
-    const [pdfBytes, setPdfBytes] = useState<any>()
-    useEffect(() => {
-        const getPdfBytes = async () => {
-            try {
-                setIsLoading(true)
-                setIsError(false)
-                const response = await fetch(
-                    `${
-                        process.env.NEXT_PUBLIC_END_POINT
-                    }/esign/template/get-updated/${
-                        template?.id
-                    }?users=${Object.values(userIds)?.join(',')}&userId=${
-                        rto?.user?.id
-                    }`
-                )
-                const pdfData = await response.arrayBuffer()
-                setPdfBytes(new Uint8Array(pdfData))
-                setIsLoading(false)
-                setIsSuccess(true)
-            } catch (error) {
-                setIsError(true)
-                setIsLoading(false)
+}: PreviewAsSignerTemplateProps) => {
+    const { data: pdfBytes, isLoading, isError, isSuccess } =
+        CommonApi.ESign.usePreviewAsSignerTemplate(
+            {
+                templateId: Number(template?.id),
+                users: Object.values(userIds).join(','),
+                userId: Number(rto?.user?.id),
+            },
+            {
+                skip: !template?.id || !rto?.user?.id,
             }
-        }
-        getPdfBytes()
-    }, [])
+        )
 
     return (
-        <div>
-            <BackButton onClick={() => goBack()} />
-            {isError && <NoData text="There is some technical issue" isError />}
+        <div className="space-y-4">
+            <div className="flex items-center justify-between border-b pb-4">
+                <Button
+                    variant="action"
+                    Icon={ChevronLeft}
+                    onClick={goBack}
+                    text="Back to Selection"
+                    mini={false}
+                />
+                <div className="text-right">
+                    <p className="text-sm font-bold text-gray-700">
+                        Previewing Template: {template?.name}
+                    </p>
+                    <p className="text-xs text-gray-400 capitalize">
+                        RTO: {rto?.user?.name}
+                    </p>
+                </div>
+            </div>
+
+            {isError && (
+                <div className="py-10">
+                    <NoData text="Failed to load preview. Please try again." isError />
+                </div>
+            )}
+
             {isLoading ? (
-                <LoadingAnimation />
+                <div className="py-20">
+                    <LoadingAnimation />
+                </div>
             ) : pdfBytes ? (
-                <DocumentView file={{ data: pdfBytes }} />
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <DocumentView file={{ data: pdfBytes }} />
+                </div>
             ) : (
-                isSuccess && <NoData text="There is no Template" />
+                isSuccess && (
+                    <div className="py-10">
+                        <NoData text="No preview data available for this template." />
+                    </div>
+                )
             )}
         </div>
     )

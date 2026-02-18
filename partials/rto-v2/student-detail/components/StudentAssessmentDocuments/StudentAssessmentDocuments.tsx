@@ -1,7 +1,7 @@
 import { NoData } from '@components'
-import { RtoV2Api } from '@queries'
+import { RtoV2Api, SubAdminApi } from '@queries'
 import { useAppSelector } from '@redux/hooks'
-import { Course, Student } from '@types'
+import { AssessmentEvidenceFolder, Course, Student } from '@types'
 import { useMemo, useState } from 'react'
 import { CourseOverview } from '../StudentOverview'
 import {
@@ -32,6 +32,26 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
         (state) => state.student.selectedCourse
     )
 
+    const studentWorkplace = SubAdminApi.Student.getWorkplaceForSchedule(
+        student?.id,
+        {
+            skip: !student,
+        }
+    )
+
+    const appliedIndustry = useMemo(
+        () =>
+            studentWorkplace?.data
+                ?.filter(
+                    (wp: any) => wp?.courses?.[0]?.id === selectedCourse?.id
+                )
+                ?.map((ind: any) => ind?.industries)
+                ?.flat()
+                ?.map((ind: any) => ind?.industry?.id)
+                ?.join(','),
+        [studentWorkplace, selectedCourse]
+    )
+
     const count = RtoV2Api.StudentDocuments.getStudentDocumentsCount({
         studentId: student.id,
         courseId: selectedCourse?.id ?? 0,
@@ -42,6 +62,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
             // search: `${filterKey}:true`,
             studentId: student.id,
             courseId: selectedCourse?.id ?? 0,
+            industryId: Number(appliedIndustry),
         },
         {
             skip: !student.id || !selectedCourse?.id,
@@ -67,9 +88,19 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
         },
         [documents]
     )
+    const getIndustryOtherDocuments = useMemo(
+        () => () => {
+            return documents?.data?.filter(
+                (document) =>
+                    document?.isOtherDoc
+            )
+        },
+        [documents]
+    )
 
     const industryDocuments = getIndustryDocuments(true)
     const courseDocuments = getIndustryDocuments(false)
+    const industryCustomRequiredDocuments = getIndustryOtherDocuments()
 
     const result = useMemo(
         () => getCourseResult(selectedCourse?.results),
@@ -79,8 +110,8 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
     const allCommentsAdded = useMemo(
         () =>
             documents?.data
-                ?.filter((folder: any) => !folder?.isIndustryCheck)
-                ?.every((f: any) => f?.studentResponse[0]?.comment),
+                ?.filter((folder) => !folder?.isIndustryCheck)
+                ?.every((f) => f?.studentResponse[0]?.comment),
         [documents?.data]
     )
 
@@ -89,9 +120,9 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
             !documents.isLoading &&
             !documents.isFetching &&
             documents.isSuccess &&
-            courseDocuments?.length > 0 &&
+            courseDocuments && courseDocuments?.length > 0 &&
             courseDocuments?.every(
-                (f: any) => f?.studentResponse[0]?.files?.length > 0
+                (f: AssessmentEvidenceFolder) => f?.studentResponse[0]?.files?.length > 0
             ),
         [documents, courseDocuments]
     )
@@ -99,7 +130,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
     const files = useMemo(
         () =>
             courseDocuments
-                ?.map((f: any) => f?.studentResponse?.[0]?.files?.length > 0)
+                ?.map((f: AssessmentEvidenceFolder) => f?.studentResponse?.[0]?.files?.length > 0)
                 ?.filter((f: any) => f)?.length,
         [courseDocuments]
     )
@@ -107,7 +138,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
     const rejectedFolders = useMemo(
         () =>
             courseDocuments?.filter(
-                (f: any) =>
+                (f: AssessmentEvidenceFolder) =>
                     f?.studentResponse?.[0]?.status === 'rejected' &&
                     f?.studentResponse?.[0]?.files?.length > 0
             )?.length,
@@ -118,16 +149,16 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
         () =>
             courseDocuments
                 ?.filter(
-                    (f: any) => f?.studentResponse?.[0]?.status === 'rejected'
+                    (f: AssessmentEvidenceFolder) => f?.studentResponse?.[0]?.status === 'rejected'
                 )
-                ?.every((f: any) => f?.studentResponse?.[0]?.files?.length > 0),
+                ?.every((f: AssessmentEvidenceFolder) => f?.studentResponse?.[0]?.files?.length > 0),
         [courseDocuments]
     )
 
     const resubmitFiles = useMemo(
         () =>
             courseDocuments?.filter(
-                (f: any) =>
+                (f: AssessmentEvidenceFolder) =>
                     f?.studentResponse?.[0]?.reSubmitted &&
                     f?.studentResponse?.[0]?.files?.length > 0
             )?.length,
@@ -136,9 +167,9 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
 
     const isAllApproved = useMemo(
         () =>
-            courseDocuments?.length > 0 &&
+            courseDocuments && courseDocuments?.length > 0 &&
             courseDocuments?.every(
-                (f: any) => f?.studentResponse[0]?.status === 'approved'
+                (f) => f?.studentResponse[0]?.status === 'approved'
             ),
         [courseDocuments]
     )
@@ -197,6 +228,14 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
             filterKey: 'industryCheck',
         },
         {
+            filterKey: 'industryCustomDocument',
+            type: 'industryCustom' as const,
+            title: 'Industry Custom Required Documents',
+            documents: industryCustomRequiredDocuments,
+            description: 'Industry custom required documents',
+            // stats: courseStats,
+        },
+        {
             filterKey: 'courseDocument',
             type: 'course' as const,
             title: 'Course Documents',
@@ -241,7 +280,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                                 stats={section.stats}
                                 sectionType={section.type}
                                 filterKey={section.filterKey}
-                                documents={section?.documents ?? []}
+                                documents={section?.documents}
                                 student={student}
                             />
                         )
@@ -272,7 +311,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                         student={student}
                         selectedCourse={selectedCourse}
                         result={result}
-                        allCommentsAdded={allCommentsAdded}
+                        allCommentsAdded={!!allCommentsAdded}
                         subadmin={subadmin}
                         getFolders={documents}
                     />}

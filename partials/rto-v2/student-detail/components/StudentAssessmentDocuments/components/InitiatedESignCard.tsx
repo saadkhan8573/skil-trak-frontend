@@ -1,5 +1,5 @@
 import { Badge, Button, Switch, Tooltip, Typography } from '@components'
-import { AssessmentEvidenceDetailType, Rto } from '@types'
+import { AssessmentEvidenceDetailType, Rto, AssessmentEvidenceFolder } from '@types'
 import { EsignDocumentStatus, maskText } from '@utils'
 import {
     Calendar,
@@ -36,7 +36,7 @@ export const InitiatedESignCard = ({
     document: any
     courseId: number
     rto: Rto
-    folder: AssessmentEvidenceDetailType | null
+    folder: AssessmentEvidenceDetailType | AssessmentEvidenceFolder | null
 }) => {
     const [modal, setModal] = useState<any>(null)
     const [isCancelModalOpen, setIsCancelModalOpen] = useState(false)
@@ -139,27 +139,19 @@ export const InitiatedESignCard = ({
                             Document {currentDocIndex + 1} of {document.length}
                         </Typography>
                         <div className="flex gap-x-2 items-center">
-                            <Badge
+                            <Button
                                 text="Previous"
                                 variant="primaryNew"
-                                onClick={
-                                    currentDocIndex === 0
-                                        ? undefined
-                                        : handlePrev
-                                }
+                                onClick={handlePrev}
                                 disabled={currentDocIndex === 0}
+                                mini
                             />
-                            <Badge
+                            <Button
                                 text="Next"
                                 variant="primaryNew"
-                                onClick={
-                                    currentDocIndex === document.length - 1
-                                        ? undefined
-                                        : handleNext
-                                }
-                                disabled={
-                                    currentDocIndex === document.length - 1
-                                }
+                                onClick={handleNext}
+                                disabled={currentDocIndex === document.length - 1}
+                                mini
                             />
                             <div className="relative group">
                                 <Button

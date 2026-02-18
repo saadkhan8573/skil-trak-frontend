@@ -44,7 +44,8 @@ export const EnhancedComplianceChecks = () => {
                     required: doc.isRequired,
                     isUploaded: files.length > 0,
                     filesCount: files.length,
-                    fileStatus: response?.status ?? "pending"
+                    fileStatus: "approved",
+                    isOtherDoc: true
                 }
             }) || []
 

@@ -7,7 +7,7 @@ export const DocumentFilter = ({
     setSelectedView,
     selectedView,
 }: {
-    selectedView: string
+    selectedView: 'industry' | 'all' | 'course'
     setSearchQuery: (e: string) => void
     setSelectedView: (e: 'industry' | 'all' | 'course') => void
     setStatusFilter: (e: string) => void

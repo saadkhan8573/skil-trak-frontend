@@ -1,7 +1,7 @@
 import { Button, ShowErrorNotifications } from '@components'
 import { useNotification } from '@hooks'
-import { RtoV2Api } from '@queries'
-import { AssessmentEvidenceDetailType, Student } from '@types'
+import { RtoV2Api, SubAdminApi } from '@queries'
+import { AssessmentEvidenceFolder, Student } from '@types'
 import { Upload } from 'lucide-react'
 import React, { useMemo, useRef } from 'react'
 import { folderResponse } from '@utils'
@@ -10,12 +10,15 @@ export const UploadDocument = ({
     folder,
     student,
 }: {
-    folder: AssessmentEvidenceDetailType
+    folder: AssessmentEvidenceFolder
     student: Student
 }) => {
     const fileInputRef = useRef<HTMLInputElement>(null)
     const [uploadDocument, uploadDocumentResult] =
         RtoV2Api.StudentDocuments.uploadStudentDocumentFile()
+
+    const [uploadOtherDocs, uploadOtherDocsResult] =
+        SubAdminApi.AssessmentEvidence.uploadOtherDocs()
 
     const { notification } = useNotification()
 
@@ -34,12 +37,21 @@ export const UploadDocument = ({
         if (file) {
             const formData = new FormData()
             formData.append('file', file)
-            const res: any = await uploadDocument({
-                stdId: Number(student?.id),
-                folderId: folder?.id ?? 0,
-                responseId: response?.id!,
-                body: formData,
-            })
+
+            const isOtherDoc = folder?.isOtherDoc || folder?.isIndustryCheck
+
+            const res: any = isOtherDoc
+                ? await uploadOtherDocs({
+                    studentId: Number(student?.id),
+                    body: formData,
+                    folderId: folder?.id ?? 0,
+                })
+                : await uploadDocument({
+                    stdId: Number(student?.id),
+                    folderId: folder?.id ?? 0,
+                    responseId: response?.id!,
+                    body: formData,
+                })
 
             if (res?.data) {
                 notification.success({
@@ -47,13 +59,16 @@ export const UploadDocument = ({
                     description: 'Document Uploaded Successfully',
                 })
             }
-
         }
     }
+
+    const isLoading =
+        uploadDocumentResult.isLoading || uploadOtherDocsResult.isLoading
 
     return (
         <>
             <ShowErrorNotifications result={uploadDocumentResult} />
+            <ShowErrorNotifications result={uploadOtherDocsResult} />
             <input
                 ref={fileInputRef}
                 type="file"
@@ -65,8 +80,8 @@ export const UploadDocument = ({
                 onClick={handleButtonClick}
                 className="py-1! rounded-sm!"
                 variant="primaryNew"
-                loading={uploadDocumentResult.isLoading}
-                disabled={uploadDocumentResult.isLoading}
+                loading={isLoading}
+                disabled={isLoading}
             >
                 <Upload className="w-4 h-4 mr-2" />
                 Add File

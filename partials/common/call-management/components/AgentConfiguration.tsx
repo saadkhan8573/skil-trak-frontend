@@ -1,13 +1,16 @@
-import { Badge, Button, EmptyData, LoadingAnimation, Table, TableChildrenProps, TechnicalError } from '@components'
+import { Badge, Button, DeleteConfirmationModal, EmptyData, LoadingAnimation, Table, TableChildrenProps, TechnicalError } from '@components'
 import { CommonApi } from '@queries/common/common.query'
 import { ColumnDef } from '@tanstack/react-table'
-import { Bot, Plus, Power, Search, Trash2 } from 'lucide-react'
+import { Bot, Edit, Plus, Search, Trash2 } from 'lucide-react'
 import { useState } from 'react'
-import { AddAgentModal } from './modal/AddAgentModal'
+import { AddAgentModal } from './modal'
 import { AgentConfigurationTypes } from '@types'
 
 export const AgentConfiguration = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const [agentToDeleteId, setAgentToDeleteId] = useState<number | null>(null)
+    const [selectedAgent, setSelectedAgent] = useState<AgentConfigurationTypes | null>(null)
     const [searchTerm, setSearchTerm] = useState('')
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
@@ -21,14 +24,6 @@ export const AgentConfiguration = () => {
             refetchOnMountOrArgChange: true,
         })
 
-    // TODO: Implement toggle and delete APIs
-    const toggleAgent = (id: string) => {
-        // setAgents(prev => prev.map(a => a.id === id ? { ...a, isActive: !a.isActive } : a))
-    }
-
-    const deleteAgent = (id: string) => {
-        // setAgents(prev => prev.filter(a => a.id !== id))
-    }
 
     const columns: ColumnDef<AgentConfigurationTypes>[] = [
         {
@@ -73,14 +68,20 @@ export const AgentConfiguration = () => {
             cell: ({ row }) => (
                 <div className="flex justify-end gap-1">
                     <button
-                        onClick={() => toggleAgent(row.original.id.toString())}
-                        title={row.original.isActive ? 'Deactivate' : 'Activate'}
-                        className={`p-2 rounded-lg transition-all ${row.original.isActive ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'}`}
+                        onClick={() => {
+                            setSelectedAgent(row.original)
+                            setIsModalOpen(true)
+                        }}
+                        title="Edit Agent"
+                        className="p-2 text-gray-400 hover:text-primaryNew hover:bg-blue-50 rounded-lg transition-all"
                     >
-                        <Power className={`w-4 h-4 ${row.original.isActive ? 'fill-green-600' : ''}`} />
+                        <Edit className="w-4 h-4" />
                     </button>
                     <button
-                        onClick={() => deleteAgent(row.original.id.toString())}
+                        onClick={() => {
+                            setAgentToDeleteId(row.original.id)
+                            setIsDeleteModalOpen(true)
+                        }}
                         title="Delete Agent"
                         className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                     >
@@ -116,7 +117,10 @@ export const AgentConfiguration = () => {
                         />
                     </div>
                     <Button
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => {
+                            setSelectedAgent(null)
+                            setIsModalOpen(true)
+                        }}
                         text="Add Agent"
                         Icon={Plus}
                         className="bg-primaryNew text-white hover:opacity-90 shadow-sm"
@@ -198,7 +202,20 @@ export const AgentConfiguration = () => {
 
             <AddAgentModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={() => {
+                    setIsModalOpen(false)
+                    setSelectedAgent(null)
+                }}
+                agent={selectedAgent}
+            />
+
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => {
+                    setIsDeleteModalOpen(false)
+                    setAgentToDeleteId(null)
+                }}
+                id={agentToDeleteId}
             />
         </div>
     )

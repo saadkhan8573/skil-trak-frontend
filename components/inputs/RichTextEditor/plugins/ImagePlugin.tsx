@@ -2,13 +2,13 @@
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $getSelection, $insertNodes, $isNodeSelection, COMMAND_PRIORITY_EDITOR, COMMAND_PRIORITY_LOW, createCommand, ElementFormatType, FORMAT_ELEMENT_COMMAND, LexicalCommand } from 'lexical';
-import { useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { $createImageNode, $isImageNode, ImageNode, ImagePayload } from '../nodes/ImageNode';
 import { mergeRegister } from '@lexical/utils';
 
 export const INSERT_IMAGE_COMMAND: LexicalCommand<ImagePayload> = createCommand();
 
-export default function ImagePlugin(): JSX.Element | null {
+export default function ImagePlugin(): ReactElement | null {
     const [editor] = useLexicalComposerContext();
 
     useEffect(() => {

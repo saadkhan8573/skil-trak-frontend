@@ -13,7 +13,7 @@ import {
     SELECTION_CHANGE_COMMAND,
 } from 'lexical'
 import { Edit2, ExternalLink } from 'lucide-react'
-import { Dispatch, useCallback, useEffect, useRef, useState } from 'react'
+import { Dispatch, ReactElement, useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 const LowPriority = 1
@@ -28,7 +28,7 @@ function FloatingLinkEditor({
     isLink: boolean
     setIsLink: Dispatch<React.SetStateAction<boolean>>
     anchorElem: HTMLElement
-}): JSX.Element | null {
+}): ReactElement | null {
     const [linkUrl, setLinkUrl] = useState('')
     const editorRef = useRef<HTMLDivElement | null>(null)
     const inputRef = useRef<HTMLInputElement>(null)
@@ -193,7 +193,7 @@ function FloatingLinkEditor({
 function useFloatingLinkEditorToolbar(
     editor: LexicalEditor,
     anchorElem: HTMLElement
-): JSX.Element | null {
+): ReactElement | null {
     const [activeEditor, setActiveEditor] = useState(editor)
     const [isLink, setIsLink] = useState(false)
 
@@ -249,7 +249,7 @@ export default function FloatingLinkEditorPlugin({
     anchorElem = document.body,
 }: {
     anchorElem?: HTMLElement
-}): JSX.Element | null {
+}): ReactElement | null {
     const [editor] = useLexicalComposerContext()
     return useFloatingLinkEditorToolbar(editor, anchorElem)
 }

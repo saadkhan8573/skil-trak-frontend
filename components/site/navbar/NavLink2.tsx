@@ -1,9 +1,6 @@
 import Link from 'next/link'
 
-import { css } from '@emotion/react'
 
-import { Button } from '@components/buttons'
-import { useRouter } from 'next/router'
 
 export const NavLink2 = ({
     to,
@@ -13,25 +10,7 @@ export const NavLink2 = ({
     subMenus,
     onClick,
 }: any) => {
-    const router = useRouter()
-    const linkCSS = css`
-        &:after {
-            content: '';
-            display: block;
-            width: 0%;
-            height: 2px;
-            background-color: #ea7e3f;
-            margin-top: 8px;
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            transition: width 0.4s ease;
-        }
-        &:hover:after {
-            width: 100%;
-            left: 0;
-        }
-    `
+
 
     const linkClasses = ` 
     text-black

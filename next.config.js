@@ -90,6 +90,7 @@ const nextConfig = {
     serverExternalPackages: [
         '@zoomus/websdk',
         'pdfjs-dist',
+        'react-pdf',
         'xlsx',
         'exceljs',
         'jspdf',

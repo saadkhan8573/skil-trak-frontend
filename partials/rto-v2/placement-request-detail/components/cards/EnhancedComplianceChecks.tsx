@@ -1,5 +1,7 @@
 import { Badge, Card, NoData } from '@components'
 import { RtoV2Api } from '@queries'
+import { AssessmentEvidenceFolder } from '@types'
+import { folderResponse } from '@utils'
 import { motion } from 'framer-motion'
 import { Shield, CheckCircle2, AlertCircle } from 'lucide-react'
 import { useRouter } from 'next/router'
@@ -18,35 +20,38 @@ export const EnhancedComplianceChecks = () => {
         if (!data) return []
 
         const assessment =
-            data?.assessmentEvidence?.map((doc: any) => {
-                const files = doc?.studentResponse?.[0]?.files || []
+            data?.assessmentEvidence?.map((doc: AssessmentEvidenceFolder) => {
+                const response = folderResponse(doc?.studentResponse)
+
+                const files = response?.files || []
                 return {
                     id: `ae-${doc.id}`,
                     name: doc.name,
                     required: doc.isMandatory,
                     isUploaded: files.length > 0,
                     filesCount: files.length,
+                    fileStatus: response?.status ?? "pending"
                 }
             }) || []
 
         const other =
             data?.otherDocs?.map((doc: any) => {
-                const files = doc?.studentResponse?.[0]?.files || []
+                const response = folderResponse(doc?.studentResponse)
+                const files = response?.files || []
                 return {
                     id: `od-${doc.id}`,
                     name: doc.name,
                     required: doc.isRequired,
                     isUploaded: files.length > 0,
                     filesCount: files.length,
+                    fileStatus: response?.status ?? "pending"
                 }
             }) || []
 
         return [...assessment, ...other]
     }, [data])
 
-    const allRequiredCompleted = complianceItems
-        .filter((item) => item.required)
-        .every((item) => item.isUploaded)
+
 
     return (
         <Card noPadding className="border-0 shadow-xl overflow-hidden">
@@ -60,12 +65,18 @@ export const EnhancedComplianceChecks = () => {
                     {complianceItems.length > 0 && (
                         <Badge
                             text={
-                                allRequiredCompleted ? 'Completed' : 'Pending'
+                                complianceItems.filter((item) => item.required).every((item) => item.fileStatus === 'approved')
+                                    ? 'Completed'
+                                    : complianceItems.filter((item) => item.required).every((item) => item.isUploaded)
+                                        ? 'Uploaded'
+                                        : 'Pending'
                             }
                             className={
-                                allRequiredCompleted
+                                complianceItems.filter((item) => item.required).every((item) => item.fileStatus === 'approved')
                                     ? 'bg-emerald-100 text-emerald-700 border-emerald-200'
-                                    : 'bg-amber-100 text-amber-700 border-amber-200'
+                                    : complianceItems.filter((item) => item.required).every((item) => item.isUploaded)
+                                        ? 'bg-blue-100 text-blue-700 border-blue-200'
+                                        : 'bg-amber-100 text-amber-700 border-amber-200'
                             }
                         />
                     )}
@@ -89,11 +100,10 @@ export const EnhancedComplianceChecks = () => {
                             >
                                 <div className="flex items-center gap-3">
                                     <div
-                                        className={`p-2 rounded-lg ${
-                                            item.isUploaded
-                                                ? 'bg-emerald-100'
-                                                : 'bg-amber-100'
-                                        }`}
+                                        className={`p-2 rounded-lg ${item.isUploaded
+                                            ? 'bg-emerald-100'
+                                            : 'bg-amber-100'
+                                            }`}
                                     >
                                         {item.isUploaded ? (
                                             <CheckCircle2 className="h-5 w-5 text-emerald-600" />
@@ -122,12 +132,18 @@ export const EnhancedComplianceChecks = () => {
 
                                 <Badge
                                     text={
-                                        item.isUploaded ? 'Uploaded' : 'Pending'
+                                        item.fileStatus === 'approved'
+                                            ? 'Approved'
+                                            : item.isUploaded
+                                                ? 'Uploaded'
+                                                : 'Pending'
                                     }
                                     className={
-                                        item.isUploaded
+                                        item.fileStatus === 'approved'
                                             ? 'bg-emerald-100 text-emerald-700 border-emerald-200'
-                                            : 'bg-amber-100 text-amber-700 border-amber-200'
+                                            : item.isUploaded
+                                                ? 'bg-blue-100 text-blue-700 border-blue-200'
+                                                : 'bg-amber-100 text-amber-700 border-amber-200'
                                     }
                                 />
                             </motion.div>

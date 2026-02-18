@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Select, TextArea, TextInput } from '@components'
 import {
     Dialog,
@@ -10,7 +10,8 @@ import {
 } from '@components/ui/dialog'
 import { Bot, Plus } from 'lucide-react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { AgentAction, CallReason, CALL_REASON_ACTIONS, AVAILABLE_ACTIONS } from '../types'
+import { AgentAction, CallReason, CALL_REASON_ACTIONS } from '../types'
+import { AgentConfigurationTypes } from '@types'
 
 import { CommonApi } from '@queries/common/common.query'
 import { useNotification } from '@hooks'
@@ -18,21 +19,48 @@ import { useNotification } from '@hooks'
 interface AddAgentModalProps {
     isOpen: boolean
     onClose: () => void
+    agent?: AgentConfigurationTypes | null
 }
 
-export const AddAgentModal = ({ isOpen, onClose }: AddAgentModalProps) => {
-    const [createAgent, { isLoading }] = CommonApi.CallManagement.useCreateAgentMutation()
+export const AddAgentModal = ({ isOpen, onClose, agent }: AddAgentModalProps) => {
+    const [createAgent, { isLoading: isCreating }] = CommonApi.CallManagement.useCreateAgentMutation()
+    const [updateAgent, { isLoading: isUpdating }] = CommonApi.CallManagement.useUpdateAgentMutation()
+    const isLoading = isCreating || isUpdating
     const { notification } = useNotification()
 
     const methods = useForm({
         defaultValues: {
             name: '',
+            vapiAgentId: '',
+            responsibility: 'Workplace Details Collection',
             callReason: 'Workplace Details Collection' as CallReason,
             actions: CALL_REASON_ACTIONS['Workplace Details Collection'] as AgentAction[],
         }
     })
 
     const { watch, setValue, reset } = methods
+
+    useEffect(() => {
+        if (agent) {
+            reset({
+                name: agent.name,
+                vapiAgentId: agent.vapiAgentId,
+                responsibility: agent.responsibility,
+                // These are defaults if not present in agent object
+                callReason: 'Workplace Details Collection' as CallReason,
+                actions: CALL_REASON_ACTIONS['Workplace Details Collection'] as AgentAction[],
+            })
+        } else {
+            reset({
+                name: '',
+                vapiAgentId: '',
+                responsibility: 'Workplace Details Collection',
+                callReason: 'Workplace Details Collection' as CallReason,
+                actions: CALL_REASON_ACTIONS['Workplace Details Collection'] as AgentAction[],
+            })
+        }
+    }, [agent, reset])
+
     const selectedActions = watch('actions')
 
     const handleReasonChange = (reason: any) => {
@@ -40,27 +68,27 @@ export const AddAgentModal = ({ isOpen, onClose }: AddAgentModalProps) => {
         setValue('actions', CALL_REASON_ACTIONS[castReason])
     }
 
-    const toggleAction = (action: AgentAction) => {
-        if (selectedActions.includes(action)) {
-            setValue('actions', selectedActions.filter(a => a !== action))
-        } else {
-            setValue('actions', [...selectedActions, action])
-        }
-    }
-
     const onSubmit = async (data: any) => {
         try {
-            await createAgent(data).unwrap()
-            notification.success({
-                title: 'Success',
-                description: 'Agent created successfully',
-            })
+            if (agent) {
+                await updateAgent({ id: agent.id, body: data }).unwrap()
+                notification.success({
+                    title: 'Success',
+                    description: 'Agent updated successfully',
+                })
+            } else {
+                await createAgent(data).unwrap()
+                notification.success({
+                    title: 'Success',
+                    description: 'Agent created successfully',
+                })
+            }
             reset()
             onClose()
         } catch (error: any) {
             notification.error({
                 title: 'Error',
-                description: error?.data?.message || 'Failed to create agent',
+                description: error?.data?.message || `Failed to ${agent ? 'update' : 'create'} agent`,
             })
         }
     }
@@ -70,6 +98,7 @@ export const AddAgentModal = ({ isOpen, onClose }: AddAgentModalProps) => {
         value: reason
     }))
 
+
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="max-w-3xl! p-0 border-none shadow-2xl flex flex-col max-h-[90vh] [&>button[data-slot='dialog-close']]:text-white">
@@ -78,16 +107,16 @@ export const AddAgentModal = ({ isOpen, onClose }: AddAgentModalProps) => {
                         <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                             <Bot className="w-6 h-6 text-white" />
                         </div>
-                        <DialogTitle className="text-white text-xl font-bold">Configure New Agent</DialogTitle>
+                        <DialogTitle className="text-white text-xl font-bold">{agent ? 'Edit Agent' : 'Configure New Agent'}</DialogTitle>
                     </div>
                     <DialogDescription className="text-blue-50 text-sm">
-                        Set up a new AI voice agent by defining its name, purpose, and allowed actions.
+                        {agent ? 'Modify the agent configuration and its responsibilities.' : 'Set up a new AI voice agent by defining its name, purpose, and allowed actions.'}
                     </DialogDescription>
                 </DialogHeader>
 
                 <FormProvider {...methods}>
-                    <form onSubmit={methods.handleSubmit(onSubmit)} className="flex flex-col flex-1 overflow-hidden">
-                        <div className="p-6 flex flex-col gap-7 overflow-y-auto">
+                    <form onSubmit={methods.handleSubmit(onSubmit)} className="flex flex-col flex-1 relative">
+                        <div className="p-6 flex flex-col gap-7">
                             <div className='grid grid-cols-2 gap-4'>
                                 <TextInput
                                     label="Agent Name (AI)"
@@ -115,7 +144,7 @@ export const AddAgentModal = ({ isOpen, onClose }: AddAgentModalProps) => {
                                 onlyValue
                                 onChange={handleReasonChange}
                                 required
-                                menuPlacement='top'
+                                menuPlacement="top"
                             />
 
                             {/* <Select
@@ -162,7 +191,7 @@ export const AddAgentModal = ({ isOpen, onClose }: AddAgentModalProps) => {
                             <Button
                                 submit
                                 variant='primaryNew'
-                                text="Create Agent"
+                                text={agent ? 'Update Agent' : 'Create Agent'}
                                 Icon={Plus}
                                 disabled={selectedActions.length === 0 || isLoading}
                                 loading={isLoading}

@@ -1,5 +1,5 @@
 import { NoData } from '@components'
-import { AssessmentEvidenceDetailType, Course, Folder } from '@types'
+import { AssessmentEvidenceFolder, Course, Folder, Student } from '@types'
 import { FolderCard, FolderHeaderCard } from '../cards'
 import { getStatusConfig } from '../utils/getStatusConfig'
 
@@ -7,12 +7,12 @@ interface FolderSectionProps {
     title: string
     description: string
     stats: any
-    sectionType: 'industry' | 'course'
-    student: any
+    sectionType: 'industry' | 'course' | 'industryCustom'
+    student: Student
 
     course: Course
     filterKey: string
-    documents: AssessmentEvidenceDetailType[]
+    documents: AssessmentEvidenceFolder[]
 }
 
 export const FolderSection = ({
@@ -38,7 +38,7 @@ export const FolderSection = ({
                     className={`p-3 space-y-${sectionType === 'industry' ? '3' : '2'
                         }`}
                 >
-                    {documents?.map((folder: AssessmentEvidenceDetailType) => {
+                    {documents?.map((folder: AssessmentEvidenceFolder) => {
                         const config = getStatusConfig(
                             folder?.studentResponse?.[0]?.status
                         )

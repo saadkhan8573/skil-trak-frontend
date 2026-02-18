@@ -1,4 +1,5 @@
-import { Button, Typography } from '@components'
+import { Typography } from '@components'
+import { CourseResult } from '@types'
 import {
     AlertCircle,
     CheckCircle,
@@ -8,12 +9,17 @@ import {
     Folder,
     Shield,
     Star,
-    TrendingUp,
-    Upload,
+    TrendingUp
 } from 'lucide-react'
-import { AssessmentResultBadge } from './AssessmentResultBadge';
+import { AssessmentResultBadge } from './AssessmentResultBadge'
 
-export const DocumentHeader = ({ count, result }: { count: any; result: any }) => {
+export const DocumentHeader = ({
+    count,
+    result,
+}: {
+    count: any
+    result: CourseResult
+}) => {
     const statsData = [
         {
             id: 1,
@@ -61,7 +67,7 @@ export const DocumentHeader = ({ count, result }: { count: any; result: any }) =
         },
     ]
     return (
-        <div className="relative overflow-hidden bg-gradient-to-br from-[#044866] via-[#0D5468] to-[#044866] rounded-xl p-4 shadow-xl">
+        <div className="relative overflow-hidden bg-linear-to-br from-[#044866] via-[#0D5468] to-[#044866] rounded-xl p-4 shadow-xl">
             <div className="absolute top-0 right-0 w-96 h-96 bg-[#F7A619]/10 rounded-full blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl"></div>
 

@@ -1,4 +1,5 @@
-import { Badge, Button, ViewDocumentModal } from '@components'
+import { Badge, Button, ViewDocumentModal, ViewImageModal } from '@components'
+import { FileType, FolderStatusConfig } from '@types'
 import {
     Tooltip,
     TooltipContent,
@@ -24,18 +25,34 @@ export const FolderDocumentCard = ({
     doc,
     config,
     studentId,
+    isOtherDoc,
 }: {
     studentId: number
-    doc: any
-    config: any
+    doc: FileType
+    config: FolderStatusConfig
+    isOtherDoc?: boolean
 }) => {
 
     const DocStatusIcon = config.icon
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false)
     const [isViewModalOpen, setIsViewModalOpen] = useState(false)
+    const [isImageViewModalOpen, setIsImageViewModalOpen] = useState(false)
 
     const extension = getFileExtensionByUrl(doc?.file)
+    const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(extension || '')
+    const isPdf = extension === 'pdf'
+
+    const handleView = () => {
+        if (isPdf) {
+            setIsViewModalOpen(true)
+        } else if (isImage) {
+            setIsImageViewModalOpen(true)
+        } else {
+            // Fallback for other files - maybe just download or open in new tab
+            window.open(doc?.file, '_blank')
+        }
+    }
 
     return (
         <>
@@ -45,7 +62,7 @@ export const FolderDocumentCard = ({
                         <FileText className="w-4 h-4 text-[#044866]" />
                     </div>
                     <div className="flex-1">
-                        <p className="text-slate-900 mb-1">{doc?.filename}</p>
+                        <p className="text-slate-900 mb-1">{doc?.filename || doc?.file?.substring(0, 30)}</p>
                         <div className="flex items-center gap-3 text-sm text-slate-600">
                             <span className="px-2 py-0.5 bg-white rounded border border-slate-200">
                                 {extension}
@@ -92,7 +109,7 @@ export const FolderDocumentCard = ({
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <Badge
+                    {doc?.status && <Badge
                         text={
                             doc.status.charAt(0).toUpperCase() +
                             doc.status.slice(1)
@@ -107,7 +124,7 @@ export const FolderDocumentCard = ({
                                         : 'info'
                         }
                         Icon={DocStatusIcon}
-                    />
+                    />}
 
                     <Tooltip>
                         <TooltipTrigger>
@@ -115,23 +132,25 @@ export const FolderDocumentCard = ({
                                 mini
                                 Icon={Eye}
                                 variant="action"
-                                onClick={() => setIsViewModalOpen(true)}
+                                onClick={handleView}
                             />
                         </TooltipTrigger>
                         <TooltipContent>View Document</TooltipContent>
                     </Tooltip>
 
-                    <Tooltip>
-                        <TooltipTrigger>
-                            <Button
-                                mini
-                                Icon={Edit3}
-                                variant="action"
-                                onClick={() => setIsEditModalOpen(true)}
-                            />
-                        </TooltipTrigger>
-                        <TooltipContent>Edit Document</TooltipContent>
-                    </Tooltip>
+                    {!isOtherDoc && (
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Button
+                                    mini
+                                    Icon={Edit3}
+                                    variant="action"
+                                    onClick={() => setIsEditModalOpen(true)}
+                                />
+                            </TooltipTrigger>
+                            <TooltipContent>Edit Document</TooltipContent>
+                        </Tooltip>
+                    )}
 
                     <Tooltip>
                         <TooltipTrigger>
@@ -147,24 +166,26 @@ export const FolderDocumentCard = ({
                         <TooltipContent>Download Document</TooltipContent>
                     </Tooltip>
 
-                    <Tooltip>
-                        <TooltipTrigger>
-                            <Button
-                                mini
-                                Icon={doc?.isArchived ? RotateCcw : Trash2}
-                                variant="action"
-                                className={
-                                    doc?.isArchived
-                                        ? 'text-blue-600 hover:text-blue-700 hover:bg-blue-50'
-                                        : 'text-red-600 hover:text-red-700 hover:bg-red-50'
-                                }
-                                onClick={() => setIsArchiveModalOpen(true)}
-                            />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            {doc?.isArchived ? 'Restore' : 'Delete'} Document
-                        </TooltipContent>
-                    </Tooltip>
+                    {!isOtherDoc && (
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Button
+                                    mini
+                                    Icon={doc?.isArchived ? RotateCcw : Trash2}
+                                    variant="action"
+                                    className={
+                                        doc?.isArchived
+                                            ? 'text-blue-600 hover:text-blue-700 hover:bg-blue-50'
+                                            : 'text-red-600 hover:text-red-700 hover:bg-red-50'
+                                    }
+                                    onClick={() => setIsArchiveModalOpen(true)}
+                                />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                {doc?.isArchived ? 'Restore' : 'Delete'} Document
+                            </TooltipContent>
+                        </Tooltip>
+                    )}
 
                     {(doc.status === 'uploaded' ||
                         doc.status === 'pending') && (
@@ -189,6 +210,13 @@ export const FolderDocumentCard = ({
                 open={isViewModalOpen}
                 onOpenChange={setIsViewModalOpen}
                 fileUrl={doc?.file || ''}
+                title={doc?.filename}
+            />
+            <ViewImageModal
+                open={isImageViewModalOpen}
+                onOpenChange={setIsImageViewModalOpen}
+                fileUrl={doc?.file || ''}
+                title={doc?.filename}
             />
         </>
     )

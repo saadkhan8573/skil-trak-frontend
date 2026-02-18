@@ -18,6 +18,10 @@ export interface AssessmentEvidenceFolder extends BaseResponse {
     isAgreement: boolean
     studentResponse: StudentResponseType[]
     isFacilityCheckList: boolean
+    isOtherDoc: boolean
+    isIndustryCheck: boolean
+    assessmentResult: any
+    comments: any
 }
 
 export interface CourseWithAssessmentEvidence extends Course {
@@ -57,6 +61,11 @@ export interface FileType extends BaseResponse {
     isArchived: boolean
     skiltrakId: number
     type: any
+    uploadedBy?: User
+    actionedBy?: User
+    comment?: string
+    status: string
+    size?: string
 }
 
 export interface StudentResponseType extends BaseResponse {
@@ -135,11 +144,38 @@ export interface CommentType extends BaseResponse {
     folder: AssessmentEvidenceFolder
 }
 export interface AssessmentResultType
-    extends ArchiveAssessmentType,
-        BaseResponse {
+    extends ArchiveAssessmentType, BaseResponse {
     id: number
     finalComment: string
     assessor: User
     student: Student
     comments: CommentType[]
+}
+
+export interface FolderStatusConfig {
+    icon: any
+    color: string
+    bg: string
+    border: string
+    badge: string
+}
+
+export interface AssessmentDocumentCount {
+    approvedCourseDocuments: number
+    approvedDocuments: number
+    approvedIndustryCheck: number
+    courseDocuments: number
+    industryCheck: number
+    pendingCourseDocuments: number
+    pendingDocuments: number
+    pendingIndustryCheck: number
+}
+
+export interface CourseResult {
+    result: Result
+    createdAt?: string | Date
+    id?: number
+    totalSubmission?: number
+    isSubmitted?: boolean
+    isManualSubmission?: boolean
 }

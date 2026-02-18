@@ -1,5 +1,6 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
+import { AssessmentEvidenceFolder } from '@types'
 
 const PREFIX = 'students/'
 export const studentDocumentsEndpoints = (
@@ -24,11 +25,12 @@ export const studentDocumentsEndpoints = (
     }),
 
     getStudentDocumentsList: builder.query<
-        any,
+        AssessmentEvidenceFolder[],
         {
             studentId: number
             courseId: number
             search?: string
+            industryId?: number
         }
     >({
         query: ({ studentId, courseId, ...params }) => ({

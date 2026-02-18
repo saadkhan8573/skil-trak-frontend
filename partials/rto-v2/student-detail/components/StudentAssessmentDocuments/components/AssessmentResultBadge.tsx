@@ -3,8 +3,10 @@ import { Result } from '@constants'
 import { motion } from 'framer-motion'
 import { Award, XCircle, RotateCcw, Clock } from 'lucide-react'
 
+import { CourseResult } from '@types'
+
 interface AssessmentResultBadgeProps {
-    result: any
+    result: CourseResult
     className?: string
 }
 

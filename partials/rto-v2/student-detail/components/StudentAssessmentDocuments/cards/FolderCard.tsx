@@ -1,7 +1,8 @@
 import { Badge, Typography } from '@components'
 import {
-    AssessmentEvidenceDetailType,
+    AssessmentEvidenceFolder,
     Folder as FolderType,
+    FolderStatusConfig,
     Student,
 } from '@types'
 import { cn, getCourseResult } from '@utils'
@@ -33,8 +34,8 @@ export const FolderCard = ({
     course,
     student,
 }: {
-    config: any
-    folder: AssessmentEvidenceDetailType
+    config: FolderStatusConfig
+    folder: AssessmentEvidenceFolder
     course: any
     student: Student
 }) => {
@@ -140,7 +141,7 @@ export const FolderCard = ({
                                 <h4 className="text-slate-900">
                                     {folder?.name}
                                 </h4>
-                                <Badge
+                                {!folder?.isOtherDoc && <Badge
                                     text={folderStatus || 'Not Uploaded'}
                                     variant={
                                         folderStatus === 'approved'
@@ -152,7 +153,7 @@ export const FolderCard = ({
                                                     : 'info'
                                     }
                                     Icon={StatusIcon}
-                                />
+                                />}
                                 {response?.filesCount > 0 &&
                                     !isAllFilesStatusChanged && response?.status === Result.Pending && result?.result !== Result.Competent && (
                                         <Typography
@@ -195,18 +196,14 @@ export const FolderCard = ({
                                     </p>
                                 </div>
                             )}
-                            <div className="flex items-center gap-4 mt-2 text-sm text-slate-600">
+                            {!folder?.isOtherDoc && <div className="flex items-center gap-4 mt-2 text-sm text-slate-600">
                                 <div className="flex items-center gap-1.5">
                                     <FileText className="w-3.5 h-3.5" />
                                     <span>
                                         {response?.filesCount || 0} files
                                     </span>
                                 </div>
-                                {/* <div className="flex items-center gap-1.5">
-                                    <Calendar className="w-3.5 h-3.5" />
-                                    <span>Updated {folder.lastUpdated}</span>
-                                </div> */}
-                            </div>
+                            </div>}
                         </div>
                     </div>
 

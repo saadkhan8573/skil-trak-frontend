@@ -1,6 +1,11 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
-import { AgentConfigurationTypes, PaginatedResponse, PaginationWithSearch, Student } from '@types'
+import {
+    AgentConfigurationTypes,
+    PaginatedResponse,
+    PaginationWithSearch,
+    Student,
+} from '@types'
 import { PlacementCall } from 'types/placement-call.type'
 
 export const callManagementLoginEndpoints = (
@@ -86,7 +91,14 @@ export const callManagementLoginEndpoints = (
             agent?: number
         }
     >({
-        query: ({ studentId, course, scheduledAt, phone, isScheduled, agent }) => ({
+        query: ({
+            studentId,
+            course,
+            scheduledAt,
+            phone,
+            isScheduled,
+            agent,
+        }) => ({
             url: `ai-voice-calls/student/${studentId}/schedule-call`,
             method: 'POST',
             body: { course, scheduledAt, phone, isScheduled, agent },
@@ -146,6 +158,23 @@ export const callManagementLoginEndpoints = (
             url: `ai-voice-calls/agents`,
             method: 'POST',
             body,
+        }),
+        invalidatesTags: ['CallManagement'],
+    }),
+
+    updateAgent: builder.mutation<any, { id: number; body: any }>({
+        query: ({ id, body }) => ({
+            url: `ai-voice-calls/agents/${id}`,
+            method: 'PATCH',
+            body,
+        }),
+        invalidatesTags: ['CallManagement'],
+    }),
+
+    deleteAgent: builder.mutation<any, number>({
+        query: (id) => ({
+            url: `ai-voice-calls/agents/${id}`,
+            method: 'DELETE',
         }),
         invalidatesTags: ['CallManagement'],
     }),

@@ -4,7 +4,18 @@ import { MdCancel } from 'react-icons/md'
 // components
 import { useState } from 'react'
 
-import { Document, Page } from 'react-pdf'
+import dynamic from 'next/dynamic'
+
+// Dynamically import Document and Page with SSR disabled to prevent
+// pdfjs-dist from loading in Node.js (causes DOMMatrix is not defined)
+const Document = dynamic(
+    () => import('react-pdf').then((mod) => ({ default: mod.Document })),
+    { ssr: false }
+)
+const Page = dynamic(
+    () => import('react-pdf').then((mod) => ({ default: mod.Page })),
+    { ssr: false }
+)
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { Typography } from '@components/Typography'
 import { OutsideClickHandler } from '@components'

@@ -75,7 +75,7 @@ export const CursorCoordinates = ({
 
     return (
         <div
-            className={`absolute bg-gray-100 shadow rounded text-gray-800 text-[11px] z-[999]`}
+            className={`absolute bg-gray-100 shadow rounded text-gray-800 text-[11px] z-999`}
             style={{
                 top: `${cursorCoords.y + 10}px`,
                 left: `${cursorCoords.x + 10}px`,

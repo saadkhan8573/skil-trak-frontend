@@ -8,7 +8,18 @@ import {
 import { FileCheck } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
-import { Document, Page } from 'react-pdf'
+import dynamic from 'next/dynamic'
+
+// Dynamically import Document and Page with SSR disabled to prevent
+// pdfjs-dist from loading in Node.js (causes DOMMatrix is not defined)
+const Document = dynamic(
+    () => import('react-pdf').then((mod) => ({ default: mod.Document })),
+    { ssr: false }
+)
+const Page = dynamic(
+    () => import('react-pdf').then((mod) => ({ default: mod.Page })),
+    { ssr: false }
+)
 
 interface ViewDocumentModalProps {
     open: boolean
@@ -43,7 +54,7 @@ export function ViewDocumentModal({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="!max-w-3xl p-0 overflow-hidden border-none shadow-2xl">
+            <DialogContent className="max-w-3xl! p-0 overflow-hidden border-none shadow-2xl">
                 <DialogHeader className="w-full bg-primaryNew p-6 text-white sm:text-left">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center shadow-inner">
@@ -116,7 +127,7 @@ export function ViewDocumentModal({
                     </div>
                 </div>
 
-                <div className="min-w-[595px] h-auto relative z-[9999]">
+                <div className="min-w-[595px] h-auto relative z-9999">
                     <div>
                         <div className="max-h-[55vh] overflow-auto custom-scrollbar">
                             {mounted ? (

@@ -20,7 +20,7 @@ import {
 import { Student } from '@types'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
-import { CreateStudentNoteModal } from '@partials/rto-v2/student-detail/components/StudentHeader/modals'
+import { ManualNoteModal } from '@partials/rto-v2/placement-request-detail/modal/ManualNoteModal'
 import { CancelWpRequest } from '@partials/rto-v2/student-detail/components/AllWorkplaces/components/CancelWpRequest'
 import {
     CancelWorkplaceModal,
@@ -73,11 +73,9 @@ export function CleanHeader({
 
     const onAddNote = () => {
         setModal(
-            <CreateStudentNoteModal
+            <ManualNoteModal
                 open={true}
-                onOpenChange={(val) => !val && setModal(null)}
-                studentId={student?.id}
-                receiverId={Number(student?.user?.id)}
+                onClose={() => setModal(null)}
             />
         )
     }

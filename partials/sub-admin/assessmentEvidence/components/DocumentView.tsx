@@ -1,7 +1,18 @@
 import { Typography } from '@components'
 import { useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
-import { Document, Page } from 'react-pdf'
+import dynamic from 'next/dynamic'
+
+// Dynamically import Document and Page with SSR disabled to prevent
+// pdfjs-dist from loading in Node.js (causes DOMMatrix is not defined)
+const Document = dynamic(
+    () => import('react-pdf').then((mod) => ({ default: mod.Document })),
+    { ssr: false }
+)
+const Page = dynamic(
+    () => import('react-pdf').then((mod) => ({ default: mod.Page })),
+    { ssr: false }
+)
 
 export const DocumentView = ({ file }: { file: string | any }) => {
     const [totalPages, setTotalPages] = useState(0)

@@ -4,8 +4,8 @@ import { useAppSelector } from '@redux/hooks'
 import { Archive, FileCheck } from 'lucide-react'
 import { useCallback, useMemo, useState } from 'react'
 import { FolderDocumentCard } from '../cards'
-import { folderResponse } from '../utils'
 import { InitiatedESignCard } from './InitiatedESignCard'
+import { folderResponse } from '@utils'
 
 export const FolderFiles = ({
     folder,

@@ -4,7 +4,18 @@ import { MdCancel } from 'react-icons/md'
 // components
 import { useEffect, useState } from 'react'
 
-import { Document, Page } from 'react-pdf'
+import dynamic from 'next/dynamic'
+
+// Dynamically import Document and Page with SSR disabled to prevent
+// pdfjs-dist from loading in Node.js (causes DOMMatrix is not defined)
+const Document = dynamic(
+    () => import('react-pdf').then((mod) => ({ default: mod.Document })),
+    { ssr: false }
+)
+const Page = dynamic(
+    () => import('react-pdf').then((mod) => ({ default: mod.Page })),
+    { ssr: false }
+)
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { Typography } from '@components/Typography'
 import {
@@ -98,8 +109,8 @@ export const PdfDocumentView = ({
                         </div>
                     </div>
 
-                    <div className="min-w-[100%] bg-[#F0F0F0] relative">
-                        <div className="min-w-[100%] flex flex-col items-center">
+                    <div className="min-w-full bg-[#F0F0F0] relative">
+                        <div className="min-w-full flex flex-col items-center">
                             <div className="w-full px-4 flex justify-between">
                                 <div>
                                     <p className="text-sm">
@@ -149,7 +160,7 @@ export const PdfDocumentView = ({
                                             setTotalPages(numPages)
                                         }}
                                         loading={
-                                            <div className="min-w-[100%] min-h-[842px]">
+                                            <div className="min-w-full min-h-[842px]">
                                                 <p className="text-center font-semibold text-gray-500 mt-16">
                                                     Loading PDF...
                                                 </p>

@@ -4,7 +4,7 @@ import { RtoV2Api } from '@queries'
 import { AssessmentEvidenceDetailType, Student } from '@types'
 import { Upload } from 'lucide-react'
 import React, { useMemo, useRef } from 'react'
-import { folderResponse } from '../utils'
+import { folderResponse } from '@utils'
 
 export const UploadDocument = ({
     folder,
@@ -63,7 +63,7 @@ export const UploadDocument = ({
             />
             <Button
                 onClick={handleButtonClick}
-                className="!py-1 !rounded-sm"
+                className="py-1! rounded-sm!"
                 variant="primaryNew"
                 loading={uploadDocumentResult.isLoading}
                 disabled={uploadDocumentResult.isLoading}

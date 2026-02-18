@@ -1,6 +1,4 @@
-import React from 'react'
 import Link from 'next/link'
-import { css, jsx } from '@emotion/react'
 
 export const FeatureSlide = ({ icon, title, link }: any) => {
     const Icon = () => icon

@@ -4,10 +4,10 @@ import { DRAG_DROP_PASTE } from '@lexical/rich-text';
 import { mergeRegister } from '@lexical/utils';
 import { AdminApi } from '@queries';
 import { $getNodeByKey, $insertNodes, COMMAND_PRIORITY_LOW, PASTE_COMMAND } from 'lexical';
-import { useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { $createImageNode, $isImageNode } from '../nodes/ImageNode';
 
-export default function DragDropPastePlugin(): JSX.Element | null {
+export default function DragDropPastePlugin(): ReactElement | null {
     const [editor] = useLexicalComposerContext();
     const [uploadImage] = AdminApi.Blogs.uploadImage();
     const { notification } = useNotification();

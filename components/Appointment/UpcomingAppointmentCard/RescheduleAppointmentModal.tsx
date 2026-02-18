@@ -6,7 +6,7 @@ import { FaTimes } from 'react-icons/fa'
 import { CommonApi } from '@queries'
 import { ShowErrorNotifications } from '@components/ShowErrorNotifications'
 import { useNotification } from '@hooks'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import {
     Appointment,
     SelectedTimeType,
@@ -87,7 +87,7 @@ export const RescheduleAppointmentModal = ({
         <>
             <ShowErrorNotifications result={rescheduleAppointmentResult} />
             <Portal>
-                <div className="bg-[#00000050] w-full h-screen flex items-center justify-center fixed top-0 left-0 z-[1001]">
+                <div className="bg-[#00000050] w-full h-screen flex items-center justify-center fixed top-0 left-0 z-1001">
                     <div className="relative bg-white rounded-2xl flex flex-col items-center gap-y-6 shadow-xl min-w-[450px] px-16 py-4">
                         <FaTimes
                             onClick={onCancel}

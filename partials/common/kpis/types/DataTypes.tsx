@@ -1,8 +1,6 @@
-import { ColumnDef, Table as ReactTable } from '@tanstack/react-table'
-import { JSX } from 'react'
-import { HeaderGroup, Row } from '@tanstack/react-table'
-import { Paginate } from '@types'
 import { UserRoles } from '@constants'
+import { ColumnDef, HeaderGroup, Row } from '@tanstack/react-table'
+import { Paginate } from '@types'
 
 export type Employee = {
     checked: any
@@ -39,7 +37,7 @@ export interface MetricField {
 
 export interface DepartmentData {
     id: number
-    icon: JSX.Element
+    icon: any
     title: string
     metrics: MetricField[]
 }

@@ -1,29 +1,10 @@
-import React from 'react'
 import Link from 'next/link'
 
-import { css, jsx } from '@emotion/react'
 
 import { Button } from '../Button'
 
 export const NavLink = ({ to, text, asButton = false, external }: any) => {
-    const linkCSS = css`
-        &:after {
-            content: '';
-            display: block;
-            width: 0%;
-            height: 2px;
-            background-color: #ea7e3f;
-            margin-top: 8px;
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            transition: width 0.4s ease;
-        }
-        &:hover:after {
-            width: 100%;
-            left: 0;
-        }
-    `
+
 
     const linkClasses = ` 
     text-gray-300

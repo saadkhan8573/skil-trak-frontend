@@ -43,7 +43,7 @@ export const CourseResultModule: React.FC<CourseResultModuleProps> = ({
         >
             <Card className="overflow-hidden border-none shadow-2xl bg-white/80 backdrop-blur-md rounded-2xl ring-1 ring-black/5">
                 {/* Header Decoration */}
-                <div className="h-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600" />
+                <div className="h-2 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600" />
 
                 <div className="p-6">
                     {/* Header */}
@@ -87,7 +87,7 @@ export const CourseResultModule: React.FC<CourseResultModuleProps> = ({
                         transition={{ delay: 0.2 }}
                         className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3"
                     >
-                        <AlertCircle size={20} className="text-amber-600 mt-0.5 flex-shrink-0" />
+                        <AlertCircle size={20} className="text-amber-600 mt-0.5 shrink-0" />
                         <div>
                             <Typography variant="small" className="text-amber-900 font-semibold">
                                 Submission Limit

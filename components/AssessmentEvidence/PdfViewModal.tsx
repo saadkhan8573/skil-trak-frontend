@@ -6,7 +6,18 @@ import { useEffect, useState } from 'react'
 import { GlobalModal } from '@components/Modal'
 import { Typography } from '@components/Typography'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
-import { Document, Page } from 'react-pdf'
+import dynamic from 'next/dynamic'
+
+// Dynamically import Document and Page with SSR disabled to prevent
+// pdfjs-dist from loading in Node.js (causes DOMMatrix is not defined)
+const Document = dynamic(
+    () => import('react-pdf').then((mod) => ({ default: mod.Document })),
+    { ssr: false }
+)
+const Page = dynamic(
+    () => import('react-pdf').then((mod) => ({ default: mod.Page })),
+    { ssr: false }
+)
 
 interface PdfViewModalProps {
     url: string
@@ -39,7 +50,7 @@ export const PdfViewModal = ({
 
     return (
         <GlobalModal onCancel={onCancelButtonClick}>
-            <div className="min-w-[595px] h-auto relative z-[9999]">
+            <div className="min-w-[595px] h-auto relative z-9999">
                 <div>
                     <div className="px-4 flex justify-between">
                         <div>

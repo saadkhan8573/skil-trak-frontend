@@ -1,34 +1,21 @@
-// ------------------------
-import { LoadingSpinner } from '@components/inputs/components'
-import { useState } from 'react'
-// import { Document, Page } from "react-pdf";
-import { Document, Page, pdfjs } from 'react-pdf'
+import dynamic from 'next/dynamic'
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
-
-export const PdfWrapper = ({
-    file,
-    width,
-}: {
+type PdfWrapperProps = {
     file: string
     width?: number
-}) => {
-    const [totalPages, setTotalPages] = useState(null)
-    const [pageNumber, setPageNumber] = useState(1)
+}
 
-    function onDocumentLoadSuccess({ numPages }: { numPages: any }) {
-        setTotalPages(numPages)
-    }
+// Dynamically import the actual PDF component with SSR disabled
+// This prevents react-pdf (and pdfjs-dist) from being loaded in Node.js
+// during build, which would cause "DOMMatrix is not defined" errors.
+const PdfWrapperClient = dynamic<PdfWrapperProps>(
+    () =>
+        import('./PdfWrapperClient').then((mod) => ({
+            default: mod.PdfWrapper,
+        })),
+    { ssr: false }
+)
 
-    return (
-        <div>
-            <Document
-                file={file}
-                onLoadSuccess={onDocumentLoadSuccess}
-                loading={<LoadingSpinner loading />}
-            >
-                <Page pageNumber={pageNumber} {...(width ? { width } : {})} />
-            </Document>
-        </div>
-    )
+export const PdfWrapper = ({ file, width }: PdfWrapperProps) => {
+    return <PdfWrapperClient file={file} width={width} />
 }

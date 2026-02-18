@@ -166,7 +166,7 @@ export const InitiatedESignCard = ({
                                     mini
                                     Icon={XCircle}
                                     variant="error"
-                                    className="ml-2 !w-8 !h-8"
+                                    className="ml-2 w-8! h-8!"
                                     iconSize={18}
                                     onClick={() => setIsCancelModalOpen(true)}
                                 />
@@ -183,7 +183,7 @@ export const InitiatedESignCard = ({
                                 mini
                                 Icon={XCircle}
                                 variant="error"
-                                className="!w-8 !h-8"
+                                className="w-8! h-8!"
                                 iconSize={18}
                                 onClick={() => setIsCancelModalOpen(true)}
                             />
@@ -203,7 +203,7 @@ export const InitiatedESignCard = ({
                             const signResponse = AllResponse?.reduce(
                                 (latest: any, current: any) =>
                                     new Date(current?.createdAt) >
-                                    new Date(latest?.createdAt)
+                                        new Date(latest?.createdAt)
                                         ? current
                                         : latest,
                                 AllResponse?.[0]
@@ -267,7 +267,7 @@ export const InitiatedESignCard = ({
                                                         variant="muted"
                                                         className={
                                                             signer?.status ===
-                                                            EsignDocumentStatus.SIGNED
+                                                                EsignDocumentStatus.SIGNED
                                                                 ? 'text-green-600 font-semibold uppercase'
                                                                 : 'text-orange-600 font-semibold uppercase'
                                                         }
@@ -289,12 +289,12 @@ export const InitiatedESignCard = ({
                                                         semibold
                                                     >
                                                         {signer?.status ===
-                                                        EsignDocumentStatus.SIGNED
+                                                            EsignDocumentStatus.SIGNED
                                                             ? moment(
-                                                                  signer?.updatedAt
-                                                              ).format(
-                                                                  'DD MMM, YYYY'
-                                                              )
+                                                                signer?.updatedAt
+                                                            ).format(
+                                                                'DD MMM, YYYY'
+                                                            )
                                                             : 'Not Submitted'}
                                                     </Typography>
                                                 </div>
@@ -322,18 +322,17 @@ export const InitiatedESignCard = ({
                                                             signer?.status !==
                                                             EsignDocumentStatus.SIGNED
                                                         }
-                                                        className={`transition-colors ${
-                                                            signer?.status ===
+                                                        className={`transition-colors ${signer?.status ===
                                                             EsignDocumentStatus.SIGNED
-                                                                ? 'text-blue-600 hover:text-blue-700 cursor-pointer'
-                                                                : 'text-gray-300 cursor-not-allowed'
-                                                        }`}
+                                                            ? 'text-blue-600 hover:text-blue-700 cursor-pointer'
+                                                            : 'text-gray-300 cursor-not-allowed'
+                                                            }`}
                                                     >
                                                         <FileSignature className="w-5 h-5" />
                                                     </button>
                                                     <Tooltip>
                                                         {signer?.status ===
-                                                        EsignDocumentStatus.SIGNED
+                                                            EsignDocumentStatus.SIGNED
                                                             ? 'Request Resign'
                                                             : 'Document not signed yet'}
                                                     </Tooltip>
@@ -363,18 +362,17 @@ export const InitiatedESignCard = ({
                                                             signer?.status ===
                                                             EsignDocumentStatus.SIGNED
                                                         }
-                                                        className={`transition-colors ${
-                                                            signer?.status !==
+                                                        className={`transition-colors ${signer?.status !==
                                                             EsignDocumentStatus.SIGNED
-                                                                ? 'text-blue-600 hover:text-blue-700 cursor-pointer'
-                                                                : 'text-gray-300 cursor-not-allowed'
-                                                        }`}
+                                                            ? 'text-blue-600 hover:text-blue-700 cursor-pointer'
+                                                            : 'text-gray-300 cursor-not-allowed'
+                                                            }`}
                                                     >
                                                         <Send className="w-5 h-5" />
                                                     </button>
                                                     <Tooltip>
                                                         {signer?.status !==
-                                                        EsignDocumentStatus.SIGNED
+                                                            EsignDocumentStatus.SIGNED
                                                             ? 'Resend Email'
                                                             : 'Document Signed'}
                                                     </Tooltip>
@@ -447,11 +445,11 @@ export const InitiatedESignCard = ({
                                                     >
                                                         {signResponse?.id
                                                             ? moment(
-                                                                  signResponse?.data ||
-                                                                      signer?.updatedAt
-                                                              ).format(
-                                                                  'DD MMM, YYYY'
-                                                              )
+                                                                signResponse?.data ||
+                                                                signer?.updatedAt
+                                                            ).format(
+                                                                'DD MMM, YYYY'
+                                                            )
                                                             : 'Not Signed'}
                                                     </Typography>
                                                 </div>
@@ -477,7 +475,7 @@ export const InitiatedESignCard = ({
                                                     </button>
                                                     <Tooltip>
                                                         {signResponse?.id &&
-                                                        signer?.status !==
+                                                            signer?.status !==
                                                             EsignDocumentStatus.SIGNED
                                                             ? 'Submit Document'
                                                             : 'Unavailable'}

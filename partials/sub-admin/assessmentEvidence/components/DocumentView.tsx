@@ -1,7 +1,9 @@
-import { Typography } from '@components'
-import { useState } from 'react'
+import { Button, Typography } from '@components'
+import { useState, useMemo } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import dynamic from 'next/dynamic'
+import Image from 'next/image'
+import { getFileExtensionByUrl } from '@utils'
 
 // Dynamically import Document and Page with SSR disabled to prevent
 // pdfjs-dist from loading in Node.js (causes DOMMatrix is not defined)
@@ -19,61 +21,116 @@ export const DocumentView = ({ file }: { file: string | any }) => {
     const [currentPage, setCurrentPage] = useState(1)
 
     const nextPage = () => {
-        setCurrentPage(currentPage + 1)
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1)
+        }
     }
 
     const previousPage = () => {
-        setCurrentPage(currentPage - 1)
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1)
+        }
     }
 
-    // const extension = file?.split('.').pop()
-    const extension = 'pdf'
+    const { extension, isImage, isPdf, imageUrl } = useMemo(() => {
+        let ext = ''
+        let isImg = false
+        let isP = false
+        let url = ''
+
+        if (typeof file === 'string') {
+            ext = getFileExtensionByUrl(file) || ''
+            url = file
+        } else if (file?.data) {
+            // If it's binary data (e.g. from PreviewAsSignerTemplate)
+            // We assume it's a PDF for now since that's what the current flow provides
+            // but we can check if it's an image or PDF if we had MIME type info.
+            // For now, we'll keep the existing assumption or check the first bytes if needed.
+            ext = 'pdf'
+        }
+
+        isImg = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(
+            ext?.toLowerCase()
+        )
+        isP = ext?.toLowerCase() === 'pdf'
+
+        return { extension: ext, isImage: isImg, isPdf: isP, imageUrl: url }
+    }, [file])
+
     return (
-        <>
-            <div className="px-4 flex justify-end gap-x-5">
-                <button
-                    className={`flex items-center gap-x-1 text-xs font-semibold text-gray-500 hover:text-black disabled:text-gray-300 disabled:cursor-not-allowed`}
+        <div className="h-full flex flex-col">
+            <div className="px-4 flex justify-end gap-x-2 pb-2">
+                <Button
+                    mini
+                    Icon={FaChevronLeft}
+                    variant="action"
                     onClick={() => previousPage()}
-                    disabled={currentPage - 1 <= 0}
-                >
-                    <FaChevronLeft />
-                    Previous
-                </button>
-                <button
+                    disabled={currentPage <= 1}
+                    title="Previous"
+                />
+                <div className="flex items-center px-2">
+                    <Typography variant="xs" semibold>
+                        {currentPage} / {totalPages || 1}
+                    </Typography>
+                </div>
+                <Button
+                    mini
+                    Icon={FaChevronRight}
+                    variant="action"
                     onClick={() => nextPage()}
-                    className={`flex items-center gap-x-1 text-xs font-semibold text-gray-500 hover:text-black disabled:text-gray-300 disabled:cursor-not-allowed`}
-                    disabled={currentPage === totalPages}
-                >
-                    Next
-                    <FaChevronRight />
-                </button>
+                    disabled={currentPage >= totalPages && totalPages > 0}
+                    title="Next"
+                />
             </div>
-            <div className="h-[calc(100%-20px)] overflow-auto  remove-scrollbar">
-                {extension === 'pdf' ? (
+            <div className="flex-1 overflow-auto remove-scrollbar flex justify-center bg-gray-50 rounded-lg border border-gray-100 p-4">
+                {isPdf || typeof file !== 'string' ? (
                     <Document
                         file={file}
                         onLoadSuccess={({ numPages }) => {
-                            numPages
+                            setTotalPages(numPages)
                         }}
                         loading={
-                            <div className="min-w-[595px] min-h-[842px]">
-                                <p className="text-center font-semibold text-gray-500 mt-16">
+                            <div className="min-w-[595px] min-h-[842px] flex items-center justify-center">
+                                <p className="text-center font-semibold text-gray-500">
                                     Loading PDF...
                                 </p>
                             </div>
                         }
                     >
-                        <Page pageNumber={currentPage} />
+                        <Page
+                            pageNumber={currentPage}
+                            renderAnnotationLayer={false}
+                            renderTextLayer={false}
+                        />
                     </Document>
+                ) : isImage ? (
+                    <div className="relative w-full h-full min-h-[500px]">
+                        <Image
+                            src={imageUrl}
+                            alt="Document Preview"
+                            fill
+                            className="object-contain"
+                            unoptimized
+                        />
+                    </div>
                 ) : (
-                    <div className="p-2">
+                    <div className="p-10 text-center">
                         <Typography>
-                            Document is not a PDF format, so Please download the
-                            file then view the document
+                            This document format is not supported for preview.
+                            <br />
+                            Please download the file to view it.
                         </Typography>
+                        {typeof file === 'string' && (
+                            <Button
+                                className="mt-4"
+                                text="Download File"
+                                onClick={() => window.open(file, '_blank')}
+                                variant="info"
+                            />
+                        )}
                     </div>
                 )}
             </div>
-        </>
+        </div>
     )
 }

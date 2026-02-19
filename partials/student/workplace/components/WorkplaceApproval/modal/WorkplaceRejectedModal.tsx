@@ -54,9 +54,9 @@ export const WorkplaceRejectedModal = ({
     }, [changeStatusResult.isSuccess])
     const reasonOptions = [
         { label: 'Location is too far from my residence', value: 'too-far' },
-        { label: 'Workplace preference', value: 'workplace-preference' },
+        // { label: 'Workplace preference', value: 'workplace-preference' },
         { label: 'Found my own workplace', value: 'find-own-workplace' },
-        { label: 'Other', value: 'other' },
+        // { label: 'Other', value: 'other' },
     ]
 
     const methods = useForm<onSubmitType>({
@@ -92,11 +92,11 @@ export const WorkplaceRejectedModal = ({
                     loading={changeStatusResult.isLoading}
                     titleIcon={FcCancel}
 
-                    // disabled={
-                    //     !password.password ||
-                    //     !password.confirmPassword ||
-                    //     password.password !== password.confirmPassword
-                    // }
+                // disabled={
+                //     !password.password ||
+                //     !password.confirmPassword ||
+                //     password.password !== password.confirmPassword
+                // }
                 >
                     <FormProvider {...methods}>
                         <form className="w-full">

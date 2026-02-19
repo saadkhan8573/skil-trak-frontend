@@ -53,7 +53,7 @@ export function PreferenceItem({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: [0, 1, 0] }}
                     transition={{ duration: 2, repeat: 1 }}
-                    className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-teal-400/20 to-emerald-400/20 pointer-events-none"
+                    className="absolute inset-0 bg-linear-to-r from-emerald-400/20 via-teal-400/20 to-emerald-400/20 pointer-events-none"
                 />
             )}
             <div className="flex items-start gap-3 relative z-10">
@@ -102,11 +102,10 @@ export function PreferenceItem({
                     )}
                     <Typography
                         variant="small"
-                        className={`ml-0 ${
-                            isVerified
+                        className={`ml-0 ${isVerified
                                 ? 'text-emerald-900 font-medium'
                                 : 'text-gray-900'
-                        }`}
+                            }`}
                     >
                         {answer}
                     </Typography>

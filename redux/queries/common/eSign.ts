@@ -172,14 +172,13 @@ export const eSignEndpoints = (
     previewAsSignerTemplate: builder.query<
         any,
         {
-            folder: number
-            industry?: number
-            student?: number
-            coordinator?: number
+            templateId: number
+            users: string
+            userId: number
         }
     >({
-        query: ({ folder, ...params }) => ({
-            url: `${PREFIX}/template/get-updated/${folder}`,
+        query: ({ templateId, ...params }) => ({
+            url: `${PREFIX}/template/get-updated/${templateId}`,
             params,
         }),
         providesTags: ['E-Sign'],

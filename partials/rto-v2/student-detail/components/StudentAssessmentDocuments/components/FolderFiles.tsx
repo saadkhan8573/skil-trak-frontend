@@ -1,5 +1,6 @@
 import { LoadingAnimation, NoData, Typography } from '@components'
-import { RtoV2Api } from '@queries'
+import { AssessmentEvidenceFolder, FolderStatusConfig } from '@types'
+import { RtoV2Api, SubAdminApi } from '@queries'
 import { useAppSelector } from '@redux/hooks'
 import { Archive, FileCheck } from 'lucide-react'
 import { useCallback, useMemo, useState } from 'react'
@@ -14,8 +15,8 @@ export const FolderFiles = ({
     course,
     student,
 }: {
-    folder: any
-    config: any
+    folder: AssessmentEvidenceFolder
+    config: FolderStatusConfig
     eSignDocument: any
     course: any
     student: any
@@ -24,24 +25,46 @@ export const FolderFiles = ({
         return folderResponse(folder.studentResponse)
     }, [folder?.studentResponse])
 
-    const filesData = RtoV2Api.StudentDocuments.getStudentDocumentFiles(
-        response?.id!,
-        {
-            skip: !response?.id,
-        }
-    )
+    const isOtherDoc = folder?.isOtherDoc
 
     const studentId = useAppSelector(
         (state) => state?.student?.studentDetail?.id ?? 0
     )
+
+    const otherDocsData = SubAdminApi.AssessmentEvidence.getOtherDocAssessment(
+        { selectedFolder: folder?.id, student: studentId },
+        {
+            skip: !isOtherDoc || !studentId || !folder?.id,
+        }
+    )
+
+    const filesData = RtoV2Api.StudentDocuments.getStudentDocumentFiles(
+        response?.id!,
+        {
+            skip: isOtherDoc || !response?.id,
+        }
+    )
     const [viewType, setViewType] = useState<'active' | 'archived'>('active')
 
+    const allFiles = useMemo(() => {
+        if (isOtherDoc) {
+            return otherDocsData?.data?.files || []
+        }
+        return filesData?.data || []
+    }, [isOtherDoc, otherDocsData?.data, filesData?.data])
+
     const filteredFiles = useMemo(() => {
-        if (!filesData?.data) return []
-        return filesData.data.filter((doc: any) =>
+        if (!allFiles) return []
+        return allFiles.filter((doc: any) =>
             viewType === 'active' ? !doc?.isArchived : doc?.isArchived
         )
-    }, [filesData?.data, viewType])
+    }, [allFiles, viewType])
+
+    const isLoading = isOtherDoc
+        ? otherDocsData.isLoading || otherDocsData.isFetching
+        : filesData.isLoading || filesData.isFetching
+    const isError = isOtherDoc ? otherDocsData.isError : filesData.isError
+    const isSuccess = isOtherDoc ? otherDocsData.isSuccess : filesData.isSuccess
 
     const onEsignRefetch = useCallback(() => {
         eSignDocument.refetch()
@@ -49,6 +72,7 @@ export const FolderFiles = ({
 
     if (
         !response?.id &&
+        !isOtherDoc &&
         (!eSignDocument?.data || eSignDocument?.data?.length === 0)
     ) {
         return <NoData text="No files uploaded" />
@@ -80,14 +104,14 @@ export const FolderFiles = ({
                 )
             )}
 
-            {filesData.isError && (
+            {isError && (
                 <NoData text={'There is some technical issue!'} isError />
             )}
-            {filesData.isLoading || filesData.isFetching ? (
+            {isLoading ? (
                 <div className="min-h-[inherit] flex justify-center items-center py-8">
                     <LoadingAnimation size={50} />
                 </div>
-            ) : filesData?.isSuccess ? (
+            ) : isSuccess ? (
                 <div className="flex flex-col">
                     {/* View Switcher */}
                     <div className="flex items-center gap-1 p-2 bg-slate-50/50 border-b border-slate-100">
@@ -111,7 +135,7 @@ export const FolderFiles = ({
                                     : 'bg-slate-200 text-slate-500'
                                     }`}
                             >
-                                {filesData?.data?.filter(
+                                {allFiles?.filter(
                                     (d: any) => !d.isArchived
                                 ).length || 0}
                             </span>
@@ -136,7 +160,7 @@ export const FolderFiles = ({
                                     : 'bg-slate-200 text-slate-500'
                                     }`}
                             >
-                                {filesData?.data?.filter(
+                                {allFiles?.filter(
                                     (d: any) => d.isArchived
                                 ).length || 0}
                             </span>
@@ -151,6 +175,7 @@ export const FolderFiles = ({
                                     key={doc.id}
                                     config={config}
                                     studentId={studentId}
+                                    isOtherDoc={isOtherDoc}
                                 />
                             ))}
                         </div>
@@ -167,7 +192,7 @@ export const FolderFiles = ({
                     )}
                 </div>
             ) : (
-                filesData?.isSuccess &&
+                isSuccess &&
                 (!eSignDocument?.data || eSignDocument?.data?.length === 0) && (
                     <NoData text="No files uploaded" />
                 )

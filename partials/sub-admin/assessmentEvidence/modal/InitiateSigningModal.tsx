@@ -7,7 +7,7 @@ import {
     Typography,
 } from '@components'
 import { CommonApi } from '@queries'
-import { AssessmentEvidenceDetailType, Folder, Rto } from '@types'
+import { AssessmentEvidenceDetailType, Folder, Rto, AssessmentEvidenceFolder } from '@types'
 import { useEffect, useMemo, useState } from 'react'
 import {
     DocumentView,
@@ -19,7 +19,7 @@ import { useWorkplace } from '@hooks'
 interface PdfViewModalProps {
     onCancel: () => void
     courseId: number
-    folder: AssessmentEvidenceDetailType | null
+    folder: AssessmentEvidenceDetailType | AssessmentEvidenceFolder | null
     rtoUser?: any
 }
 export const InitiateSigningModal = ({
@@ -30,7 +30,11 @@ export const InitiateSigningModal = ({
 }: PdfViewModalProps) => {
     const [isPreviewAsSigner, setIsPreviewAsSigner] = useState<boolean>(false)
     const [selectedDocument, setSelectedDocument] = useState<any>(null)
-    const [userIds, setUserIds] = useState<any>({})
+    const [userIds, setUserIds] = useState<{
+        industry?: number
+        student?: number
+        coordinator?: number
+    }>({})
 
     const { workplaceRto } = useWorkplace()
     const rtoId = rtoUser ? rtoUser?.id : Number(workplaceRto?.user?.id)
@@ -108,12 +112,11 @@ export const InitiateSigningModal = ({
                                                                     template
                                                                 )
                                                             }}
-                                                            className={`border cursor-pointer rounded-md ${
-                                                                template?.id ===
+                                                            className={`border cursor-pointer rounded-md ${template?.id ===
                                                                 selectedDocument?.id
-                                                                    ? 'bg-gray-200'
-                                                                    : 'bg-gray-50'
-                                                            } px-4 py-2.5`}
+                                                                ? 'bg-gray-200'
+                                                                : 'bg-gray-50'
+                                                                } px-4 py-2.5`}
                                                         >
                                                             <Typography
                                                                 variant="small"

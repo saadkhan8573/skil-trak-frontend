@@ -7,6 +7,10 @@ export type CallReason =
     | 'Scheduled Call Back'
     | 'Initial Contact Attempt'
     | 'Number Validation'
+    | 'End Placement Call'
+    | 'Mid Placement Call'
+    | 'Appointment Confirmation'
+    | 'Placement Confirmation'
 
 export type AgentAction =
     | 'Collect Workplace Information'
@@ -57,6 +61,22 @@ export const CALL_REASON_ACTIONS: Record<CallReason, AgentAction[]> = {
         'Update Contact Information',
         'Leave Voicemail',
         'Schedule Follow-up Call',
+    ],
+    'End Placement Call': [
+        'Collect Workplace Information',
+        'Update Contact Information',
+    ],
+    'Mid Placement Call': [
+        'Collect Workplace Information',
+        'Update Contact Information',
+    ],
+    'Appointment Confirmation': [
+        'Schedule Follow-up Call',
+        'Update Contact Information',
+    ],
+    'Placement Confirmation': [
+        'Update Contact Information',
+        'Collect Workplace Information',
     ],
 }
 

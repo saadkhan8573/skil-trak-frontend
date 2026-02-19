@@ -35,9 +35,9 @@ const DynamicPageData = () => {
     }, [rejectResult.isSuccess])
     const reasonOptions = [
         { label: 'Location is too far from my residence', value: 'too-far' },
-        { label: 'Workplace preference', value: 'workplace-preference' },
+        // { label: 'Workplace preference', value: 'workplace-preference' },
         { label: 'Found my own workplace', value: 'find-own-workplace' },
-        { label: 'Other', value: 'other' },
+        // { label: 'Other', value: 'other' },
     ]
 
     const validationSchema = Yup.object({

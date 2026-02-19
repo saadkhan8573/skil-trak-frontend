@@ -88,7 +88,7 @@ export const useAssessmentData = (
                 (selectedFolder && folder
                     ? folder
                     : getFolders?.data
-                          ?.assessmentEvidence?.[0]) as AssessmentEvidenceDetailType
+                        ?.assessmentEvidence?.[0]) as AssessmentEvidenceDetailType
             )
         }
     }, [getFolders, selectedFolder, onSelectFolder])

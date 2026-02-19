@@ -1,5 +1,6 @@
 import { CheckCircle2, Clock } from 'lucide-react'
-import { AvailableDay } from './generateAvailabilityDays' 
+import { AvailableDay } from './generateAvailabilityDays'
+import moment from 'moment'
 
 interface TimeSectionProps {
     selectedDay: AvailableDay | undefined
@@ -46,16 +47,22 @@ export const TimeSection = ({
             <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
                 {selectedDay.slots.map((slot: any, index: number) => {
                     const isSelected = selectedTime === slot.time
+                    const slotDateTime = moment(
+                        `${selectedDay.date} ${slot.time}`,
+                        'YYYY-MM-DD hh:mm A'
+                    )
 
+                    const isPastTime = slotDateTime.isBefore(moment())
+                    const isDisabled = !slot.available || isPastTime
                     return (
                         <button
                             key={index}
                             onClick={() => {
-                                if (slot.available) {
-                                    onTimeSelect(slot.time, slot.id)
+                                if (!isDisabled) {
+                                    onTimeSelect(slot?.time, slot?.id)
                                 }
                             }}
-                            disabled={!slot.available}
+                            disabled={isDisabled}
                             className="slot-card relative p-3 rounded-lg text-center touch-manipulation"
                             style={{
                                 backgroundColor: !slot.available

@@ -47,7 +47,7 @@ export const TechnicalError = ({
                 <>
                     <p className="text-center text-gray-400">
                         Please contact tech team so they can look into it. It
-                        will be great if you provide them a screen shot and
+                        will be great if you provide them a screenshot and
                         error description as well.{' '}
                     </p>
                     <p className="text-center mt-3 text-gray-400">

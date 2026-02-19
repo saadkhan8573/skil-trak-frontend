@@ -1,20 +1,48 @@
-import { Calendar } from 'lucide-react'
+import { Calendar, Info } from 'lucide-react'
 import { AvailableDay } from './generateAvailabilityDays'
+import moment from 'moment'
 
 interface DateSectionProps {
     availableDays: AvailableDay[]
     selectedDate: string | null
     onDateSelect: (date: string) => void
-    isDisabled: boolean
 }
 
 export const DateSection = ({
     availableDays,
     selectedDate,
     onDateSelect,
-    isDisabled,
 }: DateSectionProps) => (
     <div>
+        <div className="mb-4 sm:mb-6">
+            <div className="flex items-center gap-2.5 mb-2">
+                <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-white shrink-0"
+                    style={{ backgroundColor: '#044866' }}
+                >
+                    <Info className="w-4 h-4" />
+                </div>
+
+                <h2 className="text-sm sm:text-base font-semibold text-gray-900 mb-2">
+                    Instructions
+                </h2>
+            </div>
+            <div className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                <p>
+                    The below available dates and time slots have been provided
+                    directly by the industry to schedule your appointment with
+                    the workplace supervisor.
+                </p>
+                <p>
+                    Please select your preferred date first, then choose an
+                    available time slot.
+                </p>
+                <p>
+                    Kindly ensure you attend the scheduled appointment, as this
+                    is an important step in confirming your placement.
+                </p>
+            </div>
+        </div>
         <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
             <div
                 className="w-8 h-8 rounded-lg flex items-center justify-center text-white shrink-0"
@@ -38,19 +66,23 @@ export const DateSection = ({
                 const availableCount = day.slots.filter(
                     (s: any) => s.available
                 ).length
-
+                const isPastDate = moment(day.date)
+                    .endOf('day')
+                    .isBefore(moment())
                 return (
                     <button
                         key={day.date}
-                        onClick={() => onDateSelect(day.date)}
-                        disabled={isDisabled}
+                        onClick={() => !isPastDate && onDateSelect(day.date)}
+                        disabled={isPastDate}
                         title={
-                            isDisabled
-                                ? 'Selected time is in the past'
+                            isPastDate
+                                ? 'This date has already passed please update the industry availability'
                                 : `${availableCount} slots available`
                         }
                         className={`day-card group relative p-3 sm:p-4 rounded-lg sm:rounded-xl text-center touch-manipulation ${
-                            isDisabled ? 'cursor-not-allowed' : ''
+                            isPastDate
+                                ? 'opacity-50 cursor-not-allowed'
+                                : 'cursor-pointer'
                         }`}
                         style={{
                             backgroundColor: isSelected ? '#044866' : '#fff',

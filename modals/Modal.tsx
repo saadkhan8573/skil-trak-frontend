@@ -1,5 +1,6 @@
+'use client'
 import { useOutsideClick } from '@hooks'
-import { cloneElement, createContext, useContext, useState } from 'react'
+import React, { cloneElement, createContext, useContext, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { HiXMark } from 'react-icons/hi2'
 import styled, { css } from 'styled-components'

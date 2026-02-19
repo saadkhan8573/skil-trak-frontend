@@ -86,13 +86,13 @@ export const questionList = [
     },
     {
         name: workplaceQuestionsKeys.autoTalentPool,
-        index: 6,
+        index: 7,
         title: 'Auto Talent Pool:',
         required: false,
     },
     {
         name: workplaceQuestionsKeys.serviceOffered,
-        index: 7,
+        index: 6,
         title: 'Selecting Hospitality reveals the meal-period question and enforces at least one choice:',
         required: true,
         multipleSelection: true,

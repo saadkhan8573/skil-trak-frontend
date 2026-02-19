@@ -248,7 +248,7 @@ export function CleanHeader({
             {isWorkflowOpen && (
                 <GlobalModal
                     onCancel={() => setIsWorkflowOpen(false)}
-                    className="max-w-[700px]"
+                    className="max-w-175"
                 >
                     <div className="p-6">
                         {/* Header */}
@@ -272,7 +272,7 @@ export function CleanHeader({
                             </div>
                         </div>
 
-                        <ScrollArea className="h-[450px] mt-6">
+                        <ScrollArea className="h-112.5 mt-6">
                             <div className="space-y-6 pr-4">
                                 {/* Current Workflow */}
                                 <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">

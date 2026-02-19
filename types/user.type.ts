@@ -236,10 +236,7 @@ export interface StudentIssue extends BaseResponse {
     isReportedByAdmin: boolean
     priority: 'critical' | 'high' | 'medium'
     title: string
-    workplaceRequest?: {
-        industries: any
-        courses: any
-    }
+    workplaceRequest?: IWorkplaceIndustries
     requestedBy?: {
         id: number
         name: string

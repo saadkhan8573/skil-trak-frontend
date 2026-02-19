@@ -1,4 +1,4 @@
-import { Card, TabNavigation, TabProps } from '@components'
+import { Card, ConfigTabs, TabConfig } from '@components'
 import { RtoLayoutV2 } from '@layouts'
 import {
     PlacementRequestStats,
@@ -11,25 +11,22 @@ import { Briefcase } from 'lucide-react'
 import { ReactElement } from 'react'
 
 export const PlacementRequests = () => {
-    const tabs: TabProps[] = [
+    const count = RtoV2Api.PlacementRequests.useStudentPlacementRequestStats()
+
+    const tabs: TabConfig[] = [
         {
+            value: 'student-need-wp',
             label: 'Student Need Workplace',
-            href: {
-                pathname: 'placement-requests',
-                query: { tab: 'student-need-wp' },
-            },
-            element: <StudentsNeedWorkplaceTab />,
+            count: count?.data?.requested || 0,
+            component: StudentsNeedWorkplaceTab,
         },
         {
+            value: 'student-provided-wp',
             label: 'Student Provided Workplace',
-            href: {
-                pathname: 'placement-requests',
-                query: { tab: 'student-provided-wp' },
-            },
-            element: <StudentProvidedWorkplaceTab />,
+            count: count?.data?.provided || 0,
+            component: StudentProvidedWorkplaceTab,
         },
     ]
-    const count = RtoV2Api.PlacementRequests.useStudentPlacementRequestStats()
 
     return (
         <div className="">
@@ -58,14 +55,10 @@ export const PlacementRequests = () => {
                     <Title Icon={Briefcase} title="Placement Requests" />
                 </div>
 
-                <TabNavigation tabs={tabs}>
-                    {({ header, element }: any) => (
-                        <div>
-                            <div>{header}</div>
-                            <div className="p-4">{element}</div>
-                        </div>
-                    )}
-                </TabNavigation>
+                <ConfigTabs
+                    tabs={tabs}
+                    defaultValue="student-need-wp"
+                />
             </Card>
         </div>
     )

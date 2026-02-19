@@ -49,7 +49,7 @@ export const PlacementRequestStats = ({
     ];
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 my-4">
             {stats.map((stat, index) => {
                 const Icon = stat.icon;
                 return (
@@ -68,14 +68,14 @@ export const PlacementRequestStats = ({
                             <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white to-transparent" />
                         </div>
 
-                        <div className="relative p-6">
+                        <div className="relative p-4">
                             <div className="flex items-center justify-between">
                                 {/* Text Section */}
-                                <div className="space-y-2">
-                                    <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                                <div className="space-y-1">
+                                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         {stat.label}
                                     </p>
-                                    <p className="text-4xl font-bold bg-gradient-to-br from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text ">
+                                    <p className="text-2xl font-bold bg-gradient-to-br from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text ">
                                         {stat.value}
                                     </p>
                                 </div>
@@ -84,27 +84,27 @@ export const PlacementRequestStats = ({
                                 <div className="relative">
                                     {/* Glow effect */}
                                     <div
-                                        className={`absolute inset-0 bg-gradient-to-br ${stat.iconBg} rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-500 scale-150`}
+                                        className={`absolute inset-0 bg-gradient-to-br ${stat.iconBg} rounded-xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-500 scale-150`}
                                     />
 
                                     {/* Icon container */}
                                     <div
-                                        className={`relative h-14 w-14 rounded-2xl bg-gradient-to-br ${stat.iconBg} flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 ring-4 ${stat.ringColor}`}
+                                        className={`relative h-10 w-10 rounded-xl bg-gradient-to-br ${stat.iconBg} flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 ring-4 ${stat.ringColor}`}
                                     >
-                                        <Icon className="h-7 w-7 text-white" strokeWidth={2.5} />
+                                        <Icon className="h-5 w-5 text-white" strokeWidth={2.5} />
                                         {/* Shine effect */}
-                                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/0 via-white/30 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                        <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/0 via-white/30 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                                     </div>
 
                                     {/* Pulse ring */}
                                     <div
-                                        className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${stat.iconBg} opacity-0 group-hover:opacity-20 group-hover:scale-150 transition-all duration-700`}
+                                        className={`absolute inset-0 rounded-xl bg-gradient-to-br ${stat.iconBg} opacity-0 group-hover:opacity-20 group-hover:scale-150 transition-all duration-700`}
                                     />
                                 </div>
                             </div>
 
                             {/* Progress bar */}
-                            <div className="mt-4 h-1.5 bg-gray-200/70 dark:bg-gray-700/70 rounded-full overflow-hidden">
+                            <div className="mt-3 h-1 bg-gray-200/70 dark:bg-gray-700/70 rounded-full overflow-hidden">
                                 <div
                                     className={`h-full bg-gradient-to-r ${stat.iconBg} rounded-full transition-all duration-1000 group-hover:w-full shadow-sm`}
                                     style={{

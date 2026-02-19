@@ -642,6 +642,7 @@ const {
     useGetUserTemplateDocumentForSignQuery,
     useGetUserSignatureTabForTemplateQuery,
     useGetEsignDocumentsCountQuery,
+    useGetRtoEsignDocumentsCountQuery,
 
     // ---- Traineeship ---- //
     useGetTraineeshipProgramQuery,
@@ -1036,6 +1037,7 @@ export const CommonApi = {
         addEmailCustomFieldData: useAddEmailCustomFieldDataMutation,
         useTemplateDocumentForSign: useGetUserTemplateDocumentForSignQuery,
         useSignatureTabForTemplate: useGetUserSignatureTabForTemplateQuery,
+        useGetRtoEsignDocumentsCount: useGetRtoEsignDocumentsCountQuery,
     },
     Traineeship: {
         useGetList: useGetTraineeshipProgramQuery,

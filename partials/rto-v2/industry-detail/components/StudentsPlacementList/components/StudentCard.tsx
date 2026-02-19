@@ -10,6 +10,7 @@ import {
     AlertTriangle,
     Calendar,
     ExternalLink,
+    Send,
 } from 'lucide-react'
 import { useState } from 'react'
 import { WorkflowStep } from './types'
@@ -33,6 +34,7 @@ import { ApproveRequestModal } from '@partials/sub-admin/workplace/modals'
 import { DeclineStudentByIndustryModal } from '@partials/common/StudentProfileDetail/components'
 import { ReactNode } from 'react'
 import moment from 'moment'
+import { ResendEmailModal } from '../ResendEmailModal'
 
 interface StudentCardProps {
     student: Student
@@ -74,6 +76,14 @@ export function StudentCard({ student }: StudentCardProps) {
                     onCancel={onModalCancelClicked}
                 />
             </Portal>
+        )
+    }
+    const onClickResendEmail = (workplace: any) => {
+        setModal(
+            <ResendEmailModal
+                workplace={workplace}
+                onCancel={onModalCancelClicked}
+            />
         )
     }
 
@@ -169,6 +179,14 @@ export function StudentCard({ student }: StudentCardProps) {
                             {workplace?.currentStatus ===
                                 WorkplaceCurrentStatus.AwaitingWorkplaceResponse && (
                                 <div className="flex gap-2 mb-2">
+                                    <Button
+                                        Icon={Send}
+                                        text={'Re-Email'}
+                                        variant={'info'}
+                                        onClick={() =>
+                                            onClickResendEmail(workplace)
+                                        }
+                                    />
                                     <ActionButton
                                         variant="success"
                                         onClick={(e) => {

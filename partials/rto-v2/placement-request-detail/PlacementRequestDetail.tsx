@@ -547,21 +547,6 @@ export const PlacementRequestDetail = () => {
                             </div>
                         </div>
                     </div>
-
-                    {/* Appointment Modal */}
-                    {/* <AppointmentModal
-                open={showAppointmentDialog}
-                onClose={() => setShowAppointmentDialog(false)}
-                appointmentDate={appointmentDate}
-                onAppointmentDateChange={setAppointmentDate}
-                onConfirm={handleBookAppointment}
-            /> */}
-                    {/* <AppointmentBookingModal
-                        isOpen={showAppointmentDialog}
-                        onClose={setShowAppointmentDialog}
-                        availability={industryAvailability?.data}
-                    /> */}
-
                     {/* Schedule Modal */}
                     <ScheduleModal
                         open={showScheduleDialog}

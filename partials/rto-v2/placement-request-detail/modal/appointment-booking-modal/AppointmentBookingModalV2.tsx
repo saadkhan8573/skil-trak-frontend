@@ -51,19 +51,19 @@ export const AppointmentBookingModalV2 = ({
 
     const selectedDay = availableDays.find((day) => day.date === selectedDate)
 
-    const isPastAppointment =
-        selectedDate && selectedTime
-            ? moment(
-                  `${selectedDate} ${selectedTime}`,
-                  'YYYY-MM-DD hh:mm A'
-              ).isBefore(moment())
-            : false
+    // const isPastAppointment =
+    //     selectedDate && selectedTime
+    //         ? moment(
+    //               `${selectedDate} ${selectedTime}`,
+    //               'YYYY-MM-DD hh:mm A'
+    //           ).isBefore(moment())
+    //         : false
 
-    const isPastSchedule = availableDays.every((day) =>
-        moment(day.date).endOf('day').isBefore(moment())
-    )
+    // const isPastSchedule = availableDays.every((day) =>
+    //     moment(day.date).endOf('day').isBefore(moment())
+    // )
 
-    const isDisabledUI = isPastSchedule || isPastAppointment
+    // const isDisabledUI = isPastSchedule || isPastAppointment
 
     useEffect(() => {
         if (resultBookAppointment?.isSuccess) {
@@ -136,7 +136,6 @@ export const AppointmentBookingModalV2 = ({
                                 availableDays={availableDays}
                                 selectedDate={selectedDate}
                                 onDateSelect={handleDateSelect}
-                                isDisabled={isDisabledUI}
                             />
 
                             {selectedDate && (

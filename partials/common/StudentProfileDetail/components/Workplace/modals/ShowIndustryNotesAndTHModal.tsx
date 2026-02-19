@@ -245,14 +245,14 @@ export const ShowIndustryNotesAndTHModal = ({
                             }
                             showError={false}
                         />
-                        <Checkbox
+                        {/* <Checkbox
                             name="appointmentDates"
                             onChange={(e: any) => {
                                 setIsWithoutAppointmentDates(e?.target?.checked)
                             }}
                             label={<>Continue without appointment dates</>}
                             showError={false}
-                        />
+                        /> */}
                         <div className={'flex items-center gap-x-4  '}>
                             <Button
                                 text="Cancel"
@@ -266,24 +266,24 @@ export const ShowIndustryNotesAndTHModal = ({
                                 text={'Proceed'}
                                 variant="success"
                                 onClick={() => {
-                                    if (isWithoutAppointmentDates) {
-                                        onApply()
-                                    } else {
-                                        setModal(
-                                            <SelectAppointDateModal
-                                                onCancel={onCancelClicked}
-                                                industryId={industryId}
-                                                industryUserName={
-                                                    industryUserName
-                                                }
-                                                industryCapacity={Number(
-                                                    industryCapacity
-                                                )}
-                                                branch={type}
-                                                workplaceId={workplaceId}
-                                            />
-                                        )
-                                    }
+                                    // if (isWithoutAppointmentDates) {
+                                    onApply()
+                                    // } else {
+                                    // setModal(
+                                    //     <SelectAppointDateModal
+                                    //         onCancel={onCancelClicked}
+                                    //         industryId={industryId}
+                                    //         industryUserName={
+                                    //             industryUserName
+                                    //         }
+                                    //         industryCapacity={Number(
+                                    //             industryCapacity
+                                    //         )}
+                                    //         branch={type}
+                                    //         workplaceId={workplaceId}
+                                    //     />
+                                    // )
+                                    // }
                                 }}
                                 loading={addExistingIndustryResult?.isLoading}
                                 disabled={

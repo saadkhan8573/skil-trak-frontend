@@ -60,7 +60,7 @@ export const TeamsDashboard = () => {
             {/* Tabs */}
             <Tabs defaultValue="teams">
                 <div className="border border-border/50 rounded-2xl p-6 shadow-premium-lg">
-                    <TabsList className="w-full bg-white backdrop-blur-sm border border-border/60 shadow-premium-lg !p-2 rounded-xl h-auto grid grid-cols-2 gap-2">
+                    <TabsList className="w-full bg-white backdrop-blur-sm border border-border/60 shadow-premium-lg p-2! rounded-xl h-auto grid grid-cols-2 gap-2">
                         {TAB_LIST.map((tab) => {
                             const Icon = tab.icon
                             return (

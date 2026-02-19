@@ -3,6 +3,5 @@ export * from './ComplianceCheck'
 export * from './FindWorkplaceSection'
 export * from './InfoCard'
 export * from './PreferenceItem'
-export * from './WorkflowActions'
 
 export * from './header'

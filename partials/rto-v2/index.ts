@@ -15,3 +15,5 @@ export * from './approve-placement'
 export * from './placement-request'
 export * from './placement-request-detail'
 export * from './student-recent-activities'
+
+export * from './placement-request-detail-v2'

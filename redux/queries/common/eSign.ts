@@ -4,6 +4,12 @@ import { PaginationValues, PaginationWithSearch, UserStatus } from '@types'
 import { EsignDocumentStatus } from '@utils'
 
 const PREFIX = 'esign'
+
+interface RtoEsignCounts {
+    pendingDocuments: number
+    signedDocuments: number
+}
+
 export const eSignEndpoints = (
     builder: EndpointBuilder<BaseQueryFn, string, string>
 ) => ({
@@ -22,6 +28,10 @@ export const eSignEndpoints = (
 
     getEsignDocumentsCount: builder.query<any, void>({
         query: () => `${PREFIX}/documents/count`,
+        providesTags: ['E-Sign'],
+    }),
+    getRtoEsignDocumentsCount: builder.query<RtoEsignCounts, void>({
+        query: () => `${PREFIX}/rto/documents/count`,
         providesTags: ['E-Sign'],
     }),
 

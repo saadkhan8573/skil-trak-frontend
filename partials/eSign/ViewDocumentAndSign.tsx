@@ -19,6 +19,7 @@ import {
     SVGView,
 } from './components'
 import { EsignSignatureModal, FinishSignModal } from './modal'
+import { MoveLeft } from 'lucide-react'
 
 export const ViewDocumentAndSign = () => {
     const router = useRouter()
@@ -195,9 +196,9 @@ export const ViewDocumentAndSign = () => {
             customFields?.map((data: any) =>
                 data?.type === FieldsTypeEnum.Checkbox
                     ? {
-                          ...data,
-                          fieldValue: e.target.checked,
-                      }
+                        ...data,
+                        fieldValue: e.target.checked,
+                    }
                     : data
             )
         )
@@ -416,7 +417,7 @@ export const ViewDocumentAndSign = () => {
         } else {
             setIsLastSelected(
                 sortedPositions?.[customFieldsSelectedId]?.id ===
-                    sortedPositions?.[sortedPositions?.length - 1]?.id
+                sortedPositions?.[sortedPositions?.length - 1]?.id
             )
             setSelectedFillDataField(sortedPositions?.[0]?.id)
             scrollToPage(-1, documentsTotalPages?.data?.pageCount - 1, 'end')
@@ -457,7 +458,10 @@ export const ViewDocumentAndSign = () => {
     return (
         <div>
             {modal}
-            <DownloadEsignDocument />
+            <div className='flex justify-between items-center py-2'>
+                <Button className='lg:ml-20' Icon={MoveLeft} variant='primaryNew' text='Go Back' outline onClick={() => router.back()} />
+                <DownloadEsignDocument />
+            </div>
             {isSignature && isDocumentLoaded?.isSuccess ? (
                 <EsignSignatureModal
                     tab={selectedSign}
@@ -531,11 +535,10 @@ export const ViewDocumentAndSign = () => {
                         </div>
 
                         <div
-                            className={`${
-                                showSignersField
-                                    ? 'lg:col-span-6'
-                                    : 'lg:col-span-6'
-                            } max-w- lg:pl-20 mx-auto flex flex-col gap-y-3 relative w-full`}
+                            className={`${showSignersField
+                                ? 'lg:col-span-6'
+                                : 'lg:col-span-6'
+                                } max-w- lg:pl-20 mx-auto flex flex-col gap-y-3 relative w-full`}
                         >
                             {[
                                 ...Array(
@@ -546,7 +549,7 @@ export const ViewDocumentAndSign = () => {
                                     ref={(el: any) =>
                                         (scrollTargetRef.current[i] = el)
                                     }
-                                    onClick={() => {}}
+                                    onClick={() => { }}
                                     className="relative"
                                 >
                                     <Card key={i} noPadding>

@@ -112,8 +112,8 @@ export const Appointments = () => {
                 <div className="flex items-center justify-between flex-wrap gap-4">
                     <div className="flex items-center gap-3">
                         <div className="relative group">
-                            <div className="absolute inset-0 bg-gradient-to-br from-[#044866] to-[#0D5468] rounded-lg blur-lg opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                            <div className="relative h-11 w-11 rounded-lg bg-gradient-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-lg ring-1 ring-white/20">
+                            <div className="absolute inset-0 bg-linear-to-br from-[#044866] to-[#0D5468] rounded-lg blur-lg opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                            <div className="relative h-11 w-11 rounded-lg bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-lg ring-1 ring-white/20">
                                 <CalendarIcon className="h-5 w-5 text-white" />
                             </div>
                         </div>
@@ -155,7 +155,7 @@ export const Appointments = () => {
                                         setScheduleOpen(true)
                                     }
                                 }}
-                                className="bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-lg shadow-[#044866]/20 transition-all h-10 px-6 rounded-lg font-medium flex items-center gap-2 border-0"
+                                className="bg-linear-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-lg shadow-[#044866]/20 transition-all h-10 px-6 rounded-lg font-medium flex items-center gap-2 border-0"
                             >
                                 <Plus className="h-4 w-4" />
                                 Schedule New

@@ -23,34 +23,32 @@ export const CountCard = ({ stat }: ActionRequiredStatsGridProps) => {
     return (
         <Card
             noPadding
-            className={`shadow-premium border hover:shadow-premium-lg transition-all hover-lift border-red-400/30 bg-gradient-to-br from-red-400/15 to-transparent`}
+            className={`shadow-premium border hover:shadow-premium-lg transition-all hover-lift border-red-400/30 bg-linear-to-br from-red-400/15 to-transparent`}
         >
-            <div className="p-5">
+            <div className="p-2.5">
                 <div className="flex items-center justify-between">
                     <div>
-                        <p className="text-sm text-muted-foreground mb-1">
+                        <p className="text-xs text-muted-foreground mb-1">
                             {stat.label}
                         </p>
                         <p
-                            className={`text-3xl font-bold ${
-                                stat.valueColor || ''
-                            }`}
+                            className={`text-xl font-bold ${stat.valueColor || ''
+                                }`}
                         >
                             {stat.value}
                         </p>
                         {stat.subValue && (
-                            <p className="text-xs text-muted-foreground mt-1">
+                            <p className="text-[10px] text-muted-foreground mt-0.5">
                                 {stat.subValue}
                             </p>
                         )}
                     </div>
                     <div
-                        className={`h-12 w-12 rounded-xl ${stat.iconBgColor} flex items-center justify-center`}
+                        className={`h-10 w-10 rounded-xl ${stat.iconBgColor} flex items-center justify-center`}
                     >
                         <stat.icon
-                            className={`h-6 w-6 ${stat.iconColor} ${
-                                stat.highlight ? 'animate-pulse' : ''
-                            }`}
+                            className={`h-5 w-5 ${stat.iconColor} ${stat.highlight ? 'animate-pulse' : ''
+                                }`}
                         />
                     </div>
                 </div>
@@ -58,7 +56,7 @@ export const CountCard = ({ stat }: ActionRequiredStatsGridProps) => {
                     <Progressbar
                         value={stat.progressValue}
                         size="xs"
-                        // className="h-2 mt-3"
+                    // className="h-2 mt-3"
                     />
                 )}
             </div>

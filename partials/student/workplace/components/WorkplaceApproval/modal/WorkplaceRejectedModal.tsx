@@ -51,7 +51,7 @@ export const WorkplaceRejectedModal = ({
             })
             onCancel(true)
         }
-    }, [changeStatusResult.isSuccess])
+    }, [changeStatusResult])
     const reasonOptions = [
         { label: 'Location is too far from my residence', value: 'too-far' },
         // { label: 'Workplace preference', value: 'workplace-preference' },
@@ -67,17 +67,28 @@ export const WorkplaceRejectedModal = ({
 
     const selectedReason = methods.watch('reason')
 
-    const onSubmit = async (values: any) => {
-        await changeStatus({
-            id: wpApprovalId,
-            body: {
-                comment: values.reason,
-                ...(values.reason === 'other' && {
-                    note: values.note,
-                }),
-            },
-            status: WPApprovalStatus.Rejected,
-        })
+    const onSubmit = async (values: onSubmitType) => {
+        try {
+            await changeStatus({
+                id: wpApprovalId,
+                body: {
+                    comment: values.reason,
+                    ...(values.reason === 'other' && {
+                        note: values.note,
+                    }),
+                },
+                status: WPApprovalStatus.Rejected,
+            }).unwrap()
+
+            notification.success({
+                title: 'Status Changed',
+                description: 'Rejected successfully',
+            })
+
+            onCancel(true)
+        } catch (error) {
+            // Error already handled by ShowErrorNotifications
+        }
     }
 
     return (

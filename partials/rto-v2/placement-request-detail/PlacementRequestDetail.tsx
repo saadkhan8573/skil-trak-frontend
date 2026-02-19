@@ -14,7 +14,7 @@ import {
     EnhancedRtoRequirementsCard,
     EnhancedStatusNotesCard,
     EnhancedStudentPreferencesChecklistCard,
-    PremiumCurrentActionsCard,
+    // PremiumCurrentActionsCard,
     StudentQuickSummaryCard,
 } from './components/cards'
 import { CleanHeader } from './components/CleanHeader'
@@ -30,6 +30,7 @@ import {
     HeaderSkeleton,
     WorkflowTrackerSkeleton,
 } from './skeletonLoader'
+import { PremiumCurrentActionsCard } from '../placement-request-detail-v2'
 
 interface StatusNote {
     status: string
@@ -492,15 +493,11 @@ export const PlacementRequestDetail = () => {
                                             }
                                             currentStatus={wpCurrentStatus}
                                             setStatusNote={setStatusNote}
-                                            setShowRejectionDialog={
-                                                setShowRejectionDialog
-                                            }
                                             appointmentDate={appointmentDate}
                                             setShowScheduleDialog={
                                                 setShowScheduleDialog
                                             }
                                             setPendingStatus={setPendingStatus}
-                                            setCurrentStatus={setCurrentStatus}
                                             workplace={
                                                 placementRequestsDetails?.data
                                             }
@@ -547,21 +544,6 @@ export const PlacementRequestDetail = () => {
                             </div>
                         </div>
                     </div>
-
-                    {/* Appointment Modal */}
-                    {/* <AppointmentModal
-                open={showAppointmentDialog}
-                onClose={() => setShowAppointmentDialog(false)}
-                appointmentDate={appointmentDate}
-                onAppointmentDateChange={setAppointmentDate}
-                onConfirm={handleBookAppointment}
-            /> */}
-                    {/* <AppointmentBookingModal
-                        isOpen={showAppointmentDialog}
-                        onClose={setShowAppointmentDialog}
-                        availability={industryAvailability?.data}
-                    /> */}
-
                     {/* Schedule Modal */}
                     <ScheduleModal
                         open={showScheduleDialog}

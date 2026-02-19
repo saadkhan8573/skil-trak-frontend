@@ -185,6 +185,14 @@ export const industriesEndpoints = (
         }),
         providesTags: ['WaitingForStudents'],
     }),
+    // ResendEmailModal
+    resendEmailIndustryAwaitingStudent: builder.mutation<any, number>({
+        query: (id) => ({
+            url: `subadmin/workplace/${id}/resend-email`,
+            method: 'POST',
+        }),
+        invalidatesTags: ['WaitingForStudents'],
+    }),
 
     getIndustryWaitingForRtoStudents: builder.query<
         RtoApprovalWorkplaceRequest[],
@@ -286,7 +294,7 @@ export const industriesEndpoints = (
     >({
         query: (id) => ({
             // url: `students/workplace-requests/workplace/${id}/interview-availability/get`,
-            url: `students/workplace-requests/${id}/interview-availability/get`
+            url: `students/workplace-requests/${id}/interview-availability/get`,
         }),
         providesTags: ['RTOIndustries'],
     }),

@@ -39,14 +39,14 @@ export const WorkplaceApproval = ({
         (hasExternalLink && !wpApprovalData?.isMarkedComplete)
     return (
         <div className="px-4 py-2 w-full max-w-[inherit] h-full bg-white rounded-[10px]">
-            <div className="grid grid-cols-5 gap-x-5">
+            <div className="grid grid-cols-4 gap-x-5">
                 <div className="col-span-2">
                     <WorkplaceDetail student={wpApprovalData?.student} />
                 </div>
 
-                <div className="">
+                {/* <div className="">
                     <AvailableMeetingDates dates={wpApprovalData?.dates} />
-                </div>
+                </div> */}
 
                 <div className="col-span-2 w-full">
                     <Typography variant="label" medium center block>

@@ -26,23 +26,19 @@ export const DownloadEsignDocument = ({
     const router = useRouter()
 
     return (
-        <div className="pb-2 flex justify-end">
-            <Button
-                variant={variant || 'dark'}
-                text={text || 'Download Documnet'}
-                Icon={ArrowDown}
-                onClick={() => {
-                    if (isBrowser()) {
-                        window.open(
-                            `${
-                                process.env.NEXT_PUBLIC_END_POINT
-                            }/esign/document/${
-                                docId || router.query?.id
-                            }/download`
-                        )
-                    }
-                }}
-            />
-        </div>
+        <Button
+            variant={variant || 'dark'}
+            text={text || 'Download Documnet'}
+            Icon={ArrowDown}
+            onClick={() => {
+                if (isBrowser()) {
+                    window.open(
+                        `${process.env.NEXT_PUBLIC_END_POINT
+                        }/esign/document/${docId || router.query?.id
+                        }/download`
+                    )
+                }
+            }}
+        />
     )
 }

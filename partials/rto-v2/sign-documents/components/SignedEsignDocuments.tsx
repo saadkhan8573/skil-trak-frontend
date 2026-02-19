@@ -1,4 +1,5 @@
 import {
+    Button,
     Card,
     EmptyData,
     LoadingAnimation,
@@ -11,12 +12,17 @@ import { ColumnDef } from '@tanstack/react-table'
 import { UserRoles } from '@constants'
 import { DownloadEsignDocument } from '@partials/eSign'
 import { CommonApi } from '@queries'
-import { Building2, FileText, User } from 'lucide-react'
+import { Building2, Eye, FileText, User } from 'lucide-react'
 import { useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEsignColumns } from '../hooks/useEsignColumns'
 
 export const SignedEsignDocuments = () => {
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
+
+    const router = useRouter()
 
     const pendingDocuments = CommonApi.ESign.usePendingDocumentsList(
         {
@@ -29,75 +35,10 @@ export const SignedEsignDocuments = () => {
         }
     )
 
-    const columns: ColumnDef<any>[] = [
-        {
-            accessorKey: 'document',
-            cell: (info) => (
-                <div className="flex items-center gap-2">
-                    <div className="p-2 rounded-lg bg-destructive/10">
-                        <FileText className="h-4 w-4 text-destructive" />
-                    </div>
-                    <div>
-                        <p className="font-semibold">
-                            {info?.row?.original?.template?.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                            {info?.row?.original?.template?.folder?.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                            {info?.row?.original?.template?.course?.title}
-                        </p>
-                    </div>
-                </div>
-            ),
-            header: () => <span>Document</span>,
-        },
-        {
-            accessorKey: 'student',
-            header: () => <span>Student</span>,
-            cell: (info) => {
-                const student = info?.row?.original?.signers?.find(
-                    (s: any) => s?.user?.role === UserRoles.STUDENT
-                )
-                return (
-                    <div className="flex items-center gap-2">
-                        <User className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm font-medium">
-                            {student?.user?.name}
-                        </span>
-                    </div>
-                )
-            },
-        },
-        {
-            accessorKey: 'industryPartner',
-            header: () => <span>Industry Partner</span>,
-            cell: (info) => {
-                const industry = info?.row?.original?.signers?.find(
-                    (s: any) => s?.user?.role === UserRoles.INDUSTRY
-                )
-                return industry ? (
-                    <div className="flex items-center gap-2">
-                        <Building2 className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">{industry?.user?.name}</span>
-                    </div>
-                ) : (
-                    '---'
-                )
-            },
-        },
-        {
-            accessorKey: 'action',
-            header: () => <span>Action</span>,
-            cell: (info) => (
-                <DownloadEsignDocument
-                    variant="action"
-                    text="Dounload"
-                    docId={info?.row?.original?.id}
-                />
-            ),
-        },
-    ]
+    const { columns } = useEsignColumns({
+        isSigned: true,
+        removeColumnKeys: ['status'],
+    })
 
     return (
         <>
@@ -107,7 +48,7 @@ export const SignedEsignDocuments = () => {
                     {pendingDocuments?.isLoading ? (
                         <LoadingAnimation height="h-[60vh]" />
                     ) : pendingDocuments?.data &&
-                      pendingDocuments?.data?.data?.length ? (
+                        pendingDocuments?.data?.data?.length ? (
                         <Table
                             columns={columns}
                             data={pendingDocuments?.data.data}
@@ -141,26 +82,26 @@ export const SignedEsignDocuments = () => {
                                         <div className="px-6">{table}</div>
                                         {pendingDocuments?.data?.data?.length >
                                             10 && (
-                                            <div className="p-6 mb-2 flex justify-between">
-                                                {pageSize &&
-                                                    pageSize(
-                                                        itemPerPage,
-                                                        setItemPerPage,
-                                                        pendingDocuments?.data
-                                                            ?.data?.length
-                                                    )}
-                                                <div className="flex gap-x-2">
-                                                    {quickActions}
-                                                    {pagination &&
-                                                        pagination(
-                                                            pendingDocuments
-                                                                ?.data
-                                                                ?.pagination,
-                                                            setPage
+                                                <div className="p-6 mb-2 flex justify-between">
+                                                    {pageSize &&
+                                                        pageSize(
+                                                            itemPerPage,
+                                                            setItemPerPage,
+                                                            pendingDocuments?.data
+                                                                ?.data?.length
                                                         )}
+                                                    <div className="flex gap-x-2">
+                                                        {quickActions}
+                                                        {pagination &&
+                                                            pagination(
+                                                                pendingDocuments
+                                                                    ?.data
+                                                                    ?.pagination,
+                                                                setPage
+                                                            )}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )}
+                                            )}
                                     </div>
                                 )
                             }}

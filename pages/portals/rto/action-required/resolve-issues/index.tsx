@@ -1,13 +1,11 @@
 import {
-    LoadingAnimation,
+    ConfigTabs,
     Select,
-    TabNavigation,
-    TabProps,
-    TechnicalError,
+    TabConfig,
     TextInput,
 } from '@components'
 import { RtoLayoutV2 } from '@layouts'
-import { ResolvedIssuesHistoryTab } from '@partials'
+import { FilteredIssues, ResolvedIssuesHistoryTab } from '@partials'
 import { ActionRequiredHeader } from '@partials/rto-v2/components'
 import { ProblematicStudent } from '@partials/rto/student'
 import { RtoApi } from '@queries'
@@ -45,8 +43,6 @@ const checkFilteredDataLength = (filter: any) => {
 }
 
 export const ResolveIssues = () => {
-
-
     const [selectedPriority, setSelectedPriority] = useState('all')
     const [selectedCategory, setSelectedCategory] = useState('all')
     const [searchQuery, setSearchQuery] = useState('')
@@ -107,19 +103,18 @@ export const ResolveIssues = () => {
         setItemPerPage(Number(router.query.pageSize || 50))
     }, [router])
 
-    const tabs: TabProps[] = [
+    const tabs: TabConfig[] = [
         {
+            value: 'open-issues',
             label: 'Open Issues',
-            href: { pathname: 'resolve-issues', query: { tab: 'open-issues' } },
-            element: <ProblematicStudent />,
+            count: count?.data?.openIssues,
+            component: ProblematicStudent,
         },
         {
+            value: 'resolved-history',
             label: 'Resolved History',
-            href: {
-                pathname: 'resolve-issues',
-                query: { tab: 'resolved-history' },
-            },
-            element: <ResolvedIssuesHistoryTab />,
+            count: count?.data?.totalResolved,
+            component: ResolvedIssuesHistoryTab,
         },
     ]
 
@@ -204,25 +199,22 @@ export const ResolveIssues = () => {
                 </div>
             </div>
 
-            {filteredDataLength && filteredIssues.isError && <TechnicalError />}
-            {filteredDataLength ? (
-                filteredIssues.isLoading ? (
-                    <LoadingAnimation />
+            <div className="mt-5">
+                {filteredDataLength ? (
+                    <FilteredIssues
+                        data={filteredIssues.data}
+                        isLoading={filteredIssues.isLoading || filteredIssues?.isFetching}
+                        isError={filteredIssues.isError}
+                        isSuccess={filteredIssues.isSuccess}
+                        itemPerPage={itemPerPage}
+                        setItemPerPage={setItemPerPage}
+                        page={page}
+                        setPage={setPage}
+                    />
                 ) : (
-                    filteredIssues.isSuccess && <>Here should be the table</>
-                )
-            ) : null}
-
-            {!filteredDataLength && (
-                <TabNavigation tabs={tabs}>
-                    {({ header, element }: any) => (
-                        <div>
-                            <div>{header}</div>
-                            <div className="p-4">{element}</div>
-                        </div>
-                    )}
-                </TabNavigation>
-            )}
+                    <ConfigTabs tabs={tabs} defaultValue="open-issues" />
+                )}
+            </div>
         </div>
     )
 }

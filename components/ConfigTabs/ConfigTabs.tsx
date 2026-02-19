@@ -78,7 +78,7 @@ export const ConfigTabs = ({
                         maxWidth: width ? `${width}px` : '100%',
                         boxSizing: 'border-box',
                     }}
-                    className={`w-full overflow-x-auto border border-gray-300 shadow mb-2 bg-slate-100 p-1.5 rounded-xl h-auto gap-1 flex justify-start ${tabsClasses}`}
+                    className={`w-full overflow-x-auto border border-gray-300 shadow mb-2 bg-slate-100 p-1.5 h-auto gap-1 rounded-md py-1 flex justify-start ${tabsClasses}`}
                 >
                     {visibleTabs.map((tab) => {
                         const Icon = tab?.icon
@@ -86,7 +86,7 @@ export const ConfigTabs = ({
                             <TabsTrigger
                                 key={tab.value}
                                 value={tab.value}
-                                className={`whitespace-nowrap data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-[#044866] transition-all py-3 rounded-lg flex flex-col md:flex-row items-center gap-1 md:gap-2 ${tabsTriggerClasses}`}
+                                className={`whitespace-nowrap data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-[#044866] transition-all flex flex-col md:flex-row items-center gap-1 md:gap-2 py-1.5 rounded-md ${tabsTriggerClasses}`}
                             >
                                 {Icon && <Icon className="w-4 h-4" />}
                                 <span>{tab.label}</span>

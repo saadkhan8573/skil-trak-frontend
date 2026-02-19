@@ -20,7 +20,7 @@ import { StudentCellInfo } from '@partials/rto/student/components'
 import { ChangeStudentStatusModal } from '@partials/sub-admin/students/modals'
 import { RtoApi, RtoV2Api } from '@queries'
 import { Student } from '@types'
-import { BookOpen } from 'lucide-react'
+import { BookOpen, Building2 } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
 import { LuMessageSquare } from 'react-icons/lu'
@@ -137,6 +137,27 @@ export const StudentsNeedWorkplaceTab = () => {
             header: () => <span>Student</span>,
         },
         {
+            accessorKey: 'industry',
+            header: () => <span>Industry</span>,
+            cell: (info: any) => {
+                return (
+                    <div className='min-w-44'>
+                        {info?.row?.original?.industries &&
+                            info?.row?.original?.industries.length > 0 ? (
+                            <div className="flex items-center gap-2">
+                                <Building2 className="h-3.5 w-3.5 text-gray-500" />
+                                <span className="font-semibold text-sm">
+                                    {info?.row?.original?.industries?.[0]?.industry?.user?.name}
+                                </span>
+                            </div>
+                        ) : (
+                            <Typography center>---</Typography>
+                        )}
+                    </div>
+                )
+            },
+        },
+        {
             accessorKey: 'progress',
             header: () => <span>Status</span>,
             cell: ({ row }) => {
@@ -180,48 +201,7 @@ export const StudentsNeedWorkplaceTab = () => {
                 </div>
             ),
         },
-        {
-            accessorKey: 'industry',
-            header: () => <span>Industry</span>,
-            cell: (info: any) => {
-                // const industry = info.row.original?.industries
 
-                // const appliedIndustry = studentsListWorkplace(
-                //     info.row.original?.workplace
-                // )
-
-                // return industry && industry?.length > 0 ? (
-                //     <SubadminStudentIndustries
-                //         workplace={info.row.original?.workplace}
-                //         industries={info.row.original?.industries}
-                //     />
-                // ) : info.row.original?.workplace &&
-                //   info.row.original?.workplace?.length > 0 &&
-                //   appliedIndustry ? (
-                //     <SubadminStudentIndustries
-                //         workplace={info.row.original?.workplace}
-                //         industries={info.row.original?.industries}
-                //     />
-                // ) : (
-                //     <Typography center>---</Typography>
-                // )
-                return (
-                    <>
-                        {info?.row?.original?.industries &&
-                        info?.row?.original?.industries.length > 0 ? (
-                            <>
-                                {
-                                    info?.row?.original?.industries?.[0]
-                                        ?.industry?.user?.name
-                                }
-                            </>
-                        ) : (
-                            <Typography center>---</Typography>
-                        )}
-                    </>
-                )
-            },
-        },
 
         {
             accessorKey: 'createdAt',
@@ -280,7 +260,7 @@ export const StudentsNeedWorkplaceTab = () => {
                             columns={columns}
                             data={data.data}
                             quickActions={quickActionsElements}
-                            // enableRowSelection
+                        // enableRowSelection
                         >
                             {({
                                 table,

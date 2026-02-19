@@ -8,6 +8,7 @@ import {
 import { useNotification } from '@hooks'
 import { RtoApi } from '@queries'
 import { ellipsisText } from '@utils'
+import moment from 'moment'
 import {
     AlertTriangle,
     Building2,
@@ -178,8 +179,7 @@ export const ResolveIssuesCompletedModal = ({
                                     <div className="flex items-center gap-2">
                                         <Calendar className="h-3 w-3 text-gray-500" />
                                         <p className="text-sm">
-                                            {/* {selectedIssue.reportedDate} */}
-                                            date
+                                            {moment(student?.createdAt).format('Do MMM YYYY')}
                                         </p>
                                     </div>
                                 </div>
@@ -189,8 +189,7 @@ export const ResolveIssuesCompletedModal = ({
                                     </p>
                                     <span className="inline-flex items-center px-2 py-1 text-xs border border-amber-200 text-amber-600 rounded-md bg-amber-50">
                                         <Clock className="h-3 w-3 mr-1" />
-                                        {/* {selectedIssue.daysOpen} days */}
-                                        days
+                                        {moment().diff(moment(student?.createdAt), 'days')} days
                                     </span>
                                 </div>
                             </div>
@@ -247,11 +246,10 @@ export const ResolveIssuesCompletedModal = ({
                             <button
                                 onClick={onClickResolve}
                                 disabled={!resolution.trim()}
-                                className={`px-4 py-2 text-sm rounded-lg text-white flex items-center gap-2 transition ${
-                                    resolution.trim()
-                                        ? 'bg-gradient-to-r from-successNew to-emerald-600 hover:bg-gradient-to-r hover:from-primaryNew hover:to-emerald-600 hover:opacity-90'
+                                className={`px-4 py-2 text-sm rounded-lg text-white flex items-center gap-2 transition ${resolution.trim()
+                                        ? 'bg-linear-to-r from-successNew to-emerald-600 hover:bg-linear-to-r hover:from-primaryNew hover:to-emerald-600 hover:opacity-90'
                                         : 'bg-gray-300 cursor-not-allowed'
-                                }`}
+                                    }`}
                             >
                                 <CheckCircle2 className="h-4 w-4" />
                                 Mark as Resolved

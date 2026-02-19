@@ -347,7 +347,7 @@ const RtoStudents: NextPageWithLayout = (props: Props) => {
                                     showError={false}
                                 />
                             </div>
-                            <div className="flex-shrink-0">{filterAction}</div>
+                            <div className="shrink-0">{filterAction}</div>
                         </div>
                         <Filter<StudentsFilterType>
                             component={StudentFilters}

@@ -58,7 +58,7 @@ export const ProblematicStudent = () => {
             accessorKey: 'student.title',
             cell: (info) => (
                 <span title={info.row?.original?.title}>
-                    {ellipsisText(info.row?.original?.title, 15)}
+                    {info.row?.original?.title}
                 </span>
             ),
             header: () => <span>Issue</span>,
@@ -69,6 +69,7 @@ export const ProblematicStudent = () => {
                 <>
                     {info.row?.original?.student && (
                         <StudentCellInfo
+                            link={`/portals/rto/students-and-placements/all-students/${info?.row?.original?.student?.id}/detail`}
                             student={info.row?.original?.student}
                         />
                     )}
@@ -84,20 +85,19 @@ export const ProblematicStudent = () => {
                     <div className="flex items-center gap-2">
                         <GraduationCap className="h-3 w-3 text-gray-500" />
                         <p className="text-xs truncate">
-                            {`${
-                                info.row.original?.workplaceRequest?.courses[0]
-                                    ?.code ?? '————'
-                            } - ${
-                                info.row.original?.workplaceRequest?.courses[0]
+                            {`${info.row.original?.workplaceRequest?.courses![0]
+                                ?.code ?? '————'
+                                } - ${info.row.original?.workplaceRequest?.courses![0]
                                     ?.title ?? '————'
-                            }`}
+                                }`}
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <Building2 className="h-3 w-3 text-gray-500" />
                         <p className="text-xs text-[#64748b] truncate">
                             {info.row.original?.workplaceRequest
-                                ?.industries?.[0]?.industry?.user?.name ??
+                                ?.workplaceApprovaleRequest
+                                ?.[0]?.industry?.user?.name ??
                                 '————'}
                         </p>
                     </div>
@@ -106,7 +106,7 @@ export const ProblematicStudent = () => {
         },
         {
             accessorKey: 'requestedBy',
-            header: () => <span>Reported By</span>,
+            header: () => <span>Reported</span>,
             cell: (info) => (
                 <div className="space-y-1">
                     <div className="flex items-center gap-2 text-sm">
@@ -131,13 +131,13 @@ export const ProblematicStudent = () => {
             ),
         },
         {
-            accessorKey: 'createdAt',
-            header: () => <span>Created At</span>,
+            accessorKey: 'action',
+            header: () => <span>Action</span>,
             cell: ({ row }) => (
                 <Button
                     text="resolve"
-                    className="!bg-gradient-to-r from-successNew to-emerald-600"
-                    variant="secondary"
+                    variant="error"
+                    className='bg-red-600'
                     Icon={FaRegCheckCircle}
                     onClick={() => onClickCompleted(row.original)}
                 />
@@ -213,12 +213,8 @@ export const ProblematicStudent = () => {
     return (
         <>
             {modal && modal}
-            <div className="flex flex-col gap-y-4 mb-32">
-                {/* <PageHeading
-                    title={'Problematic Students'}
-                    subtitle={'List of Problematic Students'}
-                ></PageHeading> */}
-                <div className="mt-5 grid grid-cols-4 gap-4">
+            <div className="flex flex-col gap-y-2 mb-32">
+                <div className="grid grid-cols-4 gap-3">
                     {stats.map((stat) => (
                         <CountCard stat={stat} />
                     ))}
@@ -232,7 +228,7 @@ export const ProblematicStudent = () => {
                             columns={columns}
                             data={data.data}
                             quickActions={quickActionsElements}
-                            // enableRowSelection
+                        // enableRowSelection
                         >
                             {({
                                 table,

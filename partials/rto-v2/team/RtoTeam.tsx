@@ -1,6 +1,6 @@
 'use client'
 
-import { Badge, Button, Card } from '@components'
+import { Badge, Button, Card, ConfigTabs, TabConfig } from '@components'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs'
 import {
     Briefcase,
@@ -13,69 +13,75 @@ import {
 import { useRouter } from 'next/router'
 import { Suspense, useEffect, useState } from 'react'
 import { ActionRequiredHeader } from '../components'
+import { RtoApi } from '@queries'
 import { AssignedCoordinators } from './AssignedCoordinators'
 import { MyCoordinators } from './MyCoordinators'
 
-const TEAM_TABS = [
-    {
-        value: 'rto',
-        label: 'Your RTO Team',
-        icon: Briefcase,
-        count: '10',
-        queryParam: 'my-team',
-        component: MyCoordinators,
-        showEmpty: false,
-    },
-    {
-        value: 'skiltrak',
-        label: 'Skiltrak Support Team',
-        icon: Headphones,
-        count: '11',
-        queryParam: 'skiltrak-team',
-        component: AssignedCoordinators,
-        showEmpty: false,
-        banner: {
-            icon: LifeBuoy,
-            title: 'Dedicated Skiltrak Support',
-            description:
-                'These Skiltrak team members are allocated to support your RTO with platform setup, automation, compliance, and technical assistance. They have read-only or limited access to help you succeed.',
-        },
-    },
-]
+const SkiltrakSupportWrapper = () => {
+    const banner = {
+        icon: LifeBuoy,
+        title: 'Dedicated Skiltrak Support',
+        description:
+            'These Skiltrak team members are allocated to support your RTO with platform setup, automation, compliance, and technical assistance. They have read-only or limited access to help you succeed.',
+    }
+    return (
+        <>
+            <div className="p-4 bg-primary/12 border-b border-primary/22">
+                <div className="flex items-start gap-3">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                        <banner.icon className="h-5 w-5 text-accent" />
+                    </div>
+                    <div className="flex-1">
+                        <h3 className="font-semibold text-sm mb-1">
+                            {banner.title}
+                        </h3>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                            {banner.description}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <AssignedCoordinators />
+        </>
+    )
+}
 
 export const RtoTeam = () => {
     const router = useRouter()
     const [mount, setMount] = useState(false)
-    const [activeTab, setActiveTab] = useState('rto')
 
-    // Sync tab with URL query parameter
-    useEffect(() => {
-        const tab = router.query.tab
-        const matchedTab = TEAM_TABS.find((t) => t.queryParam === tab)
-        if (matchedTab) {
-            setActiveTab(matchedTab.value)
-        }
-    }, [router.query.tab])
+    const rtoTeamData = RtoApi.Coordinator.useList({
+        skip: 0,
+        limit: 1,
+    })
 
-    const handleTabChange = (value: string) => {
-        setActiveTab(value)
-        // Update URL when tab changes
-        const selectedTab = TEAM_TABS.find((t) => t.value === value)
-        if (selectedTab) {
-            router.push(
-                {
-                    pathname: 'team',
-                    query: { tab: selectedTab.queryParam },
-                },
-                undefined,
-                { shallow: true }
-            )
-        }
-    }
+    const skiltrakTeamData = RtoApi.Coordinator.useRtoAssignedCoordinators({
+        skip: 0,
+        limit: 1,
+    })
+
+    const tabs: TabConfig[] = [
+        {
+            value: 'rto',
+            label: 'Your RTO Team',
+            icon: Briefcase,
+            count: rtoTeamData?.data?.pagination?.totalResult || 0,
+            component: MyCoordinators,
+        },
+        {
+            value: 'skiltrak',
+            label: 'Skiltrak Support Team',
+            icon: Headphones,
+            count: skiltrakTeamData?.data?.pagination?.totalResult || 0,
+            component: SkiltrakSupportWrapper,
+        },
+    ]
 
     useEffect(() => {
         setMount(true)
     }, [])
+
+    if (!mount) return null
 
     return (
         <Suspense fallback={''}>
@@ -114,76 +120,11 @@ export const RtoTeam = () => {
                         </div>
                     </div>
                     <div className="p-0">
-                        <Tabs
-                            value={activeTab}
-                            onValueChange={handleTabChange}
+                        <ConfigTabs
+                            defaultValue={tabs[0].value}
+                            tabs={tabs}
                             className="w-full"
-                        >
-                            <div className="border-b bg-muted/20 mt-6">
-                                <TabsList className="w-full justify-start rounded-none h-auto p-0 bg-transparent">
-                                    {TEAM_TABS.map((tab) => {
-                                        const Icon = tab.icon
-                                        return (
-                                            <TabsTrigger
-                                                key={tab.value}
-                                                value={tab.value}
-                                                className="rounded-none border-b-2 border-transparent data-[state=active]:border-accent data-[state=active]:bg-accent/5 px-6 py-4"
-                                            >
-                                                <Icon className="h-4 w-4 mr-2" />
-                                                {tab.label}
-                                                <Badge
-                                                    text={tab.count}
-                                                    variant="primaryNew"
-                                                />
-                                            </TabsTrigger>
-                                        )
-                                    })}
-                                </TabsList>
-                            </div>
-
-                            {TEAM_TABS.map((tab) => {
-                                const Component = tab.component
-                                return (
-                                    <TabsContent
-                                        key={tab.value}
-                                        value={tab.value}
-                                        className="m-0"
-                                    >
-                                        {tab.banner && (
-                                            <div className="p-4 bg-primary/12 border-b border-primary/22">
-                                                <div className="flex items-start gap-3">
-                                                    <div className="p-2 rounded-lg bg-primary/10">
-                                                        <tab.banner.icon className="h-5 w-5 text-accent" />
-                                                    </div>
-                                                    <div className="flex-1">
-                                                        <h3 className="font-semibold text-sm mb-1">
-                                                            {tab.banner.title}
-                                                        </h3>
-                                                        <p className="text-xs text-muted-foreground leading-relaxed">
-                                                            {
-                                                                tab.banner
-                                                                    .description
-                                                            }
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-                                        {tab.showEmpty ? (
-                                            <div className="p-12 text-center">
-                                                <Users className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
-                                                <p className="text-muted-foreground">
-                                                    No {tab.label.toLowerCase()}{' '}
-                                                    found
-                                                </p>
-                                            </div>
-                                        ) : (
-                                            <Component />
-                                        )}
-                                    </TabsContent>
-                                )
-                            })}
-                        </Tabs>
+                        />
                     </div>
                 </Card>
             </div>

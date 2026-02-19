@@ -4,24 +4,21 @@ import {
     Card,
     EmptyData,
     LoadingAnimation,
-    StudentExpiryDaysLeft,
     Table,
-    TableAction,
     TableActionOption,
-    TechnicalError,
-    UserCreatedAt,
+    TechnicalError
 } from '@components'
-import { PageHeading } from '@components/headings'
 import { ColumnDef } from '@tanstack/react-table'
-import { FaCheckCircle, FaEdit, FaEye } from 'react-icons/fa'
+import { FaEdit, FaEye } from 'react-icons/fa'
 
 import { EditTimer } from '@components/StudentTimer/EditTimer'
+import { ResolveIssuesCompletedModal } from '@partials/rto-v2'
+import { CountCard } from '@partials/rto-v2/cards/CountCard'
+import { StudentCellInfo } from '@partials/rto/student/components'
 import { ChangeStudentStatusModal } from '@partials/sub-admin/students/modals'
 import { RtoApi } from '@queries'
 import { Student, StudentIssue } from '@types'
-import { useRouter } from 'next/router'
-import { ReactElement, useEffect, useState } from 'react'
-import { MdBlock } from 'react-icons/md'
+import { ellipsisText } from '@utils'
 import {
     AlertTriangle,
     Building2,
@@ -31,14 +28,12 @@ import {
     GraduationCap,
     User,
 } from 'lucide-react'
-import { CountCard } from '@partials/rto-v2/cards/CountCard'
-import { ResolveIssuesCompletedModal } from '@partials/rto-v2'
-import { FaRegCheckCircle } from 'react-icons/fa'
-import { SectorCell, StudentCellInfo } from '@partials/rto/student/components'
-import { LuFileCheck } from 'react-icons/lu'
-import { ellipsisText } from '@utils'
-import { PriorityBadge } from '../components'
 import moment from 'moment'
+import { useRouter } from 'next/router'
+import { ReactElement, useState } from 'react'
+import { LuFileCheck } from 'react-icons/lu'
+import { MdBlock } from 'react-icons/md'
+import { PriorityBadge } from '../components'
 
 export const ResolvedIssuesHistoryTab = () => {
     const router = useRouter()
@@ -46,7 +41,7 @@ export const ResolvedIssuesHistoryTab = () => {
 
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
-    const { isLoading, data, isError, refetch } =
+    const { isLoading, data, isError } =
         RtoApi.Students.useRtoResolveIssuesStudents({
             search: 'status:resolved',
             skip: itemPerPage * page - itemPerPage,
@@ -123,6 +118,7 @@ export const ResolvedIssuesHistoryTab = () => {
                 <>
                     {info.row?.original?.student && (
                         <StudentCellInfo
+                            link={`/portals/rto/students-and-placements/all-students/${info?.row?.original?.student?.id}/detail`}
                             student={info.row?.original?.student}
                         />
                     )}
@@ -138,9 +134,9 @@ export const ResolvedIssuesHistoryTab = () => {
                     <div className="flex items-center gap-2">
                         <GraduationCap className="h-3 w-3 text-gray-500" />
                         <p className="text-xs truncate">
-                            {`${info.row.original?.workplaceRequest?.courses[0]
-                                    ?.code ?? '————'
-                                } - ${info.row.original?.workplaceRequest?.courses[0]
+                            {`${info.row.original?.workplaceRequest?.courses![0]
+                                ?.code ?? '————'
+                                } - ${info.row.original?.workplaceRequest?.courses![0]
                                     ?.title ?? '————'
                                 }`}
                         </p>
@@ -192,6 +188,34 @@ export const ResolvedIssuesHistoryTab = () => {
         //     ),
         // },
 
+        {
+            accessorKey: 'resolvedAt',
+            header: () => <span>Resolution Date</span>,
+            cell: (info) => (
+                <div className="flex items-center gap-2">
+                    <Calendar className="h-3 w-3 text-green-500" />
+                    <span className="text-xs">
+                        {info.row.original?.resolutionDate ? moment(String(info.row.original?.resolutionDate)).format('Do MMM YYYY') : '—'}
+                    </span>
+                </div>
+            ),
+        },
+        {
+            accessorKey: 'resolutionTime',
+            header: () => <span>Resolution Time</span>,
+            cell: (info) => {
+                const created = moment(info.row.original?.createdAt)
+                const resolved = moment(info.row.original?.resolutionDate + "")
+                const days = resolved.diff(created, 'days')
+                const hours = resolved.diff(created, 'hours') % 24
+                return (
+                    <span className="inline-flex items-center px-2 py-1 text-xs border border-blue-200 text-blue-600 rounded-md bg-blue-50">
+                        <Clock className="h-3 w-3 mr-1" />
+                        {days > 0 ? `${days}d ${hours}h` : `${hours}h`}
+                    </span>
+                )
+            },
+        },
         {
             accessorKey: 'actions',
             header: () => <span>Actions</span>,
@@ -279,7 +303,7 @@ export const ResolvedIssuesHistoryTab = () => {
                     title={'Problematic Students'}
                     subtitle={'List of Problematic Students'}
                 ></PageHeading> */}
-                <div className="mt-5 grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-4 gap-4">
                     {stats.map((stat) => (
                         <CountCard stat={stat} />
                     ))}

@@ -1,10 +1,9 @@
-import { CommonApi } from '@queries'
-import React, { ReactNode, useState } from 'react'
-import { AppointmentCard } from '../card'
-import { CalendarIcon, Plus } from 'lucide-react'
-import { Button } from '@components/ui/button'
 import { LoadingAnimation } from '@components'
-import { AppointmentViewModal } from '@components/Appointment/AppointmentModal'
+import { Button } from '@components'
+import { CommonApi } from '@queries'
+import { CalendarIcon, Plus } from 'lucide-react'
+import { ReactNode, useState } from 'react'
+import { AppointmentCard } from '../card'
 
 export const UpcomingAppointments = () => {
     const [scheduleOpen, setScheduleOpen] = useState(false)
@@ -27,8 +26,8 @@ export const UpcomingAppointments = () => {
             ) : !isError && (
                 <div className="flex flex-col items-center justify-center py-16 text-center">
                     <div className="relative mb-4">
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-2xl blur-xl opacity-20"></div>
-                        <div className="relative h-20 w-20 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
+                        <div className="absolute inset-0 bg-linear-to-br from-primary to-accent rounded-2xl blur-xl opacity-20"></div>
+                        <div className="relative h-20 w-20 rounded-2xl bg-linear-to-br from-primary/10 to-accent/10 flex items-center justify-center">
                             <CalendarIcon className="h-10 w-10 text-primary/40" />
                         </div>
                     </div>
@@ -39,7 +38,7 @@ export const UpcomingAppointments = () => {
                             : "Schedule your first appointment to get started"}
                     </p> */}
                     <Button
-                        className="gap-2 bg-gradient-to-r from-primary to-accent hover:shadow-glow-primary"
+                        variant={"primaryNew"}
                         onClick={() => setScheduleOpen(true)}
                     >
                         <Plus className="h-4 w-4" />

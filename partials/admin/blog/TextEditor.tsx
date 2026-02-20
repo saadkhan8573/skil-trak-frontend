@@ -41,7 +41,7 @@ type BlogFormData = {
     featuredImage?: any
     content?: string
     isFeatured: boolean
-    faq: Array<{
+    blogQuestions: Array<{
         question: string
         answer: string
     }>
@@ -106,12 +106,12 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
         featuredImage: yup.mixed().optional(),
         content: yup.string().default('').optional(),
         isFeatured: yup.boolean().default(false),
-        faq: yup
+        blogQuestions: yup
             .array()
             .of(
                 yup.object({
-                    question: yup.string().default(''),
-                    answer: yup.string().default(''),
+                    question: yup.string().default('').optional(),
+                    answer: yup.string().default('').optional(),
                 })
             )
             .default([])
@@ -131,12 +131,12 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
             featuredImage: undefined,
             content: '',
             isFeatured: false,
-            faq: [],
+            blogQuestions: [{ question: '', answer: '' }],
         },
     })
     const { append, remove, fields } = useFieldArray({
         control: formMethods.control,
-        name: 'faq'
+        name: 'blogQuestions'
     })
 
     const onSubmit: any = (data: any, publish: boolean) => {
@@ -194,35 +194,9 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
         }
 
         // FAQ's validation
-        // if (data?.faq && data?.faq?.length > 0) {
-        let isAnyFaqInvalid = false
 
-        data?.faq &&
-            data?.faq?.forEach((faq: any, index: number) => {
-                if (faq?.question === '' || faq?.answer === '') {
-                    formMethods.setError(
-                        `faq.${index}.question` as any,
-                        {
-                            type: 'FAQs',
-                            message: 'FAQ question should not be empty',
-                        }
-                    )
 
-                    formMethods.setError(
-                        `faq.${index}.answer` as any,
-                        {
-                            type: 'FAQs',
-                            message: 'FAQ answer should not be empty',
-                        }
-                    )
 
-                    isAnyFaqInvalid = true
-                }
-            })
-
-        if (isAnyFaqInvalid) {
-            return
-        }
 
         validationSchema
             .validate(data)
@@ -239,7 +213,14 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                 formData.append('category', data?.category)
                 formData.append('author', data?.author)
                 formData.append('shortDescription', data?.shortDescription)
-                formData.append('faq', JSON.stringify(data?.faq) || '')
+                const filteredBlogQuestions = data?.blogQuestions?.filter(
+                    (q: any) =>
+                        q.question.trim() !== '' || q.answer.trim() !== ''
+                ) || []
+                formData.append(
+                    'blogQuestions',
+                    JSON.stringify(filteredBlogQuestions)
+                )
 
                 //POST Api Req
                 createBlog(formData)
@@ -425,26 +406,24 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                                     <div className="flex flex-col w-3/4">
                                         <TextInput
                                             // {...formMethods.register(
-                                            //     `faq.${index}.question`
+                                            //     `blogQuestions.${index}.question`
                                             // )}
-                                            name={`faq.${index}.question`}
+                                            name={`blogQuestions.${index}.question`}
                                             label={`FAQ ${index + 1} Question`}
                                             placeholder="Enter Question"
                                             defaultValue={faq.question}
-                                            required
                                         />
-                                        <InputErrorMessage name={'faq'} />
+                                        <InputErrorMessage name={'blogQuestions'} />
                                         <TextArea
                                             // {...formMethods.register(
-                                            //     `faq.${index}.answer`
+                                            //     `blogQuestions.${index}.answer`
                                             // )}
-                                            name={`faq.${index}.answer`}
+                                            name={`blogQuestions.${index}.answer`}
                                             label={`FAQ ${index + 1} Answer`}
                                             placeholder="Enter Answer"
-                                            required
                                         />
 
-                                        <InputErrorMessage name={'faq'} />
+                                        <InputErrorMessage name={'blogQuestions'} />
                                     </div>
                                     <div className="mt-7">
                                         <Button

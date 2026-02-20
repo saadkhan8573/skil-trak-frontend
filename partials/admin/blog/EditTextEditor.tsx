@@ -67,8 +67,8 @@ const validationSchema = yup.object({
         .array()
         .of(
             yup.object({
-                question: yup.string().required('FAQ question should not be empty'),
-                answer: yup.string().required('FAQ answer should not be empty'),
+                question: yup.string().default('').optional(),
+                answer: yup.string().default('').optional(),
             })
         )
         .required(),
@@ -161,7 +161,7 @@ export default function EditTextEditor({
             isFeatured: blogData?.isFeatured || false,
             category: [],
             content: blogData?.content || '',
-            blogQuestions: blogData?.blogQuestions || [
+            blogQuestions: blogData?.blogQuestions && blogData?.blogQuestions?.length > 0 ? blogData?.blogQuestions : [
                 { question: '', answer: '' },
             ],
         } as FormValues,
@@ -782,28 +782,9 @@ export default function EditTextEditor({
             return
         }
 
-        let isAnyFaqInvalid = false
 
-        data?.blogQuestions &&
-            data?.blogQuestions?.forEach((faq: any, index: number) => {
-                if (faq?.question === '' || faq?.answer === '') {
-                    formMethods.setError(`faq.${index}.question`, {
-                        type: 'FAQs',
-                        message: 'FAQ question should not be empty',
-                    })
 
-                    formMethods.setError(`faq.${index}.answer`, {
-                        type: 'FAQs',
-                        message: 'FAQ answer should not be empty',
-                    })
 
-                    isAnyFaqInvalid = true
-                }
-            })
-
-        if (isAnyFaqInvalid) {
-            return
-        }
 
         const values = {
             featuredImage: Array.isArray(data?.featuredImage)
@@ -817,7 +798,12 @@ export default function EditTextEditor({
             isFeatured: isFeatured.toString(),
             category: data?.category,
             shortDescription: data?.shortDescription,
-            blogQuestions: JSON.stringify(data?.blogQuestions),
+            blogQuestions: JSON.stringify(
+                data?.blogQuestions?.filter(
+                    (q: any) =>
+                        q.question.trim() !== '' || q.answer.trim() !== ''
+                ) || []
+            ),
         }
 
         if (tagIds) {
@@ -963,7 +949,6 @@ export default function EditTextEditor({
                                                         } Question`}
                                                     placeholder="Enter Question"
                                                     defaultValue={faq.question}
-                                                    required
                                                 />
                                                 <InputErrorMessage
                                                     name={'blogQuestions'}
@@ -973,8 +958,7 @@ export default function EditTextEditor({
                                                     label={`FAQ ${index + 1
                                                         } Answer`}
                                                     placeholder="Enter Answer"
-                                                    // defaultValue={faq.answer}
-                                                    required
+                                                // defaultValue={faq.answer}
                                                 />
                                                 <InputErrorMessage
                                                     name={'blogQuestions'}

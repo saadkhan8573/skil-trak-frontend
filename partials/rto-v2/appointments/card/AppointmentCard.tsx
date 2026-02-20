@@ -1,45 +1,24 @@
 import { Card, Portal } from '@components'
+import { RescheduleAppointmentModal } from '@components/Appointment/UpcomingAppointmentCard/RescheduleAppointmentModal'
+import { Badge } from '@components/ui/badge'
+import { Button } from '@components/ui/button'
 import { Separator } from '@components/ui/separator'
-import { cn, isLessThan24HoursDifference } from '@utils'
 import {
     AlertCircle,
     Ban,
-    Bell,
-    Calendar,
-    CalendarIcon,
     CheckCircle2,
     Clock,
     Edit,
     FileText,
     Link2,
-    Mail,
     MapPin,
-    MoreVertical,
     Phone,
-    Plus,
-    Repeat,
-    Trash2,
     Users,
     Video,
-    XCircle,
+    XCircle
 } from 'lucide-react'
-import {
-    Dropdown,
-    DropdownContent,
-    DropdownItem,
-    DropdownSeparator,
-    DropdownTrigger,
-} from '@components'
-import { Button } from '@components/ui/button'
-import { Badge } from '@components/ui/badge'
-import { MouseEvent, ReactNode, useEffect, useState } from 'react'
-import { ScrollArea } from '@radix-ui/react-scroll-area'
-import { AppointmentViewModal } from '@components/Appointment/AppointmentModal'
-import { CommonApi } from '@queries'
-import { useNotification } from '@hooks'
-import { PulseLoader } from 'react-spinners'
+import { ReactNode, useState } from 'react'
 import { CancelRtoAppointmentModal } from '../modals'
-import { RescheduleAppointmentModal } from '@components/Appointment/UpcomingAppointmentCard/RescheduleAppointmentModal'
 export type AppointmentStatus = 'upcoming' | 'completed' | 'cancelled'
 export type AppointmentType = 'meeting' | 'phone' | 'video' | 'site-visit'
 export interface Appointment {
@@ -179,7 +158,7 @@ export const AppointmentCard = ({
             <div className="">
                 <div className="space-y-3">
                     {/* Date Header */}
-                    <div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 pb-2">
+                    <div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80 pb-2">
                         <div className="flex items-center gap-3">
                             <h3 className="font-semibold text-lg">
                                 {formatDate(appointment?.date)}
@@ -244,7 +223,7 @@ export const AppointmentCard = ({
                                         <div className="flex items-start justify-between gap-3">
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2 mb-2 flex-wrap">
-                                                    <Badge className="gap-1 bg-gradient-to-r from-primary to-accent text-white border-0 shadow-sm">
+                                                    <Badge className="gap-1 bg-linear-to-r from-primary to-accent text-white border-0 shadow-sm">
                                                         <Clock className="h-3 w-3" />
                                                         {appointment?.startTime}
                                                     </Badge>
@@ -403,7 +382,7 @@ export const AppointmentCard = ({
                                             {appointment?.joinUrl && (
                                                 <Button
                                                     size="sm"
-                                                    className="gap-2 bg-gradient-to-r from-primary to-accent hover:shadow-glow-primary transition-all hover-lift"
+                                                    className="gap-2 bg-linear-to-r from-primary to-accent hover:shadow-glow-primary transition-all hover-lift"
                                                 >
                                                     <Video className="h-3.5 w-3.5" />
                                                     Join Now

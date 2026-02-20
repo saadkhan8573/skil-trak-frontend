@@ -1,12 +1,12 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
-import { CourseProgramData } from '@types'
+import { CourseProgramData, RtoApprovalWorkplaceRequest } from '@types'
 
 const PREFIX = 'rtos/'
 export const approvalRequestEndpoints = (
     builder: EndpointBuilder<BaseQueryFn, string, string>
 ) => ({
-    approvalRequestDetail: builder.query<any, number>({
+    approvalRequestDetail: builder.query<RtoApprovalWorkplaceRequest, number>({
         query: (id) => `${PREFIX}workplace-approval/${id}/get-details`,
         providesTags: ['RTO'],
     }),

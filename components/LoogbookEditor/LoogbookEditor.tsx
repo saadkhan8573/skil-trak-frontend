@@ -8,7 +8,7 @@ import { useNotification } from '@hooks'
 import { SubAdminApi } from '@queries'
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import { MdCancel } from 'react-icons/md'
-import { uuid } from 'uuidv4'
+import { v4 as uuid } from 'uuid';
 import {
     LogbookSignature,
     LoogbookSidebar,
@@ -418,7 +418,7 @@ export const LoogbookEditor = ({
     return (
         <>
             <ShowErrorNotifications result={saveLogbookResult} />
-            <div className="!w-full bg-white flex justify-center items-center flex-col w-full min-w-full lg:min-w-[700px] xl:min-w-[1024px] max-w-7xl border rounded-md">
+            <div className="w-full! bg-white flex justify-center items-center flex-col min-w-full lg:min-w-[700px] xl:min-w-[1024px] max-w-7xl border rounded-md">
                 <div className="w-full py-3.5 px-4 flex justify-between items-center">
                     <Typography variant="h4" capitalize>
                         {pagesCount?.data?.filename || null}

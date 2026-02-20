@@ -1,8 +1,8 @@
-import { Button, Card, NoData } from '@components'
+import { Button, Card, NoData, ViewDocumentModal, ViewImageModal } from '@components'
 import { Skeleton } from '@components/ui/skeleton'
-import { DocumentsView } from '@hooks'
 import { RtoV2Api } from '@queries'
 import { ellipsisText } from '@utils'
+import { RootState } from '@redux/store'
 import {
     CheckCircle2,
     ClipboardCheck,
@@ -10,6 +10,8 @@ import {
     FileText,
     X,
 } from 'lucide-react'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 export const RtoChecklistDetail = ({
     courseId,
@@ -20,6 +22,27 @@ export const RtoChecklistDetail = ({
     courseId: number
     studentId: number
 }) => {
+    const { studentDetail } = useSelector((state: RootState) => state.student)
+    const [viewDocument, setViewDocument] = useState<{
+        url: string
+        title: string
+        isOpen: boolean
+    }>({
+        url: '',
+        title: '',
+        isOpen: false,
+    })
+
+    const [viewImage, setViewImage] = useState<{
+        url: string
+        title: string
+        isOpen: boolean
+    }>({
+        url: '',
+        title: '',
+        isOpen: false,
+    })
+
     const getRtoCourseChecklist =
         RtoV2Api.ApprovalRequest.getRtoCourseChecklist(
             { courseId, studentId, industryUserId },
@@ -27,8 +50,6 @@ export const RtoChecklistDetail = ({
                 skip: !courseId || !studentId || !industryUserId,
             }
         )
-
-    const { documentsViewModal, onFileClicked } = DocumentsView()
 
     const getColorClasses = (color: string) => {
         const colors: Record<
@@ -65,9 +86,47 @@ export const RtoChecklistDetail = ({
         getRtoCourseChecklist?.data?.files?.[0]
 
     const extension = file?.split('.')?.pop()?.split('?')[0]
+
+    const handleViewFile = (fileUrl: string, fileName: string) => {
+        const ext = fileUrl?.split('.')?.pop()?.split('?')?.[0]?.toLowerCase()
+        console.log({ fileUrl })
+        if (ext === 'pdf') {
+            setViewDocument({
+                url: fileUrl,
+                title: fileName,
+                isOpen: true,
+            })
+        } else if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext || '')) {
+            setViewImage({
+                url: fileUrl,
+                title: fileName,
+                isOpen: true,
+            })
+        } else {
+            window.open(fileUrl, '_blank')
+        }
+    }
+
     return (
         <>
-            {documentsViewModal}
+            <ViewDocumentModal
+                open={viewDocument.isOpen}
+                onOpenChange={(open) =>
+                    setViewDocument((prev) => ({ ...prev, isOpen: open }))
+                }
+                fileUrl={viewDocument.url}
+                title={viewDocument.title}
+                student={studentDetail}
+            />
+
+            <ViewImageModal
+                open={viewImage.isOpen}
+                onOpenChange={(open) =>
+                    setViewImage((prev) => ({ ...prev, isOpen: open }))
+                }
+                fileUrl={viewImage.url}
+                title={viewImage.title}
+            />
             <Card
                 className={`border-2 ${colors.border} hover:shadow-lg transition-all`}
             >
@@ -166,23 +225,14 @@ export const RtoChecklistDetail = ({
                                     <Button
                                         outline
                                         variant="primaryNew"
-                                        onClick={() => {
-                                            if (
-                                                extension === 'docx' ||
-                                                extension === 'doc'
-                                            ) {
-                                                const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(
-                                                    file
-                                                )}&embedded=true`
-                                                window.open(viewerUrl, '_blank')
-                                            } else {
-                                                onFileClicked({
-                                                    file,
-                                                    extension,
-                                                    type: 'all',
-                                                })
-                                            }
-                                        }}
+                                        onClick={() =>
+                                            handleViewFile(
+                                                file,
+                                                getRtoCourseChecklist.data
+                                                    ?.title ||
+                                                'RTO Facility Checklist'
+                                            )
+                                        }
                                     >
                                         <ExternalLink className="w-3.5 h-3.5" />
                                         View

@@ -21,7 +21,7 @@ import { ShowNotificationModal, ShowWarningModal } from '@partials'
 import { CommonApi } from '@queries'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-import { uuid } from 'uuidv4'
+import { v4 as uuid } from 'uuid';
 
 export default function ESign() {
     const [mounted, setMounted] = useState(false)
@@ -176,14 +176,14 @@ export default function ESign() {
                             existingItem?.location?.x < 0
                                 ? 1
                                 : existingItem?.location?.x > Number(width)
-                                ? Number(width) - existingItem?.size?.width
-                                : existingItem?.location?.x,
+                                    ? Number(width) - existingItem?.size?.width
+                                    : existingItem?.location?.x,
                         y:
                             existingItem?.location?.y < 0
                                 ? 1
                                 : existingItem?.location?.y > Number(height)
-                                ? Number(height) - existingItem?.size?.height
-                                : existingItem?.location?.y,
+                                    ? Number(height) - existingItem?.size?.height
+                                    : existingItem?.location?.y,
                     },
                 })
 
@@ -212,14 +212,14 @@ export default function ESign() {
                         existingItem?.location?.x < 0
                             ? 1
                             : existingItem?.location?.x > Number(width)
-                            ? Number(width) - existingItem?.size?.width
-                            : existingItem?.location?.x,
+                                ? Number(width) - existingItem?.size?.width
+                                : existingItem?.location?.x,
                     y:
                         existingItem?.location?.y < 0
                             ? 1
                             : existingItem?.location?.y > Number(height)
-                            ? Number(height) - existingItem?.size?.height
-                            : existingItem?.location?.y,
+                                ? Number(height) - existingItem?.size?.height
+                                : existingItem?.location?.y,
                 },
             })
 
@@ -351,16 +351,16 @@ export default function ESign() {
                     ? newLocY - 3
                     : 0
                 : newLocY - 12 < 0
-                ? 0
-                : newLocY - 12
+                    ? 0
+                    : newLocY - 12
 
             const xValue = isCheckBox
                 ? newLocX > 0
                     ? newLocX - 3
                     : 0
                 : newLocX - 60 < 0
-                ? 1
-                : newLocX - 60
+                    ? 1
+                    : newLocX - 60
             const tab = {
                 id: newId,
                 page: data?.over?.id,
@@ -598,11 +598,10 @@ export default function ESign() {
                                 const tabField = updatedItems[itemIndex?.[1]]
                                 notification.error({
                                     title: `${itemIndex?.[2]} Error`,
-                                    description: `${tabField?.columnName} ${
-                                        tabField?.type
-                                    } ${itemIndex?.[2]} ${tab
-                                        ?.slice(1)
-                                        ?.join(' ')}`,
+                                    description: `${tabField?.columnName} ${tabField?.type
+                                        } ${itemIndex?.[2]} ${tab
+                                            ?.slice(1)
+                                            ?.join(' ')}`,
                                     dissmissTimer: 5500,
                                 })
                             })
@@ -735,7 +734,7 @@ export default function ESign() {
             <DndContext
                 modifiers={[restrictToWindowEdges]}
                 onDragEnd={handleDragEnd}
-                // collisionDetection={pointerWithin}
+            // collisionDetection={pointerWithin}
             >
                 <div className="bg-gray-200">
                     <div className="z-20 fixed w-full left-0 bottom-0 p-4 bg-white flex justify-end gap-x-2">
@@ -812,9 +811,9 @@ export default function ESign() {
                                                 id={`document-template-${i}`}
                                                 key={i}
                                                 ref={(el: any) =>
-                                                    (scrollTargetRef.current[
-                                                        i
-                                                    ] = el as any)
+                                                (scrollTargetRef.current[
+                                                    i
+                                                ] = el as any)
                                                 }
                                             >
                                                 <div

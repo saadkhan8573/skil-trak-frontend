@@ -1,7 +1,7 @@
 import { RtoLayoutV2 } from '@layouts'
-import { PlacementApprovalDetail } from '@partials'
 import { CheckSquare } from 'lucide-react'
 import React, { ReactElement } from 'react'
+import { PlacementApprovalDetail } from '@partials'
 
 const ApprovePlacementDetailPage = () => {
     return <PlacementApprovalDetail />

@@ -7,7 +7,8 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@components/ui/dialog'
-import { FileCheck } from 'lucide-react'
+import { Student } from '@types'
+import { AlertTriangle, Download, FileCheck } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 
@@ -17,6 +18,7 @@ interface ViewDocumentModalProps {
     onOpenChange: (open: boolean) => void
     title?: string
     subtitle?: string
+    student?: Student | null
 }
 
 export function ViewDocumentModal({
@@ -25,6 +27,7 @@ export function ViewDocumentModal({
     onOpenChange,
     title = 'Document Preview',
     subtitle = 'Document Review',
+    student,
 }: ViewDocumentModalProps) {
     const [totalPages, setTotalPages] = useState(0)
     const [currentPage, setCurrentPage] = useState(1)
@@ -120,8 +123,8 @@ export function ViewDocumentModal({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-4xl! p-0 overflow-hidden border-none shadow-2xl">
-                <DialogHeader className="w-full bg-primaryNew p-6 text-white sm:text-left">
+            <DialogContent className="max-w-4xl! p-0 overflow-hidden border-none shadow-2xl max-h-[90vh] flex flex-col">
+                <DialogHeader className="w-full bg-primaryNew px-6 py-3 text-white sm:text-left">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center shadow-inner">
                             <FileCheck className="w-6 h-6 text-white" />
@@ -133,6 +136,11 @@ export function ViewDocumentModal({
                             <p className="text-white/80 text-xs font-medium uppercase tracking-wider">
                                 {subtitle}
                             </p>
+                            {student?.user?.name && (
+                                <span className="block text-white/60 text-[10px] font-normal normal-case mt-0.5">
+                                    Student: {student.user.name}
+                                </span>
+                            )}
                         </div>
                     </div>
                 </DialogHeader>
@@ -156,19 +164,7 @@ export function ViewDocumentModal({
                             rel={'noreferrer'}
                             className="inline-flex items-center gap-2 text-sm font-semibold text-info hover:text-info-dark transition-colors px-3 py-1.5 rounded-lg hover:bg-info/5"
                         >
-                            <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-10l-4-4m0 0l-4 4m4-4v12"
-                                />
-                            </svg>
+                            <Download className="w-4 h-4" />
                             Download
                         </a>
                     </div>
@@ -193,49 +189,53 @@ export function ViewDocumentModal({
                     </div>
                 </div>
 
-                <div className="min-w-[595px] h-auto relative z-9999">
-                    <div>
-                        <div className="max-h-[55vh] overflow-auto custom-scrollbar flex justify-center">
-                            {mounted && !error ? (
-                                <div>
-                                    {loading && (
-                                        <div className="min-w-[595px] min-h-[842px] flex items-center justify-center">
-                                            <p className="text-gray-500 font-semibold">
-                                                Loading PDF...
-                                            </p>
-                                        </div>
-                                    )}
-                                    <canvas
-                                        ref={canvasRef}
-                                        className={loading ? 'hidden' : 'block'}
-                                    />
-                                </div>
-                            ) : (
-                                <div className="p-2">
-                                    <Typography>
-                                        {error ? (
-                                            <span className="text-red-500 font-bold">
-                                                {error}
-                                            </span>
-                                        ) : (
-                                            <>
-                                                The document you provided is not in PDF
-                                                format. Please download the file and
-                                                view it in the appropriate application.
-                                                <br /> If you need any help please
-                                                contact us at:{' '}
-                                                <span className="font-bold text-red-500 underline">
-                                                    tech@skiltrak.com.au
-                                                </span>
-                                            </>
-                                        )}
-                                    </Typography>
+                <div className="flex-1 overflow-y-auto overflow-x-auto bg-gray-100/50 relative z-9999 flex justify-center p-4">
+                    {mounted && !error ? (
+                        <div>
+                            {loading && (
+                                <div className="min-h-40 flex items-center justify-center">
+                                    <div className="flex flex-col items-center gap-3">
+                                        <div className="w-8 h-8 border-4 border-[#044866] border-t-transparent rounded-full animate-spin" />
+                                        <p className="text-[#044866] font-semibold animate-pulse">
+                                            Loading Document...
+                                        </p>
+                                    </div>
                                 </div>
                             )}
+                            <canvas
+                                ref={canvasRef}
+                                className={loading ? 'hidden' : 'block'}
+                            />
                         </div>
-                    </div>
+                    ) : (
+                        <div className="h-auto flex flex-col items-center justify-center px-8 text-center bg-slate-50">
+                            <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-4">
+                                <AlertTriangle className="w-8 h-8 text-red-500" />
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">
+                                Preview Unavailable
+                            </h3>
+                            <p className="text-slate-600 mb-6 max-w-md">
+                                {error?.includes('fetch') ||
+                                    error?.includes('Network')
+                                    ? "We couldn't load the preview for this document due to browser security restrictions."
+                                    : 'This document cannot be previewed directly.'}
+                                <br />
+                                Please download the file to view it.
+                            </p>
+                            <a
+                                href={fileUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-[#044866] text-white rounded-lg hover:bg-[#03364d] transition-colors font-medium"
+                            >
+                                <Download className="w-4 h-4" />
+                                Download Document
+                            </a>
+                        </div>
+                    )}
                 </div>
             </DialogContent>
-        </Dialog>
+        </Dialog >
     )
 }

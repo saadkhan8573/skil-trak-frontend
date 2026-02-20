@@ -44,14 +44,13 @@ export function WorkplaceBio({
     const supervisor: Supervisor =
         latestWorkplaceApprovaleRequest?.industry?.supervisors?.[0]
 
-    const course = workplace?.courses?.[0]
-
     const isCompletedWP = [
         WorkplaceCurrentStatus.Completed,
         WorkplaceCurrentStatus.Cancelled,
         WorkplaceCurrentStatus.Rejected,
         WorkplaceCurrentStatus.Terminated,
         WorkplaceCurrentStatus.NoResponse,
+        WorkplaceCurrentStatus.PlacementStarted,
     ].includes(workplace?.currentStatus)
 
     return (

@@ -3,7 +3,7 @@ import { useCreateCheckoutSessionMutation } from '@queries'
 import { AuthUtils, getStripe } from '@utils'
 import { ShowErrorNotifications } from '@components/ShowErrorNotifications'
 import { Button } from '@components/buttons'
-import { uuid } from 'uuidv4'
+import { v4 as uuid } from 'uuid';
 import { useRouter } from 'next/router'
 export const PaymentModal = ({ onCancel }: any) => {
     const router = useRouter()

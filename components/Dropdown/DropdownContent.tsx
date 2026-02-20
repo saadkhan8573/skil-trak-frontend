@@ -23,7 +23,7 @@ export const DropdownContent = ({
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className={`absolute z-50! mt-2 w-48 rounded-md bg-white! shadow-lg ring-1 ring-gray-200  focus:outline-none ${alignment}`}
+                    className={`absolute z-99999! mt-2 w-48 rounded-md bg-white! shadow-lg ring-1 ring-gray-200  focus:outline-none ${alignment}`}
                 >
                     <div className="py-1">{children}</div>
                 </motion.div>

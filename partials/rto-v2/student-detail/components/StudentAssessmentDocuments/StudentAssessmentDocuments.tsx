@@ -16,7 +16,7 @@ interface DocumentsProps {
 
 import { Result } from '@constants'
 import { useSubadminProfile } from '@hooks'
-import { getCourseResult } from '@utils'
+import { getCourseResult, removeEmptyValues } from '@utils'
 import { StudentDocumentsTabSkeleton } from '../../skeletonLoader'
 import { CourseResultModule, SubmitAssessmentSubmission } from './components'
 
@@ -58,12 +58,11 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
     })
 
     const documents = RtoV2Api.StudentDocuments.getStudentDocumentsList(
-        {
-            // search: `${filterKey}:true`,
+        removeEmptyValues({
             studentId: student.id,
             courseId: selectedCourse?.id ?? 0,
-            industryId: Number(appliedIndustry),
-        },
+            industryId: appliedIndustry ? Number(appliedIndustry) : null,
+        }),
         {
             skip: !student.id || !selectedCourse?.id,
         }

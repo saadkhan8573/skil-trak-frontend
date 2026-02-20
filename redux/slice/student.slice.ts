@@ -5,7 +5,7 @@ import { IWorkplaceIndustries } from 'redux/queryTypes'
 type initialStateType = {
     studentDetail: Student | null
     selectedCourse: Course | null
-    isCourseLoading : boolean
+    isCourseLoading: boolean
     selectedWorkplace: IWorkplaceIndustries | null
     assessmentSubmittedCount: number
     assessmentReSubmittedCount: number
@@ -24,7 +24,7 @@ export const studentSlice = createSlice({
     name: 'student-slice',
     initialState,
     reducers: {
-        setStudentDetail: (state, action: PayloadAction<Student>) => {
+        setStudentDetail: (state, action: PayloadAction<Student | null>) => {
             state.studentDetail = action.payload
         },
         setSelectedCourse: (state, action: PayloadAction<Course>) => {

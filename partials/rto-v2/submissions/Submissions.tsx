@@ -1,51 +1,30 @@
-import React from 'react'
-import { ActionRequiredHeader } from '../components'
+import { ConfigTabs, TabConfig } from '@components'
 import { FileText } from 'lucide-react'
-import { SubmissionsRequiringReview } from './SubmissionsRequiringReview'
-import { TabNavigation, TabProps } from '@components'
-import { ReviewCompleted } from './ReviewCompleted'
 import { RtoApi } from '@queries'
+import { ActionRequiredHeader } from '../components'
+import { ReviewCompleted } from './ReviewCompleted'
+import { SubmissionsRequiringReview } from './SubmissionsRequiringReview'
 
 export const Submissions = () => {
     const count = RtoApi.Submissions.getRtoSubmissionsCount()
 
-    const tabs: TabProps[] = [
+    const tabs: TabConfig[] = [
         {
+            value: 'submissions-requiring-review',
             label: 'Submissions Requiring Review',
-            href: {
-                pathname: 'submissions',
-                query: {
-                    tab: 'submissions-requiring-review',
-                    page: 1,
-                    pageSize: 50,
-                },
-            },
-            badge: {
-                text: count.data?.pending,
-                loading: count?.isLoading,
-            },
-            element: <SubmissionsRequiringReview />,
+            count: count.data?.pending || 0,
+            component: SubmissionsRequiringReview,
         },
         {
+            value: 'review-completed',
             label: 'Review Completed',
-            href: {
-                pathname: 'submissions',
-                query: {
-                    tab: 'review-completed',
-                    page: 1,
-                    pageSize: 50,
-                },
-            },
-            badge: {
-                text: count.data?.competent,
-                loading: count?.isLoading,
-            },
-            element: <ReviewCompleted />,
+            count: count.data?.competent || 0,
+            component: ReviewCompleted,
         },
     ]
+
     return (
         <div>
-            {' '}
             <ActionRequiredHeader
                 icon={FileText}
                 title="Student Submissions"
@@ -57,16 +36,11 @@ export const Submissions = () => {
                 gradientTo="primaryNew"
                 iconGradient="from-primary to-primary-light"
             />
-            <TabNavigation tabs={tabs}>
-                {({ header, element }: any) => {
-                    return (
-                        <div>
-                            <div>{header}</div>
-                            <div className="p-4">{element}</div>
-                        </div>
-                    )
-                }}
-            </TabNavigation>
+
+            <ConfigTabs
+                tabs={tabs}
+                defaultValue="submissions-requiring-review"
+            />
         </div>
     )
 }

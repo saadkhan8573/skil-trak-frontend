@@ -44,7 +44,7 @@ export const RtoLayoutV2 = ({
                 {/* Main content area */}
                 <div className="flex flex-1 flex-col overflow-hidden">
                     {/* Navbar - fixed (does not move when content scrolls) */}
-                    <div className="shrink-0 relative z-20">
+                    <div className="shrink-0 relative z-50">
                         <RtoNavbarV2
                             onOpenSidebar={() => setSidebarOpen(true)}
                             titleProps={titleProps}

@@ -1,7 +1,7 @@
-import { Badge, Button, Card, NoData } from '@components'
+import { Badge, Button, Card, NoData, ViewDocumentModal, ViewImageModal } from '@components'
 import { Skeleton } from '@components/ui/skeleton'
-import { DocumentsView } from '@hooks'
 import { RtoV2Api } from '@queries'
+import { RootState } from '@redux/store'
 import { ellipsisText } from '@utils'
 import {
     CheckCircle2,
@@ -9,6 +9,8 @@ import {
     ExternalLink,
     FileText,
 } from 'lucide-react'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 export const SkiltrakChecklistDetail = ({
     courseId,
@@ -19,7 +21,26 @@ export const SkiltrakChecklistDetail = ({
     courseId: number
     industryUserId: number
 }) => {
-    const { documentsViewModal, onFileClicked } = DocumentsView()
+    const { studentDetail } = useSelector((state: RootState) => state.student)
+    const [viewDocument, setViewDocument] = useState<{
+        url: string
+        title: string
+        isOpen: boolean
+    }>({
+        url: '',
+        title: '',
+        isOpen: false,
+    })
+
+    const [viewImage, setViewImage] = useState<{
+        url: string
+        title: string
+        isOpen: boolean
+    }>({
+        url: '',
+        title: '',
+        isOpen: false,
+    })
 
     const getSkiltrakCourseChecklist =
         RtoV2Api.ApprovalRequest.getSkiltrakCourseChecklist(
@@ -71,9 +92,47 @@ export const SkiltrakChecklistDetail = ({
 
     const signer = getSkiltrakCourseChecklist?.data?.document?.signers?.[0]
 
+    const handleViewFile = (fileUrl: string, fileName: string) => {
+        const ext = fileUrl?.split('.')?.pop()?.split('?')?.[0]?.toLowerCase()
+
+        if (ext === 'pdf') {
+            setViewDocument({
+                url: fileUrl,
+                title: fileName,
+                isOpen: true,
+            })
+        } else if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext || '')) {
+            setViewImage({
+                url: fileUrl,
+                title: fileName,
+                isOpen: true,
+            })
+        } else {
+            window.open(fileUrl, '_blank')
+        }
+    }
+
     return (
         <>
-            {documentsViewModal}
+            <ViewDocumentModal
+                open={viewDocument.isOpen}
+                onOpenChange={(open) =>
+                    setViewDocument((prev) => ({ ...prev, isOpen: open }))
+                }
+                fileUrl={viewDocument.url}
+                title={viewDocument.title}
+                student={studentDetail}
+            />
+
+            <ViewImageModal
+                open={viewImage.isOpen}
+                onOpenChange={(open) =>
+                    setViewImage((prev) => ({ ...prev, isOpen: open }))
+                }
+                fileUrl={viewImage.url}
+                title={viewImage.title}
+            />
+
             <Card
                 className={`border-2 ${colors.border} hover:shadow-lg transition-all`}
             >
@@ -124,14 +183,6 @@ export const SkiltrakChecklistDetail = ({
                                         {signer?.user?.name || industryName}
                                     </div>
                                 </div>
-                                {/* <div>
-                                    <div className="text-xs text-slate-600 mb-1">
-                                        Date
-                                    </div>
-                                    <div className={colors.text}>
-                                        {'checklist.signedDate'}
-                                    </div>
-                                </div> */}
                             </div>
                         </div>
 
@@ -158,23 +209,18 @@ export const SkiltrakChecklistDetail = ({
                                     </div>
                                     <div className="flex gap-2 flex-shrink-0">
                                         <Button
-                                            onClick={() => {
-                                                onFileClicked({
+                                            onClick={() =>
+                                                handleViewFile(
                                                     file,
-                                                    extension,
-                                                    type: 'all',
-                                                })
-                                            }}
+                                                    'SkilTrak Facility Checklist'
+                                                )
+                                            }
                                             outline
                                             variant="primaryNew"
                                         >
                                             <ExternalLink className="w-3.5 h-3.5" />
                                             View
                                         </Button>
-                                        {/* <Button variant="primaryNew">
-                                    <Download className="w-3.5 h-3.5" />
-                                    Download
-                                </Button> */}
                                     </div>
                                 </div>
                             </div>

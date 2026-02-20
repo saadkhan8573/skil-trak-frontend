@@ -1,4 +1,4 @@
-import { TabNavigation, TabProps } from '@components'
+import { ConfigTabs, TabConfig } from '@components'
 import { RtoApi } from '@queries'
 import { School } from 'lucide-react'
 import { ActionRequiredHeader } from '../components'
@@ -9,44 +9,27 @@ import { RejectedPlacement } from './RejectedPlacement'
 export const RtoWpApprovalPlacements = () => {
     const count = RtoApi.Workplace.wpApprovalRequestCount()
 
-    const tabs: TabProps[] = [
+    const tabs: TabConfig[] = [
         {
+            value: 'pending',
             label: 'Pending',
-            href: {
-                pathname: 'approve-placement',
-                query: { tab: 'pending' },
-            },
-            badge: {
-                text: count?.data?.pending,
-                loading: count.isLoading,
-            },
-            element: <PendingPlacement />,
+            count: count?.data?.pending || 0,
+            component: PendingPlacement,
         },
         {
+            value: 'approved',
             label: 'Approved',
-            href: {
-                pathname: 'approve-placement',
-                query: { tab: 'approved' },
-            },
-            badge: {
-                text: count?.data?.approved,
-                loading: count.isLoading,
-            },
-            element: <ApprovedPlacement />,
+            count: count?.data?.approved || 0,
+            component: ApprovedPlacement,
         },
         {
+            value: 'rejected',
             label: 'Rejected',
-            href: {
-                pathname: 'approve-placement',
-                query: { tab: 'rejected' },
-            },
-            badge: {
-                text: count?.data?.rejected,
-                loading: count.isLoading,
-            },
-            element: <RejectedPlacement />,
+            count: count?.data?.rejected || 0,
+            component: RejectedPlacement,
         },
     ]
+
     return (
         <div>
             <ActionRequiredHeader
@@ -61,16 +44,10 @@ export const RtoWpApprovalPlacements = () => {
                 iconGradient="from-primaryNew to-primaryNew"
             />
 
-            <TabNavigation tabs={tabs}>
-                {({ header, element }: any) => {
-                    return (
-                        <div>
-                            <div>{header}</div>
-                            <div className="p-4">{element}</div>
-                        </div>
-                    )
-                }}
-            </TabNavigation>
+            <ConfigTabs
+                tabs={tabs}
+                defaultValue="pending"
+            />
         </div>
     )
 }

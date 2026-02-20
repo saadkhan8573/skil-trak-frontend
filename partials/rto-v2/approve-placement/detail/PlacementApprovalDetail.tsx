@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
     Button,
@@ -8,8 +8,10 @@ import {
 } from '@components'
 import { TooltipProvider } from '@components/ui/tooltip'
 import { RtoV2Api } from '@queries'
+import { setStudentDetail } from '@redux/slice/student.slice'
 import { ChevronDown } from 'lucide-react'
 import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
 import {
     DecisionPanel,
     DetailedView,
@@ -21,16 +23,27 @@ import { PlacementApprovalSkeleton } from './skeletonLoader'
 
 export const PlacementApprovalDetail = () => {
     const [showDetails, setShowDetails] = useState(true)
+    const dispatch = useDispatch()
 
     const router = useRouter()
 
     const approvalRequestDetail =
         RtoV2Api.ApprovalRequest.approvalRequestDetail(
-            Number(router?.query?.id),
-            {
-                skip: !router?.query?.id,
-            }
+            Number(router?.query?.id), {
+        }
         )
+
+    useEffect(() => {
+        if (
+            approvalRequestDetail?.isSuccess &&
+            approvalRequestDetail?.data?.student
+        ) {
+            dispatch(setStudentDetail(approvalRequestDetail?.data?.student))
+        }
+        return () => {
+            dispatch(setStudentDetail(null))
+        }
+    }, [approvalRequestDetail?.data, approvalRequestDetail?.isSuccess])
 
     return (
         <>
@@ -40,7 +53,7 @@ export const PlacementApprovalDetail = () => {
             ) : approvalRequestDetail?.data &&
                 approvalRequestDetail?.isSuccess ? (
                 <TooltipProvider>
-                    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 space-y-3">
+                    <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-slate-50 space-y-3">
                         {/* Header */}
                         <PlacementRequestHeader
                             approval={approvalRequestDetail?.data}
@@ -66,7 +79,7 @@ export const PlacementApprovalDetail = () => {
                                                 onClick={() =>
                                                     setShowDetails(true)
                                                 }
-                                                className="w-full bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white h-14 md:h-16 shadow-lg hover:shadow-xl transition-all group text-base md:text-lg"
+                                                className="w-full bg-linear-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white h-14 md:h-16 shadow-lg hover:shadow-xl transition-all group md:text-lg"
                                             >
                                                 <span>
                                                     View Detailed Information

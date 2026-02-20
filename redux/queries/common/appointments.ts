@@ -66,7 +66,7 @@ export const appointmentsEndpoints = (
             url: `${PREFIX}/cancel/${id}`,
             method: 'PATCH',
         }),
-        invalidatesTags: ['Appointments'],
+        invalidatesTags: ['Appointments', 'RTOAppointment'],
     }),
     addNoteOnAppointment: builder.mutation<Appointment, any>({
         query: (body) => ({

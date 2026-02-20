@@ -42,7 +42,7 @@ export const PlacementRequestHeader = ({
     }
 
     return (
-        <div className="bg-[#044866] text-white sticky top-0 z-50 shadow-2xl border-b-4 border-[#F7A619]">
+        <div className="bg-[#044866] text-white sticky top-0 z-40 shadow-2xl border-b-4 border-[#F7A619]">
             {modal}
             <div className="container mx-auto p-3 space-y-2.5">
                 <div className="flex items-center justify-between flex-wrap gap-2">
@@ -57,7 +57,7 @@ export const PlacementRequestHeader = ({
                                 </button>
                             </TooltipTrigger>
                             <TooltipContent>
-                                <p>Back to Dashboard</p>
+                                <p>Go back</p>
                             </TooltipContent>
                         </Tooltip>
                         <div className="min-w-0">
@@ -78,6 +78,16 @@ export const PlacementRequestHeader = ({
                             <h1 className="text-white truncate">
                                 {approval?.industry?.user?.name}
                             </h1>
+                            {approval?.student?.user?.name && (
+                                <div className="mt-1.5 flex items-center gap-2">
+                                    <span className="text-white/60 text-xs font-medium uppercase tracking-wider">
+                                        Student:
+                                    </span>
+                                    <p className="text-xl md:text-xl font-bold text-white truncate">
+                                        {approval?.student?.user?.name}
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -97,11 +107,11 @@ export const PlacementRequestHeader = ({
                     <ProgressIndicator
                         currentStep={
                             approval?.workplaceRequest?.currentStatus ===
-                            WorkplaceCurrentStatus.AwaitingWorkplaceResponse
+                                WorkplaceCurrentStatus.AwaitingWorkplaceResponse
                                 ? 6
                                 : approval?.rtoApprovalStatus === 'approved'
-                                ? 7
-                                : 6
+                                    ? 7
+                                    : 6
                         }
                     />
                 </div>

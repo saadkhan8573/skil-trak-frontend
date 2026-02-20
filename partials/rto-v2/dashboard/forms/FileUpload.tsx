@@ -2,7 +2,7 @@ import { Typography } from '@components'
 import { Upload } from 'lucide-react'
 import React, { useCallback } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { uuid } from 'uuidv4'
+import { v4 as uuid } from 'uuid';
 
 export interface FileWithId {
     id: string

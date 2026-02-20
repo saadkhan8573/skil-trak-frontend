@@ -11,7 +11,7 @@ import {
 import { StatusType, UserStatus } from '@types'
 import { AuthUtils } from '@utils'
 import { useRouter } from 'next/router'
-import { uuid } from 'uuidv4'
+import { v4 as uuid } from 'uuid';
 
 interface AccountStatusProps {
     status: StatusType

@@ -1,18 +1,18 @@
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react';
 
-import type { NextPage } from 'next'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import type { NextPage } from 'next';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-import { AccountStatus, LoginForm, Typography } from '@components'
+import { AccountStatus, LoginForm, Typography } from '@components';
 
-import { UserRoles } from '@constants'
-import { LoginErrorAfterHoursModal } from '@modals'
-import { AuthApi } from '@queries'
-import { LoginCredentials, StatusType, UserStatus } from '@types'
-import { AuthUtils, isBrowser } from '@utils'
-import Head from 'next/head'
-import Image from 'next/image'
+import { UserRoles } from '@constants';
+import { LoginErrorAfterHoursModal } from '@modals';
+import { AuthApi } from '@queries';
+import { LoginCredentials, StatusType, UserStatus } from '@types';
+import { AuthUtils, isBrowser } from '@utils';
+import Head from 'next/head';
+import Image from 'next/image';
 
 const Login: NextPage = () => {
     const router = useRouter()
@@ -237,7 +237,7 @@ const Login: NextPage = () => {
                             />
                         </div>
                     </div>
-                    <div className="flex flex-col flex-grow mt-8 md:w-1/2 md:px-12 px-4">
+                    <div className="flex flex-col grow mt-8 md:w-1/2 md:px-12 px-4">
                         <Link href={'/'} className="mb-10">
                             <Image
                                 src="/images/auth/skiltrak-logo.png"
@@ -268,9 +268,9 @@ const Login: NextPage = () => {
                                 <Typography variant="small" medium>
                                     Don&apos;t have account?{' '}
                                     <Link href="/auth/signup" className="text-link">
-                                        
-                                            Create Account
-                                        
+
+                                        Create Account
+
                                     </Link>
                                 </Typography>
                             </div>

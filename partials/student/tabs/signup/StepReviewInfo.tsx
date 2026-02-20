@@ -20,7 +20,7 @@ import { AuthUtils, SignUpUtils } from '@utils'
 import moment from 'moment'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
-import { uuid } from 'uuidv4'
+import { v4 as uuid } from 'uuid';
 
 const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!

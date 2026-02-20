@@ -1,7 +1,7 @@
 import { InputErrorMessage } from '@components/inputs/components'
 import { useNotification } from '@hooks'
 import React, { KeyboardEvent, useEffect, useRef, useState } from 'react'
-import { uuid } from 'uuidv4'
+import { v4 as uuid } from 'uuid';
 
 // Define interface for tag object
 interface Tag {

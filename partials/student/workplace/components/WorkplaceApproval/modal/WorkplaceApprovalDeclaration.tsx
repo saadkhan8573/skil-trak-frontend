@@ -8,7 +8,7 @@ import {
 import { useNotification } from '@hooks'
 import { RateCoordinatorModal } from '@partials/common'
 import { StudentApi, SubAdminApi } from '@queries'
-import { ReactElement, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import { MdCancel } from 'react-icons/md'
 import { WPApprovalStatus } from '../enum'
 
@@ -28,8 +28,6 @@ export const WorkplaceApprovalDeclaration = ({
     onCancel: (val?: boolean) => void
     subAdminUserId?: any
 }) => {
-    const [showRateModal, setShowRateModal] = useState(false)
-    const [modal, setModal] = useState<ReactElement | null>(null)
     const [isChecked, setIsChecked] = useState<boolean>(false)
     const [reqData, setReqData] = useState<{
         status: string
@@ -41,6 +39,7 @@ export const WorkplaceApprovalDeclaration = ({
         }
     )
 
+    const { notification } = useNotification()
     const changeWpApprovalReq = StudentApi.Workplace.changeStatusWpApprroval(
         { id: wpApprovalId, ...reqData },
         {
@@ -51,35 +50,42 @@ export const WorkplaceApprovalDeclaration = ({
     const [changeStatus, changeStatusResult] =
         SubAdminApi.Workplace.changeWpReqStatus()
 
-    const { notification } = useNotification()
-
-    const onChangeStatusClicked = async (status: WPApprovalStatus) => {
-        const res: any = await changeStatus({ id: wpApprovalId, status })
-
-        if (res?.data) {
+    useEffect(() => {
+        if (changeStatusResult.isSuccess) {
             notification.success({
                 title: 'Status Changed',
                 description: 'Status Changed Successfully',
             })
-            onCancel()
-            // setModal(
-            //     <GlobalModal>
-            //         <RateCoordinatorModal
-            //             userId={subAdminUserId}
-            //             onCloseModal={onCancel}
-            //         />
-            //     </GlobalModal>
-            // )
-            // if (onCancel) {
-            //     onCancel(true)
-            // }
+            onCancel(true)
+        }
+    }, [changeStatusResult])
+
+    const onChangeStatusClicked = async (status: WPApprovalStatus) => {
+        try {
+            const res: any = await changeStatus({
+                id: wpApprovalId,
+                status,
+            }).unwrap() // await the API
+            console.log('res', res)
+
+            if (res?.data) {
+                notification.success({
+                    title: 'Status Changed',
+                    description: 'Status Changed Successfully',
+                })
+
+                onCancel(true)
+                console.log('triggered')
+            }
+        } catch (error) {
+            console.error('Error changing status:', error)
         }
     }
+
     return (
         <>
             <ShowErrorNotifications result={changeStatusResult} />
             <GlobalModal>
-                {modal && modal}
                 <div className="relative max-w-5xl w-full">
                     <MdCancel
                         onClick={() => {

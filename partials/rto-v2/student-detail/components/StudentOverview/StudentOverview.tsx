@@ -27,6 +27,7 @@ export const StudentOverview = () => {
     )
     const dispatch = useAppDispatch()
     const onClose = () => {
+        console.log('CLOSING MODAL')
         setModal(null)
     }
     const role = getUserCredentials()?.role
@@ -42,7 +43,7 @@ export const StudentOverview = () => {
             }
         )
     useEffect(() => {
-        if (wpApprovalRequest?.data && role !== UserRoles.RTO) {
+        if (wpApprovalRequest?.data && role !== UserRoles.RTO && !modal) {
             setModal(
                 <WorkplaceApprovalModal
                     onCancel={onClose}

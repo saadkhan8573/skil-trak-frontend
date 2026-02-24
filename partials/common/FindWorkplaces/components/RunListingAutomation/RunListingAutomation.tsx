@@ -6,9 +6,13 @@ import { RunListingAutomationModal } from '../../modal'
 export const RunListingAutomation = ({
     studentAddress,
     sectorId,
+    btnText = 'Run Automation',
+    icon = true,
 }: {
     studentAddress?: string
     sectorId?: number
+    btnText?: string
+    icon?: boolean
 }) => {
     const [modal, setModal] = useState<ReactElement | null>(null)
 
@@ -27,9 +31,9 @@ export const RunListingAutomation = ({
         <div>
             {modal}
             <Button
-                text={'Run Automation'}
+                text={btnText}
                 variant="primaryNew"
-                Icon={MdAddBusiness}
+                Icon={icon ? MdAddBusiness : undefined}
                 onClick={() => {
                     onRunAutomationClicked()
                 }}

@@ -40,6 +40,7 @@ const adminTagTypes = [
     'TalentPoolProfiles',
     'AutoAssignWorkplace',
     'Industry-Course-Program',
+    'StudentForecast'
 ]
 
 const subadminTagTypes = [

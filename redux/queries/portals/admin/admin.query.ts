@@ -29,6 +29,7 @@ import { invoiceEndpoints } from './invoice'
 import { rtoEnquiryEndpoints } from './rto-enquiry'
 import { rtoMessageCenterEndpoints } from './rto-message-center'
 import { defaultDocumentsEndpoints } from './default-documents'
+import { industryReadinessEndpoints } from './industry-readiness'
 
 const PREFIX = 'admin'
 export const adminApi = apiSlice.injectEndpoints({
@@ -100,6 +101,7 @@ export const adminApi = apiSlice.injectEndpoints({
         ...appointmentTypeEndpoints(build),
         ...rtoMessageCenterEndpoints(build),
         ...defaultDocumentsEndpoints(build),
+        ...industryReadinessEndpoints(build),
     }),
     // overrideExisting: false,
 })
@@ -515,6 +517,11 @@ const {
     useDefaultDocumentDetailQuery,
     useUpdateDefaultDocumentMutation,
     useRemoveDefaultDocumentMutation,
+
+    // ---------- INDUSTRY READINESS ----------//
+    useGetStudentForecastQuery,
+    useGetForecastListQuery,
+    useGetForecastCountsQuery,
 } = adminApi
 
 export const AdminApi = {
@@ -927,5 +934,10 @@ export const AdminApi = {
         defaultDocumentDetail: useDefaultDocumentDetailQuery,
         updateDefaultDocument: useUpdateDefaultDocumentMutation,
         removeDefaultDocument: useRemoveDefaultDocumentMutation,
+    },
+    IndustryReadiness: {
+        useStudentForecast: useGetStudentForecastQuery,
+        useForecastList: useGetForecastListQuery,
+        useForecastCounts: useGetForecastCountsQuery,
     },
 }

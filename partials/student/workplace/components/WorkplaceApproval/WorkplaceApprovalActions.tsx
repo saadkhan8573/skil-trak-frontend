@@ -20,7 +20,6 @@ export const WorkplaceApprovalActions = ({
 }) => {
     const onCancelModal = () => setModal(null)
     const [modal, setModal] = useState<ReactElement | null>(null)
-
     const onApprovalClicked = (declaration: string, reqData?: any) => {
         setModal(
             <WorkplaceApprovalDeclaration

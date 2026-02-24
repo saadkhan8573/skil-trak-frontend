@@ -165,10 +165,10 @@ export const Select = forwardRef(
                 border: state.isFocused
                     ? `1px solid ${Colors.secondary.dark} !important`
                     : // formContext &&
-                    //   formContext.formState.touchedFields[name] &&
-                    formContext?.formState.errors[name]
-                        ? `1px solid red !important`
-                        : `1px solid ${Colors.secondary.dark} !important`,
+                      //   formContext.formState.touchedFields[name] &&
+                      formContext?.formState.errors[name]
+                      ? `1px solid red !important`
+                      : `1px solid ${Colors.secondary.dark} !important`,
                 '&:hover': {
                     border: state.isFocused
                         ? `1px solid ${Colors.muted} !important`
@@ -190,8 +190,8 @@ export const Select = forwardRef(
                 color: state.selectProps.isDisabled
                     ? '#d0d0d0'
                     : state.selectProps.menuIsOpen
-                        ? Colors.secondary.dark
-                        : Colors.muted.dark,
+                      ? Colors.secondary.dark
+                      : Colors.muted.dark,
                 fontSize: '12px',
             }),
             option: (base: any, state: any) => ({
@@ -257,8 +257,8 @@ export const Select = forwardRef(
                     ? event.map((e) => e.value)
                     : event
                 : onlyValue
-                    ? event?.value
-                    : event
+                  ? event?.value
+                  : event
         }
 
         const getSimpleSelect = (
@@ -336,12 +336,12 @@ export const Select = forwardRef(
                     {formContext
                         ? getControlledSelect()
                         : getSimpleSelect(
-                            (event: any) =>
-                                onChange && onChange(handleChange(event)),
-                            onBlur,
-                            defaultValue,
-                            value
-                        )}
+                              (event: any) =>
+                                  onChange && onChange(handleChange(event)),
+                              onBlur,
+                              defaultValue,
+                              value
+                          )}
                     {validationIcons && <ValidationIcon name={name} />}
                 </div>
 

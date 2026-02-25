@@ -1,57 +1,13 @@
-import { Card, ConfigTabs, Filter, TabConfig, TextInput } from '@components'
-import { PlacementsFilters } from '@components/Filters'
+import { Card, ConfigTabs, TabConfig } from '@components'
 import { RtoApi } from '@queries'
-import { RTOWorkplaceFormFilter } from '@types'
-import { checkFilteredDataLength } from '@utils'
-import debounce from 'lodash/debounce'
 import { FileText, School } from 'lucide-react'
-import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
 import { ActionRequiredHeader, Title } from '../components'
 import { ApprovedPlacement } from './ApprovedPlacement'
-import { FilteredPlacements } from './FilteredPlacements'
 import { PendingPlacement } from './PendingPlacement'
 import { RejectedPlacement } from './RejectedPlacement'
 
 export const RtoWpApprovalPlacements = () => {
-    const router = useRouter()
-    const [filterAction, setFilterAction] = useState(null)
-    const [filter, setFilter] = useState<RTOWorkplaceFormFilter>(
-        {} as RTOWorkplaceFormFilter
-    )
-
-    const [page, setPage] = useState(1)
-    const [itemPerPage, setItemPerPage] = useState(50)
-    const [studentName, setStudentName] = useState<any | null>(null)
-    const [studentNameValue, setStudentNameValue] = useState<string>('')
-
-    useEffect(() => {
-        setPage(Number(router.query.page || 1))
-        setItemPerPage(Number(router.query.pageSize || 50))
-    }, [router])
-
     const count = RtoApi.Workplace.wpApprovalRequestCount()
-
-    const filteredPlacements = RtoApi.Workplace.wpApprovalRequestByStatus(
-        {
-            search: `${JSON.stringify({
-                ...filter,
-                ...studentName,
-            })
-                .replaceAll('{', '')
-                .replaceAll('}', '')
-                .replaceAll('"', '')
-                .trim()}`,
-            skip: itemPerPage * page - itemPerPage,
-            limit: itemPerPage,
-        },
-        {
-            skip: !Object.keys({
-                ...filter,
-                ...(studentName?.name ? studentName : {}),
-            }).length,
-        }
-    )
 
     const tabs: TabConfig[] = [
         {
@@ -73,18 +29,6 @@ export const RtoWpApprovalPlacements = () => {
             component: RejectedPlacement,
         },
     ]
-
-    const delayedNameSearch = useCallback(
-        debounce((value) => {
-            setStudentName({ name: value })
-        }, 700),
-        []
-    )
-
-    const filteredDataLength = checkFilteredDataLength({
-        ...filter,
-        ...(studentName?.name ? studentName : {}),
-    })
 
     return (
         <div className="space-y-4">
@@ -111,46 +55,11 @@ export const RtoWpApprovalPlacements = () => {
                             title="Placement Management"
                             description="View, filter, and manage all placement requests"
                         />
-
-                        <div className="flex items-center gap-2">
-                            <div className="w-60">
-                                <TextInput
-                                    name={'name'}
-                                    placeholder={'Search by Student Name'}
-                                    value={studentNameValue}
-                                    onChange={(e: any) => {
-                                        setStudentNameValue(e.target.value)
-                                        delayedNameSearch(e.target.value)
-                                    }}
-                                    showError={false}
-                                />
-                            </div>
-                            <div className="shrink-0">{filterAction}</div>
-                        </div>
                     </div>
                 </div>
 
-                <div className="px-4 py-2">
-                    <Filter<RTOWorkplaceFormFilter>
-                        component={PlacementsFilters}
-                        initialValues={filter}
-                        setFilterAction={setFilterAction}
-                        setFilter={setFilter}
-                        filterKeys={['name', 'courseId']}
-                    />
-                </div>
-
                 <div>
-                    {filteredDataLength ? (
-                        <FilteredPlacements
-                            placements={filteredPlacements}
-                            setPage={setPage}
-                            itemPerPage={itemPerPage}
-                            setItemPerPage={setItemPerPage}
-                        />
-                    ) : (
-                        <ConfigTabs tabs={tabs} defaultValue="pending" />
-                    )}
+                    <ConfigTabs tabs={tabs} defaultValue="pending" />
                 </div>
             </Card>
         </div>

@@ -295,8 +295,8 @@ export const studentEndpoints = (
         },
         providesTags: ['Rto-Students'],
     }),
-    rtoResolveIssue: builder.mutation<any, any>({
-        query: ({ id, body }) => {
+    rtoResolveIssue: builder.mutation<any, { id: number; note: string }>({
+        query: ({ id, ...body }) => {
             return {
                 url: `${PREFIX}/report/${id}/resolve`,
                 method: 'PATCH',

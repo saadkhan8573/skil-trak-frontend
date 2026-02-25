@@ -133,4 +133,20 @@ export const coursesEndPoints = (
         query: (id) => `${PREFIX}course/${id}/setup-confirmation`,
         providesTags: ['RTOCourses', 'RTO'],
     }),
+
+    // PATCH rtos/course/:id/approval-status
+    updateCourseApprovalStatus: builder.mutation<
+        any,
+        {
+            id: string | number
+            name?: string
+        }
+    >({
+        query: ({ id, ...params }) => ({
+            url: `${PREFIX}course-file/${id}/update-status`,
+            method: 'PATCH',
+            params,
+        }),
+        invalidatesTags: ['RTOCourses', 'RTO', 'RTO-V2-Courses'],
+    }),
 })

@@ -45,22 +45,6 @@ export const RequiredPlacementDocuments = ({ course }: any) => {
         }
     }, [updateHoursResult.isSuccess, updateHoursResult.isError, notification])
 
-    // Handle save button
-    const handleSave = () => {
-        if (tempHours === null || tempHours < 0) return
-
-        updateHours({
-            body: {
-                courses: [
-                    {
-                        course: course?.id,
-                        hours: tempHours,
-                    },
-                ],
-            },
-        })
-    }
-
     return (
         <div>
             <CollapsibleContent>

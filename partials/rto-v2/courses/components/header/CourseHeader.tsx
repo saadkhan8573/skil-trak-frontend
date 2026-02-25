@@ -5,11 +5,11 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from '@components/ui/collapsible'
-import {
-    CourseHeaderStats,
-    CourseHeaderTitle,
-    PlacementRequirementsConfiguration,
-} from '@partials/rto-v2/courses'
+import { CourseHeaderStats } from './CourseHeaderStats'
+import { CourseHeaderTitle } from './CourseHeaderTitle'
+import { CourseApproval } from './CourseApproval'
+import { PlacementRequirementsConfiguration } from '../collapsible-content/placement-requirements-config'
+import { Separator } from '@components/ui/separator'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 
@@ -68,6 +68,9 @@ export const CourseHeader = ({ coursesData }: any) => {
                                 <PlacementRequirementsConfiguration
                                     course={course}
                                 />
+
+                                <Separator className="my-6 mt-8" />
+                                <CourseApproval course={course} />
                             </CollapsibleContent>
                         </Collapsible>
                     </Card>

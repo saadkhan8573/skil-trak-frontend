@@ -1,4 +1,5 @@
 import {
+    Badge,
     Card,
     EmptyData,
     InitialAvatar,
@@ -17,7 +18,8 @@ import { RtoApi } from '@queries'
 import { useRouter } from 'next/router'
 import { UserRoles } from '@constants'
 import { AllowAllStudentsAccessModal, DeleteRtoCoordinatorModal, EditCoordinatorModal } from './modal'
-import { SubAdmin } from '@types'
+import { Course, SubAdmin } from '@types'
+import { uniq } from 'lodash'
 
 export const MyCoordinators = () => {
     const [itemPerPage, setItemPerPage] = useState(50)
@@ -129,29 +131,29 @@ export const MyCoordinators = () => {
             accessorKey: 'phone',
         },
         {
-            header: () => 'Courses',
-            accessorKey: 'course',
-            cell: (info) => (
-                <CoursesCell
-                    showAction={false}
-                    coordinator={info.row.original}
-                />
-            ),
-        },
-        {
-            header: () => 'Address',
-            accessorKey: 'addressLine1',
-        },
-        {
-            header: () => 'Created By',
-            accessorKey: 'createdBy.role',
-            cell: (info) => (
-                <Typography variant="small" semibold uppercase>
-                    {info.row.original?.createdBy?.role}
-                </Typography>
-            ),
-        },
+            header: () => 'Sectors',
+            accessorKey: 'sectors',
+            cell: ({ row }: any) => {
+                const sectors = uniq(
+                    row.original?.courses?.map((c: Course) => c?.sector?.name)
+                ).filter((name): name is string => Boolean(name))
 
+                return (
+                    <div className="flex flex-wrap gap-1">
+                        {sectors && sectors.length > 0
+                            ? sectors.map((sector: string) => (
+                                <Badge
+                                    key={sector}
+                                    variant="primaryNew"
+                                    size="xs"
+                                    text={sector}
+                                />
+                            ))
+                            : 'No sectors assigned'}
+                    </div>
+                )
+            },
+        },
         {
             header: () => 'Action',
             accessorKey: 'Action',

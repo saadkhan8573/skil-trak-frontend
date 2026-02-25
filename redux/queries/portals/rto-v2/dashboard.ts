@@ -17,6 +17,9 @@ export const dashboardEndpoints = (
             pendingSubmissions: number
             pendingSign: number
             allStudents: number
+            appointments: number
+            emails: number
+            notification: number
         },
         void
     >({

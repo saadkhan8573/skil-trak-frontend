@@ -1,6 +1,7 @@
 import { EmptyData, LoadingAnimation, PageSize, Paginate, Pagination } from '@components'
 import { PageHeading } from '@components/headings'
-import { PendingPlacementCard } from './card'
+import { ApprovedPlacementCard, PendingPlacementCard, RejectPlacementCard } from './card'
+import { RtoApprovalWorkplaceRequest } from '@types'
 
 export const FilteredPlacements = ({
     placements,
@@ -36,17 +37,35 @@ export const FilteredPlacements = ({
                                 setPage={setPage}
                             />
                         </div>
-                        {placements?.data?.data?.map((approval: any) => (
-                            <PendingPlacementCard
-                                key={approval.id}
-                                approval={approval}
-                            />
-                        ))}
+                        {placements?.data?.data?.map((approval: RtoApprovalWorkplaceRequest) => {
+                            if (approval?.status === "approved") {
+                                return <ApprovedPlacementCard
+                                    key={approval?.id}
+                                    approval={approval}
+                                />
+                            }
+
+                            if (approval?.status === "rejected") {
+                                return (
+                                    <RejectPlacementCard
+                                        key={approval?.id}
+                                        approval={approval}
+                                    />
+                                )
+                            }
+
+                            return (
+                                <PendingPlacementCard
+                                    key={approval.id}
+                                    approval={approval}
+                                />
+                            )
+                        })}
                         <div className="flex justify-between items-center px-2 border-t pt-4">
-                            <Paginate
+                            <PageSize
                                 itemPerPage={itemPerPage}
                                 setItemPerPage={setItemPerPage}
-                                totalItems={placements?.data?.data?.length}
+                                records={placements?.data?.data?.length}
                             />
                             <Pagination
                                 pagination={placements?.data?.pagination}

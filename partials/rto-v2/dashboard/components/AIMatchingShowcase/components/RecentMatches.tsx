@@ -1,21 +1,20 @@
-import React from 'react'
+import { Badge, Card, LoadingAnimation, NoData } from '@components'
 import { RtoV2Api } from '@queries'
 import { Activity } from 'lucide-react'
-import { Badge, Card, LoadingAnimation, NoData } from '@components'
 
 export const RecentMatches = () => {
     const last24HoursWp = RtoV2Api.Dashboard.last24HoursWp()
-
+    console.log({ last24HoursWp })
     return (
-        <Card className="border-border/60 shadow-premium-lg hover:shadow-premium-xl hover:border-success/40 transition-all hover-lift bg-gradient-to-br from-white via-white to-success/5 relative overflow-hidden group/card">
-            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-success/10 to-transparent rounded-bl-full opacity-0 group-hover/card:opacity-100 transition-opacity"></div>
+        <Card className="border-border/60 shadow-premium-lg hover:shadow-premium-xl hover:border-success/40 transition-all hover-lift bg-linear-to-br from-white via-white to-success/5 relative overflow-hidden group/card">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-linear-to-br from-success/10 to-transparent rounded-bl-full opacity-0 group-hover/card:opacity-100 transition-opacity"></div>
             <div className="pb-2">
                 <div className="flex items-center gap-2.5">
                     <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-br from-success to-emerald-500 rounded-lg blur opacity-30"></div>
-                        <div className="relative h-8 w-8 rounded-lg bg-gradient-to-br from-success to-emerald-500 flex items-center justify-center shadow-premium">
+                        <div className="absolute inset-0 bg-linear-to-br from-success to-emerald-500 rounded-lg blur opacity-30"></div>
+                        <div className="relative h-8 w-8 rounded-lg bg-linear-to-br from-success to-emerald-500 flex items-center justify-center shadow-premium">
                             <Activity className="h-4 w-4 text-white" />
-                            <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-white/0 to-white/20"></div>
+                            <div className="absolute inset-0 rounded-lg bg-linear-to-t from-white/0 to-white/20"></div>
                         </div>
                     </div>
                     <div>
@@ -40,7 +39,7 @@ export const RecentMatches = () => {
                         >
                             <div className="flex-1 min-w-0">
                                 <p className="text-xs font-semibold truncate">
-                                    {match.student}
+                                    {match?.user?.name}
                                 </p>
                                 <p className="text-xs text-muted-foreground truncate">
                                     {match.industry}

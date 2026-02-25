@@ -1,7 +1,8 @@
 import { Badge } from '@components/ui/badge'
 import { Progress } from '@components/ui/progress'
 import { RtoV2Api } from '@queries'
-import { CheckCircle2, Clock, FileText, Target } from 'lucide-react'
+import { UserStatus } from '@types'
+import { AlertCircle, CheckCircle2, Clock, FileText, Target } from 'lucide-react'
 import React from 'react'
 import { PulseLoader } from 'react-spinners'
 
@@ -16,6 +17,10 @@ export const CourseHeaderStats = ({ course }: any) => {
         if (progress >= 50) return 'text-warning'
         return 'text-destructive'
     }
+
+    const logbook = course?.rtoCourseFiles?.find((file: any) => file.title === 'logBook')
+    const isCourseApproved = logbook?.status === UserStatus.Approved
+
 
     const filesUploaded = course?.rtoCourseFiles?.length || 0
     return (
@@ -33,13 +38,15 @@ export const CourseHeaderStats = ({ course }: any) => {
                     </span>
                     <span className="text-xs text-muted-foreground">hours</span>
                 </div>
-                {course?.hours !== null && (
-                    <Badge
-                        variant="outline"
-                        className="mt-1 text-[10px] h-5 px-1.5 bg-success/10 text-success border-success/20"
-                    >
-                        <CheckCircle2 className="h-2.5 w-2.5 mr-0.5" />
+                {isCourseApproved ? (
+                    <Badge className="!bg-success/10 !text-success !border-success/20 ml-auto flex items-center gap-1">
+                        <CheckCircle2 className="h-3 w-3" />
                         Confirmed
+                    </Badge>
+                ) : (
+                    <Badge className="bg-warning/10 text-warning border-yellow-300/20 ml-auto flex items-center gap-1">
+                        <AlertCircle className="h-3 w-3" />
+                        Needs Confirmation
                     </Badge>
                 )}
             </div>
@@ -57,11 +64,6 @@ export const CourseHeaderStats = ({ course }: any) => {
                 </div>
                 <div className="mt-1">
                     <Progress
-                        // value={([
-                        //     course.documents.facilityChecklist.uploaded,
-                        //     course.documents.placementAgreement.uploaded,
-                        //     course.documents.logbookWorkbook.uploaded
-                        // ].filter(Boolean).length / 3) * 100}
                         value={(filesUploaded / 3) * 100}
                         className="h-1.5"
                     />
@@ -91,7 +93,7 @@ export const CourseHeaderStats = ({ course }: any) => {
                 <div className="mt-1">
                     <Progress
                         // value={currentProgress}
-                        value={20}
+                        value={setupConfirmationPercentage?.data || 0}
                         className="h-1.5"
                     />
                 </div>

@@ -50,8 +50,7 @@ export const AIMatchingShowcase = () => {
                                 {/*  */}
                             </div>
                             <p className="text-xs text-muted-foreground">
-                                Match students with eligible workplaces in under
-                                20 seconds
+                                Match students with eligible workplaces
                             </p>
                         </div>
                     </div>

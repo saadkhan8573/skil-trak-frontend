@@ -29,6 +29,9 @@ const menuSections = (navBarCounts: {
     pendingSubmissions: number
     pendingSign: number
     allStudents: number
+    appointments: number
+    emails: number
+    notification: number
 }) => [
         {
             title: 'Dashboard',
@@ -151,7 +154,7 @@ const menuSections = (navBarCounts: {
                     label: 'Emails',
                     key: 'Emails',
                     path: '/portals/rto/communications/e-mails',
-                    // badge: '8',
+                    badge: navBarCounts?.emails,
                     bg: 'hover:bg-gray-100 border border-gray-200',
                     iconBg: 'bg-gray-200 !text-slate-700',
                     badgeBg: 'bg-gray-200 !text-slate-700',
@@ -162,7 +165,7 @@ const menuSections = (navBarCounts: {
                     label: 'Appointments',
                     path: '/portals/rto/communications/appointments',
                     key: 'Appointments',
-                    // badge: '7',
+                    badge: navBarCounts?.appointments,
                     bg: 'hover:bg-gray-100 border border-gray-200',
                     iconBg: 'bg-gray-200 !text-slate-700',
                     badgeBg: 'bg-gray-200 !text-slate-700',
@@ -172,7 +175,7 @@ const menuSections = (navBarCounts: {
                     icon: BellIcon,
                     label: 'Notifications',
                     key: 'Notifications',
-                    // badge: '3',
+                    badge: navBarCounts?.notification,
                     path: '/portals/rto/communications/notifications',
                     bg: 'hover:bg-gray-100 border border-gray-200',
                     iconBg: 'bg-gray-200 !text-slate-700',
@@ -258,7 +261,7 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
             {/* ============================= HEADER ============================= */}
             <div className="flex items-center justify-between p-4 border-b border-sidebar-border shrink-0">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white">
+                    <div className="h-10 w-10 rounded-lg bg-linear-to-br from-primary to-secondary flex items-center justify-center text-white">
                         <GraduationCap className="h-5 w-5" />
                     </div>
                     <div>
@@ -361,13 +364,13 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
                 <div className="p-4 border-b border-sidebar-border shrink-0">
                     <div className="flex items-center gap-3 cursor-pointer group relative">
                         <div className="relative">
-                            <div className="absolute inset-0 bg-gradient-to-br from-[#044866] to-[#0D5468] rounded-2xl blur-md opacity-40 group-hover:opacity-60 transition-opacity"></div>
-                            <div className="relative h-12 w-12 rounded-2xl bg-gradient-to-br from-primaryNew to-[#0D5468] flex items-center justify-center shadow-premium group-hover:shadow-glow-primary transition-all group-hover:scale-105">
+                            <div className="absolute inset-0 bg-linear-to-br from-[#044866] to-[#0D5468] rounded-2xl blur-md opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                            <div className="relative h-12 w-12 rounded-2xl bg-linear-to-br from-primaryNew to-[#0D5468] flex items-center justify-center shadow-premium group-hover:shadow-glow-primary transition-all group-hover:scale-105">
                                 <GraduationCap
                                     className="h-6 w-6 text-white"
                                     strokeWidth={2.5}
                                 />
-                                <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-white/0 to-white/20"></div>
+                                <div className="absolute inset-0 rounded-2xl bg-linear-to-t from-white/0 to-white/20"></div>
                             </div>
                         </div>
                         <div>
@@ -387,8 +390,8 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
                         <div key={section.title}>
                             <div
                                 className={`${idx > 0
-                                        ? 'pt-8 mt-3 !mx-8 border-t border-sidebar-border/30'
-                                        : ''
+                                    ? 'pt-8 mt-3 mx-8! border-t border-sidebar-border/30'
+                                    : ''
                                     } mb-1 last:mb-0`}
                             />
                             <div className="flex items-center justify-between px-1 mb-2">

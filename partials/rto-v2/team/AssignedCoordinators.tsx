@@ -1,4 +1,5 @@
 import {
+    Badge,
     Card,
     EmptyData,
     InitialAvatar,
@@ -18,6 +19,7 @@ import { useRouter } from 'next/router'
 import { UserRoles } from '@constants'
 import { Course } from '@types'
 import { CourseDot } from '@partials/rto/student/components'
+import { uniq } from 'lodash'
 
 export const AssignedCoordinators = () => {
     const [itemPerPage, setItemPerPage] = useState(50)
@@ -47,7 +49,7 @@ export const AssignedCoordinators = () => {
             accessorKey: 'title',
             cell: ({ row }: any) => {
                 const {
-                    user: { name, email, avatar },
+                    user: { name, avatar },
                 } = row.original
                 return (
                     <Link
@@ -57,14 +59,9 @@ export const AssignedCoordinators = () => {
                         <InitialAvatar name={name} imageUrl={avatar} />
                         <div>
                             <Typography color={'black'}>
-                                {' '}
-                                {name}{' '}
-                            </Typography>
-                            <Typography variant={'muted'} color={'gray'}>
-                                {email}
+                                {name}
                             </Typography>
                         </div>
-
                     </Link>
                 );
             },
@@ -74,32 +71,29 @@ export const AssignedCoordinators = () => {
             accessorKey: 'phone',
         },
         {
-            header: () => 'Courses',
-            accessorKey: 'course',
-            cell: (info) => {
+            header: () => 'Sectors',
+            accessorKey: 'sectors',
+            cell: ({ row }: any) => {
+                const sectors = uniq(
+                    row.original?.courses?.map((c: Course) => c?.sector?.name)
+                ).filter((name): name is string => Boolean(name))
+
                 return (
-                    <div className="flex gap-x-1">
-                        {info.row.original?.courses.map((c: Course) => (
-                            <CourseDot key={c?.id} course={c} />
-                        ))}
+                    <div className="flex flex-wrap gap-1">
+                        {sectors && sectors.length > 0
+                            ? sectors.map((sector: string) => (
+                                <Badge
+                                    key={sector}
+                                    variant="primaryNew"
+                                    size="xs"
+                                    text={sector}
+                                />
+                            ))
+                            : 'No sectors assigned'}
                     </div>
                 )
             },
         },
-        {
-            header: () => 'Address',
-            accessorKey: 'addressLine1',
-        },
-        {
-            header: () => 'Created By',
-            accessorKey: 'createdBy.role',
-            cell: (info) => (
-                <Typography variant="small" semibold uppercase>
-                    {info.row.original?.createdBy?.role}
-                </Typography>
-            ),
-        },
-
         {
             header: () => 'Action',
             accessorKey: 'Action',

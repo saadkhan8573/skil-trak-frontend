@@ -66,7 +66,6 @@ export const SupervisorRequirements: React.FC<SupervisorRequirementsProps> = ({
     return (
         <>
             <ShowErrorNotifications result={updateSupervisorReqResult} />
-
             <div>
                 <div className="flex items-center gap-2 mb-4">
                     <div className="h-8 w-8 rounded-lg bg-sky-950/10 flex items-center justify-center">
@@ -77,7 +76,7 @@ export const SupervisorRequirements: React.FC<SupervisorRequirementsProps> = ({
                     </h3>
                 </div>
 
-                <div className="bg-gradient-to-br from-secondaryNew/5 to-secondaryNew/10 rounded-xl p-5 border border-secondaryNew/20">
+                <div className="bg-gray-200/70 rounded-xl p-5 border border-secondaryNew/20">
                     <div className="space-y-3">
                         <label className="text-sm font-medium text-gray-500">
                             Minimum Qualifications
@@ -85,18 +84,6 @@ export const SupervisorRequirements: React.FC<SupervisorRequirementsProps> = ({
 
                         {isEditing ? (
                             <div className="space-y-3">
-                                {/* <TextArea
-                                    name="supervisionQualifications"
-                                    value={supervisionQualifications}
-                                    onChange={(e: any) =>
-                                        setSupervisionQualifications(
-                                            e.target.value
-                                        )
-                                    }
-                                    placeholder="e.g., Certificate IV in Ageing Support, Disability, or Individual Support"
-                                    className="min-h-[80px] bg-[#fafbfc]/50"
-                                /> */}
-
                                 <Select
                                     name="level"
                                     label={'Qualification'}

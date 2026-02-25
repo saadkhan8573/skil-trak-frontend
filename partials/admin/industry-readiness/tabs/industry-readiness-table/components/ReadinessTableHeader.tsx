@@ -13,17 +13,21 @@ export const ReadinessTableHeader = ({
             Sector
         </div>
         <div className="text-right text-xs text-slate-600 font-bold uppercase tracking-wider">
-            Expected
+            Expected Students
         </div>
-        <div className="text-right text-xs text-slate-600 font-bold uppercase tracking-wider">
-            Capacity
+        <div
+            title="Industry Capacity"
+            className="text-right text-xs text-slate-600 font-bold uppercase tracking-wider whitespace-nowrap"
+        >
+            Ind Capacity
         </div>
         <div className="flex justify-end">
             <button
                 onClick={() => onSort('capacityGap')}
-                className="inline-flex items-center gap-1 text-xs text-slate-600 font-bold uppercase hover:text-slate-900 transition-colors"
+                className="inline-flex items-center gap-1 text-xs text-slate-600 font-bold uppercase hover:text-slate-900 transition-colors whitespace-nowrap"
             >
-                Gap <ArrowUpDown className="w-3 h-3" />
+                Capacity Gap
+                {/* <ArrowUpDown className="w-3 h-3" /> */}
             </button>
         </div>
         <div className="pl-4 text-xs text-slate-600 font-bold uppercase tracking-wider">
@@ -34,7 +38,8 @@ export const ReadinessTableHeader = ({
                 onClick={() => onSort('daysUntil')}
                 className="inline-flex items-center gap-1 text-xs text-slate-600 font-bold uppercase hover:text-slate-900 transition-colors"
             >
-                Deadline <ArrowUpDown className="w-3 h-3" />
+                Deadline
+                {/* <ArrowUpDown className="w-3 h-3" /> */}
             </button>
         </div>
         <div className="pl-4 text-xs text-slate-600 font-bold uppercase tracking-wider">

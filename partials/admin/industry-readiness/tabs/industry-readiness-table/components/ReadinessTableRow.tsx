@@ -78,7 +78,7 @@ export const ReadinessTableRow = ({ data }: { data: any }) => {
             </div>
 
             <div className="w-full flex justify-end gap-2">
-                {data?.capacityGap >= 0 && (
+                {data?.capacityGap < 0 && (
                     <RunListingAutomation
                         studentAddress={`${data?.suburb}, ${data?.postalCode}`}
                         sectorId={data?.sectorId}

@@ -29,6 +29,7 @@ import { invoiceEndpoints } from './invoice'
 import { rtoEnquiryEndpoints } from './rto-enquiry'
 import { rtoMessageCenterEndpoints } from './rto-message-center'
 import { defaultDocumentsEndpoints } from './default-documents'
+import { marketingEndpoints } from './marketing'
 
 const PREFIX = 'admin'
 export const adminApi = apiSlice.injectEndpoints({
@@ -100,6 +101,7 @@ export const adminApi = apiSlice.injectEndpoints({
         ...appointmentTypeEndpoints(build),
         ...rtoMessageCenterEndpoints(build),
         ...defaultDocumentsEndpoints(build),
+        ...marketingEndpoints(build),
     }),
     // overrideExisting: false,
 })
@@ -515,6 +517,7 @@ const {
     useDefaultDocumentDetailQuery,
     useUpdateDefaultDocumentMutation,
     useRemoveDefaultDocumentMutation,
+    useGetMarketingUsersQuery,
 } = adminApi
 
 export const AdminApi = {
@@ -927,5 +930,8 @@ export const AdminApi = {
         defaultDocumentDetail: useDefaultDocumentDetailQuery,
         updateDefaultDocument: useUpdateDefaultDocumentMutation,
         removeDefaultDocument: useRemoveDefaultDocumentMutation,
+    },
+    Marketing: {
+        useMarketingUsers: useGetMarketingUsersQuery,
     },
 }

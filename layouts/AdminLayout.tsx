@@ -182,6 +182,12 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
             visible: checkIsHod,
         },
         {
+            text: 'Marketing',
+            path: getRoutePath('/marketing'),
+            Icon: FaUsers,
+            visible: role === UserRoles.ADMIN,
+        },
+        {
             type: 'divider',
         },
         {

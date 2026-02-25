@@ -1,6 +1,11 @@
 import { RunListingAutomation } from '@partials/common'
 import { cn } from '@utils'
-import { ArrowRight } from 'lucide-react'
+import {
+    AlertCircle,
+    AlertTriangle,
+    ArrowRight,
+    CheckCircle2,
+} from 'lucide-react'
 
 // --- Row Component ---
 interface TableRowProps {
@@ -19,6 +24,35 @@ const getRowStyle = (status: string) => {
         case 'ready':
         default:
             return 'bg-white hover:bg-slate-50 border-l-4 border-l-transparent'
+    }
+}
+
+const getStatusConfig = (status: string) => {
+    const normalizedStatus = status?.replace('_', '-').toLowerCase()
+
+    switch (normalizedStatus) {
+        case 'not-ready':
+            return {
+                label: 'Not Ready',
+                icon: <AlertTriangle className="w-3.5 h-3.5" />,
+                className:
+                    'bg-[#FF3B30] text-white shadow-[0_2px_4px_rgba(255,59,48,0.3)]',
+            }
+        case 'at-risk':
+            return {
+                label: 'At Risk',
+                icon: <AlertCircle className="w-3.5 h-3.5" />,
+                className:
+                    'bg-[#FFB302] text-white shadow-[0_2px_4px_rgba(255,179,2,0.3)]',
+            }
+        case 'ready':
+        default:
+            return {
+                label: 'Ready',
+                icon: <CheckCircle2 className="w-3.5 h-3.5" />,
+                className:
+                    'bg-[#0E5D6A] text-white shadow-[0_2px_4px_rgba(14,93,106,0.3)]',
+            }
     }
 }
 export const ReadinessTableRow = ({ data }: { data: any }) => {
@@ -52,24 +86,32 @@ export const ReadinessTableRow = ({ data }: { data: any }) => {
             </div>
 
             <div className="flex justify-end">
-                <span
-                    className={`inline-flex items-center gap-0.5 px-2.5 py-1 ${data?.capacityGap >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} rounded-lg font-bold text-xs`}
-                >
-                    {data?.capacityGap ?? '___'}
-                </span>
+                {data.capacityGap >= 0 ? (
+                    <span className="text-green-600 font-bold">✓</span>
+                ) : (
+                    <span
+                        className={`inline-flex items-center gap-0.5 px-2.5 py-1 bg-red-100 text-red-700 rounded-lg font-bold text-xs`}
+                    >
+                        {data?.capacityGap ?? '___'}
+                    </span>
+                )}
             </div>
 
             <div className="pl-4">
-                <span
-                    className={cn(
-                        'px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider',
-                        data?.status === 'ready'
-                            ? 'bg-emerald-100 text-emerald-700'
-                            : 'bg-amber-100 text-amber-700'
-                    )}
-                >
-                    {data?.status?.replace('_', ' ')}
-                </span>
+                {(() => {
+                    const config = getStatusConfig(data?.status)
+                    return (
+                        <span
+                            className={cn(
+                                'inline-flex items-center gap-1.5 px-2 py-1.5 rounded-full text-[10px] font-semibold transition-all truncate',
+                                config.className
+                            )}
+                        >
+                            {config.icon}
+                            {config.label}
+                        </span>
+                    )
+                })()}
             </div>
 
             {/* Using createdAt or a hardcoded deadline for the demo */}

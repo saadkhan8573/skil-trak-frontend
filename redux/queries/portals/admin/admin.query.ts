@@ -944,8 +944,8 @@ export const AdminApi = {
         useStudentForecast: useGetStudentForecastQuery,
         useForecastList: useGetForecastListQuery,
         useForecastCounts: useGetForecastCountsQuery,
-        Marketing: {
-            useMarketingUsers: useGetMarketingUsersQuery,
-        },
+    },
+    Marketing: {
+        useMarketingUsers: useGetMarketingUsersQuery,
     },
 }

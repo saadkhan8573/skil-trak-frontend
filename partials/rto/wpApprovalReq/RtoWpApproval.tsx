@@ -42,6 +42,7 @@ export const RtoWpApproval = () => {
         {
             limit: itemPerPage,
             skip: itemPerPage * page - itemPerPage,
+            search: ""
         },
         {
             refetchOnMountOrArgChange: 30,
@@ -198,11 +199,11 @@ export const RtoWpApproval = () => {
                 <Card noPadding>
                     {wpApprovalRequests?.isError && <TechnicalError />}
                     {wpApprovalRequests?.isLoading ||
-                    wpApprovalRequests?.isFetching ? (
+                        wpApprovalRequests?.isFetching ? (
                         <LoadingAnimation height="h-[60vh]" />
                     ) : wpApprovalRequests?.data &&
-                      wpApprovalRequests?.data?.data.length &&
-                      wpApprovalRequests?.isSuccess ? (
+                        wpApprovalRequests?.data?.data.length &&
+                        wpApprovalRequests?.isSuccess ? (
                         <Table
                             columns={columns}
                             data={wpApprovalRequests?.data.data}
@@ -239,23 +240,23 @@ export const RtoWpApproval = () => {
                                         </div>
                                         {wpApprovalRequests?.data?.data
                                             ?.length > 10 && (
-                                            <div className="p-6 mb-2 flex justify-between">
-                                                {pageSize(
-                                                    itemPerPage,
-                                                    setItemPerPage,
-                                                    wpApprovalRequests?.data
-                                                        ?.data?.length
-                                                )}
-                                                <div className="flex gap-x-2">
-                                                    {quickActions}
-                                                    {pagination(
+                                                <div className="p-6 mb-2 flex justify-between">
+                                                    {pageSize(
+                                                        itemPerPage,
+                                                        setItemPerPage,
                                                         wpApprovalRequests?.data
-                                                            ?.pagination,
-                                                        setPage
+                                                            ?.data?.length
                                                     )}
+                                                    <div className="flex gap-x-2">
+                                                        {quickActions}
+                                                        {pagination(
+                                                            wpApprovalRequests?.data
+                                                                ?.pagination,
+                                                            setPage
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )}
+                                            )}
                                     </div>
                                 )
                             }}

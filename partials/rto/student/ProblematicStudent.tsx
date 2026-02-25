@@ -44,11 +44,11 @@ export const ProblematicStudent = () => {
     const count = RtoApi.Students.useRtoResolveIssuesStudentsCount()
     const onModalCancelClicked = () => setModal(null)
 
-    const onClickCompleted = (student: any) => {
+    const onClickCompleted = (reportedIssue: any) => {
         setModal(
             <ResolveIssuesCompletedModal
                 onCancel={onModalCancelClicked}
-                student={student}
+                reportedIssue={reportedIssue}
             />
         )
     }

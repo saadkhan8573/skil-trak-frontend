@@ -1,25 +1,12 @@
-//  <TicketDetails
-//   ticket={selectedTicket}
-//   onClose={() => setSelectedTicket(null)}
-//   onUpdate={handleUpdateTicket}
-//   onResolve={handleResolveTicket}
-//   onViewStudentProfile={(studentId) => {
-//     setSelectedStudentId(studentId);
-//     setSelectedTicket(null);
-//   }}
-//   onViewIndustryProfile={(industryId) => {
-//     setSelectedIndustryId(industryId);
-//     setSelectedTicket(null);
-//   }}
-// />
-
+import { ReactElement } from 'react'
+// Layouts
 import { RtoLayoutV2 } from '@layouts'
+// Components
 import { TicketDetails } from '@partials/common'
-import { MailDetail } from '@partials/common/MailsListing'
-import React, { ReactElement, useState } from 'react'
+import { NextPageWithLayout } from '@types'
 import { BiEnvelope } from 'react-icons/bi'
 
-const TicketDetailPage = () => {
+const TicketDetailPage: NextPageWithLayout = () => {
     return <TicketDetails />
 }
 
@@ -29,7 +16,7 @@ TicketDetailPage.getLayout = (page: ReactElement) => {
             titleProps={{
                 Icon: BiEnvelope,
                 title: 'Ticket Details',
-                description: 'Manage all your Ticket details',
+                description: 'View and reply to this ticket conversation',
             }}
         >
             {page}

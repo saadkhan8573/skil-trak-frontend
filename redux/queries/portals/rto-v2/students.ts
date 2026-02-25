@@ -41,10 +41,7 @@ export const studentsEndpoints = (
         providesTags: ['RTO'],
     }),
 
-    runAutomationForAvailabeleStudents: builder.mutation<
-        any,
-        { ids: number[] }
-    >({
+    runAutomationForAvailabeleStudents: builder.mutation<any, { id: number }>({
         query: (body) => ({
             url: `students/workplace-requests/pending-workplace-request/process`,
             method: 'POST',

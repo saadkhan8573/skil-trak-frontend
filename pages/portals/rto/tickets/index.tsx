@@ -1,14 +1,14 @@
 import { ReactElement, useEffect } from 'react'
 // Layouts
-import { RtoLayout, SubAdminLayout } from '@layouts'
+import { RtoLayout } from '@layouts'
 // Types
 import { BackButton, Button, TabNavigation, TabProps } from '@components'
 import { PageHeading } from '@components/headings'
 import { useNavbar } from '@hooks'
+import { ClosedTickets, OpenTickets } from '@partials/rto'
 import { NextPageWithLayout } from '@types'
 import { useRouter } from 'next/router'
 import { BsFillTicketDetailedFill } from 'react-icons/bs'
-import { ClosedTickets, OpenTickets } from '@partials/rto'
 
 enum TicketType {
     ClosedTickets = 'closed-tickets',

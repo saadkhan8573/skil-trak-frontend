@@ -113,7 +113,7 @@ export const AppointmentViewModal = ({
             {modal}
             <ShowErrorNotifications result={cancellAppointmentResult} />
             <Portal>
-                <div className="fixed w-full h-screen bg-black/50 top-0 left-0 z-[1000] flex items-center justify-center">
+                <div className="fixed w-full h-screen bg-black/50 top-0 left-0 z-1000 flex items-center justify-center">
                     <div className="bg-white shadow-lg rounded-md min-w-[500px]">
                         {appointment.isError && (
                             <div className="relative">
@@ -273,7 +273,7 @@ export const AppointmentViewModal = ({
                                                                                         ?.date
                                                                                 ) ||
                                                                                 role ===
-                                                                                    UserRoles.ADMIN
+                                                                                UserRoles.ADMIN
                                                                             ) {
                                                                                 onCancelAppointment()
                                                                             } else {
@@ -304,7 +304,7 @@ export const AppointmentViewModal = ({
                                                 selected
                                             </p>
                                             {appointment?.data?.isCancelled &&
-                                            appointment?.data?.cancelledBy ? (
+                                                appointment?.data?.cancelledBy ? (
                                                 <div className="mt-2">
                                                     <Typography
                                                         variant="small"
@@ -513,54 +513,54 @@ export const AppointmentViewModal = ({
                                                     </div>
                                                     {appointment?.data?.notes
                                                         ?.length > 0 && (
-                                                        <>
-                                                            <div className="border-t mt-2 py-1">
-                                                                <Typography variant="subtitle">
-                                                                    Notes
-                                                                </Typography>
-                                                            </div>
-                                                            <div className="flex flex-col gap-2 mt-2 overflow-auto custom-scrollbar h-44 bg-gray-100 p-2">
-                                                                {appointment
-                                                                    ?.data
-                                                                    ?.notes
-                                                                    ?.length >
-                                                                    0 &&
-                                                                    appointment?.data?.notes?.map(
-                                                                        (
-                                                                            note: any
-                                                                        ) => (
-                                                                            <div
-                                                                                key={
-                                                                                    appointment
-                                                                                        ?.data
-                                                                                        ?.id
-                                                                                }
-                                                                                className="p-2 bg-white shadow-sm rounded-md"
-                                                                            >
-                                                                                <Typography variant="small">
-                                                                                    {
-                                                                                        note?.body
+                                                            <>
+                                                                <div className="border-t mt-2 py-1">
+                                                                    <Typography variant="subtitle">
+                                                                        Notes
+                                                                    </Typography>
+                                                                </div>
+                                                                <div className="flex flex-col gap-2 mt-2 overflow-auto custom-scrollbar h-44 bg-gray-100 p-2">
+                                                                    {appointment
+                                                                        ?.data
+                                                                        ?.notes
+                                                                        ?.length >
+                                                                        0 &&
+                                                                        appointment?.data?.notes?.map(
+                                                                            (
+                                                                                note: any
+                                                                            ) => (
+                                                                                <div
+                                                                                    key={
+                                                                                        appointment
+                                                                                            ?.data
+                                                                                            ?.id
                                                                                     }
-                                                                                </Typography>
-                                                                                <div className="flex items-center gap-x-2 mt-2">
-                                                                                    <Typography variant="muted">
-                                                                                        Added
-                                                                                        by:
-                                                                                    </Typography>
-                                                                                    <Typography variant="muted">
+                                                                                    className="p-2 bg-white shadow-sm rounded-md"
+                                                                                >
+                                                                                    <Typography variant="small">
                                                                                         {
-                                                                                            note
-                                                                                                ?.addedBy
-                                                                                                ?.name
+                                                                                            note?.body
                                                                                         }
                                                                                     </Typography>
+                                                                                    <div className="flex items-center gap-x-2 mt-2">
+                                                                                        <Typography variant="muted">
+                                                                                            Added
+                                                                                            by:
+                                                                                        </Typography>
+                                                                                        <Typography variant="muted">
+                                                                                            {
+                                                                                                note
+                                                                                                    ?.addedBy
+                                                                                                    ?.name
+                                                                                            }
+                                                                                        </Typography>
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        )
-                                                                    )}
-                                                            </div>
-                                                        </>
-                                                    )}
+                                                                            )
+                                                                        )}
+                                                                </div>
+                                                            </>
+                                                        )}
                                                 </div>
                                             </div>
                                         </div>
@@ -612,29 +612,29 @@ export const AppointmentViewModal = ({
                                                     appointment?.data
                                                         .appointmentFor
                                                         ?.role ===
-                                                        UserRoles.STUDENT) && (
-                                                    <div>
-                                                        <Typography
-                                                            variant={'title'}
-                                                        >
-                                                            RTO
-                                                        </Typography>
-                                                        <StudentRtoCellInfo
-                                                            rto={
-                                                                appointment
-                                                                    ?.data
-                                                                    .appointmentFor
-                                                                    ?.student
-                                                                    ?.rto ||
-                                                                appointment
-                                                                    ?.data
-                                                                    .appointmentBy
-                                                                    ?.student
-                                                                    ?.rto
-                                                            }
-                                                        />
-                                                    </div>
-                                                )}
+                                                    UserRoles.STUDENT) && (
+                                                        <div>
+                                                            <Typography
+                                                                variant={'title'}
+                                                            >
+                                                                RTO
+                                                            </Typography>
+                                                            <StudentRtoCellInfo
+                                                                rto={
+                                                                    appointment
+                                                                        ?.data
+                                                                        .appointmentFor
+                                                                        ?.student
+                                                                        ?.rto ||
+                                                                    appointment
+                                                                        ?.data
+                                                                        .appointmentBy
+                                                                        ?.student
+                                                                        ?.rto
+                                                                }
+                                                            />
+                                                        </div>
+                                                    )}
                                             </div>
                                         </div>
 

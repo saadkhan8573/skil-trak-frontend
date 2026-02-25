@@ -19,8 +19,6 @@ export const EnhancedHighlightedTasksCard = ({ data }: any) => {
               )
           )
 
-    console.log('data::::::', data)
-    console.log('isConfirmed', isConfirmed)
     return (
         <Card noPadding className="border-0 shadow-xl overflow-hidden">
             <div className="bg-linear-to-r from-[#F7A619] to-[#F7A619]/80 px-5 py-4">

@@ -119,6 +119,53 @@ export const StudentProvidedWorkplaceTab = () => {
             ),
             header: () => <span>Student</span>,
         },
+
+
+        {
+            accessorKey: 'industry',
+            header: () => <span>Industry</span>,
+            cell: (info: any) => {
+                const industries = info?.row?.original?.industries
+                const studentApproval =
+                    info?.row?.original?.studentProvidedWorkplaceRequestApproval
+
+                const industryUserName =
+                    industries?.length > 0
+                        ? industries[0]?.industry?.user?.name
+                        : studentApproval?.industry?.user?.name
+
+                return (
+                    <>
+                        {industryUserName ? (
+                            <>{industryUserName}</>
+                        ) : (
+                            <Typography center>---</Typography>
+                        )}
+                    </>
+                )
+            },
+        },
+        {
+            accessorKey: 'Course',
+            header: () => (
+                <div className="flex items-center gap-x-2">
+                    <BookOpen className="h-3.5 w-3.5 text-primaryNew/60" />
+                    <span className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">
+                        Course
+                    </span>
+                </div>
+            ),
+            cell: ({ row }: any) => (
+                <div className="flex flex-col gap-1.5 min-w-0 col-span-1 sm:col-span-1 lg:col-span-1">
+                    <span
+                        className="text-sm font-semibold text-foreground/90 leading-tight truncate"
+                        title={row?.original?.courses?.[0]?.title}
+                    >
+                        {row?.original?.courses?.[0]?.title}
+                    </span>
+                </div>
+            ),
+        },
         {
             accessorKey: 'progress',
             header: () => <span>Status</span>,
@@ -147,52 +194,6 @@ export const StudentProvidedWorkplaceTab = () => {
                 )
             },
         },
-        {
-            accessorKey: 'Course',
-            header: () => (
-                <div className="flex items-center gap-x-2">
-                    <BookOpen className="h-3.5 w-3.5 text-primaryNew/60" />
-                    <span className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">
-                        Course
-                    </span>
-                </div>
-            ),
-            cell: ({ row }: any) => (
-                <div className="flex flex-col gap-1.5 min-w-0 col-span-1 sm:col-span-1 lg:col-span-1">
-                    <span
-                        className="text-sm font-semibold text-foreground/90 leading-tight truncate"
-                        title={row?.original?.courses?.[0]?.title}
-                    >
-                        {row?.original?.courses?.[0]?.title}
-                    </span>
-                </div>
-            ),
-        },
-        {
-            accessorKey: 'industry',
-            header: () => <span>Industry</span>,
-            cell: (info: any) => {
-                const industries = info?.row?.original?.industries
-                const studentApproval =
-                    info?.row?.original?.studentProvidedWorkplaceRequestApproval
-
-                const industryUserName =
-                    industries?.length > 0
-                        ? industries[0]?.industry?.user?.name
-                        : studentApproval?.industry?.user?.name
-
-                return (
-                    <>
-                        {industryUserName ? (
-                            <>{industryUserName}</>
-                        ) : (
-                            <Typography center>---</Typography>
-                        )}
-                    </>
-                )
-            },
-        },
-
         {
             accessorKey: 'createdAt',
             header: () => <span>Created At</span>,
@@ -248,7 +249,7 @@ export const StudentProvidedWorkplaceTab = () => {
                             columns={columns}
                             data={data.data}
                             quickActions={quickActionsElements}
-                            // enableRowSelection
+                        // enableRowSelection
                         >
                             {({
                                 table,

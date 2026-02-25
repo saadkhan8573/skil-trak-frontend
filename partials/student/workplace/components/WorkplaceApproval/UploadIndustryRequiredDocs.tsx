@@ -33,7 +33,6 @@ export const UploadIndustryRequiredDocs = ({
     data,
     workplaceRequest,
 }: Props) => {
-    console.log('workplaceRequest', workplaceRequest)
     const { notification } = useNotification()
     const [uploadingKey, setUploadingKey] = useState<string | null>(null)
     const role = getUserCredentials()?.role

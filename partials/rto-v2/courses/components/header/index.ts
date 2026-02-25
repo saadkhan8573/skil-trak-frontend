@@ -1,3 +1,7 @@
 export * from './CourseHeader'
 export * from './CourseHeaderStats'
 export * from './CourseHeaderTitle'
+export * from './CourseApproval'
+export * from './ApprovedCourseCard'
+export * from './RejectedCourseCard'
+export * from './PendingCourseCard'

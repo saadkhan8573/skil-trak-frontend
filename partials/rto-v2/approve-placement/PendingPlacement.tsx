@@ -1,9 +1,14 @@
-import { Card, LoadingAnimation, TechnicalError } from '@components'
+import { Card, Filter, LoadingAnimation, PageSize, Pagination, TechnicalError, TextInput } from '@components'
+import { PlacementsFilters } from '@components/Filters'
 import { RtoApi } from '@queries'
-import { CheckCircle2 } from 'lucide-react'
+import { RTOWorkplaceFormFilter } from '@types'
+import { CheckCircle2, FileText } from 'lucide-react'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import debounce from 'lodash/debounce'
 import { PendingPlacementCard } from './card'
+import { WpAppRequEnum } from './enum'
+import { Title } from '../components'
 
 export const PendingPlacement = () => {
     const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set())
@@ -13,13 +18,35 @@ export const PendingPlacement = () => {
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
 
+    const [filterAction, setFilterAction] = useState(null)
+    const [filter, setFilter] = useState<RTOWorkplaceFormFilter>(
+        {} as RTOWorkplaceFormFilter
+    )
+    const [studentName, setStudentName] = useState<any | null>(null)
+    const [studentNameValue, setStudentNameValue] = useState<string>('')
+
     useEffect(() => {
         setPage(Number(router.query.page || 1))
         setItemPerPage(Number(router.query.pageSize || 50))
     }, [router])
 
+    const delayedNameSearch = useCallback(
+        debounce((value) => {
+            setStudentName({ name: value })
+        }, 700),
+        []
+    )
+
     const wpApprovalRequests = RtoApi.Workplace.wpApprovalRequest(
         {
+            search: `${JSON.stringify({
+                ...filter,
+                ...studentName,
+            })
+                .replaceAll('{', '')
+                .replaceAll('}', '')
+                .replaceAll('"', '')
+                .trim()}`,
             limit: itemPerPage,
             skip: itemPerPage * page - itemPerPage,
         },
@@ -30,18 +57,72 @@ export const PendingPlacement = () => {
 
     return (
         <div className="space-y-4 animate-fade-in">
+            <div className="bg-background/50 rounded-xl border border-border/40 p-4 space-y-4">
+                <div className="flex items-center justify-between flex-wrap gap-4">
+                    <div className="flex items-center gap-2">
+                        <div className="w-60">
+                            <TextInput
+                                name={'name'}
+                                placeholder={'Search by Student Name'}
+                                value={studentNameValue}
+                                onChange={(e: any) => {
+                                    setStudentNameValue(e.target.value)
+                                    delayedNameSearch(e.target.value)
+                                }}
+                                showError={false}
+                            />
+                        </div>
+                        <div className="shrink-0">{filterAction}</div>
+                    </div>
+                </div>
+
+                <div className="border-t border-border/40 pt-4">
+                    <Filter<RTOWorkplaceFormFilter>
+                        component={PlacementsFilters}
+                        initialValues={filter}
+                        setFilterAction={setFilterAction}
+                        setFilter={setFilter}
+                        filterKeys={['name', 'courseId']}
+                    />
+                </div>
+            </div>
+
             {wpApprovalRequests?.isError && <TechnicalError />}
             {wpApprovalRequests?.isLoading || wpApprovalRequests?.isFetching ? (
                 <LoadingAnimation height="h-[60vh]" />
             ) : wpApprovalRequests?.data &&
                 wpApprovalRequests?.data?.data.length &&
                 wpApprovalRequests?.isSuccess ? (
-                wpApprovalRequests?.data?.data?.map((approval: any) => (
-                    <PendingPlacementCard
-                        key={approval.id}
-                        approval={approval}
-                    />
-                ))
+                <>
+                    <div className="flex justify-between items-center px-2">
+                        <PageSize
+                            itemPerPage={itemPerPage}
+                            setItemPerPage={setItemPerPage}
+                            records={wpApprovalRequests?.data?.data?.length}
+                        />
+                        <Pagination
+                            pagination={wpApprovalRequests?.data?.pagination}
+                            setPage={setPage}
+                        />
+                    </div>
+                    {wpApprovalRequests?.data?.data?.map((approval: any) => (
+                        <PendingPlacementCard
+                            key={approval.id}
+                            approval={approval}
+                        />
+                    ))}
+                    <div className="flex justify-between items-center px-2 border-t pt-4">
+                        <PageSize
+                            itemPerPage={itemPerPage}
+                            setItemPerPage={setItemPerPage}
+                            records={wpApprovalRequests?.data?.data?.length}
+                        />
+                        <Pagination
+                            pagination={wpApprovalRequests?.data?.pagination}
+                            setPage={setPage}
+                        />
+                    </div>
+                </>
             ) : (
                 !wpApprovalRequests?.isError && (
                     <Card className="border-border/60">
@@ -52,10 +133,14 @@ export const PendingPlacement = () => {
                                 </div>
                                 <div>
                                     <p className="font-semibold mb-1">
-                                        All caught up! 🎉
+                                        {studentNameValue || Object.keys(filter).length > 0
+                                            ? "No matching placements found!"
+                                            : "All caught up! 🎉"}
                                     </p>
                                     <p className="text-sm text-muted-foreground">
-                                        No placements pending approval
+                                        {studentNameValue || Object.keys(filter).length > 0
+                                            ? "Try adjusting your filters"
+                                            : "No placements pending approval"}
                                     </p>
                                 </div>
                             </div>

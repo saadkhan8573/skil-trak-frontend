@@ -14,9 +14,7 @@ export const Courses = () => {
                 icon={GraduationCap}
                 title="Course Setup & Configuration"
                 description="Configure placement requirements, documents, and workplace eligibility for each course"
-                urgentCount={0}
                 UrgentIcon={GraduationCap}
-                urgentLabel="Total Students"
                 warningMessage="<strong>Important:</strong> All courses must be 100% configured before automation matching can begin. Review TGA requirements and ensure all documents are uploaded."
                 gradientFrom="primaryNew"
                 gradientTo="primaryNew"

@@ -1,31 +1,52 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/ui/dialog'
-import { Student, OptionType } from '@types'
-import { Calendar, CheckCircle2, Users, X } from 'lucide-react'
-import { CommonApi } from '@queries'
-import { Button, TextInput, Switch, Select } from '@components'
+import { Button, Select, TextInput } from '@components'
 import { useNotification } from '@hooks'
+import { CommonApi } from '@queries'
+import { Student } from '@types'
 import { cn } from '@utils'
+import { CheckCircle2, Users, X } from 'lucide-react'
 import moment from 'moment'
+import { useEffect, useMemo, useState } from 'react'
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from '@components/ui/dialog'
 
 interface BulkScheduleCallModalProps {
     students: Student[]
     onClose: () => void
 }
 
-export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallModalProps) => {
+export const BulkScheduleCallModal = ({
+    students,
+    onClose,
+}: BulkScheduleCallModalProps) => {
     const [currentStudents, setCurrentStudents] = useState<Student[]>(students)
-    const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null)
+    const [selectedCourseId, setSelectedCourseId] = useState<number | null>(
+        null
+    )
     const [selectedAgentId, setSelectedAgentId] = useState<number | null>(null)
     const [isScheduled, setIsScheduled] = useState(true)
-    const [scheduledDate, setScheduledDate] = useState<string>(moment().format('YYYY-MM-DD'))
+    const [scheduledDate, setScheduledDate] = useState<string>(
+        moment().format('YYYY-MM-DD')
+    )
+    const [maxAttempts, setMaxAttempts] = useState<number>(3)
+    const [callTime, setCallTime] = useState<string>(moment().format('HH'))
 
-    const [bulkScheduleCall, { isLoading }] = CommonApi.CallManagement.useBulkScheduleAiCallMutation()
-    const { data: agentsData, isLoading: isAgentsLoading } = CommonApi.CallManagement.useGetAgentsListQuery({
-        limit: 100,
-        skip: 0,
-        search: ''
+    const hourOptions = Array.from({ length: 24 }, (_, i) => {
+        const hour = i.toString().padStart(2, '0')
+        return { label: `${hour}:00`, value: hour }
     })
+
+    const [bulkScheduleCall, { isLoading }] =
+        CommonApi.CallManagement.useBulkScheduleAiCallMutation()
+    const { data: agentsData, isLoading: isAgentsLoading } =
+        CommonApi.CallManagement.useGetAgentsListQuery({
+            limit: 100,
+            skip: 0,
+            search: '',
+        })
     const { notification } = useNotification()
 
     // Find common courses among all selected students
@@ -33,9 +54,9 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
         if (!currentStudents.length) return []
 
         const firstStudentCourses = currentStudents[0].courses || []
-        return firstStudentCourses.filter(course =>
-            currentStudents.every(student =>
-                (student.courses || []).some(c => c.id === course.id)
+        return firstStudentCourses.filter((course) =>
+            currentStudents.every((student) =>
+                (student.courses || []).some((c) => c.id === course.id)
             )
         )
     }, [currentStudents])
@@ -50,7 +71,7 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
 
     useEffect(() => {
         if (agentsData?.data && agentsData.data.length > 0) {
-            const activeAgent = agentsData.data.find(a => a.isActive)
+            const activeAgent = agentsData.data.find((a) => a.isActive)
             if (activeAgent) {
                 setSelectedAgentId(activeAgent.id)
             } else {
@@ -60,14 +81,22 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
     }, [agentsData])
 
     const handleRemoveStudent = (studentId: number) => {
-        setCurrentStudents(prev => prev.filter(s => s.id !== studentId))
+        setCurrentStudents((prev) => prev.filter((s) => s.id !== studentId))
     }
 
     const handleBulkSchedule = async () => {
-        if (!currentStudents.length || !selectedCourseId || !selectedAgentId || (isScheduled && !scheduledDate)) return
+        if (
+            !currentStudents.length ||
+            !selectedCourseId ||
+            !selectedAgentId ||
+            (isScheduled && !scheduledDate)
+        )
+            return
 
-        const scheduledAt = isScheduled ? `${scheduledDate}T00:00:00` : moment().format('YYYY-MM-DDTHH:mm:ss')
-        const studentIds = currentStudents.map(s => s.id)
+        const scheduledAt = isScheduled
+            ? `${scheduledDate}T${callTime}:00:00`
+            : moment().format('YYYY-MM-DDTHH:mm:ss')
+        const studentIds = currentStudents.map((s) => s.id)
 
         try {
             await bulkScheduleCall({
@@ -75,7 +104,8 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
                 courseId: selectedCourseId,
                 scheduledAt,
                 isScheduled: isScheduled,
-                agent: selectedAgentId
+                agent: selectedAgentId,
+                maxAttempts,
             }).unwrap()
 
             notification.success({
@@ -88,7 +118,9 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
         } catch (error: any) {
             notification.error({
                 title: 'Error',
-                description: error?.data?.message || `Failed to ${isScheduled ? 'schedule' : 'initiate'} bulk calls`,
+                description:
+                    error?.data?.message ||
+                    `Failed to ${isScheduled ? 'schedule' : 'initiate'} bulk calls`,
             })
         }
     }
@@ -101,7 +133,9 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
                 <DialogHeader className="mb-4">
                     <DialogTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
                         <Users className="w-5 h-5 text-[#044866]" />
-                        {isScheduled ? 'Bulk Schedule Call' : 'Bulk Initiate Call'}
+                        {isScheduled
+                            ? 'Bulk Schedule Call'
+                            : 'Bulk Initiate Call'}
                     </DialogTitle>
                     <p className="text-sm text-gray-500">
                         {isScheduled
@@ -112,20 +146,28 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
 
                 <div className="space-y-3.5 overflow-y-auto flex-1 pr-2 -mr-2">
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 max-h-36 overflow-y-auto">
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 block">Selected Students</span>
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 block">
+                            Selected Students
+                        </span>
                         <div className="flex flex-wrap gap-2">
-                            {currentStudents.map(student => (
-                                <div key={student.id} className="bg-white pl-2 pr-1 py-1 rounded border border-gray-200 text-xs font-medium text-gray-700 flex items-center gap-1.5 group transition-colors hover:border-red-200">
+                            {currentStudents.map((student) => (
+                                <div
+                                    key={student.id}
+                                    className="bg-white pl-2 pr-1 py-1 rounded border border-gray-200 text-xs font-medium text-gray-700 flex items-center gap-1.5 group transition-colors hover:border-red-200"
+                                >
                                     <div className="flex flex-col min-w-0">
                                         <span className="text-[11px] text-gray-400 font-bold uppercase tracking-tighter leading-none mb-0.5">
                                             {student.studentId}
                                         </span>
-                                        <span className="truncate max-w-[180px] leading-tight text-[13px]">
-                                            {student.user?.name} {student.familyName}
+                                        <span className="truncate max-w-45 leading-tight text-[13px]">
+                                            {student.user?.name}{' '}
+                                            {student.familyName}
                                         </span>
                                     </div>
                                     <button
-                                        onClick={() => handleRemoveStudent(student.id)}
+                                        onClick={() =>
+                                            handleRemoveStudent(student.id)
+                                        }
                                         className="p-1 rounded-sm hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"
                                         title="Remove student"
                                     >
@@ -134,36 +176,82 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
                                 </div>
                             ))}
                             {currentStudents.length === 0 && (
-                                <p className="text-xs text-gray-400 italic">No students selected</p>
+                                <p className="text-xs text-gray-400 italic">
+                                    No students selected
+                                </p>
                             )}
                         </div>
                     </div>
 
-
                     {isScheduled && (
-                        <div className="space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
-                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Schedule Date</span>
-                            <TextInput
-                                name="date"
-                                type="date"
-                                showError={false}
-                                value={scheduledDate}
-                                onChange={(e: any) => setScheduledDate(e.target.value)}
-                                min={moment().format('YYYY-MM-DD')}
-                            />
+                        <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                            <div className="space-y-3">
+                                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                    Schedule Date
+                                </span>
+                                <TextInput
+                                    name="date"
+                                    type="date"
+                                    showError={false}
+                                    value={scheduledDate}
+                                    onChange={(e: any) =>
+                                        setScheduledDate(e.target.value)
+                                    }
+                                    min={moment().format('YYYY-MM-DD')}
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                        Max Attempts
+                                    </span>
+                                    <TextInput
+                                        name="maxAttempts"
+                                        type="number"
+                                        showError={false}
+                                        value={maxAttempts}
+                                        onChange={(e: any) =>
+                                            setMaxAttempts(
+                                                Number(e.target.value)
+                                            )
+                                        }
+                                        placeholder="3"
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                        Call Time
+                                    </span>
+                                    <Select
+                                        name="callTime"
+                                        options={hourOptions}
+                                        value={callTime}
+                                        onChange={(val: any) =>
+                                            setCallTime(val)
+                                        }
+                                        onlyValue
+                                        menuPlacement="top"
+                                    />
+                                </div>
+                            </div>
                         </div>
                     )}
 
                     <div className="space-y-3">
-                        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Select Agent</span>
+                        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                            Select Agent
+                        </span>
                         <Select
                             name="agent"
                             placeholder="Select an agent"
                             loading={isAgentsLoading}
-                            options={agentsData?.data?.map(agent => ({
-                                label: `${agent.name} (${agent.responsibility})`,
-                                value: agent.id
-                            })) || []}
+                            options={
+                                agentsData?.data?.map((agent) => ({
+                                    label: `${agent.name} (${agent.responsibility})`,
+                                    value: agent.id,
+                                })) || []
+                            }
                             value={selectedAgentId}
                             onChange={(val: any) => setSelectedAgentId(val)}
                             onlyValue
@@ -172,15 +260,22 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
 
                     <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Select Common Course</span>
-                            <span className="text-[10px] text-gray-500">Only courses common to all selected students are shown</span>
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                Select Common Course
+                            </span>
+                            <span className="text-[10px] text-gray-500">
+                                Only courses common to all selected students are
+                                shown
+                            </span>
                         </div>
-                        <div className="grid grid-cols-1 gap-2 max-h-[250px] overflow-y-auto pr-1">
+                        <div className="grid grid-cols-1 gap-2 max-h-62.5 overflow-y-auto pr-1">
                             {commonCourses.length > 0 ? (
                                 commonCourses.map((course) => (
                                     <button
                                         key={course.id}
-                                        onClick={() => setSelectedCourseId(course.id)}
+                                        onClick={() =>
+                                            setSelectedCourseId(course.id)
+                                        }
                                         className={cn(
                                             'flex items-center justify-between p-3 rounded-xl border-2 transition-all text-left group',
                                             selectedCourseId === course.id
@@ -189,13 +284,20 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
                                         )}
                                     >
                                         <div className="flex flex-col gap-0.5 min-w-0">
-                                            <p className={cn(
-                                                'text-sm font-bold truncate',
-                                                selectedCourseId === course.id ? 'text-[#044866]' : 'text-gray-700'
-                                            )}>
+                                            <p
+                                                className={cn(
+                                                    'text-sm font-bold truncate',
+                                                    selectedCourseId ===
+                                                        course.id
+                                                        ? 'text-[#044866]'
+                                                        : 'text-gray-700'
+                                                )}
+                                            >
                                                 {course.title || course.name}
                                             </p>
-                                            <p className="text-[10px] text-gray-500 font-medium uppercase">{course.code}</p>
+                                            <p className="text-[10px] text-gray-500 font-medium uppercase">
+                                                {course.code}
+                                            </p>
                                         </div>
                                         {selectedCourseId === course.id ? (
                                             <CheckCircle2 className="w-5 h-5 text-[#044866] shrink-0" />
@@ -207,8 +309,8 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
                             ) : (
                                 <p className="text-sm text-amber-600 bg-amber-50 p-3 rounded-lg border border-amber-100 italic">
                                     {currentStudents.length === 0
-                                        ? "Please select at least one student."
-                                        : "No common courses found among all selected students. Bulk scheduling requires a shared course."}
+                                        ? 'Please select at least one student.'
+                                        : 'No common courses found among all selected students. Bulk scheduling requires a shared course.'}
                                 </p>
                             )}
                         </div>
@@ -228,12 +330,19 @@ export const BulkScheduleCallModal = ({ students, onClose }: BulkScheduleCallMod
                         className="flex-1 bg-[#044866] hover:bg-[#095a7d] text-white"
                         onClick={handleBulkSchedule}
                         loading={isLoading}
-                        disabled={!selectedCourseId || !selectedAgentId || (isScheduled && !scheduledDate) || !currentStudents.length}
+                        disabled={
+                            !selectedCourseId ||
+                            !selectedAgentId ||
+                            (isScheduled && !scheduledDate) ||
+                            !currentStudents.length
+                        }
                     >
-                        {isScheduled ? `Schedule Calls (${currentStudents.length})` : `Call Now (${currentStudents.length})`}
+                        {isScheduled
+                            ? `Schedule Calls (${currentStudents.length})`
+                            : `Call Now (${currentStudents.length})`}
                     </Button>
                 </div>
             </DialogContent>
-        </Dialog >
+        </Dialog>
     )
 }

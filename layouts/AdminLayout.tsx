@@ -234,6 +234,12 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
             visible: subadmin?.data?.allowIndustryListing,
         },
         {
+            text: 'Industry Readiness',
+            path: getRoutePath('/industry-readiness?tab=forecast'),
+            Icon: MdFindInPage,
+            visible: subadmin?.data?.allowIndustryListing,
+        },
+        {
             text: 'Rto Listing',
             path: getRoutePath('/rto-listing?tab=all&page=1&pageSize=50'),
             Icon: MdFindInPage,

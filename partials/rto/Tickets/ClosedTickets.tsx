@@ -18,7 +18,7 @@ import { AiFillCloseCircle, AiFillDelete } from 'react-icons/ai'
 import { StudentCellInfo } from '../student/components'
 import { TicketStatus } from '@partials/common/Tickets'
 
-export const ClosedTickets = () => {
+export const ClosedTickets = ({ layoutV2 = false }: { layoutV2?: boolean }) => {
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
 
@@ -38,12 +38,12 @@ export const ClosedTickets = () => {
         {
             text: 'View',
             onClick: (ticket: any) =>
-                router.push(`/portals/sub-admin/tickets/detail/${ticket?.id}`),
+                router.push(layoutV2 ? `/portals/rto/communications/tickets/${ticket?.id}` : `/portals/sub-admin/tickets/detail/${ticket?.id}`),
             Icon: AiFillCloseCircle,
         },
         {
             text: 'Delete',
-            onClick: () => {},
+            onClick: () => { },
             Icon: AiFillDelete,
         },
     ]
@@ -178,7 +178,7 @@ export const ClosedTickets = () => {
                     !isError && (
                         <EmptyData
                             title={'No Tickets!'}
-                            description={'You have not Tickets request yet'}
+                            description={'You have no Tickets request yet'}
                             height={'50vh'}
                         />
                     )

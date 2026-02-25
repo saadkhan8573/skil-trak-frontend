@@ -15,7 +15,6 @@ import { FaEdit, FaEye } from 'react-icons/fa'
 import { EditTimer } from '@components/StudentTimer/EditTimer'
 import { Badge } from '@components/ui/badge'
 import { CreateStudentNote } from '@partials/common/Notes/forms'
-import { ResolveIssuesCompletedModal } from '@partials/rto-v2'
 import { StudentCellInfo } from '@partials/rto/student/components'
 import { ChangeStudentStatusModal } from '@partials/sub-admin/students/modals'
 import { RtoApi, RtoV2Api } from '@queries'
@@ -50,14 +49,7 @@ export const StudentsNeedWorkplaceTab = () => {
             />
         )
     }
-    const onClickCompleted = (student: any) => {
-        setModal(
-            <ResolveIssuesCompletedModal
-                onCancel={onModalCancelClicked}
-                student={student}
-            />
-        )
-    }
+
     const onAddNote = (student: Student) => {
         setModal(
             <div
@@ -70,16 +62,6 @@ export const StudentsNeedWorkplaceTab = () => {
                     receiverId={student?.user?.id}
                 />
             </div>
-        )
-    }
-
-    const onDateClick = (student: Student) => {
-        setModal(
-            <EditTimer
-                studentId={student?.user?.id}
-                date={student?.expiryDate}
-                onCancel={onModalCancelClicked}
-            />
         )
     }
 
@@ -158,29 +140,6 @@ export const StudentsNeedWorkplaceTab = () => {
             },
         },
         {
-            accessorKey: 'progress',
-            header: () => <span>Status</span>,
-            cell: ({ row }) => {
-                const config = statusConfig[row?.original?.currentStatus]
-                const StatusIcon = config?.icon
-                return (
-                    <>
-                        <Badge
-                            className={`${config?.bgColor} ${config?.color} ${config?.borderColor} border-2 whitespace-nowrap px-2.5 py-1 shadow-sm hover:shadow-md transition-all font-semibold text-xs w-fit`}
-                        >
-                            <StatusIcon className="h-3.5 w-3.5 mr-1.5" />
-                            {config?.label}
-                        </Badge>
-                    </>
-                )
-            },
-        },
-        // {
-        //     accessorKey: 'sectors',
-        //     header: () => <span>Sectors</span>,
-        //     cell: (info) => <SectorCell student={info.row.original} />,
-        // },
-        {
             accessorKey: 'Course',
             header: () => (
                 <div className="flex items-center gap-x-2">
@@ -201,8 +160,24 @@ export const StudentsNeedWorkplaceTab = () => {
                 </div>
             ),
         },
-
-
+        {
+            accessorKey: 'progress',
+            header: () => <span>Status</span>,
+            cell: ({ row }) => {
+                const config = statusConfig[row?.original?.currentStatus]
+                const StatusIcon = config?.icon
+                return (
+                    <>
+                        <Badge
+                            className={`${config?.bgColor} ${config?.color} ${config?.borderColor} border-2 whitespace-nowrap px-2.5 py-1 shadow-sm hover:shadow-md transition-all font-semibold text-xs w-fit`}
+                        >
+                            <StatusIcon className="h-3.5 w-3.5 mr-1.5" />
+                            {config?.label}
+                        </Badge>
+                    </>
+                )
+            },
+        },
         {
             accessorKey: 'createdAt',
             header: () => <span>Created At</span>,

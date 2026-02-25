@@ -42,7 +42,7 @@ export const AiCallsManagement = () => {
                     }}
                 />
             )}
-            <div className="max-w-[1400px] mx-auto px-6 py-6">
+            <div className="mx-auto px-6 py-6">
                 {isAuthenticated ? (
                     <ConfigTabs tabs={tabs} tabsTriggerClasses="py-1!" />
                 ) : (

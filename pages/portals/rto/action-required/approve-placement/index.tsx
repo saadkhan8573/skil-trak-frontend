@@ -1,7 +1,7 @@
 import { RtoLayoutV2 } from '@layouts'
 import { RtoWpApprovalPlacements } from '@partials'
 import { Users } from 'lucide-react'
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 
 const ApprovePlacementsPage = () => {
     return <RtoWpApprovalPlacements />

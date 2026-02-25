@@ -25,20 +25,22 @@ import React, { useState, useEffect } from 'react'
 
 type ResolveIssuesCompletedModalProps = {
     onCancel: () => void
-    student: any
+    reportedIssue: any
     view?: boolean
 }
 export const ResolveIssuesCompletedModal = ({
     onCancel,
-    student,
+    reportedIssue,
     view = false,
-}: any) => {
+}: ResolveIssuesCompletedModalProps) => {
+    console.log({ reportedIssue })
     const [resolution, setResolution] = useState('')
     const { notification } = useNotification()
     const [resolveIssue, resolveIssueResult] =
         RtoApi.Students.useRtoResolveIssue()
 
     const getPriorityBadge = (priority: 'critical' | 'high' | 'medium') => {
+        console.log({ priority })
         const config = {
             critical: {
                 className:
@@ -79,7 +81,7 @@ export const ResolveIssuesCompletedModal = ({
         }
     }, [resolveIssueResult.isSuccess])
     const onClickResolve = () => {
-        resolveIssue({ id: student.id, body: { note: resolution } })
+        resolveIssue({ id: reportedIssue?.id, note: resolution })
     }
 
     return (
@@ -94,14 +96,14 @@ export const ResolveIssuesCompletedModal = ({
                     <div className="flex items-start justify-between gap-4 border-b border-gray-200 pb-4">
                         <div className="space-y-1">
                             <h2 className="text-xl font-semibold">
-                                {student?.title}
+                                {reportedIssue?.title}
                             </h2>
                             {/* <p className="text-sm text-gray-500">
-                            Issue #{student.id.padStart(4, '0')}
+                            Issue #{reportedIssue.id.padStart(4, '0')}
                             Issue #
                         </p> */}
                         </div>
-                        {getPriorityBadge(student?.priority)}
+                        {getPriorityBadge(reportedIssue?.priority)}
                     </div>
 
                     {/* Issue Information Grid */}
@@ -118,7 +120,7 @@ export const ResolveIssuesCompletedModal = ({
                                         Student Name
                                     </p>
                                     <p className="font-medium">
-                                        {student?.student?.user?.name}
+                                        {reportedIssue?.student?.user?.name}
                                     </p>
                                 </div>
                                 <div>
@@ -128,7 +130,7 @@ export const ResolveIssuesCompletedModal = ({
                                     <div className="flex items-center gap-2">
                                         <GraduationCap className="h-3 w-3 text-gray-500" />
                                         <p className="text-sm">
-                                            {student?.workplaceRequest
+                                            {reportedIssue?.workplaceRequest
                                                 ?.courses?.[0]?.title ?? 'NA'}
                                         </p>
                                     </div>
@@ -140,7 +142,7 @@ export const ResolveIssuesCompletedModal = ({
                                     <div className="flex items-center gap-2">
                                         <Building2 className="h-3 w-3 text-gray-500" />
                                         <p className="text-sm">
-                                            {student?.workplaceRequest
+                                            {reportedIssue?.workplaceRequest
                                                 ?.industries?.[0]?.industry
                                                 ?.user?.name ?? 'NA'}
                                         </p>
@@ -161,7 +163,7 @@ export const ResolveIssuesCompletedModal = ({
                                         Category
                                     </p>
                                     <span className="inline-flex items-center px-2 py-1 text-xs border border-gray-300 rounded-md bg-gray-50 capitalize">
-                                        {student.category}
+                                        {reportedIssue?.category}
                                     </span>
                                 </div>
                                 <div>
@@ -169,7 +171,7 @@ export const ResolveIssuesCompletedModal = ({
                                         Reported By
                                     </p>
                                     <p className="font-medium text-sm">
-                                        {student?.requestedBy?.name}
+                                        {reportedIssue?.requestedBy?.name}
                                     </p>
                                 </div>
                                 <div>
@@ -179,7 +181,7 @@ export const ResolveIssuesCompletedModal = ({
                                     <div className="flex items-center gap-2">
                                         <Calendar className="h-3 w-3 text-gray-500" />
                                         <p className="text-sm">
-                                            {moment(student?.createdAt).format('Do MMM YYYY')}
+                                            {moment(reportedIssue?.createdAt).format('Do MMM YYYY')}
                                         </p>
                                     </div>
                                 </div>
@@ -189,7 +191,7 @@ export const ResolveIssuesCompletedModal = ({
                                     </p>
                                     <span className="inline-flex items-center px-2 py-1 text-xs border border-amber-200 text-amber-600 rounded-md bg-amber-50">
                                         <Clock className="h-3 w-3 mr-1" />
-                                        {moment().diff(moment(student?.createdAt), 'days')} days
+                                        {moment().diff(moment(reportedIssue?.createdAt), 'days')} days
                                     </span>
                                 </div>
                             </div>
@@ -204,7 +206,7 @@ export const ResolveIssuesCompletedModal = ({
                         </h4>
                         <div className="p-4 rounded-xl overflow-auto max-h-40 bg-gray-50 border border-gray-200">
                             <p className="text-sm leading-relaxed ">
-                                {student?.comment ??
+                                {reportedIssue?.comment ??
                                     'No reported notes provided.'}
                             </p>
                         </div>
@@ -218,7 +220,7 @@ export const ResolveIssuesCompletedModal = ({
                         </h4>
                         {view ? (
                             <p className="text-sm leading-relaxed overflow-auto max-h-60 p-4 rounded-xl bg-gray-50 border border-gray-200">
-                                {student?.resolutionNote ??
+                                {reportedIssue?.resolutionNote ??
                                     'No resolution notes provided.'}
                             </p>
                         ) : (
@@ -243,17 +245,16 @@ export const ResolveIssuesCompletedModal = ({
                             >
                                 Cancel
                             </button>
-                            <button
+                            <Button
+                                variant='error'
                                 onClick={onClickResolve}
-                                disabled={!resolution.trim()}
-                                className={`px-4 py-2 text-sm rounded-lg text-white flex items-center gap-2 transition ${resolution.trim()
-                                        ? 'bg-linear-to-r from-successNew to-emerald-600 hover:bg-linear-to-r hover:from-primaryNew hover:to-emerald-600 hover:opacity-90'
-                                        : 'bg-gray-300 cursor-not-allowed'
-                                    }`}
+                                className='bg-red-500!'
+                                disabled={!resolution.trim() || resolveIssueResult?.isLoading}
+                                loading={resolveIssueResult?.isLoading}
                             >
                                 <CheckCircle2 className="h-4 w-4" />
                                 Mark as Resolved
-                            </button>
+                            </Button>
                         </div>
                     )}
                 </div>

@@ -70,12 +70,18 @@ export const callManagementLoginEndpoints = (
 
     initiateAiCall: builder.mutation<
         any,
-        { studentId: number; courseId: number; agent?: number }
+        {
+            studentId: number
+            courseId: number
+            agent?: number
+            maxAttempts?: number
+            callTime?: string
+        }
     >({
-        query: ({ studentId, courseId, agent }) => ({
+        query: ({ studentId, courseId, agent, maxAttempts, callTime }) => ({
             url: `ai-voice-calls/student/${studentId}/make-call`,
             method: 'POST',
-            body: { courseId, agent },
+            body: { courseId, agent, maxAttempts, callTime },
         }),
         invalidatesTags: ['CallManagement'],
     }),
@@ -89,6 +95,8 @@ export const callManagementLoginEndpoints = (
             phone: string
             isScheduled: boolean
             agent?: number
+            maxAttempts?: number
+            callTime?: string
         }
     >({
         query: ({
@@ -98,10 +106,18 @@ export const callManagementLoginEndpoints = (
             phone,
             isScheduled,
             agent,
+            maxAttempts,
         }) => ({
             url: `ai-voice-calls/student/${studentId}/schedule-call`,
             method: 'POST',
-            body: { course, scheduledAt, phone, isScheduled, agent },
+            body: {
+                course,
+                scheduledAt,
+                phone,
+                isScheduled,
+                agent,
+                maxAttempts,
+            },
         }),
         invalidatesTags: ['CallManagement'],
     }),
@@ -114,6 +130,7 @@ export const callManagementLoginEndpoints = (
             scheduledAt: string
             isScheduled: boolean
             agent?: number
+            maxAttempts?: number
         }
     >({
         query: (body) => ({

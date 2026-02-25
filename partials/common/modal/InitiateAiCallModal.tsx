@@ -18,6 +18,13 @@ export const InitiateAiCallModal = ({ student, onClose }: InitiateAiCallModalPro
     const [selectedAgentId, setSelectedAgentId] = useState<number | null>(null)
     const [isScheduled, setIsScheduled] = useState(false)
     const [scheduledDate, setScheduledDate] = useState<string>(moment().format('YYYY-MM-DD'))
+    const [maxAttempts, setMaxAttempts] = useState<number>(3)
+    const [callTime, setCallTime] = useState<string>(moment().format('HH'))
+
+    const hourOptions = Array.from({ length: 24 }, (_, i) => {
+        const hour = i.toString().padStart(2, '0')
+        return { label: `${hour}:00`, value: hour }
+    })
 
     const [scheduleCall, { isLoading }] = CommonApi.CallManagement.useScheduleAiCallMutation()
     const { data: agentsData, isLoading: isAgentsLoading } = CommonApi.CallManagement.useGetAgentsListQuery({
@@ -50,7 +57,7 @@ export const InitiateAiCallModal = ({ student, onClose }: InitiateAiCallModalPro
         if (!student || !selectedCourseId) return
 
         try {
-            const scheduledAt = isScheduled ? `${scheduledDate}T00:00:00` : moment().format('YYYY-MM-DDTHH:mm:ss')
+            const scheduledAt = isScheduled ? `${scheduledDate}T${callTime}:00:00` : moment().format('YYYY-MM-DDTHH:mm:ss')
 
             await scheduleCall({
                 studentId: student.id,
@@ -58,7 +65,8 @@ export const InitiateAiCallModal = ({ student, onClose }: InitiateAiCallModalPro
                 scheduledAt,
                 phone: student.phone || '',
                 isScheduled: isScheduled,
-                agent: selectedAgentId ?? undefined
+                agent: selectedAgentId ?? undefined,
+                maxAttempts,
             }).unwrap()
 
             notification.success({
@@ -80,7 +88,7 @@ export const InitiateAiCallModal = ({ student, onClose }: InitiateAiCallModalPro
 
     return (
         <Dialog open={!!student} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-lg p-6 flex flex-col max-h-[90vh]">
+            <DialogContent className="sm:max-w-2xl! p-6 flex flex-col max-h-[90vh]">
                 <DialogHeader className="mb-4">
                     <DialogTitle className="text-xl font-bold text-gray-900">
                         {isScheduled ? 'Schedule AI Call' : 'Initiate AI Call'}
@@ -127,16 +135,43 @@ export const InitiateAiCallModal = ({ student, onClose }: InitiateAiCallModalPro
                     </div>
 
                     {isScheduled && (
-                        <div className="space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
-                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Schedule Date</span>
-                            <TextInput
-                                name="date"
-                                type="date"
-                                showError={false}
-                                value={scheduledDate}
-                                onChange={(e: any) => setScheduledDate(e.target.value)}
-                                min={moment().format('YYYY-MM-DD')}
-                            />
+                        <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                            <div className="space-y-3">
+                                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Schedule Date</span>
+                                <TextInput
+                                    name="date"
+                                    type="date"
+                                    showError={false}
+                                    value={scheduledDate}
+                                    onChange={(e: any) => setScheduledDate(e.target.value)}
+                                    min={moment().format('YYYY-MM-DD')}
+                                />
+                            </div>
+
+                            <div className='grid grid-cols-2 gap-4'>
+                                <div className="space-y-1">
+                                    <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Max Attempts</span>
+                                    <TextInput
+                                        name="maxAttempts"
+                                        type="number"
+                                        showError={false}
+                                        value={maxAttempts}
+                                        onChange={(e: any) => setMaxAttempts(Number(e.target.value))}
+                                        placeholder="3"
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Call Time</span>
+                                    <Select
+                                        name="callTime"
+                                        options={hourOptions}
+                                        value={callTime}
+                                        onChange={(val: any) => setCallTime(val)}
+                                        onlyValue
+                                        menuPlacement='top'
+                                    />
+                                </div>
+                            </div>
                         </div>
                     )}
 
@@ -155,6 +190,7 @@ export const InitiateAiCallModal = ({ student, onClose }: InitiateAiCallModalPro
                             onlyValue
                         />
                     </div>
+
 
                     <div className="space-y-3">
                         <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Select Course</span>

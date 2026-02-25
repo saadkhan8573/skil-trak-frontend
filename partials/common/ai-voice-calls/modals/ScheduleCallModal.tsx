@@ -17,6 +17,13 @@ export const ScheduleCallModal = ({ student, onClose }: ScheduleCallModalProps) 
     const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null)
     const [selectedAgentId, setSelectedAgentId] = useState<number | null>(null)
     const [scheduledDate, setScheduledDate] = useState<string>(moment().format('YYYY-MM-DD'))
+    const [maxAttempts, setMaxAttempts] = useState<number>(3)
+    const [callTime, setCallTime] = useState<string>(moment().format('HH'))
+
+    const hourOptions = Array.from({ length: 24 }, (_, i) => {
+        const hour = i.toString().padStart(2, '0')
+        return { label: `${hour}:00`, value: hour }
+    })
 
     const [scheduleCall, { isLoading }] = CommonApi.CallManagement.useScheduleAiCallMutation()
     const { data: agentsData, isLoading: isAgentsLoading } = CommonApi.CallManagement.useGetAgentsListQuery({
@@ -48,7 +55,7 @@ export const ScheduleCallModal = ({ student, onClose }: ScheduleCallModalProps) 
     const handleScheduleCall = async () => {
         if (!student || !selectedCourseId || !selectedAgentId || !scheduledDate) return
 
-        const scheduledAt = `${scheduledDate}T00:00:00`
+        const scheduledAt = `${scheduledDate}T${callTime}:00:00`
 
         try {
             await scheduleCall({
@@ -57,7 +64,8 @@ export const ScheduleCallModal = ({ student, onClose }: ScheduleCallModalProps) 
                 scheduledAt,
                 phone: student.phone || '',
                 isScheduled: true,
-                agent: selectedAgentId
+                agent: selectedAgentId,
+                maxAttempts,
             }).unwrap()
 
             notification.success({
@@ -128,6 +136,31 @@ export const ScheduleCallModal = ({ student, onClose }: ScheduleCallModalProps) 
                                     value={selectedAgentId}
                                     onChange={(val: any) => setSelectedAgentId(val)}
                                     onlyValue
+                                />
+                            </div>
+                        </div>
+
+                        <div className='grid grid-cols-2 gap-4 mt-4'>
+                            <div className="space-y-1">
+                                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">Max Attempts</span>
+                                <TextInput
+                                    name="maxAttempts"
+                                    type="number"
+                                    showError={false}
+                                    value={maxAttempts}
+                                    onChange={(e: any) => setMaxAttempts(Number(e.target.value))}
+                                    placeholder="3"
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">Call Time</span>
+                                <Select
+                                    name="callTime"
+                                    options={hourOptions}
+                                    value={callTime}
+                                    onChange={(val: any) => setCallTime(val)}
+                                    onlyValue
+                                    menuPlacement='top'
                                 />
                             </div>
                         </div>

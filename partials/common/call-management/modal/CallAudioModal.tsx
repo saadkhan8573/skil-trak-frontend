@@ -1,7 +1,15 @@
-import { Play, Pause, Volume2, Headphones, Download } from 'lucide-react'
+import { Play, Pause, Volume2, Headphones, Download, X } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import { PlacementCall } from '@types'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/ui/dialog'
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+    DialogClose,
+} from '@components/ui/dialog'
+import { Button } from '@components'
 import { CommonApi } from '@queries'
 import moment from 'moment'
 
@@ -18,10 +26,10 @@ export function CallAudioModal({ call, onClose }: CallAudioModalProps) {
     const [volume, setVolume] = useState(1)
 
     // Fetch the recording URL
-    const { data, isLoading } = CommonApi.CallManagement.useGetCallRecordingQuery(
-        String(call.callId),
-        { skip: !call.callId }
-    )
+    const { data, isLoading } =
+        CommonApi.CallManagement.useGetCallRecordingQuery(String(call.callId), {
+            skip: !call.callId,
+        })
 
     const audioUrl = data?.url || call.recordingUrl
 
@@ -63,8 +71,21 @@ export function CallAudioModal({ call, onClose }: CallAudioModalProps) {
     }
 
     return (
-        <Dialog open={!!call} onOpenChange={(open) => !open && onClose()}>
-            <DialogContent className="max-w-sm p-0 gap-0 overflow-hidden border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 sm:rounded-2xl shadow-2xl [&>button[data-slot='dialog-close']]:text-white [&>button[data-slot='dialog-close']]:opacity-100">
+        <Dialog open={!!call} onOpenChange={(isOpen) => !isOpen && onClose()}>
+            <DialogContent
+                showCloseButton={false}
+                className="max-w-sm p-0 gap-0 overflow-hidden border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 sm:rounded-2xl shadow-2xl"
+            >
+                <Button
+                    variant="primaryNew"
+                    onClick={onClose}
+                    outline
+                    Icon={X}
+                    mini
+                    className="absolute top-4 right-4 z-50 text-white opacity-100 hover:opacity-70 transition-opacity"
+                    aria-label="Close modal"
+                />
+
                 {/* Decorative background elements */}
                 <div className="absolute top-0 left-0 w-full h-24 bg-linear-to-br from-[#044866] to-[#0D5468] z-0" />
                 <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl pointer-events-none" />
@@ -74,7 +95,9 @@ export function CallAudioModal({ call, onClose }: CallAudioModalProps) {
                         <div className="text-white">
                             <div className="flex items-center gap-2 mb-1 opacity-90">
                                 <Headphones className="w-3.5 h-3.5" />
-                                <span className="text-[10px] font-medium tracking-wide uppercase">Audio Recording</span>
+                                <span className="text-[10px] font-medium tracking-wide uppercase">
+                                    Audio Recording
+                                </span>
                             </div>
                             <DialogTitle className="text-lg font-semibold leading-tight text-white mb-0">
                                 {call.student?.user?.name || 'Unknown Student'}
@@ -87,7 +110,9 @@ export function CallAudioModal({ call, onClose }: CallAudioModalProps) {
                 <div className="relative z-10 bg-white rounded-t-3xl px-5 py-6 mt-2">
                     {/* Vinyl Record Animation / Visualizer Placeholder */}
                     <div className="flex justify-center mb-3">
-                        <div className={`relative w-14 h-14 rounded-full border-2 border-gray-100 shadow-[0_8px_16px_rgba(0,0,0,0.1)] flex items-center justify-center bg-linear-to-tr from-gray-50 to-gray-200 ${isPlaying ? 'animate-spin-slow' : ''}`}>
+                        <div
+                            className={`relative w-14 h-14 rounded-full border-2 border-gray-100 shadow-[0_8px_16px_rgba(0,0,0,0.1)] flex items-center justify-center bg-linear-to-tr from-gray-50 to-gray-200 ${isPlaying ? 'animate-spin-slow' : ''}`}
+                        >
                             <div className="absolute inset-0 rounded-full border border-gray-300 opacity-50" />
                             <div className="absolute inset-2 rounded-full border border-gray-300 opacity-50" />
                             <div className="absolute inset-4 rounded-full border border-gray-300 opacity-50" />
@@ -101,7 +126,9 @@ export function CallAudioModal({ call, onClose }: CallAudioModalProps) {
                         <div className="text-center py-4">
                             <div className="animate-pulse flex flex-col items-center">
                                 <div className="h-2 w-32 bg-gray-200 rounded mb-2" />
-                                <span className="text-xs text-gray-400">Loading audio...</span>
+                                <span className="text-xs text-gray-400">
+                                    Loading audio...
+                                </span>
                             </div>
                         </div>
                     ) : audioUrl ? (
@@ -125,8 +152,16 @@ export function CallAudioModal({ call, onClose }: CallAudioModalProps) {
                                     className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#044866]"
                                 />
                                 <div className="flex justify-between text-[10px] text-gray-500 font-medium font-mono">
-                                    <span>{moment.utc(currentTime * 1000).format('mm:ss')}</span>
-                                    <span>{moment.utc(duration * 1000).format('mm:ss')}</span>
+                                    <span>
+                                        {moment
+                                            .utc(currentTime * 1000)
+                                            .format('mm:ss')}
+                                    </span>
+                                    <span>
+                                        {moment
+                                            .utc(duration * 1000)
+                                            .format('mm:ss')}
+                                    </span>
                                 </div>
                             </div>
 
@@ -141,7 +176,11 @@ export function CallAudioModal({ call, onClose }: CallAudioModalProps) {
                                         max="1"
                                         step="0.1"
                                         value={volume}
-                                        onChange={(e) => setVolume(parseFloat(e.target.value))}
+                                        onChange={(e) =>
+                                            setVolume(
+                                                parseFloat(e.target.value)
+                                            )
+                                        }
                                         className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#044866]"
                                     />
                                 </div>
@@ -171,10 +210,24 @@ export function CallAudioModal({ call, onClose }: CallAudioModalProps) {
                         </div>
                     ) : (
                         <div className="text-center py-6 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                            <p className="text-sm text-gray-500">No recording available for this call.</p>
+                            <p className="text-sm text-gray-500">
+                                No recording available for this call.
+                            </p>
                         </div>
                     )}
                 </div>
+
+                <DialogFooter className="bg-gray-50 px-5 py-3 border-t border-gray-100 relative z-10 transition-all">
+                    <DialogClose asChild>
+                        <Button
+                            variant="secondary"
+                            onClick={onClose}
+                            className="w-full text-xs font-bold uppercase tracking-wider h-9"
+                        >
+                            Close Player
+                        </Button>
+                    </DialogClose>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     )

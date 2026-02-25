@@ -1,17 +1,13 @@
-import { Course, Student } from '@types'
-import { CourseDot } from './CourseDot'
+import { Student } from '@types'
 import { SectorDetailDrawer } from './drawer/SectorDetailDrawer'
+import { SectorCourseGroup } from './SectorCourseGroup'
 
 export const SectorCell = ({ student }: { student: Student }) => {
     return (
-        <div className="w-fit">
-            <div className="flex flex-col items-center">
+        <div className="w-full">
+            <div className="flex flex-col items-start gap-y-2">
                 <SectorDetailDrawer student={student} />
-                <div className="flex gap-x-1">
-                    {student?.courses?.map((c: Course) => (
-                        <CourseDot key={c?.id} course={c} />
-                    ))}
-                </div>
+                <SectorCourseGroup courses={student?.courses} />
             </div>
         </div>
     )

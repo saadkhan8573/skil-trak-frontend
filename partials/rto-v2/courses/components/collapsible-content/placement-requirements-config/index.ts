@@ -2,5 +2,5 @@ export * from './AIDifferences'
 export * from './AIHighlightedTasks'
 export * from './AdminPlacementRequirements'
 export * from './RtoPlacementRequirements'
-
+export * from './CourseStreams'
 export * from './PlacementRequirementsConfiguration'

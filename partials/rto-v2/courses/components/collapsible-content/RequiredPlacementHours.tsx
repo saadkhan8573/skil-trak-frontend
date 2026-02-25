@@ -5,6 +5,7 @@ import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import { useNotification } from '@hooks'
 import { RtoApi } from '@queries'
+import { UserStatus } from '@types'
 import { AlertCircle, CheckCircle2, Clock, Edit, Save } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { PuffLoader } from 'react-spinners'
@@ -59,6 +60,9 @@ export const RequiredPlacementHours = ({
         })
     }
 
+    const logbook = course?.rtoCourseFiles?.find((file: any) => file.title === 'logBook')
+    const isCourseApproved = logbook?.status === UserStatus.Approved
+
     return (
         <>
             <ShowErrorNotifications result={updateHoursResult} />
@@ -74,7 +78,7 @@ export const RequiredPlacementHours = ({
                             Required Placement Hours
                         </h3>
 
-                        {course?.hours !== null ? (
+                        {isCourseApproved ? (
                             <Badge className="!bg-success/10 !text-success !border-success/20 ml-auto flex items-center gap-1">
                                 <CheckCircle2 className="h-3 w-3" />
                                 Confirmed

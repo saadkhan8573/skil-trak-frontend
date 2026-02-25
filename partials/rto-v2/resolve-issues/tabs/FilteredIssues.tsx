@@ -46,20 +46,20 @@ export const FilteredIssues = ({
     const [modal, setModal] = useState<ReactElement | null>(null)
     const onModalCancelClicked = () => setModal(null)
 
-    const onClickResolve = (student: any) => {
+    const onClickResolve = (reportedIssue: any) => {
         setModal(
             <ResolveIssuesCompletedModal
                 onCancel={onModalCancelClicked}
-                student={student}
+                reportedIssue={reportedIssue}
             />
         )
     }
 
-    const onClickViewDetails = (student: any) => {
+    const onClickViewDetails = (reportedIssue: any) => {
         setModal(
             <ResolveIssuesCompletedModal
                 onCancel={onModalCancelClicked}
-                student={student}
+                reportedIssue={reportedIssue}
                 view
             />
         )

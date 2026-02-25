@@ -50,6 +50,10 @@ export const StudentOverview = () => {
                 />
             )
         }
+
+        return () => {
+            dispatch(setSelectedWorkplace(null))
+        }
     }, [wpApprovalRequest])
 
     const studentWorkplaces =
@@ -92,8 +96,8 @@ export const StudentOverview = () => {
                                     }
                                     indId={industryAvailability?.industryId}
                                     availability={industryAvailability}
-                                    // resultBookAppointment={resultBookAppointment}
-                                    // bookAppointment={bookAppointment}
+                                // resultBookAppointment={resultBookAppointment}
+                                // bookAppointment={bookAppointment}
                                 />
                             )
                         )}

@@ -4,15 +4,15 @@ import React from 'react'
 
 export const HowItWorks = () => {
     return (
-        <Card className="border-border/60 shadow-premium-lg hover:shadow-premium-xl hover:border-primary/40 transition-all hover-lift bg-gradient-to-br from-white via-white to-primary/5 relative overflow-hidden group/card">
-            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full opacity-0 group-hover/card:opacity-100 transition-opacity"></div>
+        <Card className="border-border/60 shadow-premium-lg hover:shadow-premium-xl hover:border-primary/40 transition-all hover-lift bg-linear-to-br from-white via-white to-primary/5 relative overflow-hidden group/card">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-linear-to-br from-primary/10 to-transparent rounded-bl-full opacity-0 group-hover/card:opacity-100 transition-opacity"></div>
             <div className="pb-2">
                 <div className="flex items-center gap-2.5">
                     <div className="relative">
                         <div className="absolute inset-0 bg-primaryNew rounded-lg blur opacity-30"></div>
                         <div className="relative h-8 w-8 rounded-lg bg-primaryNew flex items-center justify-center shadow-premium">
                             <Brain className="h-4 w-4 text-white" />
-                            <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-white/0 to-white/20"></div>
+                            <div className="absolute inset-0 rounded-lg bg-linear-to-t from-white/0 to-white/20"></div>
                         </div>
                     </div>
                     <div>

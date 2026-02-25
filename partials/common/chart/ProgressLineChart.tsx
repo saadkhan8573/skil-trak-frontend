@@ -1,4 +1,4 @@
-import { Rto } from '@types'
+import { Rto, Sector } from '@types'
 import { removeEmptyValues } from '@utils'
 import { useMemo, useState } from 'react'
 import {
@@ -67,9 +67,9 @@ export const ProgressLineChart = () => {
 
     const initialData = chartCount?.data
         ? Object.entries(chartCount?.data)?.map(([month, value]: any) => ({
-              name: month,
-              ...value,
-          }))
+            name: month,
+            ...value,
+        }))
         : []
 
     initialData?.sort(
@@ -80,7 +80,7 @@ export const ProgressLineChart = () => {
     // options
     const sectorOptions = useMemo(
         () =>
-            sectorResponse.data?.map((sector: any) => ({
+            sectorResponse.data?.map((sector: Sector) => ({
                 label: sector?.name,
                 value: sector?.id,
             })),
@@ -220,9 +220,8 @@ export const ProgressLineChart = () => {
                             />
                         )}
                         <div
-                            className={`absolute top-full w-72 z-50 right-0 bg-white ${
-                                showDateFilter ? 'block' : 'hidden'
-                            }`}
+                            className={`absolute top-full w-72 z-50 right-0 bg-white ${showDateFilter ? 'block' : 'hidden'
+                                }`}
                         >
                             <SidebarCalendar
                                 setSelectedDate={(e) => {
@@ -267,8 +266,12 @@ export const ProgressLineChart = () => {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
                         <YAxis />
-                        <Tooltip content={<CustomTooltip />} />
                         <Legend />
+                        <Tooltip
+                            wrapperStyle={{ zIndex: 1000 }}
+                            content={<CustomTooltip />}
+                            allowEscapeViewBox={{ x: true, y: true }}
+                        />
                         {chartLinesConfig.map((lineConfig) => (
                             <Line
                                 key={lineConfig.dataKey}

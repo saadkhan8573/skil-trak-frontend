@@ -4,12 +4,14 @@ import { SupervisorRequirements } from '../supervision-requirements'
 import { AIDifferences } from './AIDifferences'
 import { AIHighlightedTasks } from './AIHighlightedTasks'
 import { AdminPlacementRequirements } from './AdminPlacementRequirements'
+import { CourseStreams } from './CourseStreams'
 import { RtoPlacementRequirements } from './RtoPlacementRequirements'
 
 export const PlacementRequirementsConfiguration = ({ course }: any) => {
     return (
         <div className="space-y-4">
             <RequiredPlacementDocuments course={course} />
+            <CourseStreams course={course} />
             {/* <LogbookSummaryDisplay course={course} /> */}
             {/* TGA Admin Placement Requirements */}
             <AdminPlacementRequirements course={course} />

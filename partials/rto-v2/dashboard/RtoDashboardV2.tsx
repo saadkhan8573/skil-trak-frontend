@@ -23,7 +23,7 @@ export const RtoDashboardV2 = () => {
                     message={adminMessage?.data?.message}
                     from={adminMessage?.data?.senderName}
                     date={moment(adminMessage?.data?.createdAt).fromNow()}
-                    onDismiss={() => {}}
+                    onDismiss={() => { }}
                 />
             )}
 
@@ -46,7 +46,7 @@ export const RtoDashboardV2 = () => {
                         Icon={Sparkles}
                         text="AI Powered"
                         shape="pill"
-                        className="relative bg-gradient-to-r from-accent/15 to-accent/10 border-accent/30 text-accent shadow-sm px-2.5 py-1 hover-lift overflow-hidden group/ai"
+                        className="relative bg-linear-to-r from-accent/15 to-accent/10 border-accent/30 text-accent shadow-sm px-2.5 py-1 hover-lift overflow-hidden group/ai"
                     />
                 </div>
                 <StudentAISearch />

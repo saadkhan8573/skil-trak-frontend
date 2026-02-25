@@ -58,11 +58,11 @@ export const ResolvedIssuesHistoryTab = () => {
             />
         )
     }
-    const onClickCompleted = (student: any) => {
+    const onClickCompleted = (reportedIssue: any) => {
         setModal(
             <ResolveIssuesCompletedModal
                 onCancel={onModalCancelClicked}
-                student={student}
+                reportedIssue={reportedIssue}
                 view
             />
         )

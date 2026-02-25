@@ -8,17 +8,16 @@ import {
     TextArea,
     TextInput,
     Typography,
-    UploadFile,
-    useShowErrorNotification,
+    UploadFile
 } from '@components'
+import { InputErrorMessage } from '@components/inputs/components'
 import { FileUpload } from '@hoc'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNotification } from '@hooks'
-import { InputErrorMessage } from '@components/inputs/components'
 import { AdminApi, adminApi } from '@queries'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { FormProvider, Path, useFieldArray, useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 interface TextEditorProps {
@@ -148,7 +147,6 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
 
             return
         }
-        // const content = quillRef.current.getEditor().root.innerHTML
 
         if (!data.featuredImage || !data.featuredImage[0]) {
             formMethods.setError('featuredImage', {
@@ -192,11 +190,6 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
             })
             return
         }
-
-        // FAQ's validation
-
-
-
 
         validationSchema
             .validate(data)
@@ -352,52 +345,7 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                             Add FAQ's here
                         </Typography>
                         <Card>
-                            {/* {faqList.map((faq: any, index: any) => (
-                                <div
-                                    key={index}
-                                    className="flex items-start gap-x-4"
-                                >
-                                    <div className="flex flex-col w-3/4">
-                                        <TextInput
-                                            name={`faq[${index}].question`}
-                                            label={`FAQ ${index + 1} Question`}
-                                            placeholder="Enter Question"
-                                            value={faq.question}
-                                            onChange={(e: any) => {
-                                                const updatedFaqList = [
-                                                    ...faqList,
-                                                ]
-                                                updatedFaqList[index].question =
-                                                    e.target.value
-                                                setFaqList(updatedFaqList)
-                                            }}
-                                        />
-                                        <TextArea
-                                            name={`faq[${index}].answer`}
-                                            label={`FAQ ${index + 1} Answer`}
-                                            placeholder="Enter Answer"
-                                            value={faq.answer}
-                                            onChange={(e: any) => {
-                                                const updatedFaqList = [
-                                                    ...faqList,
-                                                ]
-                                                updatedFaqList[index].answer =
-                                                    e.target.value
-                                                setFaqList(updatedFaqList)
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="mt-7">
-                                        <Button
-                                            text="Remove"
-                                            onClick={() =>
-                                                handleRemoveFAQ(index)
-                                            }
-                                            variant="error"
-                                        />
-                                    </div>
-                                </div>
-                            ))} */}
+
                             {fields.map((faq: any, index: number) => (
                                 <div
                                     key={faq.id}

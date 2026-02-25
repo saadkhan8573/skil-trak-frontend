@@ -60,7 +60,7 @@ export const PublishedBlogs = () => {
         {
             text: 'View',
             onClick: (blog: any) => {
-                router.push(`https://skiltrak.com.au/blogs/${blog?.slug}`)
+                router.push(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/blogs/${blog?.slug}`)
             },
             Icon: FaEye,
         },
@@ -255,18 +255,18 @@ export const PublishedBlogs = () => {
                                         <div className="p-6 mb-2 flex justify-between">
                                             {pageSize
                                                 ? pageSize(
-                                                      itemPerPage,
-                                                      setItemPerPage,
-                                                      data?.data?.length
-                                                  )
+                                                    itemPerPage,
+                                                    setItemPerPage,
+                                                    data?.data?.length
+                                                )
                                                 : null}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination
                                                     ? pagination(
-                                                          data?.pagination,
-                                                          setPage
-                                                      )
+                                                        data?.pagination,
+                                                        setPage
+                                                    )
                                                     : null}
                                             </div>
                                         </div>
@@ -279,18 +279,18 @@ export const PublishedBlogs = () => {
                                             <div className="p-6 mb-2 flex justify-between">
                                                 {pageSize
                                                     ? pageSize(
-                                                          itemPerPage,
-                                                          setItemPerPage,
-                                                          data?.data?.length
-                                                      )
+                                                        itemPerPage,
+                                                        setItemPerPage,
+                                                        data?.data?.length
+                                                    )
                                                     : null}
                                                 <div className="flex gap-x-2">
                                                     {quickActions}
                                                     {pagination
                                                         ? pagination(
-                                                              data?.pagination,
-                                                              setPage
-                                                          )
+                                                            data?.pagination,
+                                                            setPage
+                                                        )
                                                         : null}
                                                 </div>
                                             </div>

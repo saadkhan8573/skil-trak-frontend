@@ -14,11 +14,10 @@ import { adminApi } from '@queries'
 import { ColumnDef } from '@tanstack/react-table'
 import { checkListLength } from '@utils'
 import moment from 'moment'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
-import { FaEdit, FaEye, FaTrash } from 'react-icons/fa'
-import { DeleteModal, BulkDeleteModal } from '../components'
+import { FaEdit, FaTrash } from 'react-icons/fa'
+import { BulkDeleteModal, DeleteModal } from '../components'
 export const DraftBlogs = () => {
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
@@ -202,18 +201,18 @@ export const DraftBlogs = () => {
                                         >
                                             {pageSize
                                                 ? pageSize(
-                                                      itemPerPage,
-                                                      setItemPerPage,
-                                                      data?.data?.length
-                                                  )
+                                                    itemPerPage,
+                                                    setItemPerPage,
+                                                    data?.data?.length
+                                                )
                                                 : null}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination
                                                     ? pagination(
-                                                          data?.pagination,
-                                                          setPage
-                                                      )
+                                                        data?.pagination,
+                                                        setPage
+                                                    )
                                                     : null}
                                             </div>
                                         </div>
@@ -226,18 +225,18 @@ export const DraftBlogs = () => {
                                             <div className="p-6 mb-2 flex justify-between">
                                                 {pageSize
                                                     ? pageSize(
-                                                          itemPerPage,
-                                                          setItemPerPage,
-                                                          data?.data?.length
-                                                      )
+                                                        itemPerPage,
+                                                        setItemPerPage,
+                                                        data?.data?.length
+                                                    )
                                                     : null}
                                                 <div className="flex gap-x-2">
                                                     {quickActions}
                                                     {pagination
                                                         ? pagination(
-                                                              data?.pagination,
-                                                              setPage
-                                                          )
+                                                            data?.pagination,
+                                                            setPage
+                                                        )
                                                         : null}
                                                 </div>
                                             </div>

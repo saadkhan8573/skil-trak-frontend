@@ -17,7 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useNotification } from '@hooks'
 import { AdminApi, adminApi } from '@queries'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
@@ -35,12 +35,13 @@ interface FormValues extends FieldValues {
     isFeatured: boolean
     category: number[]
     content: string
-    faq: BlogQuestion[]
+    blogQuestions: BlogQuestion[]
 }
 
 const validationSchema = yup.object({
     title: yup
         .string()
+        .default('') // Add default
         .required('Title is required')
         .matches(/^[\w\s!@#$%^&*()\-+=_{}|:"<>?,./;'[\]]{5,160}$/, {
             message:
@@ -49,6 +50,7 @@ const validationSchema = yup.object({
         }),
     author: yup
         .string()
+        .default('') // Add default
         .required('Author is required')
         .matches(/^[^\d]+$/, 'Author name cannot contain numbers')
         .matches(
@@ -59,43 +61,41 @@ const validationSchema = yup.object({
         .max(20, 'Author cannot exceed 20 characters'),
     category: yup
         .array()
-        .of(yup.number().required())
+        .default([]) // Add default
         .min(1, 'Must select at least 1 category')
         .required(),
     shortDescription: yup
         .string()
+        .default('') // Add default
         .required('Short description is required'),
-    metaData: yup.string().optional(),
-    featuredImage: yup.mixed<any>().nullable().optional(),
-    isFeatured: yup.boolean().required(),
-    content: yup.string().required('Content is required'),
-    faq: yup
+    metaData: yup.string().default('').optional(),
+    featuredImage: yup.mixed().optional(),
+    content: yup.string().default('').optional(),
+    isFeatured: yup.boolean().default(false),
+    blogQuestions: yup
         .array()
         .of(
             yup.object({
-                question: yup.string().required('FAQ question should not be empty'),
-                answer: yup.string().required('FAQ answer should not be empty'),
+                question: yup.string().default('').optional(),
+                answer: yup.string().default('').optional(),
             })
         )
-        .required(),
-}) as any
+        .default([])
+        .optional(),
+})
 
 interface TextEditorProps {
     tagIds?: any
 }
 
 export const imageSizeErrorMessage = (file: File) => {
-    if (file && file.size && file.size > 2 * 1024 * 1024) {
-        return 'Image size must be less than 2MB'
+    if (file && file.size && file.size > 5 * 1024 * 1024) {
+        return 'Image size must be less than 5MB'
     }
     return true
 }
 
 export default function TextEditor({ tagIds }: TextEditorProps) {
-    const quillRef = useRef<any>(null)
-    const autoUploadingRef = useRef<boolean>(false)
-    const editorWrapperRef = useRef<HTMLDivElement | null>(null)
-
     const { notification } = useNotification()
 
     const router = useRouter()
@@ -103,9 +103,6 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
     const [isPublish, setIsPublish] = useState<boolean>(true)
     const [isFeatured, setIsFeatured] = useState(false)
     const [blogPost, setBlogPost] = useState<any>('')
-    const [faqList, setFaqList] = useState<
-        Array<{ question: string; answer: string }>
-    >([{ question: '', answer: '' }])
 
     const blogPostEnum = {
         Save: 'save',
@@ -140,473 +137,13 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
             featuredImage: null,
             isFeatured: false,
             content: '',
-            faq: [{ question: '', answer: '' }],
+            blogQuestions: [{ question: '', answer: '' }],
         } as FormValues,
     })
     const { append, remove, fields } = useFieldArray({
         control: formMethods.control as any,
-        name: 'faq',
+        name: 'blogQuestions',
     })
-
-    const uploadImageToServer = async (file: File) => {
-        const formData = new FormData()
-        formData.append('file', file)
-
-        const res: any = await uploadImage(formData)
-
-        if (!res?.data?.url) {
-            showErrorNotifications({
-                isError: true,
-                error: {
-                    data: {
-                        error: 'Image Failed to upload',
-                        message: 'Image Failed to upload',
-                    },
-                },
-            })
-
-            return null
-        }
-
-        if (res?.data) {
-            notification.success({
-                title: 'Image Uplaoded',
-                description: 'Image Uploaded Successfully',
-            })
-            return res?.data?.url
-        }
-
-        return null
-    }
-
-    const SERVER_IMAGE_PREFIXES = [
-        'https://skiltrak-dev.s3.ap-southeast-2.amazonaws.com/',
-    ]
-
-    const isServerImageUrl = (url: string) => {
-        if (!url) return false
-        return SERVER_IMAGE_PREFIXES.some((prefix) => url.startsWith(prefix))
-    }
-
-    const computeImageOverlays = () => {
-        const editor = quillRef.current?.getEditor()
-        const wrapper = editorWrapperRef.current
-        if (!editor || !wrapper) return
-        const root: HTMLElement = editor.root
-        const images = Array.from(
-            root.querySelectorAll('img')
-        ) as HTMLImageElement[]
-
-        let overlay: any = wrapper.querySelector(
-            '.ql-image-upload-overlays'
-        ) as HTMLDivElement | null
-
-        if (!overlay) {
-            overlay = document.createElement('div')
-            overlay.className = 'ql-image-upload-overlays'
-            overlay.style.position = 'absolute'
-            overlay.style.top = '0'
-            overlay.style.left = '0'
-            overlay.style.right = '0'
-            overlay.style.bottom = '0'
-            overlay.style.pointerEvents = 'none'
-            wrapper.appendChild(overlay)
-        }
-
-        overlay.innerHTML = ''
-
-        const wrapperRect = wrapper.getBoundingClientRect()
-
-        images.forEach((img) => {
-            const src = img.getAttribute('src') || ''
-            if (isServerImageUrl(src)) return
-
-            const imgRect = img.getBoundingClientRect()
-            const top = imgRect.top - wrapperRect.top + 4
-            const right = wrapperRect.right - imgRect.right + 4
-
-            const button = document.createElement('button')
-            button.type = 'button'
-            button.textContent = 'Upload'
-            button.className = 'ql-image-upload-float'
-            button.style.position = 'absolute'
-            button.style.top = `${Math.max(top, 0)}px`
-            button.style.right = `${Math.max(right, 0)}px`
-            button.style.zIndex = '20'
-            button.style.background = '#111827'
-            button.style.color = '#ffffff'
-            button.style.borderRadius = '6px'
-            button.style.padding = '4px 6px'
-            button.style.fontSize = '12px'
-            button.style.lineHeight = '12px'
-            button.style.boxShadow = '0 1px 2px rgba(0,0,0,0.2)'
-            button.style.cursor = 'pointer'
-            button.style.border = '1px solid rgba(255,255,255,0.2)'
-            button.style.pointerEvents = 'auto'
-            button.title = 'Upload image to server'
-
-            button.addEventListener('click', async (e: MouseEvent) => {
-                e.preventDefault()
-                e.stopPropagation()
-
-                let fileToUpload: File | null = null
-                const srcNow = img.getAttribute('src') || ''
-                try {
-                    const response = await fetch(srcNow, { mode: 'cors' })
-                    if (!response.ok) throw new Error('Fetch failed')
-                    const blob = await response.blob()
-                    const inferredExt = blob.type.split('/')[1] || 'png'
-                    const fileNameFromUrl = (srcNow.split('/').pop() || 'image')
-                        .split('?')[0]
-                        .split('#')[0]
-                    const safeName = fileNameFromUrl.includes('.')
-                        ? fileNameFromUrl
-                        : `${fileNameFromUrl}.${inferredExt}`
-                    fileToUpload = new File([blob], safeName, {
-                        type: blob.type || 'image/png',
-                    })
-                } catch (err) {
-                    const input = document.createElement('input')
-                    input.type = 'file'
-                    input.accept = 'image/*'
-                    input.onchange = () => {
-                        const f = input.files?.[0] || null
-                        if (f) {
-                            fileToUpload = f
-                            void proceed()
-                        }
-                    }
-                    input.click()
-                    return
-                }
-
-                await proceed()
-
-                async function proceed() {
-                    if (!fileToUpload) return
-                    if (fileToUpload.size > 5 * 1024 * 1024) {
-                        alert('Image size must be less than 5MB')
-                        return
-                    }
-                    const editorInstance = quillRef.current?.getEditor()
-                    editorInstance?.enable(false)
-                    const uploadedUrl = await uploadImageToServer(fileToUpload!)
-                    editorInstance?.enable(true)
-                    if (uploadedUrl) {
-                        img.setAttribute('src', uploadedUrl)
-                        computeImageOverlays()
-                    }
-                }
-            })
-
-            overlay.appendChild(button)
-        })
-    }
-
-    const autoUploadPastedImages = async () => {
-        if (autoUploadingRef.current) return
-        const editor = quillRef.current?.getEditor()
-        if (!editor) return
-        const root: HTMLElement = editor.root
-        const images = Array.from(
-            root.querySelectorAll('img')
-        ) as HTMLImageElement[]
-
-        const candidates = images.filter((img) => {
-            const src = img.getAttribute('src') || ''
-            // skip images already from server
-            if (isServerImageUrl(src)) return false
-            // only auto-upload once
-            const attempted =
-                (img as any).dataset?.autoUploadAttempted === 'true'
-            return !attempted
-        })
-
-        if (candidates.length === 0) return
-        autoUploadingRef.current = true
-        try {
-            for (const img of candidates) {
-                const srcNow = img.getAttribute('src') || ''
-                // mark attempted regardless of result to avoid loops
-                img.setAttribute('data-auto-upload-attempted', 'true')
-                try {
-                    const response = await fetch(srcNow, { mode: 'cors' })
-                    if (!response.ok) throw new Error('Fetch failed')
-                    const blob = await response.blob()
-                    // Size guard (5MB limit)
-                    if (blob.size > 5 * 1024 * 1024) {
-                        continue
-                    }
-                    const inferredExt = blob.type.split('/')[1] || 'png'
-                    const fileNameFromUrl = (srcNow.split('/').pop() || 'image')
-                        .split('?')[0]
-                        .split('#')[0]
-                    const safeName = fileNameFromUrl.includes('.')
-                        ? fileNameFromUrl
-                        : `${fileNameFromUrl}.${inferredExt}`
-                    const file = new File([blob], safeName, {
-                        type: blob.type || 'image/png',
-                    })
-
-                    editor.enable(false)
-                    const uploadedUrl = await uploadImageToServer(file)
-                    editor.enable(true)
-                    if (uploadedUrl) {
-                        img.setAttribute('src', uploadedUrl)
-                    }
-                } catch (err) {
-                    // If fetching fails (CORS), leave for manual upload
-                    continue
-                }
-            }
-        } finally {
-            autoUploadingRef.current = false
-            // Refresh buttons/overlays after auto-upload pass
-            ensureImageUploadButtons()
-            computeImageOverlays()
-        }
-    }
-    const ensureImageUploadButtons = () => {
-        const editor = quillRef.current?.getEditor()
-        if (!editor) return
-        const root: HTMLElement = editor.root
-        const images = Array.from(
-            root.querySelectorAll('img')
-        ) as HTMLImageElement[]
-
-        images.forEach((img) => {
-            const src = img.getAttribute('src') || ''
-            const alreadyDecorated =
-                (img as any).dataset?.uploadDecorated === 'true'
-
-            if (isServerImageUrl(src)) {
-                const parent = img.parentElement as HTMLElement | null
-                const btn = parent?.querySelector('.ql-image-upload-icon')
-                if (btn && parent) {
-                    btn.remove()
-                    parent.style.position = ''
-                }
-                if (alreadyDecorated) {
-                    img.removeAttribute('data-upload-decorated')
-                }
-                return
-            }
-
-            if (alreadyDecorated) return
-
-            const parent = img.parentElement as HTMLElement | null
-            if (!parent) return
-
-            if (!parent.style.position || parent.style.position === 'static') {
-                parent.style.position = 'relative'
-            }
-
-            if (parent.querySelector('.ql-image-upload-icon')) return
-
-            const button = document.createElement('button')
-            button.type = 'button'
-            button.className = 'ql-image-upload-icon'
-            button.title = 'Upload image to server'
-            button.style.position = 'absolute'
-            button.style.top = '4px'
-            button.style.right = '4px'
-            button.style.zIndex = '10'
-            button.style.background = '#111827'
-            button.style.color = '#ffffff'
-            button.style.borderRadius = '6px'
-            button.style.padding = '4px 6px'
-            button.style.fontSize = '12px'
-            button.style.lineHeight = '12px'
-            button.style.boxShadow = '0 1px 2px rgba(0,0,0,0.2)'
-            button.style.cursor = 'pointer'
-            button.style.border = '1px solid rgba(255,255,255,0.2)'
-            button.textContent = 'Upload'
-
-            const onClick = async (e: MouseEvent) => {
-                e.preventDefault()
-                e.stopPropagation()
-
-                let fileToUpload: File | null = null
-                try {
-                    const response = await fetch(src, { mode: 'cors' })
-                    if (!response.ok) throw new Error('Fetch failed')
-                    const blob = await response.blob()
-                    const inferredExt = blob.type.split('/')[1] || 'png'
-                    const fileNameFromUrl = (src.split('/').pop() || 'image')
-                        .split('?')[0]
-                        .split('#')[0]
-                    const safeName = fileNameFromUrl.includes('.')
-                        ? fileNameFromUrl
-                        : `${fileNameFromUrl}.${inferredExt}`
-                    fileToUpload = new File([blob], safeName, {
-                        type: blob.type || 'image/png',
-                    })
-                } catch (err) {
-                    const input = document.createElement('input')
-                    input.type = 'file'
-                    input.accept = 'image/*'
-                    input.onchange = () => {
-                        const f = input.files?.[0] || null
-                        if (f) {
-                            fileToUpload = f
-                            proceed()
-                        }
-                    }
-                    input.click()
-                    return
-                }
-
-                proceed()
-
-                async function proceed() {
-                    if (!fileToUpload) return
-
-                    if (fileToUpload.size > 5 * 1024 * 1024) {
-                        alert('Image size must be less than 5MB')
-                        return
-                    }
-
-                    editor.enable(false)
-                    const uploadedUrl = await uploadImageToServer(fileToUpload)
-                    editor.enable(true)
-
-                    if (uploadedUrl) {
-                        img.setAttribute('src', uploadedUrl)
-                        button.remove()
-                        if (parent) {
-                            if (
-                                !parent.querySelector('.ql-image-upload-icon')
-                            ) {
-                                parent.style.position = ''
-                            }
-                        }
-                        img.removeAttribute('data-upload-decorated')
-                    }
-                }
-            }
-
-            button.addEventListener('click', onClick)
-            parent.appendChild(button)
-            img.setAttribute('data-upload-decorated', 'true')
-        })
-    }
-
-    // Custom image handler function
-    const imageHandler = () => {
-        const editor = quillRef.current?.getEditor()
-        if (!editor) return
-
-        const range = editor.getSelection()
-        if (!range) return
-
-        // Create file input
-        const fileInput = document.createElement('input')
-        fileInput.setAttribute('type', 'file')
-        fileInput.setAttribute('accept', 'image/*')
-        fileInput.click()
-
-        fileInput.onchange = async () => {
-            const file = fileInput.files?.[0]
-            if (!file) return
-
-            // Validate file type
-            if (!file.type.startsWith('image/')) {
-                alert('Please select an image file')
-                return
-            }
-
-            // Validate file size (5MB limit)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Image size must be less than 5MB')
-                return
-            }
-
-            // Show loading state in editor (optional)
-            editor.enable(false)
-
-            // Upload image to server
-            const imageUrl = await uploadImageToServer(file)
-
-            // Re-enable editor
-            editor.enable(true)
-
-            if (imageUrl) {
-                // Insert the image URL into the editor
-                editor.insertEmbed(range.index, 'image', imageUrl)
-                editor.setSelection(range.index + 1)
-            }
-        }
-    }
-
-    const modules = useMemo(
-        () => ({
-            toolbar: {
-                container: [
-                    [{ font: [] }],
-                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ color: [] }, { background: [] }],
-                    [{ script: 'sub' }, { script: 'super' }],
-                    ['blockquote', 'code-block'],
-                    [{ list: 'ordered' }, { list: 'bullet' }],
-                    [{ indent: '-1' }, { indent: '+1' }, { align: [] }],
-                    ['link', 'image', 'video'],
-                    ['table'],
-                    ['clean'],
-                ],
-                handlers: {
-                    image: imageHandler,
-                },
-            },
-        }),
-        []
-    )
-
-    useEffect(() => {
-        const editor = quillRef.current?.getEditor()
-        if (!editor) return
-
-        ensureImageUploadButtons()
-        computeImageOverlays()
-        void autoUploadPastedImages()
-
-        const onChange = () => {
-            setTimeout(() => {
-                ensureImageUploadButtons()
-                computeImageOverlays()
-                void autoUploadPastedImages()
-            }, 0)
-        }
-
-        editor.on('text-change', onChange)
-
-        const root: HTMLElement = editor.root
-        const observer = new MutationObserver(() => {
-            ensureImageUploadButtons()
-            computeImageOverlays()
-            void autoUploadPastedImages()
-        })
-        observer.observe(root, {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            attributeFilter: ['src'],
-        })
-
-        const onResize = () => computeImageOverlays()
-        const onScroll = () => computeImageOverlays()
-        window.addEventListener('resize', onResize)
-        root.addEventListener('scroll', onScroll, true)
-
-        return () => {
-            try {
-                editor.off('text-change', onChange)
-            } catch { }
-            observer.disconnect()
-            window.removeEventListener('resize', onResize)
-            root.removeEventListener('scroll', onScroll, true)
-        }
-    }, [])
 
     const onSubmit = (
         data: FormValues,
@@ -644,7 +181,7 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
         if (imageSizeErrorMessage(featuredImage?.[0] || featuredImage) !== true) {
             formMethods.setError('featuredImage', {
                 type: 'imageSizeError',
-                message: 'Image size must be less than 2MB',
+                message: 'Image size must be less than 5MB',
             })
             return
         }
@@ -664,31 +201,6 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
             return
         }
 
-        // FAQ's validation
-        // if (data?.faq && data?.faq?.length > 0) {
-        let isAnyFaqInvalid = false
-
-        data?.faq &&
-            data?.faq?.forEach((faq: any, index: number) => {
-                if (faq?.question === '' || faq?.answer === '') {
-                    formMethods.setError(`faq.${index}.question`, {
-                        type: 'FAQs',
-                        message: 'FAQ question should not be empty',
-                    })
-
-                    formMethods.setError(`faq.${index}.answer`, {
-                        type: 'FAQs',
-                        message: 'FAQ answer should not be empty',
-                    })
-
-                    isAnyFaqInvalid = true
-                }
-            })
-
-        if (isAnyFaqInvalid) {
-            return
-        }
-
         validationSchema
             .validate(data)
             .then(() => {
@@ -701,12 +213,16 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                 formData.append('isPublished', publish.toString())
                 formData.append('isFeatured', data?.isFeatured.toString())
                 formData.append('tags', tagIds)
-                formData.append('category', JSON.stringify(data?.category))
+                formData.append('category', data?.category as any)
                 formData.append('author', data?.author)
                 formData.append('shortDescription', data?.shortDescription)
+                const filteredBlogQuestions = data?.blogQuestions?.filter(
+                    (q: any) =>
+                        q.question.trim() !== '' || q.answer.trim() !== ''
+                ) || []
                 formData.append(
                     'blogQuestions',
-                    JSON.stringify(data?.faq) || ''
+                    JSON.stringify(filteredBlogQuestions)
                 )
 
                 //POST Api Req
@@ -745,11 +261,11 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
     }, [createBlogResult.isSuccess])
 
     // dynamic fields
-    const handleRemoveFAQ = (index: number) => {
+    const handleRemoveBlogQuestion = (index: number) => {
         remove(index)
     }
 
-    const handleAddFAQ = () => {
+    const handleAddBlogQuestion = () => {
         append({ question: '', answer: '' })
     }
 
@@ -845,7 +361,7 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
 
                     <div className="py-4 border-t">
                         <Typography variant="subtitle">
-                            Add FAQ's here
+                            Add Blog Questions here
                         </Typography>
                         <Card>
                             {/* {faqList.map((faq: any, index: any) => (
@@ -894,31 +410,25 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                                     </div>
                                 </div>
                             ))} */}
-                            {fields.map((faq: any, index: number) => (
+                            {fields.map((item: any, index: number) => (
                                 <div
-                                    key={faq.id}
+                                    key={item.id}
                                     className="flex items-start gap-x-4"
                                 >
                                     <div className="flex flex-col w-3/4">
                                         <TextInput
-                                            // {...formMethods.register(
-                                            //     `faq.${index}.question`
-                                            // )}
-                                            name={`faq.${index}.question`}
-                                            label={`FAQ ${index + 1} Question`}
+                                            name={`blogQuestions.${index}.question`}
+                                            label={`Blog Question ${index + 1} Question`}
                                             placeholder="Enter Question"
-                                            defaultValue={faq.question}
+                                            defaultValue={item.question}
                                             required
                                         />
                                         <InputErrorMessage
                                             name={'blogQuestions'}
                                         />
                                         <TextArea
-                                            // {...formMethods.register(
-                                            //     `faq.${index}.answer`
-                                            // )}
-                                            name={`faq.${index}.answer`}
-                                            label={`FAQ ${index + 1} Answer`}
+                                            name={`blogQuestions.${index}.answer`}
+                                            label={`Blog Question ${index + 1} Answer`}
                                             placeholder="Enter Answer"
                                             required
                                         />
@@ -931,7 +441,7 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                                         <Button
                                             text="Remove"
                                             onClick={() => {
-                                                handleRemoveFAQ(index)
+                                                handleRemoveBlogQuestion(index)
                                             }}
                                             variant="error"
                                         />
@@ -941,8 +451,8 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                             <div className="mb-4">
                                 <Button
                                     variant="success"
-                                    text="Add FAQ"
-                                    onClick={handleAddFAQ}
+                                    text="Add Blog Question"
+                                    onClick={handleAddBlogQuestion}
                                 />
                             </div>
                         </Card>

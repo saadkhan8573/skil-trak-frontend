@@ -30,6 +30,7 @@ import { rtoEnquiryEndpoints } from './rto-enquiry'
 import { rtoMessageCenterEndpoints } from './rto-message-center'
 import { defaultDocumentsEndpoints } from './default-documents'
 import { industryReadinessEndpoints } from './industry-readiness'
+import { marketingEndpoints } from './marketing'
 
 const PREFIX = 'admin'
 export const adminApi = apiSlice.injectEndpoints({
@@ -102,6 +103,7 @@ export const adminApi = apiSlice.injectEndpoints({
         ...rtoMessageCenterEndpoints(build),
         ...defaultDocumentsEndpoints(build),
         ...industryReadinessEndpoints(build),
+        ...marketingEndpoints(build),
     }),
     // overrideExisting: false,
 })
@@ -522,6 +524,9 @@ const {
     useGetStudentForecastQuery,
     useGetForecastListQuery,
     useGetForecastCountsQuery,
+
+    // ------ MARKETING ------ //
+    useGetMarketingUsersQuery,
 } = adminApi
 
 export const AdminApi = {
@@ -939,5 +944,7 @@ export const AdminApi = {
         useStudentForecast: useGetStudentForecastQuery,
         useForecastList: useGetForecastListQuery,
         useForecastCounts: useGetForecastCountsQuery,
+    Marketing: {
+        useMarketingUsers: useGetMarketingUsersQuery,
     },
 }

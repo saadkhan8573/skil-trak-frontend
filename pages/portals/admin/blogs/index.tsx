@@ -82,7 +82,7 @@ const BlogsList: NextPageWithLayout = () => {
                     <div>
                         <div className="flex justify-between items-center">
                             <div className="w-full">{header}</div>
-                            <div className="flex-shrink-0">
+                            <div className="shrink-0">
                                 <Button
                                     onClick={() => {
                                         router.push(

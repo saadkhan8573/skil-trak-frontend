@@ -1,11 +1,11 @@
 export const requestType = [
     {
-        primaryText: 'Request Sent',
+        primaryText: 'Industry sourcing',
         secondaryText: 'No Case Officer',
         color: 'text-primary-dark',
     },
     {
-        primaryText: 'Assigned',
+        primaryText: 'Industry sourcing',
         secondaryText: 'Case Officer',
         color: 'text-primary',
     },

@@ -8,7 +8,8 @@ import { TicketTypes } from '@types'
 import moment from 'moment'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
-import { AiFillCloseCircle, AiFillDelete } from 'react-icons/ai'
+import { AiFillCloseCircle } from 'react-icons/ai'
+import { BsFillEyeFill } from 'react-icons/bs'
 import { CloseTicketModal } from '../modals'
 
 export const useTicketsColumns = () => {
@@ -30,12 +31,12 @@ export const useTicketsColumns = () => {
             text: 'View',
             onClick: (ticket: any) =>
                 router.push(`/portals/admin/tickets/detail/${ticket?.id}`),
-            Icon: AiFillCloseCircle,
+            Icon: BsFillEyeFill,
         },
         {
             text: 'Close',
             onClick: (ticket: any) => onCloseClicked(ticket),
-            Icon: AiFillDelete,
+            Icon: AiFillCloseCircle,
         },
     ]
 

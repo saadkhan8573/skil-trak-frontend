@@ -52,11 +52,10 @@ export function CurrentStatus({
                 <div
                     className="absolute left-3.5 top-0 w-0.5 bg-gradient-to-b from-primaryNew via-primaryNew to-primaryNew transition-all duration-500 shadow-lg"
                     style={{
-                        height: `${
-                            (statuses.filter((s) => s.completed).length /
+                        height: `${(statuses.filter((s) => s.completed).length /
                                 (statuses.length - 1)) *
                             100
-                        }%`,
+                            }%`,
                     }}
                 />
 
@@ -64,19 +63,17 @@ export function CurrentStatus({
                     {statuses.map((status, index) => (
                         <div
                             key={index}
-                            className={`relative flex items-center gap-3.5 transition-all duration-300 ${
-                                status.current ? 'scale-105' : ''
-                            }`}
+                            className={`relative flex items-center gap-3.5 transition-all duration-300 ${status.current ? 'scale-105' : ''
+                                }`}
                         >
                             {/* Status Icon */}
                             <div
-                                className={`relative z-10 w-7 h-7 rounded-xl flex items-center justify-center transition-all duration-300 shadow-lg ${
-                                    status.completed
+                                className={`relative z-10 w-7 h-7 rounded-xl flex items-center justify-center transition-all duration-300 shadow-lg ${status.completed
                                         ? 'bg-gradient-to-br from-primaryNew to-primaryNew text-white shadow-primaryNew/40 scale-100'
                                         : status.current
-                                        ? 'bg-gradient-to-br from-[#F7A619] to-[#F7A619]/80 text-white shadow-[#F7A619]/40 ring-4 ring-[#F7A619]/20 animate-pulse'
-                                        : 'bg-white border-2 border-secondary text-slate-400'
-                                }`}
+                                            ? 'bg-gradient-to-br from-[#F7A619] to-[#F7A619]/80 text-white shadow-[#F7A619]/40 ring-4 ring-[#F7A619]/20 animate-pulse'
+                                            : 'bg-white border-2 border-secondary text-slate-400'
+                                    }`}
                             >
                                 {status.completed ? (
                                     <Check className="w-3.5 h-3.5" />
@@ -89,28 +86,25 @@ export function CurrentStatus({
 
                             {/* Status Label */}
                             <div
-                                className={`flex-1 py-1.5 px-2.5 rounded-xl transition-all duration-300 ${
-                                    status.current
+                                className={`flex-1 py-1.5 px-2.5 rounded-xl transition-all duration-300 ${status.current
                                         ? 'bg-gradient-to-r from-[#F7A619]/10 to-transparent border border-[#F7A619]/20'
                                         : status.completed
-                                        ? 'hover:bg-slate-50/50'
-                                        : ''
-                                }`}
+                                            ? 'hover:bg-slate-50/50'
+                                            : ''
+                                    }`}
                             >
                                 <div className="flex items-center justify-between">
                                     <div className="flex-1">
                                         <p
-                                            className={`text-sm transition-all duration-300 ${
-                                                status.completed
+                                            className={`text-sm transition-all duration-300 ${status.completed
                                                     ? 'text-slate-700'
                                                     : status.current
-                                                    ? 'text-[#F7A619]'
-                                                    : 'text-slate-400'
-                                            } ${
-                                                status.current
+                                                        ? 'text-[#F7A619]'
+                                                        : 'text-slate-400'
+                                                } ${status.current
                                                     ? 'font-medium'
                                                     : ''
-                                            }`}
+                                                }`}
                                         >
                                             {status.label}
                                         </p>

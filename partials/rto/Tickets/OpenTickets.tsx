@@ -1,20 +1,23 @@
 import {
     Card,
     EmptyData,
+    InitialAvatar,
     LoadingAnimation,
+    Portal,
     Table,
     TableAction,
     TableActionOption,
     TechnicalError,
     Typography,
 } from '@components'
+import { CloseTicketModal } from '@partials/admin/Tickets/modals'
 import { TicketSubject, TicketUser } from '@partials/common/Tickets/components'
 import { CommonApi, SubAdminApi } from '@queries'
 import { ColumnDef } from '@tanstack/react-table'
 import moment from 'moment'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
-import { AiFillCloseCircle, AiFillDelete } from 'react-icons/ai'
+import { ReactElement, useState } from 'react'
+import { AiFillCloseCircle } from 'react-icons/ai'
 import { BsFillEyeFill } from 'react-icons/bs'
 import { StudentCellInfo } from '../student/components'
 import { TicketStatus } from '@partials/common/Tickets'
@@ -22,6 +25,7 @@ import { TicketStatus } from '@partials/common/Tickets'
 export const OpenTickets = ({ layoutV2 = false }: { layoutV2?: boolean }) => {
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
+    const [modal, setModal] = useState<ReactElement | null>(null)
 
     const router = useRouter()
 
@@ -35,6 +39,16 @@ export const OpenTickets = ({ layoutV2 = false }: { layoutV2?: boolean }) => {
             { refetchOnMountOrArgChange: true }
         )
 
+    const onCancelClicked = () => setModal(null)
+
+    const onCloseClicked = (ticket: any) => {
+        setModal(
+            <Portal>
+                <CloseTicketModal onCancel={onCancelClicked} ticket={ticket} />
+            </Portal>
+        )
+    }
+
     const tableActionOptions: TableActionOption<any>[] = [
         {
             text: 'View',
@@ -43,16 +57,16 @@ export const OpenTickets = ({ layoutV2 = false }: { layoutV2?: boolean }) => {
             Icon: BsFillEyeFill,
         },
         {
-            text: 'Delete',
-            onClick: () => { },
-            Icon: AiFillDelete,
+            text: 'Close',
+            onClick: (ticket: any) => onCloseClicked(ticket),
+            Icon: AiFillCloseCircle,
         },
     ]
     const columns: ColumnDef<any>[] = [
         {
             accessorKey: 'subject',
             cell: (info) => {
-                return <TicketSubject ticket={info?.row?.original} />
+                return <TicketSubject layoutV2={layoutV2} ticket={info?.row?.original} />
             },
             header: () => <span>Subject</span>,
         },
@@ -71,13 +85,6 @@ export const OpenTickets = ({ layoutV2 = false }: { layoutV2?: boolean }) => {
             header: () => <span>Student</span>,
         },
         {
-            accessorKey: 'createdBy',
-            cell: (info) => (
-                <TicketUser ticket={info?.row?.original?.createdBy} />
-            ),
-            header: () => <span>Created By</span>,
-        },
-        {
             accessorKey: 'student',
             cell: (info) => (
                 <TicketUser
@@ -87,10 +94,22 @@ export const OpenTickets = ({ layoutV2 = false }: { layoutV2?: boolean }) => {
             header: () => <span>Linked Student</span>,
         },
         {
+            accessorKey: 'createdBy',
+            cell: (info) => (
+                <div className='flex items-center gap-x-2'>
+                    {info?.row?.original?.createdBy?.name && <InitialAvatar name={info?.row?.original?.createdBy?.name} />}
+                    <Typography variant='small' semibold>{info?.row?.original?.createdBy?.name}</Typography>
+                </div>
+            ),
+            header: () => <span>Created By</span>,
+        },
+        {
             accessorKey: 'assignedTo',
             cell: (info) => (
-                <TicketUser ticket={info?.row?.original?.assignedTo} />
-            ),
+                <div className='flex items-center gap-x-2'>
+                    {info?.row?.original?.assignedTo?.name && <InitialAvatar name={info?.row?.original?.assignedTo?.name} />}
+                    <Typography variant='small' semibold>{info?.row?.original?.assignedTo?.name}</Typography>
+                </div>),
             header: () => <span>Assigned To</span>,
         },
         {
@@ -134,6 +153,7 @@ export const OpenTickets = ({ layoutV2 = false }: { layoutV2?: boolean }) => {
     ]
     return (
         <div>
+            {modal}
             <Card noPadding>
                 {isError && <TechnicalError />}
                 {isLoading || isFetching ? (

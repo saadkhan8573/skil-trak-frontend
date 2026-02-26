@@ -8,8 +8,8 @@ import { FaFileSignature } from 'react-icons/fa'
 
 type WorkplaceRequestStatus =
     | '1-NotRequested'
-    | '2-Requested'
-    | '3-Assigned'
+    | '2-Industry sourcing'
+    | '3-Industry sourcing'
     | '4-Industry sourcing'
     | '5-Waiting'
     | '6-Meeting'
@@ -38,15 +38,15 @@ const WorkplaceRequestProgress = (appliedIndustry?: any) => {
             image: 'not-requested.png',
             date: '',
         },
-        '2-Requested': {
-            status: 'Request Sent',
+        '2-Industry sourcing': {
+            status: 'Industry sourcing',
             description: 'No Case Officer',
             color: 'text-orange-700',
             image: 'industry-check.png',
             date: appliedIndustry?.appliedDate,
         },
-        '3-Assigned': {
-            status: 'Assigned',
+        '3-Industry sourcing': {
+            status: 'Industry sourcing',
             description: 'Case Officer',
             color: 'text-orange-600',
             image: 'case-officer.png',
@@ -166,24 +166,24 @@ export const ProgressCell = ({
     studentId?: number
     status?: WorkplaceRequestStatus
     step:
-        | 1
-        | 2
-        | 3
-        | 4
-        | 5
-        | 6
-        | 7
-        | 8
-        | 9
-        | 10
-        | 11
-        | 12
-        | 13
-        | 14
-        | 15
-        | 16
-        | 17
-        | number
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6
+    | 7
+    | 8
+    | 9
+    | 10
+    | 11
+    | 12
+    | 13
+    | 14
+    | 15
+    | 16
+    | 17
+    | number
     assigned?: SubAdmin
     appliedIndustry?: any
     studentProvidedWorkplace?: boolean

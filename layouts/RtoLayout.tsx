@@ -150,14 +150,14 @@ export const RtoLayout = ({ pageTitle, children }: RtoLayoutProps) => {
                                 skip: 'Close Tour',
                             }}
 
-                            // styles={{
-                            //     options: {
-                            //         arrowColor: theme.black,
-                            //         backgroundColor: theme.black,
-                            //         primaryColor: theme.colors.purple,
-                            //         textColor: theme.white,
-                            //     },
-                            // }}
+                        // styles={{
+                        //     options: {
+                        //         arrowColor: theme.black,
+                        //         backgroundColor: theme.black,
+                        //         primaryColor: theme.colors.purple,
+                        //         textColor: theme.white,
+                        //     },
+                        // }}
                         />
                     )}
                 </>

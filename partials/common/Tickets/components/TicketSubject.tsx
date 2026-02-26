@@ -7,7 +7,7 @@ import Link from 'next/link'
 import React from 'react'
 import { TicketStatus } from '../enum'
 
-export const TicketSubject = ({ ticket }: { ticket: any }) => {
+export const TicketSubject = ({ ticket, layoutV2 = false }: { ticket: any, layoutV2?: boolean }) => {
     const role = getUserCredentials()?.role
 
     const subadmin = SubAdminApi.SubAdmin.useProfile(undefined, {
@@ -21,22 +21,21 @@ export const TicketSubject = ({ ticket }: { ticket: any }) => {
                 role === UserRoles.ADMIN || subadmin?.data?.isAdmin
                     ? `/portals/admin/tickets/detail/${ticket?.id}`
                     : role === UserRoles.SUBADMIN
-                    ? `/portals/sub-admin/tickets/detail/${ticket?.id}`
-                    : role === UserRoles.RTO
-                    ? `/portals/rto/tickets/detail/${ticket?.id}`
-                    : ''
+                        ? `/portals/sub-admin/tickets/detail/${ticket?.id}`
+                        : role === UserRoles.RTO
+                            ? layoutV2 ? `/portals/rto/communications/tickets/${ticket?.id}` : `/portals/rto/tickets/detail/${ticket?.id}`
+                            : ''
             }
             className="relative z-10"
         >
             <div className="flex items-center gap-x-2 mb-1 w-[320px]">
                 <div
-                    className={`rounded-full ${
-                        ticket?.status === TicketStatus.OPEN
-                            ? 'bg-success'
-                            : ticket?.status === TicketStatus.CLOSED
+                    className={`rounded-full ${ticket?.status === TicketStatus.OPEN
+                        ? 'bg-success'
+                        : ticket?.status === TicketStatus.CLOSED
                             ? 'bg-red-700'
                             : 'bg-success'
-                    } uppercase text-[11px] text-white px-1.5 whitespace-pre`}
+                        } uppercase text-[11px] text-white px-1.5 whitespace-pre`}
                 >
                     {ticket?.status}
                 </div>

@@ -19,13 +19,13 @@ const Tickets: NextPageWithLayout = () => {
         {
             label: 'All Tickets',
             value: 'all-tickets',
-            count: ticketCount?.all || 0,
+            count: ticketCount?.openTickets || 0,
             component: () => <OpenTickets layoutV2 />,
         },
         {
             label: 'Closed Tickets',
             value: 'closed-tickets',
-            count: ticketCount?.closed || 0,
+            count: ticketCount?.closedTickets || 0,
             component: () => <ClosedTickets layoutV2 />,
         },
     ]

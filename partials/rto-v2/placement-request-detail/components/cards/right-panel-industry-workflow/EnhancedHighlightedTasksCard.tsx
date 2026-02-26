@@ -1,9 +1,7 @@
-import React from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
 import { Button, Card, NoData } from '@components'
-import { CheckCheck, CheckCircle2, ChevronRight, Zap } from 'lucide-react'
-import { useRouter } from 'next/router'
 import { RtoV2Api } from '@queries'
+import { motion } from 'framer-motion'
+import { CheckCheck, CheckCircle2, ChevronRight, Zap } from 'lucide-react'
 
 export const EnhancedHighlightedTasksCard = ({ data }: any) => {
     const [confirmTasks, confirmTasksResult] =

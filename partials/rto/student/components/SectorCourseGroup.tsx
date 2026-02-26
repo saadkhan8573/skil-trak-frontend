@@ -27,14 +27,14 @@ const CourseRenderList = ({ sectorsWithCourses }: { sectorsWithCourses: Record<s
                 <Typography
                     variant="small"
                     color="text-gray-500"
-                    className="text-[10px] font-semibold uppercase tracking-wider"
+                    className="text-[10px] font-semibold uppercase tracking-wider whitespace-pre"
                 >
                     {sectorName}
                 </Typography>
                 <div className="flex flex-col gap-y-1">
                     {sectorsWithCourses[sectorName].map((course) => (
                         <div key={course.id} className="flex flex-col">
-                            <Typography variant="small" className="text-[11px] font-medium leading-tight">
+                            <Typography variant="small" className="text-[11px] font-medium leading-tight whitespace-pre">
                                 {course.title}
                             </Typography>
                             <Typography variant="small" color="text-gray-400" className="text-[10px] leading-tight">
@@ -53,9 +53,9 @@ export const SectorCourseGroup = ({ courses }: SectorCourseGroupProps) => {
         return <Typography variant="small" color="text-gray-400">---</Typography>
     }
 
-    const isOverLimit = courses.length > 3
-    const displayedCourses = isOverLimit ? courses.slice(0, 3) : courses
-    const remainingCourses = isOverLimit ? courses.slice(3) : []
+    const isOverLimit = courses.length > 1
+    const displayedCourses = isOverLimit ? courses.slice(0, 1) : courses
+    const remainingCourses = isOverLimit ? courses.slice(1) : []
     const sectorsWithCourses = getSectors(displayedCourses)
     const remainingSectorsWithCourses = getSectors(remainingCourses)
 
@@ -67,7 +67,7 @@ export const SectorCourseGroup = ({ courses }: SectorCourseGroupProps) => {
                 <Popover>
                     <PopoverTrigger asChild>
                         <button className="text-[11px] font-semibold text-blue-600 hover:underline text-left mt-1">
-                            + {courses.length - 3} more courses
+                            + {courses.length - 1} more courses
                         </button>
                     </PopoverTrigger>
                     <PopoverContent className="w-64 p-3 max-h-80 overflow-y-auto" align="start">

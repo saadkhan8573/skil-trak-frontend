@@ -37,7 +37,7 @@ export const ReadinessFilterBar = ({
 }: ReadinessFilterBarProps) => {
     const [localSuburb, setLocalSuburb] = useState(filters.suburb)
     const [localPostalCode, setLocalPostalCode] = useState(filters.postalCode)
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(true)
 
     const { data: sectors = [] } = AuthApi.useSectors({})
 
@@ -51,15 +51,12 @@ export const ReadinessFilterBar = ({
     )
     const debouncedUpdate = useMemo(
         () =>
-            debounce(
-                (key: keyof ReadinessFilters, value: string) => {
-                    setFilters((prev) => ({
-                        ...prev,
-                        [key]: value,
-                    }))
-                },
-                700
-            ),
+            debounce((key: keyof ReadinessFilters, value: string) => {
+                setFilters((prev) => ({
+                    ...prev,
+                    [key]: value,
+                }))
+            }, 500),
         [setFilters]
     )
     useEffect(() => {
@@ -87,7 +84,7 @@ export const ReadinessFilterBar = ({
     }
 
     return (
-        <div className="my-10">
+        <div className="my-5">
             <div className="flex justify-end">
                 <Button
                     onClick={handleToggleOrClear}
@@ -104,7 +101,6 @@ export const ReadinessFilterBar = ({
                             name="suburb"
                             label="Suburb"
                             placeholder="Search Suburb..."
-                            value={filters.suburb}
                             onChange={(
                                 e: React.ChangeEvent<HTMLInputElement>
                             ) => {
@@ -118,7 +114,6 @@ export const ReadinessFilterBar = ({
                             name="postalCode"
                             label="Postal Code"
                             placeholder="Search Postal Code..."
-                            value={filters.postalCode}
                             onChange={(
                                 e: React.ChangeEvent<HTMLInputElement>
                             ) => {

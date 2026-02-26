@@ -1,14 +1,13 @@
 'use client'
 
 import {
-    ContextBar,
-    RtoNavbarV2,
     DisplayAlerts,
     DisplayNotifications,
+    RtoNavbarV2
 } from '@components'
-import { ReactNode, useState } from 'react'
-import { AccessNewPortalOnPermission } from '@partials'
 import { RtoSidebar } from '@components/sideBars/rtoSidebarV2'
+import { AccessNewPortalOnPermission } from '@partials'
+import { ReactNode, useState } from 'react'
 
 interface RtoLayoutProps {
     children: ReactNode

@@ -1,6 +1,7 @@
 import {
     Card,
     EmptyData,
+    InitialAvatar,
     LoadingAnimation,
     Table,
     TableAction,
@@ -51,7 +52,7 @@ export const ClosedTickets = ({ layoutV2 = false }: { layoutV2?: boolean }) => {
         {
             accessorKey: 'subject',
             cell: (info) => {
-                return <TicketSubject ticket={info?.row?.original} />
+                return <TicketSubject layoutV2={layoutV2} ticket={info?.row?.original} />
             },
             header: () => <span>Subject</span>,
         },
@@ -72,16 +73,30 @@ export const ClosedTickets = ({ layoutV2 = false }: { layoutV2?: boolean }) => {
         {
             accessorKey: 'createdBy',
             cell: (info) => (
-                <TicketUser ticket={info?.row?.original?.createdBy} />
+                <div className='flex items-center gap-x-2'>
+                    {info?.row?.original?.createdBy?.name && <InitialAvatar name={info?.row?.original?.createdBy?.name} />}
+                    <Typography variant='small' semibold>{info?.row?.original?.createdBy?.name}</Typography>
+                </div>
             ),
             header: () => <span>Created By</span>,
         },
         {
             accessorKey: 'assignedTo',
             cell: (info) => (
-                <TicketUser ticket={info?.row?.original?.assignedTo} />
-            ),
+                <div className='flex items-center gap-x-2'>
+                    {info?.row?.original?.assignedTo?.name && <InitialAvatar name={info?.row?.original?.assignedTo?.name} />}
+                    <Typography variant='small' semibold>{info?.row?.original?.assignedTo?.name}</Typography>
+                </div>),
             header: () => <span>Assigned To</span>,
+        },
+        {
+            accessorKey: 'closedBy',
+            cell: (info) => (
+                <div className='flex items-center gap-x-2'>
+                    {info?.row?.original?.closedBy?.name && <InitialAvatar name={info?.row?.original?.closedBy?.name} />}
+                    <Typography variant='small' semibold>{info?.row?.original?.closedBy?.name}</Typography>
+                </div>),
+            header: () => <span>Closed By</span>,
         },
         {
             accessorKey: 'closedAt',

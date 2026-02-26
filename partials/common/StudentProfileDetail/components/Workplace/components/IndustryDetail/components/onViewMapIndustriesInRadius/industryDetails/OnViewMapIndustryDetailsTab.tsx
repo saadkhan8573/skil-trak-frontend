@@ -217,8 +217,8 @@ export const OnViewMapIndustryDetailsTab = ({
                                 className={`h-8 w-8 rounded-lg flex items-center justify-center shadow-sm ${
                                     // industry.contacted
                                     true
-                                        ? 'bg-gradient-to-br from-emerald-500 to-emerald-600'
-                                        : 'bg-gradient-to-br from-[#044866] to-[#0D5468]'
+                                        ? 'bg-linear-to-br from-emerald-500 to-emerald-600'
+                                        : 'bg-linear-to-br from-[#044866] to-[#0D5468]'
                                 }`}
                             >
                                 {true ? (
@@ -305,7 +305,7 @@ export const OnViewMapIndustryDetailsTab = ({
                     {/* Call */}
                     {call && (
                         <div className="cursor-not-allowed">
-                            <div className="h-[1px] mt-4 mb-1 w-full bg-gray-300" />
+                            <div className="h-px mt-4 mb-1 w-full bg-gray-300" />
                             <div className="bg-gray-50 p-3 rounded-lg">
                                 <div className="flex items-center gap-2 mb-2">
                                     <Phone className="h-3 w-3 text-emerald-600" />

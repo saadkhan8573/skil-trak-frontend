@@ -143,13 +143,6 @@ export const RtoAllStudents = () => {
         },
     ]
 
-    const delayedSearch = useCallback(
-        debounce((value) => {
-            setStudentId({ studentId: value })
-        }, 700),
-        []
-    )
-
     const delayedNameSearch = useCallback(
         debounce((value) => {
             setStudentName({ name: value })

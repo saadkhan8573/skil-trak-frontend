@@ -174,9 +174,9 @@ export const OnViewMapFutureIndustryDetailsTab = ({
                                 className={`h-8 w-8 rounded-lg flex items-center justify-center shadow-sm ${
                                     // industry.contacted
                                     true
-                                        ? 'bg-gradient-to-br from-emerald-500 to-emerald-600'
-                                        : 'bg-gradient-to-br from-[#044866] to-[#0D5468]'
-                                    }`}
+                                        ? 'bg-linear-to-br from-emerald-500 to-emerald-600'
+                                        : 'bg-linear-to-br from-[#044866] to-[#0D5468]'
+                                }`}
                             >
                                 {true && (
                                     <CheckCircle2 className="h-4 w-4 text-white" />
@@ -186,10 +186,11 @@ export const OnViewMapFutureIndustryDetailsTab = ({
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
                                 <h3
-                                    className={`font-semibold text-sm truncate ${true
-                                        ? 'text-emerald-700'
-                                        : 'text-gray-800'
-                                        }`}
+                                    className={`font-semibold text-sm truncate ${
+                                        true
+                                            ? 'text-emerald-700'
+                                            : 'text-gray-800'
+                                    }`}
                                     title={industryDetails?.data?.businessName}
                                 >
                                     {ellipsisText(
@@ -276,7 +277,7 @@ export const OnViewMapFutureIndustryDetailsTab = ({
 
                     {call && (
                         <div className="cursor-not-allowed">
-                            <div className="h-[1px] mt-4 mb-1 w-full bg-gray-300" />
+                            <div className="h-px mt-4 mb-1 w-full bg-gray-300" />
                             <div className="bg-gray-50 p-3 rounded-lg">
                                 <div className="flex items-center gap-2 mb-2">
                                     <Phone className="h-3 w-3 text-emerald-600" />
@@ -288,7 +289,7 @@ export const OnViewMapFutureIndustryDetailsTab = ({
                             <OnViewMapCallAnswer
                                 callLog={industryDetails?.data?.callLog?.[0]}
                                 workplaceId={workplaceId}
-                            //  isListing={ true}
+                                //  isListing={ true}
                             />
                         </div>
                     )}

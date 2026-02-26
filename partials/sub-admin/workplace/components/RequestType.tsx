@@ -111,7 +111,7 @@ export const RequestType = ({
 
     const requestTypeActions = [
         {
-            primaryText: 'Request Sent',
+            primaryText: 'Industry sourcing',
             secondaryText: 'No Case Officer',
             color: 'text-primary-dark',
             onClick: () => { },
@@ -119,7 +119,7 @@ export const RequestType = ({
             date: appliedIndustry?.appliedDate,
         },
         {
-            primaryText: 'Assigned',
+            primaryText: 'Industry sourcing',
             secondaryText: 'Case Officer',
             color: 'text-primary',
             onClick: () => { },

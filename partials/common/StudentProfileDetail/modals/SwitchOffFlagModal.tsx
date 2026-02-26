@@ -1,7 +1,6 @@
 import { Button, GlobalModal, Typography } from '@components'
-import React from 'react'
-import { TiWarning } from 'react-icons/ti'
 import { SubAdminApi } from '@queries'
+import { TiWarning } from 'react-icons/ti'
 
 export const SwitchOffFlagModal = ({ onCancel, studentId }: any) => {
     const [problamaticStudent, problamaticStudentResult] =

@@ -26,22 +26,22 @@ export const CaseOfficerAssignedStudent = ({
     const sortedWorkplace =
         student?.workplace && student?.workplace?.length > 0
             ? [...student?.workplace].sort((a: any, b: any) => {
-                  // Check if either status is "completed"
-                  if (
-                      a.currentStatus === WorkplaceCurrentStatus.Completed &&
-                      b.currentStatus !== WorkplaceCurrentStatus.Completed
-                  ) {
-                      return 1 // a goes after b
-                  }
-                  if (
-                      a.currentStatus !== WorkplaceCurrentStatus.Completed &&
-                      b.currentStatus === WorkplaceCurrentStatus.Completed
-                  ) {
-                      return -1 // a goes before b
-                  }
-                  // If neither or both are "completed", sort by createdAt date
-                  return Date.parse(a.createdAt) - Date.parse(b.createdAt)
-              })
+                // Check if either status is "completed"
+                if (
+                    a.currentStatus === WorkplaceCurrentStatus.Completed &&
+                    b.currentStatus !== WorkplaceCurrentStatus.Completed
+                ) {
+                    return 1 // a goes after b
+                }
+                if (
+                    a.currentStatus !== WorkplaceCurrentStatus.Completed &&
+                    b.currentStatus === WorkplaceCurrentStatus.Completed
+                ) {
+                    return -1 // a goes before b
+                }
+                // If neither or both are "completed", sort by createdAt date
+                return Date.parse(a.createdAt) - Date.parse(b.createdAt)
+            })
             : []
 
     const workplace = sortedWorkplace?.filter(
@@ -86,11 +86,11 @@ export const CaseOfficerAssignedStudent = ({
 
     const WorkplaceStatus = [
         {
-            text: 'Request Sent',
+            text: 'Industry sourcing',
             date: updatedAlliedIndustry?.appliedDate,
         },
         {
-            text: 'Coordinator Assigned',
+            text: 'Industry sourcing',
             date: appliedIndustry?.caseOfficerAssignedDate,
         },
         {
@@ -128,8 +128,8 @@ export const CaseOfficerAssignedStudent = ({
     const documentInitiates =
         student?.user?.signers && student?.user?.signers?.length > 0
             ? student?.user?.signers?.find(
-                  (signer: any) => signer?.document?.status === 'pending'
-              )
+                (signer: any) => signer?.document?.status === 'pending'
+            )
             : false
 
     return (
@@ -170,7 +170,7 @@ export const CaseOfficerAssignedStudent = ({
                     studentId={student?.id}
                     step={
                         workplace?.currentStatus ===
-                        WorkplaceCurrentStatus.Cancelled
+                            WorkplaceCurrentStatus.Cancelled
                             ? 4
                             : studentStatus
                     }
@@ -214,51 +214,51 @@ export const CaseOfficerAssignedStudent = ({
                     />
                 )
             ) : // <StudentStatusProgressCell
-            //     assigned={
-            //         (updatedWorkplace?.assignedTo as SubAdmin) ||
-            //         student?.subadmin
-            //     }
-            //     studentId={student?.id}
-            //     step={
-            //         workplace?.currentStatus ===
-            //         WorkplaceCurrentStatus.Cancelled
-            //             ? 4
-            //             : studentStatus
-            //     }
-            //     appliedIndustry={updatedAlliedIndustry}
-            //     studentProvidedWorkplace={
-            //         updatedWorkplace?.studentProvidedWorkplace ||
-            //         updatedWorkplace?.byExistingAbn
-            //     }
-            //     documentInitiates={documentInitiates}
-            // />
-            student?.subadmin ? (
-                <ProgressCell
-                    appliedIndustry={updatedAlliedIndustry}
-                    studentId={student?.id}
-                    step={3}
-                    assigned={updatedWorkplace?.assignedTo || student?.subadmin}
-                    studentProvidedWorkplace={
-                        updatedWorkplace?.studentProvidedWorkplace ||
-                        updatedWorkplace?.byExistingAbn
-                    }
-                    documentInitiates={documentInitiates}
-                    wpCreatedAt={updatedWorkplace?.createdAt}
-                />
-            ) : (
-                <ProgressCell
-                    appliedIndustry={updatedAlliedIndustry}
-                    studentId={student?.id}
-                    step={1}
-                    assigned={updatedWorkplace?.assignedTo || student?.subadmin}
-                    studentProvidedWorkplace={
-                        updatedWorkplace?.studentProvidedWorkplace ||
-                        updatedWorkplace?.byExistingAbn
-                    }
-                    documentInitiates={documentInitiates}
-                    wpCreatedAt={updatedWorkplace?.createdAt}
-                />
-            )}
+                //     assigned={
+                //         (updatedWorkplace?.assignedTo as SubAdmin) ||
+                //         student?.subadmin
+                //     }
+                //     studentId={student?.id}
+                //     step={
+                //         workplace?.currentStatus ===
+                //         WorkplaceCurrentStatus.Cancelled
+                //             ? 4
+                //             : studentStatus
+                //     }
+                //     appliedIndustry={updatedAlliedIndustry}
+                //     studentProvidedWorkplace={
+                //         updatedWorkplace?.studentProvidedWorkplace ||
+                //         updatedWorkplace?.byExistingAbn
+                //     }
+                //     documentInitiates={documentInitiates}
+                // />
+                student?.subadmin ? (
+                    <ProgressCell
+                        appliedIndustry={updatedAlliedIndustry}
+                        studentId={student?.id}
+                        step={3}
+                        assigned={updatedWorkplace?.assignedTo || student?.subadmin}
+                        studentProvidedWorkplace={
+                            updatedWorkplace?.studentProvidedWorkplace ||
+                            updatedWorkplace?.byExistingAbn
+                        }
+                        documentInitiates={documentInitiates}
+                        wpCreatedAt={updatedWorkplace?.createdAt}
+                    />
+                ) : (
+                    <ProgressCell
+                        appliedIndustry={updatedAlliedIndustry}
+                        studentId={student?.id}
+                        step={1}
+                        assigned={updatedWorkplace?.assignedTo || student?.subadmin}
+                        studentProvidedWorkplace={
+                            updatedWorkplace?.studentProvidedWorkplace ||
+                            updatedWorkplace?.byExistingAbn
+                        }
+                        documentInitiates={documentInitiates}
+                        wpCreatedAt={updatedWorkplace?.createdAt}
+                    />
+                )}
             <div className="flex items-center justify-between gap-x-2 mt-1">
                 {secondWorkplace && checkKeysLength(secondWorkplace) ? (
                     <div
@@ -276,8 +276,8 @@ export const CaseOfficerAssignedStudent = ({
 
                 <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
                     {workplace &&
-                    checkKeysLength(workplace) &&
-                    updatedStatus?.length > 0 ? (
+                        checkKeysLength(workplace) &&
+                        updatedStatus?.length > 0 ? (
                         <div
                             className={
                                 'bg-indigo-300 px-2 py-0.5 rounded-md  w-fit ml-auto cursor-pointer relative z-10'

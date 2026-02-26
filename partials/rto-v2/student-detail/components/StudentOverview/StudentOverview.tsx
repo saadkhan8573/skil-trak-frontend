@@ -19,6 +19,7 @@ import { GlobalModal, LoadingAnimation, NoData } from '@components'
 import { UserRoles } from '@constants'
 import { getUserCredentials } from '@utils'
 import { WorkplaceApprovalModal } from '@partials/student/workplace/modal'
+import { StudentOverViewUpdated } from './StudentOverViewUpdated'
 
 export const StudentOverview = () => {
     const [modal, setModal] = useState<ReactNode | null>(null)
@@ -97,8 +98,8 @@ export const StudentOverview = () => {
                                     }
                                     indId={industryAvailability?.industryId}
                                     availability={industryAvailability}
-                                // resultBookAppointment={resultBookAppointment}
-                                // bookAppointment={bookAppointment}
+                                    // resultBookAppointment={resultBookAppointment}
+                                    // bookAppointment={bookAppointment}
                                 />
                             )
                         )}
@@ -125,6 +126,7 @@ export const StudentOverview = () => {
             {modal && modal}
             <div className="space-y-4">
                 <CourseOverview />
+                {/* <StudentOverViewUpdated /> */}
                 <PlacementRequest
                     sortedWorkplaces={sortedWorkplaces}
                     studentWorkplaces={studentWorkplaces}

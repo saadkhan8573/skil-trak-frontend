@@ -19,7 +19,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useNotification, useSubadminProfile } from '@hooks'
 import { SubAdminApi } from '@queries'
 import { AlertCircle, CheckCircle2, Flag, X } from 'lucide-react'
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 
@@ -57,6 +57,13 @@ export function FlagStudentDialog({
     const [problematicStudent, problematicStudentResult] =
         SubAdminApi.Student.useProblamaticStudent()
 
+    const studentWorkplace = SubAdminApi.Student.getWorkplaceForSchedule(
+        studentId,
+        {
+            skip: !studentId,
+        }
+    )
+
     const hasPermission = useAuthorizedUserComponent({
         roles: [UserRoles.ADMIN],
         isHod: subadmin?.departmentMember?.isHod,
@@ -87,17 +94,35 @@ export function FlagStudentDialog({
         mode: 'all',
         defaultValues: {
             isReported: 'no',
+            workplaceId: workplaceId || undefined,
         }
     })
 
     const isReported = methods.watch('isReported')
+
+    const workplaceOptions = useMemo(() => (
+        studentWorkplace?.data
+            ?.map((w: any, i: number) => (
+                {
+                    label: `Workplace ${i + 1}`,
+                    value: w?.id,
+                    item: w,
+                }
+            )) || []
+
+    ), [studentWorkplace])
+
+    useEffect(() => {
+        if (workplaceOptions.length === 1 && !methods.getValues('workplaceId')) {
+            methods.setValue('workplaceId', workplaceOptions[0].value)
+        }
+    }, [workplaceOptions, methods])
 
     const onSubmit = async (values: any) => {
         const body: any = {
             ...values,
             isReported: values.isReported === 'yes',
         }
-        if (workplaceId) body.workplaceId = workplaceId
 
         const res: any = await problematicStudent({ studentId, body })
 
@@ -154,6 +179,16 @@ export function FlagStudentDialog({
                 <FormProvider {...methods}>
                     <form onSubmit={methods.handleSubmit(onSubmit)} className="flex flex-col">
                         <div className="p-5 space-y-2 max-h-[60vh] overflow-y-auto custom-scrollbar">
+                            {workplaceOptions.length > 1 && (
+                                <Select
+                                    name="workplaceId"
+                                    label={<span className="text-xs font-semibold text-slate-700">Workplace</span>}
+                                    required
+                                    options={workplaceOptions}
+                                    placeholder="Select Workplace"
+                                />
+                            )}
+
                             <TextArea
                                 label={<span className="text-xs font-semibold text-slate-700">Reason for Flagging</span>}
                                 required

@@ -187,7 +187,7 @@ const menuSections = (navBarCounts: {
                     label: 'Tickets',
                     key: 'Tickets',
                     // badge: '3',
-                    path: '/portals/rto/communications/tickets?tab=active',
+                    path: '/portals/rto/communications/tickets?tab=all-tickets',
                     bg: 'hover:bg-gray-100 border border-gray-200',
                     iconBg: 'bg-gray-200 !text-slate-700',
                     badgeBg: 'bg-gray-200 !text-slate-700',

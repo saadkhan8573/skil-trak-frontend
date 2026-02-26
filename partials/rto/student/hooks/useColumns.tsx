@@ -349,7 +349,7 @@ export const useColumns = () => {
         {
             text: 'Edit',
             onClick: (student: Student) =>
-                router.push(`/portals/rto/students/${student.id}/edit-student`),
+                router.push(`/portals/rto/students-and-placements/all-students/${student.id}/edit-student`),
             Icon: FaEdit,
         },
     ]

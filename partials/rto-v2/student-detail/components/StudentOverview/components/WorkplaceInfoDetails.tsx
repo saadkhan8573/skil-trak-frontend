@@ -94,8 +94,8 @@ export const WorkplaceInfoDetails = ({
 
     const statusMapping = {
         [WorkplaceCurrentStatus.NotRequested]: 'Student Added',
-        [WorkplaceCurrentStatus.Applied]: 'Request Generated',
-        [WorkplaceCurrentStatus.CaseOfficerAssigned]: 'Coordinator Assigned',
+        [WorkplaceCurrentStatus.Applied]: 'Industry sourcing',
+        [WorkplaceCurrentStatus.CaseOfficerAssigned]: 'Industry sourcing',
         [WorkplaceCurrentStatus.Interview]: 'Industry Sourcing',
         [WorkplaceCurrentStatus.AwaitingStudentResponse]: 'Waiting for Student',
         [WorkplaceCurrentStatus.AwaitingRtoResponse]: 'Waiting for RTO',

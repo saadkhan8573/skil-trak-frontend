@@ -53,8 +53,8 @@ export const EnhancedIndustryDetailsCard = ({
         workplace?.industries?.length > 0
             ? data
             : wpApprovalStatus?.length > 0
-              ? wpApprovalStatus?.[0]?.industry
-              : null
+                ? wpApprovalStatus?.[0]?.industry
+                : null
 
     const workplaceEligibilityIndustry =
         workplace?.currentStatus === WorkplaceCurrentStatus.IndustryEligibility
@@ -82,7 +82,7 @@ export const EnhancedIndustryDetailsCard = ({
             {documentsViewModal}
             {shouldRenderIndustryCard && (
                 <Card noPadding className="border-0 shadow-xl overflow-hidden">
-                    <div className="bg-gradient-to-r from-[#044866] to-[#0D5468] px-5 py-4">
+                    <div className="bg-linear-to-r from-[#044866] to-[#0D5468] px-5 py-4">
                         <div className="flex items-center gap-2.5 text-white">
                             <Building2 className="h-5 w-5" />
                             <h3 className="font-semibold">Matched Industry</h3>
@@ -141,7 +141,7 @@ export const EnhancedIndustryDetailsCard = ({
                     </div>
                     <div className="p-6">
                         <div className="flex items-center gap-4 mb-5">
-                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-lg">
+                            <div className="w-12 h-12 rounded-xl bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-lg">
                                 <Building2 className="h-6 w-6 text-white" />
                             </div>
                             <div className="flex-1">
@@ -196,7 +196,7 @@ export const EnhancedIndustryDetailsCard = ({
                         <Separator className="my-4" />
 
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="p-3 bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-lg">
+                            <div className="p-3 bg-linear-to-br from-slate-50 to-slate-100/50 rounded-lg">
                                 <p className="text-slate-600 text-xs mb-1">
                                     Location
                                 </p>
@@ -204,7 +204,7 @@ export const EnhancedIndustryDetailsCard = ({
                                     {industry?.addressLine1 ?? '———'}
                                 </p>
                             </div>
-                            <div className="p-3 bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-lg">
+                            <div className="p-3 bg-linear-to-br from-slate-50 to-slate-100/50 rounded-lg">
                                 <p className="text-slate-600 text-xs mb-1">
                                     Distance
                                 </p>

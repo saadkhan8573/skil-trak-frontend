@@ -184,38 +184,6 @@ export const Appointments = () => {
                     )}
                 </div>
 
-                {/* Filters Toolbar */}
-                <Card className="border border-slate-200 shadow-sm p-2 flex flex-wrap items-center justify-between gap-3 bg-white rounded-lg">
-                    <div className="flex items-center gap-2 flex-1">
-                        <div className="relative flex-1 max-w-xs">
-                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
-                            <TextInput
-                                placeholder="Search..."
-                                value={searchQuery}
-                                onChange={(e: any) =>
-                                    setSearchQuery(e.target.value)
-                                }
-                                className="pl-8 h-8 text-xs border-slate-200 bg-slate-50/50 focus:bg-white transition-all w-full"
-                                name="search"
-                            />
-                        </div>
-                        <Select
-                            value={filterCategory}
-                            onChange={setFilterCategory}
-                            name="category"
-                            className="h-8 text-xs border-slate-200 w-40"
-                            options={[
-                                { label: 'All Categories', value: 'all' },
-                                { label: 'Placement', value: 'placement' },
-                                { label: 'Student', value: 'student' },
-                                { label: 'Industry', value: 'industry' },
-                                { label: 'Admin', value: 'admin' },
-                                { label: 'Training', value: 'training' },
-                            ]}
-                        />
-                    </div>
-                </Card>
-
                 {/* Main Content with ConfigTabs */}
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                     <ConfigTabs

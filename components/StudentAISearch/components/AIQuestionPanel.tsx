@@ -231,7 +231,7 @@ export function AIQuestionPanel({ student }: AIQuestionPanelProps) {
                                             <div className="flex items-center gap-2 mb-2">
                                                 <Sparkles className="h-4 w-4 text-primaryNew" />
                                                 <span className="text-xs font-semibold text-primaryNew">
-                                                    AI Lumo
+                                                    Lumo
                                                 </span>
                                             </div>
                                         )}

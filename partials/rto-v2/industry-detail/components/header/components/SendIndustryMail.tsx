@@ -1,8 +1,6 @@
-import { Badge, Button } from '@components'
+import { Badge } from '@components'
 import { ComposeEmailModal } from '@partials/rto-v2/student-detail/components'
 import { useAppSelector } from '@redux'
-import { Student } from '@types'
-import { Mail } from 'lucide-react'
 import { ReactElement, useState } from 'react'
 import { BiEnvelope } from 'react-icons/bi'
 

@@ -6,7 +6,7 @@ import {
     StudentHeader,
     StudentInfoMessage,
     StudentOverview,
-    Tickets
+    Tickets,
 } from './components'
 
 import { ConfigTabs, EmptyData, TabConfig, TechnicalError } from '@components'
@@ -14,7 +14,13 @@ import { Skeleton } from '@components/ui/skeleton'
 import { ProfileSupportTickets } from '@partials/common'
 import { Schedule } from '@partials/common/StudentProfileDetail/components'
 import { useGetSubAdminStudentDetailQuery } from '@queries'
-import { CommonApi, setAssessmentReSubmittedCount, setAssessmentSubmittedCount, setSelectedCourse, setStudentDetail } from '@redux'
+import {
+    CommonApi,
+    setAssessmentReSubmittedCount,
+    setAssessmentSubmittedCount,
+    setSelectedCourse,
+    setStudentDetail,
+} from '@redux'
 import { Course, Student } from '@types'
 import {
     Book,
@@ -25,7 +31,7 @@ import {
     Ticket,
 } from 'lucide-react'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { AllWorkplaces } from './components/AllWorkplaces/AllWorkplaces'
 import {
@@ -59,6 +65,11 @@ export const RtoStudentDetail = () => {
             dispatch(setSelectedCourse(null as unknown as Course))
         }
     }, [profile?.data])
+
+    const SupportTicketsComponent = useMemo(
+        () => () => <ProfileSupportTickets userId={profile?.data?.user?.id!} />,
+        [profile?.data?.user?.id]
+    )
 
     const tabs: TabConfig[] = [
         {
@@ -141,9 +152,7 @@ export const RtoStudentDetail = () => {
             value: 'support-tickets',
             label: 'Support Tickets',
             icon: Ticket,
-            component: () => (
-                <ProfileSupportTickets userId={profile?.data?.user?.id!} />
-            ),
+            component: SupportTicketsComponent,
         },
     ]
 

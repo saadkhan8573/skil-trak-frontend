@@ -11,7 +11,7 @@ export const EnhancedRtoRequirementsCard = ({ data }: any) => {
 
     return (
         <Card noPadding className="border-0 shadow-xl overflow-hidden">
-            <div className="bg-gradient-to-r from-violet-600 to-purple-600 px-5 py-4">
+            <div className="bg-linear-to-r from-violet-600 to-purple-600 px-5 py-4">
                 <div className="flex items-center gap-2.5 text-white">
                     <ClipboardCheck className="h-5 w-5" />
                     <h3 className="font-semibold">RTO Extra Requirements</h3>

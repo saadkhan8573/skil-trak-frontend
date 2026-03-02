@@ -23,14 +23,14 @@ export const PinnedNotesActionBanner = ({ userId }: { userId?: number }) => {
                             </div>
                             <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#044866] rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                                 <span className="text-white text-xs">
-                                    {notes?.data}
+                                    {notes?.data!}
                                 </span>
                             </div>
                         </div>
                         <div>
                             <div className="flex items-center gap-2 mb-0.5">
                                 <p className="text-slate-900 text-[15px]">
-                                    Pinned Notes: You have {notes?.data}{' '}
+                                    Pinned Notes: You have {notes?.data!}{' '}
                                     important notes flagged
                                 </p>
                                 <Sparkles className="w-3 h-3 text-[#F7A619]" />

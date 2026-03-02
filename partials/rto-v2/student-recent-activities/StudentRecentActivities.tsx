@@ -19,7 +19,7 @@ export const StudentRecentActivities = () => {
 
     const recentActivities = RtoV2Api.Students.rtoStudentHistory(
         {
-            search: `name:${searchedValue}`,
+            search: `title:${searchedValue}`,
             skip: itemPerPage * page - itemPerPage,
             limit: itemPerPage,
         },

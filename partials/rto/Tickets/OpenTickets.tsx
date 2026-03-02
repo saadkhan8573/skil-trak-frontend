@@ -84,6 +84,7 @@ export const OpenTickets = ({ layoutV2 = false }: { layoutV2?: boolean }) => {
             cell: (info) => {
                 return info?.row?.original?.student ? (
                     <StudentCellInfo
+                        link={`/portals/rto/students-and-placements/all-students/${info?.row?.original?.student?.id}/detail`}
                         student={info?.row?.original?.student}
                         call
                     />

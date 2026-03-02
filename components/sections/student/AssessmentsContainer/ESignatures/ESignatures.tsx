@@ -14,7 +14,7 @@ export const ESignatures = () => {
 
     const pendingDocuments = CommonApi.ESign.usePendingDocumentsList(
         {
-            // status: 'signed',
+            status: 'signed',
             skip: itemPerPage * page - itemPerPage,
             limit: itemPerPage,
         },

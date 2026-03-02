@@ -430,6 +430,8 @@ const {
     useNoteRemoveMutation,
     useGetNotesTemplateQuery,
     useNoteStatusChangeMutation,
+    useStudentNotesListQuery,
+    useStudentNotesCountQuery,
 
     // --- COMMUNICATIONS --- //
     useCommunicationsQuery,
@@ -822,6 +824,8 @@ export const CommonApi = {
         useRemove: useNoteRemoveMutation,
         getNotesTemplate: useGetNotesTemplateQuery,
         useStatusChange: useNoteStatusChangeMutation,
+        useStudentNotesList: useStudentNotesListQuery,
+        useStudentNotesCount: useStudentNotesCountQuery,
     },
     AllCommunication: {
         useCommunications: useCommunicationsQuery,

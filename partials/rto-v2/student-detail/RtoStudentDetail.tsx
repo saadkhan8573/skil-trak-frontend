@@ -1,12 +1,13 @@
 import {
     Appointments,
     Communications,
+    PinnedNotesActionBanner,
     RtoInfo,
     StudentAssessmentDocuments,
     StudentHeader,
     StudentInfoMessage,
     StudentOverview,
-    Tickets
+    Tickets,
 } from './components'
 
 import { ConfigTabs, EmptyData, TabConfig, TechnicalError } from '@components'
@@ -14,7 +15,13 @@ import { Skeleton } from '@components/ui/skeleton'
 import { ProfileSupportTickets } from '@partials/common'
 import { Schedule } from '@partials/common/StudentProfileDetail/components'
 import { useGetSubAdminStudentDetailQuery } from '@queries'
-import { CommonApi, setAssessmentReSubmittedCount, setAssessmentSubmittedCount, setSelectedCourse, setStudentDetail } from '@redux'
+import {
+    CommonApi,
+    setAssessmentReSubmittedCount,
+    setAssessmentSubmittedCount,
+    setSelectedCourse,
+    setStudentDetail,
+} from '@redux'
 import { Course, Student } from '@types'
 import {
     Book,
@@ -178,6 +185,9 @@ export const RtoStudentDetail = () => {
                         <StudentHeader student={profile?.data} />
                         <StudentInfoMessage
                             studentUserId={profile?.data?.user?.id}
+                        />
+                        <PinnedNotesActionBanner
+                            userId={profile?.data?.user?.id}
                         />
 
                         <ConfigTabs

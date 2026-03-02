@@ -83,7 +83,7 @@ export const WorkplaceIndustryInfo = ({
                             <h3 className="font-bold text-slate-900 mb-0.5">
                                 {industry?.user?.name}
                             </h3>
-                            <div className="flex items-center gap-1.5">
+                            <div className="grid grid-cols-2 items-center gap-1.5">
                                 {industry?.isPartner && (
                                     <Badge
                                         Icon={CheckCircle}
@@ -121,7 +121,7 @@ export const WorkplaceIndustryInfo = ({
                                 {latestWorkplaceApprovaleRequest?.status ===
                                     'pending' && (
                                     <Badge
-                                        variant="info"
+                                        variant="primaryNew"
                                         onClick={() =>
                                             setIsResendModalOpen(true)
                                         }

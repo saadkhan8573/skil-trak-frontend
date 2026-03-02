@@ -409,12 +409,14 @@ const {
     useUnAssignedWorkplaceListQuery,
     useAllRequestedWorkplaceListQuery,
     useWpCancellationRequestsListQuery,
+    useIndustryRejectedWpListQuery,
     useBlockedStudentsWorkplaceListQuery,
     usePlacementStartedWorkplaceListQuery,
     useScheduleCompletedWorkplaceListQuery,
     useGetSubadminForAssignWorkplaceQuery,
     useAllStudentProvidedWorkplaceListQuery,
     useChangeStatusForWPCancelationRequestMutation,
+    useChangeStatusIndustryRejectedWpReqMutation,
 
     // ------ FOLDERS ------ //
     useFolderAddMutation,
@@ -719,12 +721,15 @@ export const AdminApi = {
         useRequestedWorkplace: useAllRequestedWorkplaceListQuery,
         blockedStudentsWPList: useBlockedStudentsWorkplaceListQuery,
         wpCancelationRequestsList: useWpCancellationRequestsListQuery,
+        useIndustryRejectedWpList: useIndustryRejectedWpListQuery,
         placementStartedWPList: usePlacementStartedWorkplaceListQuery,
         completedWorkplaceList: useScheduleCompletedWorkplaceListQuery,
         subadminForAssignWorkplace: useGetSubadminForAssignWorkplaceQuery,
         useStudentProvidedWorkplace: useAllStudentProvidedWorkplaceListQuery,
         changeStatusCancelationReq:
             useChangeStatusForWPCancelationRequestMutation,
+        useChangeStatusIndustryRejectedWpReq:
+            useChangeStatusIndustryRejectedWpReqMutation,
     },
 
     Industries: {

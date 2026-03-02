@@ -1,3 +1,5 @@
 export * from './RejectRequestModal'
 export * from './ApproveRequestModal'
 export * from './ViewWpRequestNoteModal'
+export * from './IndustryRejectedWpAcceptModal'
+export * from './IndustryRejectedWpDeclineModal'

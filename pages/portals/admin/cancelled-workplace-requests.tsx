@@ -2,7 +2,11 @@ import React, { ReactElement } from 'react'
 
 import { NextPageWithLayout } from '@types'
 import { AdminLayout } from '@layouts'
-import { WpCancelationRequest, WpRejectionList } from '@partials/common'
+import {
+    WpCancelationRequest,
+    WpRejectionList,
+    WpIndustryRejectedRequest,
+} from '@partials/common'
 import { TabNavigation, TabProps } from '@components'
 
 const CancelledWorkplaceRequests: NextPageWithLayout = () => {
@@ -27,6 +31,19 @@ const CancelledWorkplaceRequests: NextPageWithLayout = () => {
             },
 
             element: <WpRejectionList />,
+        },
+        {
+            label: 'Industry Rejected Workplaces',
+            href: {
+                pathname: '/portals/admin/cancelled-workplace-requests',
+                query: {
+                    tab: 'industry-rejected-workplace',
+                    page: 1,
+                    pageSize: 50,
+                },
+            },
+
+            element: <WpIndustryRejectedRequest />,
         },
     ]
     return (

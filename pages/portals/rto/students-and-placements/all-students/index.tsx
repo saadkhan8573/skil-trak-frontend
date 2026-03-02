@@ -1,7 +1,7 @@
 import { RtoLayoutV2 } from '@layouts'
 import { RtoAllStudents } from '@partials'
 import { Users } from 'lucide-react'
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 
 const AllStudentsPage = () => {
     return <RtoAllStudents />

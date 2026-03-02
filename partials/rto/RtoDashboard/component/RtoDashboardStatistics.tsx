@@ -25,14 +25,16 @@ export const RtoDashboardStatistics = ({ rto }: { rto?: Rto }) => {
         setSelectedCourse(rtoCourseOptions?.[0])
     }, [rtoCourseOptions])
     const count = RtoApi.Rto.useDashboard()
+    const selectedCourseId = selectedCourse?.value ?? selectedCourse
     const { data, isLoading, isError, isSuccess } =
         RtoApi.Rto.useRtoProgressByCourse(
             {
-                courseId: selectedCourse?.value ?? selectedCourse,
+                courseId: selectedCourseId,
+            },
+            {
+                skip: !selectedCourseId,
+                // refetchOnMountOrArgChange: true,
             }
-            // {
-            //     refetchOnMountOrArgChange: true,
-            // }
         )
 
     const initialData = [
@@ -76,7 +78,7 @@ export const RtoDashboardStatistics = ({ rto }: { rto?: Rto }) => {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5 mt-[18px]">
             <div className="flex flex-col">
-                <div className="flex-grow">
+                <div className="grow">
                     <div className="h-full">
                         <ProfileCounts statisticsCount={count} />
                     </div>
@@ -103,7 +105,7 @@ export const RtoDashboardStatistics = ({ rto }: { rto?: Rto }) => {
                         </Modal.Window>
                     </Modal>
                 </div>
-                <div className="flex-grow">
+                <div className="grow">
                     <Card shadowType="profile" fullHeight>
                         <div className="mb-2 flex items-center gap-x-2">
                             {links?.map((link) => (

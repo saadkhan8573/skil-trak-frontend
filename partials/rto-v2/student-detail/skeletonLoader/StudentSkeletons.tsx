@@ -39,10 +39,10 @@ export function StudentProfileHeaderSkeleton() {
                             {/* Left: Avatar + Name + Badges */}
                             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2.5">
                                 {/* Avatar */}
-                                <Skeleton className="w-14 h-14 rounded-full flex-shrink-0 ring-4 ring-white shadow-md order-1 mb-2 sm:mb-0 sm:order-none" />
+                                <Skeleton className="w-14 h-14 rounded-full shrink-0 ring-4 ring-white shadow-md order-1 mb-2 sm:mb-0 sm:order-0" />
 
                                 {/* Name & Badges */}
-                                <div className="space-y-2 text-center sm:text-left order-2 sm:order-none w-full sm:w-auto flex flex-col items-center sm:items-start">
+                                <div className="space-y-2 text-center sm:text-left order-2 sm:order-0 w-full sm:w-auto flex flex-col items-center sm:items-start">
                                     {/* Name */}
                                     <Skeleton className="h-7 w-48 rounded-md" />
 
@@ -99,7 +99,10 @@ export function StudentQuickInfoSkeleton() {
     return (
         <div className="grid grid-cols-3 gap-2.5">
             {[1, 2, 3].map((i) => (
-                <div key={i} className="rounded-xl border border-slate-100 p-3.5 space-y-3">
+                <div
+                    key={i}
+                    className="rounded-xl border border-slate-100 p-3.5 space-y-3"
+                >
                     <Skeleton className="w-8 h-8 rounded-lg" />
                     <Skeleton className="h-3 w-24" />
                     <Skeleton className="h-5 w-32" />
@@ -157,7 +160,10 @@ export function WorkplaceTabSkeleton() {
             </div>
             <div className="grid gap-3">
                 {[1, 2, 3].map((i) => (
-                    <div key={i} className="p-4 bg-white border border-slate-100 rounded-xl space-y-4">
+                    <div
+                        key={i}
+                        className="p-4 bg-white border border-slate-100 rounded-xl space-y-4"
+                    >
                         <div className="flex justify-between items-start">
                             <div className="flex gap-4">
                                 <Skeleton className="w-12 h-12 rounded-lg" />
@@ -201,7 +207,10 @@ export function StudentDocumentsTabSkeleton() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                    <div key={i} className="p-4 bg-white border border-slate-100 rounded-xl space-y-4">
+                    <div
+                        key={i}
+                        className="p-4 bg-white border border-slate-100 rounded-xl space-y-4"
+                    >
                         <div className="flex justify-between items-center">
                             <Skeleton className="w-10 h-10 rounded-lg" />
                             <Skeleton className="h-8 w-8 rounded-full" />
@@ -231,8 +240,11 @@ export function CommunicationsSkeleton() {
             </div>
             <div className="space-y-3">
                 {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="p-4 bg-white border border-slate-100 rounded-xl flex gap-4">
-                        <Skeleton className="w-10 h-10 rounded-full flex-shrink-0" />
+                    <div
+                        key={i}
+                        className="p-4 bg-white border border-slate-100 rounded-xl flex gap-4"
+                    >
+                        <Skeleton className="w-10 h-10 rounded-full shrink-0" />
                         <div className="flex-1 space-y-2">
                             <div className="flex justify-between">
                                 <Skeleton className="h-5 w-48" />
@@ -285,7 +297,10 @@ export function ScheduleTabSkeleton() {
                 <Skeleton className="h-12 w-full rounded-xl" />
                 <div className="space-y-2">
                     {[1, 2, 3].map((i) => (
-                        <div key={i} className="p-4 bg-white border border-slate-100 rounded-xl flex justify-between items-center">
+                        <div
+                            key={i}
+                            className="p-4 bg-white border border-slate-100 rounded-xl flex justify-between items-center"
+                        >
                             <div className="flex gap-4">
                                 <Skeleton className="w-12 h-12 rounded-lg" />
                                 <div className="space-y-2">
@@ -306,7 +321,7 @@ export function AppointmentCardSkeleton() {
     return (
         <div className="p-4 bg-white border border-slate-100 rounded-xl flex justify-between items-center shadow-sm">
             <div className="flex gap-4 items-center flex-1">
-                <Skeleton className="w-12 h-12 rounded-full flex-shrink-0" />
+                <Skeleton className="w-12 h-12 rounded-full shrink-0" />
                 <div className="space-y-2 flex-1">
                     <div className="flex justify-between">
                         <Skeleton className="h-5 w-1/3" />
@@ -364,7 +379,10 @@ export function TicketsTabSkeleton() {
             </div>
             <div className="space-y-3">
                 {[1, 2, 3].map((i) => (
-                    <div key={i} className="p-4 bg-white border border-slate-100 rounded-2xl space-y-4">
+                    <div
+                        key={i}
+                        className="p-4 bg-white border border-slate-100 rounded-2xl space-y-4"
+                    >
                         <div className="flex justify-between items-start">
                             <div className="space-y-2">
                                 <div className="flex gap-2">
@@ -413,7 +431,10 @@ export function AppointmentsTabSkeleton() {
                         <Skeleton className="h-6 w-32" />
                         <div className="space-y-2">
                             {[1, 2].map((j) => (
-                                <div key={j} className="p-4 bg-white border border-slate-100 rounded-xl flex justify-between items-center">
+                                <div
+                                    key={j}
+                                    className="p-4 bg-white border border-slate-100 rounded-xl flex justify-between items-center"
+                                >
                                     <div className="flex gap-4 items-center">
                                         <Skeleton className="w-12 h-12 rounded-full" />
                                         <div className="space-y-2">
@@ -429,6 +450,21 @@ export function AppointmentsTabSkeleton() {
                             ))}
                         </div>
                     </div>
+                ))}
+            </div>
+        </div>
+    )
+}
+
+export function PlacementRequirementsSkeleton() {
+    return (
+        <div className="space-y-3">
+            <Skeleton className="h-20 w-full rounded-xl" />
+            <Skeleton className="h-20 w-full rounded-xl" />
+            <div className="space-y-2.5 pt-4">
+                <Skeleton className="h-6 w-32" />
+                {[1, 2, 3].map((i) => (
+                    <Skeleton key={i} className="h-20 w-full rounded-lg" />
                 ))}
             </div>
         </div>

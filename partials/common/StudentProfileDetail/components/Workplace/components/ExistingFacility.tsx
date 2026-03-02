@@ -10,7 +10,7 @@ import {
 import { UseExistingFacilityModal } from '../modals'
 import { useAssessmentDocumentsView } from '../../AssessmentsSubmission'
 import moment from 'moment'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 interface ExistingDocumentContentProps {
     onCancel: () => void

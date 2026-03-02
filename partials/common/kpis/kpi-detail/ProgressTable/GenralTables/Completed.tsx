@@ -6,7 +6,7 @@ import moment, { Moment } from 'moment'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { HiCheck } from 'react-icons/hi'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 import { DataKpiTable } from '../../DataKpiTable'
 import { useColumnsAction } from '../../hooks'
 

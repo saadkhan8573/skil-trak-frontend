@@ -19,7 +19,7 @@ import { UserRoles } from '@constants'
 import { RemoveIndustryModal } from '@partials/sub-admin/workplace/modals'
 import { Student } from '@types'
 import { getUserCredentials } from '@utils'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 export const IndustryCard = ({
     industry,
@@ -79,10 +79,10 @@ export const IndustryCard = ({
                             role === UserRoles.ADMIN
                                 ? `/portals/admin/industry/${industry?.industry?.id}?tab=sectors`
                                 : role === UserRoles.SUBADMIN
-                                ? `/portals/sub-admin/users/industries/${industry?.industry?.id}?tab=overview`
-                                : role === UserRoles.RTO
-                                ? `/portals/rto/industries/workplaces/${industry?.industry?.id}`
-                                : '#'
+                                  ? `/portals/sub-admin/users/industries/${industry?.industry?.id}?tab=overview`
+                                  : role === UserRoles.RTO
+                                    ? `/portals/rto/industries/workplaces/${industry?.industry?.id}`
+                                    : '#'
                         }
                         className="flex items-center gap-x-2 cursor-pointer"
                     >

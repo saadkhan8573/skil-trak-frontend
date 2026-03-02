@@ -26,7 +26,7 @@ import { useRouter } from 'next/router'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
-} from 'redux/queryTypes'
+} from '@redux/queryTypes'
 import { Course, Folder, Student } from '@types'
 
 export const Actions = ({
@@ -231,13 +231,13 @@ export const Actions = ({
                         {(appliedIndustry?.isCompleted ||
                             appliedIndustry?.cancelled ||
                             appliedIndustry?.terminated) && (
-                                <Typography
-                                    variant={'small'}
-                                    color={'text-gray-700'}
-                                >
-                                    Status of student placement
-                                </Typography>
-                            )}
+                            <Typography
+                                variant={'small'}
+                                color={'text-gray-700'}
+                            >
+                                Status of student placement
+                            </Typography>
+                        )}
                         {appliedIndustry?.isCompleted && (
                             <Button
                                 submit

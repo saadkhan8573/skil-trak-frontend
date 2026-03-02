@@ -18,7 +18,11 @@ import {
 
 import { AdminApi } from '@queries'
 import { Course, OptionType } from '@types'
-import { CourseSelectOption, checkWorkplaceStatus, formatOptionLabel } from '@utils'
+import {
+    CourseSelectOption,
+    checkWorkplaceStatus,
+    formatOptionLabel,
+} from '@utils'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { RiBook2Fill } from 'react-icons/ri'
@@ -27,7 +31,7 @@ import { StudentDetail } from '../StudentDetail'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
-} from 'redux/queryTypes'
+} from '@redux/queryTypes'
 type Props = {
     workplace: IWorkplaceIndustries
 }
@@ -111,7 +115,9 @@ export const AdminWorkplaceRequest = ({ workplace }: Props) => {
                                         </Typography>
                                         <Typography variant={'muted'}>
                                             <span className="break-all">
-                                                {workplace?.courses[0]?.code}{' '}
+                                                {
+                                                    workplace?.courses[0]?.code
+                                                }{' '}
                                             </span>
                                             -{' '}
                                             <span className="break-all">

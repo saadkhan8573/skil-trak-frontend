@@ -107,16 +107,6 @@ export const RtoTeam = () => {
                                 <Users className="h-5 w-5 text-primaryNew" />
                                 Team Members
                             </div>
-                            <div className="flex gap-2">
-                                <Button variant="primaryNew" outline>
-                                    <Key className="h-4 w-4 mr-2" />
-                                    Manage Permissions
-                                </Button>
-                                <Button variant="primaryNew" outline>
-                                    <Download className="h-4 w-4 mr-2" />
-                                    Export
-                                </Button>
-                            </div>
                         </div>
                     </div>
                     <div className="p-0">

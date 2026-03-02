@@ -41,6 +41,8 @@ export const CourseApprovalModal = ({
     const [userName, setUserName] = useState('')
     const { notification } = useNotification()
 
+    console.log('courseasdasd', course)
+
     const [updateCourseApprovalStatus, { isLoading }] =
         RtoV2Api.Courses.useUpdateCourseApprovalStatus()
 
@@ -48,7 +50,7 @@ export const CourseApprovalModal = ({
         try {
             const res: any = await updateCourseApprovalStatus({
                 id: logbook.id,
-                name: userName
+                name: userName,
             })
 
             if (res?.error) {
@@ -63,7 +65,8 @@ export const CourseApprovalModal = ({
 
             notification.success({
                 title: 'Approved',
-                description: 'Course configuration has been approved successfully.',
+                description:
+                    'Course configuration has been approved successfully.',
             })
             onApproved?.()
             onOpenChange(false)
@@ -97,20 +100,44 @@ export const CourseApprovalModal = ({
                                     Review and approve the course configuration:
                                 </p>
                                 <div className="bg-white/60 dark:bg-background/40 rounded-lg p-3 border border-blue-200/40 dark:border-blue-800/40">
-                                    <p className="font-semibold text-foreground text-left">{course.code}</p>
-                                    <p className="text-sm text-muted-foreground text-left">{course.name}</p>
+                                    <p className="font-semibold text-foreground text-left">
+                                        {course.code}
+                                    </p>
+                                    <p className="text-sm text-muted-foreground text-left">
+                                        {course.name}
+                                    </p>
                                     <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-border/50">
-                                        <Badge outline variant="muted" className="text-xs">
+                                        <Badge
+                                            outline
+                                            variant="muted"
+                                            className="text-xs"
+                                        >
                                             <Target className="h-3 w-3 mr-1" />
-                                            {course.sector?.name || course.sector}
+                                            {course.sector?.name ||
+                                                course.sector}
                                         </Badge>
-                                        <Badge outline variant="muted" className="text-xs">
+                                        <Badge
+                                            outline
+                                            variant="muted"
+                                            className="text-xs"
+                                        >
                                             <Clock className="h-3 w-3 mr-1" />
-                                            {course.confirmedHours || course.requiredHours || course.hours} hours
+                                            {course?.extraHours?.length > 0
+                                                ? course?.extraHours[0]?.hours
+                                                : (course?.hours ?? 0)}{' '}
+                                            hours
                                         </Badge>
-                                        <Badge outline variant="muted" className="text-xs">
+                                        <Badge
+                                            outline
+                                            variant="muted"
+                                            className="text-xs"
+                                        >
                                             <Layers className="h-3 w-3 mr-1" />
-                                            {(course.workplaceTypes || []).length} workplace types
+                                            {
+                                                (course?.coursePrograms || [])
+                                                    ?.length
+                                            }{' '}
+                                            Streams
                                         </Badge>
                                     </div>
                                 </div>
@@ -121,9 +148,16 @@ export const CourseApprovalModal = ({
                     <div className="flex items-start gap-3 p-3 rounded-lg bg-warning/5 border border-warning/20 text-left">
                         <AlertTriangle className="h-5 w-5 text-warning shrink-0 mt-0.5" />
                         <div>
-                            <p className="font-semibold text-foreground mb-1 text-left">Important</p>
+                            <p className="font-semibold text-foreground mb-1 text-left">
+                                Important
+                            </p>
                             <p className="text-sm text-muted-foreground text-left">
-                                By approving this course configuration, you confirm that all placement requirements, documents, and settings are correct and compliant with training.gov.au requirements. This course will become active for placement matching.
+                                By approving this course configuration, you
+                                confirm that all placement requirements,
+                                documents, and settings are correct and
+                                compliant with training.gov.au requirements.
+                                This course will become active for placement
+                                matching.
                             </p>
                         </div>
                     </div>

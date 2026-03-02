@@ -28,7 +28,7 @@ import {
     getUserCredentials,
     latestWorkplace,
 } from '@utils'
-import { WorkplaceWorkIndustriesType } from 'redux/queryTypes'
+import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
 
 export const RequiredDocs = ({
     studentId,

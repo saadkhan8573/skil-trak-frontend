@@ -12,7 +12,8 @@ RtoStudentDetailPage.getLayout = (page: ReactElement) => {
         <RtoLayoutV2
             titleProps={{
                 Icon: User,
-                title: 'Student Detail',
+                title: 'Students',
+                description: 'Manage student profiles and placements',
             }}
             childrenClasses="!p-0 !md:p-0"
         >

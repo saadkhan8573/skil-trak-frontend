@@ -1,7 +1,7 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
 import { PaginationWithSearch } from '@types'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 const PREFIX = 'rtos/'
 export const studentsEndpoints = (
@@ -36,8 +36,14 @@ export const studentsEndpoints = (
         invalidatesTags: ['RTO'],
     }),
 
-    getWpForAutoMatching: builder.query<IWorkplaceIndustries[], void>({
-        query: () => `${PREFIX}workplace-request/pending/list`,
+    getWpForAutoMatching: builder.query<
+        IWorkplaceIndustries[],
+        { userId?: number } | void
+    >({
+        query: (params) => ({
+            url: `${PREFIX}workplace-request/pending/list`,
+            params: params || {},
+        }),
         providesTags: ['RTO'],
     }),
 
@@ -101,5 +107,10 @@ export const studentsEndpoints = (
             body,
         }),
         invalidatesTags: ['RTO', 'RTOIndustries', 'StudentsWorkplace'],
+    }),
+
+    getStudentRejectedIndustries: builder.query<any, number>({
+        query: (studentId) => `students/${studentId}/rejected-industries/list`,
+        providesTags: ['RTO'],
     }),
 })

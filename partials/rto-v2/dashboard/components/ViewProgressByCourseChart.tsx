@@ -19,9 +19,14 @@ export const ViewProgressByCourseChart = ({
     showBullets?: boolean
 }) => {
     const { data, isLoading, isError, isSuccess } =
-        RtoApi.Rto.useRtoProgressByCourse({
-            courseId: selectedCourse,
-        })
+        RtoApi.Rto.useRtoProgressByCourse(
+            {
+                courseId: selectedCourse,
+            },
+            {
+                skip: !selectedCourse,
+            }
+        )
 
     const COLORS: { [key: string]: string } = {
         'Total Students': '#0ea5e9',

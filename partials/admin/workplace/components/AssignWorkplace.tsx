@@ -10,7 +10,7 @@ import { AdminApi } from '@queries'
 import { useNotification } from '@hooks'
 import { OptionType, SubAdmin } from '@types'
 import { ellipsisText } from '@utils'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 export const AssignWorkplace = ({
     workplace,

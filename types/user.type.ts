@@ -1,5 +1,5 @@
 import { BaseResponse } from './base.type'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 import { ReportingType } from '@partials/admin/rto/enum'
 import { IndustryPlacementStatus } from '@partials/common'
 import { InvoiceTypeEnum } from '@partials/admin/invoices'

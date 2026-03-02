@@ -31,10 +31,11 @@ export const RtoProfileStatistics = ({
     useEffect(() => {
         setSelectedCourse(rtoCourseOptions?.[0])
     }, [rtoCourseOptions])
-    const { data, isLoading, isError, isSuccess } = RtoApi.Rto.useRtoProgressByCourse({
-        courseId: selectedCourse?.value ?? selectedCourse,
-        userId: rtoUserId,
-    })
+    const { data, isLoading, isError, isSuccess } =
+        RtoApi.Rto.useRtoProgressByCourse({
+            courseId: selectedCourse?.value ?? selectedCourse,
+            userId: rtoUserId,
+        })
     const role = getUserCredentials()?.role
 
     const statisticsCount = AdminApi.Rtos.useStatisticsCount(
@@ -72,7 +73,7 @@ export const RtoProfileStatistics = ({
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5 mt-[18px]">
             <div className="flex flex-col">
-                <div className="flex-grow">
+                <div className="grow">
                     <div className="h-full">
                         <ProfileCounts
                             statisticsCount={
@@ -106,7 +107,7 @@ export const RtoProfileStatistics = ({
                         </Modal.Window>
                     </Modal>
                 </div>
-                <div className="flex-grow">
+                <div className="grow">
                     <Card shadowType="profile" fullHeight>
                         <div className="relative whitespace-nowrap inline-block">
                             <Button variant="info" text={'E-Sign Documents'} />

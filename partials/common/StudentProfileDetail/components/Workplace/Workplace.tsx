@@ -35,7 +35,7 @@ import {
 import { IndustryDetail } from './components/IndustryDetail'
 import { WPStatusForCancelButon } from './data'
 import { useWorkplaceHook } from './hooks'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 import { WPProcessMatchingLoader } from './components/IndustryDetail/components/WPProcessMatchingLoader'
 
 export const Workplace = ({

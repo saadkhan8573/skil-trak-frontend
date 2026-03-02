@@ -8,7 +8,7 @@ import {
 import { SubAdminApi } from '@queries'
 import moment from 'moment'
 import React, { ReactNode } from 'react'
-import { WorkplaceQuestionType } from 'redux/queryTypes'
+import { WorkplaceQuestionType } from '@redux/queryTypes'
 
 export const ViewQuestionsModal = ({
     wpId,

@@ -12,17 +12,13 @@ import {
 import { ColumnDef } from '@tanstack/react-table'
 import { FaEdit, FaEye } from 'react-icons/fa'
 
-import { EditTimer } from '@components/StudentTimer/EditTimer'
 import { Badge } from '@components/ui/badge'
-import { CreateStudentNote } from '@partials/common/Notes/forms'
 import { StudentCellInfo } from '@partials/rto/student/components'
-import { ChangeStudentStatusModal } from '@partials/sub-admin/students/modals'
-import { RtoApi, RtoV2Api } from '@queries'
+import { RtoV2Api } from '@queries'
 import { Student } from '@types'
 import { BookOpen, Building2 } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
-import { LuMessageSquare } from 'react-icons/lu'
 import { MdBlock } from 'react-icons/md'
 import { statusConfig } from '../components/placementHelpers'
 
@@ -39,33 +35,8 @@ export const StudentsNeedWorkplaceTab = () => {
             skip: itemPerPage * page - itemPerPage,
             limit: itemPerPage,
         })
-    const count = RtoApi.Students.useRtoResolveIssuesStudentsCount()
-    const onModalCancelClicked = () => setModal(null)
-    const onChangeStatus = (student: Student) => {
-        setModal(
-            <ChangeStudentStatusModal
-                student={student}
-                onCancel={onModalCancelClicked}
-            />
-        )
-    }
 
-    const onAddNote = (student: Student) => {
-        setModal(
-            <div
-                className={`bg-[#00000050]  w-[calc(100%-80%)]
-                     h-full flex items-center justify-center gap-x-2 fixed top-[4.4rem] right-0 z-40`}
-            >
-                <CreateStudentNote
-                    studentId={student?.id}
-                    onCancel={onModalCancelClicked}
-                    receiverId={student?.user?.id}
-                />
-            </div>
-        )
-    }
-
-    const tableActionOptions = (student: Student) => [
+    const tableActionOptions = [
         {
             text: 'View',
             onClick: (student: Student) => {
@@ -74,35 +45,6 @@ export const StudentsNeedWorkplaceTab = () => {
                 )
             },
             Icon: FaEye,
-        },
-        // {
-        //     text: 'Edit',
-        //     onClick: (student: Student) =>
-        //         router.push(`/portals/rto/students/${student.id}/edit-student`),
-        //     Icon: FaEye,
-        // },
-        // {
-        //     text: student?.rtoCoordinator
-        //         ? 'Change Coordinator'
-        //         : 'Assign Coordinator',
-        //     onClick: (student: Student) => onAssignCoordinatorClicked(student),
-        //     Icon: FaUserPlus,
-        // },
-        // {
-        //     text: 'Block',
-        //     onClick: (student: Student) => onBlockClicked(student),
-        //     Icon: MdBlock,
-        //     color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
-        // },
-        {
-            text: 'Change Status',
-            onClick: (student: Student) => onChangeStatus(student),
-            Icon: FaEdit,
-        },
-        {
-            text: 'Add Note',
-            onClick: (student: Student) => onAddNote(student),
-            Icon: LuMessageSquare,
         },
     ]
 
@@ -123,13 +65,16 @@ export const StudentsNeedWorkplaceTab = () => {
             header: () => <span>Industry</span>,
             cell: (info: any) => {
                 return (
-                    <div className='min-w-44'>
+                    <div className="min-w-44">
                         {info?.row?.original?.industries &&
-                            info?.row?.original?.industries.length > 0 ? (
+                        info?.row?.original?.industries.length > 0 ? (
                             <div className="flex items-center gap-2">
                                 <Building2 className="h-3.5 w-3.5 text-gray-500" />
                                 <span className="font-semibold text-sm">
-                                    {info?.row?.original?.industries?.[0]?.industry?.user?.name}
+                                    {
+                                        info?.row?.original?.industries?.[0]
+                                            ?.industry?.user?.name
+                                    }
                                 </span>
                             </div>
                         ) : (
@@ -189,13 +134,10 @@ export const StudentsNeedWorkplaceTab = () => {
             accessorKey: 'action',
             header: () => <span>Action</span>,
             cell: (info) => {
-                const tableActionOption = tableActionOptions(
-                    info?.row?.original
-                )
                 return (
                     <div className="flex gap-x-1 items-center">
                         <TableAction
-                            options={tableActionOption}
+                            options={tableActionOptions}
                             rowItem={info.row.original}
                         />
                     </div>
@@ -235,7 +177,7 @@ export const StudentsNeedWorkplaceTab = () => {
                             columns={columns}
                             data={data.data}
                             quickActions={quickActionsElements}
-                        // enableRowSelection
+                            // enableRowSelection
                         >
                             {({
                                 table,

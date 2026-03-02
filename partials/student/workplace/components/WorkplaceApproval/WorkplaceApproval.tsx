@@ -82,12 +82,13 @@ export const WorkplaceApproval = ({
                     </div>
                 </div>
             </div>
-            {data?.assessmentEvidence?.length > 0 && (
+            {data?.assessmentEvidence?.length > 0 ||
+            data?.otherDocs?.length > 0 ? (
                 <UploadIndustryRequiredDocs
                     data={data}
                     workplaceRequest={wpApprovalData}
                 />
-            )}
+            ) : null}
             {hasExternalLink && (
                 <PrePlacementForm wpApprovalData={wpApprovalData} />
             )}

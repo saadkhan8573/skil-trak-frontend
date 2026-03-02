@@ -2,12 +2,9 @@ import { EmptyData, LoadingAnimation, TechnicalError } from '@components'
 import { StatusEnum, TicketMessageCard } from '@partials/common/Tickets'
 import { CommonApi } from '@queries'
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 import { ActionCard } from './ActionCard'
 
 export const TicketReplies = ({ ticket }: { ticket: any }) => {
-    const dispatch = useDispatch()
-
     const replies = CommonApi.Tickets.useGetTicketReplies(ticket?.id, {
         skip: !ticket?.id,
     })
@@ -15,12 +12,6 @@ export const TicketReplies = ({ ticket }: { ticket: any }) => {
     const createdAtDate = new Date(ticket?.createdAt)
 
     const [seenReply, seenReplyResult] = CommonApi.Tickets.useSeenTicketReply()
-
-    // useEffect(() => {
-    //     if (eventListener?.eventListener) {
-    //         replies.refetch()
-    //     }
-    // }, [eventListener])
 
     useEffect(() => {
         seenReply(ticket?.id)

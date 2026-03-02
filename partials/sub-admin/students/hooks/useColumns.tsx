@@ -24,7 +24,7 @@ import { MdBlock, MdPriorityHigh } from 'react-icons/md'
 import { getStudentWorkplaceAppliedIndustry, setLink } from '@utils'
 import { EditTimer } from '@components/StudentTimer/EditTimer'
 import { InterviewModal } from '@partials/sub-admin/workplace/modals'
-import { WorkplaceWorkIndustriesType } from 'redux/queryTypes'
+import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
 import { useSubadminProfile } from '@hooks'
 
 export const useColumns = () => {

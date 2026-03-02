@@ -26,7 +26,7 @@ import { ellipsisText } from '@utils'
 import Link from 'next/link'
 import { ReactElement, useState } from 'react'
 import { FaRegDotCircle } from 'react-icons/fa'
-import { DataResponse } from 'redux/queryTypes'
+import { DataResponse } from '@redux/queryTypes'
 
 export enum Status {
     PENDING = 'pending',
@@ -140,15 +140,15 @@ const CourseRequest: NextPageWithLayout = () => {
                             info?.row.original?.status === Status.PENDING
                                 ? 'bg-yellow-100 border-yellow-400 text-yellow-400'
                                 : info?.row.original?.status === Status.APPROVED
-                                ? 'bg-green-100 border-green-400 text-green-400'
-                                : 'bg-red-100 border-red-400 text-red-400'
+                                  ? 'bg-green-100 border-green-400 text-green-400'
+                                  : 'bg-red-100 border-red-400 text-red-400'
                         }`}
                     >
                         {info?.row.original?.status === Status.PENDING
                             ? 'PENDING'
                             : info?.row.original?.status === Status.APPROVED
-                            ? 'APPROVED'
-                            : 'REJECTED'}
+                              ? 'APPROVED'
+                              : 'REJECTED'}
                     </div>
                 )
             },

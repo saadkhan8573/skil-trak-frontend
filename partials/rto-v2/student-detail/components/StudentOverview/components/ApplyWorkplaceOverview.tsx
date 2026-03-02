@@ -19,7 +19,7 @@ export function ApplyWorkplaceOverview({
     handleAddNewWorkplace,
     firstWorkplace,
 }: {
-    firstWorkplace: IWorkplaceIndustries
+    firstWorkplace: IWorkplaceIndustries | null
     handleAddNewWorkplace: () => void
 }) {
     const router = useRouter()
@@ -100,8 +100,8 @@ export function ApplyWorkplaceOverview({
     return (
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200/60 shadow-xl shadow-slate-200/50 p-6 hover:shadow-2xl transition-all overflow-hidden relative">
             {/* Background Decorative Elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#044866]/5 to-[#F7A619]/5 rounded-full blur-3xl -z-10"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-purple-500/5 to-blue-500/5 rounded-full blur-3xl -z-10"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-linear-to-br from-[#044866]/5 to-[#F7A619]/5 rounded-full blur-3xl -z-10"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-linear-to-tr from-purple-500/5 to-blue-500/5 rounded-full blur-3xl -z-10"></div>
 
             {firstWorkplace && (
                 <Button
@@ -116,10 +116,10 @@ export function ApplyWorkplaceOverview({
             <div className="flex items-center justify-between my-3">
                 <div className="flex items-start gap-4">
                     <div className="relative group">
-                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#044866] to-[#0D5468] flex items-center justify-center text-white shadow-2xl shadow-[#044866]/40 group-hover:scale-110 transition-transform duration-300">
+                        <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center text-white shadow-2xl shadow-[#044866]/40 group-hover:scale-110 transition-transform duration-300">
                             <Building2 className="w-7 h-7" />
                         </div>
-                        <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 bg-gradient-to-br from-[#F7A619] to-amber-500 rounded-xl border-3 border-white flex items-center justify-center shadow-lg animate-pulse">
+                        <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 bg-linear-to-br from-[#F7A619] to-amber-500 rounded-xl border-3 border-white flex items-center justify-center shadow-lg animate-pulse">
                             <Sparkles className="w-3 h-3 text-white" />
                         </div>
                     </div>
@@ -136,11 +136,11 @@ export function ApplyWorkplaceOverview({
             </div>
             {/* Progress Alert Banner */}
             <div className="relative mb-5 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-emerald-400/10 to-emerald-500/10 animate-pulse"></div>
-                <div className="relative bg-gradient-to-br from-emerald-50 via-white to-emerald-50 rounded-2xl p-5 border-2 border-emerald-200 shadow-lg">
+                <div className="absolute inset-0 bg-linear-to-r from-emerald-500/10 via-emerald-400/10 to-emerald-500/10 animate-pulse"></div>
+                <div className="relative bg-linear-to-br from-emerald-50 via-white to-emerald-50 rounded-2xl p-5 border-2 border-emerald-200 shadow-lg">
                     <div className="flex items-start gap-4">
                         <div className="relative">
-                            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center flex-shrink-0 shadow-xl shadow-emerald-500/40">
+                            <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shrink-0 shadow-xl shadow-emerald-500/40">
                                 <CheckCircle className="w-6 h-6 text-white" />
                             </div>
                             <div className="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full border-2 border-emerald-500 flex items-center justify-center">
@@ -152,7 +152,7 @@ export function ApplyWorkplaceOverview({
                                 <h3 className="text-slate-900">
                                     Profile Ready for Placement
                                 </h3>
-                                <span className="px-3 py-1 text-xs bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-full shadow-lg shadow-emerald-500/30">
+                                <span className="px-3 py-1 text-xs bg-linear-to-r from-emerald-500 to-emerald-600 text-white rounded-full shadow-lg shadow-emerald-500/30">
                                     ✓ Verified
                                 </span>
                             </div>
@@ -171,7 +171,7 @@ export function ApplyWorkplaceOverview({
             </div>
             {/* Main Call to Action */}
             <div className="text-center mb-6">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#044866]/10 to-[#0D5468]/10 rounded-xl border border-[#044866]/20 mb-3">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-[#044866]/10 to-[#0D5468]/10 rounded-xl border border-[#044866]/20 mb-3">
                     <ArrowRight className="w-4 h-4 text-[#044866]" />
                     <span className="text-sm text-slate-700">
                         Choose your placement pathway
@@ -190,16 +190,16 @@ export function ApplyWorkplaceOverview({
                             className={`group relative overflow-hidden rounded-2xl border-2 ${pathway.colors.border} transition-all duration-300 cursor-pointer hover:shadow-2xl ${pathway.colors.shadow} hover:-translate-y-1`}
                         >
                             <div
-                                className={`absolute inset-0 bg-gradient-to-br ${pathway.colors.gradient} opacity-0 group-hover:opacity-100 transition-opacity`}
+                                className={`absolute inset-0 bg-linear-to-br ${pathway.colors.gradient} opacity-0 group-hover:opacity-100 transition-opacity`}
                             ></div>
                             <div
-                                className={`relative bg-gradient-to-br ${pathway.colors.bgGradient} p-6`}
+                                className={`relative bg-linear-to-br ${pathway.colors.bgGradient} p-6`}
                             >
                                 {/* Icon and Badge */}
                                 <div className="flex items-start justify-between mb-4">
                                     <div className="relative">
                                         <div
-                                            className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${pathway.colors.iconBg} flex items-center justify-center shadow-xl ${pathway.colors.iconShadow} group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}
+                                            className={`w-14 h-14 rounded-2xl bg-linear-to-br ${pathway.colors.iconBg} flex items-center justify-center shadow-xl ${pathway.colors.iconShadow} group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}
                                         >
                                             <Icon className="w-7 h-7 text-white" />
                                         </div>

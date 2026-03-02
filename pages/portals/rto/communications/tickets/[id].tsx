@@ -13,7 +13,7 @@ import {
     EmptyData,
     LoadingAnimation,
     ShowErrorNotifications,
-    TechnicalError
+    TechnicalError,
 } from '@components'
 import { ReplyTicketForm, TicketStatus } from '@partials/common/Tickets'
 import { TicketDetailHeaderCard } from '@partials/common/Tickets/components'
@@ -48,14 +48,16 @@ const TicketDetailPage: NextPageWithLayout = () => {
         <>
             {modal}
             <ShowErrorNotifications result={addReplyResult} />
-            <BackButton link={"portals/rto/communications/tickets?tab=all-tickets"} />
+            <BackButton
+                link={'portals/rto/communications/tickets?tab=all-tickets'}
+            />
             <div className="px-4">
                 {ticketDetail.isError && <TechnicalError />}
                 {ticketDetail.isLoading ? (
                     <LoadingAnimation height={'h-[50vh]'} />
                 ) : ticketDetail?.data && ticketDetail.isSuccess ? (
                     <>
-                        <div className="h-[calc(100vh-420px)] overflow-auto custom-scrollbar">
+                        <div className="h-[calc(100vh-380px)] overflow-auto custom-scrollbar">
                             <TicketDetailHeaderCard
                                 ticket={ticketDetail?.data}
                                 isOpened={isOpened}

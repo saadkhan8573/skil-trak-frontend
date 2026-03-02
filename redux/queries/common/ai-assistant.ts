@@ -1,7 +1,7 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
 import { PaginatedResponse, PaginationWithSearch, Student } from '@types'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 export const aiAssistantEndpoints = (
     builder: EndpointBuilder<BaseQueryFn, string, string>

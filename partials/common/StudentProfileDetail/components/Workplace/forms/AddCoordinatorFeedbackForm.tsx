@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { feedbackQuestions } from '../modals'
 import { FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { WorkplaceQuestionType } from 'redux/queryTypes'
+import { WorkplaceQuestionType } from '@redux/queryTypes'
 import {
     WorkplaceFeedbackCard,
     WorkplaceQuestionCard,

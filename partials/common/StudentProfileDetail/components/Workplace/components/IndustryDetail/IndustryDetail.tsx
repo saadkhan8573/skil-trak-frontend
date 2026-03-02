@@ -27,7 +27,7 @@ import { IoIosWarning, IoMdDocument } from 'react-icons/io'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
-} from 'redux/queryTypes'
+} from '@redux/queryTypes'
 import { useAssessmentDocumentsView } from '../../../AssessmentsSubmission'
 import {
     ReRunWPAutomation,
@@ -629,8 +629,7 @@ export const IndustryDetail = ({
                                                             onClick={() => {
                                                                 onFileClicked({
                                                                     ...workplace?.employmentDocument,
-                                                                    showEdit:
-                                                                        false,
+                                                                    showEdit: false,
                                                                     file: workplace?.employmentDocument?.file
                                                                         .replaceAll(
                                                                             '{"',

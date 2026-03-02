@@ -18,7 +18,7 @@ export const ImportStudentsModal = ({ onCancel }: any) => {
             key: 'add',
             label: 'Add Individual',
             icon: UserPlus,
-            color: 'from-[#F7A619] to-secondary',
+            color: 'from-[#044866] to-[#0C648A]',
             content: <AddIndividualStudentTab />,
         },
     ]
@@ -63,10 +63,11 @@ export const ImportStudentsModal = ({ onCancel }: any) => {
                                             tab.key as 'import' | 'add'
                                         )
                                     }
-                                    className={`flex items-center gap-2 px-16 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${isActive
-                                        ? `text-white bg-gradient-to-r ${tab.color} shadow-md`
-                                        : 'text-gray-600 hover:text-gray-800'
-                                        }`}
+                                    className={`flex items-center gap-2 px-16 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${
+                                        isActive
+                                            ? `text-white bg-gradient-to-r ${tab.color} shadow-md`
+                                            : 'text-gray-600 hover:text-gray-800'
+                                    }`}
                                 >
                                     <Icon className="size-4" />
                                     {tab.label}

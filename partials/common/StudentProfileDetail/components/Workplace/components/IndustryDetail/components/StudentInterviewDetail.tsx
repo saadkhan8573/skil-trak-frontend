@@ -5,7 +5,7 @@ import {
     workplaceQuestions,
     workplaceQuestionsKeys,
 } from '@partials/common/workplace'
-import { WorkplaceQuestionType } from 'redux/queryTypes'
+import { WorkplaceQuestionType } from '@redux/queryTypes'
 
 export const StudentInterviewDetail = ({
     workplaceId,

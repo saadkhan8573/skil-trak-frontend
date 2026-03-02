@@ -1,7 +1,12 @@
+import { GlobalModal, LoadingAnimation } from '@components'
+import { UserRoles } from '@constants'
+import { AppointmentBookingModalV2 } from '@partials/rto-v2/placement-request-detail/modal'
+import { WorkplaceApprovalModal } from '@partials/student/workplace/modal'
 import { RtoV2Api } from '@queries'
 import { setSelectedWorkplace } from '@redux'
 import { useAppDispatch, useAppSelector } from '@redux/hooks'
 import { IWorkplaceIndustries } from '@redux/queryTypes'
+import { getUserCredentials } from '@utils'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { sortedWorkplaceRequests } from '../../utils'
 import {
@@ -11,14 +16,6 @@ import {
     PlacementRequest,
     WorkplaceBio,
 } from './components'
-import {
-    AppointmentBookingModal,
-    AppointmentBookingModalV2,
-} from '@partials/rto-v2/placement-request-detail/modal'
-import { GlobalModal, LoadingAnimation, NoData } from '@components'
-import { UserRoles } from '@constants'
-import { getUserCredentials } from '@utils'
-import { WorkplaceApprovalModal } from '@partials/student/workplace/modal'
 import { StudentOverViewUpdated } from './StudentOverViewUpdated'
 
 export const StudentOverview = () => {
@@ -71,8 +68,6 @@ export const StudentOverview = () => {
     const {
         data: industryAvailability,
         isLoading: isIndustryAvailabilityLoading,
-        isError: isIndustryAvailabilityError,
-        isSuccess: isIndustryAvailabilitySuccess,
     } = RtoV2Api.StudentsWorkplace.useIndustryAvailabilityForStudent(
         studentDetail?.id,
         { skip: !studentDetail?.id }
@@ -126,7 +121,10 @@ export const StudentOverview = () => {
             {modal && modal}
             <div className="space-y-4">
                 <CourseOverview />
-                {/* <StudentOverViewUpdated /> */}
+                {/* <StudentOverViewUpdated
+                    sortedWorkplaces={sortedWorkplaces}
+                    isLoading={studentWorkplaces?.isLoading}
+                /> */}
                 <PlacementRequest
                     sortedWorkplaces={sortedWorkplaces}
                     studentWorkplaces={studentWorkplaces}

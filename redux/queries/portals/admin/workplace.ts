@@ -11,7 +11,7 @@ import {
     AdminNeedWorkplaceCount,
     AdminWorkplaceCount,
     IWorkplaceIndustries,
-} from 'redux/queryTypes'
+} from '@redux/queryTypes'
 
 const PREFIX = 'admin'
 export const workplaceEndpoints = (

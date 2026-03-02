@@ -2,7 +2,7 @@ import { RtoLayoutV2 } from '@layouts'
 import { RtoTeam } from '@partials'
 import { NextPageWithLayout } from '@types'
 import { User } from 'lucide-react'
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 
 const RtoTeamPage: NextPageWithLayout = () => {
     return <RtoTeam />

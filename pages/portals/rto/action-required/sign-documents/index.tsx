@@ -1,7 +1,7 @@
 import { RtoLayoutV2 } from '@layouts'
 import { SignDocuments } from '@partials'
 import { FileSignature } from 'lucide-react'
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 
 const SignDocumentsPage = () => {
     return <SignDocuments />

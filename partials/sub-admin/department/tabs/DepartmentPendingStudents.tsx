@@ -37,7 +37,7 @@ import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
 import { FaEdit, FaEye } from 'react-icons/fa'
 import { MdBlock, MdPriorityHigh } from 'react-icons/md'
-import { WorkplaceWorkIndustriesType } from 'redux/queryTypes'
+import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
 
 // useDepartmentStudents
 export const DepartmentPendingStudents = () => {

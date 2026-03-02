@@ -37,7 +37,7 @@ export const AssignedCoordinators = () => {
         {
             text: 'View',
             onClick: (coordinator: any) => {
-                router.push(`/portals/rto/coordinators/${coordinator?.id}`)
+                router.push(`/portals/rto/manage/team/${coordinator?.id}`)
             },
             Icon: '',
         },
@@ -53,17 +53,15 @@ export const AssignedCoordinators = () => {
                 } = row.original
                 return (
                     <Link
-                        href={`/portals/rto/coordinators/${row.original.id}`}
-                        className="flex items-center gap-x-2 relative">
-
+                        href={`/portals/rto/manage/team/${row.original.id}`}
+                        className="flex items-center gap-x-2 relative"
+                    >
                         <InitialAvatar name={name} imageUrl={avatar} />
                         <div>
-                            <Typography color={'black'}>
-                                {name}
-                            </Typography>
+                            <Typography color={'black'}>{name}</Typography>
                         </div>
                     </Link>
-                );
+                )
             },
         },
         {
@@ -82,13 +80,13 @@ export const AssignedCoordinators = () => {
                     <div className="flex flex-wrap gap-1">
                         {sectors && sectors.length > 0
                             ? sectors.map((sector: string) => (
-                                <Badge
-                                    key={sector}
-                                    variant="primaryNew"
-                                    size="xs"
-                                    text={sector}
-                                />
-                            ))
+                                  <Badge
+                                      key={sector}
+                                      variant="primaryNew"
+                                      size="xs"
+                                      text={sector}
+                                  />
+                              ))
                             : 'No sectors assigned'}
                     </div>
                 )
@@ -98,8 +96,7 @@ export const AssignedCoordinators = () => {
             header: () => 'Action',
             accessorKey: 'Action',
             cell: ({ row }: any) => {
-                const tableActionOption =
-                    tableActionOptions(row?.original)
+                const tableActionOption = tableActionOptions(row?.original)
                 return (
                     <TableAction
                         rowItem={row?.original}

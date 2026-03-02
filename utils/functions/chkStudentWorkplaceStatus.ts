@@ -1,7 +1,7 @@
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
-} from 'redux/queryTypes'
+} from '@redux/queryTypes'
 
 export enum WorkplaceCurrentStatus {
     NotRequested = 'notRequested',

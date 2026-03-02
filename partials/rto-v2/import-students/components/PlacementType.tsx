@@ -12,15 +12,15 @@ const placementOptions = [
         badgeColor: 'primary',
         description: 'Student can be placed any time before the expiry date',
     },
-    {
-        id: PlacementTypeEnum.BLOCK,
-        value: PlacementTypeEnum.BLOCK,
-        label: 'Block Placement',
-        badge: 'Scheduled',
-        badgeColor: 'primaryNew',
-        description:
-            'Student must be placed before the start date and will have an end date',
-    },
+    // {
+    //     id: PlacementTypeEnum.BLOCK,
+    //     value: PlacementTypeEnum.BLOCK,
+    //     label: 'Block Placement',
+    //     badge: 'Scheduled',
+    //     badgeColor: 'primaryNew',
+    //     description:
+    //         'Student must be placed before the start date and will have an end date',
+    // },
 ]
 
 export const PlacementType = () => {

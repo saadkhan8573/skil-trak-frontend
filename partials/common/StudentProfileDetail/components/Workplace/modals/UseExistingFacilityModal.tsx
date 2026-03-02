@@ -1,7 +1,7 @@
 import { SubAdminApi } from '@queries'
 import { useNotification } from '@hooks'
 import { HiCheckBadge } from 'react-icons/hi2'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 import { ActionModal, ShowErrorNotifications } from '@components'
 
 export const UseExistingFacilityModal = ({

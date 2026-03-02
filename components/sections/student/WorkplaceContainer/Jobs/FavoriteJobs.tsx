@@ -5,7 +5,7 @@ import { LoadingAnimation, EmptyData, TechnicalError } from '@components'
 
 // query
 import { StudentApi } from '@queries'
-import { StudentJobType } from 'redux/queryTypes'
+import { StudentJobType } from '@redux/queryTypes'
 
 type Props = {}
 

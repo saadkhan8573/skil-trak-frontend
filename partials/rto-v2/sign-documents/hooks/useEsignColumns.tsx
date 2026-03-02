@@ -1,7 +1,7 @@
 import { Button } from '@components'
 import { UserRoles } from '@constants'
 import { DownloadEsignDocument } from '@partials/eSign'
-import { getFilteredColumns } from '@utils'
+import { getFilteredColumns, getUserCredentials } from '@utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { Building2, Eye, FileText, User } from 'lucide-react'
 import Link from 'next/link'
@@ -24,6 +24,8 @@ interface UseEsignColumnsOptions {
 export const useEsignColumns = (options?: UseEsignColumnsOptions) => {
     const router = useRouter()
     const { isSigned } = options || {}
+
+    const credentials = getUserCredentials()
 
     const allColumns: ColumnDef<any>[] = useMemo(
         () => [
@@ -85,7 +87,9 @@ export const useEsignColumns = (options?: UseEsignColumnsOptions) => {
                     return industry ? (
                         <div className="flex items-center gap-2">
                             <Building2 className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-sm font-semibold">{industry?.user?.name}</span>
+                            <span className="text-sm font-semibold">
+                                {industry?.user?.name}
+                            </span>
                         </div>
                     ) : (
                         '---'
@@ -97,7 +101,9 @@ export const useEsignColumns = (options?: UseEsignColumnsOptions) => {
                 header: () => <span>Status</span>,
                 cell: (info) => (
                     <span className="capitalize text-sm font-medium">
-                        {info?.row?.original?.status}
+                        {info?.row?.original?.signers?.find(
+                            (s: any) => s?.user?.id === credentials?.id
+                        )?.status || '--'}
                     </span>
                 ),
             },

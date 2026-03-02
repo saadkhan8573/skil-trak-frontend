@@ -8,7 +8,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { DataKpiTable } from '../../DataKpiTable'
 import { RiGitPullRequestFill } from 'react-icons/ri'
 import { CreatedAtDate, Typography } from '@components'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 export const WorkplaceRequest = ({
     endDate,

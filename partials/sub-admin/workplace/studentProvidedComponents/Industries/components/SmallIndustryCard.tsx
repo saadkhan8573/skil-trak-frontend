@@ -1,6 +1,6 @@
 import { Typography } from '@components/Typography'
 import { BsDot } from 'react-icons/bs'
-import { WorkplaceWorkIndustriesType } from 'redux/queryTypes'
+import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
 
 export const SmallIndustryCard = ({
     industry,

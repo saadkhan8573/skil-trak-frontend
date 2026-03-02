@@ -7,7 +7,7 @@ import {
 import { SubAdminApi } from '@queries'
 import moment from 'moment'
 import { ReactNode } from 'react'
-import { WorkplaceQuestionType } from 'redux/queryTypes'
+import { WorkplaceQuestionType } from '@redux/queryTypes'
 
 export const ViewPlacementStartedAnswersModal = ({
     wpId,

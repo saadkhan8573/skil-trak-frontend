@@ -26,7 +26,7 @@ import { ReactElement, useEffect, useState } from 'react'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
-} from 'redux/queryTypes'
+} from '@redux/queryTypes'
 import { IndustryCellInfo, SectorCell, StudentCellInfo } from './components'
 
 const filterKeys = [

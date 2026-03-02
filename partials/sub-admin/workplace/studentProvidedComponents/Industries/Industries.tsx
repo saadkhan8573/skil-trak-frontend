@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
-} from 'redux/queryTypes'
+} from '@redux/queryTypes'
 import { AddIndustryCB } from '../../contextBar'
 import { Actions, IndustryCard } from './components'
 import { Student } from '@types'

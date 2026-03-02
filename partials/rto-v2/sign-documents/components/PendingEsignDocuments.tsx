@@ -1,25 +1,19 @@
 import {
-    Button,
     Card,
     EmptyData,
     LoadingAnimation,
     Table,
     TableChildrenProps,
-    TechnicalError
+    TechnicalError,
 } from '@components'
-import { ColumnDef } from '@tanstack/react-table'
 
-import { UserRoles } from '@constants'
 import { CommonApi } from '@queries'
-import { Building2, Eye, FileText, User } from 'lucide-react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
 import { useEsignColumns } from '../hooks/useEsignColumns'
 
 export const PendingEsignDocuments = () => {
     const router = useRouter()
-    const [modal, setModal] = useState<ReactElement | null>(null)
 
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
@@ -46,14 +40,13 @@ export const PendingEsignDocuments = () => {
 
     return (
         <>
-            {modal && modal}
             <div className="flex flex-col gap-y-4 mb-32">
                 <Card noPadding>
                     {pendingDocuments?.isError && <TechnicalError />}
                     {pendingDocuments?.isLoading ? (
                         <LoadingAnimation height="h-[60vh]" />
                     ) : pendingDocuments?.data &&
-                        pendingDocuments?.data?.data?.length ? (
+                      pendingDocuments?.data?.data?.length ? (
                         <Table
                             columns={columns}
                             data={pendingDocuments?.data.data}
@@ -87,26 +80,26 @@ export const PendingEsignDocuments = () => {
                                         <div className="px-6">{table}</div>
                                         {pendingDocuments?.data?.data?.length >
                                             10 && (
-                                                <div className="p-6 mb-2 flex justify-between">
-                                                    {pageSize &&
-                                                        pageSize(
-                                                            itemPerPage,
-                                                            setItemPerPage,
-                                                            pendingDocuments?.data
-                                                                ?.data?.length
+                                            <div className="p-6 mb-2 flex justify-between">
+                                                {pageSize &&
+                                                    pageSize(
+                                                        itemPerPage,
+                                                        setItemPerPage,
+                                                        pendingDocuments?.data
+                                                            ?.data?.length
+                                                    )}
+                                                <div className="flex gap-x-2">
+                                                    {quickActions}
+                                                    {pagination &&
+                                                        pagination(
+                                                            pendingDocuments
+                                                                ?.data
+                                                                ?.pagination,
+                                                            setPage
                                                         )}
-                                                    <div className="flex gap-x-2">
-                                                        {quickActions}
-                                                        {pagination &&
-                                                            pagination(
-                                                                pendingDocuments
-                                                                    ?.data
-                                                                    ?.pagination,
-                                                                setPage
-                                                            )}
-                                                    </div>
                                                 </div>
-                                            )}
+                                            </div>
+                                        )}
                                     </div>
                                 )
                             }}

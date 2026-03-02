@@ -30,7 +30,7 @@ import { ReactElement, useMemo, useState } from 'react'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
-} from 'redux/queryTypes'
+} from '@redux/queryTypes'
 import { ComposeEmailModal } from '../../Communications'
 import { useRouter } from 'next/router'
 import { CancelWpRequest } from '../components/CancelWpRequest'
@@ -222,10 +222,11 @@ export const WorkplaceCard = ({
                                         e.stopPropagation()
                                         router.push(industryLink)
                                     }}
-                                    className={`cursor-pointer p-1 rounded-md bg-white/20 hover:bg-white/30 text-white transition-colors border border-white/10 ${status === 'active'
-                                        ? 'animate-pulse'
-                                        : ''
-                                        }`}
+                                    className={`cursor-pointer p-1 rounded-md bg-white/20 hover:bg-white/30 text-white transition-colors border border-white/10 ${
+                                        status === 'active'
+                                            ? 'animate-pulse'
+                                            : ''
+                                    }`}
                                     title="View Industry Profile"
                                 >
                                     <Eye className="w-4 h-4" />
@@ -419,7 +420,7 @@ export const WorkplaceCard = ({
                                 <span className="font-medium">Status:</span>{' '}
                                 {
                                     WorkplaceStatusLabels[
-                                    workplace?.currentStatus
+                                        workplace?.currentStatus
                                     ]
                                 }
                             </p>
@@ -433,21 +434,21 @@ export const WorkplaceCard = ({
 
                 {workplace?.currentStatus ===
                     WorkplaceCurrentStatus.AwaitingRtoResponse && (
-                        <AuthorizedUserComponent roles={[UserRoles.RTO]}>
-                            <Button
-                                outline
-                                fullWidth
-                                variant="primaryNew"
-                                text="View Details"
-                                className="mt-3"
-                                onClick={() =>
-                                    router.push(
-                                        `/portals/rto/action-required/approve-placement/${latestWorkplaceApprovaleRequest?.id}`
-                                    )
-                                }
-                            />
-                        </AuthorizedUserComponent>
-                    )}
+                    <AuthorizedUserComponent roles={[UserRoles.RTO]}>
+                        <Button
+                            outline
+                            fullWidth
+                            variant="primaryNew"
+                            text="View Details"
+                            className="mt-3"
+                            onClick={() =>
+                                router.push(
+                                    `/portals/rto/action-required/approve-placement/${latestWorkplaceApprovaleRequest?.id}`
+                                )
+                            }
+                        />
+                    </AuthorizedUserComponent>
+                )}
 
                 {/* Cancel Section */}
                 {/* {[

@@ -20,7 +20,7 @@ import { userStatus } from '@utils'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
-} from 'redux/queryTypes'
+} from '@redux/queryTypes'
 
 export const Actions = ({
     appliedIndustry,

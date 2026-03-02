@@ -20,6 +20,16 @@ export const notesEndpoints = (
         providesTags: ['Notes', 'AllCommunications'],
     }),
 
+    studentNotesList: builder.query<Note[], number>({
+        query: (id) => `${PREFIX}/student/${id}/notes-list`,
+        providesTags: ['Notes', 'AllCommunications'],
+    }),
+
+    studentNotesCount: builder.query<{ count: number }, number>({
+        query: (id) => `${PREFIX}/student/${id}/notes-count`,
+        providesTags: ['Notes', 'AllCommunications'],
+    }),
+
     noteStatusChange: builder.mutation<Note, number>({
         query: (id) => ({
             url: `${PREFIX}/pin/${id}`,

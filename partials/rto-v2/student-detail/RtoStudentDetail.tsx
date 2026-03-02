@@ -1,6 +1,7 @@
 import {
     Appointments,
     Communications,
+    PinnedNotesActionBanner,
     RtoInfo,
     StudentAssessmentDocuments,
     StudentHeader,
@@ -187,6 +188,9 @@ export const RtoStudentDetail = () => {
                         <StudentHeader student={profile?.data} />
                         <StudentInfoMessage
                             studentUserId={profile?.data?.user?.id}
+                        />
+                        <PinnedNotesActionBanner
+                            userId={profile?.data?.user?.id}
                         />
 
                         <ConfigTabs

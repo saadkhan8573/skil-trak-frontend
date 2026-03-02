@@ -84,7 +84,7 @@ export const StudentInfoMessage = ({ studentUserId }: AdminMessageProps) => {
                 className={`border ${currentConfig.borderColor} ${currentConfig.bgColor} rounded-2xl shadow-premium-lg overflow-hidden animate-scale-in backdrop-blur-sm relative hover-lift`}
             >
                 {/* Subtle gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity pointer-events-none"></div>
+                <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity pointer-events-none"></div>
 
                 {/* Compact Header - Always Visible */}
                 <div className="flex items-center gap-3 p-4 relative">
@@ -114,7 +114,7 @@ export const StudentInfoMessage = ({ studentUserId }: AdminMessageProps) => {
 
                         <Badge
                             // className={`${currentConfig.badgeClass} border-0 shadow-premium text-xs h-5 px-2.5 font-semibold`}
-                            className="animate-pulse !bg-red-600 text-white"
+                            className="animate-pulse bg-red-600! text-white"
                             text={currentConfig.badgeText}
                         />
                     </div>

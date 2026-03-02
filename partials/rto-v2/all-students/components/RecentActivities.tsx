@@ -12,6 +12,7 @@ import {
     Activity,
     ChevronRight,
     Clock,
+    ExternalLink,
     LogIn,
     Sparkles,
     Upload,
@@ -21,6 +22,7 @@ import { useState } from 'react'
 import classNames from 'classnames'
 import { Title } from '@partials/rto-v2/components'
 import { RtoV2Api } from '@queries'
+import { useRouter } from 'next/router'
 
 interface ActivityItem {
     id: string
@@ -41,6 +43,7 @@ interface ActivityItem {
 
 export const RecentActivities = () => {
     const [expand, setExpand] = useState<boolean>(false)
+    const router = useRouter()
 
     const recentActivities = RtoV2Api.Students.rtoStudentHistory(
         {
@@ -71,18 +74,33 @@ export const RecentActivities = () => {
                             description="Live updates from your students"
                         />
 
-                        <CollapsibleTrigger>
-                            <Button
-                                // variant="ghost"
-                                // size="sm"
-                                outline
-                                variant="primaryNew"
-                                className="gap-1.5 hover-lift"
-                            >
-                                Show
-                                <ChevronRight className="h-4 w-4" />
-                            </Button>
-                        </CollapsibleTrigger>
+                        <div className="flex items-center gap-2">
+                            <CollapsibleTrigger>
+                                <Button
+                                    outline
+                                    variant="primaryNew"
+                                    className="gap-1.5 hover-lift"
+                                >
+                                    {expand ? 'Collapse' : 'Show'}
+                                    <ChevronRight className="h-4 w-4" />
+                                </Button>
+                            </CollapsibleTrigger>
+
+                            {expand && (
+                                <Button
+                                    variant="primaryNew"
+                                    className="gap-1.5 hover-lift"
+                                    onClick={() =>
+                                        router.push(
+                                            '/portals/rto/students-and-placements/all-students/student-recent-activities'
+                                        )
+                                    }
+                                >
+                                    View All Activities
+                                    <ExternalLink className="h-4 w-4" />
+                                </Button>
+                            )}
+                        </div>
                     </div>
                 </div>
 

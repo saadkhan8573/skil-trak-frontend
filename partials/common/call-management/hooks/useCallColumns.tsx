@@ -17,6 +17,7 @@ import { StatusBadge } from '../components/StatusBadge'
 import { cn } from '@utils'
 
 import { TableAction, UserCreatedAt, Badge } from '@components'
+import { Popover, PopoverContent, PopoverTrigger } from '@components/ui'
 import Link from 'next/link'
 
 export const useCallColumns = () => {
@@ -130,14 +131,18 @@ export const useCallColumns = () => {
                 const call = row.original
                 const isCompleted = call?.status === 'completed'
                 return (
-                    <Link href={`/portals/admin/student/${call?.student?.id}/detail`} className="flex items-center gap-3">
+                    <Link
+                        href={`/portals/admin/student/${call?.student?.id}/detail`}
+                        className="flex items-center gap-3"
+                    >
                         <div
-                            className={`w-1 h-8 rounded-full shrink-0 ${call.priority === 'high' && !isCompleted
+                            className={`w-1 h-8 rounded-full shrink-0 ${
+                                call.priority === 'high' && !isCompleted
                                     ? 'bg-red-500'
                                     : call.priority === 'medium' && !isCompleted
-                                        ? 'bg-yellow-500'
-                                        : 'bg-gray-200'
-                                }`}
+                                      ? 'bg-yellow-500'
+                                      : 'bg-gray-200'
+                            }`}
                         />
                         <div className="relative shrink-0">
                             <div className="w-9 h-9 rounded-lg bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-sm">
@@ -271,14 +276,52 @@ export const useCallColumns = () => {
             accessorKey: 'isAnswered',
             cell: ({ row }) => {
                 const isAnswered = row.original.isAnswered
+                const errorMessage = row.original.errorMessage
+
+                if (errorMessage) {
+                    const isLarge = errorMessage.length > 20
+                    return (
+                        <div className="flex flex-col gap-1">
+                            <div className="flex items-center gap-1.5 text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-100 max-w-[150px]">
+                                <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                                <span className="text-[10px] font-semibold leading-tight truncate">
+                                    {errorMessage}
+                                </span>
+                            </div>
+                            {isLarge && (
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <button className="text-[10px] text-[#044866] hover:text-[#0D5468] font-medium underline cursor-pointer text-left w-fit transition-colors">
+                                            View All
+                                        </button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-80">
+                                        <div className="space-y-2">
+                                            <h4 className="font-medium leading-none text-red-600 flex items-center gap-2">
+                                                <AlertCircle className="w-4 h-4" />
+                                                Call Error
+                                            </h4>
+                                            <p className="text-sm text-slate-600 leading-relaxed">
+                                                {errorMessage}
+                                            </p>
+                                        </div>
+                                    </PopoverContent>
+                                </Popover>
+                            )}
+                        </div>
+                    )
+                }
+
                 if (isAnswered === null)
                     return <span className="text-gray-400">-</span>
+
                 return (
                     <span
-                        className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${isAnswered
+                        className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            isAnswered
                                 ? 'bg-green-100 text-green-700 border border-green-200'
                                 : 'bg-red-100 text-red-700 border border-red-200'
-                            }`}
+                        }`}
                     >
                         {isAnswered ? 'Yes' : 'No'}
                     </span>

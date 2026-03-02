@@ -82,6 +82,7 @@ export const {
     useAddSingleStudentWithPlacementTypeMutation,
     useRunAutomationForAvailabeleStudentsMutation,
     useBookAppointmentExternallyMutation,
+    useGetStudentRejectedIndustriesQuery,
 
     // ---- Students Workplace ---- //
     useGetStudentWorkplaceListQuery,
@@ -220,6 +221,7 @@ export const RtoV2Api = {
         runAutomationForAvailabeleStudents:
             useRunAutomationForAvailabeleStudentsMutation,
         useBookAppointmentExternally: useBookAppointmentExternallyMutation,
+        useGetStudentRejectedIndustries: useGetStudentRejectedIndustriesQuery,
     },
     StudentsWorkplace: {
         getStudentWorkplaceList: useGetStudentWorkplaceListQuery,

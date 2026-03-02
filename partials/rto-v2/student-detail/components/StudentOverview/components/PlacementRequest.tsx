@@ -4,12 +4,11 @@ import { WorkplaceSmallCard } from '../card'
 
 export function PlacementRequest({
     studentWorkplaces,
-    sortedWorkplaces
+    sortedWorkplaces,
 }: {
     sortedWorkplaces: IWorkplaceIndustries[]
     studentWorkplaces: any
 }) {
-
     return (
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
             {/* Compact Header */}
@@ -28,33 +27,21 @@ export function PlacementRequest({
             {studentWorkplaces?.isLoading ? (
                 <LoadingAnimation size={65} />
             ) : studentWorkplaces?.data &&
-                studentWorkplaces?.data?.length > 0 &&
-                studentWorkplaces?.isSuccess ? (
+              studentWorkplaces?.data?.length > 0 &&
+              studentWorkplaces?.isSuccess ? (
                 <>
                     {/* Compact Requests List */}
                     <div className="p-3.5 max-h-[196px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
                         <div className="space-y-2.5">
-                            {sortedWorkplaces?.map(
-                                (
-                                    request,
-                                    index
-                                ) => (
-                                    <WorkplaceSmallCard
-                                        index={index}
-                                        key={request?.id}
-                                        request={request}
-                                    />
-                                )
-                            )}
+                            {sortedWorkplaces?.map((request, index) => (
+                                <WorkplaceSmallCard
+                                    index={index}
+                                    key={request?.id}
+                                    request={request}
+                                />
+                            ))}
                         </div>
                     </div>
-
-                    {/* Detailed Request View */}
-                    {/* {selectedWorkplace && (
-                        <WorkplaceInfoDetails
-                            selectedWorkplace={selectedWorkplace}
-                        />
-                    )} */}
                 </>
             ) : studentWorkplaces?.isSuccess ? (
                 <NoData text="No placement request found!" />

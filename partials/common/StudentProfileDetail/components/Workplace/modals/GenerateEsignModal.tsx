@@ -4,7 +4,7 @@ import { SubAdminApi } from '@queries'
 import { AssessmentEvidenceDetailType } from '@types'
 import { ReactElement, useCallback, useState } from 'react'
 import { MdCancel } from 'react-icons/md'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 import { DocumentToRelease, ExistingFacility } from '../components'
 
 export const GenerateEsignModal = ({

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Course, Student } from '@types'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 type initialStateType = {
     studentDetail: Student | null

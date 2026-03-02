@@ -18,7 +18,6 @@ export const WorkplaceCreatedModal = ({
 }) => {
     const router = useRouter()
 
-
     const role = getUserCredentials()?.role
     return (
         <GlobalModal>
@@ -50,7 +49,15 @@ export const WorkplaceCreatedModal = ({
                 <div className="mx-auto mt-5">
                     <div
                         onClick={() => {
-                            if (role === UserRoles.STUDENT) {
+                            if (role === UserRoles.ADMIN) {
+                                router.push(
+                                    `/portals/admin/student/${router.query?.id}/detail`
+                                )
+                            } else if (role === UserRoles.RTO) {
+                                router.push(
+                                    `/portals/rto/students-and-placements/all-students/${router.query?.id}/detail`
+                                )
+                            } else if (role === UserRoles.STUDENT) {
                                 router.back()
                             } else {
                                 router.push(

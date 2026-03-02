@@ -11,13 +11,13 @@ import {
     Phone,
     Plus,
     Star,
-    Send
+    Send,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
-} from 'redux/queryTypes'
+} from '@redux/queryTypes'
 import { ResendApprovalEmailModal } from '../modal/ResendApprovalEmailModal'
 
 export function WorkplaceBio({
@@ -39,7 +39,9 @@ export function WorkplaceBio({
     )
 
     const industry =
-        workIndustry?.industry || latestWorkplaceApprovaleRequest?.industry || workplace?.studentProvidedWorkplaceRequestApproval?.industry
+        workIndustry?.industry ||
+        latestWorkplaceApprovaleRequest?.industry ||
+        workplace?.studentProvidedWorkplaceRequestApproval?.industry
 
     const supervisor: Supervisor =
         latestWorkplaceApprovaleRequest?.industry?.supervisors?.[0]
@@ -104,27 +106,34 @@ export function WorkplaceBio({
                         <div className="mb-5 bg-linear-to-br from-secondary to-white rounded-xl p-4 border border-secondary">
                             <div className="flex items-center gap-2 mb-2">
                                 <Typography variant="title" medium>
-                                    Student  Approval Status
+                                    Student Approval Status
                                 </Typography>
                                 <Badge
                                     variant={
-                                        latestWorkplaceApprovaleRequest.status === 'approved'
+                                        latestWorkplaceApprovaleRequest.status ===
+                                        'approved'
                                             ? 'success'
-                                            : latestWorkplaceApprovaleRequest.status === 'rejected'
-                                                ? 'error'
-                                                : 'warning'
+                                            : latestWorkplaceApprovaleRequest.status ===
+                                                'rejected'
+                                              ? 'error'
+                                              : 'warning'
                                     }
                                     text={
                                         latestWorkplaceApprovaleRequest?.status
                                             ?.charAt(0)
                                             ?.toUpperCase() +
-                                        latestWorkplaceApprovaleRequest?.status?.slice(1)
+                                        latestWorkplaceApprovaleRequest?.status?.slice(
+                                            1
+                                        )
                                     }
                                 />
-                                {latestWorkplaceApprovaleRequest.status === 'pending' && (
+                                {latestWorkplaceApprovaleRequest.status ===
+                                    'pending' && (
                                     <Button
                                         variant="info"
-                                        onClick={() => setIsResendModalOpen(true)}
+                                        onClick={() =>
+                                            setIsResendModalOpen(true)
+                                        }
                                         className="ml-auto"
                                     >
                                         <Send className="w-3 h-3 mr-1" />
@@ -132,14 +141,17 @@ export function WorkplaceBio({
                                     </Button>
                                 )}
                             </div>
-                            {latestWorkplaceApprovaleRequest?.status === 'rejected' &&
+                            {latestWorkplaceApprovaleRequest?.status ===
+                                'rejected' &&
                                 latestWorkplaceApprovaleRequest.comment && (
                                     <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
                                         <p className="text-sm text-slate-600 mb-1">
                                             Rejection Reason:
                                         </p>
                                         <p className="text-sm text-slate-900">
-                                            {latestWorkplaceApprovaleRequest.comment}
+                                            {
+                                                latestWorkplaceApprovaleRequest.comment
+                                            }
                                         </p>
                                     </div>
                                 )}

@@ -53,7 +53,11 @@ export const OpenTickets = ({ layoutV2 = false }: { layoutV2?: boolean }) => {
         {
             text: 'View',
             onClick: (ticket: any) =>
-                router.push(layoutV2 ? `/portals/rto/communications/tickets/${ticket?.id}` : `/portals/rto/tickets/detail/${ticket?.id}`),
+                router.push(
+                    layoutV2
+                        ? `/portals/rto/communications/tickets/${ticket?.id}`
+                        : `/portals/rto/tickets/detail/${ticket?.id}`
+                ),
             Icon: BsFillEyeFill,
         },
         {
@@ -66,7 +70,12 @@ export const OpenTickets = ({ layoutV2 = false }: { layoutV2?: boolean }) => {
         {
             accessorKey: 'subject',
             cell: (info) => {
-                return <TicketSubject layoutV2={layoutV2} ticket={info?.row?.original} />
+                return (
+                    <TicketSubject
+                        layoutV2={layoutV2}
+                        ticket={info?.row?.original}
+                    />
+                )
             },
             header: () => <span>Subject</span>,
         },
@@ -85,20 +94,17 @@ export const OpenTickets = ({ layoutV2 = false }: { layoutV2?: boolean }) => {
             header: () => <span>Student</span>,
         },
         {
-            accessorKey: 'student',
-            cell: (info) => (
-                <TicketUser
-                    ticket={info?.row?.original?.student?.user || 'N/A'}
-                />
-            ),
-            header: () => <span>Linked Student</span>,
-        },
-        {
             accessorKey: 'createdBy',
             cell: (info) => (
-                <div className='flex items-center gap-x-2'>
-                    {info?.row?.original?.createdBy?.name && <InitialAvatar name={info?.row?.original?.createdBy?.name} />}
-                    <Typography variant='small' semibold>{info?.row?.original?.createdBy?.name}</Typography>
+                <div className="flex items-center gap-x-2">
+                    {info?.row?.original?.createdBy?.name && (
+                        <InitialAvatar
+                            name={info?.row?.original?.createdBy?.name}
+                        />
+                    )}
+                    <Typography variant="small" semibold>
+                        {info?.row?.original?.createdBy?.name}
+                    </Typography>
                 </div>
             ),
             header: () => <span>Created By</span>,
@@ -106,10 +112,17 @@ export const OpenTickets = ({ layoutV2 = false }: { layoutV2?: boolean }) => {
         {
             accessorKey: 'assignedTo',
             cell: (info) => (
-                <div className='flex items-center gap-x-2'>
-                    {info?.row?.original?.assignedTo?.name && <InitialAvatar name={info?.row?.original?.assignedTo?.name} />}
-                    <Typography variant='small' semibold>{info?.row?.original?.assignedTo?.name}</Typography>
-                </div>),
+                <div className="flex items-center gap-x-2">
+                    {info?.row?.original?.assignedTo?.name && (
+                        <InitialAvatar
+                            name={info?.row?.original?.assignedTo?.name}
+                        />
+                    )}
+                    <Typography variant="small" semibold>
+                        {info?.row?.original?.assignedTo?.name}
+                    </Typography>
+                </div>
+            ),
             header: () => <span>Assigned To</span>,
         },
         {

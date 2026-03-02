@@ -11,7 +11,7 @@ import React from 'react'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
-} from 'redux/queryTypes'
+} from '@redux/queryTypes'
 
 export const StudentIndustries = ({
     workplace,

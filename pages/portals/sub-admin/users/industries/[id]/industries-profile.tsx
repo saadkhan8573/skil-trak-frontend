@@ -7,7 +7,7 @@ import {
     TechnicalError,
 } from '@components'
 import { IndustryProfile } from '@components/IndustryProfile'
-import { useContextBar, useNavbar } from '@hooks'
+import { useAdminLocalAccess, useContextBar, useNavbar } from '@hooks'
 import { SubAdminLayout } from '@layouts'
 import { DetailTabs } from '@partials/sub-admin/Industries/tabs'
 import { useGetSubAdminIndustryProfileQuery } from '@queries'
@@ -44,6 +44,8 @@ const IndustriesProfile: NextPageWithLayout = () => {
             hide()
         }
     }, [data, isSuccess, setContent])
+
+    useAdminLocalAccess()
 
     return (
         <>

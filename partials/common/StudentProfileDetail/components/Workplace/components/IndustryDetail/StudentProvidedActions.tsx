@@ -5,7 +5,7 @@ import { CommonApi, useChangeCustomIndustryStatusMutation } from '@queries'
 import { Course, Student, UserStatus } from '@types'
 import { WorkplaceCurrentStatus } from '@utils'
 import React, { ReactElement, useEffect, useState } from 'react'
-import { WorkplaceWorkIndustriesType } from 'redux/queryTypes'
+import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
 import { InitiateSign } from './components'
 import { AgreementSignedModal } from '../../modals'
 

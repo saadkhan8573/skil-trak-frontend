@@ -53,8 +53,6 @@ export function CleanHeader({
 }: CleanHeaderProps) {
     const [modal, setModal] = useState<ReactElement | null>(null)
 
-    console.log({ wpCurrStatus })
-
     const [isWorkflowOpen, setIsWorkflowOpen] = useState(false)
     const router = useRouter()
     const wpId = router.query.id
@@ -72,12 +70,7 @@ export function CleanHeader({
     }
 
     const onAddNote = () => {
-        setModal(
-            <ManualNoteModal
-                open={true}
-                onClose={() => setModal(null)}
-            />
-        )
+        setModal(<ManualNoteModal open={true} onClose={() => setModal(null)} />)
     }
 
     const onCancelClick = () => {
@@ -207,16 +200,16 @@ export function CleanHeader({
                                             WorkplaceCurrentStatus.AppointmentBooked,
                                             WorkplaceCurrentStatus.AwaitingAgreementSigned,
                                         ].includes(wpCurrStatus) && (
-                                                <CancelWpRequest
-                                                    fullWidth={false}
-                                                    onCancelWPClicked={
-                                                        onCancelWPClicked
-                                                    }
-                                                    onCancelWPRequestClicked={
-                                                        onCancelWPRequestClicked
-                                                    }
-                                                />
-                                            )}
+                                            <CancelWpRequest
+                                                fullWidth={false}
+                                                onCancelWPClicked={
+                                                    onCancelWPClicked
+                                                }
+                                                onCancelWPRequestClicked={
+                                                    onCancelWPRequestClicked
+                                                }
+                                            />
+                                        )}
                                     </>
                                 )}
 
@@ -294,16 +287,17 @@ export function CleanHeader({
                                                 {workplaceType === 'provided'
                                                     ? 'Student Has Provided Workplace'
                                                     : workplaceType === 'needs'
-                                                        ? 'Student Needs Workplace'
-                                                        : 'Not Selected'}
+                                                      ? 'Student Needs Workplace'
+                                                      : 'Not Selected'}
                                             </Typography>
                                         </div>
                                     </div>
                                     {workplaceType && (
                                         <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-lg">
                                             <Badge
-                                                text={`Stage ${lastTrueIndex + 1
-                                                    } of ${workflowStages.length}`}
+                                                text={`Stage ${
+                                                    lastTrueIndex + 1
+                                                } of ${workflowStages.length}`}
                                                 variant="primaryNew"
                                                 size="xs"
                                             />
@@ -335,21 +329,23 @@ export function CleanHeader({
                                             return (
                                                 <div
                                                     key={stage.id}
-                                                    className={`p-3 rounded-lg border transition-all ${isCurrent
-                                                        ? 'bg-primaryNew/5 border-primaryNew'
-                                                        : isPast
-                                                            ? 'bg-emerald-50 border-emerald-200'
-                                                            : 'bg-white border-gray-200'
-                                                        }`}
+                                                    className={`p-3 rounded-lg border transition-all ${
+                                                        isCurrent
+                                                            ? 'bg-primaryNew/5 border-primaryNew'
+                                                            : isPast
+                                                              ? 'bg-emerald-50 border-emerald-200'
+                                                              : 'bg-white border-gray-200'
+                                                    }`}
                                                 >
                                                     <div className="flex items-center gap-3">
                                                         <div
-                                                            className={`p-2 rounded-lg ${isCurrent
-                                                                ? 'bg-primaryNew'
-                                                                : isPast
-                                                                    ? 'bg-emerald-500'
-                                                                    : 'bg-gray-300'
-                                                                }`}
+                                                            className={`p-2 rounded-lg ${
+                                                                isCurrent
+                                                                    ? 'bg-primaryNew'
+                                                                    : isPast
+                                                                      ? 'bg-emerald-500'
+                                                                      : 'bg-gray-300'
+                                                            }`}
                                                         >
                                                             <CircleCheckBig className="h-4 w-4 text-white" />
                                                         </div>
@@ -357,12 +353,13 @@ export function CleanHeader({
                                                         <div className="flex-1 flex items-center justify-between">
                                                             <Typography
                                                                 variant="small"
-                                                                className={`font-medium ${isCurrent
-                                                                    ? 'text-primaryNew'
-                                                                    : isPast
-                                                                        ? 'text-emerald-700'
-                                                                        : 'text-gray-600'
-                                                                    }`}
+                                                                className={`font-medium ${
+                                                                    isCurrent
+                                                                        ? 'text-primaryNew'
+                                                                        : isPast
+                                                                          ? 'text-emerald-700'
+                                                                          : 'text-gray-600'
+                                                                }`}
                                                             >
                                                                 {index + 1}.{' '}
                                                                 {stage.stage}

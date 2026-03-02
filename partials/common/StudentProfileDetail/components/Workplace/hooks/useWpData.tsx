@@ -1,6 +1,6 @@
 import { WorkplaceCurrentStatus } from '@utils'
 import React, { useMemo } from 'react'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 export const useWpData = ({
     selectedWorkplace,

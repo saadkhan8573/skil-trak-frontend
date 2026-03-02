@@ -25,7 +25,7 @@ import {
 } from '@queries'
 import { WorkplaceCurrentStatus, checkStudentProfileCompletion } from '@utils'
 import { useRouter } from 'next/router'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 const RequestWorkplaceDetail: NextPageWithLayout = () => {
     const [active, setActive] = useState(1)

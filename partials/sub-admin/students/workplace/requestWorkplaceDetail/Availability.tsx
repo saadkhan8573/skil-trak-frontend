@@ -46,7 +46,6 @@ export const Availability = ({
         }).then((res: any) => {
             if (res?.data) {
                 setModal(<WorkplaceCreatedModal onCancel={onCancelModal} />)
-                // setActive((active: number) => active + 1)
             }
             if (res?.error?.data) {
                 showErrorNotifications(res)

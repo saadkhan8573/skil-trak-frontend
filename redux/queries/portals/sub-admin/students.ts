@@ -12,7 +12,7 @@ import {
     UserStatus,
     WorkplaceTypes,
 } from '@types'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 const PREFIX = 'subadmin'
 export const studentsEndpoints = (

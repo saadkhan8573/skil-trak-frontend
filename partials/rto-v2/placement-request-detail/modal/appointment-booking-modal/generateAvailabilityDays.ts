@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 interface TimeSlot {
     time: string
     available: boolean
@@ -109,13 +111,8 @@ export const generateAvailabilityDays = (
     }
 
     /* =======================
-       WEEKLY (UNCHANGED)
+       WEEKLY (MODIFIED: NEXT 7 DAYS)
        ======================= */
-    const today = new Date()
-    const currentMonth = today.getMonth()
-    const currentYear = today.getFullYear()
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
-
     const dayMap: Record<string, number> = {
         sunday: 0,
         monday: 1,
@@ -126,15 +123,11 @@ export const generateAvailabilityDays = (
         saturday: 6,
     }
 
-    for (let day = today.getDate(); day <= daysInMonth; day++) {
-        const currentDate = new Date(currentYear, currentMonth, day)
-        const year = currentDate.getFullYear()
-        const monthStr = (currentDate.getMonth() + 1)
-            .toString()
-            .padStart(2, '0')
-        const dayStr = currentDate.getDate().toString().padStart(2, '0')
-        const formattedDate = `${year}-${monthStr}-${dayStr}`
+    // Iterate through the next 7 days (including today)
+    for (let i = 0; i < 7; i++) {
+        const currentDate = moment().add(i, 'days').toDate()
         const dayOfWeek = currentDate.getDay()
+        const formattedDate = moment(currentDate).format('YYYY-MM-DD')
 
         const dayName = Object.keys(dayMap).find(
             (key) => dayMap[key] === dayOfWeek
@@ -171,8 +164,8 @@ export const generateAvailabilityDays = (
             availableDays.push({
                 date: formattedDate,
                 dayName: dayNames[dayOfWeek],
-                dayNumber: day,
-                month: monthNames[currentMonth],
+                dayNumber: currentDate.getDate(),
+                month: monthNames[currentDate.getMonth()],
                 slots: timeSlots,
             })
         }

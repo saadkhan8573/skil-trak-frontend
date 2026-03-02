@@ -17,7 +17,11 @@ import { CoursesCell } from '@partials/rto/coordinators'
 import { RtoApi } from '@queries'
 import { useRouter } from 'next/router'
 import { UserRoles } from '@constants'
-import { AllowAllStudentsAccessModal, DeleteRtoCoordinatorModal, EditCoordinatorModal } from './modal'
+import {
+    AllowAllStudentsAccessModal,
+    DeleteRtoCoordinatorModal,
+    EditCoordinatorModal,
+} from './modal'
 import { Course, SubAdmin } from '@types'
 import { uniq } from 'lodash'
 
@@ -32,7 +36,6 @@ export const MyCoordinators = () => {
         skip: itemPerPage * page - itemPerPage,
         limit: itemPerPage,
     })
-
 
     const onCancelModal = () => setModal(null)
 
@@ -66,7 +69,7 @@ export const MyCoordinators = () => {
         {
             text: 'View',
             onClick: (coordinator: any) => {
-                router.push(`/portals/rto/coordinators/${coordinator?.id}`)
+                router.push(`/portals/rto/manage/team/${coordinator?.id}`)
             },
             Icon: '',
         },
@@ -80,13 +83,13 @@ export const MyCoordinators = () => {
         {
             ...(coordinator?.createdBy?.role === UserRoles.RTO
                 ? {
-                    text: 'Delete',
-                    onClick: (coordinator: any) => {
-                        onDeleteCoordinator(coordinator)
-                        //   removeCoordinator(coordinator?.user?.id)
-                    },
-                    Icon: '',
-                }
+                      text: 'Delete',
+                      onClick: (coordinator: any) => {
+                          onDeleteCoordinator(coordinator)
+                          //   removeCoordinator(coordinator?.user?.id)
+                      },
+                      Icon: '',
+                  }
                 : null),
         },
         {
@@ -108,22 +111,18 @@ export const MyCoordinators = () => {
                 } = row.original
                 return (
                     <Link
-                        href={`/portals/rto/coordinators/${row.original.id}`}
-                        className="flex items-center gap-x-2 relative">
-
+                        href={`/portals/rto/manage/team/${row.original.id}`}
+                        className="flex items-center gap-x-2 relative"
+                    >
                         <InitialAvatar name={name} imageUrl={avatar} />
                         <div>
-                            <Typography color={'black'}>
-                                {' '}
-                                {name}{' '}
-                            </Typography>
+                            <Typography color={'black'}> {name} </Typography>
                             <Typography variant={'muted'} color={'gray'}>
                                 {email}
                             </Typography>
                         </div>
-
                     </Link>
-                );
+                )
             },
         },
         {
@@ -142,13 +141,13 @@ export const MyCoordinators = () => {
                     <div className="flex flex-wrap gap-1">
                         {sectors && sectors.length > 0
                             ? sectors.map((sector: string) => (
-                                <Badge
-                                    key={sector}
-                                    variant="primaryNew"
-                                    size="xs"
-                                    text={sector}
-                                />
-                            ))
+                                  <Badge
+                                      key={sector}
+                                      variant="primaryNew"
+                                      size="xs"
+                                      text={sector}
+                                  />
+                              ))
                             : 'No sectors assigned'}
                     </div>
                 )

@@ -103,16 +103,18 @@ export const TicketDetailHeaderCard = ({
                             </Typography>
                             <TicketUser small ticket={ticket?.assignedTo} />
                         </div>
-                        <Button
-                            variant={isOpened ? 'error' : 'info'}
-                            text={isOpened ? 'Close Ticket' : 'Re Open'}
-                            onClick={() => {
-                                if (isOpened) {
-                                    onCloseClicked()
-                                }
-                            }}
-                            disabled={!checkCreatorOfTicket}
-                        />
+                        {isOpened && (
+                            <Button
+                                variant={isOpened ? 'error' : 'info'}
+                                text={isOpened ? 'Close Ticket' : 'Re Open'}
+                                onClick={() => {
+                                    if (isOpened) {
+                                        onCloseClicked()
+                                    }
+                                }}
+                                disabled={!checkCreatorOfTicket}
+                            />
+                        )}
                     </div>
                 </div>
             </div>

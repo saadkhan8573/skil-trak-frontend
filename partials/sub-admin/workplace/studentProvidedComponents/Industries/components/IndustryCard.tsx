@@ -8,7 +8,7 @@ import { useNotification } from '@hooks'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
-} from 'redux/queryTypes'
+} from '@redux/queryTypes'
 
 export const IndustryCard = ({
     industry,

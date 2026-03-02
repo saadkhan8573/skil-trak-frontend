@@ -14,11 +14,13 @@ interface Coordinates {
 interface UseTravelInfoProps {
     studentLocation: string[]
     industryLocation: string[]
+    modes?: ('driving' | 'walking' | 'transit')[]
 }
 
 export const useRouteInfo = ({
     studentLocation,
     industryLocation,
+    modes = ['driving', 'walking', 'transit'],
 }: UseTravelInfoProps) => {
     const [travelInfo, setTravelInfo] = useState<TravelInfo[]>([])
     const [directions, setDirections] = useState<any>(null)
@@ -32,7 +34,7 @@ export const useRouteInfo = ({
             latitude: +industryLocation?.[0],
             longitude: +industryLocation?.[1],
         }),
-        [industryLocation]
+        [JSON.stringify(industryLocation)]
     )
 
     const studentLocationCoordinates = useMemo(
@@ -40,11 +42,21 @@ export const useRouteInfo = ({
             latitude: +studentLocation?.[0],
             longitude: +studentLocation?.[1],
         }),
-        [studentLocation]
+        [JSON.stringify(studentLocation)]
     )
 
     const fetchDirections = useCallback(
         async (mode: 'driving' | 'walking' | 'transit') => {
+            if (
+                isNaN(studentLocationCoordinates.latitude) ||
+                isNaN(studentLocationCoordinates.longitude) ||
+                isNaN(industryLocationCoordinates.latitude) ||
+                isNaN(industryLocationCoordinates.longitude)
+            ) {
+                return
+            }
+            setIsLoading(true)
+            setError(null)
             try {
                 const profile = mode === 'transit' ? 'driving' : mode // Mapbox doesn't support transit routing
                 const response = await fetch(
@@ -90,19 +102,17 @@ export const useRouteInfo = ({
                 }
             } catch (error) {
                 console.error('Error fetching directions:', error)
+                setError('Failed to fetch directions')
+            } finally {
+                setIsLoading(false)
             }
         },
         [industryLocationCoordinates, studentLocationCoordinates]
     )
 
     useEffect(() => {
-        const travelModes: ('driving' | 'walking' | 'transit')[] = [
-            'driving',
-            'walking',
-            'transit',
-        ]
-        travelModes.forEach((mode) => fetchDirections(mode))
-    }, [fetchDirections])
+        modes.forEach((mode) => fetchDirections(mode))
+    }, [fetchDirections, JSON.stringify(modes)])
 
     return {
         travelInfo,

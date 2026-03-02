@@ -26,7 +26,7 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
-} from 'redux/queryTypes'
+} from '@redux/queryTypes'
 import {
     AssignToMe,
     Notes,
@@ -280,9 +280,9 @@ export const WorkplaceRequest = ({
                                                 role === UserRoles.ADMIN
                                                     ? `/portals/admin/industry/${appliedIndustry?.industry?.id}?tab=sectors`
                                                     : role ===
-                                                      UserRoles.SUBADMIN
-                                                    ? `/portals/sub-admin/users/industries/${appliedIndustry?.industry?.id}?tab=overview`
-                                                    : '#'
+                                                        UserRoles.SUBADMIN
+                                                      ? `/portals/sub-admin/users/industries/${appliedIndustry?.industry?.id}?tab=overview`
+                                                      : '#'
                                             }
                                             className="flex items-center gap-x-2 cursor-pointer bg-gray-100 py-1 px-2 rounded-md"
                                         >

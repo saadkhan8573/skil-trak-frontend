@@ -4,7 +4,6 @@ import { getUserCredentials } from '@utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React from 'react'
 
 export const StudentMyWorkplace = () => {
     const router = useRouter()

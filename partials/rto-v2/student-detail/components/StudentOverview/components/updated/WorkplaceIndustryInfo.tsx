@@ -10,11 +10,15 @@ import {
     Phone,
     Send,
     Shield,
+    Star,
     User,
 } from 'lucide-react'
 import { ResendApprovalEmailModal } from '../../modal/ResendApprovalEmailModal'
 import { ReactElement, useState } from 'react'
 import { ComposeEmailModal } from '@partials/rto-v2/student-detail/components'
+import { getUserCredentials } from '@utils'
+import { UserRoles } from '@constants'
+import { useRouter } from 'next/router'
 
 export const WorkplaceIndustryInfo = ({
     industry,
@@ -27,7 +31,12 @@ export const WorkplaceIndustryInfo = ({
 }) => {
     const [isResendModalOpen, setIsResendModalOpen] = useState(false)
     const [modal, setModal] = useState<ReactElement | null>(null)
+
+    const router = useRouter()
+
     const onCancelClicked = () => setModal(null)
+
+    const role = getUserCredentials()?.role
 
     const onComposeMailClicked = () => {
         setModal(
@@ -36,6 +45,21 @@ export const WorkplaceIndustryInfo = ({
                 onCancel={onCancelClicked}
             />
         )
+    }
+
+    const getIndustryLink = () => {
+        if (!industry?.id) return ''
+
+        switch (role) {
+            case UserRoles.ADMIN:
+                return `/portals/admin/industry/${industry.id}`
+            case UserRoles.SUBADMIN:
+                return `/portals/sub-admin/users/industries/${industry.id}`
+            case UserRoles.RTO:
+                return `/portals/rto/manage/industries/${industry.id}/detail`
+            default:
+                return ''
+        }
     }
 
     return (
@@ -89,25 +113,29 @@ export const WorkplaceIndustryInfo = ({
                                         }
                                     />
                                 )}
+                                {industry?.isPremium && (
+                                    <Badge variant="info" Icon={Star}>
+                                        Premium
+                                    </Badge>
+                                )}
                                 {latestWorkplaceApprovaleRequest?.status ===
                                     'pending' && (
-                                    <Button
+                                    <Badge
                                         variant="info"
                                         onClick={() =>
                                             setIsResendModalOpen(true)
                                         }
-                                        className="bg-blue-500 hover:bg-blue-600 text-white border-0 text-[10px] h-6 px-2"
+                                        Icon={Send}
                                     >
-                                        <Send className="w-2.5 h-2.5 mr-1" />
                                         Resend Email
-                                    </Button>
+                                    </Badge>
                                 )}
                             </div>
                         </div>
                     </div>
                     <Button
                         variant="secondary"
-                        className="hover:bg-slate-100 rounded-lg group/link h-7 w-7"
+                        onClick={() => router.push(getIndustryLink())}
                     >
                         <ExternalLink className="w-4 h-4 text-slate-400 group-hover/link:text-[#044866] group-hover/link:rotate-45 transition-all" />
                     </Button>
@@ -200,14 +228,10 @@ export const WorkplaceIndustryInfo = ({
                                 Email Address
                             </p>
                             <p className="text-xs font-semibold text-slate-900 truncate">
-                                {supervisor?.email || industry?.user?.email}
+                                {industry?.user?.email}
                             </p>
                         </div>
-                        <Button
-                            outline
-                            onClick={onComposeMailClicked}
-                            className="border-emerald-200 text-emerald-600 hover:bg-emerald-50 h-7 text-xs px-2"
-                        >
+                        <Button outline onClick={onComposeMailClicked}>
                             <Mail className="w-3 h-3 mr-0.5" />
                             Send
                         </Button>

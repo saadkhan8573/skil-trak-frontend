@@ -7,9 +7,7 @@ import {
     BackButton,
     Button,
     Card,
-    LoadingAnimation,
-    PageTitle,
-    Typography,
+    Typography
 } from '@components'
 import { ShowErrorNotifications } from '@components/ShowErrorNotifications'
 import { RtoLayoutV2 } from '@layouts'
@@ -39,9 +37,8 @@ import {
     useGetSubAdminStudentDetailQuery,
     useSubAdminCancelStudentWorkplaceRequestMutation,
 } from '@queries'
-import { checkStudentProfileCompletion, WorkplaceCurrentStatus } from '@utils'
+import { checkStudentProfileCompletion } from '@utils'
 import { ArrowLeft, CalendarCheck, CheckCircle2, User } from 'lucide-react'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
 
 type Props = {}
 
@@ -262,8 +259,8 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                                             active === 1
                                                 ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30'
                                                 : active > 1
-                                                ? 'bg-emerald-500 text-white'
-                                                : 'bg-slate-200'
+                                                  ? 'bg-emerald-500 text-white'
+                                                  : 'bg-slate-200'
                                         }`}
                                     >
                                         {active > 1 ? (
@@ -287,8 +284,8 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                                             active === 2
                                                 ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30'
                                                 : active > 2
-                                                ? 'bg-emerald-500 text-white'
-                                                : 'bg-slate-200'
+                                                  ? 'bg-emerald-500 text-white'
+                                                  : 'bg-slate-200'
                                         }`}
                                     >
                                         {active > 2 ? (

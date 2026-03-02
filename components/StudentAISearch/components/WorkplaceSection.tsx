@@ -18,7 +18,7 @@ import {
     ExternalLink,
     Plus,
 } from 'lucide-react'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 interface WorkplaceSectionProps {
     student: Student
@@ -41,10 +41,10 @@ export function WorkplaceSection({ student }: WorkplaceSectionProps) {
                     ...placement,
                     industries:
                         placement?.industries &&
-                            placement?.industries?.length > 0
+                        placement?.industries?.length > 0
                             ? placement?.industries.filter(
-                                (industry: any) => industry.applied === true
-                            )
+                                  (industry: any) => industry.applied === true
+                              )
                             : [],
                 }))
                 .filter((placement) => placement.industries.length > 0)
@@ -141,10 +141,11 @@ export function WorkplaceSection({ student }: WorkplaceSectionProps) {
                                 </h3>
                                 <Badge
                                     text={`${filteredWp?.length} 
-                            ${filteredWp?.length === 1
-                                            ? 'Workplace'
-                                            : 'Workplaces'
-                                        }`}
+                            ${
+                                filteredWp?.length === 1
+                                    ? 'Workplace'
+                                    : 'Workplaces'
+                            }`}
                                     variant="secondary"
                                     className="gap-1"
                                 ></Badge>
@@ -208,8 +209,9 @@ export function WorkplaceSection({ student }: WorkplaceSectionProps) {
                         )}
 
                         <div
-                            className={`grid gap-4 ${filteredWp?.length === 1 ? '' : 'lg:grid-cols-2'
-                                }`}
+                            className={`grid gap-4 ${
+                                filteredWp?.length === 1 ? '' : 'lg:grid-cols-2'
+                            }`}
                         >
                             {filteredWp?.map((workplace, index) => (
                                 <motion.div
@@ -217,8 +219,9 @@ export function WorkplaceSection({ student }: WorkplaceSectionProps) {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.6 + index * 0.1 }}
-                                    className={`rounded-2xl border-2 border-border bg-card shadow-lg transition-all hover:border-primaryNew/50 hover:shadow-xl ${filteredWp?.length === 1 ? 'p-8' : 'p-6'
-                                        }`}
+                                    className={`rounded-2xl border-2 border-border bg-card shadow-lg transition-all hover:border-primaryNew/50 hover:shadow-xl ${
+                                        filteredWp?.length === 1 ? 'p-8' : 'p-6'
+                                    }`}
                                     whileHover={{ y: -2 }}
                                 >
                                     {/* Header */}
@@ -235,35 +238,35 @@ export function WorkplaceSection({ student }: WorkplaceSectionProps) {
                                                 </h4>
                                                 {workplace?.status ===
                                                     'active' && (
-                                                        <Badge
-                                                            shape="pill"
-                                                            variant="info"
-                                                            className="gap-1 text-xs"
-                                                            Icon={CheckCircle2}
-                                                            text="Active"
-                                                        />
-                                                    )}
+                                                    <Badge
+                                                        shape="pill"
+                                                        variant="info"
+                                                        className="gap-1 text-xs"
+                                                        Icon={CheckCircle2}
+                                                        text="Active"
+                                                    />
+                                                )}
                                                 {workplace?.status ===
                                                     'pending' && (
-                                                        <Badge
-                                                            shape="pill"
-                                                            variant="secondary"
-                                                            className="gap-1 text-xs"
-                                                            Icon={Clock}
-                                                            text="Pending"
-                                                        />
-                                                    )}
+                                                    <Badge
+                                                        shape="pill"
+                                                        variant="secondary"
+                                                        className="gap-1 text-xs"
+                                                        Icon={Clock}
+                                                        text="Pending"
+                                                    />
+                                                )}
                                                 {workplace?.status ===
                                                     'completed' && (
-                                                        <Badge
-                                                            shape="pill"
-                                                            variant="info"
-                                                            outline
-                                                            className="gap-1 text-xs"
-                                                            Icon={CheckCircle2}
-                                                            text="Completed"
-                                                        />
-                                                    )}
+                                                    <Badge
+                                                        shape="pill"
+                                                        variant="info"
+                                                        outline
+                                                        className="gap-1 text-xs"
+                                                        Icon={CheckCircle2}
+                                                        text="Completed"
+                                                    />
+                                                )}
                                             </div>
                                             <p className="text-sm text-muted-foreground">
                                                 {
@@ -302,9 +305,9 @@ export function WorkplaceSection({ student }: WorkplaceSectionProps) {
                                     {/* Progress - if active */}
                                     {(workplace as any)?.status === 'active' &&
                                         (workplace as any)?.hoursCompleted !==
-                                        undefined &&
+                                            undefined &&
                                         (workplace as any)?.totalHours !==
-                                        undefined && (
+                                            undefined && (
                                             <>
                                                 <div className="mb-4 rounded-lg bg-primary/5 p-3">
                                                     <div className="mb-2 flex items-center justify-between text-sm">
@@ -332,7 +335,8 @@ export function WorkplaceSection({ student }: WorkplaceSectionProps) {
                                                                 width: 0,
                                                             }}
                                                             animate={{
-                                                                width: `${((
+                                                                width: `${
+                                                                    ((
                                                                         workplace as any
                                                                     )
                                                                         ?.hoursCompleted /
@@ -341,7 +345,7 @@ export function WorkplaceSection({ student }: WorkplaceSectionProps) {
                                                                         )
                                                                             ?.totalHours) *
                                                                     100
-                                                                    }%`,
+                                                                }%`,
                                                             }}
                                                             transition={{
                                                                 delay:

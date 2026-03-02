@@ -1,7 +1,6 @@
 import {
     ActionButton,
     Card,
-    CaseOfficerAssignedStudent,
     EmptyData,
     Table,
     TableAction,
@@ -13,20 +12,15 @@ import {
 import { ColumnDef } from '@tanstack/react-table'
 import { FaEdit, FaEye } from 'react-icons/fa'
 
-import { CreateStudentNote } from '@partials/common/Notes/forms'
-import { SectorCell, StudentCellInfo } from '@partials/rto/student/components'
-import { SubadminStudentIndustries } from '@partials/sub-admin/students'
-import { ChangeStudentStatusModal } from '@partials/sub-admin/students/modals'
-import { RtoApi, RtoV2Api } from '@queries'
+import { Badge } from '@components/ui/badge'
+import { StudentCellInfo } from '@partials/rto/student/components'
+import { RtoV2Api } from '@queries'
 import { Student } from '@types'
-import { studentsListWorkplace } from '@utils'
+import { BookOpen } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
-import { LuMessageSquare } from 'react-icons/lu'
 import { MdBlock } from 'react-icons/md'
 import { statusConfig } from '../components/placementHelpers'
-import { Badge } from '@components/ui/badge'
-import { BookOpen } from 'lucide-react'
 
 export const StudentProvidedWorkplaceTab = () => {
     const router = useRouter()
@@ -34,39 +28,15 @@ export const StudentProvidedWorkplaceTab = () => {
 
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
-    // RtoV2Api.PlacementRequests.useStudentPlacementRequestList()
+
     const { isLoading, data, isError, refetch } =
         RtoV2Api.PlacementRequests.useStudentPlacementRequestList({
             search: `studentProvidedWorkplace:${true}`,
             skip: itemPerPage * page - itemPerPage,
             limit: itemPerPage,
         })
-    const count = RtoApi.Students.useRtoResolveIssuesStudentsCount()
-    const onModalCancelClicked = () => setModal(null)
-    const onChangeStatus = (student: Student) => {
-        setModal(
-            <ChangeStudentStatusModal
-                student={student}
-                onCancel={onModalCancelClicked}
-            />
-        )
-    }
-    const onAddNote = (student: Student) => {
-        setModal(
-            <div
-                className={`bg-[#00000050]  w-[calc(100%-80%)]
-                     h-full flex items-center justify-center gap-x-2 fixed top-[4.4rem] right-0 z-40`}
-            >
-                <CreateStudentNote
-                    studentId={student?.id}
-                    onCancel={onModalCancelClicked}
-                    receiverId={student?.user?.id}
-                />
-            </div>
-        )
-    }
 
-    const tableActionOptions = (student: any) => [
+    const tableActionOptions = [
         {
             text: 'View',
             onClick: (student: Student) => {
@@ -75,35 +45,6 @@ export const StudentProvidedWorkplaceTab = () => {
                 )
             },
             Icon: FaEye,
-        },
-        // {
-        //     text: 'Edit',
-        //     onClick: (student: Student) =>
-        //         router.push(`/portals/rto/students/${student.id}/edit-student`),
-        //     Icon: FaEye,
-        // },
-        // {
-        //     text: student?.rtoCoordinator
-        //         ? 'Change Coordinator'
-        //         : 'Assign Coordinator',
-        //     onClick: (student: Student) => onAssignCoordinatorClicked(student),
-        //     Icon: FaUserPlus,
-        // },
-        // {
-        //     text: 'Block',
-        //     onClick: (student: Student) => onBlockClicked(student),
-        //     Icon: MdBlock,
-        //     color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
-        // },
-        {
-            text: 'Change Status',
-            onClick: (student: Student) => onChangeStatus(student),
-            Icon: FaEdit,
-        },
-        {
-            text: 'Add Note',
-            onClick: (student: Student) => onAddNote(student),
-            Icon: LuMessageSquare,
         },
     ]
 
@@ -119,7 +60,6 @@ export const StudentProvidedWorkplaceTab = () => {
             ),
             header: () => <span>Student</span>,
         },
-
 
         {
             accessorKey: 'industry',
@@ -204,17 +144,14 @@ export const StudentProvidedWorkplaceTab = () => {
         {
             accessorKey: 'action',
             header: () => <span>Action</span>,
-            cell: (info) => {
-                const tableActionOption = tableActionOptions(info.row.original)
-                return (
-                    <div className="flex gap-x-1 items-center">
-                        <TableAction
-                            options={tableActionOption}
-                            rowItem={info.row.original}
-                        />
-                    </div>
-                )
-            },
+            cell: (info) => (
+                <div className="flex gap-x-1 items-center">
+                    <TableAction
+                        options={tableActionOptions}
+                        rowItem={info.row.original}
+                    />
+                </div>
+            ),
         },
     ]
 
@@ -249,7 +186,7 @@ export const StudentProvidedWorkplaceTab = () => {
                             columns={columns}
                             data={data.data}
                             quickActions={quickActionsElements}
-                        // enableRowSelection
+                            // enableRowSelection
                         >
                             {({
                                 table,

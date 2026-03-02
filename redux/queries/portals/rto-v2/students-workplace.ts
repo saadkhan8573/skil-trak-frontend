@@ -1,7 +1,7 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
 import { IndustryInterviewAvailability } from '@types'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 const PREFIX = 'students/'
 export const studentsWorkplaceEndpoints = (

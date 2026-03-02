@@ -18,6 +18,7 @@ import {
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { useRouteInfo } from '../../../../student-detail/components/StudentOverview/hooks'
 
 function getIndustryProfileLink(role: string, industryId: number) {
     switch (role) {
@@ -53,14 +54,27 @@ export const EnhancedIndustryDetailsCard = ({
         workplace?.industries?.length > 0
             ? data
             : wpApprovalStatus?.length > 0
-                ? wpApprovalStatus?.[0]?.industry
-                : null
+              ? wpApprovalStatus?.[0]?.industry
+              : null
 
     const workplaceEligibilityIndustry =
         workplace?.currentStatus === WorkplaceCurrentStatus.IndustryEligibility
             ? data
             : null
     const industry = workplaceEligibilityIndustry || workplaceIndustry
+
+    const { travelInfo } = useRouteInfo({
+        studentLocation: student?.location?.split(',') || [],
+        industryLocation: industry?.location?.split(',') || [],
+        modes: ['driving'],
+    })
+
+    const drivingInfo = travelInfo.find((info) => info.mode === 'driving')
+    const calculatedDistanceValue = drivingInfo?.distance
+        ? parseFloat(drivingInfo.distance.replace(' km', ''))
+        : industry?.distance
+
+    const displayDistance = calculatedDistanceValue || 0
 
     const roundCustom = (value: number) => {
         const decimal = value % 1
@@ -107,7 +121,7 @@ export const EnhancedIndustryDetailsCard = ({
                                 </span>
                             </div>
                             <span className="text-[#044866] font-bold text-lg">
-                                {roundCustom(industry?.distance || 0)} km
+                                {roundCustom(displayDistance)} km
                             </span>
                         </div>
                         <Button
@@ -132,7 +146,7 @@ export const EnhancedIndustryDetailsCard = ({
                                     )}
                                     workplaceName={industry?.user?.name}
                                     showMap={
-                                        !industry?.industry?.location &&
+                                        !!industry?.location &&
                                         !!student?.location
                                     }
                                 />
@@ -209,7 +223,7 @@ export const EnhancedIndustryDetailsCard = ({
                                     Distance
                                 </p>
                                 <p className="text-slate-900 font-medium">
-                                    {roundCustom(industry?.distance || 0)} km
+                                    {roundCustom(displayDistance)} km
                                 </p>
                             </div>
                         </div>

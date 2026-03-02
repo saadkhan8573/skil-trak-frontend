@@ -12,7 +12,7 @@ import { AdminApi } from '@queries'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { AdminWorkplaceRequest } from './components'
-import { IWorkplaceIndustries } from 'redux/queryTypes'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 export const AllStudentProvidedWorkplace = () => {
     const router = useRouter()

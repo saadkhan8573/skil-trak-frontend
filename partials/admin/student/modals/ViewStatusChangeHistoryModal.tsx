@@ -1,6 +1,6 @@
 import { Modal, Typography } from '@components'
 import React from 'react'
-import { WorkplaceWorkIndustriesType } from 'redux/queryTypes'
+import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
 import moment from 'moment'
 
 export const ViewStatusChangeHistoryModal = ({

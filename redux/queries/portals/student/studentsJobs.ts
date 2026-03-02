@@ -1,6 +1,6 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
-import { StudentJobType, StudentJobsType } from 'redux/queryTypes'
+import { StudentJobType, StudentJobsType } from '@redux/queryTypes'
 
 const PREFIX = 'students'
 export const studentJobEndpoints = (

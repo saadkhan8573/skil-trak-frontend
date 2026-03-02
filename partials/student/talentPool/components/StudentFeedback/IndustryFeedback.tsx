@@ -1,8 +1,13 @@
-import { EmptyData, LoadingAnimation, StarRating, Typography } from '@components'
+import {
+    EmptyData,
+    LoadingAnimation,
+    StarRating,
+    Typography,
+} from '@components'
 import { WorkplaceQuestionCard } from '@partials/common'
 import { StudentFeedbackType } from '@partials/common/StudentProfileDetail/components/Workplace/enum'
 import { CommonApi } from '@queries'
-import { WorkplaceQuestionType } from 'redux/queryTypes'
+import { WorkplaceQuestionType } from '@redux/queryTypes'
 
 export const IndustryFeedback = () => {
     const feedback = CommonApi.Feedback.useStudentFeedbackList({

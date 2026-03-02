@@ -20,7 +20,7 @@ import { setSelectedWorkplace } from '@redux'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
-} from 'redux/queryTypes'
+} from '@redux/queryTypes'
 import { useStatusInfo } from '../hooks/useStatusInfo'
 import { getStatusCategory } from '@partials/rto-v2/student-detail/utils'
 
@@ -212,8 +212,8 @@ export const WorkplaceInfoDetails = ({
                                                     ? 'info'
                                                     : statusCategory ===
                                                         'pending'
-                                                        ? 'warning'
-                                                        : 'success'
+                                                      ? 'warning'
+                                                      : 'success'
                                             }
                                             text={statusCategory}
                                             Icon={StatusIcon}

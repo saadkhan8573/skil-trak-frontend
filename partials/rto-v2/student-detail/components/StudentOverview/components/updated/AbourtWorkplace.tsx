@@ -1,3 +1,4 @@
+import { NoData } from '@components'
 import { FileText } from 'lucide-react'
 import React from 'react'
 
@@ -15,19 +16,27 @@ export const AbourtWorkplace = ({ bio }: { bio: string }) => {
                         <FileText className="w-4 h-4 text-white" />
                     </div>
                     <div>
-                        <h4 className="font-bold text-slate-900">About the Workplace</h4>
-                        <p className="text-xs text-slate-600">Learn more about this verified partner</p>
+                        <h4 className="font-bold text-slate-900">
+                            About the Workplace
+                        </h4>
+                        <p className="text-xs text-slate-600">
+                            Learn more about this verified partner
+                        </p>
                     </div>
                 </div>
 
                 {/* Description Card */}
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200 p-3 shadow-lg hover:shadow-xl transition-all duration-300">
-                    <div
-                        className="text-xs text-slate-700 leading-relaxed space-y-1.5"
-                        dangerouslySetInnerHTML={{
-                            __html: bio || '',
-                        }}
-                    />
+                    {bio ? (
+                        <div
+                            className="text-xs text-slate-700 leading-relaxed space-y-1.5"
+                            dangerouslySetInnerHTML={{
+                                __html: bio || '',
+                            }}
+                        />
+                    ) : (
+                        <NoData text="No Bio Available" simple />
+                    )}
                 </div>
             </div>
         </div>

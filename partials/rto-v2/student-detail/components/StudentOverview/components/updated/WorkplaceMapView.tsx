@@ -3,6 +3,7 @@ import { WorkplaceMapBoxView } from '@partials/student'
 import { Industry, Student } from '@types'
 import { MapPin, Navigation, TrendingUp, X } from 'lucide-react'
 import React, { useState } from 'react'
+import { useRouteInfo } from '../../hooks'
 
 interface WorkplaceMapViewProps {
     industry: Industry
@@ -10,8 +11,27 @@ interface WorkplaceMapViewProps {
     distance: number
 }
 
-export const WorkplaceMapView = ({ industry, student, distance = 0 }: WorkplaceMapViewProps) => {
+export const WorkplaceMapView = ({
+    industry,
+    student,
+    distance = 0,
+}: WorkplaceMapViewProps) => {
     const [showMap, setShowMap] = useState(false)
+
+    const { travelInfo } = useRouteInfo({
+        studentLocation: student?.location?.split(',') || [],
+        industryLocation: industry?.location?.split(',') || [],
+        modes: ['driving'],
+    })
+
+    const drivingInfo = travelInfo.find((info) => info.mode === 'driving')
+    const calculatedDistanceValue = drivingInfo?.distance
+        ? parseFloat(drivingInfo.distance.replace(' km', ''))
+        : distance
+
+    const displayDistance = calculatedDistanceValue || 0
+    const drivingDuration =
+        drivingInfo?.duration || `${Math.round(displayDistance * 2.5)} min`
 
     return (
         <div className="relative group/distance overflow-hidden rounded-lg bg-linear-to-br from-blue-50 via-white to-blue-50 border border-blue-200 p-3 shadow-md hover:shadow-lg transition-all duration-500 shrink-0">
@@ -24,11 +44,13 @@ export const WorkplaceMapView = ({ industry, student, distance = 0 }: WorkplaceM
                     </div>
                     <div className="flex-1">
                         <div className="flex items-center justify-between">
-                            <p className="text-xs text-slate-500 mb-0.5">Distance from you</p>
+                            <p className="text-xs text-slate-500 mb-0.5">
+                                Distance from you
+                            </p>
                             {/* Small View Map Button */}
                             <Button
                                 onClick={() => setShowMap(!showMap)}
-                                variant={showMap ? "error" : "primary"}
+                                variant={showMap ? 'error' : 'primary'}
                             >
                                 {showMap ? (
                                     <X className="w-2.5 h-2.5 mr-0.5" />
@@ -40,9 +62,11 @@ export const WorkplaceMapView = ({ industry, student, distance = 0 }: WorkplaceM
                         </div>
                         <div className="flex items-baseline gap-1">
                             <span className="text-xl font-bold text-transparent bg-clip-text bg-linear-to-r from-[#044866] to-[#0D5468]">
-                                {distance || 0}
+                                {displayDistance}
                             </span>
-                            <span className="text-sm font-semibold text-slate-600">km</span>
+                            <span className="text-sm font-semibold text-slate-600">
+                                km
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -53,17 +77,28 @@ export const WorkplaceMapView = ({ industry, student, distance = 0 }: WorkplaceM
                             industryLocation={industry?.location?.split(',')}
                             studentLocation={student?.location?.split(',')}
                             workplaceName={industry?.user?.name}
-                            showMap={!!industry?.location && !!student?.location}
+                            showMap={
+                                !!industry?.location && !!student?.location
+                            }
                         />
                     </div>
                 )}
 
                 <div className="flex items-center justify-between">
-                    <Badge Icon={TrendingUp} className="bg-emerald-100 text-emerald-700 border-emerald-200 text-xs px-2 py-0.5">
-                        {distance < 5 && distance > 0 ? 'Very Close' : distance < 15 && distance > 0 ? 'Moderate' : 'Far'}
+                    <Badge
+                        Icon={TrendingUp}
+                        className="bg-emerald-100 text-emerald-700 border-emerald-200 text-xs px-2 py-0.5"
+                    >
+                        {displayDistance < 5 && displayDistance > 0
+                            ? 'Very Close'
+                            : displayDistance < 15 && displayDistance > 0
+                              ? 'Moderate'
+                              : !displayDistance
+                                ? 'Very Close'
+                                : 'Far'}
                     </Badge>
                     <span className="text-xs text-slate-500">
-                        ≈ {Math.round(distance * 2.5)} min drive
+                        ≈ {drivingDuration} drive
                     </span>
                 </div>
             </div>

@@ -25,7 +25,7 @@ export const notesEndpoints = (
         providesTags: ['Notes', 'AllCommunications'],
     }),
 
-    studentNotesCount: builder.query<{ count: number }, number>({
+    studentNotesCount: builder.query<number, number>({
         query: (id) => `${PREFIX}/student/${id}/notes-count`,
         providesTags: ['Notes', 'AllCommunications'],
     }),

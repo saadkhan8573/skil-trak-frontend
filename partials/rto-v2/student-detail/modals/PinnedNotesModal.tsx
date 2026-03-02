@@ -47,7 +47,7 @@ export const PinnedNotesModal = ({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="max-w-3xl! p-0 overflow-hidden border-none bg-white rounded-2xl shadow-2xl [&_[data-slot=dialog-close]]:text-white [&_[data-slot=dialog-close]]:opacity-100 [&_[data-slot=dialog-close]]:hover:opacity-80">
+            <DialogContent className="max-w-3xl! p-0 overflow-hidden border-none bg-white rounded-2xl shadow-2xl **:data-[slot=dialog-close]:text-white **:data-[slot=dialog-close]:opacity-100 **:data-[slot=dialog-close]:hover:opacity-80">
                 <DialogHeader className="bg-linear-to-r from-[#044866] to-[#0D5468] px-5 py-4 flex flex-row items-center justify-between space-y-0">
                     <div className="flex items-center gap-2.5">
                         <div className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">

@@ -59,7 +59,7 @@ export const ReadinessTableRow = ({ data }: { data: any }) => {
     return (
         <div
             className={cn(
-                'grid grid-cols-9 items-center px-4 py-4 border-b border-slate-100 transition-all',
+                'grid grid-cols-10 items-center px-4 py-4 border-b border-slate-100 transition-all',
                 getRowStyle(data?.status) // This handles bg, hover, and the left border
             )}
         >
@@ -83,6 +83,9 @@ export const ReadinessTableRow = ({ data }: { data: any }) => {
             </div>
             <div className="text-right text-xs text-slate-700 font-semibold">
                 {data?.industryCapacity ?? '___'}
+            </div>
+             <div className="text-right text-xs text-slate-900 font-bold">
+                {data?.radiusRemainingCapacity ?? '___'}
             </div>
 
             <div className="flex justify-end">

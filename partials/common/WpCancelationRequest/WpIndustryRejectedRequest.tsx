@@ -248,8 +248,8 @@ export const WpIndustryRejectedRequest = () => {
             />
             <div className="flex flex-col gap-y-4 mb-32 px-4">
                 <PageHeading
-                    title={'Workplace Cancellation Requests'}
-                    subtitle={'List of Workplace Cancellation Requests'}
+                    title={'Workplace Requests Rejected'}
+                    subtitle={'List of Workplace Requests Rejected'}
                 >
                     <div className="shrink-0">{filterAction}</div>
                 </PageHeading>
@@ -302,8 +302,10 @@ export const WpIndustryRejectedRequest = () => {
                     ) : (
                         !isError && (
                             <EmptyData
-                                title={'No Blocked Students!'}
-                                description={'You have not blocked Student yet'}
+                                title={'No rejected request!'}
+                                description={
+                                    'There is no industry rejected yet'
+                                }
                                 height={'50vh'}
                             />
                         )

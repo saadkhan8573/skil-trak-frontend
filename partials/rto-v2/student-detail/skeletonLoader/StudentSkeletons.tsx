@@ -470,3 +470,77 @@ export function PlacementRequirementsSkeleton() {
         </div>
     )
 }
+
+export function CourseProgressSkeleton() {
+    return (
+        <div className="bg-white/80 backdrop-blur-sm rounded-lg border border-slate-200/60 shadow-md p-1.5 animate-pulse">
+            <div className="flex items-center justify-between gap-2 mb-1">
+                <div className="flex items-center gap-1">
+                    <Skeleton className="w-5 h-5 rounded-md" />
+                    <div className="space-y-1">
+                        <Skeleton className="h-3 w-32" />
+                        <Skeleton className="h-2 w-48" />
+                    </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                    {/* Date Range Skeleton */}
+                    <div className="flex items-center gap-2 px-2 py-1 bg-slate-50/80 rounded-lg border border-slate-100">
+                        <div className="flex items-center gap-1">
+                            <Skeleton className="w-4 h-4 rounded" />
+                            <div className="space-y-1">
+                                <Skeleton className="h-2 w-8" />
+                                <Skeleton className="h-3 w-16" />
+                            </div>
+                        </div>
+                        <div className="w-px h-6 bg-slate-200"></div>
+                        <div className="flex items-center gap-1 text-right">
+                            <div className="space-y-1">
+                                <Skeleton className="h-2 w-8 ml-auto" />
+                                <Skeleton className="h-3 w-16 ml-auto" />
+                            </div>
+                            <Skeleton className="w-4 h-4 rounded" />
+                        </div>
+                    </div>
+
+                    {/* Edit Button Skeleton */}
+                    <Skeleton className="h-8 w-24 rounded-lg" />
+                </div>
+            </div>
+
+            {/* Main Progress Card Skeleton */}
+            <div className="bg-slate-50/50 rounded-lg p-1.5 border border-slate-100/50">
+                <div className="flex items-start justify-between mb-2">
+                    <div className="space-y-1.5">
+                        <Skeleton className="h-2.5 w-24" />
+                        <Skeleton className="h-3 w-32" />
+                    </div>
+                    <div className="text-right space-y-1">
+                        <Skeleton className="h-6 w-12 ml-auto" />
+                        <Skeleton className="h-2 w-10 ml-auto" />
+                    </div>
+                </div>
+
+                {/* Progress Bar Skeleton */}
+                <Skeleton className="h-1.5 w-full rounded-full mb-2" />
+
+                {/* Stats Row Skeleton */}
+                <div className="grid grid-cols-3 gap-1">
+                    {[1, 2, 3].map((i) => (
+                        <div
+                            key={i}
+                            className="bg-white/50 rounded-md p-1 border border-slate-100"
+                        >
+                            <div className="flex items-center gap-0.5 mb-1">
+                                <Skeleton className="w-3 h-3 rounded" />
+                                <Skeleton className="h-2 w-8" />
+                            </div>
+                            <Skeleton className="h-3.5 w-10 mb-0.5" />
+                            <Skeleton className="h-2 w-6" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    )
+}

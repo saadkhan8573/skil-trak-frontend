@@ -245,7 +245,7 @@ export const WpCancelationRequestSA = () => {
                     title={'Workplace Cancellation Requests'}
                     subtitle={'List of Workplace Cancellation Requests'}
                 >
-                    <div className="flex-shrink-0">{filterAction}</div>
+                    <div className="shrink-0">{filterAction}</div>
                 </PageHeading>
                 <Filter<WpCancelationReqFilter>
                     setFilter={setFilter}

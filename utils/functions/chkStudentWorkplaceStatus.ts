@@ -21,6 +21,9 @@ export enum WorkplaceCurrentStatus {
     NoResponse = 'noResponse',
     Rejected = 'rejected',
     Terminated = 'terminated',
+    RejectedByStudent = 'rejected-by-student',
+    RejectedByIndustry = 'rejected-by-industry',
+    RejectedByRto = 'rejected-by-rto',
 }
 
 export const WorkplaceStatusLabels: Record<WorkplaceCurrentStatus, string> = {
@@ -43,6 +46,9 @@ export const WorkplaceStatusLabels: Record<WorkplaceCurrentStatus, string> = {
     [WorkplaceCurrentStatus.NoResponse]: 'No Response',
     [WorkplaceCurrentStatus.Rejected]: 'Rejected',
     [WorkplaceCurrentStatus.Terminated]: 'Terminated',
+    [WorkplaceCurrentStatus.RejectedByStudent]: 'Rejected by Student',
+    [WorkplaceCurrentStatus.RejectedByIndustry]: 'Rejected by Industry',
+    [WorkplaceCurrentStatus.RejectedByRto]: 'Rejected by RTO',
 }
 
 export const checkWorkplaceStatus = (currentStatus: WorkplaceCurrentStatus) => {

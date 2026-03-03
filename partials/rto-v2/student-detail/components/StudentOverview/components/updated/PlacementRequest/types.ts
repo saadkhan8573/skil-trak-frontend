@@ -36,15 +36,20 @@ export const statusConfigs: Record<
         label: 'Completed',
         color: 'emerald',
     },
-    'rejected-by-student': {
+    [WorkplaceCurrentStatus.RejectedByStudent]: {
         icon: X,
         label: 'Rejected by Student',
         color: 'orange',
     },
-    'rejected-by-industry': {
+    [WorkplaceCurrentStatus.RejectedByIndustry]: {
         icon: X,
         label: 'Rejected by Industry',
         color: 'purple',
+    },
+    [WorkplaceCurrentStatus.RejectedByRto]: {
+        icon: X,
+        label: 'Rejected by RTO',
+        color: 'red',
     },
     [WorkplaceCurrentStatus.Rejected]: {
         icon: X,

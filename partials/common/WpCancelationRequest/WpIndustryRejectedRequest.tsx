@@ -26,9 +26,12 @@ import { StudentCellInfo } from '../../admin/student/components'
 import { CancelationRequestEnum } from './enum'
 import {
     ApproveRequestModal,
+    IndustryRejectedWpAcceptModal,
+    IndustryRejectedWpDeclineModal,
     RejectRequestModal,
     ViewWpRequestNoteModal,
 } from './modals'
+import { IndustryCellInfo } from '@partials/sub-admin/Industries'
 
 const filterKeys = [
     'name',
@@ -40,7 +43,7 @@ const filterKeys = [
     'coordinatorId',
 ]
 
-export const WpCancelationRequest = () => {
+export const WpIndustryRejectedRequest = () => {
     const router = useRouter()
     const [modal, setModal] = useState<ReactElement | null>(null)
     const [filterAction, setFilterAction] = useState(null)
@@ -54,7 +57,7 @@ export const WpCancelationRequest = () => {
     }, [router])
 
     const { isLoading, isFetching, data, isError } =
-        AdminApi.Workplace.wpCancelationRequestsList({
+        AdminApi.Workplace.useIndustryRejectedWpList({
             search: `${JSON.stringify(filter)
                 .replaceAll('{', '')
                 .replaceAll('}', '')
@@ -73,16 +76,16 @@ export const WpCancelationRequest = () => {
     }
     const onApproveRequestClicked = (wpRequest: any) => {
         setModal(
-            <ApproveRequestModal
-                wpRequest={wpRequest}
+            <IndustryRejectedWpAcceptModal
+                wpReq={wpRequest}
                 onCancel={onCancelClicked}
             />
         )
     }
     const onRejectRequestClicked = (wpRequest: any) => {
         setModal(
-            <RejectRequestModal
-                wpRequest={wpRequest}
+            <IndustryRejectedWpDeclineModal
+                wpReq={wpRequest}
                 onCancel={onCancelClicked}
             />
         )
@@ -93,37 +96,50 @@ export const WpCancelationRequest = () => {
             accessorKey: 'student',
             header: () => <span>Student</span>,
             cell: (info) => (
-                <StudentCellInfo
-                    student={info.row.original?.workplaceRequest?.student}
-                />
+                <StudentCellInfo student={info.row.original?.student} />
+            ),
+        },
+        {
+            accessorKey: 'industry',
+            header: () => <span>Industry</span>,
+            cell: (info) => (
+                <IndustryCellInfo industry={info?.row?.original?.industry} />
             ),
         },
         {
             accessorKey: 'cancelledBy',
             header: () => <span>Cancelled By</span>,
             cell: (info) => {
+                console.log('info.row.original', info?.row?.original)
                 return (
                     <a className="flex items-center gap-x-2">
                         <div className="shadow-inner-image rounded-full">
-                            {info.row.original?.requestedBy?.name && (
+                            {info.row.original?.industryRejectionUser?.name && (
                                 <InitialAvatar
-                                    name={info.row.original?.requestedBy?.name}
+                                    name={
+                                        info.row.original?.industryRejectionUser
+                                            ?.name
+                                    }
                                     imageUrl={
-                                        info.row.original?.requestedBy?.avatar
+                                        info.row.original?.industryRejectionUser
+                                            ?.avatar
                                     }
                                 />
                             )}
                         </div>
                         <div>
                             <p className={`font-semibold`}>
-                                {info.row.original?.requestedBy?.name}
+                                {info.row.original?.industryRejectionUser?.name}
                             </p>
                             <div className="font-medium text-xs text-gray-500">
                                 <p className="flex items-center gap-x-1">
                                     <span>
                                         <MdEmail />
                                     </span>
-                                    {info.row.original?.requestedBy?.email}
+                                    {
+                                        info.row.original?.industryRejectionUser
+                                            ?.email
+                                    }
                                 </p>
                             </div>
                         </div>
@@ -131,50 +147,50 @@ export const WpCancelationRequest = () => {
                 )
             },
         },
-        {
-            accessorKey: 'currentStatus',
-            header: () => (
-                <span className="whitespace-pre">Workplace Status</span>
-            ),
-            cell: (info) => (
-                <Badge
-                    variant="success"
-                    text={info.row.original?.workplaceRequest?.currentStatus}
-                />
-            ),
-        },
-        {
-            accessorKey: 'status',
-            header: () => (
-                <span className="whitespace-pre">Canelation Status</span>
-            ),
-            cell: (info) => (
-                <Badge
-                    variant={
-                        info.row.original?.status ===
-                        CancelationRequestEnum.Rejected
-                            ? 'error'
-                            : 'success'
-                    }
-                    text={info.row.original?.status}
-                />
-            ),
-        },
-        {
-            accessorKey: 'comment',
-            header: () => <span>Comment</span>,
-            cell: (info) => (
-                <ActionButton
-                    onClick={() => {
-                        onViewNoteClicked(info.row.original?.comment)
-                    }}
-                    variant="info"
-                    simple
-                >
-                    View Comment
-                </ActionButton>
-            ),
-        },
+        // {
+        //     accessorKey: 'currentStatus',
+        //     header: () => (
+        //         <span className="whitespace-pre">Workplace Status</span>
+        //     ),
+        //     cell: (info) => (
+        //         <Badge
+        //             variant="success"
+        //             text={info.row.original?.workplaceRequest?.currentStatus}
+        //         />
+        //     ),
+        // },
+        // {
+        //     accessorKey: 'status',
+        //     header: () => (
+        //         <span className="whitespace-pre">Canelation Status</span>
+        //     ),
+        //     cell: (info) => (
+        //         <Badge
+        //             variant={
+        //                 info.row.original?.status ===
+        //                 CancelationRequestEnum.Rejected
+        //                     ? 'error'
+        //                     : 'success'
+        //             }
+        //             text={info.row.original?.status}
+        //         />
+        //     ),
+        // },
+        // {
+        //     accessorKey: 'comment',
+        //     header: () => <span>Comment</span>,
+        //     cell: (info) => (
+        //         <ActionButton
+        //             onClick={() => {
+        //                 onViewNoteClicked(info.row.original?.comment)
+        //             }}
+        //             variant="info"
+        //             simple
+        //         >
+        //             View Comment
+        //         </ActionButton>
+        //     ),
+        // },
         {
             accessorKey: 'createdAt',
             header: () => <span>Created At</span>,
@@ -207,19 +223,11 @@ export const WpCancelationRequest = () => {
                     <Button
                         text={'Approve'}
                         variant="success"
-                        disabled={
-                            info.row.original?.status !==
-                            CancelationRequestEnum.Pending
-                        }
                         onClick={() => {
                             onApproveRequestClicked(info.row.original)
                         }}
                     />
                     <Button
-                        disabled={
-                            info.row.original?.status !==
-                            CancelationRequestEnum.Pending
-                        }
                         text={'Reject'}
                         variant="error"
                         onClick={() => {
@@ -240,8 +248,8 @@ export const WpCancelationRequest = () => {
             />
             <div className="flex flex-col gap-y-4 mb-32 px-4">
                 <PageHeading
-                    title={'Workplace Cancellation Requests'}
-                    subtitle={'List of Workplace Cancellation Requests'}
+                    title={'Workplace Requests Rejected'}
+                    subtitle={'List of Workplace Requests Rejected'}
                 >
                     <div className="shrink-0">{filterAction}</div>
                 </PageHeading>
@@ -294,8 +302,10 @@ export const WpCancelationRequest = () => {
                     ) : (
                         !isError && (
                             <EmptyData
-                                title={'No Blocked Students!'}
-                                description={'You have not blocked Student yet'}
+                                title={'No rejected request!'}
+                                description={
+                                    'There is no industry rejected yet'
+                                }
                                 height={'50vh'}
                             />
                         )

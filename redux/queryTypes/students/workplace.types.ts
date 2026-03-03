@@ -12,6 +12,12 @@ import {
 import { WorkplaceCurrentStatus } from '@utils'
 import { BaseResponse } from 'types/base.type'
 
+export interface WorkplaceProgress {
+    stage: string
+    completed: boolean
+    current: boolean
+}
+
 export interface WorkplaceQuestionType {
     id: number
     isActive: boolean
@@ -96,6 +102,15 @@ export interface Warning {
     type: string
 }
 
+export type RequestStatus = 'pending' | 'approved' | 'rejected'
+
+export interface CancelledRequestType extends BaseResponse {
+    id: number
+    comment: string
+    workplaceCurrentStatus: WorkplaceCurrentStatus
+    status: RequestStatus
+}
+
 export interface IWorkplaceIndustries {
     warnings?: Warning[]
     approvalStatus?: string
@@ -119,7 +134,7 @@ export interface IWorkplaceIndustries {
     prefferableLocation?: string
     status?: string
     updatedAt?: Date
-    cancelledRequests?: any
+    cancelledRequests?: CancelledRequestType[]
     interviewDate?: Date
     appointmentDate?: Date
     industries?: WorkplaceWorkIndustriesType[]

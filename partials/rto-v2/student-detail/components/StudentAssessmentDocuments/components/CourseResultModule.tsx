@@ -1,11 +1,24 @@
 import React, { useState } from 'react'
-import { AuthorizedUserComponent, Button, Typography, Card, Badge } from '@components'
+import {
+    AuthorizedUserComponent,
+    Button,
+    Typography,
+    Card,
+    Badge,
+} from '@components'
 import { UserRoles, Result } from '@constants'
 import { Course, Student } from '@types'
 import { SubmitFinalResult } from './SubmitFinalResult'
 import { FinalResult } from './FinalResult'
 import { motion, AnimatePresence } from 'framer-motion'
-import { GraduationCap, ClipboardCheck, History, Edit3, X, AlertCircle } from 'lucide-react'
+import {
+    GraduationCap,
+    ClipboardCheck,
+    History,
+    Edit3,
+    X,
+    AlertCircle,
+} from 'lucide-react'
 
 interface CourseResultModuleProps {
     student: Student
@@ -26,13 +39,18 @@ export const CourseResultModule: React.FC<CourseResultModuleProps> = ({
 }) => {
     const [editAssessment, setEditAssessment] = useState<boolean>(false)
 
+    console.log({ selectedCourse })
+
     if (!selectedCourse) return null
 
-    const showSubmitForm = (allCommentsAdded &&
-        result?.result !== Result.Competent &&
-        result?.isSubmitted) ||
+    const showSubmitForm =
+        (allCommentsAdded &&
+            result?.result !== Result.Competent &&
+            result?.isSubmitted) ||
         editAssessment ||
         subadmin?.isAssociatedWithRto
+
+    console.log({ showSubmitForm, allCommentsAdded })
 
     return (
         <motion.div
@@ -53,30 +71,58 @@ export const CourseResultModule: React.FC<CourseResultModuleProps> = ({
                                 <GraduationCap size={28} />
                             </div>
                             <div>
-                                <Typography variant="h4" className="font-bold text-slate-800">
+                                <Typography
+                                    variant="h4"
+                                    className="font-bold text-slate-800"
+                                >
                                     Assessment Outcome
                                 </Typography>
-                                <Typography variant="small" className="text-slate-500">
-                                    Final review and certification for <Badge text={selectedCourse.title} variant='info' />
+                                <Typography
+                                    variant="small"
+                                    className="text-slate-500"
+                                >
+                                    Final review and certification for{' '}
+                                    <Badge
+                                        text={selectedCourse.title}
+                                        variant="info"
+                                    />
                                 </Typography>
                             </div>
                         </div>
 
-                        <AuthorizedUserComponent excludeRoles={[UserRoles.OBSERVER]}>
-                            {result?.isAssessed && !subadmin?.isAssociatedWithRto && (
-                                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                                    <Button
-                                        text={editAssessment ? 'Cancel Edit' : 'Revise Last Assessment Result'}
-                                        onClick={() => setEditAssessment(!editAssessment)}
-                                        variant={editAssessment ? 'error' : 'primary'}
-                                        // className={`transition-all duration-300 ${editAssessment
-                                        //     ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100'
-                                        //     : 'border-indigo-200 text-indigo-600 hover:bg-indigo-50'
-                                        //     }`}
-                                        Icon={editAssessment ? X : Edit3}
-                                    />
-                                </motion.div>
-                            )}
+                        <AuthorizedUserComponent
+                            excludeRoles={[UserRoles.OBSERVER]}
+                        >
+                            {result?.isAssessed &&
+                                !subadmin?.isAssociatedWithRto && (
+                                    <motion.div
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                    >
+                                        <Button
+                                            text={
+                                                editAssessment
+                                                    ? 'Cancel Edit'
+                                                    : 'Revise Last Assessment Result'
+                                            }
+                                            onClick={() =>
+                                                setEditAssessment(
+                                                    !editAssessment
+                                                )
+                                            }
+                                            variant={
+                                                editAssessment
+                                                    ? 'error'
+                                                    : 'primary'
+                                            }
+                                            // className={`transition-all duration-300 ${editAssessment
+                                            //     ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100'
+                                            //     : 'border-indigo-200 text-indigo-600 hover:bg-indigo-50'
+                                            //     }`}
+                                            Icon={editAssessment ? X : Edit3}
+                                        />
+                                    </motion.div>
+                                )}
                         </AuthorizedUserComponent>
                     </div>
 
@@ -87,13 +133,24 @@ export const CourseResultModule: React.FC<CourseResultModuleProps> = ({
                         transition={{ delay: 0.2 }}
                         className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3"
                     >
-                        <AlertCircle size={20} className="text-amber-600 mt-0.5 shrink-0" />
+                        <AlertCircle
+                            size={20}
+                            className="text-amber-600 mt-0.5 shrink-0"
+                        />
                         <div>
-                            <Typography variant="small" className="text-amber-900 font-semibold">
+                            <Typography
+                                variant="small"
+                                className="text-amber-900 font-semibold"
+                            >
                                 Submission Limit
                             </Typography>
-                            <Typography variant="small" className="text-amber-700 mt-1">
-                                Students are allowed a maximum of 3 assessment submissions per course. Please ensure all feedback is comprehensive.
+                            <Typography
+                                variant="small"
+                                className="text-amber-700 mt-1"
+                            >
+                                Students are allowed a maximum of 3 assessment
+                                submissions per course. Please ensure all
+                                feedback is comprehensive.
                             </Typography>
                         </div>
                     </motion.div>
@@ -110,8 +167,13 @@ export const CourseResultModule: React.FC<CourseResultModuleProps> = ({
                                     className="bg-slate-50/50 rounded-xl p-1 border border-slate-100"
                                 >
                                     <div className="flex items-center gap-2 px-4 pt-4 text-slate-600">
-                                        <ClipboardCheck size={20} className="text-indigo-500" />
-                                        <span className="font-semibold uppercase tracking-wider text-xs">Submission Terminal</span>
+                                        <ClipboardCheck
+                                            size={20}
+                                            className="text-indigo-500"
+                                        />
+                                        <span className="font-semibold uppercase tracking-wider text-xs">
+                                            Submission Terminal
+                                        </span>
                                     </div>
                                     <SubmitFinalResult
                                         course={selectedCourse}
@@ -130,18 +192,26 @@ export const CourseResultModule: React.FC<CourseResultModuleProps> = ({
                                     className="mt-4"
                                 >
                                     <div className="flex items-center gap-2 px-2 mb-4 text-slate-600">
-                                        <History size={20} className="text-indigo-500" />
-                                        <span className="font-semibold uppercase tracking-wider text-xs">Decision History</span>
+                                        <History
+                                            size={20}
+                                            className="text-indigo-500"
+                                        />
+                                        <span className="font-semibold uppercase tracking-wider text-xs">
+                                            Decision History
+                                        </span>
                                     </div>
                                     <FinalResult
                                         folders={{
                                             ...getFolders,
                                             data:
-                                                getFolders?.data?.assessmentEvidence ||
+                                                getFolders?.data
+                                                    ?.assessmentEvidence ||
                                                 getFolders?.data,
                                         }}
                                         results={selectedCourse?.results}
-                                        courseName={String(selectedCourse?.title)}
+                                        courseName={String(
+                                            selectedCourse?.title
+                                        )}
                                     />
                                 </motion.div>
                             )}

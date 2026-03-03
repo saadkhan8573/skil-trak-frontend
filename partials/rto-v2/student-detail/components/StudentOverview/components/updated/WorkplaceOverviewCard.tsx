@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Activity, useState } from 'react'
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible'
 import { Card } from '@components'
 import { IWorkplaceIndustries } from '@redux/queryTypes'
@@ -10,6 +10,8 @@ import {
     WorkplaceBio,
     WorkplaceTypes,
 } from './index'
+import { checkJsxVisibility, getUserCredentials, WorkplaceCurrentStatus } from '@utils'
+import { WorkplaceCancellationBanner } from './WorkplaceCancellationBanner'
 
 interface WorkplaceOverviewCardProps {
     workplace: IWorkplaceIndustries
@@ -22,6 +24,8 @@ export const WorkplaceOverviewCard = ({
     index,
     setAddNewWorkplace,
 }: WorkplaceOverviewCardProps) => {
+    const role = getUserCredentials()?.role
+
     // Local state for toggling sections inside this specific card
     const [showWorkplaceTypes, setShowWorkplaceTypes] = useState(false)
     const [showPlacementRequirements, setShowPlacementRequirements] =
@@ -53,8 +57,16 @@ export const WorkplaceOverviewCard = ({
         }
     }
 
+    const activeInProgressStatuses = [
+        WorkplaceCurrentStatus.AppointmentBooked,
+        WorkplaceCurrentStatus.AwaitingAgreementSigned,
+        WorkplaceCurrentStatus.AgreementSigned,
+        WorkplaceCurrentStatus.PlacementStarted,
+        WorkplaceCurrentStatus.Completed,
+    ]
+
     return (
-        <Card className="space-y-4 border-2! border-gray-400!">
+        <Card className="space-y-4 border-2! border-gray-400! relative">
             <QuickActions
                 index={index}
                 showWorkplaceTypes={showWorkplaceTypes}
@@ -64,6 +76,7 @@ export const WorkplaceOverviewCard = ({
                 showHighlightedTasks={showHighlightedTasks}
                 setShowHighlightedTasks={toggleHighlightedTasks}
             />
+            <WorkplaceCancellationBanner workplace={workplace} role={role} />
             <Collapsible open={showHighlightedTasks}>
                 <CollapsibleContent>
                     <HighlightedTasks workplace={workplace} />
@@ -79,7 +92,13 @@ export const WorkplaceOverviewCard = ({
                     <PlacementRequirements workplaceId={workplace} />
                 </CollapsibleContent>
             </Collapsible>
-            <CourseProgress />
+            <Activity
+                mode={checkJsxVisibility(
+                    activeInProgressStatuses.includes(workplace.currentStatus)
+                )}
+            >
+                <CourseProgress />
+            </Activity>
             <WorkplaceBio
                 workplace={workplace}
                 onAddNew={() => setAddNewWorkplace(true)}

@@ -133,7 +133,24 @@ export const workplaceEndpoints = (
         }),
         providesTags: ['Workplaces'],
     }),
-
+    industryRejectedWpList: builder.query<
+        PaginatedResponse<any>,
+        PaginationWithSearch
+    >({
+        query: (params) => ({
+            url: `${PREFIX}/pending/rejection-list`,
+            params,
+        }),
+        providesTags: ['Workplaces'],
+    }),
+    changeStatusIndustryRejectedWpReq: builder.mutation<any, any>({
+        query: ({ id, params }) => ({
+            url: `students/workplace-requests/${id}/update/status`,
+            method: 'PATCH',
+            params,
+        }),
+        invalidatesTags: ['Workplaces'],
+    }),
     wpRejectionList: builder.query<PaginatedResponse<any>, PaginationValues>({
         query: (params) => ({
             url: `students/workplace-requests/list/workplace/rejected`,

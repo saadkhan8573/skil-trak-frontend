@@ -20,6 +20,25 @@ export const StudentOverViewUpdated = ({
     const terminalStatuses = [
         WorkplaceCurrentStatus.Completed,
         WorkplaceCurrentStatus.Cancelled,
+        WorkplaceCurrentStatus.Rejected,
+        WorkplaceCurrentStatus.RejectedByStudent,
+        WorkplaceCurrentStatus.RejectedByIndustry,
+        WorkplaceCurrentStatus.RejectedByRto,
+        WorkplaceCurrentStatus.NoResponse,
+        WorkplaceCurrentStatus.Terminated,
+    ]
+
+    // Active in-progress statuses — from request generated through to before agreement signed
+    const activeInProgressStatuses = [
+        WorkplaceCurrentStatus.Applied,
+        WorkplaceCurrentStatus.CaseOfficerAssigned,
+        WorkplaceCurrentStatus.Interview,
+        WorkplaceCurrentStatus.IndustryEligibility,
+        WorkplaceCurrentStatus.AwaitingWorkplaceResponse,
+        WorkplaceCurrentStatus.AwaitingStudentResponse,
+        WorkplaceCurrentStatus.AwaitingRtoResponse,
+        WorkplaceCurrentStatus.AppointmentBooked,
+        WorkplaceCurrentStatus.AwaitingAgreementSigned,
     ]
 
     const activeWorkplaces = useMemo(() => {
@@ -38,13 +57,20 @@ export const StudentOverViewUpdated = ({
         )
     }, [sortedWorkplaces])
 
+    // Show create button only when no workplace is currently in an active/in-progress state
+    const canCreateNewWorkplace = useMemo(() => {
+        return !sortedWorkplaces?.some((wp) =>
+            activeInProgressStatuses.includes(wp?.currentStatus)
+        )
+    }, [sortedWorkplaces])
+
     return (
         <div className="space-y-3">
             {isLoading ? (
                 <StudentOverviewSkeleton />
             ) : (
                 <>
-                    {true && (
+                    {canCreateNewWorkplace && !addNewWorkplace && (
                         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200/60 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-all">
                             <div className="flex items-center gap-3">
                                 <div className="p-2 bg-primaryNew/10 rounded-lg">

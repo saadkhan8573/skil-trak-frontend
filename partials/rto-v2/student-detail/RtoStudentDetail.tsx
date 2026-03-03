@@ -91,7 +91,7 @@ export const RtoStudentDetail = () => {
             component: () => <StudentOverview />,
         },
         {
-            value: 'overview',
+            value: 'overview-admin',
             label: 'Overview (Testing/ only admin visible)',
             icon: Book,
             component: () => <StudentOverviewTesting />,

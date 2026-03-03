@@ -12,6 +12,12 @@ import {
 import { WorkplaceCurrentStatus } from '@utils'
 import { BaseResponse } from 'types/base.type'
 
+export interface WorkplaceProgress {
+    stage: string
+    completed: boolean
+    current: boolean
+}
+
 export interface WorkplaceQuestionType {
     id: number
     isActive: boolean

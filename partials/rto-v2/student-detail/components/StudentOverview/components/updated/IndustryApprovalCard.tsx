@@ -8,6 +8,8 @@ import {
 import { useStatusInfo } from '../../hooks/useStatusInfo'
 import { WorkplaceApproveModal, WorkplaceRejectModal } from './modals'
 
+import { STATUS_CONTENT } from './statusMapping'
+
 interface IndustryApprovalCardProps {
     workplace: IWorkplaceIndustries
     workIndustry: WorkplaceWorkIndustriesType
@@ -35,6 +37,9 @@ export const IndustryApprovalCard = ({
     }))
 
     const approvalId = workplace?.latestPendingApproval?.id
+    const currentStatusContent = currentStep?.label
+        ? STATUS_CONTENT[currentStep.label]
+        : null
 
     return (
         <>
@@ -52,7 +57,8 @@ export const IndustryApprovalCard = ({
                                     Take action to progress placement
                                 </p>
                                 <p className="text-sm font-bold text-[#6B46C1] mb-2">
-                                    {currentStep?.label ||
+                                    {currentStatusContent?.title ||
+                                        currentStep?.label ||
                                         'Awaiting Industry Confirmation'}
                                 </p>
                             </div>
@@ -113,11 +119,8 @@ export const IndustryApprovalCard = ({
 
                     <div className="grow flex items-end">
                         <p className="text-xs text-slate-600 leading-relaxed">
-                            {currentStep?.label === 'Waiting for Industry'
-                                ? 'The workplace will review your placement request shortly'
-                                : currentStep?.label === 'Waiting for Student'
-                                  ? 'The student needs to accept the placement request'
-                                  : 'Follow the progress of your placement request'}
+                            {currentStatusContent?.description ||
+                                'Follow the progress of your placement request'}
                         </p>
                     </div>
                 </div>

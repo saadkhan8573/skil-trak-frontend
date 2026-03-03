@@ -100,7 +100,7 @@ export const StudentTimeline = () => {
     const statusInfo = getStudentStatus(expiryDate + '')
 
     return (
-        <div className="rounded-lg bg-gradient-to-r from-[#044866]/5 via-[#0D5468]/5 to-transparent border border-[#044866]/20 p-3.5 shadow-sm">
+        <div className="rounded-lg bg-linear-to-r from-[#044866]/5 via-[#0D5468]/5 to-transparent border border-[#044866]/20 p-3.5 shadow-sm space-y-2">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="relative">
@@ -197,7 +197,7 @@ export const StudentTimeline = () => {
                             )}
                         </p>
                     </div>
-                    <div className="flex-1 bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-md p-2 border border-emerald-200/50">
+                    <div className="flex-1 bg-linear-to-br from-emerald-50 to-emerald-100/50 rounded-md p-2 border border-emerald-200/50">
                         <p className="text-[10px] text-emerald-700 mb-0.5">
                             Extended To
                         </p>

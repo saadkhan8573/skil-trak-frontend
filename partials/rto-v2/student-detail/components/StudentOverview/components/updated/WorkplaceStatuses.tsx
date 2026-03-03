@@ -1,4 +1,5 @@
 import { Badge } from '@components'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import { WorkplaceStatusLabels } from '@utils'
 import {
     Circle,
@@ -12,47 +13,131 @@ import {
     Zap,
 } from 'lucide-react'
 import moment from 'moment'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
 } from '@redux/queryTypes'
 import { useStatusInfo } from '../../hooks/useStatusInfo'
+import { RtoV2Api } from '@queries'
+import { STATUS_CONTENT } from './statusMapping'
 
 interface WorkplaceStatusesProps {
     workplace: IWorkplaceIndustries
     workIndustry: WorkplaceWorkIndustriesType | undefined
-    industry: any // Pass industry to avoid re-calculation if possible
     onCancelRequested: () => void
 }
 
 export function WorkplaceStatuses({
     workplace,
     workIndustry,
-    industry,
     onCancelRequested,
 }: WorkplaceStatusesProps) {
-    const [hoveredStage, setHoveredStage] = useState<number | null>(null)
+    const wpId = workplace?.id
 
-    const { statuses, progressPercent } = useStatusInfo({
-        workplace: workplace as any,
-        workIndustry: workIndustry as WorkplaceWorkIndustriesType,
-    })
+    const progressData = RtoV2Api.PlacementRequests.useStudentPlacementProgress(
+        wpId!,
+        {
+            skip: !wpId,
+        }
+    )
 
-    // Map dynamic statuses to components
-    const workflowSteps = statuses.map((status) => ({
-        label: status.label,
-        status: status.completed
-            ? 'completed'
-            : status.current
-              ? 'current'
-              : 'pending',
-        icon: status.completed ? CheckCircle : status.current ? Clock : Circle,
-        date: status.date,
-    }))
+    const apiProgress = progressData?.data
 
-    const currentStage = statuses.findIndex((s) => s.current) + 1
-    const totalStages = statuses.length
+    const { statuses: localStatuses, progressPercent: localProgressPercent } =
+        useStatusInfo({
+            workplace: workplace as any,
+            workIndustry: workIndustry as WorkplaceWorkIndustriesType,
+        })
+
+    // Map dynamic statuses to components - Preferred API data, fallback to local logic
+    const workflowSteps = useMemo(() => {
+        if (apiProgress && apiProgress.length > 0) {
+            // Find the last completed stage to treat it as "current" (In Progress)
+            const lastCompletedIndex = [...apiProgress]
+                .reverse()
+                .findIndex((s: any) => s.completed)
+            const currentStageIndex =
+                lastCompletedIndex !== -1
+                    ? apiProgress.length - 1 - lastCompletedIndex
+                    : -1
+
+            return apiProgress.map((status: any, index: number) => {
+                let mappedStatus: 'completed' | 'current' | 'pending' =
+                    'pending'
+
+                if (currentStageIndex !== -1) {
+                    if (index < currentStageIndex) {
+                        mappedStatus = 'completed'
+                    } else if (index === currentStageIndex) {
+                        mappedStatus = 'current'
+                    } else {
+                        mappedStatus = 'pending'
+                    }
+                } else {
+                    // Fallback to original logic if none are completed
+                    mappedStatus = status.completed
+                        ? 'completed'
+                        : status.current
+                          ? 'current'
+                          : 'pending'
+                }
+
+                return {
+                    label: status.stage,
+                    status: mappedStatus,
+                    icon:
+                        mappedStatus === 'completed'
+                            ? CheckCircle
+                            : mappedStatus === 'current'
+                              ? Clock
+                              : Circle,
+                    date: status.date
+                        ? moment(status.date).format('DD/MM/YYYY')
+                        : null,
+                }
+            })
+        }
+
+        if (localStatuses && localStatuses.length > 0) {
+            return localStatuses.map((status: any) => ({
+                label: status.label,
+                status: status.completed
+                    ? 'completed'
+                    : status.current
+                      ? 'current'
+                      : 'pending',
+                icon: status.completed
+                    ? CheckCircle
+                    : status.current
+                      ? Clock
+                      : Circle,
+                date: status.date,
+            }))
+        }
+
+        return []
+    }, [apiProgress, localStatuses])
+
+    const totalStages = workflowSteps.length || 1
+    const currentStageIndex = workflowSteps.findIndex(
+        (s) => s.status === 'current'
+    )
+    const currentStage =
+        currentStageIndex !== -1
+            ? currentStageIndex + 1
+            : workflowSteps.filter((s) => s.status === 'completed').length
+
+    // Use API progress percent if available, otherwise fallback to local calculation
+    const currentProgressPercent = useMemo(() => {
+        if (apiProgress && apiProgress.length > 0) {
+            const completedCount = workflowSteps.filter(
+                (s: any) => s.status === 'completed'
+            ).length
+            return Math.round((completedCount / totalStages) * 100)
+        }
+        return localProgressPercent || 0
+    }, [apiProgress, localProgressPercent, workflowSteps, totalStages])
 
     const hasCancelledRequests = (workplace?.cancelledRequests?.length ?? 0) > 0
 
@@ -123,7 +208,7 @@ export function WorkplaceStatuses({
                 {/* Progress Line with Gradient and Animation */}
                 <div
                     className="absolute top-3 left-0 h-1 rounded-full transition-all duration-1000 ease-out shadow-lg overflow-hidden"
-                    style={{ width: `${progressPercent}%` }}
+                    style={{ width: `${currentProgressPercent}%` }}
                 >
                     <div className="absolute inset-0 bg-linear-to-r from-emerald-400 via-emerald-500 to-emerald-600"></div>
                     <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/40 to-transparent animate-pulse"></div>
@@ -135,94 +220,102 @@ export function WorkplaceStatuses({
                         const StageIcon = stage.icon
                         const isCompleted = stage.status === 'completed'
                         const isCurrent = stage.status === 'current'
-                        const isHovered = hoveredStage === index
 
                         return (
-                            <div
-                                key={index}
-                                className="flex flex-col items-center group/stage cursor-pointer"
-                                style={{ width: `${100 / 9}%` }}
-                                onMouseEnter={() => setHoveredStage(index)}
-                                onMouseLeave={() => setHoveredStage(null)}
-                            >
-                                {/* Stage Circle with Premium Effects */}
-                                <div
-                                    className={`relative w-6 h-6 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                                        isCompleted
-                                            ? 'bg-linear-to-br from-emerald-400 via-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/50 group-hover/stage:scale-110 group-hover/stage:rotate-6'
-                                            : isCurrent
-                                              ? 'bg-linear-to-br from-[#6B46C1] via-[#8B5CF6] to-[#A78BFA] text-white ring-2 ring-purple-200 shadow-xl shadow-purple-500/50 animate-pulse group-hover/stage:scale-110'
-                                              : 'bg-white text-slate-400 border border-slate-300 shadow-md group-hover/stage:scale-110 group-hover/stage:border-slate-400'
-                                    }`}
-                                >
-                                    <StageIcon
-                                        className={`transition-all duration-300 ${
-                                            isHovered ? 'w-6 h-6' : 'w-5 h-5'
-                                        }`}
-                                    />
+                            <Tooltip key={index}>
+                                <TooltipTrigger asChild>
+                                    <div
+                                        className="flex flex-col items-center group/stage cursor-pointer"
+                                        style={{
+                                            width: `${100 / totalStages}%`,
+                                        }}
+                                    >
+                                        {/* Stage Circle with Premium Effects */}
+                                        <div
+                                            className={`relative w-6 h-6 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                                                isCompleted
+                                                    ? 'bg-linear-to-br from-emerald-400 via-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/50 group-hover/stage:scale-110 group-hover/stage:rotate-6'
+                                                    : isCurrent
+                                                      ? 'bg-linear-to-br from-[#6B46C1] via-[#8B5CF6] to-[#A78BFA] text-white ring-2 ring-purple-200 shadow-xl shadow-purple-500/50 animate-pulse group-hover/stage:scale-110'
+                                                      : 'bg-white text-slate-400 border border-slate-300 shadow-md group-hover/stage:scale-110 group-hover/stage:border-slate-400'
+                                            }`}
+                                        >
+                                            <StageIcon className="transition-all duration-300 w-5 h-5 group-hover/stage:w-6 group-hover/stage:h-6" />
 
-                                    {/* Sparkle effect for completed */}
-                                    {isCompleted && (
-                                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-lg">
-                                            <Sparkles className="w-3 h-3 text-emerald-500" />
+                                            {/* Sparkle effect for completed */}
+                                            {isCompleted && (
+                                                <div className="absolute -top-1 -right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-lg">
+                                                    <Sparkles className="w-3 h-3 text-emerald-500" />
+                                                </div>
+                                            )}
+
+                                            {/* Pulse effect for current */}
+                                            {isCurrent && (
+                                                <>
+                                                    <div className="absolute inset-0 rounded-2xl bg-[#6B46C1] animate-ping opacity-20"></div>
+                                                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-linear-to-br from-[#F7A619] to-amber-500 rounded-full flex items-center justify-center shadow-lg animate-bounce">
+                                                        <Zap className="w-3 h-3 text-white" />
+                                                    </div>
+                                                </>
+                                            )}
                                         </div>
-                                    )}
 
-                                    {/* Pulse effect for current */}
-                                    {isCurrent && (
-                                        <>
-                                            <div className="absolute inset-0 rounded-2xl bg-[#6B46C1] animate-ping opacity-20"></div>
-                                            <div className="absolute -top-2 -right-2 w-6 h-6 bg-linear-to-br from-[#F7A619] to-amber-500 rounded-full flex items-center justify-center shadow-lg animate-bounce">
-                                                <Zap className="w-3 h-3 text-white" />
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
+                                        {/* Stage Label */}
+                                        <div className="mt-3 group-hover/stage:transform group-hover/stage:scale-105 transition-all duration-300 text-center">
+                                            <span
+                                                className={`text-xs font-medium block transition-all duration-300 ${
+                                                    isCompleted
+                                                        ? 'text-emerald-600'
+                                                        : isCurrent
+                                                          ? 'text-[#6B46C1]'
+                                                          : 'text-slate-400'
+                                                } group-hover/stage:text-slate-900`}
+                                            >
+                                                {stage.label}
+                                            </span>
 
-                                {/* Stage Label with Tooltip Effect */}
-                                <div
-                                    className={`mt-3 transition-all duration-300 ${
-                                        isHovered ? 'transform scale-110' : ''
-                                    }`}
-                                >
-                                    <span
-                                        className={`text-xs text-center font-medium block transition-all duration-300 ${
-                                            isCompleted
-                                                ? 'text-emerald-600'
-                                                : isCurrent
-                                                  ? 'text-[#6B46C1]'
-                                                  : 'text-slate-400'
-                                        } ${isHovered ? 'text-slate-900' : ''}`}
-                                    >
-                                        {stage.label}
-                                    </span>
-
-                                    {/* Date display */}
-                                    <span
-                                        className={`text-[10px] text-center block mt-0.5 transition-all duration-300 ${
-                                            isCompleted
-                                                ? 'text-emerald-500'
-                                                : isCurrent
-                                                  ? 'text-[#8B5CF6]'
-                                                  : 'text-slate-400'
-                                        }`}
-                                    >
-                                        {stage.date}
-                                    </span>
-
-                                    {/* Hover tooltip */}
-                                    {isHovered && (
-                                        <div className="absolute z-10 mt-2 px-3 py-2 bg-slate-900 text-white text-xs rounded-lg shadow-xl whitespace-nowrap animate-in fade-in slide-in-from-top-1 duration-200">
+                                            {/* Date display */}
+                                            {stage.date && (
+                                                <span
+                                                    className={`text-[10px] block mt-0.5 transition-all duration-300 ${
+                                                        isCompleted
+                                                            ? 'text-emerald-500'
+                                                            : isCurrent
+                                                              ? 'text-[#8B5CF6]'
+                                                              : 'text-slate-400'
+                                                    }`}
+                                                >
+                                                    {stage.date}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <div className="flex flex-col gap-1 max-w-64">
+                                        <p className="font-bold text-sm">
+                                            {STATUS_CONTENT[stage.label]
+                                                ?.title ||
+                                                (isCompleted
+                                                    ? '✓ Completed'
+                                                    : isCurrent
+                                                      ? '⚡ In Progress'
+                                                      : '○ Pending')}
+                                        </p>
+                                        <p className="text-xs opacity-90 leading-relaxed">
+                                            {STATUS_CONTENT[stage.label]
+                                                ?.description || stage.label}
+                                        </p>
+                                        <p className="text-[10px] italic mt-1 text-white/70">
                                             {isCompleted
-                                                ? '✓ Completed'
+                                                ? 'Status: Completed'
                                                 : isCurrent
-                                                  ? '⚡ In Progress'
-                                                  : '○ Pending'}
-                                            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
+                                                  ? 'Status: In Progress'
+                                                  : 'Status: Pending'}
+                                        </p>
+                                    </div>
+                                </TooltipContent>
+                            </Tooltip>
                         )
                     })}
                 </div>

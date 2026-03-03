@@ -13,6 +13,7 @@ import {
     WorkplaceTypes,
 } from '@types'
 import { IWorkplaceIndustries } from '@redux/queryTypes'
+import { workplaceQuestionsKeys } from '@partials/common'
 
 const PREFIX = 'subadmin'
 export const studentsEndpoints = (
@@ -438,7 +439,18 @@ export const studentsEndpoints = (
         query: (id) => `${PREFIX}/student/${id}/view-call/log`,
         providesTags: ['SubAdminStudents'],
     }),
-    getStudentPreferredCallTime: builder.query<any, number>({
+    getStudentPreferredCallTime: builder.query<
+        {
+            id: number
+            isActive: boolean
+            createdAt: string
+            updatedAt: string
+            question: string
+            answer: string
+            type: workplaceQuestionsKeys
+        }[],
+        number
+    >({
         query: (id) => `${PREFIX}/student/${id}/question/get`,
         providesTags: ['SubAdminStudents'],
     }),

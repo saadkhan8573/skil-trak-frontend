@@ -2,7 +2,7 @@ import { Button, Select, TextInput } from '@components'
 import { useNotification } from '@hooks'
 import { CommonApi } from '@queries'
 import { Student } from '@types'
-import { cn } from '@utils'
+import { cn, ellipsisText } from '@utils'
 import { CheckCircle2, Users, X } from 'lucide-react'
 import moment from 'moment'
 import { useEffect, useMemo, useState } from 'react'
@@ -157,7 +157,10 @@ export const BulkScheduleCallModal = ({
                                 >
                                     <div className="flex flex-col min-w-0">
                                         <span className="text-[11px] text-gray-400 font-bold uppercase tracking-tighter leading-none mb-0.5">
-                                            {student.studentId}
+                                            {ellipsisText(
+                                                student?.studentId,
+                                                8
+                                            )}
                                         </span>
                                         <span className="truncate max-w-45 leading-tight text-[13px]">
                                             {student.user?.name}{' '}

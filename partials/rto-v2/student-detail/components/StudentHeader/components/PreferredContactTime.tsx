@@ -20,9 +20,52 @@ export const PreferredContactTime = () => {
     const medicalCondition = getQuestionData(
         workplaceQuestionsKeys?.medicalCondition
     )
-    const preferredContactTime = getQuestionData(
-        workplaceQuestionsKeys?.preferredContactTime
-    )
+    const time = getQuestionData(workplaceQuestionsKeys?.preferredContactTime)
+
+    const formatCallTime = (time: string | undefined) => {
+        if (!time) return null
+
+        try {
+            const parsed = JSON.parse(time)
+            if (parsed && typeof parsed === 'object') {
+                const days = Array.isArray(parsed.days)
+                    ? parsed.days.join(', ')
+                    : ''
+                const slot = parsed.timeSlot || ''
+                if (days || slot) {
+                    const label = [days, slot].filter(Boolean).join(', ')
+                    return { label, badge: label }
+                }
+            }
+        } catch (e) {
+            // Not a JSON string, proceed with normal logic
+        }
+
+        // Handle different time formats
+        const timeStr = time.toLowerCase().trim()
+
+        // Map common patterns to user-friendly text
+        const timePatterns: Record<string, { label: string; badge: string }> = {
+            morning: { label: 'Morning (8AM - 12PM)', badge: 'Morning' },
+            afternoon: { label: 'Afternoon (12PM - 5PM)', badge: 'Afternoon' },
+            evening: { label: 'Evening (5PM - 8PM)', badge: 'Evening' },
+            anytime: { label: 'Anytime', badge: 'Flexible' },
+            weekday: { label: 'Weekdays Only', badge: 'Weekdays' },
+            weekend: { label: 'Weekends Only', badge: 'Weekends' },
+        }
+
+        // Check for pattern matches
+        for (const [key, value] of Object.entries(timePatterns)) {
+            if (timeStr.includes(key)) {
+                return value
+            }
+        }
+
+        // Default: return the original time
+        return { label: time, badge: time }
+    }
+
+    const preferredContactTime = formatCallTime(time?.answer)
 
     return (
         <div className="flex items-center gap-3">
@@ -54,7 +97,7 @@ export const PreferredContactTime = () => {
                             Contact Time
                         </p>
                         <p className="text-sm text-[#044866] font-medium">
-                            {preferredContactTime?.answer}
+                            {preferredContactTime?.badge}
                         </p>
                     </div>
                 </div>

@@ -23,7 +23,7 @@ import {
 } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
-import { getUserCredentials } from '@utils'
+import { ellipsisText, getUserCredentials } from '@utils'
 import { searchAiUrls } from '../urls'
 import moment from 'moment'
 
@@ -60,8 +60,8 @@ export function EnhancedStudentProfile({
 
     const onAddNote = () => {
         setModal(
-            <GlobalModal className="!overflow-hidden">
-                <div className="!h-[88vh] !overflow-auto !custom-scrollbar">
+            <GlobalModal className="overflow-hidden!">
+                <div className="h-[88vh]! overflow-auto! custom-scrollbar">
                     <CreateStudentNote
                         studentId={student?.id}
                         receiverId={Number(student?.user?.id)}
@@ -105,10 +105,10 @@ export function EnhancedStudentProfile({
                 <motion.div
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    className="relative overflow-hidden rounded-md border-2 border-border bg-gradient-to-br from-card via-card to-primaryNew/5 shadow-xl"
+                    className="relative overflow-hidden rounded-md border-2 border-border bg-linear-to-br from-card via-card to-primaryNew/5 shadow-xl"
                 >
                     {/* Background Pattern */}
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,_var(--primaryNew)_0%,_transparent_50%)] opacity-5" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,var(--primaryNew)_0%,transparent_50%)] opacity-5" />
 
                     <div className="relative px-6 py-4 space-y-4">
                         <div className="flex justify-between items-center w-full">
@@ -211,7 +211,12 @@ export function EnhancedStudentProfile({
                                     <div className="flex items-center gap-2 text-muted-foreground">
                                         <div className="flex items-center gap-2">
                                             <FileText className="h-4 w-4" />
-                                            <span>{student?.studentId}</span>
+                                            <span>
+                                                {ellipsisText(
+                                                    student?.studentId,
+                                                    8
+                                                )}
+                                            </span>
                                         </div>
 
                                         <Copy
@@ -220,7 +225,7 @@ export function EnhancedStudentProfile({
                                         />
                                     </div>
                                     <div className="flex items-center gap-2 text-muted-foreground">
-                                        <Building2 className="h-4 w-4 flex-shrink-0" />
+                                        <Building2 className="h-4 w-4 shrink-0" />
                                         <div className="flex flex-wrap gap-2">
                                             {student?.courses?.map((course) => (
                                                 <Badge

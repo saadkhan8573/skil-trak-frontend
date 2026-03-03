@@ -2,6 +2,7 @@ import { Badge } from '@components'
 import { Course } from '@types'
 import { Clock, GraduationCap, Sparkles, User } from 'lucide-react'
 import { PlacementActions } from './PlacementActions'
+import { ellipsisText } from '@utils'
 
 export const PlacementTopSection = ({ approval }: { approval: any }) => {
     const course: Course =
@@ -21,11 +22,14 @@ export const PlacementTopSection = ({ approval }: { approval: any }) => {
                                     {approval?.student?.user?.name}
                                 </h3>
                                 <Badge
-                                    text={approval?.student?.studentId}
+                                    text={ellipsisText(
+                                        approval?.student?.studentId,
+                                        8
+                                    )}
                                     shape="pill"
                                     outline
                                     variant="primaryNew"
-                                    className="!bg-transparent"
+                                    className="bg-transparent!"
                                 />
                                 {approval.daysWaiting >= 7 && (
                                     <Badge

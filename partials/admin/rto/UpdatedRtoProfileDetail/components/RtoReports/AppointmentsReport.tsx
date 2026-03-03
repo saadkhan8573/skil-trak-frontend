@@ -55,18 +55,6 @@ export const AppointmentsReport = ({
 
     const columns: ColumnDef<any>[] = [
         {
-            header: () => <span>Student ID</span>,
-            accessorKey: 'user',
-            cell: (info: any) => {
-                const student = studentData(info.row.original)
-                return (
-                    <Typography medium variant="small">
-                        {student?.student?.studentId}
-                    </Typography>
-                )
-            },
-        },
-        {
             header: () => <span>Name</span>,
             accessorKey: 'user.name',
             cell: (info: any) => {

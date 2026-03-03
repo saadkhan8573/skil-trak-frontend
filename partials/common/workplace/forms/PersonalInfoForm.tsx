@@ -69,13 +69,9 @@ export const PersonalInfoForm = ({
                 value: yup.string().required(),
             })
             .nullable()
-            .test(
-                'course-required',
-                'Course is Required',
-                (course: any) => {
-                    return !!course?.value
-                }
-            ),
+            .test('course-required', 'Course is Required', (course: any) => {
+                return !!course?.value
+            }),
         ...requiredQuestionsValidation(),
         // preferableLocation: yup
         //     .string()
@@ -92,8 +88,6 @@ export const PersonalInfoForm = ({
             ...questionsDefaultValues(personalInfoData?.questions),
         },
     })
-
-    console.log({ formMethods })
 
     const onHandleSubmit = (values: any) => {
         // onSubmit(values)

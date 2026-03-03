@@ -222,7 +222,7 @@ const DepartmentStudent: NextPageWithLayout = () => {
                                     }}
                                 />
                             </div> */}
-                            <div className="flex-shrink-0">{filterAction}</div>
+                            <div className="shrink-0">{filterAction}</div>
                         </div>
                         <Filter<StudentsFilterType>
                             setFilter={(f: StudentsFilterType) => {

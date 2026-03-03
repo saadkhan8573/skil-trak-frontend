@@ -17,6 +17,7 @@ import { FilterReport } from '../../FilterReport'
 import { ViewFullListReport } from '../../ViewFullListReport'
 import { useRouter } from 'next/router'
 import { SubAdminReports } from 'types/sub-admin-reports.type'
+import { ellipsisText } from '@utils'
 
 type Props = {
     startDate: Date
@@ -58,7 +59,13 @@ export const CancelledWorkplaceReport = ({
                         />
                     )}
                     <div className="flex flex-col">
-                        <span>{info?.row?.original?.studentId}</span>
+                        <span>
+                            {' '}
+                            {ellipsisText(
+                                info?.row?.original?.student?.studentId,
+                                8
+                            )}
+                        </span>
                         <span>{info.row.original?.user?.name}</span>
                     </div>
                 </a>

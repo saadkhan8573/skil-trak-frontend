@@ -1,4 +1,5 @@
 import { Button, ButtonVariantOptions } from '@components'
+import { ellipsisText } from '@utils'
 import { useRouter } from 'next/router'
 import React from 'react'
 
@@ -36,7 +37,9 @@ export const CreatedStudentsList = ({
                             {importedStudentsResult?.created.map(
                                 (student: any, i: number) => (
                                     <tr key={i}>
-                                        <td>{student.studentId}</td>
+                                        <td>
+                                            {ellipsisText(student.studentId, 8)}
+                                        </td>
                                         <td>{student.user.name}</td>
                                         <td>{student.user.email}</td>
                                     </tr>

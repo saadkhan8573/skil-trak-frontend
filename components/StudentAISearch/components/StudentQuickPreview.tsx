@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight, BookOpen, Hash, Mail } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { searchAiUrls } from '../urls'
-import { getUserCredentials } from '@utils'
+import { ellipsisText, getUserCredentials } from '@utils'
 
 interface StudentQuickPreviewProps {
     link?: string
@@ -27,7 +27,7 @@ export function StudentQuickPreview({ student }: StudentQuickPreviewProps) {
             className="group relative overflow-hidden rounded-md border-2 border-border bg-card shadow-lg transition-all hover:border-primaryNew hover:shadow-xl"
         >
             {/* Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primaryNew/5 via-transparent to-primaryNew/5 opacity-0 transition-opacity group-hover:opacity-100" />
+            <div className="absolute inset-0 bg-linear-to-br from-primaryNew/5 via-transparent to-primaryNew/5 opacity-0 transition-opacity group-hover:opacity-100" />
 
             <div className="relative p-6">
                 {/* Header */}
@@ -40,9 +40,9 @@ export function StudentQuickPreview({ student }: StudentQuickPreviewProps) {
                         />
 
                         <div>
-                            <h3 className="text-xl">{student?.user?.name} {
-                                student?.familyName
-                            }</h3>
+                            <h3 className="text-xl">
+                                {student?.user?.name} {student?.familyName}
+                            </h3>
                             {student?.studentStatus ? (
                                 <Badge
                                     className="mt-1"
@@ -59,7 +59,7 @@ export function StudentQuickPreview({ student }: StudentQuickPreviewProps) {
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Hash className="h-4 w-4" />
                         <span className="text-foreground">
-                            {student.studentId}
+                            {ellipsisText(student?.studentId, 8)}
                         </span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">

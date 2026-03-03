@@ -10,6 +10,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { RtoProfileTable } from './components'
+import { ellipsisText } from '@utils'
 
 export const NonContactableStudentReport = ({
     user,
@@ -49,7 +50,7 @@ export const NonContactableStudentReport = ({
             accessorKey: 'user',
             cell: (info: any) => (
                 <Typography medium variant="small">
-                    {info?.row?.original?.studentId}
+                    {ellipsisText(info?.row?.original?.studentId, 8)}
                 </Typography>
             ),
         },

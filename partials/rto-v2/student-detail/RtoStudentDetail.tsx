@@ -7,6 +7,7 @@ import {
     StudentHeader,
     StudentInfoMessage,
     StudentOverview,
+    StudentOverviewTesting,
     Tickets,
 } from './components'
 
@@ -40,11 +41,15 @@ import {
     StudentProfileHeaderSkeleton,
     StudentTopBarSkeleton,
 } from './skeletonLoader'
+import { getUserCredentials } from '@utils'
+import { UserRoles } from '@constants'
 
 export const RtoStudentDetail = () => {
     const router = useRouter()
 
     const dispatch = useDispatch()
+
+    const role = getUserCredentials()?.role
 
     const studentId = Number(router.query?.id)
     const profile = useGetSubAdminStudentDetailQuery(studentId, {
@@ -84,6 +89,13 @@ export const RtoStudentDetail = () => {
             //     </div>
             // ),
             component: () => <StudentOverview />,
+        },
+        {
+            value: 'overview',
+            label: 'Overview (Testing)',
+            icon: Book,
+            component: () => <StudentOverviewTesting />,
+            hidden: role !== UserRoles.ADMIN,
         },
         {
             value: 'workplace',

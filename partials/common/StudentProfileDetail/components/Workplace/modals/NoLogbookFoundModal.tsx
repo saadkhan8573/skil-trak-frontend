@@ -1,8 +1,6 @@
-import { Button, GlobalModal, Typography } from '@components'
+import { GlobalModal, Typography } from '@components'
 import { MdCancel } from 'react-icons/md'
-import { PiWarningOctagonThin } from 'react-icons/pi'
 
-import React from 'react'
 import Image from 'next/image'
 
 export const NoLogbookFoundModal = ({
@@ -15,7 +13,7 @@ export const NoLogbookFoundModal = ({
     onCancel: () => void
 }) => {
     return (
-        <GlobalModal className="!max-w-5xl !w-full">
+        <GlobalModal className="max-w-5xl! w-full!">
             <div className="w-full px-7 sm:px-16 md:px-32 xl:px-44 relative flex flex-col gap-y-5 py-10">
                 <MdCancel
                     onClick={onCancel}

@@ -145,7 +145,8 @@ export const StudentQuickSummaryCard = ({
 
                             <p className="text-slate-500 text-sm mt-0.5 flex items-center gap-1.5">
                                 <span className="w-1 h-1 rounded-full bg-slate-400"></span>
-                                {studentDetails?.studentId ?? '____'}
+                                {ellipsisText(studentDetails?.studentId, 8) ??
+                                    '____'}
                             </p>
                         </div>
                     </div>

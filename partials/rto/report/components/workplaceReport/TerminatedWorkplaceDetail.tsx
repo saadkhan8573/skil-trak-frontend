@@ -15,7 +15,7 @@ import React, { useState } from 'react'
 import { FilterReport } from '../../FilterReport'
 import { ViewFullListReport } from '../../ViewFullListReport'
 import { Course, ReportOptionsEnum } from '@types'
-import { getUserCredentials } from '@utils'
+import { ellipsisText, getUserCredentials } from '@utils'
 import { UserRoles } from '@constants'
 
 type Props = {
@@ -48,7 +48,9 @@ export const TerminatedWorkplaceDetail = ({ rtoUser }: Props) => {
                         />
                     )}
                     <div className="flex flex-col">
-                        <span>{info.row.original?.studentId}</span>
+                        <span>
+                            {ellipsisText(info.row.original?.studentId, 8)}
+                        </span>
                         <span>{info.row.original?.user?.name}</span>
                     </div>
                 </a>

@@ -25,6 +25,7 @@ import { paymentStatusData } from './InvoiceStatusData'
 import { FaEye } from 'react-icons/fa'
 import { BiSolidPencil } from 'react-icons/bi'
 import Link from 'next/link'
+import { ellipsisText } from '@utils'
 
 export const InvoiceDataListing = ({
     startDate,
@@ -97,7 +98,7 @@ export const InvoiceDataListing = ({
                     className="flex flex-col"
                 >
                     <Typography variant="small" color="text-gray-500" normal>
-                        {info.row?.original?.studentId}
+                        {ellipsisText(info.row?.original?.studentId, 8)}
                     </Typography>
                     <Typography variant="label" normal cursorPointer>
                         {info.row?.original?.studentName}

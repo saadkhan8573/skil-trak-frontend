@@ -1,3 +1,4 @@
+import { ellipsisText } from '@utils'
 import React from 'react'
 
 export const CardTable = ({
@@ -44,7 +45,7 @@ export const CardTable = ({
                                     className="border-b hover:bg-gray-50"
                                 >
                                     <td className="px-4 py-2">
-                                        {item.studentId}
+                                        {ellipsisText(item.studentId, 8)}
                                     </td>
                                     <td className="px-4 py-2">{`${
                                         item.givenName || ''

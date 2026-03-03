@@ -120,27 +120,28 @@ export const WorkplaceIndustryInfo = ({
                                         } from student`}
                                     />
                                 )}
-                                {latestWorkplaceApprovaleRequest && (
-                                    <Badge
-                                        variant={
-                                            latestWorkplaceApprovaleRequest.rtoApprovalStatus ===
-                                            'approved'
-                                                ? 'success'
-                                                : latestWorkplaceApprovaleRequest.rtoApprovalStatus ===
-                                                    'rejected'
-                                                  ? 'error'
-                                                  : 'warning'
-                                        }
-                                        text={`${
-                                            latestWorkplaceApprovaleRequest?.rtoApprovalStatus
-                                                ?.charAt(0)
-                                                ?.toUpperCase() +
-                                            latestWorkplaceApprovaleRequest?.rtoApprovalStatus?.slice(
-                                                1
-                                            )
-                                        } from RTO`}
-                                    />
-                                )}
+                                {latestWorkplaceApprovaleRequest &&
+                                    latestWorkplaceApprovaleRequest.rtoApprovalStatus && (
+                                        <Badge
+                                            variant={
+                                                latestWorkplaceApprovaleRequest.rtoApprovalStatus ===
+                                                'approved'
+                                                    ? 'success'
+                                                    : latestWorkplaceApprovaleRequest.rtoApprovalStatus ===
+                                                        'rejected'
+                                                      ? 'error'
+                                                      : 'warning'
+                                            }
+                                            text={`${
+                                                latestWorkplaceApprovaleRequest?.rtoApprovalStatus
+                                                    ?.charAt(0)
+                                                    ?.toUpperCase() +
+                                                latestWorkplaceApprovaleRequest?.rtoApprovalStatus?.slice(
+                                                    1
+                                                )
+                                            } from RTO`}
+                                        />
+                                    )}
 
                                 {latestWorkplaceApprovaleRequest?.status ===
                                     'pending' && (
@@ -160,9 +161,9 @@ export const WorkplaceIndustryInfo = ({
                     <Button
                         variant="secondary"
                         onClick={() => router.push(getIndustryLink())}
-                    >
-                        <ExternalLink className="w-4 h-4 text-slate-400 group-hover/link:text-[#044866] group-hover/link:rotate-45 transition-all" />
-                    </Button>
+                        Icon={ExternalLink}
+                        mini
+                    />
                 </div>
 
                 {/* Quick Info Grid */}

@@ -89,31 +89,6 @@ export const IndustryApprovalCard = ({
                                     </Button>
                                 </>
                             )}
-
-                            {workflowSteps.find(
-                                (s) => s.label === 'Waiting for Student'
-                            )?.status === 'current' && (
-                                <>
-                                    <Button
-                                        onClick={() =>
-                                            setShowApproveModal(true)
-                                        }
-                                        className="h-8 px-3 text-xs bg-linear-to-r from-[#6B46C1] to-[#8B5CF6] hover:from-[#8B5CF6] hover:to-[#A78BFA] text-white shadow-md hover:shadow-lg transition-all"
-                                    >
-                                        <CheckCircle className="w-3.5 h-3.5 mr-1" />
-                                        Accept
-                                    </Button>
-                                    <Button
-                                        variant="error"
-                                        outline
-                                        onClick={() => setShowRejectModal(true)}
-                                        className="h-8 px-3 text-xs border-orange-200 text-orange-700 hover:bg-orange-50 hover:border-orange-300"
-                                    >
-                                        <X className="w-3.5 h-3.5 mr-1" />
-                                        Reject
-                                    </Button>
-                                </>
-                            )}
                         </div>
                     </div>
 

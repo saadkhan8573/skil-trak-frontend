@@ -22,21 +22,6 @@ export const TodoStudents = () => {
 
     const columns: TableColumn<any>[] = [
         {
-            key: 'studentId',
-            header: 'Student ID',
-            width: '140px',
-            className: 'font-medium',
-            render: (value, row) => (
-                <Link
-                    href={`/portals/sub-admin/students/${row?.student?.id}/detail`}
-                >
-                    <Typography variant="label" cursorPointer>
-                        {row?.student?.studentId}
-                    </Typography>
-                </Link>
-            ),
-        },
-        {
             key: 'student.user.name',
             header: 'Name',
             width: '200px',

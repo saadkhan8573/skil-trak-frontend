@@ -42,7 +42,7 @@ export const LogbookNotReleasedModal = ({
         <>
             {documentsViewModal}
             <ShowErrorNotifications result={releaseLogbookResult} />
-            <GlobalModal className="!max-w-5xl !w-full">
+            <GlobalModal className="max-w-5xl! w-full!">
                 <div className="w-full px-7 sm:px-16 md:px-32 xl:px-44 relative flex flex-col gap-y-5 py-10">
                     <MdCancel
                         onClick={onCancel}

@@ -45,15 +45,6 @@ export const PlacementStartedReport = ({
 
     const columns: ColumnDef<any>[] = [
         {
-            header: () => <span>Student ID</span>,
-            accessorKey: 'user',
-            cell: (info: any) => (
-                <Typography medium variant="small">
-                    {info?.row?.original?.studentId}
-                </Typography>
-            ),
-        },
-        {
             header: () => <span>Name</span>,
             accessorKey: 'user.name',
             cell: (info: any) => (

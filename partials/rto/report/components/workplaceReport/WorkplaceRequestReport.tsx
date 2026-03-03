@@ -19,6 +19,7 @@ import { Course, ReportOptionsEnum } from '@types'
 import { useRouter } from 'next/router'
 import { UserRoles } from '@constants'
 import { Waypoint } from 'react-waypoint'
+import { ellipsisText } from '@utils'
 type Props = {
     startDate: Date
     setStartDate: (startDate: Date) => void
@@ -67,7 +68,9 @@ export const WorkplaceRequestReport = ({
                         />
                     )}
                     <div className="flex flex-col">
-                        <span>{info.row.original?.studentId}</span>
+                        <span>
+                            {ellipsisText(info.row.original?.studentId, 8)}
+                        </span>
                         <span>{info.row.original?.user?.name}</span>
                     </div>
                 </a>

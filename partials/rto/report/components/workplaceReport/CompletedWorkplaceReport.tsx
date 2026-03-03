@@ -1,21 +1,20 @@
 import {
     ActionButton,
     AuthorizedUserComponent,
-    EmptyData,
     InitialAvatar,
     LoadingAnimation,
     NoData,
     Table,
     TechnicalError,
-    Typography,
+    Typography
 } from '@components'
+import { UserRoles } from '@constants'
 import { RtoApi } from '@queries'
 import { ColumnDef } from '@tanstack/react-table'
 import { ReportOptionsEnum } from '@types'
+import { ellipsisText } from '@utils'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { FilterReport } from '../../FilterReport'
-import { UserRoles } from '@constants'
 import { Waypoint } from 'react-waypoint'
 type Props = {
     startDate: Date
@@ -65,7 +64,10 @@ export const CompletedWorkplaceReport = ({
                         />
                         <div className="flex flex-col">
                             <span>
-                                {info?.row?.original?.studentId || 'N/A'}
+                                {ellipsisText(
+                                    info?.row?.original?.studentId,
+                                    8
+                                ) || 'N/A'}
                             </span>
                             <span>
                                 {info?.row?.original?.user?.name || 'N/A'}

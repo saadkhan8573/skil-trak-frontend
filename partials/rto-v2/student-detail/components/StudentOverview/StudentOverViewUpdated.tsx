@@ -2,18 +2,21 @@ import { Button, Typography } from '@components'
 import { IWorkplaceIndustries } from '@redux/queryTypes'
 import { WorkplaceCurrentStatus } from '@utils'
 import { Plus, Sparkles } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useAppDispatch } from '@redux/hooks'
+import { setSelectedWorkplace } from '@redux'
+import { useMemo, useState, useEffect } from 'react'
 import { StudentOverviewSkeleton } from '../../skeletonLoader'
 import { ApplyWorkplaceOverview } from './components'
 import { PlacementRequest, WorkplaceOverviewCard } from './components/updated'
 
 export const StudentOverViewUpdated = ({
-    sortedWorkplaces,
     isLoading,
+    sortedWorkplaces,
 }: {
-    sortedWorkplaces: IWorkplaceIndustries[]
     isLoading?: boolean
+    sortedWorkplaces: IWorkplaceIndustries[]
 }) => {
+    const dispatch = useAppDispatch()
     // State for toggling Quick Actions sections
     const [addNewWorkplace, setAddNewWorkplace] = useState(false)
 
@@ -39,6 +42,7 @@ export const StudentOverViewUpdated = ({
         WorkplaceCurrentStatus.AwaitingRtoResponse,
         WorkplaceCurrentStatus.AppointmentBooked,
         WorkplaceCurrentStatus.AwaitingAgreementSigned,
+        WorkplaceCurrentStatus.AgreementSigned,
     ]
 
     const activeWorkplaces = useMemo(() => {
@@ -63,6 +67,17 @@ export const StudentOverViewUpdated = ({
             activeInProgressStatuses.includes(wp?.currentStatus)
         )
     }, [sortedWorkplaces])
+
+    console.log({ canCreateNewWorkplace })
+
+    useEffect(() => {
+        const activeWorkplace = sortedWorkplaces?.find((wp) =>
+            activeInProgressStatuses.includes(wp?.currentStatus)
+        )
+        if (activeWorkplace) {
+            dispatch(setSelectedWorkplace(activeWorkplace))
+        }
+    }, [sortedWorkplaces, dispatch])
 
     return (
         <div className="space-y-3">

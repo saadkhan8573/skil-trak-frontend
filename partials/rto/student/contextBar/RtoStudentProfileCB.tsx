@@ -8,6 +8,7 @@ import { IoLocation } from 'react-icons/io5'
 import { MdBatchPrediction, MdBlock, MdPhone, MdVerified } from 'react-icons/md'
 import { Course, Rto } from '@types'
 import { CourseList } from '@partials/common'
+import { ellipsisText } from '@utils'
 
 type Props = {
     student: any
@@ -77,7 +78,7 @@ export const RtoStudentProfileCB = ({ student }: Props) => {
                                 <FaAddressCard size={12} />
                             </span>
                             <p className="text-xs font-medium">
-                                {student?.studentId}
+                                {ellipsisText(student?.studentId, 8)}
                             </p>
                         </div>
                         <div className="text-gray-400 text-[11px] -mt-0.5 text-right">

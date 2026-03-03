@@ -1,9 +1,7 @@
 import { Button, NoData } from '@components'
-import moment from 'moment'
 import { RtoV2Api } from '@queries'
-import { motion } from 'framer-motion'
-import { PlacementRequirementsSkeleton } from '../../../../skeletonLoader'
 import { useAppSelector } from '@redux/hooks'
+import { motion } from 'framer-motion'
 import {
     CheckCheck,
     CheckCircle,
@@ -12,7 +10,8 @@ import {
     FileText,
     Shield,
 } from 'lucide-react'
-import { getCourseById } from './data'
+import moment from 'moment'
+import { PlacementRequirementsSkeleton } from '../../../../skeletonLoader'
 
 interface PlacementRequirementsProps {
     workplaceId: any
@@ -98,7 +97,13 @@ export function PlacementRequirements({
                                         Minimum Placement Hours
                                     </p>
                                     <p className="text-2xl font-bold text-emerald-600">
-                                        {course.hours || '120'} hours
+                                        {course?.extraHours &&
+                                        course?.extraHours?.length > 0
+                                            ? Number(
+                                                  course?.extraHours?.[0]?.hours
+                                              ).toFixed(0)
+                                            : course?.hours}{' '}
+                                        hours
                                     </p>
                                 </div>
                             </div>
@@ -205,7 +210,10 @@ export function PlacementRequirements({
                                         )}
                                     </>
                                 ) : (
-                                    <NoData text="No Extra Requirements Found" />
+                                    <NoData
+                                        text="Maintenance mode"
+                                        // text="No Extra Requirements Found"
+                                    />
                                 )}
                             </div>
                         </div>

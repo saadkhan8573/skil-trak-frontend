@@ -1,15 +1,14 @@
-import { ReactNode, useEffect } from 'react'
 import { UserRoles } from '@constants'
-import { WorkplaceCurrentStatus } from '@utils'
-import {
-    AddFeedbackModal,
-    BookAppointmentInfoModal,
-    LogbookNotReleasedModal,
-    ReleaseLogbookModal,
-    NoLogbookFoundModal,
-} from '../modals'
 import { InitiateSigningModal } from '@partials/sub-admin/assessmentEvidence/modal'
 import { AssessmentEvidenceDetailType, Course } from '@types'
+import { WorkplaceCurrentStatus } from '@utils'
+import { ReactNode, useEffect } from 'react'
+import {
+    AddFeedbackModal,
+    LogbookNotReleasedModal,
+    NoLogbookFoundModal,
+    ReleaseLogbookModal,
+} from '../modals'
 
 export const useWorkplaceStatusModals = ({
     selectedWorkplace,
@@ -52,32 +51,6 @@ export const useWorkplaceStatusModals = ({
             )
         }
     }, [selectedWorkplace, appliedIndustry])
-
-    // Book Appointment Info Modal
-    // useEffect(() => {
-    //     if (
-    //         selectedWorkplace?.currentStatus ===
-    //             WorkplaceCurrentStatus.AwaitingWorkplaceResponse &&
-    //         !workplaceStudentDetail?.data?.appointmentBooked &&
-    //         workplaceStudentDetail?.isSuccess &&
-    //         !workplaceStudentDetail?.isLoading &&
-    //         !workplaceStudentDetail?.isFetching &&
-    //         (role === UserRoles.ADMIN || role === UserRoles.SUBADMIN)
-    //     ) {
-    //         showModal(
-    //             <BookAppointmentInfoModal
-    //                 onCancel={() => showModal(null)}
-    //                 courseId={Number(selectedWorkplace?.courses?.[0]?.id)}
-    //                 studentUser={workplaceStudentDetail?.data?.user?.id}
-    //                 approvalDate={latestWorkplaceApprovaleRequest?.approvalDate}
-    //             />
-    //         )
-    //     }
-    // }, [
-    //     selectedWorkplace,
-    //     workplaceStudentDetail,
-    //     workplaceStudentDetail?.data?.appointmentBooked,
-    // ])
 
     // Initiate Signing Modal
     useEffect(() => {

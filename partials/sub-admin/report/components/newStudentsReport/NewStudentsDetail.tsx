@@ -1,5 +1,4 @@
 import {
-    ActionButton,
     EmptyData,
     InitialAvatar,
     LoadingAnimation,
@@ -7,12 +6,9 @@ import {
     TechnicalError,
     Typography,
 } from '@components'
-import { CourseDot } from '@partials/rto/student/components'
 import { RtoApi } from '@queries'
 import { ColumnDef } from '@tanstack/react-table'
-import React, { useState } from 'react'
-import { FilterReport } from '../../FilterReport'
-import { Course, ReportOptionsEnum } from '@types'
+import { ellipsisText } from '@utils'
 
 type Props = {}
 
@@ -32,7 +28,12 @@ export const NewStudentsDetail = (props: Props) => {
                             imageUrl={info?.row?.original?.user?.avatar}
                         />
                         <div className="flex flex-col">
-                            <span>{info?.row?.original?.studentId}</span>
+                            <span>
+                                {ellipsisText(
+                                    info?.row?.original?.studentId,
+                                    8
+                                )}
+                            </span>
                             <span>{info?.row?.original?.user?.name}</span>
                         </div>
                     </a>

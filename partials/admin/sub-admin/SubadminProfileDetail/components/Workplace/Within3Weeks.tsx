@@ -44,7 +44,10 @@ export const Within3Weeks = () => {
             cell: (info) => (
                 <div>
                     <Typography variant="muted" color="text-gray-700">
-                        {info?.row?.original?.student?.studentId ?? 'N/A'}
+                        {ellipsisText(
+                            info?.row?.original?.student?.studentId,
+                            8
+                        ) ?? 'N/A'}
                     </Typography>
                     <Typography variant="small" semibold>
                         {info?.row?.original?.student?.user?.name ?? 'N/A'}

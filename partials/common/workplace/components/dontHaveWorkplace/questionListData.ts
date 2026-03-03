@@ -85,6 +85,13 @@ export const questionList = [
         onlyAccept: true,
     },
     {
+        name: workplaceQuestionsKeys.preferredContactTime,
+        index: 11,
+        title: 'Preferred Contact Time',
+        required: true,
+        type: 'textarea',
+    },
+    {
         name: workplaceQuestionsKeys.autoTalentPool,
         index: 7,
         title: 'Auto Talent Pool:',
@@ -145,13 +152,7 @@ export const questionList = [
         required: false,
         type: 'textarea',
     },
-    // {
-    //     name: workplaceQuestionsKeys.preferredContactTime,
-    //     index: 11,
-    //     title: 'Preferred Contact Time',
-    //     required: true,
-    //     type: 'textarea',
-    // },
+
     // {
     //     name: workplaceQuestionsKeys.possession,
     //     index: 12,

@@ -17,6 +17,7 @@ import { useState } from 'react'
 import { FilterReport } from '../../FilterReport'
 import { UserRoles } from '@constants'
 import { Waypoint } from 'react-waypoint'
+import { ellipsisText } from '@utils'
 type Props = {
     startDate: Date
     setStartDate: (startDate: Date) => void
@@ -65,7 +66,10 @@ export const PlacementStartedReport = ({
                         />
                         <div className="flex flex-col">
                             <span>
-                                {info?.row?.original?.studentId || 'N/A'}
+                                {ellipsisText(
+                                    info?.row?.original?.studentId,
+                                    8
+                                ) || 'N/A'}
                             </span>
                             <span>
                                 {info?.row?.original?.user?.name || 'N/A'}
@@ -98,7 +102,8 @@ export const PlacementStartedReport = ({
                 // ))
                 return (
                     <span>
-                        {info?.row?.original?.workplace[0]?.courses[0]?.title || 'N/A'}
+                        {info?.row?.original?.workplace[0]?.courses[0]?.title ||
+                            'N/A'}
                     </span>
                 )
             },
@@ -119,7 +124,7 @@ export const PlacementStartedReport = ({
                     <div className="flex justify-between">
                         <div className="">
                             <Typography variant="title" color="text-gray-400">
-                               Placement Started
+                                Placement Started
                             </Typography>
                             <Typography variant="h3">{count || 0}</Typography>
                         </div>
@@ -202,9 +207,7 @@ export const PlacementStartedReport = ({
                             }}
                         </Table>
                     ) : (
-                        !isError && (
-                            <NoData text="No Placement Started Found" />
-                        )
+                        !isError && <NoData text="No Placement Started Found" />
                     )}
                 </div>
             </Waypoint>

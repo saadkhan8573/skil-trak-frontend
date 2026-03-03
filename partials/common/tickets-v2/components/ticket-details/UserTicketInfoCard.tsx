@@ -1,4 +1,4 @@
-import { getUserCredentials } from '@utils'
+import { ellipsisText, getUserCredentials } from '@utils'
 import {
     Activity,
     Building2,
@@ -61,7 +61,10 @@ export const UserTicketInfoCard = ({ ticket }: any) => {
                                     <ExternalLink className="size-3 opacity-0 group-hover/student:opacity-100 transition-opacity" />
                                 </div>
                                 <div className="text-white/70 text-xs">
-                                    {ticket?.user?.student?.studentId ?? '---'}
+                                    {ellipsisText(
+                                        ticket?.user?.student?.studentId,
+                                        8
+                                    ) ?? '---'}
                                 </div>
                             </div>
                         </Link>

@@ -16,6 +16,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Waypoint } from 'react-waypoint'
 import { FilterReport } from '../../FilterReport'
+import { ellipsisText } from '@utils'
 type Props = {
     startDate: Date
     setStartDate: (startDate: Date) => void
@@ -65,7 +66,12 @@ export const StudentResultsReport = ({
                         imageUrl={info?.row?.original?.student?.user?.avatar}
                     />
                     <div className="flex flex-col">
-                        <span>{info?.row?.original?.student?.studentId}</span>
+                        <span>
+                            {ellipsisText(
+                                info?.row?.original?.student?.studentId,
+                                8
+                            )}
+                        </span>
                         <span>{info?.row?.original?.student?.user?.name}</span>
                     </div>
                 </a>
@@ -81,9 +87,7 @@ export const StudentResultsReport = ({
         {
             accessorKey: 'phone',
             header: () => <span>Phone</span>,
-            cell: (info) => (
-                <span>{info?.row?.original?.student?.phone}</span>
-            ),
+            cell: (info) => <span>{info?.row?.original?.student?.phone}</span>,
         },
         {
             accessorKey: 'courses',
@@ -93,9 +97,7 @@ export const StudentResultsReport = ({
                 //     <CourseDot key={c?.id} course={c} />
                 // ))
                 return (
-                    <span>
-                        {info?.row?.original?.course?.title || 'N/A'}
-                    </span>
+                    <span>{info?.row?.original?.course?.title || 'N/A'}</span>
                 )
             },
         },
@@ -106,9 +108,7 @@ export const StudentResultsReport = ({
                 // return info?.row?.original?.courses?.map((c: Course) => (
                 //     <CourseDot key={c?.id} course={c} />
                 // ))
-                return (
-                    <span> {info?.row?.original?.result || 'N/A'} </span>
-                )
+                return <span> {info?.row?.original?.result || 'N/A'} </span>
             },
         },
     ]

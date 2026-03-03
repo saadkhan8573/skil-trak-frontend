@@ -93,7 +93,10 @@ export const ActiveWorkplaceRequest = () => {
                 return (
                     <div>
                         <Typography variant="muted" color="text-gray-700">
-                            {info?.row?.original?.student?.studentId ?? 'N/A'}
+                            {ellipsisText(
+                                info?.row?.original?.student?.studentId,
+                                8
+                            ) ?? 'N/A'}
                         </Typography>
                         <div className="flex items-center gap-x-2">
                             <Typography variant="small" semibold>

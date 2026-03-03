@@ -1,7 +1,7 @@
 import { Button } from '@components'
 import { UserRoles } from '@constants'
 import { DownloadEsignDocument } from '@partials/eSign'
-import { getFilteredColumns, getUserCredentials } from '@utils'
+import { ellipsisText, getFilteredColumns, getUserCredentials } from '@utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { Building2, Eye, FileText, User } from 'lucide-react'
 import Link from 'next/link'
@@ -66,7 +66,10 @@ export const useEsignColumns = (options?: UseEsignColumnsOptions) => {
                             <User className="h-4 w-4 text-muted-foreground" />
                             <div className="flex flex-col">
                                 <span className="text-xs text-gray-700">
-                                    {student?.user?.student?.studentId}
+                                    {ellipsisText(
+                                        info?.row?.original?.student?.studentId,
+                                        8
+                                    )}
                                 </span>
                                 <span className="text-sm font-medium">
                                     {student?.user?.name}{' '}

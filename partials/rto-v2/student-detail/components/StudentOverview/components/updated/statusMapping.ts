@@ -5,7 +5,7 @@ export const STATUS_CONTENT: Record<
     'Waiting for Student': {
         title: 'Awaiting Student Approval',
         description:
-            'The industry has responded to your placement request. Please review the details and approve the request to proceed further.',
+            'The Workplace option has been sent to the student. Student will review the details and approve the request to proceed further.',
     },
     'Waiting for RTO': {
         title: 'Awaiting RTO Confirmation',
@@ -20,7 +20,7 @@ export const STATUS_CONTENT: Record<
     Appointment: {
         title: 'Book Your Appointment',
         description:
-            'Your placement request has been approved. Please schedule your appointment with the industry to move forward.',
+            'Student placement request has been approved. Student need to schedule their appointment with the industry to move forward.',
     },
     'Agreement Pending': {
         title: 'Agreement & Eligibility Pending',
@@ -35,12 +35,12 @@ export const STATUS_CONTENT: Record<
     'Placement Started': {
         title: 'Placement in Progress',
         description:
-            'Your workplace placement has officially started. Please ensure you follow your approved schedule and requirements.',
+            'The placement of the student has officially started. Please ensure that student follow the approved placement schedule and requirements.',
     },
     'Schedule Completed': {
         title: 'Schedule Completed',
         description:
-            'Your placement schedule has been successfully completed. Please ensure all required documentation and logs are submitted.',
+            'The placement schedule has been successfully completed. Please ensure all required documentation and logs are submitted.',
     },
     Cancelled: {
         title: 'Placement Cancelled',
@@ -50,12 +50,12 @@ export const STATUS_CONTENT: Record<
     Terminated: {
         title: 'Placement Terminated',
         description:
-            'The industry has terminated the placement. Please contact your RTO immediately for further guidance.',
+            'The industry has terminated the placement. Please contact your Industry immediately for further guidance.',
     },
     'No Response': {
         title: 'No Response from Industry',
         description:
-            'The industry has not responded to your placement request yet. You may wait or contact your RTO for support.',
+            'The industry has not responded to your placement request yet. You may wait or contact your Industry for support.',
     },
     'Industry Eligibility Check': {
         title: 'Industry Eligibility Check',

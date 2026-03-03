@@ -1,5 +1,6 @@
 import { Typography } from '@components'
 import { Student } from '@types'
+import { ellipsisText } from '@utils'
 import React from 'react'
 import { HiOutlineDocumentText } from 'react-icons/hi'
 
@@ -54,7 +55,7 @@ export const StudentViewCard = ({
                             color={active ? 'text-white' : 'text-[#374151]'}
                             medium
                         >
-                            {student?.studentId}
+                            {ellipsisText(student?.studentId, 8)}{' '}
                         </Typography>
                     </div>
                 </div>

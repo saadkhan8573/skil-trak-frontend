@@ -71,8 +71,8 @@ export const SubAdminStudentProfile = ({
                     ? 'Remove Mark As High Priority'
                     : 'Mark As High Priority',
                 description: student.isHighPriority
-                    ? `Removed Marked ${student?.studentId} As High Priority`
-                    : `Marked ${student?.studentId} As High Priority`,
+                    ? `Removed Marked ${student?.user?.name} As High Priority`
+                    : `Marked ${student?.user?.name} As High Priority`,
             })
         }
     }, [makeAsHighPriorityResult])
@@ -115,10 +115,10 @@ export const SubAdminStudentProfile = ({
                                     subadmin?.data?.isAdmin
                                     ? `/portals/admin/student/edit-student/${student?.id}`
                                     : role === UserRoles.SUBADMIN
-                                    ? `/portals/sub-admin/students/${student?.id}/edit-student`
-                                    : role === UserRoles.RTO
-                                    ? `/portals/rto/students/${student?.id}/edit-student`
-                                    : '#'
+                                      ? `/portals/sub-admin/students/${student?.id}/edit-student`
+                                      : role === UserRoles.RTO
+                                        ? `/portals/rto/students/${student?.id}/edit-student`
+                                        : '#'
                             )
                         }}
                         title="Edit Profile"
@@ -163,7 +163,7 @@ export const SubAdminStudentProfile = ({
                             <FaAddressCard size={12} />
                         </span>
                         <p className="text-xs font-medium">
-                            {student?.studentId}
+                            {ellipsisText(student?.studentId, 8)}
                         </p>
                     </div>
                     <div className="text-gray-400 text-[11px] -mt-0.5 text-right">
@@ -339,8 +339,8 @@ export const SubAdminStudentProfile = ({
                             {student?.isInternational
                                 ? 'International'
                                 : student?.isInternational === false
-                                ? 'Domestic'
-                                : '---'}
+                                  ? 'Domestic'
+                                  : '---'}
                         </Typography>
                     }
                 </div>

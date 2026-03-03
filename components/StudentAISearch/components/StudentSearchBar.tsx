@@ -2,7 +2,7 @@ import { Badge, InitialAvatar, LoadingAnimation, NoData } from '@components'
 import { Command, CommandGroup, CommandItem, CommandList } from '@components/ui'
 import { CommonApi, RtoApi } from '@queries'
 import { Student } from '@types'
-import { getUserCredentials } from '@utils'
+import { ellipsisText, getUserCredentials } from '@utils'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Loader2, Search, Sparkles } from 'lucide-react'
 import { useState } from 'react'
@@ -70,12 +70,13 @@ export const StudentSearchBar = ({
                     }}
                     onFocus={() => searchQuery.length > 0 && setIsOpen(true)}
                     placeholder="Search by student name, ID, or email..."
-                    className={`h-12 w-full rounded-lg border-2 pl-16 pr-6  shadow-lg transition-all focus-visible:ring-4 placeholder:text-sm text-sm  ${hasTyped &&
-                            data?.data?.length === 0 &&
-                            searchQuery.length > 2
+                    className={`h-12 w-full rounded-lg border-2 pl-16 pr-6  shadow-lg transition-all focus-visible:ring-4 placeholder:text-sm text-sm  ${
+                        hasTyped &&
+                        data?.data?.length === 0 &&
+                        searchQuery.length > 2
                             ? 'border-red-500/50 focus-visible:border-red-500 focus-visible:ring-red-500/10'
                             : 'focus-visible:border-primaryNew focus-visible:ring-primaryNew/10'
-                        }`}
+                    }`}
                 />
                 <AnimatePresence mode="wait">
                     {isLoading || isFetching ? (
@@ -135,8 +136,8 @@ export const StudentSearchBar = ({
                         {isLoading || isFetching ? (
                             <LoadingAnimation />
                         ) : data?.data &&
-                            data?.data?.length > 0 &&
-                            isSuccess ? (
+                          data?.data?.length > 0 &&
+                          isSuccess ? (
                             <Command>
                                 <CommandList>
                                     <CommandGroup>
@@ -165,7 +166,7 @@ export const StudentSearchBar = ({
                                                                 student
                                                             )
                                                         }
-                                                        className="flex cursor-pointer items-center gap-4 rounded-xl p-4 !text-gray-700 !hover:text-gray-700 transition-colors hover:bg-blue-50"
+                                                        className="flex cursor-pointer items-center gap-4 rounded-xl p-4 text-gray-700! !hover:text-gray-700 transition-colors hover:bg-blue-50"
                                                     >
                                                         <InitialAvatar
                                                             name={
@@ -185,14 +186,16 @@ export const StudentSearchBar = ({
                                                                     student
                                                                         ?.user
                                                                         ?.name
-                                                                } {
+                                                                }{' '}
+                                                                {
                                                                     student?.familyName
                                                                 }
                                                             </div>
                                                             <div className="text-sm ">
-                                                                {
-                                                                    student.studentId
-                                                                }{' '}
+                                                                {ellipsisText(
+                                                                    student?.studentId,
+                                                                    8
+                                                                )}{' '}
                                                                 •{' '}
                                                                 {
                                                                     student
@@ -203,7 +206,7 @@ export const StudentSearchBar = ({
                                                             {student?.courses &&
                                                                 student?.courses
                                                                     ?.length >
-                                                                0 && (
+                                                                    0 && (
                                                                     <div className="flex flex-wrap gap-2 justify-center">
                                                                         {student?.courses?.map(
                                                                             (

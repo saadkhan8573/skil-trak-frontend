@@ -9,7 +9,7 @@ import { ErrorBoundary } from '@components/ErrorBoundary/ErrorBoundary'
 import { UserRoles } from '@constants'
 import { useScrollIntoView } from '@hooks'
 import { Student } from '@types'
-import { QueryType, isBrowser, queryToUrl, setLink } from '@utils'
+import { QueryType, ellipsisText, isBrowser, queryToUrl, setLink } from '@utils'
 import moment from 'moment'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -56,8 +56,8 @@ export const StudentCellInfo = ({
                     sessionStorage.setItem('scrollId', student?.studentId)
                 }
             }}
-            className="flex items-center gap-x-2 cursor-pointer relative z-10">
-
+            className="flex items-center gap-x-2 cursor-pointer relative z-10"
+        >
             <div className="" id={student?.studentId}>
                 <ErrorBoundary>
                     {student?.user?.name && (
@@ -77,7 +77,7 @@ export const StudentCellInfo = ({
                             }
                         >
                             <ErrorBoundary>
-                                {student?.studentId}
+                                {ellipsisText(student?.studentId, 8)}
                             </ErrorBoundary>
                         </p>
                         {student?.nonContactable && (
@@ -167,7 +167,6 @@ export const StudentCellInfo = ({
                     </p>
                 </div>
             </div>
-
         </Link>
-    );
+    )
 }

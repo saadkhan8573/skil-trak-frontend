@@ -14,7 +14,7 @@ import { FaTimes } from 'react-icons/fa'
 import moment from 'moment'
 import { useRouter } from 'next/router'
 import { UserRoles } from '@constants'
-import { getUserCredentials } from '@utils'
+import { ellipsisText, getUserCredentials } from '@utils'
 import { RtoProfileTable, UserDetail } from '@partials/admin'
 
 export const StudentLogsModal = ({ onCancel }: { onCancel: () => void }) => {
@@ -39,7 +39,7 @@ export const StudentLogsModal = ({ onCancel }: { onCancel: () => void }) => {
             cell: (info) => (
                 <div className="px-3 py-1 rounded bg-[#24556D1A]">
                     <Typography variant="label">
-                        {info.row.original?.studentId}
+                        {ellipsisText(info.row.original?.studentId, 8)}
                     </Typography>
                 </div>
             ),

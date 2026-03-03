@@ -7,7 +7,7 @@ import { PageHeading } from '@components/headings'
 import { ImportStudentForm, SpecifyColumns } from '@partials/admin/rto/students'
 import { AdminApi } from '@queries'
 import { ImportStudentFormType } from '@types'
-import { trimText } from '@utils'
+import { ellipsisText, trimText } from '@utils'
 
 export const ImportStudentList = ({
     onSubmit,
@@ -264,7 +264,12 @@ export const ImportStudentList = ({
                                         {result.data?.created.map(
                                             (student: any, i: number) => (
                                                 <tr key={i}>
-                                                    <td>{student.studentId}</td>
+                                                    <td>
+                                                        {ellipsisText(
+                                                            student.studentId,
+                                                            8
+                                                        )}
+                                                    </td>
                                                     <td>{student.user.name}</td>
                                                     <td>
                                                         {student.user.email}

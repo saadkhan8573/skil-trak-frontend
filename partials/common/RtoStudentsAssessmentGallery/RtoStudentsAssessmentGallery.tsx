@@ -17,6 +17,7 @@ import {
     PdfViewModal,
     VideoPlayerModal,
 } from './components'
+import { ellipsisText } from '@utils'
 
 export const RtoStudentsAssessmentGallery = () => {
     const router = useRouter()
@@ -149,7 +150,10 @@ export const RtoStudentsAssessmentGallery = () => {
                                             color="text-gray-400 font-thin"
                                             right
                                         >
-                                            {student?.studentId}
+                                            {ellipsisText(
+                                                student?.studentId,
+                                                8
+                                            )}
                                         </Typography>
                                         <Typography
                                             variant={'label'}

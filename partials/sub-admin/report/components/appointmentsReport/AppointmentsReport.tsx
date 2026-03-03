@@ -18,6 +18,7 @@ import { ViewFullListReport } from '../../ViewFullListReport'
 import { useRouter } from 'next/router'
 import { SubAdminReports } from 'types/sub-admin-reports.type'
 import { UserRoles } from '@constants'
+import { ellipsisText } from '@utils'
 
 type Props = {
     startDate: Date
@@ -67,10 +68,11 @@ export const AppointmentsReport = ({
                             {info.row.original?.appointmentBy?.role ===
                                 UserRoles.STUDENT && (
                                 <span>
-                                    {
+                                    {ellipsisText(
                                         info.row.original?.appointmentBy
-                                            ?.student?.studentId
-                                    }
+                                            ?.student?.studentId,
+                                        8
+                                    )}
                                 </span>
                             )}
                             <span>

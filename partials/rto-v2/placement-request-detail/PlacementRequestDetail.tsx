@@ -101,7 +101,7 @@ export const PlacementRequestDetail = () => {
             ? providedWorkplaceStages
             : needsWorkplaceStages
     const progressData = RtoV2Api.PlacementRequests.useStudentPlacementProgress(
-        wpId,
+        wpId!,
         {
             skip: !wpId,
         }

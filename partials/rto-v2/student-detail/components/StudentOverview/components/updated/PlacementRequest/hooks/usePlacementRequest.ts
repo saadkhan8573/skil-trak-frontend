@@ -230,15 +230,15 @@ export const usePlacementRequest = (
     const onSelectWorkplace = (request: IWorkplaceIndustries) => {
         if (role === UserRoles.RTO) {
             router.push(
-                `/portals/rto/students-and-placements/placement-requests/${request.id}/${request.student?.id}`
+                `/portals/rto/students-and-placements/placement-requests/${request.id}/${studentDetail?.id}`
             )
         } else if (role === UserRoles.ADMIN) {
             router.push(
-                `/portals/admin/workplaces/${request.id}/${request.student?.id}`
+                `/portals/admin/workplaces/${request.id}/${studentDetail?.id}`
             )
         } else if (role === UserRoles.SUBADMIN) {
             router.push(
-                `/portals/sub-admin/tasks/workplace/${request.id}/${request.student?.id}`
+                `/portals/sub-admin/tasks/workplace/${request.id}/${studentDetail?.id}`
             )
         }
     }

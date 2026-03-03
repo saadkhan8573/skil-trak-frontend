@@ -41,8 +41,6 @@ export const PlacementRequestItem = ({
     const displayDistance = drivingInfo?.distance ?? null
     const drivingDuration = drivingInfo?.duration ?? null
 
-    console.log('requestrequest', request)
-
     const statusConfig =
         statusConfigs[request.status] || statusConfigs.cancelled
     const StatusIcon = statusConfig.icon

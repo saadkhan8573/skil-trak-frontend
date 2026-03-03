@@ -101,7 +101,7 @@ export const PlacementRequestDetail = () => {
             ? providedWorkplaceStages
             : needsWorkplaceStages
     const progressData = RtoV2Api.PlacementRequests.useStudentPlacementProgress(
-        wpId!,
+        Number(wpId),
         {
             skip: !wpId,
         }
@@ -132,7 +132,7 @@ export const PlacementRequestDetail = () => {
         const index = progressData?.data?.findIndex(
             (s: any) => s.stage === currentStatus
         )
-        return index !== -1 ? index : 0
+        return typeof index === 'number' && index !== -1 ? index : 0
     }
 
     const studentPreferences = [

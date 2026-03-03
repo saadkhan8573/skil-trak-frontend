@@ -26,12 +26,6 @@ export const useTodoHooks = () => {
 
     const columns: TableColumn<any>[] = [
         {
-            key: 'student.studentId',
-            header: 'Student ID',
-            width: '140px',
-            className: 'font-medium',
-        },
-        {
             key: 'student.user.name',
             header: 'Name',
             width: '200px',

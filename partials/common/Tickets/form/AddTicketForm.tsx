@@ -8,13 +8,13 @@ import {
     Select,
     TextInput,
     inputRichTextEditorErrorMessage,
-    useIsRestricted
+    useIsRestricted,
 } from '@components'
 import { UserRoles } from '@constants'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { AuthApi } from '@queries'
 import { Course, OptionType } from '@types'
-import { CourseSelectOption, formatOptionLabel } from '@utils'
+import { CourseSelectOption, ellipsisText, formatOptionLabel } from '@utils'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -71,7 +71,11 @@ export const AddTicketForm = ({
         message: yup
             .string()
             .ensure()
-            .test('Message', 'Must Provide Message', inputRichTextEditorErrorMessage),
+            .test(
+                'Message',
+                'Must Provide Message',
+                inputRichTextEditorErrorMessage
+            ),
         priority: yup.string().required('Must provide Priority'),
     })
 
@@ -105,13 +109,13 @@ export const AddTicketForm = ({
         () =>
             students?.data?.length
                 ? students?.data?.map((student: any) => ({
-                    label:
-                        student?.user?.name +
-                        student?.studentId +
-                        student?.familyName,
-                    value: student?.id,
-                    item: student,
-                }))
+                      label:
+                          student?.user?.name +
+                          ellipsisText(student?.studentId, 8) +
+                          student?.familyName,
+                      value: student?.id,
+                      item: student,
+                  }))
                 : [],
         [students?.data]
     )
@@ -215,27 +219,28 @@ export const AddTicketForm = ({
                                             <div className="px-2 flex items-center gap-x-2">
                                                 {optionItem.data?.item?.user
                                                     ?.name && (
-                                                        <InitialAvatar
-                                                            name={
-                                                                optionItem.data
-                                                                    ?.item?.user
-                                                                    ?.name
-                                                            }
-                                                            imageUrl={
-                                                                optionItem.data
-                                                                    ?.item?.user
-                                                                    ?.avatar
-                                                            }
-                                                        />
-                                                    )}
+                                                    <InitialAvatar
+                                                        name={
+                                                            optionItem.data
+                                                                ?.item?.user
+                                                                ?.name
+                                                        }
+                                                        imageUrl={
+                                                            optionItem.data
+                                                                ?.item?.user
+                                                                ?.avatar
+                                                        }
+                                                    />
+                                                )}
                                                 <div>
                                                     <p className="text-[11px] text-gray-600">
                                                         {' '}
-                                                        {
+                                                        {ellipsisText(
                                                             optionItem.data
                                                                 ?.item
-                                                                ?.studentId
-                                                        }{' '}
+                                                                ?.studentId,
+                                                            8
+                                                        )}{' '}
                                                     </p>
                                                     <p>
                                                         {
@@ -258,7 +263,10 @@ export const AddTicketForm = ({
                                     return (
                                         <div>
                                             <span>
-                                                {option?.item?.studentId}
+                                                {ellipsisText(
+                                                    option?.item?.studentId,
+                                                    8
+                                                )}
                                                 {' - '}
                                             </span>
                                             <span>

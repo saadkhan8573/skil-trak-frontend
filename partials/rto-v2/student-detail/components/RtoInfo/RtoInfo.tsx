@@ -38,7 +38,7 @@ export const RtoInfo = () => {
             <div className="w-full mx-auto px-[13.25px] sm:px-[19.87px] lg:px-[26.5px] py-[13.25px]">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-[9.94px]">
-                        <div className="w-[33.12px] h-[33.12px] rounded-xl bg-gradient-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-lg shadow-[#044866]/20">
+                        <div className="w-[33.12px] h-[33.12px] rounded-xl bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-lg shadow-[#044866]/20">
                             <span className="text-white text-[14.9px]">📚</span>
                         </div>
                         <div>

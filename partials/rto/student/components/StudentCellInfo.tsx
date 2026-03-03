@@ -1,5 +1,6 @@
 import { InitialAvatar, Tooltip, TooltipPosition } from '@components'
 import { Student } from '@types'
+import { ellipsisText, trimText } from '@utils'
 import moment from 'moment'
 import Link from 'next/link'
 import { BiMessageRoundedDots } from 'react-icons/bi'
@@ -37,7 +38,6 @@ export const StudentCellInfo = ({
             href={link || `/portals/rto/students/${student?.id}`}
             className="flex items-center gap-x-2"
         >
-
             <div className="shadow-inner-image rounded-full">
                 {student?.user?.name && (
                     <InitialAvatar
@@ -50,7 +50,7 @@ export const StudentCellInfo = ({
                 <div className="flex items-center gap-x-2">
                     <div className="flex items-center gap-x-2">
                         <p className="flex items-center gap-x-1 text-xs">
-                            {student?.studentId}
+                            {ellipsisText(student?.studentId, 8)}
                         </p>
                         {student?.nonContactable && (
                             <div className="group relative bg-red-600 p-1 rounded-full flex items-center justify-center">
@@ -127,7 +127,6 @@ export const StudentCellInfo = ({
                     </p>
                 </div>
             </div>
-
         </Link>
-    );
+    )
 }

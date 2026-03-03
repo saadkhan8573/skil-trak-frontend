@@ -11,6 +11,7 @@ import {
 import { SubAdminApi } from '@queries'
 import { ColumnDef } from '@tanstack/react-table'
 import { CoordinatorActiveStudentReport } from '@types'
+import { ellipsisText } from '@utils'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { SubAdminReports } from 'types/sub-admin-reports.type'
@@ -41,7 +42,12 @@ export const ActiveStudentsReport = ({ subadmin }: Props) => {
                             imageUrl={info?.row?.original?.user?.avatar}
                         />
                         <div className="flex flex-col">
-                            <span>{info?.row?.original?.studentId}</span>
+                            <span>
+                                {ellipsisText(
+                                    info?.row?.original?.studentId,
+                                    8
+                                )}
+                            </span>
                             <span>{info?.row?.original?.user?.name}</span>
                         </div>
                     </a>

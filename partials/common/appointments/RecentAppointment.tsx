@@ -6,7 +6,7 @@ import React, {
 } from 'react'
 import { LoadingAnimation, NoData, Typography } from '@components'
 import { Button } from '@components/buttons'
-import { getUserCredentials } from '@utils'
+import { ellipsisText, getUserCredentials } from '@utils'
 import moment from 'moment'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -50,8 +50,8 @@ export const RecentAppointment = ({
         ? appointment?.appointmentFor?.id === userId
             ? 'appointmentFor'
             : appointment?.appointmentFor?.id === id
-            ? 'appointmentBy'
-            : 'appointmentFor'
+              ? 'appointmentBy'
+              : 'appointmentFor'
         : ''
 
     const appointmentUser: any = appointment
@@ -96,7 +96,7 @@ export const RecentAppointment = ({
                     className={`${
                         appointment?.isCancelled
                             ? 'bg-error-dark'
-                            : 'bg-gradient-to-r from-[#3883F3] to-[#5D1BE0]'
+                            : 'bg-linear-to-r from-[#3883F3] to-[#5D1BE0]'
                     }  rounded-2xl p-4`}
                 >
                     <div className="flex gap-x-16 justify-between items-center mb-1.5">
@@ -166,7 +166,10 @@ export const RecentAppointment = ({
                                                     }
                                                     semibold
                                                 >
-                                                    {profile?.studentId}
+                                                    {ellipsisText(
+                                                        profile?.studentId,
+                                                        8
+                                                    )}
                                                 </Typography>
                                             </div>
                                         )}

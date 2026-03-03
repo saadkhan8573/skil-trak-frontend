@@ -17,6 +17,7 @@ import { useState } from 'react'
 import { SubAdminReports } from 'types/sub-admin-reports.type'
 import { FilterReport } from '../../FilterReport'
 import { Waypoint } from 'react-waypoint'
+import { ellipsisText } from '@utils'
 
 type Props = {
     startDate: Date
@@ -65,7 +66,12 @@ export const StudentsAssignedReport = ({
                             imageUrl={info?.row?.original?.user?.avatar}
                         />
                         <div className="flex flex-col">
-                            <span>{info?.row?.original?.studentId}</span>
+                            <span>
+                                {ellipsisText(
+                                    info?.row?.original?.studentId,
+                                    8
+                                )}
+                            </span>
                             <span>{info?.row?.original?.user?.name}</span>
                         </div>
                     </a>

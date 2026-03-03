@@ -8,7 +8,7 @@ import {
 import { Button } from '@components'
 import { AlertTriangle, CheckCircle } from 'lucide-react'
 import { useState } from 'react'
-import { RtoApi } from '@queries'
+import { SubAdminApi } from '@queries'
 import { WpAppRequEnum } from '@partials/rto/wpApprovalReq/enum'
 import { useNotification } from '@hooks'
 
@@ -23,28 +23,32 @@ export function WorkplaceApproveModal({
     onClose,
     id,
 }: WorkplaceApproveModalProps) {
-    const [comment, setComment] = useState('')
     const { notification } = useNotification()
     const [changeStatus, { isLoading }] =
-        RtoApi.Workplace.wpAppReqChangeStatus()
+        SubAdminApi.Workplace.updateWpIndustryStatus()
 
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         if (!id) return
 
-        changeStatus({
-            id: id,
-            status: WpAppRequEnum.APPROVED,
-            comment: comment,
-        } as any).then((res: any) => {
+        try {
+            const res: any = await changeStatus({
+                id: id,
+                status: WpAppRequEnum.APPROVED,
+            } as any)
+
             if (res?.data) {
                 notification.success({
                     title: 'Approved',
                     description: 'Placement approved successfully.',
                 })
                 onClose()
-                setComment('')
             }
-        })
+        } catch (error) {
+            notification.error({
+                title: 'Error',
+                description: 'Failed to approve placement.',
+            })
+        }
     }
 
     return (
@@ -67,7 +71,7 @@ export function WorkplaceApproveModal({
                     </div>
                 </DialogHeader>
 
-                <div className="p-6 space-y-4">
+                <div className="px-6 space-y-4">
                     <div className="bg-linear-to-br from-amber-50 to-orange-50 border-l-4 border-orange-400 rounded-lg p-4">
                         <div className="flex items-start gap-3">
                             <div className="w-8 h-8 rounded-lg bg-orange-400 flex items-center justify-center shrink-0">
@@ -117,24 +121,6 @@ export function WorkplaceApproveModal({
                             </div>
                         </div>
                     </div>
-
-                    <div>
-                        <label className="block text-sm font-semibold text-slate-900 mb-2">
-                            Reason for Approval{' '}
-                            <span className="text-red-500">*</span>
-                        </label>
-                        <textarea
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            placeholder="Please provide a reason for approving this placement request..."
-                            rows={4}
-                            className="w-full px-4 py-3 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none placeholder:text-slate-400"
-                        />
-                        <p className="mt-1.5 text-xs text-slate-500">
-                            This comment will be included in the notification
-                            emails sent to all parties.
-                        </p>
-                    </div>
                 </div>
 
                 <DialogFooter className="px-6 py-4 bg-slate-50 rounded-b-2xl flex items-center justify-end gap-2 border-t border-slate-200">
@@ -148,7 +134,7 @@ export function WorkplaceApproveModal({
                     </Button>
                     <Button
                         onClick={handleConfirm}
-                        disabled={!comment.trim() || isLoading}
+                        disabled={isLoading}
                         className={`px-4 py-2 text-sm bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${isLoading ? 'cursor-wait' : ''}`}
                     >
                         {isLoading ? (

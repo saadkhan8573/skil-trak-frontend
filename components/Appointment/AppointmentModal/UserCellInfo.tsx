@@ -3,7 +3,7 @@ import { Typography } from '@components/Typography'
 import { UserRoles } from '@constants'
 import { useMaskText } from '@hooks'
 import { User } from '@types'
-import { maskText } from '@utils'
+import { ellipsisText, maskText } from '@utils'
 import { State } from 'country-state-city'
 import { FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa'
 
@@ -43,7 +43,7 @@ export const UserCellInfo = ({ user }: { user: User }) => {
                 <div>
                     <div className="flex items-center gap-x-2">
                         <Typography variant={'muted'} color={'text-gray-700'}>
-                            {profile?.studentId}
+                            {ellipsisText(profile?.studentId, 8)}
                         </Typography>
                     </div>
                     <Typography variant={'subtitle'} color={'text-gray-800'}>

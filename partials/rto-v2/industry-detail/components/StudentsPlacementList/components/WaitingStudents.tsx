@@ -5,7 +5,7 @@ import { EmptyData, PageSize, Pagination, TechnicalError } from '@components'
 import { StudentsTabSkeleton } from '../../../skeletonLoader'
 import { useState } from 'react'
 
-export function WaitingStudents() {
+export const WaitingStudents = () => {
     const [itemPerPage, setItemPerPage] = useState(20)
     const [page, setPage] = useState(1)
 

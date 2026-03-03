@@ -21,7 +21,7 @@ export const StudentWorkplaceCellInfo = ({
         <div>
             <div className="flex items-center gap-x-2">
                 <Typography variant="muted" color="text-gray-700">
-                    {student?.studentId ?? 'N/A'}
+                    {ellipsisText(student?.studentId, 8) ?? 'N/A'}
                 </Typography>
                 {student?.nonContactable && (
                     <div className="group relative bg-red-600 p-1 rounded-full flex items-center justify-center">
@@ -72,10 +72,9 @@ export const StudentWorkplaceCellInfo = ({
                     setLink('student', router)
                 }}
             >
-
-                {' '}View Details
-                                
+                {' '}
+                View Details
             </Link>
         </div>
-    );
+    )
 }

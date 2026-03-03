@@ -7,6 +7,7 @@ import {
     Typography,
 } from '@components'
 import { SubAdminApi } from '@queries'
+import { ellipsisText } from '@utils'
 import { ColumnDef } from '@tanstack/react-table'
 
 type Props = {}
@@ -27,7 +28,13 @@ export const CancelledWorkplaceDetail = (props: Props) => {
                         />
                     )}
                     <div className="flex flex-col">
-                        <span>{info?.row?.original?.studentId}</span>
+                        <span>
+                            {' '}
+                            {ellipsisText(
+                                info?.row?.original?.student?.studentId,
+                                8
+                            )}
+                        </span>
                         <span>{info.row.original?.user?.name}</span>
                     </div>
                 </a>

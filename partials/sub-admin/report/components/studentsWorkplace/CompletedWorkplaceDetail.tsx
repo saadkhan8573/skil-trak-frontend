@@ -11,6 +11,7 @@ import { CourseDot } from '@partials/rto/student/components'
 import { SubAdminApi } from '@queries'
 import { ColumnDef } from '@tanstack/react-table'
 import { Course } from '@types'
+import { ellipsisText } from '@utils'
 
 type Props = {}
 
@@ -30,7 +31,13 @@ export const CompletedWorkplaceDetail = (props: Props) => {
                         />
                     )}
                     <div className="flex flex-col">
-                        <span>{info?.row?.original?.studentId}</span>
+                        <span>
+                            {' '}
+                            {ellipsisText(
+                                info?.row?.original?.student?.studentId,
+                                8
+                            )}
+                        </span>
                         <span>{info.row.original?.user?.name}</span>
                     </div>
                 </a>

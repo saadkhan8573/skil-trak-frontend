@@ -10,6 +10,7 @@ import { UserRoles } from '@constants'
 
 import { SubAdminApi } from '@queries'
 import { ColumnDef } from '@tanstack/react-table'
+import { ellipsisText } from '@utils'
 
 type Props = {}
 
@@ -35,10 +36,11 @@ export const AppointmentsDetail = (props: Props) => {
                             {info.row.original?.appointmentBy?.role ===
                                 UserRoles.STUDENT && (
                                 <span>
-                                    {
+                                    {ellipsisText(
                                         info.row.original?.appointmentBy
-                                            ?.student?.studentId
-                                    }
+                                            ?.student?.studentId,
+                                        8
+                                    )}
                                 </span>
                             )}
                             <span>

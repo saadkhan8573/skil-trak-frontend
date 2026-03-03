@@ -13,6 +13,7 @@ import { ReportOptionsEnum } from '@types'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { FilterReport } from '../../FilterReport'
+import { ellipsisText } from '@utils'
 
 type Props = {
     startDate: Date
@@ -49,7 +50,12 @@ export const NewStudentReport = ({
                             imageUrl={info?.row?.original?.user?.avatar}
                         />
                         <div className="flex flex-col">
-                            <span>{info?.row?.original?.studentId}</span>
+                            <span>
+                                {ellipsisText(
+                                    info?.row?.original?.studentId,
+                                    8
+                                )}
+                            </span>
                             <span>{info?.row?.original?.user?.name}</span>
                         </div>
                     </a>

@@ -17,6 +17,7 @@ import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
 import { CompleteSubmissionModal } from './modals'
 import { Result } from '@constants'
+import { ellipsisText } from '@utils'
 
 export const ReviewCompleted = () => {
     const router = useRouter()
@@ -61,7 +62,8 @@ export const ReviewCompleted = () => {
 
                     <div>
                         <Typography variant="small" color="text-gray-700">
-                            ID:{row?.original?.student?.studentId}
+                            ID:
+                            {ellipsisText(row?.original?.student?.studentId, 8)}
                         </Typography>
                         <Typography semibold>
                             {row?.original?.student?.user?.name}

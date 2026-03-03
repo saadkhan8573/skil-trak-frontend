@@ -163,7 +163,7 @@ export const ViewProfileCB = () => {
                                         <FaAddressCard />
                                     </span>
                                     <p className="text-sm font-medium">
-                                        {data?.studentId}
+                                        {ellipsisText(data?.studentId, 8)}
                                     </p>
                                 </div>
                                 <div className="text-gray-400 text-[11px] -mt-0.5 text-center">

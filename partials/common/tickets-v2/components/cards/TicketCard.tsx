@@ -4,7 +4,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from '@components/ui/tooltip'
-import { getUserCredentials } from '@utils'
+import { ellipsisText, getUserCredentials } from '@utils'
 import {
     ArrowRight,
     Building2,
@@ -266,7 +266,10 @@ const TicketCardComponent = ({
                                 <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover/profile:opacity-100 transition-opacity" />
                             </div>
                             <div className="text-[#0D5468]/60 text-[9px] truncate">
-                                {ticket?.user?.student?.studentId}
+                                {ellipsisText(
+                                    ticket?.user?.student?.studentId,
+                                    8
+                                )}
                             </div>
                         </div>
                     </Link>

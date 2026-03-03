@@ -9,7 +9,7 @@ import {
 import { UserRoles } from '@constants'
 import { RtoApi } from '@queries'
 import { ColumnDef } from '@tanstack/react-table'
-import { getUserCredentials } from '@utils'
+import { ellipsisText, getUserCredentials } from '@utils'
 type Props = {
     rtoUser?: number
 }
@@ -39,7 +39,12 @@ export const StudentResultsDetail = ({ rtoUser }: Props) => {
                         imageUrl={info?.row?.original?.student?.user?.avatar}
                     />
                     <div className="flex flex-col">
-                        <span>{info?.row?.original?.student?.studentId}</span>
+                        <span>
+                            {ellipsisText(
+                                info?.row?.original?.student?.studentId,
+                                8
+                            )}
+                        </span>
                         <span>{info?.row?.original?.student?.user?.name}</span>
                     </div>
                 </a>

@@ -58,10 +58,11 @@ export const StudentCellInfo = ({
                 </div>
 
                 <Link
-                    href={`${router.pathname === '/portals/sub-admin/talent-pool'
-                        ? '#'
-                        : `/portals/sub-admin/students/${student?.id}/detail`
-                        }`}
+                    href={`${
+                        router.pathname === '/portals/sub-admin/talent-pool'
+                            ? '#'
+                            : `/portals/sub-admin/students/${student?.id}/detail`
+                    }`}
                     onClick={() => {
                         setLink('subadmin-student', router)
                         if (isBrowser()) {
@@ -72,19 +73,9 @@ export const StudentCellInfo = ({
                         }
                     }}
                 >
-
                     <div className="flex items-center gap-x-2">
                         <div className="flex items-center gap-x-2">
                             <div className="flex items-center gap-x-2">
-                                {subadmin?.isManager && (
-                                    <p
-                                        className={
-                                            'whitespace-nowrap text-xs text-gray-500'
-                                        }
-                                    >
-                                        {student?.studentId}
-                                    </p>
-                                )}
                                 {student?.nonContactable && (
                                     <div className="group relative bg-red-600 p-1 rounded-full flex items-center justify-center">
                                         <FiPhoneOff className="text-white text-[10px]" />
@@ -100,9 +91,7 @@ export const StudentCellInfo = ({
                                         <div className="group relative ">
                                             <LuFlagTriangleRight className="text-red-600 text-xl" />
                                             <Tooltip
-                                                position={
-                                                    TooltipPosition.left
-                                                }
+                                                position={TooltipPosition.left}
                                             >
                                                 Flagged Issue
                                             </Tooltip>
@@ -154,13 +143,13 @@ export const StudentCellInfo = ({
                                 {student?.user?.name} {student?.familyName}{' '}
                             </p>
                             <CopyData
-                                text={`${student?.user?.name} ${student?.familyName ?? ''
-                                    }`}
+                                text={`${student?.user?.name} ${
+                                    student?.familyName ?? ''
+                                }`}
                                 type={'Student Name'}
                             />
                         </div>
-                        {student?.tickets &&
-                            student?.tickets?.length > 0 ? (
+                        {student?.tickets && student?.tickets?.length > 0 ? (
                             <div className="w-4 h-4 rounded  relative group">
                                 <BsTicketDetailed className="text-black text-lg" />
                                 <Tooltip>Ticket Created</Tooltip>
@@ -168,16 +157,16 @@ export const StudentCellInfo = ({
                         ) : null}
                         {student?.isSnoozed ? (
                             <div className="w-4 h-4 rounded  relative group">
-                                <MdSnooze
-                                    size={17}
-                                    className="text-red-500"
-                                />
+                                <MdSnooze size={17} className="text-red-500" />
                                 <Tooltip>Student Snoozed</Tooltip>
                             </div>
                         ) : null}
                         {student?.studentStatus === StudentStatusEnum.EXPIRED &&
                             student?.expiryDate &&
-                            moment(student.expiryDate).isBefore(moment(), 'day') && (
+                            moment(student.expiryDate).isBefore(
+                                moment(),
+                                'day'
+                            ) && (
                                 <div className="w-4 h-4 flex items-center justify-center rounded relative group">
                                     <MdTimerOff
                                         size={17}
@@ -195,10 +184,7 @@ export const StudentCellInfo = ({
                                         <FaEnvelope />
                                     </span>
                                     <p className="text-gray-500">
-                                        {ellipsisText(
-                                            student?.user?.email,
-                                            20
-                                        )}
+                                        {ellipsisText(student?.user?.email, 20)}
                                     </p>
                                 </div>
                             )}
@@ -217,5 +203,5 @@ export const StudentCellInfo = ({
                 </Link>
             </div>
         </div>
-    );
+    )
 }

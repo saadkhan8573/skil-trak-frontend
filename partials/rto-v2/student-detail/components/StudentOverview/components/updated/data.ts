@@ -1,3 +1,5 @@
+import { WorkplaceCurrentStatus } from '@utils'
+
 export interface CourseData {
     id: string
     name: string
@@ -233,7 +235,7 @@ export const coursesData: Record<string, CourseData> = {
                 createdDate: 'Jul 18, 2024, 11:45 AM',
                 lastActionDate: 'Jul 28, 2024, 04:15 PM',
                 assignedTo: 'Emma Wilson',
-                status: 'rejected-by-student',
+                status: WorkplaceCurrentStatus.RejectedByStudent,
                 progress: 15,
                 workflowStage: 'Rejected by Student',
                 nextAction: 'Request Rejected',
@@ -268,7 +270,7 @@ export const coursesData: Record<string, CourseData> = {
                 createdDate: 'Jun 1, 2024, 03:30 PM',
                 lastActionDate: 'Jun 15, 2024, 02:50 PM',
                 assignedTo: 'Michael Torres',
-                status: 'rejected-by-industry',
+                status: WorkplaceCurrentStatus.RejectedByIndustry,
                 progress: 25,
                 workflowStage: 'Rejected by Industry',
                 nextAction: 'Request Rejected',

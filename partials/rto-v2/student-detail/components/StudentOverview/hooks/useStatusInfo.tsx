@@ -11,7 +11,7 @@ export const useStatusInfo = ({
     workplace: IWorkplaceIndustries
     workIndustry: WorkplaceWorkIndustriesType
 }) => {
-    const statusMapping = {
+    const statusMapping: Record<WorkplaceCurrentStatus, string> = {
         [WorkplaceCurrentStatus.NotRequested]: 'Student Added',
         [WorkplaceCurrentStatus.Applied]: 'Request Generated',
         [WorkplaceCurrentStatus.CaseOfficerAssigned]: 'Industry sourcing',
@@ -31,6 +31,9 @@ export const useStatusInfo = ({
         [WorkplaceCurrentStatus.NoResponse]: 'No Response',
         [WorkplaceCurrentStatus.Rejected]: 'Rejected',
         [WorkplaceCurrentStatus.Terminated]: 'Terminated',
+        [WorkplaceCurrentStatus.RejectedByStudent]: 'Rejected by Student',
+        [WorkplaceCurrentStatus.RejectedByIndustry]: 'Rejected by Industry',
+        [WorkplaceCurrentStatus.RejectedByRto]: 'Rejected by RTO',
     }
 
     const statusOrder = [
@@ -89,10 +92,7 @@ export const useStatusInfo = ({
                                 (status) => !terminalStatuses.includes(status)
                             )
                             .map(
-                                (s: WorkplaceCurrentStatus) =>
-                                    statusMapping[
-                                        s as keyof typeof statusMapping
-                                    ]
+                                (s: WorkplaceCurrentStatus) => statusMapping[s]
                             )
                     )
                 ),
@@ -105,7 +105,7 @@ export const useStatusInfo = ({
                     .slice(0, currentIndex + 1) // Include current status in completed
                     .map(
                         (status: WorkplaceCurrentStatus) =>
-                            statusMapping[status as keyof typeof statusMapping]
+                            statusMapping[status]
                     )
             )
         )
@@ -117,7 +117,7 @@ export const useStatusInfo = ({
                     .slice(currentIndex + 1) // All statuses after current
                     .map(
                         (status: WorkplaceCurrentStatus) =>
-                            statusMapping[status as keyof typeof statusMapping]
+                            statusMapping[status]
                     )
             )
         ).filter((label) => !completed.includes(label)) // Ensure no overlap if current label maps to multiple internal statuses

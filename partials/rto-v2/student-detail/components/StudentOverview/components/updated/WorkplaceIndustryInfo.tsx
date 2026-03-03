@@ -92,6 +92,13 @@ export const WorkplaceIndustryInfo = ({
                                         Verified Partner
                                     </Badge>
                                 )}
+
+                                {industry?.isPremium && (
+                                    <Badge variant="info" Icon={Star}>
+                                        Premium
+                                    </Badge>
+                                )}
+
                                 {latestWorkplaceApprovaleRequest && (
                                     <Badge
                                         variant={
@@ -103,21 +110,38 @@ export const WorkplaceIndustryInfo = ({
                                                   ? 'error'
                                                   : 'warning'
                                         }
-                                        text={
+                                        text={`${
                                             latestWorkplaceApprovaleRequest?.status
                                                 ?.charAt(0)
                                                 ?.toUpperCase() +
                                             latestWorkplaceApprovaleRequest?.status?.slice(
                                                 1
                                             )
-                                        }
+                                        } from student`}
                                     />
                                 )}
-                                {industry?.isPremium && (
-                                    <Badge variant="info" Icon={Star}>
-                                        Premium
-                                    </Badge>
+                                {latestWorkplaceApprovaleRequest && (
+                                    <Badge
+                                        variant={
+                                            latestWorkplaceApprovaleRequest.rtoApprovalStatus ===
+                                            'approved'
+                                                ? 'success'
+                                                : latestWorkplaceApprovaleRequest.rtoApprovalStatus ===
+                                                    'rejected'
+                                                  ? 'error'
+                                                  : 'warning'
+                                        }
+                                        text={`${
+                                            latestWorkplaceApprovaleRequest?.rtoApprovalStatus
+                                                ?.charAt(0)
+                                                ?.toUpperCase() +
+                                            latestWorkplaceApprovaleRequest?.rtoApprovalStatus?.slice(
+                                                1
+                                            )
+                                        } from RTO`}
+                                    />
                                 )}
+
                                 {latestWorkplaceApprovaleRequest?.status ===
                                     'pending' && (
                                     <Badge

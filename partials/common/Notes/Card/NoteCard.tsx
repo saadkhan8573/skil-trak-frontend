@@ -125,12 +125,12 @@ export const NoteCard = ({ note }: { note: NoteType | any }) => {
                     note?.isInternal
                         ? 'bg-[#F5F5F5]'
                         : note?.author?.role === UserRoles.RTO
-                        ? 'bg-[#bfe7f6]'
-                        : note?.isPinned
-                        ? 'bg-[#FFDCDC]'
-                        : note?.isSuccess === false
-                        ? 'bg-error'
-                        : 'bg-[#FEF6E6] '
+                          ? 'bg-[#bfe7f6]'
+                          : note?.isPinned
+                            ? 'bg-[#FFDCDC]'
+                            : note?.isSuccess === false
+                              ? 'bg-error'
+                              : 'bg-[#FEF6E6] '
                 } p-4 rounded-xl shadow-lg `}
             >
                 <div className={`${isDeleting ? 'blur' : ''}`}>
@@ -218,7 +218,7 @@ export const NoteCard = ({ note }: { note: NoteType | any }) => {
                     <div>
                         <div className={`text-sm mt-1 mb-2`}>
                             <span
-                                className="block remove-text-bg customTailwingStyles-inline-style customTailwingStyles"
+                                className="block remove-text-bg customTailwingStyles-inline-style customTailwingStyles whitespace-pre-wrap"
                                 dangerouslySetInnerHTML={{
                                     __html: note?.body ?? note?.message,
                                 }}
@@ -248,9 +248,9 @@ export const NoteCard = ({ note }: { note: NoteType | any }) => {
                                         note.isPinned
                                             ? 'text-red-800'
                                             : note?.isSuccess ||
-                                              note?.isSuccess !== false
-                                            ? 'text-[#BFBF80]'
-                                            : 'text-white'
+                                                note?.isSuccess !== false
+                                              ? 'text-[#BFBF80]'
+                                              : 'text-white'
                                     } `}
                                 >
                                     {moment(

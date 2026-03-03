@@ -20,6 +20,7 @@ export interface AssessmentEvidenceFolder extends BaseResponse {
     isFacilityCheckList: boolean
     isOtherDoc: boolean
     isIndustryCheck: boolean
+    isCustom: boolean
     assessmentResult: any
     comments: any
 }

@@ -1,10 +1,9 @@
 import { NoData } from '@components'
-import { AlertCircle, Building2, FileText, ChevronRight } from 'lucide-react'
-import { Building2 as BuildingIcon } from 'lucide-react'
 import { Skeleton } from '@components/ui/skeleton'
 import { IWorkplaceIndustries } from '@redux/queryTypes'
-import { usePlacementRequest } from './hooks/usePlacementRequest'
+import { AlertCircle, Building2, ChevronRight, FileText } from 'lucide-react'
 import { PlacementRequestItem } from './components/PlacementRequestItem'
+import { usePlacementRequest } from './hooks/usePlacementRequest'
 
 interface PlacementRequestProps {
     nonActiveWorkplaces: IWorkplaceIndustries[]
@@ -69,16 +68,6 @@ export function PlacementRequest({
                         </div>
                     </div>
                 </div>
-
-                {!canCreateNewRequest && (
-                    <div className="mt-2 bg-amber-500/20 backdrop-blur-sm border border-amber-400/30 rounded px-2 py-1 flex items-center gap-1.5">
-                        <AlertCircle className="w-3 h-3 text-amber-200 shrink-0" />
-                        <span className="text-amber-100 text-[10px]">
-                            First placement must start before creating new
-                            request
-                        </span>
-                    </div>
-                )}
             </div>
 
             {/* Canceled/Completed Requests List */}

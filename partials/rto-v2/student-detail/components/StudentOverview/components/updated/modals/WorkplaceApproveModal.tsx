@@ -4,27 +4,49 @@ import {
     DialogHeader,
     DialogTitle,
     DialogFooter,
-} from "@components/ui/dialog";
-import { Button } from "@components";
-import { AlertTriangle, CheckCircle } from "lucide-react";
+} from '@components/ui/dialog'
+import { Button } from '@components'
+import { AlertTriangle, CheckCircle } from 'lucide-react'
+import { useState } from 'react'
+import { RtoApi } from '@queries'
+import { WpAppRequEnum } from '@partials/rto/wpApprovalReq/enum'
+import { useNotification } from '@hooks'
 
 interface WorkplaceApproveModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onConfirm: () => void;
-    comment: string;
-    setComment: (comment: string) => void;
-    isLoading: boolean;
+    isOpen: boolean
+    onClose: () => void
+    id?: number
 }
 
 export function WorkplaceApproveModal({
     isOpen,
     onClose,
-    onConfirm,
-    comment,
-    setComment,
-    isLoading,
+    id,
 }: WorkplaceApproveModalProps) {
+    const [comment, setComment] = useState('')
+    const { notification } = useNotification()
+    const [changeStatus, { isLoading }] =
+        RtoApi.Workplace.wpAppReqChangeStatus()
+
+    const handleConfirm = () => {
+        if (!id) return
+
+        changeStatus({
+            id: id,
+            status: WpAppRequEnum.APPROVED,
+            comment: comment,
+        } as any).then((res: any) => {
+            if (res?.data) {
+                notification.success({
+                    title: 'Approved',
+                    description: 'Placement approved successfully.',
+                })
+                onClose()
+                setComment('')
+            }
+        })
+    }
+
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="max-w-lg p-0 overflow-hidden border-none rounded-2xl">
@@ -35,8 +57,12 @@ export function WorkplaceApproveModal({
                             <CheckCircle className="w-6 h-6 text-white" />
                         </div>
                         <div className="text-left">
-                            <DialogTitle className="text-xl font-bold text-white">Approve Placement Request</DialogTitle>
-                            <p className="text-green-100 text-sm mt-0.5">This action requires confirmation</p>
+                            <DialogTitle className="text-xl font-bold text-white">
+                                Approve Placement Request
+                            </DialogTitle>
+                            <p className="text-green-100 text-sm mt-0.5">
+                                This action requires confirmation
+                            </p>
                         </div>
                     </div>
                 </DialogHeader>
@@ -48,22 +74,44 @@ export function WorkplaceApproveModal({
                                 <AlertTriangle className="w-4 h-4 text-white" />
                             </div>
                             <div className="flex-1">
-                                <h4 className="text-sm font-bold text-orange-900 mb-1">Important Notice</h4>
+                                <h4 className="text-sm font-bold text-orange-900 mb-1">
+                                    Important Notice
+                                </h4>
                                 <p className="text-xs text-orange-800 leading-relaxed">
                                     By approving this placement request:
                                 </p>
                                 <ul className="mt-2 space-y-1 text-xs text-orange-800">
                                     <li className="flex items-start gap-2">
-                                        <span className="text-orange-500 mt-0.5">•</span>
-                                        <span>Both <strong>industry and student</strong> will be notified via email</span>
+                                        <span className="text-orange-500 mt-0.5">
+                                            •
+                                        </span>
+                                        <span>
+                                            Both{' '}
+                                            <strong>
+                                                industry and student
+                                            </strong>{' '}
+                                            will be notified via email
+                                        </span>
                                     </li>
                                     <li className="flex items-start gap-2">
-                                        <span className="text-orange-500 mt-0.5">•</span>
-                                        <span>The workplace will be <strong>added to student account</strong></span>
+                                        <span className="text-orange-500 mt-0.5">
+                                            •
+                                        </span>
+                                        <span>
+                                            The workplace will be{' '}
+                                            <strong>
+                                                added to student account
+                                            </strong>
+                                        </span>
                                     </li>
                                     <li className="flex items-start gap-2">
-                                        <span className="text-orange-500 mt-0.5">•</span>
-                                        <span>This action <strong>cannot be undone</strong></span>
+                                        <span className="text-orange-500 mt-0.5">
+                                            •
+                                        </span>
+                                        <span>
+                                            This action{' '}
+                                            <strong>cannot be undone</strong>
+                                        </span>
                                     </li>
                                 </ul>
                             </div>
@@ -72,7 +120,8 @@ export function WorkplaceApproveModal({
 
                     <div>
                         <label className="block text-sm font-semibold text-slate-900 mb-2">
-                            Reason for Approval <span className="text-red-500">*</span>
+                            Reason for Approval{' '}
+                            <span className="text-red-500">*</span>
                         </label>
                         <textarea
                             value={comment}
@@ -82,7 +131,8 @@ export function WorkplaceApproveModal({
                             className="w-full px-4 py-3 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none placeholder:text-slate-400"
                         />
                         <p className="mt-1.5 text-xs text-slate-500">
-                            This comment will be included in the notification emails sent to all parties.
+                            This comment will be included in the notification
+                            emails sent to all parties.
                         </p>
                     </div>
                 </div>
@@ -97,7 +147,7 @@ export function WorkplaceApproveModal({
                         Cancel
                     </Button>
                     <Button
-                        onClick={onConfirm}
+                        onClick={handleConfirm}
                         disabled={!comment.trim() || isLoading}
                         className={`px-4 py-2 text-sm bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${isLoading ? 'cursor-wait' : ''}`}
                     >
@@ -116,5 +166,5 @@ export function WorkplaceApproveModal({
                 </DialogFooter>
             </DialogContent>
         </Dialog>
-    );
+    )
 }

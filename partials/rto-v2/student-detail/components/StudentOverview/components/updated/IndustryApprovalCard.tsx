@@ -19,12 +19,8 @@ export const IndustryApprovalCard = ({
 }: IndustryApprovalCardProps) => {
     const [showApproveModal, setShowApproveModal] = useState(false)
     const [showRejectModal, setShowRejectModal] = useState(false)
-    const [approveComment, setApproveComment] = useState('')
-    const [rejectComment, setRejectComment] = useState('')
-    const [isApproving, setIsApproving] = useState(false)
-    const [isRejecting, setIsRejecting] = useState(false)
 
-    const { statuses } = useStatusInfo({
+    const { statuses, currentStep } = useStatusInfo({
         workplace: workplace as any,
         workIndustry: workIndustry as WorkplaceWorkIndustriesType,
     })
@@ -38,31 +34,7 @@ export const IndustryApprovalCard = ({
               : 'pending',
     }))
 
-    const handleApprovePlacement = () => {
-        if (!approveComment.trim()) return
-        setIsApproving(true)
-        setTimeout(() => {
-            setIsApproving(false)
-            setShowApproveModal(false)
-            setApproveComment('')
-            alert(
-                'Placement approved. Notifications sent to industry and student.'
-            )
-        }, 1500)
-    }
-
-    const handleRejectPlacement = () => {
-        if (!rejectComment.trim()) return
-        setIsRejecting(true)
-        setTimeout(() => {
-            setIsRejecting(false)
-            setShowRejectModal(false)
-            setRejectComment('')
-            alert(
-                'Placement rejected. Notifications sent to industry and student.'
-            )
-        }, 1500)
-    }
+    const approvalId = workplace?.latestPendingApproval?.id
 
     return (
         <>
@@ -80,14 +52,15 @@ export const IndustryApprovalCard = ({
                                     Take action to progress placement
                                 </p>
                                 <p className="text-sm font-bold text-[#6B46C1] mb-2">
-                                    Awaiting Industry Confirmation
+                                    {currentStep?.label ||
+                                        'Awaiting Industry Confirmation'}
                                 </p>
                             </div>
                         </div>
 
                         <div className="flex items-center gap-2 shrink-0">
                             {workflowSteps.find(
-                                (s) => s.label === 'Waiting for industry'
+                                (s) => s.label === 'Waiting for Industry'
                             )?.status === 'current' && (
                                 <>
                                     <Button
@@ -112,7 +85,7 @@ export const IndustryApprovalCard = ({
                             )}
 
                             {workflowSteps.find(
-                                (s) => s.label === 'Waiting for student'
+                                (s) => s.label === 'Waiting for Student'
                             )?.status === 'current' && (
                                 <>
                                     <Button
@@ -140,8 +113,11 @@ export const IndustryApprovalCard = ({
 
                     <div className="grow flex items-end">
                         <p className="text-xs text-slate-600 leading-relaxed">
-                            The workplace will review your placement request
-                            shortly
+                            {currentStep?.label === 'Waiting for Industry'
+                                ? 'The workplace will review your placement request shortly'
+                                : currentStep?.label === 'Waiting for Student'
+                                  ? 'The student needs to accept the placement request'
+                                  : 'Follow the progress of your placement request'}
                         </p>
                     </div>
                 </div>
@@ -150,19 +126,13 @@ export const IndustryApprovalCard = ({
             <WorkplaceApproveModal
                 isOpen={showApproveModal}
                 onClose={() => setShowApproveModal(false)}
-                onConfirm={handleApprovePlacement}
-                comment={approveComment}
-                setComment={setApproveComment}
-                isLoading={isApproving}
+                id={approvalId}
             />
 
             <WorkplaceRejectModal
                 isOpen={showRejectModal}
                 onClose={() => setShowRejectModal(false)}
-                onConfirm={handleRejectPlacement}
-                comment={rejectComment}
-                setComment={setRejectComment}
-                isLoading={isRejecting}
+                id={approvalId}
             />
         </>
     )

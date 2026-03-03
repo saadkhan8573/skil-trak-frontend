@@ -82,7 +82,6 @@ export function WorkplaceBio({ workplace, onAddNew }: WorkplaceBioProps) {
                 <WorkplaceStatuses
                     workplace={workplace}
                     workIndustry={workIndustry}
-                    industry={industry}
                     onCancelRequested={() => {
                         const role = getUserCredentials()?.role
                         if (role === UserRoles.ADMIN) {

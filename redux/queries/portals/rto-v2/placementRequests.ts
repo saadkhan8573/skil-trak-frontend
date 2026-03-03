@@ -1,3 +1,4 @@
+import { WorkplaceProgress } from '@redux/queryTypes'
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
 
@@ -81,7 +82,7 @@ export const placementRequestsEndPoints = (
         providesTags: ['RTO'],
     }),
     // rtos/placement-request/:id/view-progress
-    getStudentPlacementProgress: builder.query<any, any>({
+    getStudentPlacementProgress: builder.query<WorkplaceProgress[], number>({
         query: (id) => ({
             url: `${PREFIX}placement-request/${id}/view-progress`,
         }),

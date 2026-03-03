@@ -5,21 +5,27 @@ export const ReadinessTableHeader = ({
 }: {
     onSort: (key: string) => void
 }) => (
-    <div className="grid grid-cols-9 bg-white shadow-2xl border-b border-slate-200 px-4 py-3">
-        <div className="col-span-2 text-xs text-slate-600 font-bold uppercase tracking-wider">
+    <div className="grid grid-cols-10 bg-white shadow-2xl border-b border-slate-200 px-4 py-3">
+        <div className="col-span-2 text-xs text-slate-600 font-bold uppercase ">
             Location
         </div>
-        <div className="text-xs text-slate-600 font-bold uppercase tracking-wider">
+        <div className="text-xs text-slate-600 font-bold uppercase ">
             Sector
         </div>
-        <div className="text-right text-xs text-slate-600 font-bold uppercase tracking-wider">
+        <div className="text-right text-xs text-slate-600 font-bold uppercase ">
             Expected Students
         </div>
         <div
             title="Industry Capacity"
-            className="text-right text-xs text-slate-600 font-bold uppercase tracking-wider whitespace-nowrap"
+            className="text-right text-xs text-slate-600 font-bold uppercase  whitespace-nowrap"
         >
             Ind Capacity
+        </div>
+        <div
+            title="Industry Capacity"
+            className="text-right text-xs text-slate-600 font-bold uppercase "
+        >
+            Ind Capacity (20km)
         </div>
         <div className="flex justify-end">
             <button
@@ -30,7 +36,7 @@ export const ReadinessTableHeader = ({
                 {/* <ArrowUpDown className="w-3 h-3" /> */}
             </button>
         </div>
-        <div className="pl-4 text-xs text-slate-600 font-bold uppercase tracking-wider">
+        <div className="pl-4 text-xs text-slate-600 font-bold uppercase ">
             Status
         </div>
         <div className="flex justify-end">
@@ -42,7 +48,7 @@ export const ReadinessTableHeader = ({
                 {/* <ArrowUpDown className="w-3 h-3" /> */}
             </button>
         </div>
-        <div className="pl-4 text-xs text-slate-600 font-bold uppercase tracking-wider">
+        <div className="pl-4 text-xs text-slate-600 font-bold uppercase ">
             Action
         </div>
     </div>

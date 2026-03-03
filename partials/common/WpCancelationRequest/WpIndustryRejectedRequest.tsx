@@ -302,8 +302,8 @@ export const WpIndustryRejectedRequest = () => {
                     ) : (
                         !isError && (
                             <EmptyData
-                                title={'No Blocked Students!'}
-                                description={'You have not blocked Student yet'}
+                                title={'No rejected request!'}
+                                description={'There is no industry rejected yet'}
                                 height={'50vh'}
                             />
                         )

@@ -473,7 +473,7 @@ export const Workplace = ({
 
                 {showPreviousWorkplace ? (
                     getCancelledWP?.data && getCancelledWP?.data?.length > 0 ? (
-                        <div className="flex flex-col gap-y-2 h-[27rem] overflow-auto custom-scrollbar">
+                        <div className="flex flex-col gap-y-2 h-108 overflow-auto custom-scrollbar">
                             {getCancelledWP?.data?.map((cancelledWp: any) => (
                                 <CancelledWorkplaceCard
                                     cancelledWp={cancelledWp}

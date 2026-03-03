@@ -15,6 +15,7 @@ import { useAppSelector } from '@redux/hooks'
 import moment from 'moment'
 import { useState } from 'react'
 import { EditScheduleModal } from './modals'
+import { CourseProgressSkeleton } from '../../../../skeletonLoader/StudentSkeletons'
 
 export function CourseProgress() {
     const [showEditModal, setShowEditModal] = useState(false)
@@ -45,19 +46,71 @@ export function CourseProgress() {
 
     const schedule = data?.schedule
 
+    const timeSlots = StudentApi.Schedule.scheduleTimeSlots(
+        {
+            scheduleId: schedule?.id,
+            search: schedule?.startDate
+                ? `startDate:${moment(schedule.startDate).format(
+                      'YYYY-MM-DD'
+                  )},endDate:${moment(schedule.startDate)
+                      .add(6, 'days')
+                      .format('YYYY-MM-DD')}`
+                : '',
+        },
+        {
+            skip: !schedule?.id || !schedule?.startDate,
+            refetchOnMountOrArgChange: 150,
+        }
+    )
+
     // Calculate hours
     const totalHours: number = Number(schedule?.hours ?? 0)
-    const completedHours: number = Number(schedule?.doneHours ?? 0)
-    const remainingHours: number = totalHours - completedHours
+
+    // Calculate hours manually from timeSlots and startDate
+    const calculateCompletedHours = () => {
+        if (!schedule?.startDate || !timeSlots?.data?.length) {
+            return Number(schedule?.doneHours ?? 0)
+        }
+
+        // Map day names to hours based on the first week's time slots
+        const dayHoursMap: Record<string, number> = {}
+        timeSlots.data.forEach((slot: any) => {
+            if (slot.openingTime && slot.closingTime && !slot.isCancelled) {
+                const startT = moment(slot.openingTime, ['HH:mm', 'HH:mm:ss'])
+                const endT = moment(slot.closingTime, ['HH:mm', 'HH:mm:ss'])
+                const hours = endT.diff(startT, 'hours', true)
+                dayHoursMap[slot.day.toLowerCase()] = hours
+            }
+        })
+
+        const start = moment(schedule.startDate).startOf('day')
+        const today = moment().startOf('day')
+        let totalDone = 0
+
+        const current = moment(start)
+        while (current.isSameOrBefore(today)) {
+            const dayName = current.format('dddd').toLowerCase()
+            if (dayHoursMap[dayName]) {
+                totalDone += dayHoursMap[dayName]
+            }
+            current.add(1, 'day')
+        }
+
+        return Math.min(totalDone, totalHours)
+    }
+
+    const completedHours: number = calculateCompletedHours()
+    const remainingHours: number = Math.max(0, totalHours - completedHours)
     const overallProgress: number =
         totalHours > 0 ? Math.round((completedHours / totalHours) * 100) : 0
 
-    if (isLoading || isFetching) {
-        return (
-            <div className="bg-white/80 backdrop-blur-sm rounded-lg border border-slate-200/60 shadow-md p-4 flex items-center justify-center min-h-[120px]">
-                <LoadingAnimation />
-            </div>
-        )
+    if (
+        isLoading ||
+        isFetching ||
+        timeSlots.isLoading ||
+        timeSlots.isFetching
+    ) {
+        return <CourseProgressSkeleton />
     }
 
     if (!schedule) {

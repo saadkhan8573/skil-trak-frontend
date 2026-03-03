@@ -103,10 +103,14 @@ export const usePlacementRequest = (
                 if (item.type === 'student') {
                     items.push({
                         id: item?.id,
+                        industry: item?.industry,
                         workplace:
                             item?.industry?.user?.name || 'Unknown Workplace',
                         location: item?.industry?.addressLine1,
-                        status: 'rejected-by-student',
+                        status:
+                            item?.ActionedBy?.role === UserRoles?.RTO
+                                ? WorkplaceCurrentStatus.RejectedByRto
+                                : WorkplaceCurrentStatus.RejectedByStudent,
                         createdDate: moment(item.createdAt).format(
                             'DD MMM YYYY'
                         ),
@@ -122,10 +126,12 @@ export const usePlacementRequest = (
                 } else if (item.type === 'industry') {
                     items.push({
                         id: item?.id,
+                        industry: item?.industry,
                         workplace:
-                            item.industry?.user?.name || 'Unknown Workplace',
+                            item.industry?.user?.name ||
+                            'Workplace Option Not Provided',
                         location: item?.industry?.addressLine1,
-                        status: 'rejected-by-industry',
+                        status: WorkplaceCurrentStatus.RejectedByIndustry,
                         createdDate: moment(item.createdAt).format(
                             'DD MMM YYYY'
                         ),
@@ -139,13 +145,15 @@ export const usePlacementRequest = (
                 } else {
                     items.push({
                         id: item?.id,
+                        industry: item?.industry,
                         workplace:
-                            item.industry?.user?.name || 'Unknown Workplace',
+                            item.industry?.user?.name ||
+                            'Workplace Option Not Provided',
                         location: item?.industry?.addressLine1,
                         status:
                             item.rtoApprovalStatus === 'rejected'
-                                ? 'rejected-by-industry'
-                                : 'cancelled',
+                                ? WorkplaceCurrentStatus.RejectedByRto
+                                : WorkplaceCurrentStatus.Cancelled,
                         createdDate: moment(item.createdAt).format(
                             'DD MMM YYYY'
                         ),
@@ -175,7 +183,8 @@ export const usePlacementRequest = (
 
                 items.push({
                     id: wp?.id,
-                    workplace: industry?.user?.name || 'Unknown',
+                    workplace:
+                        industry?.user?.name || 'Workplace Option Not Provided',
                     location: industry?.addressLine1 || 'N/A',
                     status: wp.currentStatus,
                     createdDate: moment(wp.createdAt).format('MMM D, YYYY'),
@@ -195,8 +204,6 @@ export const usePlacementRequest = (
         return items
     }, [rejectedIndustries, nonActiveWorkplaces])
 
-    console.log('canceledCompletedRequests', canceledCompletedRequests)
-
     const groupedRequests = useMemo(() => {
         return {
             completed: canceledCompletedRequests.filter(
@@ -207,10 +214,11 @@ export const usePlacementRequest = (
             ),
             rejected: canceledCompletedRequests.filter((r) =>
                 [
-                    'rejected-by-student',
-                    'rejected-by-industry',
+                    WorkplaceCurrentStatus.RejectedByStudent,
+                    WorkplaceCurrentStatus.RejectedByIndustry,
+                    WorkplaceCurrentStatus.RejectedByRto,
                     WorkplaceCurrentStatus.Rejected,
-                ].includes(r.status)
+                ].includes(r.status as WorkplaceCurrentStatus)
             ),
         }
     }, [canceledCompletedRequests])

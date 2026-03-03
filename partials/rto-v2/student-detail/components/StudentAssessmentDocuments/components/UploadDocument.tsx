@@ -38,20 +38,20 @@ export const UploadDocument = ({
             const formData = new FormData()
             formData.append('file', file)
 
-            const isOtherDoc = folder?.isOtherDoc || folder?.isIndustryCheck
+            const isOtherDoc = folder?.isOtherDoc
 
             const res: any = isOtherDoc
                 ? await uploadOtherDocs({
-                    studentId: Number(student?.id),
-                    body: formData,
-                    folderId: folder?.id ?? 0,
-                })
+                      studentId: Number(student?.id),
+                      body: formData,
+                      folderId: folder?.id ?? 0,
+                  })
                 : await uploadDocument({
-                    stdId: Number(student?.id),
-                    folderId: folder?.id ?? 0,
-                    responseId: response?.id!,
-                    body: formData,
-                })
+                      stdId: Number(student?.id),
+                      folderId: folder?.id ?? 0,
+                      responseId: response?.id!,
+                      body: formData,
+                  })
 
             if (res?.data) {
                 notification.success({

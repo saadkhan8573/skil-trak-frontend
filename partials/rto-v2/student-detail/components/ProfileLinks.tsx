@@ -19,7 +19,7 @@ import { MdInfo, MdSnooze } from 'react-icons/md'
 import { RiEditFill, RiFootprintFill } from 'react-icons/ri'
 import { TbMessage2Up } from 'react-icons/tb'
 import { StudentMessageModal } from '../modals/StudentMessageModal'
-import { StudentInfoMessageModal } from '../modals'
+import { StudentInfoMessageModal, StudentStatusModal } from '../modals'
 
 export const ProfileLinks = ({ profile }: { profile: Student }) => {
     const router = useRouter()
@@ -80,6 +80,12 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
             />
         )
     }
+    const onUpdateStatus = () => {
+        setModal(
+            <StudentStatusModal onCancel={onCancelClicked} student={profile} />
+        )
+    }
+
     const onMessageSendClicked = () => {
         setModal(
             <StudentMessageModal onCancel={onCancelClicked} student={profile} />
@@ -130,10 +136,10 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
                         role === UserRoles.ADMIN || subadmin?.isAdmin
                             ? `/portals/admin/student/edit-student/${profile?.id}`
                             : role === UserRoles.SUBADMIN
-                            ? `/portals/sub-admin/students/${profile?.id}/edit-student`
-                            : role === UserRoles.RTO
-                            ? `/portals/rto/students-and-placements/all-students/${profile?.id}/edit-student`
-                            : '#'
+                              ? `/portals/sub-admin/students/${profile?.id}/edit-student`
+                              : role === UserRoles.RTO
+                                ? `/portals/rto/students-and-placements/all-students/${profile?.id}/edit-student`
+                                : '#'
                     router.push(editPath)
                 },
             })
@@ -156,6 +162,11 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
                 Icon: MdSnooze,
                 onClick: () =>
                     profile?.isSnoozed ? UnSnoozeModal() : onSnooze(),
+            },
+            {
+                text: 'Update Status',
+                Icon: MdInfo,
+                onClick: () => onUpdateStatus(),
             }
         )
 

@@ -4,10 +4,7 @@ import { useAppSelector } from '@redux/hooks'
 import { AssessmentEvidenceFolder, Course, Student } from '@types'
 import { useMemo, useState } from 'react'
 import { CourseOverview } from '../StudentOverview'
-import {
-    DocumentFilter,
-    DocumentHeader
-} from './components'
+import { DocumentFilter, DocumentHeader } from './components'
 import { FolderSection } from './components/FolderSection'
 
 interface DocumentsProps {
@@ -31,6 +28,8 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
     const selectedCourse = useAppSelector(
         (state) => state.student.selectedCourse
     )
+
+    console.log({ selectedCourseselectedCourse: selectedCourse })
 
     const studentWorkplace = SubAdminApi.Student.getWorkplaceForSchedule(
         student?.id,
@@ -89,10 +88,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
     )
     const getIndustryOtherDocuments = useMemo(
         () => () => {
-            return documents?.data?.filter(
-                (document) =>
-                    document?.isOtherDoc
-            )
+            return documents?.data?.filter((document) => document?.isOtherDoc)
         },
         [documents]
     )
@@ -109,7 +105,9 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
     const allCommentsAdded = useMemo(
         () =>
             documents?.data
-                ?.filter((folder) => !folder?.isIndustryCheck)
+                ?.filter(
+                    (folder) => !folder?.isIndustryCheck && !folder?.isCustom
+                )
                 ?.every((f) => f?.studentResponse[0]?.comment),
         [documents?.data]
     )
@@ -119,9 +117,11 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
             !documents.isLoading &&
             !documents.isFetching &&
             documents.isSuccess &&
-            courseDocuments && courseDocuments?.length > 0 &&
+            courseDocuments &&
+            courseDocuments?.length > 0 &&
             courseDocuments?.every(
-                (f: AssessmentEvidenceFolder) => f?.studentResponse[0]?.files?.length > 0
+                (f: AssessmentEvidenceFolder) =>
+                    f?.studentResponse[0]?.files?.length > 0
             ),
         [documents, courseDocuments]
     )
@@ -129,7 +129,10 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
     const files = useMemo(
         () =>
             courseDocuments
-                ?.map((f: AssessmentEvidenceFolder) => f?.studentResponse?.[0]?.files?.length > 0)
+                ?.map(
+                    (f: AssessmentEvidenceFolder) =>
+                        f?.studentResponse?.[0]?.files?.length > 0
+                )
                 ?.filter((f: any) => f)?.length,
         [courseDocuments]
     )
@@ -148,9 +151,13 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
         () =>
             courseDocuments
                 ?.filter(
-                    (f: AssessmentEvidenceFolder) => f?.studentResponse?.[0]?.status === 'rejected'
+                    (f: AssessmentEvidenceFolder) =>
+                        f?.studentResponse?.[0]?.status === 'rejected'
                 )
-                ?.every((f: AssessmentEvidenceFolder) => f?.studentResponse?.[0]?.files?.length > 0),
+                ?.every(
+                    (f: AssessmentEvidenceFolder) =>
+                        f?.studentResponse?.[0]?.files?.length > 0
+                ),
         [courseDocuments]
     )
 
@@ -166,7 +173,8 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
 
     const isAllApproved = useMemo(
         () =>
-            courseDocuments && courseDocuments?.length > 0 &&
+            courseDocuments &&
+            courseDocuments?.length > 0 &&
             courseDocuments?.every(
                 (f) => f?.studentResponse[0]?.status === 'approved'
             ),
@@ -194,7 +202,8 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                 return (
                     (result?.result === Result.ReOpened ||
                         result?.result === Result.NotCompetent ||
-                        allCommentsAdded) && result?.result !== Result.Competent &&
+                        allCommentsAdded) &&
+                    result?.result !== Result.Competent &&
                     !result?.isSubmitted
                 )
             } else {
@@ -270,7 +279,9 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                     const shouldRender =
                         selectedView === 'all' || selectedView === section.type
                     return (
-                        shouldRender && section?.documents && section?.documents?.length > 0 && (
+                        shouldRender &&
+                        section?.documents &&
+                        section?.documents?.length > 0 && (
                             <FolderSection
                                 key={section.type}
                                 course={selectedCourse ?? ({ id: 0 } as Course)}
@@ -305,15 +316,17 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
                         />
                     </div>
                 )}
-                {selectedCourse?.results && selectedCourse?.results?.length > 0 &&
-                    <CourseResultModule
-                        student={student}
-                        selectedCourse={selectedCourse}
-                        result={result}
-                        allCommentsAdded={!!allCommentsAdded}
-                        subadmin={subadmin}
-                        getFolders={documents}
-                    />}
+                {selectedCourse?.results &&
+                    selectedCourse?.results?.length > 0 && (
+                        <CourseResultModule
+                            student={student}
+                            selectedCourse={selectedCourse}
+                            result={result}
+                            allCommentsAdded={!!allCommentsAdded}
+                            subadmin={subadmin}
+                            getFolders={documents}
+                        />
+                    )}
             </div>
         </div>
     )

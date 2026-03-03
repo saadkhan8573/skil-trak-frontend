@@ -277,7 +277,9 @@ export const Schedule = ({
                                                 }
                                                 startDate={
                                                     new Date(
-                                                        schedules?.data?.schedule?.startDate
+                                                        schedules?.data
+                                                            ?.schedule
+                                                            ?.startDate
                                                     )
                                                 }
                                             />

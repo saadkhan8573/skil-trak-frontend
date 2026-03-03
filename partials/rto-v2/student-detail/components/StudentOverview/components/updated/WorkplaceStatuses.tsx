@@ -54,6 +54,8 @@ export function WorkplaceStatuses({
     const currentStage = statuses.findIndex((s) => s.current) + 1
     const totalStages = statuses.length
 
+    const hasCancelledRequests = (workplace?.cancelledRequests?.length ?? 0) > 0
+
     return (
         <div className="px-4 py-3 bg-linear-to-br from-slate-50 via-white to-blue-50/30 border-b border-slate-200/60 relative overflow-hidden">
             {/* Decorative elements */}
@@ -95,8 +97,17 @@ export function WorkplaceStatuses({
                     </span>
                     <div className="ml-1 h-3 w-px bg-slate-300"></div>
                     <button
-                        onClick={onCancelRequested}
-                        className="flex items-center gap-1 text-red-600 hover:text-red-700 hover:bg-red-50 px-1.5 py-0.5 rounded transition-colors"
+                        onClick={
+                            !hasCancelledRequests
+                                ? onCancelRequested
+                                : undefined
+                        }
+                        disabled={hasCancelledRequests}
+                        className={`flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors ${
+                            hasCancelledRequests
+                                ? 'text-slate-400 cursor-not-allowed opacity-60'
+                                : 'text-red-600 hover:text-red-700 hover:bg-red-50'
+                        }`}
                     >
                         <X className="w-3 h-3" />
                         <span className="font-medium">Cancel</span>

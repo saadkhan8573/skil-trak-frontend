@@ -1,7 +1,9 @@
 import { Badge } from '@components'
-import { Badge as BadgeType } from '@components/ui/badge'
-import { Info, Clock, User, ChevronRight, Calendar } from 'lucide-react'
+import { Calendar, ChevronRight, Info, MapPin } from 'lucide-react'
 import { PlacementHistoryItem, statusConfigs } from '../types'
+import { WorkplaceCurrentStatus } from '@utils'
+import { useRouteInfo } from '../../../../hooks/useRouteInfo'
+import { useAppSelector } from '@redux/hooks'
 
 interface PlacementRequestItemProps {
     request: PlacementHistoryItem
@@ -27,13 +29,31 @@ export const PlacementRequestItem = ({
     hoveredCommentId,
     tooltipPosition,
 }: PlacementRequestItemProps) => {
+    const { studentDetail } = useAppSelector((state) => state.student)
+
+    const { travelInfo } = useRouteInfo({
+        studentLocation: studentDetail?.location?.split(',') || [],
+        industryLocation: request.industry?.location?.split(',') || [],
+        modes: ['driving'],
+    })
+
+    const drivingInfo = travelInfo.find((info) => info.mode === 'driving')
+    const displayDistance = drivingInfo?.distance ?? null
+    const drivingDuration = drivingInfo?.duration ?? null
+
+    console.log('requestrequest', request)
+
     const statusConfig =
         statusConfigs[request.status] || statusConfigs.cancelled
     const StatusIcon = statusConfig.icon
     const isCancelled = request.status === 'cancelled'
     const isCompleted = request.status === 'completed'
-    const isRejectedByStudent = request.status === 'rejected-by-student'
-    const isRejectedByIndustry = request.status === 'rejected-by-industry'
+    const isRejectedByStudent =
+        request.status === WorkplaceCurrentStatus.RejectedByStudent
+    const isRejectedByIndustry =
+        request.status === WorkplaceCurrentStatus.RejectedByIndustry
+    const isRejectedByRto =
+        request.status === WorkplaceCurrentStatus.RejectedByRto
 
     let iconBg = 'bg-linear-to-br from-red-500 to-red-600'
     let badgeClass = 'bg-red-50 text-red-700 border-red-200'
@@ -125,6 +145,13 @@ export const PlacementRequestItem = ({
                             </span>
                         </div>
                         <span>•</span>
+                        <div className="flex items-center gap-1 shrink-0">
+                            <Calendar className="w-2.5 h-2.5 text-slate-400" />
+                            <span className="whitespace-nowrap">
+                                Last Action: {request.lastActionDate}
+                            </span>
+                        </div>
+                        <span>•</span>
                         <Badge
                             outline
                             className="text-[9px] px-1 py-0 h-3.5 border-slate-300"
@@ -139,6 +166,21 @@ export const PlacementRequestItem = ({
 
                         <span>•</span>
                         <span className="truncate">{request.location}</span>
+
+                        {displayDistance && (
+                            <>
+                                <span>•</span>
+                                <span className="flex items-center gap-0.5 text-primary font-medium whitespace-nowrap">
+                                    <MapPin className="w-2 h-2" />
+                                    {displayDistance}
+                                    {drivingDuration && (
+                                        <span className="text-slate-400 font-normal ml-0.5">
+                                            ({drivingDuration})
+                                        </span>
+                                    )}
+                                </span>
+                            </>
+                        )}
                     </div>
                 </div>
 

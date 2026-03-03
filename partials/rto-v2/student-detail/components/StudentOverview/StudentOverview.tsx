@@ -121,10 +121,10 @@ export const StudentOverview = () => {
             {modal && modal}
             <div className="space-y-4">
                 <CourseOverview />
-                {/* <StudentOverViewUpdated
+                <StudentOverViewUpdated
                     sortedWorkplaces={sortedWorkplaces}
                     isLoading={studentWorkplaces?.isLoading}
-                /> */}
+                />
                 <PlacementRequest
                     sortedWorkplaces={sortedWorkplaces}
                     studentWorkplaces={studentWorkplaces}

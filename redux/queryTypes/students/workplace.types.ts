@@ -96,6 +96,15 @@ export interface Warning {
     type: string
 }
 
+export type RequestStatus = 'pending' | 'approved' | 'rejected'
+
+export interface CancelledRequestType extends BaseResponse {
+    id: number
+    comment: string
+    workplaceCurrentStatus: WorkplaceCurrentStatus
+    status: RequestStatus
+}
+
 export interface IWorkplaceIndustries {
     warnings?: Warning[]
     approvalStatus?: string
@@ -119,7 +128,7 @@ export interface IWorkplaceIndustries {
     prefferableLocation?: string
     status?: string
     updatedAt?: Date
-    cancelledRequests?: any
+    cancelledRequests?: CancelledRequestType[]
     interviewDate?: Date
     appointmentDate?: Date
     industries?: WorkplaceWorkIndustriesType[]

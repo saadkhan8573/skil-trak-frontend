@@ -99,18 +99,18 @@ export const IndustryStudentProfileDetail = ({ data }: { data: any }) => {
                             />
                         </div>
                     </div>
-                    <div className="h-64 w-[1px] bg-gray-300"></div>
+                    <div className="h-64 w-px bg-gray-300"></div>
                     <StudentDetail profile={profile} />
-                    <div className="h-64 w-[1px] bg-gray-300"></div>
+                    <div className="h-64 w-px bg-gray-300"></div>
 
                     <div className="flex flex-col gap-y-4">
                         <StudentRelatedInfo profile={profile} />
                         <EmergencyContact profile={profile} />
                     </div>
-                    <div className="h-64 w-[1px] bg-gray-300"></div>
+                    <div className="h-64 w-px bg-gray-300"></div>
 
                     <RtoDetail rto={profile?.student?.rto} />
-                    <div className="h-64 w-[1px] bg-gray-300"></div>
+                    <div className="h-64 w-px bg-gray-300"></div>
 
                     <div>
                         {(industry?.awaitingAgreementSigned ||

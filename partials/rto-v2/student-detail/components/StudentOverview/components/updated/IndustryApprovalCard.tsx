@@ -1,23 +1,26 @@
 import { Button } from '@components'
-import { CheckCircle, Clock, X } from 'lucide-react'
-import { useState } from 'react'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
 } from '@redux/queryTypes'
+import { CheckCircle, Clock, X } from 'lucide-react'
+import { useState } from 'react'
 import { useStatusInfo } from '../../hooks/useStatusInfo'
-import { WorkplaceApproveModal, WorkplaceRejectModal } from './modals'
+import { WorkplaceIndustryApproveModal, WorkplaceRejectModal } from './modals'
 
 import { STATUS_CONTENT } from './statusMapping'
+import { RtoApprovalWorkplaceRequest } from '@types'
 
 interface IndustryApprovalCardProps {
     workplace: IWorkplaceIndustries
     workIndustry: WorkplaceWorkIndustriesType
+    latestWorkplaceApprovaleRequest: RtoApprovalWorkplaceRequest
 }
 
 export const IndustryApprovalCard = ({
     workplace,
     workIndustry,
+    latestWorkplaceApprovaleRequest,
 }: IndustryApprovalCardProps) => {
     const [showApproveModal, setShowApproveModal] = useState(false)
     const [showRejectModal, setShowRejectModal] = useState(false)
@@ -65,30 +68,33 @@ export const IndustryApprovalCard = ({
                         </div>
 
                         <div className="flex items-center gap-2 shrink-0">
-                            {workflowSteps.find(
-                                (s) => s.label === 'Waiting for Industry'
-                            )?.status === 'current' && (
-                                <>
-                                    <Button
-                                        onClick={() =>
-                                            setShowApproveModal(true)
-                                        }
-                                        className="h-8 px-3 text-xs bg-linear-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white shadow-md hover:shadow-lg transition-all"
-                                    >
-                                        <CheckCircle className="w-3.5 h-3.5 mr-1" />
-                                        Approve
-                                    </Button>
-                                    <Button
-                                        variant="error"
-                                        outline
-                                        onClick={() => setShowRejectModal(true)}
-                                        className="h-8 px-3 text-xs border-orange-200 text-orange-700 hover:bg-orange-50 hover:border-orange-300"
-                                    >
-                                        <X className="w-3.5 h-3.5 mr-1" />
-                                        Reject
-                                    </Button>
-                                </>
-                            )}
+                            {!latestWorkplaceApprovaleRequest?.isRejectedByIndustry &&
+                                workflowSteps.find(
+                                    (s) => s.label === 'Waiting for Industry'
+                                )?.status === 'current' && (
+                                    <>
+                                        <Button
+                                            onClick={() =>
+                                                setShowApproveModal(true)
+                                            }
+                                            className="h-8 px-3 text-xs bg-linear-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white shadow-md hover:shadow-lg transition-all"
+                                        >
+                                            <CheckCircle className="w-3.5 h-3.5 mr-1" />
+                                            Approve
+                                        </Button>
+                                        <Button
+                                            variant="error"
+                                            outline
+                                            onClick={() =>
+                                                setShowRejectModal(true)
+                                            }
+                                            className="h-8 px-3 text-xs border-orange-200 text-orange-700 hover:bg-orange-50 hover:border-orange-300"
+                                        >
+                                            <X className="w-3.5 h-3.5 mr-1" />
+                                            Reject
+                                        </Button>
+                                    </>
+                                )}
                         </div>
                     </div>
 
@@ -101,16 +107,17 @@ export const IndustryApprovalCard = ({
                 </div>
             </div>
 
-            <WorkplaceApproveModal
+            <WorkplaceIndustryApproveModal
                 isOpen={showApproveModal}
                 onClose={() => setShowApproveModal(false)}
-                id={approvalId}
+                workplace={workplace}
+                workIndustry={workIndustry}
             />
 
             <WorkplaceRejectModal
                 isOpen={showRejectModal}
                 onClose={() => setShowRejectModal(false)}
-                id={approvalId}
+                id={workplace?.id}
             />
         </>
     )

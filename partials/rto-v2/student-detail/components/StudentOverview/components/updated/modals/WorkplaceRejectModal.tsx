@@ -5,7 +5,7 @@ import {
     DialogTitle,
     DialogFooter,
 } from '@components/ui/dialog'
-import { Button, TextArea } from '@components'
+import { Button, TextArea, ShowErrorNotifications } from '@components'
 import { AlertTriangle, X } from 'lucide-react'
 import { SubAdminApi } from '@queries'
 import { WpAppRequEnum } from '@partials/rto/wpApprovalReq/enum'
@@ -26,7 +26,7 @@ export function WorkplaceRejectModal({
     id,
 }: WorkplaceRejectModalProps) {
     const { notification } = useNotification()
-    const [changeStatus, { isLoading }] =
+    const [changeStatus, changeStatusResult] =
         SubAdminApi.Workplace.updateWpIndustryStatus()
 
     const validationSchema = Yup.object({
@@ -75,6 +75,7 @@ export function WorkplaceRejectModal({
                 methods.reset()
             }}
         >
+            <ShowErrorNotifications result={changeStatusResult} />
             <DialogContent className="max-w-lg p-0 overflow-hidden border-none rounded-2xl">
                 <DialogHeader className="relative bg-linear-to-r from-orange-500 to-orange-600 px-6 py-4 rounded-t-2xl overflow-hidden space-y-0">
                     <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent animate-pulse"></div>
@@ -109,7 +110,7 @@ export function WorkplaceRejectModal({
                                             By rejecting this placement request:
                                         </p>
                                         <ul className="mt-2 space-y-1 text-xs text-orange-800">
-                                            <li className="flex items-start gap-2">
+                                            {/* <li className="flex items-start gap-2">
                                                 <span className="text-orange-500 mt-0.5">
                                                     •
                                                 </span>
@@ -120,7 +121,7 @@ export function WorkplaceRejectModal({
                                                     </strong>{' '}
                                                     will be notified via email
                                                 </span>
-                                            </li>
+                                            </li> */}
                                             <li className="flex items-start gap-2">
                                                 <span className="text-orange-500 mt-0.5">
                                                     •
@@ -165,17 +166,17 @@ export function WorkplaceRejectModal({
                             <Button
                                 outline
                                 onClick={onClose}
-                                disabled={isLoading}
+                                disabled={changeStatusResult?.isLoading}
                                 className="px-4 py-2 text-sm border-slate-300 hover:bg-slate-100"
                             >
                                 Cancel
                             </Button>
                             <Button
                                 submit
-                                disabled={isLoading}
-                                className={`px-4 py-2 text-sm bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${isLoading ? 'cursor-wait' : ''}`}
+                                disabled={changeStatusResult?.isLoading}
+                                className={`px-4 py-2 text-sm bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${changeStatusResult?.isLoading ? 'cursor-wait' : ''}`}
                             >
-                                {isLoading ? (
+                                {changeStatusResult?.isLoading ? (
                                     <>
                                         <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
                                         Rejecting...

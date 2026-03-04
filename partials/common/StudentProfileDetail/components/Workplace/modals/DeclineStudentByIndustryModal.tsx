@@ -1,5 +1,4 @@
 import { Modal } from '@components'
-import React from 'react'
 import { DeclineStudentFromInd } from '../components'
 
 export const DeclineStudentByIndustryModal = ({

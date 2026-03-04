@@ -1,20 +1,41 @@
 import { Student } from '@types'
-import { Award, Clock } from 'lucide-react'
+import { Award, Clock, User } from 'lucide-react'
 import moment from 'moment'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useAppSelector } from '@redux/hooks'
+import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
+import { latestWpApprovalRequest } from '../../utils'
+import { useStatusInfo } from '../StudentOverview/hooks/useStatusInfo'
 
 export const StudentQuickInfo = () => {
-    const { selectedCourse, studentDetail } = useAppSelector(
+    const { selectedCourse, studentDetail, selectedWorkplace } = useAppSelector(
         (state) => state.student
     )
 
+    const latestWorkplaceApprovaleRequest = useMemo(() => {
+        return latestWpApprovalRequest(
+            selectedWorkplace?.workplaceApprovaleRequest || []
+        )
+    }, [selectedWorkplace?.workplaceApprovaleRequest])
+
+    const workIndustry = selectedWorkplace?.industries?.find(
+        (i: WorkplaceWorkIndustriesType) => i?.applied
+    )
+
+    const { currentStep } = useStatusInfo({
+        workplace: selectedWorkplace as any,
+        workIndustry: workIndustry as any,
+    })
+
+    const industry =
+        workIndustry?.industry ||
+        latestWorkplaceApprovaleRequest?.industry ||
+        selectedWorkplace?.studentProvidedWorkplaceRequestApproval?.industry
 
     const courseHours =
         selectedCourse?.extraHours && selectedCourse?.extraHours?.length > 0
             ? selectedCourse?.extraHours?.[0]?.hours
             : selectedCourse?.hours
-
 
     const studentInfoCards = [
         {
@@ -23,7 +44,10 @@ export const StudentQuickInfo = () => {
             mainText: selectedCourse?.code,
             subText: (
                 <div className="flex flex-col gap-1 mt-1">
-                    <span className="line-clamp-1" title={selectedCourse?.title}>
+                    <span
+                        className="line-clamp-1"
+                        title={selectedCourse?.title}
+                    >
                         {selectedCourse?.title}
                     </span>
                     {courseHours && (
@@ -40,31 +64,51 @@ export const StudentQuickInfo = () => {
             iconType: 'lucide' as const,
             gradient: 'from-[#044866] to-[#0D5468]',
         },
-        // {
-        //     id: 'active-workplace',
-        //     title: 'Active Workplace',
-        //     mainText: 'Hale Foundation',
-        //     subText: 'Marangaroo, WA',
-        //     icon: '🏢',
-        //     iconType: 'emoji' as const,
-        //     gradient: 'from-[#0D5468] to-[#044866]',
-        // },
         {
-            id: 'coordinator',
-            title: 'Coordinator',
-            mainText: studentDetail?.subadmin
-                ? studentDetail?.subadmin?.user?.name
-                : '---',
-            // subText: 'Assigned Nov 4, 2025',
-            icon: '👤',
+            id: 'active-workplace',
+            title: 'Current Workplace',
+            mainText: industry?.user?.name || '---',
+            subText: `Address: ${industry?.addressLine1 || ''}`,
+            icon: '🏢',
             iconType: 'emoji' as const,
+            gradient: 'from-[#0D5468] to-[#044866]',
+        },
+        {
+            id: 'current-status',
+            title: 'Current Status',
+            isSpecial: true,
+            subText: (
+                <div className="mt-2">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#F7A619] animate-pulse flex-shrink-0"></div>
+                        <p className="text-sm text-white font-medium whitespace-nowrap">
+                            {currentStep?.label || '---'}
+                        </p>
+                    </div>
+                    <p className="text-[10px] text-white/60 whitespace-nowrap">
+                        Assigned to:
+                    </p>
+                    <div className="flex items-center gap-1 mt-1.5">
+                        <User className="w-3 h-3 text-white/80" />
+                        <p className="text-[10px] text-white/60 whitespace-nowrap">
+                            <span className="font-semibold text-white/80">
+                                {studentDetail?.subadmin?.user?.name || '---'}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            ),
+            icon: User,
+            iconType: 'lucide' as const,
             gradient: 'from-[#044866] to-[#0D5468]',
         },
         {
             id: 'student-since',
             title: 'Student Since',
             mainText: studentDetail?.createdAt
-                ? moment(studentDetail?.createdAt).format('MMMM YYYY')
+                ? moment(studentDetail?.createdAt).format(
+                      'DD MMMM YYYY [at] h:mm A'
+                  )
                 : '',
             subText: studentDetail?.createdAt
                 ? moment(studentDetail?.createdAt).fromNow()
@@ -75,11 +119,11 @@ export const StudentQuickInfo = () => {
         },
     ]
     return (
-        <div className="grid grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-4 gap-1.5">
             {studentInfoCards.map((card) => (
                 <div
                     key={card.id}
-                    className={`group relative overflow-hidden rounded-xl bg-gradient-to-br ${card.gradient} p-3.5 shadow-xl hover:shadow-2xl transition-all cursor-pointer`}
+                    className={`group relative overflow-hidden rounded-xl bg-gradient-to-br ${card.gradient} p-3.5 shadow-xl hover:shadow-2xl transition-all`}
                 >
                     {/* Decorative circles */}
                     <div className="absolute top-0 right-0 w-16 h-16 bg-white/5 rounded-full -mr-8 -mt-8"></div>
@@ -96,10 +140,16 @@ export const StudentQuickInfo = () => {
                         <p className="text-[10px] text-white/60 uppercase tracking-wider mb-0.5">
                             {card.title}
                         </p>
-                        <p className="text-white mb-0.5 text-[13px]">
-                            {card.mainText}
-                        </p>
-                        <div className="text-xs text-white/80">
+                        {!card.isSpecial && (
+                            <p className="text-white mb-0.5 text-[13px]">
+                                {card.mainText}
+                            </p>
+                        )}
+                        <div
+                            className={`${
+                                card.isSpecial ? '' : 'text-xs text-white/80'
+                            }`}
+                        >
                             {card.subText}
                         </div>
                     </div>

@@ -20,7 +20,6 @@ import { AbourtWorkplace } from './AbourtWorkplace'
 import { IndustryApprovalCard } from './IndustryApprovalCard'
 import { WorkplaceCancelModal } from './modals'
 import { StudentWorkplaceComplianceChecks } from './StudentWorkplaceComplianceChecks'
-
 import { WorkplaceIndustryInfo } from './WorkplaceIndustryInfo'
 import { WorkplaceMapView } from './WorkplaceMapView'
 import { WorkplaceStatuses } from './WorkplaceStatuses'
@@ -122,6 +121,9 @@ export function WorkplaceBio({ workplace, onAddNew }: WorkplaceBioProps) {
                                     <IndustryApprovalCard
                                         workplace={workplace}
                                         workIndustry={workIndustry!}
+                                        latestWorkplaceApprovaleRequest={
+                                            latestWorkplaceApprovaleRequest
+                                        }
                                     />
                                 </div>
                             </div>

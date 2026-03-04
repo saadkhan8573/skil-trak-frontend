@@ -32,7 +32,7 @@ type CurrentStatus = {
 const WorkplaceRequestProgress = (appliedIndustry?: any) => {
     return {
         '1-NotRequested': {
-            status: 'No Progress',
+            status: 'No WPR Generated',
             description: 'Pending',
             color: 'text-gray-400',
             image: 'not-requested.png',
@@ -156,6 +156,7 @@ export const ProgressCell = ({
     documentInitiates,
     wpCreatedAt,
     studentId,
+    isAssigned,
     status,
     step,
     assigned,
@@ -164,26 +165,27 @@ export const ProgressCell = ({
 }: {
     wpCreatedAt?: Date | undefined
     studentId?: number
+    isAssigned?: boolean
     status?: WorkplaceRequestStatus
     step:
-    | 1
-    | 2
-    | 3
-    | 4
-    | 5
-    | 6
-    | 7
-    | 8
-    | 9
-    | 10
-    | 11
-    | 12
-    | 13
-    | 14
-    | 15
-    | 16
-    | 17
-    | number
+        | 1
+        | 2
+        | 3
+        | 4
+        | 5
+        | 6
+        | 7
+        | 8
+        | 9
+        | 10
+        | 11
+        | 12
+        | 13
+        | 14
+        | 15
+        | 16
+        | 17
+        | number
     assigned?: SubAdmin
     appliedIndustry?: any
     studentProvidedWorkplace?: boolean

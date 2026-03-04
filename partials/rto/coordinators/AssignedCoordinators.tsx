@@ -52,21 +52,17 @@ export const AssignedCoordinators = () => {
                 return (
                     <Link
                         href={`/portals/rto/coordinators/${row.original.id}`}
-                        className="flex items-center gap-x-2 relative">
-
+                        className="flex items-center gap-x-2 relative"
+                    >
                         <InitialAvatar name={name} imageUrl={avatar} />
                         <div>
-                            <Typography color={'black'}>
-                                {' '}
-                                {name}{' '}
-                            </Typography>
+                            <Typography color={'black'}> {name} </Typography>
                             <Typography variant={'muted'} color={'gray'}>
                                 {email}
                             </Typography>
                         </div>
-
                     </Link>
-                );
+                )
             },
         },
         {
@@ -87,10 +83,6 @@ export const AssignedCoordinators = () => {
             },
         },
         {
-            header: () => 'Address',
-            accessorKey: 'addressLine1',
-        },
-        {
             header: () => 'Created By',
             accessorKey: 'createdBy.role',
             cell: (info) => (
@@ -104,8 +96,7 @@ export const AssignedCoordinators = () => {
             header: () => 'Action',
             accessorKey: 'Action',
             cell: ({ row }: any) => {
-                const tableActionOption =
-                    tableActionOptions(row?.original)
+                const tableActionOption = tableActionOptions(row?.original)
                 return (
                     <TableAction
                         rowItem={row?.original}

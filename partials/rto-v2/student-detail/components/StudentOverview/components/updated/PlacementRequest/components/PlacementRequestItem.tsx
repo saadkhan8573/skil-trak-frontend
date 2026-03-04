@@ -73,32 +73,32 @@ export const PlacementRequestItem = ({
             onClick={() => onSelect(request)}
             className="group relative bg-white rounded-lg border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all cursor-pointer overflow-hidden"
         >
-            <div className="flex items-center gap-2 p-2">
-                <div className="w-6 h-6 rounded bg-slate-700 flex items-center justify-center text-white text-[10px] font-bold shrink-0">
+            <div className="flex items-center gap-3 p-2.5">
+                <div className="w-7 h-7 rounded bg-slate-700 flex items-center justify-center text-white text-xs font-bold shrink-0">
                     {index + 1}
                 </div>
 
                 <div
-                    className={`w-6 h-6 rounded ${iconBg} flex items-center justify-center text-white shrink-0`}
+                    className={`w-7 h-7 rounded ${iconBg} flex items-center justify-center text-white shrink-0`}
                 >
-                    <StatusIcon className="w-3.5 h-3.5" />
+                    <StatusIcon className="w-4 h-4" />
                 </div>
 
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5 mb-0.5">
-                        <span className="text-[11px] text-slate-900 font-medium truncate">
+                        <span className="text-sm text-slate-900 font-medium truncate">
                             {request.workplace}
                         </span>
                         {request.cancellationComment && (
                             <div className="relative shrink-0">
                                 <div
-                                    className="w-4 h-4 rounded-full bg-[#044866] hover:bg-[#0D5468] flex items-center justify-center cursor-help transition-all"
+                                    className="w-5 h-5 rounded-full bg-[#044866] hover:bg-[#0D5468] flex items-center justify-center cursor-help transition-all"
                                     onMouseEnter={(e) =>
                                         onMouseEnter(e, request.id)
                                     }
                                     onMouseLeave={onMouseLeave}
                                 >
-                                    <Info className="w-2.5 h-2.5 text-white" />
+                                    <Info className="w-3 h-3 text-white" />
                                 </div>
                                 {hoveredCommentId === request.id &&
                                     tooltipPosition && (
@@ -111,8 +111,8 @@ export const PlacementRequestItem = ({
                                         >
                                             <div className="bg-slate-900 text-white text-xs rounded-lg p-3 shadow-2xl border border-slate-700 w-72">
                                                 <div className="flex items-start gap-2">
-                                                    <div className="w-6 h-6 rounded bg-[#F7A619] flex items-center justify-center shrink-0">
-                                                        <Info className="w-3 h-3 text-white" />
+                                                    <div className="w-7 h-7 rounded bg-[#F7A619] flex items-center justify-center shrink-0">
+                                                        <Info className="w-4 h-4 text-white" />
                                                     </div>
                                                     <div className="flex-1">
                                                         <p className="font-semibold mb-1.5">
@@ -121,7 +121,7 @@ export const PlacementRequestItem = ({
                                                                 : 'Rejection'}{' '}
                                                             Reason
                                                         </p>
-                                                        <p className="text-slate-300 leading-relaxed text-[11px]">
+                                                        <p className="text-slate-300 leading-relaxed text-xs">
                                                             {
                                                                 request.cancellationComment
                                                             }
@@ -135,16 +135,16 @@ export const PlacementRequestItem = ({
                             </div>
                         )}
                     </div>
-                    <div className="flex items-center gap-1.5 text-[9px] text-slate-500">
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
                         <div className="flex items-center gap-1 shrink-0">
-                            <Calendar className="w-2.5 h-2.5 text-slate-400" />
+                            <Calendar className="w-3.5 h-3.5 text-slate-400" />
                             <span className="whitespace-nowrap">
                                 Created: {request.createdDate}
                             </span>
                         </div>
                         <span>•</span>
                         <div className="flex items-center gap-1 shrink-0">
-                            <Calendar className="w-2.5 h-2.5 text-slate-400" />
+                            <Calendar className="w-3.5 h-3.5 text-slate-400" />
                             <span className="whitespace-nowrap">
                                 Last Action: {request.lastActionDate}
                             </span>
@@ -152,12 +152,12 @@ export const PlacementRequestItem = ({
                         <span>•</span>
                         <Badge
                             outline
-                            className="text-[9px] px-1 py-0 h-3.5 border-slate-300"
+                            className="text-xs px-1.5 py-0 h-4 border-slate-300"
                         >
                             {request.id}
                         </Badge>
                         <Badge
-                            className={`text-[8px] px-1 py-0 h-3.5 ${badgeClass}`}
+                            className={`text-xs px-1.5 py-0 h-4 ${badgeClass}`}
                         >
                             {statusConfig.label}
                         </Badge>
@@ -168,8 +168,8 @@ export const PlacementRequestItem = ({
                         {displayDistance && (
                             <>
                                 <span>•</span>
-                                <span className="flex items-center gap-0.5 text-primary font-medium whitespace-nowrap">
-                                    <MapPin className="w-2 h-2" />
+                                <span className="flex items-center gap-1 text-primary font-medium whitespace-nowrap">
+                                    <MapPin className="w-3 h-3" />
                                     {displayDistance}
                                     {drivingDuration && (
                                         <span className="text-slate-400 font-normal ml-0.5">

@@ -58,8 +58,8 @@ export function PlacementRequest({
             <div className="bg-linear-to-r from-[#044866] to-[#0D5468] px-3 py-2.5">
                 <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                            <Building2 className="w-3 h-3 text-white" />
+                        <div className="w-7 h-7 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                            <Building2 className="w-4 h-4 text-white" />
                         </div>
                         <div>
                             <h3 className="text-white text-sm font-semibold">
@@ -81,10 +81,10 @@ export function PlacementRequest({
                     >
                         <div className="flex items-center gap-2">
                             <div
-                                className={`w-5 h-5 rounded ${showCanceledCompleted ? 'bg-linear-to-br from-[#044866] to-[#0D5468]' : 'bg-slate-100'} flex items-center justify-center transition-all`}
+                                className={`w-6 h-6 rounded ${showCanceledCompleted ? 'bg-linear-to-br from-[#044866] to-[#0D5468]' : 'bg-slate-100'} flex items-center justify-center transition-all`}
                             >
                                 <FileText
-                                    className={`w-3 h-3 ${showCanceledCompleted ? 'text-white' : 'text-slate-600'}`}
+                                    className={`w-4 h-4 ${showCanceledCompleted ? 'text-white' : 'text-slate-600'}`}
                                 />
                             </div>
                             <span className="text-xs text-slate-900 font-medium">
@@ -101,7 +101,7 @@ export function PlacementRequest({
                             {/* Group Section: Completed */}
                             {groupedRequests.completed.length > 0 && (
                                 <div className="space-y-2">
-                                    <h5 className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider px-1">
+                                    <h5 className="text-xs font-bold text-emerald-600 uppercase tracking-wider px-1">
                                         Completed
                                     </h5>
                                     <div className="space-y-1.5">
@@ -138,7 +138,7 @@ export function PlacementRequest({
                             {/* Group Section: Cancelled */}
                             {groupedRequests.cancelled.length > 0 && (
                                 <div className="space-y-2">
-                                    <h5 className="text-[10px] font-bold text-red-600 uppercase tracking-wider px-1">
+                                    <h5 className="text-xs font-bold text-red-600 uppercase tracking-wider px-1">
                                         Cancelled
                                     </h5>
                                     <div className="space-y-1.5">
@@ -175,7 +175,7 @@ export function PlacementRequest({
                             {/* Group Section: Rejected */}
                             {groupedRequests.rejected.length > 0 && (
                                 <div className="space-y-2">
-                                    <h5 className="text-[10px] font-bold text-orange-600 uppercase tracking-wider px-1">
+                                    <h5 className="text-xs font-bold text-orange-600 uppercase tracking-wider px-1">
                                         Rejected
                                     </h5>
                                     <div className="space-y-1.5">

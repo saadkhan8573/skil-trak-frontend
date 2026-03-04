@@ -46,20 +46,46 @@ export const StudentOverViewUpdated = ({
     ]
 
     const activeWorkplaces = useMemo(() => {
-        return (
+        const inProgress =
             sortedWorkplaces?.filter(
                 (wp) => !terminalStatuses.includes(wp?.currentStatus)
             ) || []
-        )
-    }, [sortedWorkplaces])
 
-    const nonActiveWorkplaces = useMemo(() => {
+        if (inProgress.length > 0) {
+            return inProgress
+        }
+
         return (
-            sortedWorkplaces?.filter((wp) =>
-                terminalStatuses.includes(wp?.currentStatus)
+            sortedWorkplaces?.filter(
+                (wp) =>
+                    wp?.currentStatus === WorkplaceCurrentStatus.Completed ||
+                    wp?.currentStatus === WorkplaceCurrentStatus.Cancelled
             ) || []
         )
-    }, [sortedWorkplaces])
+    }, [sortedWorkplaces, terminalStatuses])
+
+    const nonActiveWorkplaces = useMemo(() => {
+        const hasInProgress = sortedWorkplaces?.some(
+            (wp) => !terminalStatuses.includes(wp?.currentStatus)
+        )
+
+        if (hasInProgress) {
+            return (
+                sortedWorkplaces?.filter((wp) =>
+                    terminalStatuses.includes(wp?.currentStatus)
+                ) || []
+            )
+        }
+
+        return (
+            sortedWorkplaces?.filter(
+                (wp) =>
+                    terminalStatuses.includes(wp?.currentStatus) &&
+                    wp?.currentStatus !== WorkplaceCurrentStatus.Completed &&
+                    wp?.currentStatus !== WorkplaceCurrentStatus.Cancelled
+            ) || []
+        )
+    }, [sortedWorkplaces, terminalStatuses])
 
     // Show create button only when no workplace is currently in an active/in-progress state
     const canCreateNewWorkplace = useMemo(() => {
@@ -67,8 +93,6 @@ export const StudentOverViewUpdated = ({
             activeInProgressStatuses.includes(wp?.currentStatus)
         )
     }, [sortedWorkplaces])
-
-    console.log({ canCreateNewWorkplace })
 
     useEffect(() => {
         const activeWorkplace = sortedWorkplaces?.find((wp) =>

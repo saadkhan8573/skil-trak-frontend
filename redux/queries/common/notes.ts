@@ -1,4 +1,5 @@
 import { NotesTemplateType } from '@partials/admin/noteTemplates/enum'
+import { providesTagsOnSuccess } from '@redux/utils'
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
 import { Note } from '@types'
@@ -35,7 +36,7 @@ export const notesEndpoints = (
             url: `${PREFIX}/pin/${id}`,
             method: 'PATCH',
         }),
-        invalidatesTags: ['Notes', 'AllCommunications'],
+        invalidatesTags: providesTagsOnSuccess(['Notes', 'AllCommunications']),
     }),
 
     noteCreate: builder.mutation({

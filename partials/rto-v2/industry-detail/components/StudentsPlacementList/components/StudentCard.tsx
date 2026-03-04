@@ -1,39 +1,37 @@
-import {
-    CheckCircle,
-    Clock,
-    Circle,
-    ChevronDown,
-    ChevronUp,
-    MoreVertical,
-    Pause,
-    XCircle,
-    AlertTriangle,
-    Calendar,
-    ExternalLink,
-    Send,
-} from 'lucide-react'
-import { useState } from 'react'
-import { WorkflowStep } from './types'
-import { StudentDetails } from './StudentDetails'
+import { Badge, Button, Portal } from '@components'
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
 } from '@components/ui/collapsible'
-import { Badge, Button, Portal } from '@components'
-import { Student } from '@types'
 import { useStatusInfo } from '@partials/rto-v2/student-detail/components/StudentOverview/hooks/useStatusInfo'
 import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
-import Link from 'next/link'
+import { Student } from '@types'
 import { getUserCredentials } from '@utils'
+import {
+    AlertTriangle,
+    Calendar,
+    CheckCircle,
+    ChevronDown,
+    ChevronUp,
+    Circle,
+    Clock,
+    ExternalLink,
+    Pause,
+    Send,
+    XCircle,
+} from 'lucide-react'
+import Link from 'next/link'
+import { useState } from 'react'
+import { StudentDetails } from './StudentDetails'
 
-import { UserRoles } from '@constants'
-import { WorkplaceCurrentStatus } from '@utils'
 import { ActionButton } from '@components'
-import { ApproveRequestModal } from '@partials/sub-admin/workplace/modals'
+import { UserRoles } from '@constants'
 import { DeclineStudentByIndustryModal } from '@partials/common/StudentProfileDetail/components'
-import { ReactNode } from 'react'
+import { ApproveRequestModal } from '@partials/sub-admin/workplace/modals'
+import { WorkplaceCurrentStatus } from '@utils'
 import moment from 'moment'
+import { ReactNode } from 'react'
 import { ResendEmailModal } from '../ResendEmailModal'
 
 interface StudentCardProps {
@@ -48,14 +46,6 @@ function getStudentProfileLink(role: string, studentId: number) {
             return `/portals/sub-admin/students/${studentId}/detail`
         default:
             return `/portals/rto/students-and-placements/all-students/${studentId}/detail`
-    }
-}
-
-function getStatusCounts(workflow: WorkflowStep[]) {
-    return {
-        completed: workflow.filter((s) => s.status === 'completed').length,
-        inProgress: workflow.filter((s) => s.status === 'in-progress').length,
-        remaining: workflow.filter((s) => s.status === 'pending').length,
     }
 }
 

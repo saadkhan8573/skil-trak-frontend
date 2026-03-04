@@ -33,11 +33,11 @@ interface ItemFilterProps {
 
 export const workplaceProgressOptions = [
     {
-        label: 'Industry sourcing',
+        label: 'Request Generated',
         value: WorkplaceCurrentStatus.Applied,
     },
     {
-        label: 'Industry sourcing',
+        label: 'Case Officer Assigned',
         value: WorkplaceCurrentStatus.CaseOfficerAssigned,
     },
     {

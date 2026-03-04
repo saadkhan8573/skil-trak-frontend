@@ -1,13 +1,4 @@
-import {
-    CheckCircle,
-    Clock,
-    Circle,
-    Pause,
-    XCircle,
-    AlertTriangle,
-    Calendar,
-} from 'lucide-react'
-import { WorkflowStep } from './types'
+import { CheckCircle, Circle, Clock, XCircle } from 'lucide-react'
 
 interface StudentDetailsProps {
     workflow: {
@@ -23,7 +14,7 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
         'Cancelled',
         'Terminated',
         'Rejected',
-        'No Response'
+        'No Response',
     ]
     const isTerminalActive = workflow.some(
         (step) => step.current && terminalStatuses.includes(step?.label)
@@ -56,14 +47,15 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
 
                             {/* Status Icon */}
                             <div
-                                className={`w-5 h-5 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0 transition-all duration-300 ${step?.completed
-                                    ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
-                                    : step?.current
-                                        ? isTerminal
-                                            ? 'bg-gradient-to-br from-[#EF4444] to-[#B91C1C]'
-                                            : 'bg-gradient-to-br from-[#F7A619] to-[#EA580C] animate-pulse'
-                                        : 'bg-gradient-to-br from-[#F8FAFB] to-[#E2E8F0]'
-                                    }`}
+                                className={`w-5 h-5 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0 transition-all duration-300 ${
+                                    step?.completed
+                                        ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
+                                        : step?.current
+                                          ? isTerminal
+                                              ? 'bg-gradient-to-br from-[#EF4444] to-[#B91C1C]'
+                                              : 'bg-gradient-to-br from-[#F7A619] to-[#EA580C] animate-pulse'
+                                          : 'bg-gradient-to-br from-[#F8FAFB] to-[#E2E8F0]'
+                                }`}
                             >
                                 {step?.completed ? (
                                     <CheckCircle className="w-3 h-3 text-white" />
@@ -82,14 +74,15 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
                             <div className="flex-1 pt-0.5">
                                 <div className="flex items-start justify-between mb-0.5">
                                     <h5
-                                        className={`text-[10px] font-medium ${step?.completed
-                                            ? 'text-[#1A2332]'
-                                            : step?.current
-                                                ? isTerminal
-                                                    ? 'text-[#991B1B]'
-                                                    : 'text-[#B45309]'
-                                                : 'text-[#94A3B8]'
-                                            }`}
+                                        className={`text-[10px] font-medium ${
+                                            step?.completed
+                                                ? 'text-[#1A2332]'
+                                                : step?.current
+                                                  ? isTerminal
+                                                      ? 'text-[#991B1B]'
+                                                      : 'text-[#B45309]'
+                                                  : 'text-[#94A3B8]'
+                                        }`}
                                     >
                                         {step?.label}
                                     </h5>
@@ -99,19 +92,27 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
                                         </span>
                                     )}
                                 </div>
-                                {step?.current && step?.label !== "Schedule Completed" && (
-                                    <p className={`text-[9px] px-1.5 py-0.5 rounded inline-block border ${isTerminal
-                                        ? 'text-[#991B1B] bg-[#FEE2E2] border-[#EF4444]/20'
-                                        : 'text-[#92400E] bg-[#FEF3C7] border-[#F7A619]/20'
-                                        }`}>
-                                        {isTerminal ? '❌ Request Cancelled' : '⚡ Currently in progress'}
-                                    </p>
-                                )}
-                                {!isTerminal && !step?.completed && !step?.current && (
-                                    <p className="text-[9px] text-[#64748B]">
-                                        Pending previous step completion
-                                    </p>
-                                )}
+                                {step?.current &&
+                                    step?.label !== 'Schedule Completed' && (
+                                        <p
+                                            className={`text-[9px] px-1.5 py-0.5 rounded inline-block border ${
+                                                isTerminal
+                                                    ? 'text-[#991B1B] bg-[#FEE2E2] border-[#EF4444]/20'
+                                                    : 'text-[#92400E] bg-[#FEF3C7] border-[#F7A619]/20'
+                                            }`}
+                                        >
+                                            {isTerminal
+                                                ? '❌ Request Cancelled'
+                                                : '⚡ Currently in progress'}
+                                        </p>
+                                    )}
+                                {!isTerminal &&
+                                    !step?.completed &&
+                                    !step?.current && (
+                                        <p className="text-[9px] text-[#64748B]">
+                                            Pending previous step completion
+                                        </p>
+                                    )}
                             </div>
                         </div>
                     )

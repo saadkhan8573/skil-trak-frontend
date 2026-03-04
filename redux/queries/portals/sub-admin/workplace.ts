@@ -240,7 +240,8 @@ export const workplaceEndpoints = (
             'SubAdminStudents',
             'IndustryWorkplace',
             'RTOIndustries',
-            'WaitingForStudents'
+            'WaitingForStudents',
+            'StudentsWorkplace',
         ]),
     }),
 
@@ -259,7 +260,7 @@ export const workplaceEndpoints = (
             'SubAdminStudents',
             'IndustryWorkplace',
             'RTOIndustries',
-            'WaitingForStudents'
+            'WaitingForStudents',
         ]),
     }),
 

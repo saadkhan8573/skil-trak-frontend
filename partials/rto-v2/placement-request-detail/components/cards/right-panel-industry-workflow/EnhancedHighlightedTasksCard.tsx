@@ -2,6 +2,7 @@ import { Button, Card, NoData } from '@components'
 import { RtoV2Api } from '@queries'
 import { motion } from 'framer-motion'
 import { CheckCheck, CheckCircle2, ChevronRight, Zap } from 'lucide-react'
+import moment from 'moment'
 
 export const EnhancedHighlightedTasksCard = ({ data }: any) => {
     const [confirmTasks, confirmTasksResult] =
@@ -40,6 +41,28 @@ export const EnhancedHighlightedTasksCard = ({ data }: any) => {
                                         Confirmed with Workplace
                                     </span>
                                 </div>
+                                {data?.isString &&
+                                    highlightedTaskConfig?.confirmedBy && (
+                                        <div className="mt-1 text-[11px] text-emerald-700 flex items-center gap-1.5 ml-6">
+                                            <span>
+                                                By{' '}
+                                                <span className="font-bold">
+                                                    {
+                                                        highlightedTaskConfig
+                                                            .confirmedBy.name
+                                                    }
+                                                </span>
+                                            </span>
+                                            <span className="text-emerald-600/60">
+                                                •
+                                            </span>
+                                            <span>
+                                                {moment(
+                                                    highlightedTaskConfig.updatedAt
+                                                ).format('DD/MM/YYYY')}
+                                            </span>
+                                        </div>
+                                    )}
                             </div>
                         ) : (
                             <Button
@@ -131,9 +154,11 @@ export const EnhancedHighlightedTasksCard = ({ data }: any) => {
                                                                 </span>
                                                                 <span className="text-slate-500">
                                                                     •{' '}
-                                                                    {new Date(
+                                                                    {moment(
                                                                         task.updatedAt
-                                                                    ).toLocaleDateString()}
+                                                                    ).format(
+                                                                        'DD/MM/YYYY'
+                                                                    )}
                                                                 </span>
                                                             </div>
                                                         )}

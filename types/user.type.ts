@@ -249,6 +249,7 @@ export interface RtoApprovalWorkplaceRequest extends BaseResponse {
     id: number
     status: 'pending' | 'approved' | 'rejected'
     isRtoApprovalRequired: boolean
+    isRejectedByIndustry: boolean
     rtoApprovalStatus: 'pending' | 'approved' | 'rejected'
     declaration: string
     isAutomated: boolean

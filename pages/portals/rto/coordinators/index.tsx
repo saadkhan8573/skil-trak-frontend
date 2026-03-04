@@ -1,15 +1,14 @@
 import { useRouter } from 'next/router'
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useEffect } from 'react'
 // Layouts
 import { RtoLayout } from '@layouts'
 import { NextPageWithLayout } from '@types'
 //components
 import { Button, PageTitle, TabNavigation, TabProps } from '@components'
 // queries
-import { RtoApi } from '@queries'
 // Link
 // React icons
-import { useJoyRide, useNotification } from '@hooks'
+import { useJoyRide } from '@hooks'
 import {
     AssignedCoordinators,
     MyCoordinators,
@@ -18,17 +17,7 @@ import {
 type Props = {}
 
 const RtoCoordinators: NextPageWithLayout = (props: Props) => {
-    const [changeStatusResult, setChangeStatusResult] = useState<any>({})
-    const [modal, setModal] = useState<ReactElement | null>(null)
-    const { notification } = useNotification()
-
     const router = useRouter()
-    const [itemPerPage, setItemPerPage] = useState(50)
-    const [page, setPage] = useState(1)
-    const [filter, setFilter] = useState({})
-
-    const [removeCoordinator, removeCoordinatorResult] =
-        RtoApi.Coordinator.useRemove()
 
     // ADD COORDINATOR JOY RIDE - START
     const joyride = useJoyRide()
@@ -39,58 +28,6 @@ const RtoCoordinators: NextPageWithLayout = (props: Props) => {
             }, 1200)
         }
     }, [])
-    // ADD COORDINATOR JOY RIDE - END
-
-    useEffect(() => {
-        if (removeCoordinatorResult.isSuccess) {
-            notification.error({
-                title: 'Coordinato Removed',
-                description: 'Coordinato Removed Successfully',
-            })
-        }
-    }, [removeCoordinatorResult])
-
-    const RelatedQuestions = [
-        {
-            text: `I have a workplace. What next?`,
-            link: '#',
-        },
-        {
-            text: `I don't have a workplace. What should I do?`,
-            link: '#',
-        },
-        {
-            text: `I want to book an appointment`,
-            link: '#',
-        },
-        {
-            text: `I want to look for a job`,
-            link: '#',
-        },
-    ]
-
-    const OtherQuestions = [
-        {
-            text: `I have a workplace. What next?`,
-            link: '#',
-        },
-        {
-            text: `I don't have a workplace. What should I do?`,
-            link: '#',
-        },
-        {
-            text: `I want to book an appointment`,
-            link: '#',
-        },
-        {
-            text: `I want to look for a job`,
-            link: '#',
-        },
-    ]
-
-    const onModalCancelClicked = () => {
-        setModal(null)
-    }
 
     const tabs: TabProps[] = [
         {

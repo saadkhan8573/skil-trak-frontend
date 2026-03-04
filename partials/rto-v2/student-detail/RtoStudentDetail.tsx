@@ -100,7 +100,7 @@ export const RtoStudentDetail = () => {
             label: 'Overview (Testing/ only admin visible)',
             icon: Book,
             component: () => <StudentOverviewTesting />,
-            hidden: role !== UserRoles.ADMIN,
+            hidden: ![UserRoles.ADMIN, UserRoles.SUBADMIN].includes(role),
         },
         {
             value: 'workplace',

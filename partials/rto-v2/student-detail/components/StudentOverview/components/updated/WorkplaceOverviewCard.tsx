@@ -10,8 +10,13 @@ import {
     WorkplaceBio,
     WorkplaceTypes,
 } from './index'
-import { checkJsxVisibility, getUserCredentials, WorkplaceCurrentStatus } from '@utils'
+import {
+    checkJsxVisibility,
+    getUserCredentials,
+    WorkplaceCurrentStatus,
+} from '@utils'
 import { WorkplaceCancellationBanner } from './WorkplaceCancellationBanner'
+import { WpIndustryRejectedBanner } from './WpIndustryRejectedBanner'
 
 interface WorkplaceOverviewCardProps {
     workplace: IWorkplaceIndustries
@@ -77,6 +82,7 @@ export const WorkplaceOverviewCard = ({
                 setShowHighlightedTasks={toggleHighlightedTasks}
             />
             <WorkplaceCancellationBanner workplace={workplace} role={role} />
+            <WpIndustryRejectedBanner workplace={workplace} />
             <Collapsible open={showHighlightedTasks}>
                 <CollapsibleContent>
                     <HighlightedTasks workplace={workplace} />

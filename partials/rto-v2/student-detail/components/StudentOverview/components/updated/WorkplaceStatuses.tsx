@@ -1,10 +1,15 @@
 import { Badge } from '@components'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
-import { WorkplaceStatusLabels } from '@utils'
+import {
+    getUserCredentials,
+    WorkplaceCurrentStatus,
+    WorkplaceStatusLabels,
+} from '@utils'
 import {
     Circle,
     CheckCircle,
     Clock,
+    ExternalLink,
     Search,
     Sparkles,
     TrendingUp,
@@ -21,6 +26,8 @@ import {
 import { useStatusInfo } from '../../hooks/useStatusInfo'
 import { RtoV2Api } from '@queries'
 import { STATUS_CONTENT } from './statusMapping'
+import { UserRoles } from '@constants'
+import { useRouter } from 'next/router'
 
 interface WorkplaceStatusesProps {
     workplace: IWorkplaceIndustries
@@ -34,6 +41,7 @@ export function WorkplaceStatuses({
     onCancelRequested,
 }: WorkplaceStatusesProps) {
     const wpId = workplace?.id
+    const router = useRouter()
 
     const progressData = RtoV2Api.PlacementRequests.useStudentPlacementProgress(
         wpId!,
@@ -119,6 +127,8 @@ export function WorkplaceStatuses({
         return []
     }, [apiProgress, localStatuses])
 
+    const role = getUserCredentials()?.role
+
     const totalStages = workflowSteps.length || 1
     const currentStageIndex = workflowSteps.findIndex(
         (s) => s.status === 'current'
@@ -141,6 +151,37 @@ export function WorkplaceStatuses({
 
     const hasCancelledRequests = (workplace?.cancelledRequests?.length ?? 0) > 0
 
+    const allowCancellationStatuses = [
+        WorkplaceCurrentStatus.Applied,
+        WorkplaceCurrentStatus.CaseOfficerAssigned,
+        WorkplaceCurrentStatus.Interview,
+        WorkplaceCurrentStatus.IndustryEligibility,
+        WorkplaceCurrentStatus.AwaitingWorkplaceResponse,
+        WorkplaceCurrentStatus.AwaitingStudentResponse,
+        WorkplaceCurrentStatus.AwaitingRtoResponse,
+        WorkplaceCurrentStatus.AppointmentBooked,
+        WorkplaceCurrentStatus.AwaitingAgreementSigned,
+    ]
+
+    const canCancel =
+        allowCancellationStatuses.includes(workplace?.currentStatus) &&
+        !hasCancelledRequests
+
+    const onSelectWorkplace = () => {
+        if (role === UserRoles.RTO) {
+            router.push(
+                `/portals/rto/students-and-placements/placement-requests/${workplace.id}/${workplace.student?.id}`
+            )
+        } else if (role === UserRoles.ADMIN) {
+            router.push(
+                `/portals/admin/workplaces/${workplace.id}/${workplace.student?.id}`
+            )
+        } else if (role === UserRoles.SUBADMIN) {
+            router.push(
+                `/portals/sub-admin/tasks/workplace/${workplace.id}/${workplace.student?.id}`
+            )
+        }
+    }
     return (
         <div className="px-4 py-3 bg-linear-to-br from-slate-50 via-white to-blue-50/30 border-b border-slate-200/60 relative overflow-hidden">
             {/* Decorative elements */}
@@ -165,6 +206,12 @@ export function WorkplaceStatuses({
                     </div>
                 </div>
                 <div className="relative flex items-center gap-1.5 text-xs text-slate-500 bg-white/60 backdrop-blur-sm px-2 py-1 rounded-lg border border-slate-200">
+                    <Badge
+                        variant="primaryNew"
+                        Icon={ExternalLink}
+                        text={'Visit Placement Profile'}
+                        onClick={onSelectWorkplace}
+                    />
                     <Clock className="w-3 h-3" />
                     <span>
                         Created:{' '}
@@ -182,14 +229,10 @@ export function WorkplaceStatuses({
                     </span>
                     <div className="ml-1 h-3 w-px bg-slate-300"></div>
                     <button
-                        onClick={
-                            !hasCancelledRequests
-                                ? onCancelRequested
-                                : undefined
-                        }
-                        disabled={hasCancelledRequests}
+                        onClick={canCancel ? onCancelRequested : undefined}
+                        disabled={!canCancel}
                         className={`flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors ${
-                            hasCancelledRequests
+                            !canCancel
                                 ? 'text-slate-400 cursor-not-allowed opacity-60'
                                 : 'text-red-600 hover:text-red-700 hover:bg-red-50'
                         }`}

@@ -1,21 +1,17 @@
 import {
-    ActionButton,
-    Badge,
     Button,
     Card,
     EmptyData,
-    Filter,
     InitialAvatar,
     LoadingAnimation,
-    SetDetaultQueryFilteres,
     Table,
     TechnicalError,
     Typography,
-    WPCancelationReqFilters,
 } from '@components'
 import { PageHeading } from '@components/headings'
 import { ColumnDef } from '@tanstack/react-table'
 
+import { IndustryCellInfo } from '@partials/sub-admin/Industries'
 import { AdminApi } from '@queries'
 import { WpCancelationReqFilter } from '@types'
 import moment from 'moment'
@@ -23,15 +19,10 @@ import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
 import { MdEmail } from 'react-icons/md'
 import { StudentCellInfo } from '../../admin/student/components'
-import { CancelationRequestEnum } from './enum'
 import {
-    ApproveRequestModal,
     IndustryRejectedWpAcceptModal,
     IndustryRejectedWpDeclineModal,
-    RejectRequestModal,
-    ViewWpRequestNoteModal,
 } from './modals'
-import { IndustryCellInfo } from '@partials/sub-admin/Industries'
 
 const filterKeys = [
     'name',
@@ -69,11 +60,6 @@ export const WpIndustryRejectedRequest = () => {
 
     const onCancelClicked = () => setModal(null)
 
-    const onViewNoteClicked = (note: string) => {
-        setModal(
-            <ViewWpRequestNoteModal note={note} onCancel={onCancelClicked} />
-        )
-    }
     const onApproveRequestClicked = (wpRequest: any) => {
         setModal(
             <IndustryRejectedWpAcceptModal
@@ -147,50 +133,6 @@ export const WpIndustryRejectedRequest = () => {
                 )
             },
         },
-        // {
-        //     accessorKey: 'currentStatus',
-        //     header: () => (
-        //         <span className="whitespace-pre">Workplace Status</span>
-        //     ),
-        //     cell: (info) => (
-        //         <Badge
-        //             variant="success"
-        //             text={info.row.original?.workplaceRequest?.currentStatus}
-        //         />
-        //     ),
-        // },
-        // {
-        //     accessorKey: 'status',
-        //     header: () => (
-        //         <span className="whitespace-pre">Canelation Status</span>
-        //     ),
-        //     cell: (info) => (
-        //         <Badge
-        //             variant={
-        //                 info.row.original?.status ===
-        //                 CancelationRequestEnum.Rejected
-        //                     ? 'error'
-        //                     : 'success'
-        //             }
-        //             text={info.row.original?.status}
-        //         />
-        //     ),
-        // },
-        // {
-        //     accessorKey: 'comment',
-        //     header: () => <span>Comment</span>,
-        //     cell: (info) => (
-        //         <ActionButton
-        //             onClick={() => {
-        //                 onViewNoteClicked(info.row.original?.comment)
-        //             }}
-        //             variant="info"
-        //             simple
-        //         >
-        //             View Comment
-        //         </ActionButton>
-        //     ),
-        // },
         {
             accessorKey: 'createdAt',
             header: () => <span>Created At</span>,
@@ -242,24 +184,12 @@ export const WpIndustryRejectedRequest = () => {
     return (
         <>
             {modal}
-            <SetDetaultQueryFilteres<WpCancelationReqFilter>
-                filterKeys={filterKeys}
-                setFilter={setFilter}
-            />
+
             <div className="flex flex-col gap-y-4 mb-32 px-4">
                 <PageHeading
                     title={'Workplace Requests Rejected'}
                     subtitle={'List of Workplace Requests Rejected'}
-                >
-                    <div className="shrink-0">{filterAction}</div>
-                </PageHeading>
-                <Filter<WpCancelationReqFilter>
-                    setFilter={setFilter}
-                    initialValues={filter}
-                    filterKeys={filterKeys}
-                    component={WPCancelationReqFilters}
-                    setFilterAction={setFilterAction}
-                />
+                ></PageHeading>
 
                 <Card noPadding>
                     {isError && <TechnicalError />}

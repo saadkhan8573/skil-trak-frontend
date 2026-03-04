@@ -186,7 +186,8 @@ export const CaseOfficerAssignedStudent = ({
                     <ProgressCell
                         appliedIndustry={updatedAlliedIndustry}
                         studentId={student?.id}
-                        step={3}
+                        isAssigned
+                        step={steps > 17 ? 17 : steps < 1 ? 1 : steps}
                         assigned={
                             updatedWorkplace?.assignedTo || student?.subadmin
                         }
@@ -234,9 +235,10 @@ export const CaseOfficerAssignedStudent = ({
             // />
             student?.subadmin ? (
                 <ProgressCell
+                    isAssigned
                     appliedIndustry={updatedAlliedIndustry}
                     studentId={student?.id}
-                    step={3}
+                    step={steps > 17 ? 17 : steps < 1 ? 1 : steps}
                     assigned={updatedWorkplace?.assignedTo || student?.subadmin}
                     studentProvidedWorkplace={
                         updatedWorkplace?.studentProvidedWorkplace ||

@@ -203,6 +203,6 @@ export const workplaceEndpoints = (
             method: 'PATCH',
             body,
         }),
-        invalidatesTags: ['Workplaces'],
+        invalidatesTags: ['Workplaces', 'RTO', 'StudentsWorkplace'],
     }),
 })

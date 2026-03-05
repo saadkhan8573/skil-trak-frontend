@@ -155,18 +155,12 @@ const WorkplaceRequestProgress = (appliedIndustry?: any) => {
 export const ProgressCell = ({
     documentInitiates,
     wpCreatedAt,
-    studentId,
-    isAssigned,
-    status,
     step,
     assigned,
     appliedIndustry,
     studentProvidedWorkplace,
 }: {
     wpCreatedAt?: Date | undefined
-    studentId?: number
-    isAssigned?: boolean
-    status?: WorkplaceRequestStatus
     step:
         | 1
         | 2
@@ -208,22 +202,9 @@ export const ProgressCell = ({
             WorkplaceRequestProgress()['11-PlacementStarted'].status,
     })
 
-    const onProgressClicked = (studentId: number | undefined) => {
-        contextBar.setContent(<ChangeWorkplaceStatus studentId={studentId} />)
-        contextBar.show()
-        contextBar.setTitle('Change Workplace Status')
-    }
-
     return (
         <>
-            <div
-                className={`${classes} ${step > 1 ? 'cursor-pointer' : ''}`}
-                onClick={() => {
-                    if (step > 1) {
-                        onProgressClicked(studentId)
-                    }
-                }}
-            >
+            <div className={`${classes}`}>
                 <img
                     src={`/images/students/workplace-progress/${currentStatus.image}`}
                     alt=""

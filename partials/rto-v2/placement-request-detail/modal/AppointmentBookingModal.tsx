@@ -265,7 +265,6 @@ export const AppointmentBookingModal = ({
 
     const selectedDay = availableDays.find((day) => day.date === selectedDate)
 
-    console.log('selectedDay.slots', availableDays)
     const isPastAppointment =
         selectedDate && selectedTime
             ? moment(

@@ -13,6 +13,8 @@ import { Notes } from '@partials/common'
 import { SubAdmin, UserStatus } from '@types'
 import { SubadminHistory } from './components/SubadminHistory'
 import { MailsCommunication } from '@partials/common/StudentProfileDetail/components'
+import { AuthorizedUserComponent } from '@components'
+import { UserRoles } from '@constants'
 
 export const SubadminProfileDetail = ({ subadmin }: { subadmin: SubAdmin }) => {
     const subAdminProfileCount = AdminApi.SubAdmins.useProfileCount(
@@ -68,17 +70,17 @@ export const SubadminProfileDetail = ({ subadmin }: { subadmin: SubAdmin }) => {
     }, [])
 
     return (
-        <div className="p-4 flex flex-col gap-y-6">
+        <div className="flex flex-col gap-y-6">
             <div className="grid grid-cols-3 gap-x-5">
                 <div className="flex flex-col">
-                    <div className="flex-grow">
+                    <div className="grow">
                         <div className="h-full">
                             <ProfileDetail subadmin={subadmin} />
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-col col-span-2 h-full">
-                    <div className="flex-grow h-full">
+                    <div className="grow h-full">
                         <div className="h-full">
                             <SubadminProfileCounts
                                 subAdminProfileCount={subAdminProfileCount}
@@ -95,7 +97,7 @@ export const SubadminProfileDetail = ({ subadmin }: { subadmin: SubAdmin }) => {
             <SubadminProgress subAdminProfileCount={subAdminProfileCount} />
 
             {/*  */}
-            <div className=" grid grid-cols-3 gap-x-[18px] h-[580px]">
+            <div className=" grid grid-cols-3 gap-x-4.5 h-145">
                 <div className="col-span-2 h-full">
                     <div className="w-full">
                         <SubadminCalendarViewDetail
@@ -109,7 +111,11 @@ export const SubadminProfileDetail = ({ subadmin }: { subadmin: SubAdmin }) => {
             </div>
 
             {/*  */}
-            <SubadminTodoList />
+            <AuthorizedUserComponent
+                roles={[UserRoles.ADMIN, UserRoles.SUBADMIN]}
+            >
+                <SubadminTodoList />
+            </AuthorizedUserComponent>
 
             {/*  */}
             <div>
@@ -124,8 +130,8 @@ export const SubadminProfileDetail = ({ subadmin }: { subadmin: SubAdmin }) => {
             </div>
 
             {/*  */}
-            <div className="h-[640px] px-2  grid grid-cols-2 gap-x-3">
-                <div className={`!h-[99%] col-span-2`}>
+            <div className="h-160 px-2  grid grid-cols-2 gap-x-3">
+                <div className={`h-[99%]! col-span-2`}>
                     <MailsCommunication user={subadmin} />
                 </div>
             </div>

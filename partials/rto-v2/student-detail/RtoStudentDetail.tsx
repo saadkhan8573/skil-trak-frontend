@@ -7,7 +7,6 @@ import {
     StudentHeader,
     StudentInfoMessage,
     StudentOverview,
-    StudentOverviewTesting,
     Tickets,
 } from './components'
 
@@ -24,6 +23,7 @@ import {
     setStudentDetail,
 } from '@redux'
 import { Course, Student } from '@types'
+import { getUserCredentials } from '@utils'
 import {
     Book,
     Building2,
@@ -41,8 +41,6 @@ import {
     StudentProfileHeaderSkeleton,
     StudentTopBarSkeleton,
 } from './skeletonLoader'
-import { getUserCredentials } from '@utils'
-import { UserRoles } from '@constants'
 
 export const RtoStudentDetail = () => {
     const router = useRouter()
@@ -82,25 +80,7 @@ export const RtoStudentDetail = () => {
             value: 'overview',
             label: 'Overview',
             icon: Book,
-            // component: () => (
-            //     <div className="space-y-[19.87px] mt-[19.87px]">
-            //         <CourseOverview />
-            //         <CourseProgress />
-            //         <PlacementRequest />
-            //         <div className="grid grid-cols-1 lg:grid-cols-2 gap-[19.87px]">
-            //             <WorkplaceBio />
-            //             <CurrentStatus />
-            //         </div>
-            //     </div>
-            // ),
             component: () => <StudentOverview />,
-        },
-        {
-            value: 'overview-admin',
-            label: 'Overview (Testing/ only admin visible)',
-            icon: Book,
-            component: () => <StudentOverviewTesting />,
-            hidden: ![UserRoles.ADMIN, UserRoles.SUBADMIN].includes(role),
         },
         {
             value: 'workplace',
@@ -172,7 +152,6 @@ export const RtoStudentDetail = () => {
     return (
         <>
             {profile?.isError ? <TechnicalError /> : null}
-
             {profile?.isLoading ? (
                 <div className="bg-linear-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 min-h-screen">
                     <StudentTopBarSkeleton />

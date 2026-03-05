@@ -18,7 +18,7 @@ import { FaEdit, FaEye, FaFileExport, FaFlag } from 'react-icons/fa'
 
 import { RtoCellInfo } from '@partials/admin/rto/components'
 import { AdminApi } from '@queries'
-import { Student, UserStatus } from '@types'
+import { Student } from '@types'
 import {
     activeAndCompleted,
     checkListLength,
@@ -28,32 +28,22 @@ import {
     isBrowser,
     setLink,
 } from '@utils'
+import { Phone } from 'lucide-react'
 import { useRouter } from 'next/router'
-import { ReactElement, ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { MdBlock } from 'react-icons/md'
 import { SectorCell, StudentCellInfo, StudentIndustries } from './components'
 import {
-    ArchiveModal,
+    AdminStudentModalType,
     BlockModal,
     BlockMultiStudentsModal,
-    ChangeStatusModal,
-    HighPriorityModal,
-    AdminStudentModalType,
     getAdminStudentsModal,
 } from './modals'
-import { Phone } from 'lucide-react'
 
 // hooks
-import { useActionModal } from '@hooks'
 
-import { EditTimer } from '@components/StudentTimer/EditTimer'
 import Modal from '@modals/Modal'
-import {
-    FlagStudentModal,
-    SwitchOffFlagModal,
-} from '@partials/common/StudentProfileDetail/modals'
-import moment from 'moment'
-import { isWorkplaceValid } from 'utils/workplaceRowBlinking'
+import { SwitchOffFlagModal } from '@partials/common/StudentProfileDetail/modals'
 
 export const FlaggedStudentsList = () => {
     const router = useRouter()
@@ -83,10 +73,6 @@ export const FlaggedStudentsList = () => {
         setItemPerPage(Number(router.query.pageSize || 50))
     }, [router])
 
-    // hooks
-    const { passwordModal, onViewPassword } = useActionModal()
-
-    // admin/students/reported/list
     const { isLoading, isFetching, data, isError } =
         AdminApi.Students.useFlaggedStudents(
             {
@@ -116,68 +102,6 @@ export const FlaggedStudentsList = () => {
         )
     }
 
-    const onArchiveClicked = (student: Student) => {
-        setModal(
-            <ArchiveModal item={student} onCancel={onModalCancelClicked} />
-        )
-    }
-    const onMarkAsHighPriorityClicked = (studetnt: Student) => {
-        setModal(
-            <HighPriorityModal
-                item={studetnt}
-                onCancel={onModalCancelClicked}
-            // setRefetchStudents={setRefetchStudents}
-            />
-        )
-    }
-
-    const onChangeStatus = (student: Student) => {
-        setModal(
-            <ChangeStatusModal
-                student={student}
-                onCancel={onModalCancelClicked}
-            />
-        )
-    }
-
-    const onDateClick = (student: Student) => {
-        setModal(
-            <EditTimer
-                studentId={student?.user?.id}
-                date={student?.expiryDate}
-                onCancel={onModalCancelClicked}
-            />
-        )
-    }
-
-    const numberOfWeeks = 20
-    const endDate = new Date() // Starting from the current date
-
-    const dateObjects = []
-
-    for (let i = numberOfWeeks - 1; i >= 0; i--) {
-        const currentDate = new Date(endDate)
-        currentDate.setDate(currentDate.getDate() - i * 7) // Decrement by a week
-
-        const lastWeekDate = new Date(currentDate)
-        lastWeekDate.setDate(lastWeekDate.getDate() + 6) // End of the week
-
-        const dateObject = {
-            startDate: currentDate.toISOString().slice(0, 10), // Format as YYYY-MM-DD
-            endDate: lastWeekDate.toISOString().slice(0, 10),
-        }
-
-        dateObjects.push(dateObject)
-    }
-
-    const onMakeProblamatic = (student: Student) => {
-        setModal(
-            <FlagStudentModal
-                onCancel={onModalCancelClicked}
-                studentId={student?.id}
-            />
-        )
-    }
     const onSwitchOffFlag = (student: Student) => {
         setModal(
             <SwitchOffFlagModal
@@ -198,15 +122,6 @@ export const FlaggedStudentsList = () => {
                 Icon: FaEye,
             },
             {
-                text: 'View Old Profile',
-                onClick: (student: Student) => {
-                    router.push(
-                        `/portals/admin/student/${student?.id}/old-profile`
-                    )
-                },
-                Icon: FaEye,
-            },
-            {
                 text: 'AI Voice Call',
                 onClick: (student: Student) => {
                     handleOpenModal(AdminStudentModalType.AI_CALL, student)
@@ -214,19 +129,9 @@ export const FlaggedStudentsList = () => {
                 Icon: () => <Phone className="w-3 h-3" />,
             },
             {
-                text:
-                    // !student?.isReported && student?.hasIssue
-                    //     ? 'Report to RTO'
-                    //     :
-                    'Cancel',
+                text: 'Cancel',
                 onClick: (student: Student) => {
                     onSwitchOffFlag(student)
-                    // if (student?.isReported || student?.hasIssue) {
-                    //   onMakeProblamatic(student)
-                    // }
-                    // else {
-                    // onSwitchOffFlag(student)
-                    // }
                 },
                 Icon: FaFlag,
             },
@@ -278,19 +183,20 @@ export const FlaggedStudentsList = () => {
                                     Reported Comment
                                 </Typography>
                                 {info.row?.original?.statusHistory &&
-                                    info.row?.original?.statusHistory?.length >
+                                info.row?.original?.statusHistory?.length >
                                     0 ? (
                                     <div className="flex gap-x-4 w-full h-full">
                                         <div
-                                            className={`flex flex-col gap-y-1 ${info.row?.original
-                                                ?.statusHistory?.[
+                                            className={`flex flex-col gap-y-1 ${
                                                 info.row?.original
-                                                    ?.statusHistory
-                                                    ?.length - 1
-                                            ]?.response
-                                                ? 'w-1/2'
-                                                : 'w-full'
-                                                }`}
+                                                    ?.statusHistory?.[
+                                                    info.row?.original
+                                                        ?.statusHistory
+                                                        ?.length - 1
+                                                ]?.response
+                                                    ? 'w-1/2'
+                                                    : 'w-full'
+                                            }`}
                                         >
                                             <Typography
                                                 variant="label"
@@ -311,26 +217,26 @@ export const FlaggedStudentsList = () => {
                                             info.row?.original?.statusHistory
                                                 ?.length - 1
                                         ]?.response && (
-                                                <>
-                                                    <div className="w-[2px] bg-gray-200 h-auto min-h-full mx-4"></div>
-                                                    <div className="flex flex-col gap-y-1 w-1/2">
-                                                        <Typography
-                                                            variant="label"
-                                                            semibold
-                                                        >
-                                                            RTO Comment
-                                                        </Typography>
-                                                        <Typography variant="body">
-                                                            {info.row?.original
-                                                                ?.statusHistory?.[
-                                                                info.row?.original
-                                                                    ?.statusHistory
-                                                                    ?.length - 1
-                                                            ]?.response ?? 'NA'}
-                                                        </Typography>
-                                                    </div>
-                                                </>
-                                            )}
+                                            <>
+                                                <div className="w-0.5 bg-gray-200 h-auto min-h-full mx-4"></div>
+                                                <div className="flex flex-col gap-y-1 w-1/2">
+                                                    <Typography
+                                                        variant="label"
+                                                        semibold
+                                                    >
+                                                        RTO Comment
+                                                    </Typography>
+                                                    <Typography variant="body">
+                                                        {info.row?.original
+                                                            ?.statusHistory?.[
+                                                            info.row?.original
+                                                                ?.statusHistory
+                                                                ?.length - 1
+                                                        ]?.response ?? 'NA'}
+                                                    </Typography>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
                                 ) : (
                                     <NoData text="No Data found" />
@@ -421,7 +327,6 @@ export const FlaggedStudentsList = () => {
     return (
         <>
             {modal && modal}
-            {passwordModal && passwordModal}
             <div className="flex flex-col gap-y-4">
                 <div className="flex">
                     <PageHeading
@@ -482,18 +387,18 @@ export const FlaggedStudentsList = () => {
                                     >
                                         {pageSize
                                             ? pageSize(
-                                                itemPerPage,
-                                                setItemPerPage,
-                                                data?.data?.length
-                                            )
+                                                  itemPerPage,
+                                                  setItemPerPage,
+                                                  data?.data?.length
+                                              )
                                             : null}
                                         <div className="flex gap-x-2">
                                             {quickActions}
                                             {pagination
                                                 ? pagination(
-                                                    data?.pagination,
-                                                    setPage
-                                                )
+                                                      data?.pagination,
+                                                      setPage
+                                                  )
                                                 : null}
                                         </div>
                                     </div>
@@ -509,18 +414,18 @@ export const FlaggedStudentsList = () => {
                                         <div className="p-6 mb-2 flex justify-between">
                                             {pageSize
                                                 ? pageSize(
-                                                    itemPerPage,
-                                                    setItemPerPage,
-                                                    data?.data?.length
-                                                )
+                                                      itemPerPage,
+                                                      setItemPerPage,
+                                                      data?.data?.length
+                                                  )
                                                 : null}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination
                                                     ? pagination(
-                                                        data?.pagination,
-                                                        setPage
-                                                    )
+                                                          data?.pagination,
+                                                          setPage
+                                                      )
                                                     : null}
                                             </div>
                                         </div>

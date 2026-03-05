@@ -1,4 +1,10 @@
-import { Button, Card, NoData, ViewDocumentModal, ViewImageModal } from '@components'
+import {
+    Button,
+    Card,
+    NoData,
+    ViewDocumentModal,
+    ViewImageModal,
+} from '@components'
 import { Skeleton } from '@components/ui/skeleton'
 import { RtoV2Api } from '@queries'
 import { ellipsisText } from '@utils'
@@ -89,7 +95,6 @@ export const RtoChecklistDetail = ({
 
     const handleViewFile = (fileUrl: string, fileName: string) => {
         const ext = fileUrl?.split('.')?.pop()?.split('?')?.[0]?.toLowerCase()
-        console.log({ fileUrl })
         if (ext === 'pdf') {
             setViewDocument({
                 url: fileUrl,
@@ -134,7 +139,7 @@ export const RtoChecklistDetail = ({
                     <div className="flex items-start justify-between">
                         <div className="flex items-start gap-3 flex-1">
                             <div
-                                className={`w-10 h-10 ${colors.bg} rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}
+                                className={`w-10 h-10 ${colors.bg} rounded-lg flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}
                             >
                                 <ClipboardCheck
                                     className={`w-5 h-5 ${colors.text}`}
@@ -158,7 +163,7 @@ export const RtoChecklistDetail = ({
                                         className="flex items-center gap-3"
                                     >
                                         <Skeleton className="h-4 w-4 rounded-full" />
-                                        <Skeleton className="h-4 w-full max-w-[350px]" />
+                                        <Skeleton className="h-4 w-full max-w-87.5" />
                                     </div>
                                 ))}
                             </div>
@@ -188,7 +193,7 @@ export const RtoChecklistDetail = ({
                                         className="flex items-start gap-3"
                                     >
                                         <CheckCircle2
-                                            className={`w-4 h-4 ${colors.text} mt-0.5 flex-shrink-0`}
+                                            className={`w-4 h-4 ${colors.text} mt-0.5 shrink-0`}
                                         />
                                         <span className="text-sm text-slate-700">
                                             {item}
@@ -199,10 +204,10 @@ export const RtoChecklistDetail = ({
                         )}
 
                     {file ? (
-                        <div className="mt-4 p-5 bg-gradient-to-br from-slate-50 to-white rounded-xl border-2 border-slate-200 hover:border-[#044866]/30 hover:shadow-md transition-all group">
+                        <div className="mt-4 p-5 bg-linear-to-br from-slate-50 to-white rounded-xl border-2 border-slate-200 hover:border-[#044866]/30 hover:shadow-md transition-all group">
                             <div className="flex items-center justify-between gap-4 flex-wrap">
                                 <div className="flex items-center gap-4 flex-1 min-w-0">
-                                    <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                                    <div className="w-12 h-12 bg-linear-to-br from-slate-100 to-slate-200 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                                         <FileText className="w-6 h-6 text-slate-600" />
                                     </div>
                                     <div className="flex-1 min-w-0">
@@ -221,7 +226,7 @@ export const RtoChecklistDetail = ({
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex gap-2 flex-shrink-0">
+                                <div className="flex gap-2 shrink-0">
                                     <Button
                                         outline
                                         variant="primaryNew"
@@ -230,7 +235,7 @@ export const RtoChecklistDetail = ({
                                                 file,
                                                 getRtoCourseChecklist.data
                                                     ?.title ||
-                                                'RTO Facility Checklist'
+                                                    'RTO Facility Checklist'
                                             )
                                         }
                                     >

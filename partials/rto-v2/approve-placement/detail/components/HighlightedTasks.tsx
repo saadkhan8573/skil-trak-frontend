@@ -19,8 +19,6 @@ export const HighlightedTasks = ({
         }
     )
 
-    console.log({ highlightedTasks })
-
     const getColorClasses = (color: string) => {
         const colors: Record<
             string,
@@ -76,62 +74,66 @@ export const HighlightedTasks = ({
                         {[1, 2, 3, 4].map((i) => (
                             <div key={i} className="flex items-center gap-3">
                                 <Skeleton className="h-4 w-4 rounded-full" />
-                                <Skeleton className="h-4 w-full max-w-[400px]" />
+                                <Skeleton className="h-4 w-full max-w-100" />
                             </div>
                         ))}
                     </div>
-                ) : highlightedTasks?.data && highlightedTasks?.isSuccess && (
-                    <div className="space-y-2.5">
-                        {Array.isArray(highlightedTasks?.data) ? (
-                            highlightedTasks?.data[0] &&
+                ) : (
+                    highlightedTasks?.data &&
+                    highlightedTasks?.isSuccess && (
+                        <div className="space-y-2.5">
+                            {Array.isArray(highlightedTasks?.data) ? (
+                                highlightedTasks?.data[0] &&
                                 typeof highlightedTasks.data[0] === 'object' &&
                                 'statement' in highlightedTasks.data[0] ? (
-                                highlightedTasks.data.map(
-                                    (item: any, itemIndex: number) => (
-                                        <div
-                                            key={itemIndex}
-                                            className="flex items-start gap-3"
-                                        >
-                                            <CheckCircle2
-                                                className={`w-4 h-4 ${colors.text} mt-0.5 shrink-0`}
-                                            />
-                                            <span className="text-sm text-slate-700">
-                                                {item.statement}
-                                            </span>
-                                        </div>
+                                    highlightedTasks.data.map(
+                                        (item: any, itemIndex: number) => (
+                                            <div
+                                                key={itemIndex}
+                                                className="flex items-start gap-3"
+                                            >
+                                                <CheckCircle2
+                                                    className={`w-4 h-4 ${colors.text} mt-0.5 shrink-0`}
+                                                />
+                                                <span className="text-sm text-slate-700">
+                                                    {item.statement}
+                                                </span>
+                                            </div>
+                                        )
+                                    )
+                                ) : (
+                                    highlightedTasks?.data?.[0]?.map(
+                                        (item: string, itemIndex: number) => (
+                                            <div
+                                                key={itemIndex}
+                                                className="flex items-start gap-3"
+                                            >
+                                                <CheckCircle2
+                                                    className={`w-4 h-4 ${colors.text} mt-0.5 shrink-0`}
+                                                />
+                                                <span className="text-sm text-slate-700">
+                                                    {item}
+                                                </span>
+                                            </div>
+                                        )
                                     )
                                 )
                             ) : (
-                                highlightedTasks?.data?.[0]?.map(
-                                    (item: string, itemIndex: number) => (
-                                        <div
-                                            key={itemIndex}
-                                            className="flex items-start gap-3"
-                                        >
-                                            <CheckCircle2
-                                                className={`w-4 h-4 ${colors.text} mt-0.5 shrink-0`}
-                                            />
-                                            <span className="text-sm text-slate-700">
-                                                {item}
-                                            </span>
-                                        </div>
-                                    )
-                                )
-                            )
-                        ) : (
-                            <div className="flex items-start gap-3">
-                                <CheckCircle2
-                                    className={`w-4 h-4 ${colors.text} mt-0.5 shrink-0`}
-                                />
-                                <div
-                                    className="text-sm text-slate-700"
-                                    dangerouslySetInnerHTML={{
-                                        __html: highlightedTasks?.data?.info,
-                                    }}
-                                ></div>
-                            </div>
-                        )}
-                    </div>
+                                <div className="flex items-start gap-3">
+                                    <CheckCircle2
+                                        className={`w-4 h-4 ${colors.text} mt-0.5 shrink-0`}
+                                    />
+                                    <div
+                                        className="text-sm text-slate-700"
+                                        dangerouslySetInnerHTML={{
+                                            __html: highlightedTasks?.data
+                                                ?.info,
+                                        }}
+                                    ></div>
+                                </div>
+                            )}
+                        </div>
+                    )
                 )}
             </div>
         </Card>

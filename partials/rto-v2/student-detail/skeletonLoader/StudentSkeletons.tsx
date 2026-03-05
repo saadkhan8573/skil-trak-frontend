@@ -76,7 +76,7 @@ export function StudentProfileHeaderSkeleton() {
                                     {[1, 2, 3].map((i) => (
                                         <Skeleton
                                             key={i}
-                                            className="h-[46px] w-[145px] rounded-xl"
+                                            className="h-11.5 w-36.25 rounded-xl"
                                         />
                                     ))}
                                 </div>
@@ -130,20 +130,143 @@ export function StudentTimelineSkeleton() {
     )
 }
 
+export function WorkplaceOverviewCardSkeleton() {
+    return (
+        <div className="rounded-xl border-2 border-gray-400 bg-white overflow-hidden space-y-0">
+            {/* QuickActions Header Skeleton */}
+            <div className="bg-[#044866] px-5 py-3 flex items-center justify-between gap-4">
+                {/* Left: index badge + title */}
+                <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center">
+                        <Skeleton className="w-7 h-7 rounded-full bg-white/30" />
+                    </div>
+                    <div className="space-y-1">
+                        <Skeleton className="h-4 w-36 bg-white/20 rounded" />
+                        <Skeleton className="h-2.5 w-28 bg-white/15 rounded" />
+                    </div>
+                </div>
+                {/* Right: 3 action buttons */}
+                <div className="flex items-center gap-3">
+                    <Skeleton className="h-9 w-36 bg-white/20 rounded-lg" />
+                    <Skeleton className="h-9 w-36 bg-amber-400/40 rounded-lg" />
+                    <Skeleton className="h-9 w-40 bg-white/20 rounded-lg" />
+                </div>
+            </div>
+
+            {/* WorkplaceStatuses Skeleton */}
+            <div className="px-4 py-3 bg-slate-50 border-b border-slate-200/60">
+                {/* Top row: status badge + right meta */}
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                        <Skeleton className="h-6 w-28 rounded-full" />
+                        <Skeleton className="h-6 w-20 rounded-lg" />
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <Skeleton className="h-6 w-36 rounded-lg" />
+                        <Skeleton className="h-6 w-24 rounded-lg" />
+                    </div>
+                </div>
+                {/* Progress bar */}
+                <div className="relative pb-1">
+                    <Skeleton className="absolute top-3 left-0 right-0 h-1 rounded-full" />
+                    {/* Step dots with labels */}
+                    <div className="relative flex justify-between">
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                            <div
+                                key={i}
+                                className="flex flex-col items-center"
+                                style={{ width: `${100 / 6}%` }}
+                            >
+                                <Skeleton className="w-6 h-6 rounded-xl" />
+                                <div className="mt-3 space-y-1 flex flex-col items-center">
+                                    <Skeleton className="h-2.5 w-14 rounded" />
+                                    <Skeleton className="h-2 w-10 rounded" />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* WorkplaceBio Skeleton */}
+            <div className="bg-white">
+                {/* 2-column layout */}
+                <div className="p-5 border-b border-slate-200/60">
+                    <div className="grid lg:grid-cols-2 gap-5">
+                        {/* Left: WorkplaceIndustryInfo */}
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-3">
+                                <Skeleton className="w-12 h-12 rounded-xl" />
+                                <div className="space-y-1.5 flex-1">
+                                    <Skeleton className="h-5 w-48" />
+                                    <Skeleton className="h-3.5 w-32" />
+                                </div>
+                                <Skeleton className="h-6 w-20 rounded-full" />
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                                {[1, 2, 3, 4].map((i) => (
+                                    <div
+                                        key={i}
+                                        className="p-2.5 rounded-lg border border-slate-100 space-y-1"
+                                    >
+                                        <Skeleton className="h-2.5 w-16" />
+                                        <Skeleton className="h-4 w-24" />
+                                    </div>
+                                ))}
+                            </div>
+                            {/* Supervisor */}
+                            <div className="flex items-center gap-3 p-2.5 rounded-lg border border-slate-100">
+                                <Skeleton className="w-9 h-9 rounded-full" />
+                                <div className="space-y-1">
+                                    <Skeleton className="h-3 w-20" />
+                                    <Skeleton className="h-4 w-32" />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Right: Map + Approval Card */}
+                        <div className="flex flex-col gap-2">
+                            {/* Map view */}
+                            <Skeleton className="h-32 w-full rounded-xl" />
+                            {/* Approval card */}
+                            <div className="flex-1 rounded-xl border border-slate-100 p-3 space-y-3">
+                                <div className="flex items-center justify-between">
+                                    <Skeleton className="h-4 w-28" />
+                                    <Skeleton className="h-6 w-20 rounded-full" />
+                                </div>
+                                <Skeleton className="h-8 w-full rounded-lg" />
+                                <div className="flex gap-2">
+                                    <Skeleton className="h-9 flex-1 rounded-lg" />
+                                    <Skeleton className="h-9 flex-1 rounded-lg" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* About section */}
+                <div className="px-5 py-3 border-b border-slate-200/60 space-y-2">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-3 w-full" />
+                    <Skeleton className="h-3 w-5/6" />
+                    <Skeleton className="h-3 w-4/6" />
+                </div>
+
+                {/* Compliance checks */}
+                <div className="px-5 py-3 flex gap-3">
+                    {[1, 2, 3].map((i) => (
+                        <Skeleton key={i} className="h-8 flex-1 rounded-lg" />
+                    ))}
+                </div>
+            </div>
+        </div>
+    )
+}
+
 export function StudentOverviewSkeleton() {
     return (
-        <div className="space-y-6">
-            {/* Course Overview */}
-            <Skeleton className="h-48 w-full rounded-xl" />
-
-            {/* Placement Request */}
-            <Skeleton className="h-32 w-full rounded-xl" />
-
-            {/* Two Column Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <Skeleton className="h-64 w-full rounded-xl" />
-                <Skeleton className="h-64 w-full rounded-xl" />
-            </div>
+        <div className="space-y-3">
+            <WorkplaceOverviewCardSkeleton />
         </div>
     )
 }

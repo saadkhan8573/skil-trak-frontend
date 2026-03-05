@@ -212,13 +212,6 @@ export const FilteredStudents = ({
             Icon: FaEye,
         },
         {
-            text: 'View Old Profile',
-            onClick: (student) => {
-                router.push(`/portals/admin/student/${student?.id}/old-profile`)
-            },
-            Icon: FaEye,
-        },
-        {
             text: 'Edit',
             onClick: (row: any) => {
                 router.push(`/portals/admin/student/edit-student/${row?.id}`)
@@ -269,16 +262,16 @@ export const FilteredStudents = ({
         {
             ...(role === UserRoles.ADMIN
                 ? {
-                    status: [
-                        UserStatus.Blocked,
-                        UserStatus.Rejected,
-                        UserStatus.Archived,
-                    ],
-                    text: 'Delete',
-                    onClick: (student) => onDeleteClicked(student),
-                    Icon: FaTrash,
-                    color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
-                }
+                      status: [
+                          UserStatus.Blocked,
+                          UserStatus.Rejected,
+                          UserStatus.Archived,
+                      ],
+                      text: 'Delete',
+                      onClick: (student) => onDeleteClicked(student),
+                      Icon: FaTrash,
+                      color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
+                  }
                 : { status: [] }),
         },
         // {

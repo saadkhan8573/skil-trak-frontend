@@ -31,7 +31,6 @@ export const ApproveRequestModal = ({
         })
     }
 
-    console.log({ wpRequest })
     return (
         <>
             <ShowErrorNotifications result={changeStatusResult} />

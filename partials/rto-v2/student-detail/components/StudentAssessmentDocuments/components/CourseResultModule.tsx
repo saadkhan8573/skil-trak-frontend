@@ -39,8 +39,6 @@ export const CourseResultModule: React.FC<CourseResultModuleProps> = ({
 }) => {
     const [editAssessment, setEditAssessment] = useState<boolean>(false)
 
-    console.log({ selectedCourse })
-
     if (!selectedCourse) return null
 
     const showSubmitForm =
@@ -49,8 +47,6 @@ export const CourseResultModule: React.FC<CourseResultModuleProps> = ({
             result?.isSubmitted) ||
         editAssessment ||
         subadmin?.isAssociatedWithRto
-
-    console.log({ showSubmitForm, allCommentsAdded })
 
     return (
         <motion.div

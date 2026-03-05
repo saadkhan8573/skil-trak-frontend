@@ -29,8 +29,6 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
         (state) => state.student.selectedCourse
     )
 
-    console.log({ selectedCourseselectedCourse: selectedCourse })
-
     const studentWorkplace = SubAdminApi.Student.getWorkplaceForSchedule(
         student?.id,
         {

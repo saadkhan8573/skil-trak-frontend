@@ -33,12 +33,11 @@ export const FilteredIndustry = ({
             'address',
             'createdBy',
             'action',
-            "placementStatus",
-            "favoriteBy"
+            'placementStatus',
+            'favoriteBy',
         ],
         actionKeys: [
             'view',
-            'viewOldProfile',
             'edit',
             'viewPassword',
             'archive',

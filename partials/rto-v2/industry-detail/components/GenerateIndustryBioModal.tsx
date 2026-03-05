@@ -1,4 +1,3 @@
-
 import { Button, ShowErrorNotifications } from '@components'
 import {
     Dialog,
@@ -32,7 +31,6 @@ export function GenerateIndustryBioModal({
         setGeneratedBio('')
         try {
             const res = await generateBio(industryId).unwrap()
-            console.log({ res })
             // Assuming the API returns { data: "generated bio string" } or similar
             // Adjust based on actual API response structure
             setGeneratedBio(res?.bio)
@@ -83,7 +81,7 @@ export function GenerateIndustryBioModal({
                             </p>
                             <Button
                                 onClick={handleGenerate}
-                                className="bg-gradient-to-r from-[#F7A619] to-[#F7A619]/90 text-white shadow-sm hover:shadow-md transition-all h-9 text-xs"
+                                className="bg-linear-to-r from-[#F7A619] to-[#F7A619]/90 text-white shadow-sm hover:shadow-md transition-all h-9 text-xs"
                             >
                                 <Sparkles className="w-3.5 h-3.5 mr-1.5" />
                                 Generate Biography

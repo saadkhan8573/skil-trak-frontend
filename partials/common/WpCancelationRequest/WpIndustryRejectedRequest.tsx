@@ -95,43 +95,40 @@ export const WpIndustryRejectedRequest = () => {
         {
             accessorKey: 'cancelledBy',
             header: () => <span>Cancelled By</span>,
-            cell: (info) => {
-                console.log('info.row.original', info?.row?.original)
-                return (
-                    <a className="flex items-center gap-x-2">
-                        <div className="shadow-inner-image rounded-full">
-                            {info.row.original?.industryRejectionUser?.name && (
-                                <InitialAvatar
-                                    name={
-                                        info.row.original?.industryRejectionUser
-                                            ?.name
-                                    }
-                                    imageUrl={
-                                        info.row.original?.industryRejectionUser
-                                            ?.avatar
-                                    }
-                                />
-                            )}
-                        </div>
-                        <div>
-                            <p className={`font-semibold`}>
-                                {info.row.original?.industryRejectionUser?.name}
+            cell: (info) => (
+                <a className="flex items-center gap-x-2">
+                    <div className="shadow-inner-image rounded-full">
+                        {info.row.original?.industryRejectionUser?.name && (
+                            <InitialAvatar
+                                name={
+                                    info.row.original?.industryRejectionUser
+                                        ?.name
+                                }
+                                imageUrl={
+                                    info.row.original?.industryRejectionUser
+                                        ?.avatar
+                                }
+                            />
+                        )}
+                    </div>
+                    <div>
+                        <p className={`font-semibold`}>
+                            {info.row.original?.industryRejectionUser?.name}
+                        </p>
+                        <div className="font-medium text-xs text-gray-500">
+                            <p className="flex items-center gap-x-1">
+                                <span>
+                                    <MdEmail />
+                                </span>
+                                {
+                                    info.row.original?.industryRejectionUser
+                                        ?.email
+                                }
                             </p>
-                            <div className="font-medium text-xs text-gray-500">
-                                <p className="flex items-center gap-x-1">
-                                    <span>
-                                        <MdEmail />
-                                    </span>
-                                    {
-                                        info.row.original?.industryRejectionUser
-                                            ?.email
-                                    }
-                                </p>
-                            </div>
                         </div>
-                    </a>
-                )
-            },
+                    </div>
+                </a>
+            ),
         },
         {
             accessorKey: 'createdAt',

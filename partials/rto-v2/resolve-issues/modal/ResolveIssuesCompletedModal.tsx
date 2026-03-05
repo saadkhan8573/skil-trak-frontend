@@ -33,14 +33,12 @@ export const ResolveIssuesCompletedModal = ({
     reportedIssue,
     view = false,
 }: ResolveIssuesCompletedModalProps) => {
-    console.log({ reportedIssue })
     const [resolution, setResolution] = useState('')
     const { notification } = useNotification()
     const [resolveIssue, resolveIssueResult] =
         RtoApi.Students.useRtoResolveIssue()
 
     const getPriorityBadge = (priority: 'critical' | 'high' | 'medium') => {
-        console.log({ priority })
         const config = {
             critical: {
                 className:
@@ -181,7 +179,9 @@ export const ResolveIssuesCompletedModal = ({
                                     <div className="flex items-center gap-2">
                                         <Calendar className="h-3 w-3 text-gray-500" />
                                         <p className="text-sm">
-                                            {moment(reportedIssue?.createdAt).format('Do MMM YYYY')}
+                                            {moment(
+                                                reportedIssue?.createdAt
+                                            ).format('Do MMM YYYY')}
                                         </p>
                                     </div>
                                 </div>
@@ -191,7 +191,11 @@ export const ResolveIssuesCompletedModal = ({
                                     </p>
                                     <span className="inline-flex items-center px-2 py-1 text-xs border border-amber-200 text-amber-600 rounded-md bg-amber-50">
                                         <Clock className="h-3 w-3 mr-1" />
-                                        {moment().diff(moment(reportedIssue?.createdAt), 'days')} days
+                                        {moment().diff(
+                                            moment(reportedIssue?.createdAt),
+                                            'days'
+                                        )}{' '}
+                                        days
                                     </span>
                                 </div>
                             </div>
@@ -231,7 +235,7 @@ export const ResolveIssuesCompletedModal = ({
                                 onChange={(e: any) =>
                                     setResolution(e.target.value)
                                 }
-                                className="w-full min-h-[120px] p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm resize-none"
+                                className="w-full min-h-30 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm resize-none"
                             />
                         )}
                     </div>
@@ -246,10 +250,13 @@ export const ResolveIssuesCompletedModal = ({
                                 Cancel
                             </button>
                             <Button
-                                variant='error'
+                                variant="error"
                                 onClick={onClickResolve}
-                                className='bg-red-500!'
-                                disabled={!resolution.trim() || resolveIssueResult?.isLoading}
+                                className="bg-red-500!"
+                                disabled={
+                                    !resolution.trim() ||
+                                    resolveIssueResult?.isLoading
+                                }
                                 loading={resolveIssueResult?.isLoading}
                             >
                                 <CheckCircle2 className="h-4 w-4" />

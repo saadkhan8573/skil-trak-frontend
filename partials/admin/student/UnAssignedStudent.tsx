@@ -20,7 +20,13 @@ import { AdminApi } from '@queries'
 import { Student } from '@types'
 import { checkListLength, setLink } from '@utils'
 import { useRouter } from 'next/router'
-import { ReactElement, ReactNode, useCallback, useEffect, useState } from 'react'
+import {
+    ReactElement,
+    ReactNode,
+    useCallback,
+    useEffect,
+    useState,
+} from 'react'
 import { RiLockPasswordFill } from 'react-icons/ri'
 import { SectorCell, StudentCellInfo, StudentIndustries } from './components'
 import {
@@ -80,13 +86,6 @@ export const UnAssignedStudent = () => {
             onClick: (student) => {
                 router.push(`/portals/admin/student/${student?.id}/detail`)
                 setLink('student', router)
-            },
-            Icon: FaEye,
-        },
-        {
-            text: 'View Old Profile',
-            onClick: (student) => {
-                router.push(`/portals/admin/student/${student?.id}/old-profile`)
             },
             Icon: FaEye,
         },
@@ -242,18 +241,18 @@ export const UnAssignedStudent = () => {
                                         <div className="p-6 mb-2 flex justify-between">
                                             {pageSize
                                                 ? pageSize(
-                                                    itemPerPage,
-                                                    setItemPerPage,
-                                                    data?.data?.length
-                                                )
+                                                      itemPerPage,
+                                                      setItemPerPage,
+                                                      data?.data?.length
+                                                  )
                                                 : null}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination
                                                     ? pagination(
-                                                        data?.pagination,
-                                                        setPage
-                                                    )
+                                                          data?.pagination,
+                                                          setPage
+                                                      )
                                                     : null}
                                             </div>
                                         </div>
@@ -269,18 +268,18 @@ export const UnAssignedStudent = () => {
                                             <div className="p-6 mb-2 flex justify-between">
                                                 {pageSize
                                                     ? pageSize(
-                                                        itemPerPage,
-                                                        setItemPerPage,
-                                                        data?.data?.length
-                                                    )
+                                                          itemPerPage,
+                                                          setItemPerPage,
+                                                          data?.data?.length
+                                                      )
                                                     : null}
                                                 <div className="flex gap-x-2">
                                                     {quickActions}
                                                     {pagination
                                                         ? pagination(
-                                                            data?.pagination,
-                                                            setPage
-                                                        )
+                                                              data?.pagination,
+                                                              setPage
+                                                          )
                                                         : null}
                                                 </div>
                                             </div>

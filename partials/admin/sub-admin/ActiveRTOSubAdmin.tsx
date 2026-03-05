@@ -5,6 +5,7 @@ import {
     LoadingAnimation,
     Table,
     TableAction,
+    TableActionOption,
     TechnicalError,
     Typography,
 } from '@components'
@@ -30,6 +31,7 @@ import { AddSubAdminCB, ViewRtosCB, ViewSectorsCB } from './contextBar'
 import {
     AllowAsAdminModal,
     AllowLoginAfterHoursModal,
+    AllowPermissionModal,
     AllowRtoWpRequestModal,
     ArchiveModal,
     AssignAutoWorkplaceModal,
@@ -37,10 +39,10 @@ import {
     RemoveFromAssociatedRTOModal,
 } from './modals'
 import { CiCircleList } from 'react-icons/ci'
+import { PiCellSignalLowFill } from 'react-icons/pi'
 
 export const ActiveRTOSubAdmin = () => {
     const [modal, setModal] = useState<ReactElement | null>(null)
-    const [changeStatusResult, setChangeStatusResult] = useState<any>({})
     const router = useRouter()
 
     const contextBar = useContextBar()
@@ -59,8 +61,9 @@ export const ActiveRTOSubAdmin = () => {
     const { isLoading, isFetching, data, isError, refetch } =
         AdminApi.SubAdmins.useListQuery(
             {
-                search: `status:${UserStatus.Approved
-                    },isAssociatedWithRto:${true}`,
+                search: `status:${
+                    UserStatus.Approved
+                },isAssociatedWithRto:${true}`,
                 skip: itemPerPage * page - itemPerPage,
                 limit: itemPerPage,
             },
@@ -69,16 +72,7 @@ export const ActiveRTOSubAdmin = () => {
             }
         )
 
-    const [associatedWithRto, associatedWithRtoResult] =
-        AdminApi.SubAdmins.useAssociatedWithRto()
-
     const [bulkAction, resultBulkAction] = commonApi.useBulkStatusMutation()
-
-    useEffect(() => {
-        if (changeStatusResult.isSuccess) {
-            refetch()
-        }
-    }, [changeStatusResult])
 
     const onModalCancelClicked = () => {
         setModal(null)
@@ -142,6 +136,15 @@ export const ActiveRTOSubAdmin = () => {
         )
     }
 
+    const onAllowPermissionClicked = (subadmin: SubAdmin) => {
+        setModal(
+            <AllowPermissionModal
+                subadmin={subadmin}
+                onCancel={onModalCancelClicked}
+            />
+        )
+    }
+
     const onEditSubAdmin = (subAdmin: SubAdmin) => {
         contextBar.setContent(<AddSubAdminCB edit subAdmin={subAdmin} />)
         contextBar.setTitle('Edit SubAdmin')
@@ -158,11 +161,13 @@ export const ActiveRTOSubAdmin = () => {
     }
 
     const role = getUserCredentials()?.role
-    const tableActionOptions = (subAdmin: any) => {
+    const tableActionOptions = (
+        subAdmin: SubAdmin
+    ): TableActionOption<SubAdmin>[] => {
         return [
             {
                 text: 'View',
-                onClick: (subAdmin: any) => {
+                onClick: (subAdmin) => {
                     router.push(
                         `/portals/admin/sub-admin/${subAdmin?.id}?tab=notes`
                     )
@@ -170,40 +175,8 @@ export const ActiveRTOSubAdmin = () => {
                 Icon: FaEye,
             },
             {
-                text: 'New Profile',
-                onClick: (subAdmin: any) => {
-                    router.push(
-                        `/portals/admin/sub-admin/${subAdmin?.id}/detail`
-                    )
-                },
-                Icon: FaEye,
-            },
-            {
-                text: 'Allow All Students Access',
-                onClick: (subAdmin: any) => {
-                    onHasAllowAllStudentsAccess(subAdmin)
-                },
-                Icon: SiOpenaccess,
-            },
-            {
-                text: 'Assign Courses',
-                onClick: (subAdmin: any) => {
-                    contextBar.setTitle('Sectors & Courses')
-                    contextBar.setContent(<ViewSectorsCB subAdmin={subAdmin} />)
-                    contextBar.show()
-                },
-            },
-            {
-                text: 'Assign RTO',
-                onClick: (subAdmin: any) => {
-                    contextBar.setTitle('Assigned RTOs')
-                    contextBar.setContent(<ViewRtosCB subAdmin={subAdmin} />)
-                    contextBar.show()
-                },
-            },
-            {
                 text: 'Edit',
-                onClick: (subadmin: SubAdmin) => {
+                onClick: (subadmin) => {
                     onEditSubAdmin(subadmin)
                 },
                 Icon: FaEdit,
@@ -211,59 +184,44 @@ export const ActiveRTOSubAdmin = () => {
             {
                 ...(role === UserRoles.ADMIN
                     ? {
-                        text: 'View Password',
-                        onClick: (subAdmin: SubAdmin) =>
-                            onViewPassword(subAdmin),
-                        Icon: RiLockPasswordFill,
-                    }
+                          text: 'Permissions',
+                          onClick: (subAdmin) =>
+                              onAllowPermissionClicked(subAdmin),
+                          Icon: PiCellSignalLowFill,
+                      }
                     : {}),
             },
+            {
+                text: 'Allow All Students Access',
+                onClick: (subAdmin) => {
+                    onHasAllowAllStudentsAccess(subAdmin)
+                },
+                Icon: SiOpenaccess,
+            },
+
             {
                 ...(role === UserRoles.ADMIN
                     ? {
-                        text: `${!subAdmin?.canAdmin
-                            ? 'Allow as Admin'
-                            : 'Remove As Admin'
-                            }`,
-                        onClick: (subAdmin: SubAdmin) =>
-                            onMakeAsAdminClicked(subAdmin),
-                        Icon: MdAdminPanelSettings,
-                    }
+                          text: 'View Password',
+                          onClick: (subAdmin) => onViewPassword(subAdmin),
+                          Icon: RiLockPasswordFill,
+                      }
                     : {}),
             },
+
             {
                 ...(role === UserRoles.ADMIN
                     ? {
-                        text: `${!subAdmin?.hasRtoWorkplaceApprovalAccess
-                            ? 'Allow WP Request'
-                            : 'Revoke WP Request'
-                            }`,
-                        onClick: (subAdmin: SubAdmin) =>
-                            onAllowRtoWpApprovalReqClicked(subAdmin),
-                        Icon: CiCircleList,
-                    }
+                          text: `${
+                              !subAdmin?.hasRtoWorkplaceApprovalAccess
+                                  ? 'Allow WP Request'
+                                  : 'Revoke WP Request'
+                          }`,
+                          onClick: (subAdmin: SubAdmin) =>
+                              onAllowRtoWpApprovalReqClicked(subAdmin),
+                          Icon: CiCircleList,
+                      }
                     : {}),
-            },
-            {
-                ...(role === UserRoles.ADMIN
-                    ? {
-                        text: subAdmin?.user?.after_hours_access
-                            ? 'Remove Login'
-                            : 'Allow Login',
-                        onClick: (subAdmin: SubAdmin) =>
-                            onAllowLoginAfterHoursModalClicked(subAdmin),
-                        Icon: MdAdminPanelSettings,
-                    }
-                    : {}),
-            },
-            {
-                text: `${!subAdmin?.allowAutoAssignment
-                    ? 'Allow Auto Assignment'
-                    : 'Remove Auto Assignment'
-                    }`,
-                onClick: (subAdmin: SubAdmin) =>
-                    onAutoAssignWorkplace(subAdmin),
-                Icon: MdOutlineAssignmentReturn,
             },
             {
                 text: 'Block',
@@ -327,7 +285,7 @@ export const ActiveRTOSubAdmin = () => {
                         </Typography>
                     </>
                 ) : info.row.original?.createdBy?.role ===
-                    UserRoles.SUBADMIN ? (
+                  UserRoles.SUBADMIN ? (
                     <>
                         <SubAdminCell
                             subAdmin={
@@ -399,10 +357,10 @@ export const ActiveRTOSubAdmin = () => {
         id: 'id',
         individual: (id: SubAdmin) => (
             <div className="flex gap-x-2">
-                <ActionButton variant="success" onClick={() => { }}>
+                <ActionButton variant="success" onClick={() => {}}>
                     Accept
                 </ActionButton>
-                <ActionButton variant="error" onClick={() => { }}>
+                <ActionButton variant="error" onClick={() => {}}>
                     Reject
                 </ActionButton>
             </div>

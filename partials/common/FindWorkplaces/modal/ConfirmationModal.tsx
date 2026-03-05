@@ -18,7 +18,9 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     selectedSector,
     listingResults,
 }) => {
-    const [submitType, setSubmitType] = React.useState<'unique' | 'all' | 'selective'>('unique')
+    const [submitType, setSubmitType] = React.useState<
+        'unique' | 'all' | 'selective'
+    >('unique')
     const [submitListing, submitListingResult] =
         CommonApi.FindWorkplace.submitAutoListing()
 
@@ -29,20 +31,12 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         return listingResults?.filter((l: any) => !l?.duplicated)
     }, [listingResults])
 
-    console.log({ uniqueResults })
-
-    // Duplicate detection map (by ID)
-    const duplicateStatus = React.useMemo(() => {
-        return listingResults.map((item: any) => {
-            const isDup = item?.duplicated
-            return isDup
-        })
-    }, [listingResults])
-
     // Initial select all logic
-    const [selectedIndices, setSelectedIndices] = React.useState<Set<number>>(() => {
-        return new Set(listingResults.map((_, i) => i))
-    })
+    const [selectedIndices, setSelectedIndices] = React.useState<Set<number>>(
+        () => {
+            return new Set(listingResults.map((_, i) => i))
+        }
+    )
 
     const toggleSelection = (index: number) => {
         const next = new Set(selectedIndices)
@@ -55,13 +49,13 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         let payload: string[] = [] // APIs typically expect IDs
 
         if (submitType === 'unique') {
-            payload = uniqueResults.map(i => i.id)
+            payload = uniqueResults.map((i) => i.id)
         } else if (submitType === 'all') {
-            payload = listingResults.map(i => i.id)
+            payload = listingResults.map((i) => i.id)
         } else if (submitType === 'selective') {
             payload = listingResults
                 .filter((_, i) => selectedIndices.has(i))
-                .map(item => item.id)
+                .map((item) => item.id)
         }
 
         const res: any = await submitListing({
@@ -94,7 +88,9 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             >
                 <div className="p-6 max-h-[80vh] overflow-y-auto">
                     <div className="mb-6 space-y-3">
-                        <label className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${submitType === 'unique' ? 'border-[#044866] bg-[#044866]/5' : 'border-gray-200 hover:border-gray-300'}`}>
+                        <label
+                            className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${submitType === 'unique' ? 'border-[#044866] bg-[#044866]/5' : 'border-gray-200 hover:border-gray-300'}`}
+                        >
                             <div className="flex items-center gap-3">
                                 <input
                                     type="radio"
@@ -105,8 +101,12 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                                     className="w-4 h-4 text-[#044866]"
                                 />
                                 <div>
-                                    <p className="font-medium text-gray-900">Submit Unique</p>
-                                    <p className="text-sm text-gray-500">Remove duplicates before submitting</p>
+                                    <p className="font-medium text-gray-900">
+                                        Submit Unique
+                                    </p>
+                                    <p className="text-sm text-gray-500">
+                                        Remove duplicates before submitting
+                                    </p>
                                 </div>
                             </div>
                             <span className="font-bold text-[#044866] bg-[#044866]/10 px-2 py-1 rounded text-sm">
@@ -114,7 +114,9 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                             </span>
                         </label>
 
-                        <label className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${submitType === 'all' ? 'border-[#044866] bg-[#044866]/5' : 'border-gray-200 hover:border-gray-300'}`}>
+                        <label
+                            className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${submitType === 'all' ? 'border-[#044866] bg-[#044866]/5' : 'border-gray-200 hover:border-gray-300'}`}
+                        >
                             <div className="flex items-center gap-3">
                                 <input
                                     type="radio"
@@ -125,8 +127,12 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                                     className="w-4 h-4 text-[#044866]"
                                 />
                                 <div>
-                                    <p className="font-medium text-gray-900">Submit All</p>
-                                    <p className="text-sm text-gray-500">Submit including duplicates</p>
+                                    <p className="font-medium text-gray-900">
+                                        Submit All
+                                    </p>
+                                    <p className="text-sm text-gray-500">
+                                        Submit including duplicates
+                                    </p>
                                 </div>
                             </div>
                             <span className="font-bold text-gray-600 bg-gray-100 px-2 py-1 rounded text-sm">
@@ -134,7 +140,9 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                             </span>
                         </label>
 
-                        <label className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${submitType === 'selective' ? 'border-[#044866] bg-[#044866]/5' : 'border-gray-200 hover:border-gray-300'}`}>
+                        <label
+                            className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${submitType === 'selective' ? 'border-[#044866] bg-[#044866]/5' : 'border-gray-200 hover:border-gray-300'}`}
+                        >
                             <div className="flex items-center gap-3">
                                 <input
                                     type="radio"
@@ -145,8 +153,12 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                                     className="w-4 h-4 text-[#044866]"
                                 />
                                 <div>
-                                    <p className="font-medium text-gray-900">Selective</p>
-                                    <p className="text-sm text-gray-500">Manually select companies to submit</p>
+                                    <p className="font-medium text-gray-900">
+                                        Selective
+                                    </p>
+                                    <p className="text-sm text-gray-500">
+                                        Manually select companies to submit
+                                    </p>
                                 </div>
                             </div>
                             <span className="font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded text-sm">
@@ -158,42 +170,67 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                         {submitType === 'selective' && (
                             <div className="mt-4 border rounded-lg overflow-hidden">
                                 <div className="bg-gray-50 p-2 border-b flex justify-between items-center">
-                                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider ml-2">Company Name</span>
+                                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider ml-2">
+                                        Company Name
+                                    </span>
                                     <button
                                         onClick={() => {
-                                            if (selectedIndices.size === listingResults.length) setSelectedIndices(new Set())
-                                            else setSelectedIndices(new Set(listingResults.map((_, i) => i)))
+                                            if (
+                                                selectedIndices.size ===
+                                                listingResults.length
+                                            )
+                                                setSelectedIndices(new Set())
+                                            else
+                                                setSelectedIndices(
+                                                    new Set(
+                                                        listingResults.map(
+                                                            (_, i) => i
+                                                        )
+                                                    )
+                                                )
                                         }}
                                         className="text-xs text-[#044866] hover:underline mr-2"
                                     >
-                                        {selectedIndices.size === listingResults.length ? 'Deselect All' : 'Select All'}
+                                        {selectedIndices.size ===
+                                        listingResults.length
+                                            ? 'Deselect All'
+                                            : 'Select All'}
                                     </button>
                                 </div>
                                 <div className="max-h-60 overflow-y-auto divide-y">
-                                    {listingResults.map((company: any, idx: number) => {
-                                        const isDup = company?.duplicated
-                                        return (
-                                            <div key={idx}
-                                                className={`flex items-center p-3 hover:bg-gray-50 cursor-pointer ${selectedIndices.has(idx) ? 'bg-[#044866]/5' : ''}`}
-                                                onClick={() => toggleSelection(idx)}
-                                            >
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedIndices.has(idx)}
-                                                    onChange={() => { }} // Handled by div click
-                                                    className="w-4 h-4 text-[#044866] rounded border-gray-300 mr-3"
-                                                />
-                                                <div className="flex-1 min-w-0 flex items-center gap-2">
-                                                    <span className="text-sm font-medium text-gray-900 truncate">{company.name}</span>
-                                                    {isDup && (
-                                                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800">
-                                                            Duplicate
+                                    {listingResults.map(
+                                        (company: any, idx: number) => {
+                                            const isDup = company?.duplicated
+                                            return (
+                                                <div
+                                                    key={idx}
+                                                    className={`flex items-center p-3 hover:bg-gray-50 cursor-pointer ${selectedIndices.has(idx) ? 'bg-[#044866]/5' : ''}`}
+                                                    onClick={() =>
+                                                        toggleSelection(idx)
+                                                    }
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedIndices.has(
+                                                            idx
+                                                        )}
+                                                        onChange={() => {}} // Handled by div click
+                                                        className="w-4 h-4 text-[#044866] rounded border-gray-300 mr-3"
+                                                    />
+                                                    <div className="flex-1 min-w-0 flex items-center gap-2">
+                                                        <span className="text-sm font-medium text-gray-900 truncate">
+                                                            {company.name}
                                                         </span>
-                                                    )}
+                                                        {isDup && (
+                                                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800">
+                                                                Duplicate
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )
-                                    })}
+                                            )
+                                        }
+                                    )}
                                 </div>
                             </div>
                         )}
@@ -230,8 +267,8 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                         >
                             <MdCheckCircle className="w-4 h-4" />
                             <Typography variant="small" color="#044866">
-                                {currentCount} companies are ready to
-                                be added to our industry listing database.
+                                {currentCount} companies are ready to be added
+                                to our industry listing database.
                             </Typography>
                         </div>
                     </div>

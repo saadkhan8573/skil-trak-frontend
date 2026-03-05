@@ -197,7 +197,6 @@ export const Students = ({ industry }: { industry: Industry }) => {
 
                 return workplace ? (
                     <ProgressCell
-                        studentId={row.original?.id}
                         step={steps > 14 ? 14 : steps < 1 ? 1 : steps}
                         assigned={workplace?.assignedTo}
                         appliedIndustry={appliedIndustry}
@@ -224,7 +223,6 @@ export const Students = ({ industry }: { industry: Industry }) => {
                     />
                 ) : (
                     <ProgressCell
-                        studentId={row.original?.id}
                         step={steps > 14 ? 14 : steps < 1 ? 1 : steps}
                         assigned={workplace?.assignedTo}
                         appliedIndustry={appliedIndustry}

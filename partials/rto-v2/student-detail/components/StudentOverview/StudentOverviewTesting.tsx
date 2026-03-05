@@ -9,9 +9,7 @@ import { getUserCredentials } from '@utils'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useLogbookModals } from '../../hooks/useLogbookModals'
 import { sortedWorkplaceRequests } from '../../utils'
-import {
-    CourseOverview
-} from './components'
+import { CourseOverview } from './components'
 import { StudentOverViewUpdated } from './StudentOverViewUpdated'
 
 export const StudentOverviewTesting = () => {

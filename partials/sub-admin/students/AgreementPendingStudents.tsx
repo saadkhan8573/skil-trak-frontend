@@ -188,7 +188,6 @@ export const AgreementPendingStudents = () => {
                 return (
                     <ProgressCell
                         appliedIndustry={appliedIndustry}
-                        studentId={student?.id}
                         assigned={workplace?.assignedTo || student?.subadmin}
                         step={steps > 14 ? 14 : steps < 1 ? 1 : steps}
                         studentProvidedWorkplace={

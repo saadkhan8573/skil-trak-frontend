@@ -281,7 +281,7 @@ export const LogbookAssessmentForm = ({
     return (
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent
-                className="min-w-[56rem] max-h-[95vh] overflow-auto flex flex-col p-0"
+                className="min-w-4xl max-h-[95vh] overflow-auto flex flex-col p-0"
                 aria-describedby="assessment-description"
             >
                 <DialogHeader className="sr-only">
@@ -298,7 +298,7 @@ export const LogbookAssessmentForm = ({
                 </DialogHeader>
 
                 {/* PDF-Style Header */}
-                <div className="bg-gradient-to-r from-primary to-secondary text-white px-8 py-6">
+                <div className="bg-linear-to-r from-primary to-secondary text-white px-8 py-6">
                     <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2">
@@ -482,7 +482,7 @@ export const LogbookAssessmentForm = ({
                                                         disabled={
                                                             !canStudentEdit
                                                         }
-                                                        className="min-h-[100px] text-sm"
+                                                        className="min-h-25 text-sm"
                                                     />
                                                 </div>
 
@@ -512,7 +512,7 @@ export const LogbookAssessmentForm = ({
                                                         disabled={
                                                             !canStudentEdit
                                                         }
-                                                        className="min-h-[80px] text-sm"
+                                                        className="min-h-20 text-sm"
                                                     />
                                                 </div>
 
@@ -541,7 +541,7 @@ export const LogbookAssessmentForm = ({
                                                         disabled={
                                                             !canStudentEdit
                                                         }
-                                                        className="min-h-[80px] text-sm"
+                                                        className="min-h-20 text-sm"
                                                     />
                                                 </div>
 
@@ -571,7 +571,7 @@ export const LogbookAssessmentForm = ({
                                                         disabled={
                                                             !canStudentEdit
                                                         }
-                                                        className="min-h-[80px] text-sm"
+                                                        className="min-h-20 text-sm"
                                                     />
                                                 </div>
                                             </div>
@@ -604,7 +604,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Provide a comprehensive overview of your placement experience..."
                                                 disabled={!canStudentEdit}
-                                                className="min-h-[120px] text-sm"
+                                                className="min-h-30 text-sm"
                                             />
                                         </div>
 
@@ -626,7 +626,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Identify the most significant insights or skills gained..."
                                                 disabled={!canStudentEdit}
-                                                className="min-h-[100px] text-sm"
+                                                className="min-h-25 text-sm"
                                             />
                                         </div>
 
@@ -648,7 +648,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Be honest about skills or knowledge areas requiring improvement..."
                                                 disabled={!canStudentEdit}
-                                                className="min-h-[100px] text-sm"
+                                                className="min-h-25 text-sm"
                                             />
                                         </div>
 
@@ -670,7 +670,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Reflect on how this experience has shaped your career direction..."
                                                 disabled={!canStudentEdit}
-                                                className="min-h-[100px] text-sm"
+                                                className="min-h-25 text-sm"
                                             />
                                         </div>
 
@@ -696,7 +696,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Outline specific goals and next steps in your professional journey..."
                                                 disabled={!canStudentEdit}
-                                                className="min-h-[100px] text-sm"
+                                                className="min-h-25 text-sm"
                                             />
                                         </div>
                                     </div>
@@ -847,7 +847,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Comments on attendance, timeliness, and reliability..."
                                                 disabled={!canSupervisorEdit}
-                                                className="min-h-[60px] text-sm"
+                                                className="min-h-15 text-sm"
                                             />
                                         </div>
 
@@ -869,7 +869,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Comment on professional behavior, attitude, dress code compliance..."
                                                 disabled={!canSupervisorEdit}
-                                                className="min-h-[80px] text-sm"
+                                                className="min-h-20 text-sm"
                                             />
                                         </div>
 
@@ -891,7 +891,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Assess ability to communicate with clients, colleagues, and management..."
                                                 disabled={!canSupervisorEdit}
-                                                className="min-h-[80px] text-sm"
+                                                className="min-h-20 text-sm"
                                             />
                                         </div>
 
@@ -913,7 +913,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Evaluate practical skills, ability to perform tasks, learning curve..."
                                                 disabled={!canSupervisorEdit}
-                                                className="min-h-[80px] text-sm"
+                                                className="min-h-20 text-sm"
                                             />
                                         </div>
 
@@ -935,7 +935,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Comment on proactive behavior, critical thinking, decision-making..."
                                                 disabled={!canSupervisorEdit}
-                                                className="min-h-[80px] text-sm"
+                                                className="min-h-20 text-sm"
                                             />
                                         </div>
 
@@ -957,7 +957,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Assess ability to work with others, contribute to team goals..."
                                                 disabled={!canSupervisorEdit}
-                                                className="min-h-[80px] text-sm"
+                                                className="min-h-20 text-sm"
                                             />
                                         </div>
 
@@ -979,7 +979,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Comment on adherence to WHS procedures, infection control, policies..."
                                                 disabled={!canSupervisorEdit}
-                                                className="min-h-[80px] text-sm"
+                                                className="min-h-20 text-sm"
                                             />
                                         </div>
 
@@ -1001,7 +1001,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Evaluate rapport with clients, dignity of care, person-centered approach..."
                                                 disabled={!canSupervisorEdit}
-                                                className="min-h-[80px] text-sm"
+                                                className="min-h-20 text-sm"
                                             />
                                         </div>
 
@@ -1023,7 +1023,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Provide overall assessment, strengths, areas for improvement, recommendations..."
                                                 disabled={!canSupervisorEdit}
-                                                className="min-h-[120px] text-sm"
+                                                className="min-h-20 text-sm"
                                             />
                                         </div>
                                     </div>
@@ -1189,7 +1189,7 @@ export const LogbookAssessmentForm = ({
                                                     }}
                                                     placeholder="Document evidence observed (e.g., logbook entries, supervisor feedback, specific examples)..."
                                                     disabled={!canAssessorEdit}
-                                                    className="min-h-[60px] text-xs ml-7"
+                                                    className="min-h-15 text-xs ml-7"
                                                 />
                                             </div>
                                         ))}
@@ -1338,7 +1338,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Identify key strengths and well-demonstrated competencies..."
                                                 disabled={!canAssessorEdit}
-                                                className="min-h-[100px] text-sm"
+                                                className="min-h-20 text-sm"
                                             />
                                         </div>
 
@@ -1360,7 +1360,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Note any areas needing improvement or additional evidence..."
                                                 disabled={!canAssessorEdit}
-                                                className="min-h-[100px] text-sm"
+                                                className="min-h-20 text-sm"
                                             />
                                         </div>
 
@@ -1380,7 +1380,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Provide recommendations for student's ongoing development..."
                                                 disabled={!canAssessorEdit}
-                                                className="min-h-[100px] text-sm"
+                                                className="min-h-20 text-sm"
                                             />
                                         </div>
 
@@ -1400,7 +1400,7 @@ export const LogbookAssessmentForm = ({
                                                 }
                                                 placeholder="Any other relevant observations or comments..."
                                                 disabled={!canAssessorEdit}
-                                                className="min-h-[80px] text-sm"
+                                                className="min-h-20 text-sm"
                                             />
                                         </div>
                                     </div>

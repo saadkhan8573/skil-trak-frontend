@@ -39,14 +39,7 @@ export const ApprovedIndustry = () => {
             'createdBy',
             'action',
         ],
-        actionKeys: [
-            'view',
-            'viewOldProfile',
-            'edit',
-            'viewPassword',
-            'archive',
-            'block',
-        ],
+        actionKeys: ['view', 'edit', 'viewPassword', 'archive', 'block'],
     })
 
     useEffect(() => {

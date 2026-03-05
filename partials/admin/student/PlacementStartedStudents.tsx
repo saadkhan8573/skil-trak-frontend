@@ -46,8 +46,6 @@ export const PlacementStartedStudents = () => {
     const [itemPerPage, setItemPerPage] = useState(30)
     const [page, setPage] = useState(1)
 
-    // Function to handle scrolling
-
     useEffect(() => {
         setPage(Number(router.query.page || 1))
         setItemPerPage(Number(router.query.pageSize || 30))
@@ -92,7 +90,6 @@ export const PlacementStartedStudents = () => {
             <HighPriorityModal
                 item={studetnt}
                 onCancel={onModalCancelClicked}
-                // setRefetchStudents={setRefetchStudents}
             />
         )
     }
@@ -124,13 +121,6 @@ export const PlacementStartedStudents = () => {
             onClick: (student) => {
                 router.push(`/portals/admin/student/${student?.id}/detail`)
                 setLink('student', router)
-            },
-            Icon: FaEye,
-        },
-        {
-            text: 'View Old Profile',
-            onClick: (student: Student) => {
-                router.push(`/portals/admin/student/${student?.id}/old-profile`)
             },
             Icon: FaEye,
         },

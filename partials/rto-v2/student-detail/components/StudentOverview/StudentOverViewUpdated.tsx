@@ -55,37 +55,35 @@ export const StudentOverViewUpdated = ({
             return inProgress
         }
 
-        return (
+        const completed =
             sortedWorkplaces?.filter(
-                (wp) =>
-                    wp?.currentStatus === WorkplaceCurrentStatus.Completed ||
-                    wp?.currentStatus === WorkplaceCurrentStatus.Cancelled
+                (wp) => wp?.currentStatus === WorkplaceCurrentStatus.Completed
             ) || []
+
+        if (completed.length > 0) {
+            return completed
+        }
+
+        return (
+            sortedWorkplaces
+                ?.filter(
+                    (wp) =>
+                        wp?.currentStatus === WorkplaceCurrentStatus.Cancelled
+                )
+                .slice(0, 1) || []
         )
     }, [sortedWorkplaces, terminalStatuses])
 
     const nonActiveWorkplaces = useMemo(() => {
-        const hasInProgress = sortedWorkplaces?.some(
-            (wp) => !terminalStatuses.includes(wp?.currentStatus)
-        )
-
-        if (hasInProgress) {
-            return (
-                sortedWorkplaces?.filter((wp) =>
-                    terminalStatuses.includes(wp?.currentStatus)
-                ) || []
-            )
-        }
-
+        const activeIds = activeWorkplaces?.map((wp) => wp.id) || []
         return (
             sortedWorkplaces?.filter(
                 (wp) =>
                     terminalStatuses.includes(wp?.currentStatus) &&
-                    wp?.currentStatus !== WorkplaceCurrentStatus.Completed &&
-                    wp?.currentStatus !== WorkplaceCurrentStatus.Cancelled
+                    !activeIds.includes(wp.id)
             ) || []
         )
-    }, [sortedWorkplaces, terminalStatuses])
+    }, [sortedWorkplaces, terminalStatuses, activeWorkplaces])
 
     // Show create button only when no workplace is currently in an active/in-progress state
     const canCreateNewWorkplace = useMemo(() => {

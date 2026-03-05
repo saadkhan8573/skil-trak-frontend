@@ -31,8 +31,14 @@ export const RejectedIndustry = () => {
     const { getTableConfig, modal: hookModal, passwordModal } = useColumns()
 
     const { columns } = getTableConfig({
-        columnKeys: ['businessName', 'abn', 'contactPerson', 'address', 'createdBy'],
-        actionKeys: ['view', 'viewOldProfile', 'edit', 'viewPassword', 'accept', 'delete'],
+        columnKeys: [
+            'businessName',
+            'abn',
+            'contactPerson',
+            'address',
+            'createdBy',
+        ],
+        actionKeys: ['view', 'edit', 'viewPassword', 'accept', 'delete'],
     })
 
     const { isLoading, data, isError } = AdminApi.Industries.useListQuery({

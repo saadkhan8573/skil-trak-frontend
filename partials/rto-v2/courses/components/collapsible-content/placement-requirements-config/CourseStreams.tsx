@@ -19,7 +19,6 @@ export const CourseStreams = ({ course }: { course: Course | any }) => {
         streamId: number,
         hours: number
     ) => {
-        console.log('Update stream hours:', { courseId, streamId, hours })
         // Implement API call here when available
     }
 
@@ -28,7 +27,9 @@ export const CourseStreams = ({ course }: { course: Course | any }) => {
         0
     )
 
-    const logbook = course?.rtoCourseFiles?.find((file: any) => file.title === 'logBook')
+    const logbook = course?.rtoCourseFiles?.find(
+        (file: any) => file.title === 'logBook'
+    )
     const isCourseApproved = logbook?.status === UserStatus.Approved
 
     return (
@@ -49,11 +50,11 @@ export const CourseStreams = ({ course }: { course: Course | any }) => {
                 {coursePrograms.map((stream: any) => (
                     <Card
                         key={stream.id}
-                        className="border-2 border-primaryNew/20 bg-gradient-to-br from-primaryNew/5 to-background hover:border-primaryNew/30 transition-all"
+                        className="border-2 border-primaryNew/20 bg-linear-to-br from-primaryNew/5 to-background hover:border-primaryNew/30 transition-all"
                     >
                         <div className="flex items-center justify-between gap-4">
                             <div className="flex items-center gap-3 flex-1">
-                                <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-secondary/10 to-primaryNew/10 flex items-center justify-center border border-primaryNew/20">
+                                <div className="h-10 w-10 rounded-lg bg-linear-to-br from-secondary/10 to-primaryNew/10 flex items-center justify-center border border-primaryNew/20">
                                     <BookOpen className="h-5 w-5 text-primaryNew" />
                                 </div>
                                 <div className="flex-1">
@@ -96,7 +97,7 @@ export const CourseStreams = ({ course }: { course: Course | any }) => {
 
                 {!coursePrograms?.length && (
                     <div className="text-center py-8 px-4 rounded-xl bg-muted/30 border-2 border-dashed border-border col-span-2">
-                        <div className="mx-auto w-12 h-12 rounded-xl bg-gradient-to-br from-primaryNew/10 to-secondary/10 flex items-center justify-center mb-3">
+                        <div className="mx-auto w-12 h-12 rounded-xl bg-linear-to-br from-primaryNew/10 to-secondary/10 flex items-center justify-center mb-3">
                             <Layers className="h-6 w-6 text-primaryNew" />
                         </div>
                         <p className="text-sm font-semibold mb-1">
@@ -123,10 +124,11 @@ export const CourseStreams = ({ course }: { course: Course | any }) => {
                             {totalStreamHours} hours
                         </span>
                     </div>
-                    {isCourseApproved && course.confirmedHours &&
+                    {isCourseApproved &&
+                        course.confirmedHours &&
                         totalStreamHours !== course.confirmedHours && (
                             <div className="mt-2 flex items-start gap-2 text-xs text-warning">
-                                <AlertCircle className="h-3 w-3 mt-0.5 flex-shrink-0" />
+                                <AlertCircle className="h-3 w-3 mt-0.5 shrink-0" />
                                 <span>
                                     Stream hours ({totalStreamHours}) don't
                                     match required hours (

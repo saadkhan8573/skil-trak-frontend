@@ -1,10 +1,6 @@
 'use client'
 
-import {
-    DisplayAlerts,
-    DisplayNotifications,
-    RtoNavbarV2
-} from '@components'
+import { DisplayAlerts, DisplayNotifications, RtoNavbarV2 } from '@components'
 import { RtoSidebar } from '@components/sideBars/rtoSidebarV2'
 import { AccessNewPortalOnPermission } from '@partials'
 import { ReactNode, useState } from 'react'
@@ -52,11 +48,9 @@ export const RtoLayoutV2 = ({
                     {/* Main scrollable content */}
                     <main
                         id="main-content-scroll"
-                        className={`flex-1 overflow-y-auto p-4 md:p-6 mx-auto w-full ${childrenClasses}`}
+                        className={`flex-1 overflow-y-auto bg-gray-50 p-4 md:p-6 mx-auto w-full ${childrenClasses}`}
                     >
-                        <div>
-                            {children}
-                        </div>
+                        <div>{children}</div>
                     </main>
                     <DisplayNotifications />
                     <DisplayAlerts />

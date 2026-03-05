@@ -6,6 +6,7 @@ import {
     StudentStatusProgressCell,
     Table,
     TableAction,
+    TableActionOption,
     TableChildrenProps,
     TechnicalError,
     Typography,
@@ -72,25 +73,18 @@ export const CompletedStudents = () => {
         )
     }
 
-    const tableActionOptions = [
+    const tableActionOptions: TableActionOption<Student>[] = [
         {
             text: 'View',
-            onClick: (student: any) => {
+            onClick: (student) => {
                 router.push(`/portals/admin/student/${student?.id}/detail`)
                 setLink('student', router)
             },
             Icon: FaEye,
         },
         {
-            text: 'View Old Profile',
-            onClick: (student: Student) => {
-                router.push(`/portals/admin/student/${student?.id}/old-profile`)
-            },
-            Icon: FaEye,
-        },
-        {
             text: 'Edit',
-            onClick: (student: Student) => {
+            onClick: (student) => {
                 router.push(
                     `/portals/admin/student/edit-student/${student?.id}`
                 )
@@ -99,13 +93,12 @@ export const CompletedStudents = () => {
         },
         {
             text: 'Change Status',
-            onClick: (student: Student) => onChangeStatus(student),
+            onClick: (student) => onChangeStatus(student),
             Icon: FaEdit,
         },
         {
             text: 'View Password',
-            onClick: (student: Student) =>
-                onViewPassword({ user: student?.user }),
+            onClick: (student) => onViewPassword({ user: student?.user }),
             Icon: RiLockPasswordFill,
         },
     ]

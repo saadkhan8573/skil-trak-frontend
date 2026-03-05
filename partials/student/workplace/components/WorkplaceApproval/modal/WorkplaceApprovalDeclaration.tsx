@@ -66,7 +66,6 @@ export const WorkplaceApprovalDeclaration = ({
                 id: wpApprovalId,
                 status,
             }).unwrap() // await the API
-            console.log('res', res)
 
             if (res?.data) {
                 notification.success({
@@ -75,7 +74,6 @@ export const WorkplaceApprovalDeclaration = ({
                 })
 
                 onCancel(true)
-                console.log('triggered')
             }
         } catch (error) {
             console.error('Error changing status:', error)

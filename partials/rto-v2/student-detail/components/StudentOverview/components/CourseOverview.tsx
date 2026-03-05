@@ -24,7 +24,7 @@ export const CourseOverview = () => {
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200/60 shadow-xl shadow-slate-200/50 p-4.5 hover:shadow-2xl transition-all">
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                    <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-lg shadow-[#044866]/30">
+                    <div className="w-9 h-9 rounded-2xl bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-lg shadow-[#044866]/30">
                         <BookOpen className="w-4.5 h-4.5 text-white" />
                     </div>
                     <div>
@@ -77,7 +77,7 @@ export const CourseOverview = () => {
                     className={cn('grid grid-cols-1 md:grid-cols-2 gap-2', {
                         'h-40 overflow-auto custom-scrollbar':
                             studentCourses?.data?.length > 2,
-                        'md:!grid-cols-1': studentCourses?.data?.length === 1,
+                        'md:grid-cols-1!': studentCourses?.data?.length === 1,
                     })}
                 >
                     {studentCourses?.data?.map((course: Course) => (

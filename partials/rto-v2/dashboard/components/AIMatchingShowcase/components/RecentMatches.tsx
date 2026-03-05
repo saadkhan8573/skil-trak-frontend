@@ -4,7 +4,6 @@ import { Activity } from 'lucide-react'
 
 export const RecentMatches = () => {
     const last24HoursWp = RtoV2Api.Dashboard.last24HoursWp()
-    console.log({ last24HoursWp })
     return (
         <Card className="border-border/60 shadow-premium-lg hover:shadow-premium-xl hover:border-success/40 transition-all hover-lift bg-linear-to-br from-white via-white to-success/5 relative overflow-hidden group/card">
             <div className="absolute top-0 right-0 w-20 h-20 bg-linear-to-br from-success/10 to-transparent rounded-bl-full opacity-0 group-hover/card:opacity-100 transition-opacity"></div>

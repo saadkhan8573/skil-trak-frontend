@@ -106,7 +106,6 @@ const TicketCardComponent = ({
             }
         } else if (onViewStudentProfile) {
             // onViewStudentProfile(ticket.studentId)
-            console.log('profile view')
         }
     }
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {

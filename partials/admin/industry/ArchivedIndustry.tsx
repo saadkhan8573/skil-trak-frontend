@@ -36,14 +36,7 @@ export const ArchivedIndustry = () => {
             'address',
             'createdBy',
         ],
-        actionKeys: [
-            'view',
-            'viewOldProfile',
-            'edit',
-            'viewPassword',
-            'unarchive',
-            'delete',
-        ],
+        actionKeys: ['view', 'edit', 'viewPassword', 'unarchive', 'delete'],
     })
 
     const { isLoading, data, isError } = AdminApi.Industries.useListQuery({

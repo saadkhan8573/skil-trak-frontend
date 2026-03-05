@@ -41,8 +41,6 @@ export const CourseApprovalModal = ({
     const [userName, setUserName] = useState('')
     const { notification } = useNotification()
 
-    console.log('courseasdasd', course)
-
     const [updateCourseApprovalStatus, { isLoading }] =
         RtoV2Api.Courses.useUpdateCourseApprovalStatus()
 
@@ -104,7 +102,7 @@ export const CourseApprovalModal = ({
                                         {course.code}
                                     </p>
                                     <p className="text-sm text-muted-foreground text-left">
-                                        {course.name}
+                                        {course.title}
                                     </p>
                                     <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-border/50">
                                         <Badge

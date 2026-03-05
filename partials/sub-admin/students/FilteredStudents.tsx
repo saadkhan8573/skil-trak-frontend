@@ -282,67 +282,6 @@ export const FilteredStudents = ({
                     workplaceFilter={filter?.currentStatus}
                 />
             ),
-            // cell: (info) => {
-            //     const student = info.row.original
-
-            //     const activeWP = activeWorkplace(student?.workplace)
-            //     const workplace = latestWorkplace(activeWP)
-            //     const appliedIndustry = getStudentWorkplaceAppliedIndustry(
-            //         workplace?.industries as WorkplaceWorkIndustriesType[]
-            //     )
-
-            //     const updatedAlliedIndustry = {
-            //         ...appliedIndustry,
-            //         appliedDate:
-            //             appliedIndustry?.appliedDate || workplace?.createdAt,
-            //         interviewDate:
-            //             appliedIndustry?.interviewDate ||
-            //             workplace?.interviewDate,
-            //         appointmentBookedDate:
-            //             appliedIndustry?.appointmentBookedDate ||
-            //             workplace?.appointmentDate,
-            //     }
-
-            //     const steps = checkWorkplaceStatus(workplace?.currentStatus)
-
-            //     const documentInitiates =
-            //         student?.user?.signers && student?.user?.signers?.length > 0
-
-            //     return !student?.workplace?.length &&
-            //         student?.industries?.length ? (
-            //         <ProgressCell
-            //             appliedIndustry={updatedAlliedIndustry}
-            //             studentId={student?.id}
-            //             assigned={student?.subadmin}
-            //             step={10}
-            //             documentInitiates={documentInitiates}
-            //         />
-            //     ) : student?.workplace && student?.workplace?.length > 0 ? (
-            //         <ProgressCell
-            //             appliedIndustry={updatedAlliedIndustry}
-            //             studentId={student?.id}
-            //             assigned={student?.subadmin}
-            //             step={steps > 14 ? 14 : steps < 1 ? 1 : steps}
-            //             documentInitiates={documentInitiates}
-            //         />
-            //     ) : student?.subadmin ? (
-            //         <ProgressCell
-            //             appliedIndustry={updatedAlliedIndustry}
-            //             studentId={student?.id}
-            //             step={3}
-            //             assigned={student?.subadmin}
-            //             documentInitiates={documentInitiates}
-            //         />
-            //     ) : (
-            //         <ProgressCell
-            //             appliedIndustry={updatedAlliedIndustry}
-            //             studentId={student?.id}
-            //             step={1}
-            //             assigned={student?.subadmin}
-            //             documentInitiates={documentInitiates}
-            //         />
-            //     )
-            // },
         },
         {
             accessorKey: 'assignCoordinator',

@@ -30,7 +30,6 @@ import { useActionModals } from './useActionModals'
 
 export type ActionKey =
     | 'view'
-    | 'viewOldProfile'
     | 'edit'
     | 'viewPassword'
     | 'archive'
@@ -222,14 +221,14 @@ export const useColumns = () => {
                                 variant={'primaryNew'}
                                 text={'Placement Ready'}
                                 Icon={FaCheck}
-                                className="!whitespace-pre"
+                                className="whitespace-pre!"
                             />
                         ) : (
                             <Badge
                                 Icon={FaTimes}
                                 variant={'error'}
                                 text={'Placement Not Ready'}
-                                className="!whitespace-pre"
+                                className="whitespace-pre!"
                             />
                         )}
                     </div>
@@ -314,14 +313,6 @@ export const useColumns = () => {
             onClick: (industry) => {
                 router.push(`/portals/admin/industry/${industry.id}`)
             },
-            Icon: FaEye,
-        },
-        viewOldProfile: {
-            text: 'View Old Profile',
-            onClick: (industry) =>
-                router.push(
-                    `/portals/admin/industry/${industry?.id}/old-detail`
-                ),
             Icon: FaEye,
         },
         edit: {
@@ -464,7 +455,6 @@ export const useColumns = () => {
                 // and let the 'hidden' property filter them based on industry status
                 const dynamicBaseKeys: ActionKey[] = [
                     'view',
-                    'viewOldProfile',
                     'edit',
                     'viewPassword',
                     'block',

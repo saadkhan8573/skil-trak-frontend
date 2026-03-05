@@ -116,8 +116,8 @@ export function DocumentCard({
                         <div
                             className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm ${
                                 doc?.isRequired
-                                    ? 'bg-gradient-to-br from-[#044866] to-[#0D5468]'
-                                    : 'bg-gradient-to-br from-[#F8FAFB] to-[#E8F4F8]'
+                                    ? 'bg-linear-to-br from-[#044866] to-[#0D5468]'
+                                    : 'bg-linear-to-br from-[#F8FAFB] to-[#E8F4F8]'
                             }`}
                         >
                             <FileText

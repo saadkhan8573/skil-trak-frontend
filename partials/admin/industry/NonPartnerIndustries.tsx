@@ -33,16 +33,9 @@ export const NonPartnerIndustries = () => {
             'favoriteBy',
             'createdBy',
             'action',
-            "placementStatus"
+            'placementStatus',
         ],
-        actionKeys: [
-            'view',
-            'viewOldProfile',
-            'edit',
-            'viewPassword',
-            'archive',
-            'block',
-        ],
+        actionKeys: ['view', 'edit', 'viewPassword', 'archive', 'block'],
     })
 
     useEffect(() => {

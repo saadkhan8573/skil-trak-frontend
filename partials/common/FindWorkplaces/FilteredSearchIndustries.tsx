@@ -24,9 +24,8 @@ export const FilteredSearchIndustries = ({
     const industriesData =
         industries?.data?.paginatedResults?.data || industries?.data?.data
     const industriesPagination =
-        industries?.data?.paginatedResults?.pagination || industries?.data?.pagination
-
-    console.log({ industriesData })
+        industries?.data?.paginatedResults?.pagination ||
+        industries?.data?.pagination
 
     return (
         <>

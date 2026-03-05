@@ -37,20 +37,15 @@ export const SnoozedIndustry = () => {
             'snoozedAt',
             'snoozedDate',
         ],
-        actionKeys: [
-            'view',
-            'viewOldProfile',
-            'edit',
-            'viewPassword',
-            'unsnooze',
-            'block',
-        ],
+        actionKeys: ['view', 'edit', 'viewPassword', 'unsnooze', 'block'],
     })
 
-    const { isLoading, data, isError } = AdminApi.Industries.useSnoozedIndustry({
-        skip: itemPerPage * page - itemPerPage,
-        limit: itemPerPage,
-    })
+    const { isLoading, data, isError } = AdminApi.Industries.useSnoozedIndustry(
+        {
+            skip: itemPerPage * page - itemPerPage,
+            limit: itemPerPage,
+        }
+    )
 
     const onModalCancelClicked = () => {
         setModal(null)

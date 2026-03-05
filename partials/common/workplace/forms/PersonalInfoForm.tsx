@@ -30,8 +30,6 @@ export const PersonalInfoForm = ({
     const [selectedCourse, setSelectedCourse] = useState<any>(null)
     const [onLocationClicked, setOnLocationClicked] = useState<boolean>(true)
 
-    console.log({ personalInfoData })
-
     const { notification } = useNotification()
 
     useEffect(() => {

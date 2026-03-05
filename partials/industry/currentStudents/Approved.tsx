@@ -210,7 +210,6 @@ export const Approved = () => {
                         {row.original?.currentStatus ? (
                             <ProgressCell
                                 appliedIndustry={appliedIndustry}
-                                studentId={row.original?.student?.id}
                                 step={steps > 14 ? 14 : steps < 1 ? 1 : steps}
                             />
                         ) : wpStatus.includes(row.original?.currentStatus) ? (
@@ -250,7 +249,6 @@ export const Approved = () => {
                 ) : (
                     <ProgressCell
                         appliedIndustry={appliedIndustry}
-                        studentId={row.original?.student?.id}
                         step={steps > 14 ? 14 : steps < 1 ? 1 : steps}
                     />
                 )

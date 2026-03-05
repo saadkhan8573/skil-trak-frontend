@@ -14,7 +14,7 @@ import {
     Select,
     ShowErrorNotifications,
     TextInput,
-    Typography
+    Typography,
 } from '@components'
 
 // query
@@ -201,7 +201,11 @@ export const CreateStudentNote = ({
         title: Yup.string().required('Title is required'),
         body: Yup.string()
             .ensure()
-            .test('Message', 'Must Provide Message', inputRichTextEditorErrorMessage),
+            .test(
+                'Message',
+                'Must Provide Message',
+                inputRichTextEditorErrorMessage
+            ),
     })
 
     const localMethods = useForm<onSubmitType>({
@@ -214,7 +218,7 @@ export const CreateStudentNote = ({
 
     const noteBodyWordsCount = noteContent
         ? HtmlToPlainText(noteContent)?.trim()?.replace(/\s+/g, ' ')?.split(' ')
-            ?.length
+              ?.length
         : ''
 
     const isBodyGreaterThen30 = noteBodyWordsCount > 30
@@ -288,8 +292,6 @@ export const CreateStudentNote = ({
 
     const onFixGrammarClick = async () => {
         const data = await onRewritePhrase(noteContent)
-
-        console.log({ data })
 
         if (data?.correctedText) {
             setNoteContent(data?.correctedText)
@@ -392,7 +394,10 @@ export const CreateStudentNote = ({
                                                 setSelectedStatus(null)
                                                 setSelectedContent(null)
                                                 methods.setValue('body', '')
-                                                methods.setValue('_persistedSelectedContent', null)
+                                                methods.setValue(
+                                                    '_persistedSelectedContent',
+                                                    null
+                                                )
                                             }}
                                         />
                                     </div>
@@ -436,9 +441,9 @@ export const CreateStudentNote = ({
                                                                             template.value
                                                                         ) &&
                                                                         selectedType ===
-                                                                        NotesTemplateType[
-                                                                        'Status Check Label'
-                                                                        ]
+                                                                            NotesTemplateType[
+                                                                                'Status Check Label'
+                                                                            ]
                                                                     ) {
                                                                         notification.warning(
                                                                             {
@@ -452,11 +457,11 @@ export const CreateStudentNote = ({
                                                                             template.value
                                                                         ) &&
                                                                         filteredNotesTemplate?.[0] !==
-                                                                        template.value &&
+                                                                            template.value &&
                                                                         selectedType ===
-                                                                        NotesTemplateType[
-                                                                        'Status Check Label'
-                                                                        ]
+                                                                            NotesTemplateType[
+                                                                                'Status Check Label'
+                                                                            ]
                                                                     ) {
                                                                         notification.warning(
                                                                             {
@@ -469,23 +474,27 @@ export const CreateStudentNote = ({
                                                                         setSelectedContent(
                                                                             template
                                                                         )
-                                                                        methods.setValue('_persistedSelectedContent', template)
+                                                                        methods.setValue(
+                                                                            '_persistedSelectedContent',
+                                                                            template
+                                                                        )
                                                                     }
                                                                 }}
-                                                                className={`${selectedContent?.value ===
+                                                                className={`${
+                                                                    selectedContent?.value ===
                                                                     template?.value
-                                                                    ? 'bg-gray-200'
-                                                                    : ''
-                                                                    } hover:bg-gray-200 py-2 border-b border-secondary-dark px-2 flex items-center justify-between gap-x-2 cursor-pointer`}
+                                                                        ? 'bg-gray-200'
+                                                                        : ''
+                                                                } hover:bg-gray-200 py-2 border-b border-secondary-dark px-2 flex items-center justify-between gap-x-2 cursor-pointer`}
                                                             >
                                                                 <div className="flex items-center gap-x-2">
                                                                     <Typography
                                                                         variant={
                                                                             filteredNotesTemplate?.[0] ===
                                                                                 template?.value &&
-                                                                                selectedType ===
+                                                                            selectedType ===
                                                                                 NotesTemplateType[
-                                                                                'Status Check Label'
+                                                                                    'Status Check Label'
                                                                                 ]
                                                                                 ? 'label'
                                                                                 : 'small'
@@ -493,9 +502,9 @@ export const CreateStudentNote = ({
                                                                         color={
                                                                             filteredNotesTemplate?.[0] !==
                                                                                 template?.value &&
-                                                                                selectedType ===
+                                                                            selectedType ===
                                                                                 NotesTemplateType[
-                                                                                'Status Check Label'
+                                                                                    'Status Check Label'
                                                                                 ]
                                                                                 ? 'text-gray-400'
                                                                                 : 'text-black'
@@ -504,9 +513,9 @@ export const CreateStudentNote = ({
                                                                         {!filteredNotesTemplate?.includes(
                                                                             template.value
                                                                         ) &&
-                                                                            selectedType ===
+                                                                        selectedType ===
                                                                             NotesTemplateType[
-                                                                            'Status Check Label'
+                                                                                'Status Check Label'
                                                                             ] ? (
                                                                             <del>
                                                                                 {i +
@@ -521,9 +530,9 @@ export const CreateStudentNote = ({
                                                                         variant={
                                                                             filteredNotesTemplate?.[0] ===
                                                                                 template?.value &&
-                                                                                selectedType ===
+                                                                            selectedType ===
                                                                                 NotesTemplateType[
-                                                                                'Status Check Label'
+                                                                                    'Status Check Label'
                                                                                 ]
                                                                                 ? 'label'
                                                                                 : 'small'
@@ -531,9 +540,9 @@ export const CreateStudentNote = ({
                                                                         color={
                                                                             filteredNotesTemplate?.[0] !==
                                                                                 template?.value &&
-                                                                                selectedType ===
+                                                                            selectedType ===
                                                                                 NotesTemplateType[
-                                                                                'Status Check Label'
+                                                                                    'Status Check Label'
                                                                                 ]
                                                                                 ? 'text-gray-400'
                                                                                 : 'text-black'
@@ -542,9 +551,9 @@ export const CreateStudentNote = ({
                                                                         {!filteredNotesTemplate?.includes(
                                                                             template.value
                                                                         ) &&
-                                                                            selectedType ===
+                                                                        selectedType ===
                                                                             NotesTemplateType[
-                                                                            'Status Check Label'
+                                                                                'Status Check Label'
                                                                             ] ? (
                                                                             <del>
                                                                                 {
@@ -560,9 +569,9 @@ export const CreateStudentNote = ({
                                                                     template.value
                                                                 ) &&
                                                                     selectedType ===
-                                                                    NotesTemplateType[
-                                                                    'Status Check Label'
-                                                                    ] && (
+                                                                        NotesTemplateType[
+                                                                            'Status Check Label'
+                                                                        ] && (
                                                                         <IoCheckmark />
                                                                     )}
                                                             </div>
@@ -636,9 +645,9 @@ export const CreateStudentNote = ({
                                     // disabled={!!selectedStatus}
                                     disabled={
                                         selectedType ===
-                                        NotesTemplateType[
-                                        'Status Check Label'
-                                        ] && !!selectedStatus
+                                            NotesTemplateType[
+                                                'Status Check Label'
+                                            ] && !!selectedStatus
                                     }
                                     placeholder={'Note Title...'}
                                     validationIcons
@@ -692,7 +701,9 @@ export const CreateStudentNote = ({
                                     >
                                         <InputRichTextEditor
                                             name={'body'}
-                                            onChange={(e: any) => setNoteContent(e)}
+                                            onChange={(e: any) =>
+                                                setNoteContent(e)
+                                            }
                                         />
                                     </ClickAwayListener>
                                 </div>
@@ -724,8 +735,9 @@ export const CreateStudentNote = ({
                                     <Button
                                         submit
                                         fullWidth
-                                        text={`${editing ? 'Update' : 'Add'
-                                            } Note`}
+                                        text={`${
+                                            editing ? 'Update' : 'Add'
+                                        } Note`}
                                         loading={
                                             createNoteResult?.isLoading ||
                                             changeNoteStatusResult?.isLoading

@@ -134,16 +134,6 @@ const SubAdminList: NextPageWithLayout = () => {
                     filterKeys={filterKeys}
                     setFilter={setFilter}
                 />
-                {/* <div className="px-4">
-                    <div className="flex justify-end mb-2">{filterAction}</div>
-                    <Filter<AdminSubadminFilter>
-                        component={SubAdminFilters}
-                        initialValues={filter}
-                        setFilterAction={setFilterAction}
-                        setFilter={setFilter}
-                        filterKeys={filterKeys}
-                    />
-                </div> */}
 
                 <div className="px-6 flex items-end justify-end">
                     <Button
@@ -200,7 +190,7 @@ const SubAdminList: NextPageWithLayout = () => {
                         return (
                             <div>
                                 <div className="flex items-end justify-between">
-                                    <div className="flex-grow">{header}</div>
+                                    <div className="grow">{header}</div>
                                     <div className="px-6">
                                         <Button
                                             text={'Add Sub Admin'}

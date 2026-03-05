@@ -219,16 +219,6 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
             ),
     })
 
-    // useEffect(() => {
-    //     if (sectorResponse.data?.length) {
-    //         console.log({ state, data: data?.data })
-    //         const stateData = data?.data?.find(
-    //             (item: any) => item?.name === state
-    //         )
-    //         console.log({ stateData })
-    //     }
-    // }, [sectorResponse?.data])
-
     useEffect(() => {
         if (SignUpUtils.getEditingMode()) {
             const values = SignUpUtils.getValuesFromStorage()
@@ -421,8 +411,8 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
                                 label={'Sector'}
                                 {...(storedData
                                     ? {
-                                        defaultValue: storedData.sectors,
-                                    }
+                                          defaultValue: storedData.sectors,
+                                      }
                                     : {})}
                                 value={selectedSector}
                                 name={'sectors'}
@@ -614,10 +604,11 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
                                         Terms
                                     </Link>{' '}
                                     {'&'}{' '}
-                                    <Link href="/privacy-policy" className="text-link">
-                                        
-                                            Privacy Policy
-                                        
+                                    <Link
+                                        href="/privacy-policy"
+                                        className="text-link"
+                                    >
+                                        Privacy Policy
                                     </Link>
                                 </>
                             }
@@ -637,5 +628,5 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
                 </div>
             </form>
         </FormProvider>
-    );
+    )
 }

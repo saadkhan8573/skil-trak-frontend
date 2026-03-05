@@ -72,12 +72,9 @@ const StudentList: NextPageWithLayout = () => {
     const [page, setPage] = useState(1)
     const [itemPerPage, setItemPerPage] = useState(30)
 
-    const { isLoading, data } = AdminApi.Students.useCountQuery(
-        undefined,
-        {
-            refetchOnMountOrArgChange: true,
-        }
-    )
+    const { isLoading, data } = AdminApi.Students.useCountQuery(undefined, {
+        refetchOnMountOrArgChange: true,
+    })
 
     const filteredStudents = AdminApi.Students.useListQuery(
         {
@@ -273,14 +270,6 @@ const StudentList: NextPageWithLayout = () => {
                 loading: isLoading,
             },
             element: <UnAssignedStudent />,
-        },
-        {
-            label: 'All Students Report',
-            href: {
-                pathname: 'student',
-                query: { tab: 'all-students-report' },
-            },
-            element: <AllStudentsReport />,
         },
     ]
 

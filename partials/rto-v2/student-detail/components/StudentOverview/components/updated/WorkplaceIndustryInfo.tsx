@@ -1,5 +1,9 @@
 import { Badge, Button } from '@components'
+import { UserRoles } from '@constants'
+import { ComposeEmailModal } from '@partials/rto-v2/student-detail/components'
+import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
 import { Industry, RtoApprovalWorkplaceRequest, Supervisor } from '@types'
+import { getUserCredentials } from '@utils'
 import {
     Building2,
     CheckCircle,
@@ -13,18 +17,17 @@ import {
     Star,
     User,
 } from 'lucide-react'
-import { ResendApprovalEmailModal } from '../../modal/ResendApprovalEmailModal'
-import { ReactElement, useState } from 'react'
-import { ComposeEmailModal } from '@partials/rto-v2/student-detail/components'
-import { getUserCredentials } from '@utils'
-import { UserRoles } from '@constants'
 import { useRouter } from 'next/router'
+import { ReactElement, useState } from 'react'
+import { ResendApprovalEmailModal } from '../../modal/ResendApprovalEmailModal'
 
 export const WorkplaceIndustryInfo = ({
+    industryData,
     industry,
     supervisor,
     latestWorkplaceApprovaleRequest,
 }: {
+    industryData: RtoApprovalWorkplaceRequest | WorkplaceWorkIndustriesType
     industry: Industry
     supervisor: Supervisor
     latestWorkplaceApprovaleRequest: RtoApprovalWorkplaceRequest
@@ -81,7 +84,8 @@ export const WorkplaceIndustryInfo = ({
                         </div>
                         <div>
                             <h3 className="font-bold text-slate-900 mb-0.5">
-                                {industry?.user?.name}
+                                {industry?.user?.name}{' '}
+                                {industryData?.location ? '(Branch)' : ''}
                             </h3>
                             <div className="grid grid-cols-2 items-center gap-1.5">
                                 {industry?.isPartner && (
@@ -178,7 +182,8 @@ export const WorkplaceIndustryInfo = ({
                                     Location
                                 </p>
                                 <p className="text-xs font-semibold text-slate-900">
-                                    {industry?.addressLine1}
+                                    {industryData?.location?.address ||
+                                        industry?.addressLine1}
                                 </p>
                             </div>
                         </div>
@@ -217,7 +222,9 @@ export const WorkplaceIndustryInfo = ({
                                     Contact
                                 </p>
                                 <p className="text-xs font-semibold text-slate-900">
-                                    {supervisor?.phone ||
+                                    {industryData?.location
+                                        ?.contactPersonPhone ||
+                                        supervisor?.phone ||
                                         industry?.phoneNumber ||
                                         '---'}
                                 </p>
@@ -253,7 +260,8 @@ export const WorkplaceIndustryInfo = ({
                                 Email Address
                             </p>
                             <p className="text-xs font-semibold text-slate-900 truncate">
-                                {industry?.user?.email}
+                                {industryData?.location?.contactPersonEmail ||
+                                    industry?.user?.email}
                             </p>
                         </div>
                         <Button outline onClick={onComposeMailClicked}>

@@ -89,6 +89,7 @@ export const OnViewMapTabs = ({
                 <ListIndustriesInRadius
                     workplaceId={workplace?.id}
                     courseId={workplaceCourseId}
+                    studentLocation={workplace?.student?.location}
                     setSelectedBox={setSelectedBox}
                     activeIndustryListTab={activeIndustryListTab}
                     setActiveIndustryListTab={setActiveIndustryListTab}

@@ -5,16 +5,27 @@ import { DistanceIndicator } from './DistanceIndicator'
 import { Actions } from '../contactHistoryTab/Actions'
 import { MdNoAccounts } from 'react-icons/md'
 import moment from 'moment'
+import { useRouteInfo } from '@partials/rto-v2/student-detail/components/StudentOverview/hooks/useRouteInfo'
 
 type FutureIndustryInRadiusListCardProps = {
     item: any
     onSelect: any
+    studentLocation?: string
 }
 
 export const FutureIndustryInRadiusListCard = ({
     item,
+    studentLocation,
     onSelect,
 }: FutureIndustryInRadiusListCardProps) => {
+    const { travelInfo } = useRouteInfo({
+        studentLocation: studentLocation?.split(',')!,
+        industryLocation: item?.location?.split(','),
+        modes: ['driving'],
+    })
+
+    const drivingInfo = travelInfo.find((info) => info.mode === 'driving')
+
     return (
         <div className={`flex items-center justify-between w-full `}>
             {/* Left Section */}
@@ -71,7 +82,9 @@ export const FutureIndustryInRadiusListCard = ({
 
                         <DistanceIndicator
                             distance={item?.distance ?? 0}
-                            mode="walking"
+                            mode="car"
+                            exactDistance={drivingInfo?.distance}
+                            duration={drivingInfo?.duration}
                         />
                     </div>
                 </div>

@@ -52,6 +52,7 @@ export const ImportStudentList = ({
         email: 'email',
         contact: 'contact',
         address: 'address',
+        suburb: 'suburb',
         // state: 'state',
         // zipcode: 'zipcode',
     })
@@ -165,6 +166,7 @@ export const ImportStudentList = ({
                                                         <th>Email</th>
                                                         <th>Contact</th>
                                                         <th>Address</th>
+                                                        <th>Suburb</th>
                                                         {/* <th>State</th> */}
                                                         {/* <th>Zip Code</th> */}
                                                     </tr>

@@ -52,15 +52,12 @@ export const AssignedCoordinators = () => {
                     user: { name, avatar },
                 } = row.original
                 return (
-                    <Link
-                        href={`/portals/rto/manage/team/${row.original.id}`}
-                        className="flex items-center gap-x-2 relative"
-                    >
+                    <div className="flex items-center gap-x-2 relative font-semibold">
                         <InitialAvatar name={name} imageUrl={avatar} />
                         <div>
                             <Typography color={'black'}>{name}</Typography>
                         </div>
-                    </Link>
+                    </div>
                 )
             },
         },

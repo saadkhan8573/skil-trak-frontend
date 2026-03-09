@@ -1,4 +1,5 @@
 import { WorkplaceAnswerEnum } from '@partials/common'
+import { Branch } from '@partials/common/StudentProfileDetail/components/Workplace/components/IndustryDetail/components/onViewMapIndustriesInRadius/contactHistoryTab/IndustryCommunications'
 import { WorkplaceEmploymentDocument } from '@partials/student'
 import {
     Course,
@@ -77,6 +78,7 @@ export interface WorkplaceWorkIndustriesType {
     placementStarted: boolean
     placementStartedDate: Date
     terminated: boolean
+    location: Branch
     terminatedDate: Date
     updatedAt: Date
     industry: Industry
@@ -131,7 +133,7 @@ export interface IWorkplaceIndustries {
     id?: number
     isActive?: boolean
     isCancelled?: boolean
-    prefferableLocation?: string
+    preferableLocation?: string
     status?: string
     updatedAt?: Date
     cancelledRequests?: CancelledRequestType[]

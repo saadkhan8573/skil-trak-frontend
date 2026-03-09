@@ -4,9 +4,7 @@ import { RtoV2Api } from '@queries'
 import { motion } from 'framer-motion'
 import { Eye, GraduationCap, Info } from 'lucide-react'
 import { useRouter } from 'next/router'
-export const EnhancedPlacementProgramCard = ({
-    toggleRequirement,
-}: any) => {
+export const EnhancedPlacementProgramCard = ({ toggleRequirement }: any) => {
     const router = useRouter()
     const wpId = router.query.id
     const { data } =
@@ -15,7 +13,7 @@ export const EnhancedPlacementProgramCard = ({
         })
     return (
         <Card noPadding className="border-0 shadow-xl overflow-hidden">
-            <div className="bg-gradient-to-r from-[#0D5468] to-[#044866] px-5 py-4">
+            <div className="bg-linear-to-r from-[#0D5468] to-[#044866] px-5 py-4">
                 <div className="flex items-center justify-between text-white">
                     <div className="flex items-center gap-2.5">
                         <GraduationCap className="h-5 w-5" />
@@ -48,7 +46,7 @@ export const EnhancedPlacementProgramCard = ({
                                 whileHover={{ scale: 1.01 }}
                                 className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${
                                     req?.isActive
-                                        ? 'border-[#044866] bg-gradient-to-br from-[#044866]/5 to-[#044866]/10 shadow-md'
+                                        ? 'border-[#044866] bg-linear-to-br from-[#044866]/5 to-[#044866]/10 shadow-md'
                                         : 'border-slate-200 hover:border-slate-300 bg-white hover:shadow-sm'
                                 }`}
                                 onClick={() => toggleRequirement(req.id)}
@@ -103,10 +101,10 @@ export const EnhancedPlacementProgramCard = ({
                                                     }}
                                                     className={`h-full rounded-full ${
                                                         progress === 100
-                                                            ? 'bg-gradient-to-r from-emerald-500 to-teal-500'
+                                                            ? 'bg-linear-to-r from-emerald-500 to-teal-500'
                                                             : progress >= 50
-                                                            ? 'bg-gradient-to-r from-[#044866] to-[#0D5468]'
-                                                            : 'bg-gradient-to-r from-amber-400 to-amber-500'
+                                                              ? 'bg-linear-to-r from-[#044866] to-[#0D5468]'
+                                                              : 'bg-linear-to-r from-amber-400 to-amber-500'
                                                     }`}
                                                 />
                                             </div>

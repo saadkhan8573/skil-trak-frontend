@@ -3,10 +3,19 @@ import {
     Button,
     Card,
     CreateNote,
-    Typography
+    Typography,
 } from '@components'
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from '@components/ui/drawer'
+import { Button as UIButton } from '@components/ui/button'
 import { UserRoles } from '@constants'
-import { useContextBar } from '@hooks'
 import { useState } from 'react'
 import { Waypoint } from 'react-waypoint'
 import { NotesView } from './components'
@@ -18,15 +27,8 @@ export const Notes = ({
     userId: number
     isPinned?: boolean
 }) => {
-    const contextBar = useContextBar()
-
+    const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false)
     const [isViewd, setIsViewd] = useState<boolean>(false)
-
-    const onAddNote = () => {
-        contextBar.setTitle('Add Note')
-        contextBar.setContent(<CreateNote receiverId={Number(userId)} />)
-        contextBar.show(false)
-    }
 
     return (
         <Waypoint
@@ -43,7 +45,39 @@ export const Notes = ({
                         <AuthorizedUserComponent
                             excludeRoles={[UserRoles.OBSERVER]}
                         >
-                            <Button onClick={onAddNote}>Add Note</Button>
+                            <Drawer
+                                open={isDrawerOpen}
+                                onOpenChange={setIsDrawerOpen}
+                                direction="right"
+                            >
+                                <DrawerTrigger asChild>
+                                    <Button>Add Note</Button>
+                                </DrawerTrigger>
+                                <DrawerContent className="sm:max-w-[500px] w-screen h-full mt-0 rounded-none z-100">
+                                    <div className="mx-auto w-full h-full flex flex-col">
+                                        <DrawerHeader>
+                                            <DrawerTitle>Add Note</DrawerTitle>
+                                        </DrawerHeader>
+
+                                        <div className="p-4 overflow-y-auto flex-1">
+                                            <CreateNote
+                                                receiverId={Number(userId)}
+                                                onCancel={() =>
+                                                    setIsDrawerOpen(false)
+                                                }
+                                            />
+                                        </div>
+
+                                        <DrawerFooter>
+                                            <DrawerClose asChild>
+                                                <UIButton variant="outline">
+                                                    Close
+                                                </UIButton>
+                                            </DrawerClose>
+                                        </DrawerFooter>
+                                    </div>
+                                </DrawerContent>
+                            </Drawer>
                         </AuthorizedUserComponent>
                     </div>
 

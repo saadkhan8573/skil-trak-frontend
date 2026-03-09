@@ -14,6 +14,7 @@ const TAB_KEY = 'signed'
 export const SignedUpIndustriesInRadiusTab = ({
     courseId,
     workplaceId,
+    studentLocation,
     setSelectedBox,
 }: any) => {
     const [page, setPage] = useState(1)
@@ -108,6 +109,7 @@ export const SignedUpIndustriesInRadiusTab = ({
                         <React.Fragment key={item?.id}>
                             <IndustryInRadiusListCard
                                 item={item}
+                                studentLocation={studentLocation}
                                 onSelect={(selected: any) => {
                                     router.push(
                                         {
@@ -122,12 +124,14 @@ export const SignedUpIndustriesInRadiusTab = ({
                                     )
                                     setSelectedBox(selected)
                                 }}
+                                branch={item?.isBranch}
                             />
                             {item?.locations?.length > 0 &&
                                 item?.locations?.map((branch: any) => (
                                     <IndustryInRadiusListCard
                                         key={`${item?.id}-${branch?.id}`}
                                         item={{ ...item, ...branch }}
+                                        studentLocation={studentLocation}
                                         onSelect={setSelectedBox}
                                         branch
                                     />

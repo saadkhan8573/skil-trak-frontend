@@ -1,19 +1,21 @@
 import { Typography } from '@components'
-import { AvailableMeetingDates } from './AvailableMeetingDates'
+import { useEffect, useState } from 'react'
+import { StudentApi } from '@queries'
+import { getLatLng } from '@utils'
+import { PrePlacementForm } from './PrePlacementForm'
 import { StudentWorkplaceInfo } from './StudentWorkplaceInfo'
+import { UploadIndustryRequiredDocs } from './UploadIndustryRequiredDocs'
 import { WorkplaceApprovalActions } from './WorkplaceApprovalActions'
 import { WorkplaceAvailableSlots } from './WorkplaceAvailableSlots'
 import { WorkplaceDetail } from './WorkplaceDetail'
 import { WorkplaceMapBoxView } from './WorkplaceMapBoxView'
-import { UploadIndustryRequiredDocs } from './UploadIndustryRequiredDocs'
-import { StudentApi } from '@queries'
-import { PrePlacementForm } from './PrePlacementForm'
+import { RtoApprovalWorkplaceRequest } from '@types'
 
 export const WorkplaceApproval = ({
     onCancel,
     wpApprovalData,
 }: {
-    wpApprovalData: any
+    wpApprovalData: RtoApprovalWorkplaceRequest
     onCancel?: () => void
 }) => {
     const { data, isLoading, isError } =
@@ -21,6 +23,31 @@ export const WorkplaceApproval = ({
             wpApprovalData.id,
             { skip: !wpApprovalData?.id }
         )
+
+    const [preferableLatLng, setPreferableLatLng] = useState<{
+        lat: number
+        lng: number
+    } | null>(null)
+
+    useEffect(() => {
+        const fetchLatLng = async () => {
+            if (wpApprovalData?.workplaceRequest?.preferableLocation) {
+                try {
+                    const coords = await getLatLng(
+                        wpApprovalData?.workplaceRequest?.preferableLocation
+                    )
+                    setPreferableLatLng(coords)
+                } catch (error) {
+                    console.error('Error fetching latlng:', error)
+                }
+            }
+        }
+        fetchLatLng()
+    }, [wpApprovalData?.workplaceRequest?.preferableLocation])
+
+    const studentLoc = preferableLatLng
+        ? [String(preferableLatLng?.lat), String(preferableLatLng?.lng)]
+        : wpApprovalData?.student?.location?.split(',') || []
 
     const allArrays = [
         ...(data?.assessmentEvidence || []),
@@ -53,16 +80,6 @@ export const WorkplaceApproval = ({
                         Workplace on map
                     </Typography>
                     <div className="rounded-xl w-full overflow-hidden mt-2">
-                        {/* <WorkplaceMapView
-                            industryLocation={wpApprovalData?.industry?.location?.split(
-                                ','
-                            )}
-                            studentLocation={wpApprovalData?.student?.location?.split(
-                                ','
-                            )}
-                            workplaceName={wpApprovalData?.industry?.user?.name}
-                            showMap
-                        /> */}
                         <WorkplaceMapBoxView
                             industryLocation={
                                 !wpApprovalData?.location
@@ -73,9 +90,7 @@ export const WorkplaceApproval = ({
                                           ','
                                       )
                             }
-                            studentLocation={wpApprovalData?.student?.location?.split(
-                                ','
-                            )}
+                            studentLocation={studentLoc}
                             workplaceName={wpApprovalData?.industry}
                             showMap
                         />

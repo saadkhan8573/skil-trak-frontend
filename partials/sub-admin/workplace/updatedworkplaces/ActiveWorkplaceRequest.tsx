@@ -22,7 +22,11 @@ import { useRouter } from 'next/router'
 import { FiPhoneOff } from 'react-icons/fi'
 import { LuFlagTriangleRight } from 'react-icons/lu'
 import { MdSnooze } from 'react-icons/md'
-import { RtoCellInfo, UpdatedWorkplaceRequest } from './components'
+import {
+    IndustryDetail,
+    RtoCellInfo,
+    UpdatedWorkplaceRequest,
+} from './components'
 import { UserRoles } from '@constants'
 import { useSubadminProfile } from '@hooks'
 
@@ -170,35 +174,11 @@ export const ActiveWorkplaceRequest = () => {
             accessorKey: 'industry',
             header: () => <span>Workplace Name</span>,
             cell: (info) => {
-                const appliedIndustry = info?.row?.original?.industries.find(
-                    (industry: any) => industry?.applied
-                )
                 return (
-                    <>
-                        {appliedIndustry ? (
-                            <>
-                                <div className="bg-white px-3 py-1.5 rounded-md border border-[#128C7E]">
-                                    <Typography variant="small" bold>
-                                        {ellipsisText(
-                                            appliedIndustry?.industry?.user
-                                                ?.name,
-                                            30
-                                        )}
-                                    </Typography>
-                                </div>
-                                <Link
-                                    href={`/portals/sub-admin/users/industries/${appliedIndustry?.industry?.id}?tab=students`}
-                                    className="text-blue-500 text-xs"
-                                >
-                                    View Details
-                                </Link>
-                            </>
-                        ) : (
-                            <Typography variant="small" semibold>
-                                N/A
-                            </Typography>
-                        )}
-                    </>
+                    <IndustryDetail
+                        workplace={info?.row?.original}
+                        createdAt={info?.row?.original?.createdAt}
+                    />
                 )
             },
         },

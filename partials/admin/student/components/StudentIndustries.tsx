@@ -1,17 +1,16 @@
 import { Typography } from '@components'
+import { latestWpApprovalRequest } from '@partials/rto-v2'
 import { IndustryCell } from '@partials/admin/industry/components'
-import { Industry } from '@types'
-import {
-    activeWorkplace,
-    getStudentWorkplaceAppliedIndustry,
-    latestWorkplace,
-    WorkplaceCurrentStatus,
-} from '@utils'
-import React from 'react'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
 } from '@redux/queryTypes'
+import { Industry } from '@types'
+import {
+    activeWorkplace,
+    getStudentWorkplaceAppliedIndustry,
+    WorkplaceCurrentStatus,
+} from '@utils'
 
 export const StudentIndustries = ({
     workplace,
@@ -42,12 +41,26 @@ export const StudentIndustries = ({
 
     const appliedIndustry = studentsListWorkplace()
 
-    const wpApp = latestWP?.latestPendingApproval?.industry
+    // Industry from latestPendingApproval (pre-computed on the backend)
+    const wpPendingApprovalIndustry = latestWP?.latestPendingApproval?.industry
 
-    return workplace && workplace?.length > 0 && appliedIndustry ? (
-        <IndustryCell industry={appliedIndustry} />
-    ) : wpApp ? (
-        <IndustryCell industry={wpApp} />
+    // Industry from the workplaceApprovaleRequest array (via utility)
+    const wpApprovalRequestIndustry = latestWpApprovalRequest(
+        latestWP?.workplaceApprovaleRequest || []
+    )?.industry
+
+    // Industry from student-provided workplace approval
+    const wpStudentProvidedIndustry =
+        latestWP?.studentProvidedWorkplaceRequestApproval?.industry
+
+    const resolvedIndustry =
+        appliedIndustry ||
+        wpPendingApprovalIndustry ||
+        wpApprovalRequestIndustry ||
+        wpStudentProvidedIndustry
+
+    return resolvedIndustry ? (
+        <IndustryCell industry={resolvedIndustry} />
     ) : industries && industries?.length > 0 ? (
         <IndustryCell industry={industries?.[0]} />
     ) : (

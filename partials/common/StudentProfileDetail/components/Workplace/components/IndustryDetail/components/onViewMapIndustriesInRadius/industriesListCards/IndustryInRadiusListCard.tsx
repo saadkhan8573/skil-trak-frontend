@@ -1,22 +1,26 @@
-import React from 'react'
-import { DistanceIndicator } from './DistanceIndicator'
-import { MapPin, Lock } from 'lucide-react'
-import { ellipsisText } from '@utils'
-import { Actions } from '../contactHistoryTab/Actions'
-import { FaHandshakeSimple, FaHandshakeSimpleSlash } from 'react-icons/fa6'
-import { FaCheck, FaTimes } from 'react-icons/fa'
 import { Badge } from '@components'
+import { useAppSelector } from '@redux'
+import { ellipsisText, getLatLng } from '@utils'
+import { MapPin } from 'lucide-react'
 import moment from 'moment'
+import { useEffect, useState } from 'react'
+import { FaCheck, FaTimes } from 'react-icons/fa'
+import { FaHandshakeSimple, FaHandshakeSimpleSlash } from 'react-icons/fa6'
+import { Actions } from '../contactHistoryTab/Actions'
+import { DistanceIndicator } from './DistanceIndicator'
+import { useRouteInfo } from '@partials/rto-v2/student-detail/components/StudentOverview/hooks/useRouteInfo'
 
 type IndustryInRadiusListCardProps = {
     item: any
     onSelect: (item: any) => void
     branch?: boolean
     isLocked?: boolean
+    studentLocation?: string
 }
 
 export const IndustryInRadiusListCard = ({
     item,
+    studentLocation,
     onSelect,
     branch = false,
 }: IndustryInRadiusListCardProps) => {
@@ -29,6 +33,41 @@ export const IndustryInRadiusListCard = ({
     const isContacted = item?.studentIndustryContact?.length > 0
     const hasEmailSent = item?.user?.emails?.length > 0
     const contactData = item?.studentIndustryContact?.[0]
+
+    const workplace = useAppSelector((state) => state.student.selectedWorkplace)
+    const [preferableLatLng, setPreferableLatLng] = useState<{
+        lat: number
+        lng: number
+    } | null>(null)
+
+    useEffect(() => {
+        const fetchLatLng = async () => {
+            if (workplace?.preferableLocation) {
+                try {
+                    const coords = await getLatLng(workplace.preferableLocation)
+                    setPreferableLatLng(coords)
+                } catch (error) {
+                    console.error('Error fetching latlng:', error)
+                }
+            }
+        }
+        fetchLatLng()
+    }, [workplace?.preferableLocation])
+
+    const studentLoc = preferableLatLng
+        ? [String(preferableLatLng.lat), String(preferableLatLng.lng)]
+        : studentLocation?.split(',')!
+
+    const { travelInfo } = useRouteInfo({
+        studentLocation: studentLoc,
+        industryLocation:
+            item?.activeBranch?.location?.split(',') ||
+            item?.location?.split(','),
+        modes: ['driving'],
+    })
+
+    const drivingInfo = travelInfo.find((info) => info.mode === 'driving')
+
     return (
         <div
             className={`
@@ -54,7 +93,8 @@ export const IndustryInRadiusListCard = ({
                             />
                         ) : (
                             <span className="font-semibold text-gray-600">
-                                {item?.user?.name?.[0]?.toUpperCase() ?? 'N'}
+                                {item?.user?.name?.[0]?.toUpperCase() ??
+                                    'N'}{' '}
                             </span>
                         )}
                     </div>
@@ -107,14 +147,20 @@ export const IndustryInRadiusListCard = ({
                     {/* Location */}
                     <div
                         className="flex items-start gap-1.5 text-sm text-gray-600 mb-2"
-                        title={item?.addressLine1}
+                        title={
+                            item?.activeBranch?.address || item?.addressLine1
+                        }
                     >
                         <MapPin
                             className="text-red-500 shrink-0 mt-0.5"
                             size={14}
                         />
                         <span className="truncate">
-                            {ellipsisText(item?.addressLine1, 25)}
+                            {ellipsisText(
+                                item?.activeBranch?.address ||
+                                    item?.addressLine1,
+                                25
+                            )}
                         </span>
                     </div>
 
@@ -123,6 +169,8 @@ export const IndustryInRadiusListCard = ({
                         <DistanceIndicator
                             distance={item?.distance ?? 0}
                             mode="car"
+                            exactDistance={drivingInfo?.distance}
+                            duration={drivingInfo?.duration}
                         />
                     </div>
 

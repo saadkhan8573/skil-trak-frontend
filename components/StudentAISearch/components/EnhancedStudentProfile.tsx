@@ -7,22 +7,19 @@ import {
     InitialAvatar,
     Typography,
 } from '@components'
-import { CreateStudentNote } from '@partials/common/Notes/forms'
 import { Student } from '@types'
 import {
     Building2,
-    Calendar,
     CheckCircle2,
     Copy,
     FileText,
     Mail,
     Star,
-    Target,
     Timer,
     User,
 } from 'lucide-react'
 import { useRouter } from 'next/router'
-import { ReactElement, useState } from 'react'
+import { useState } from 'react'
 import { ellipsisText, getUserCredentials } from '@utils'
 import { searchAiUrls } from '../urls'
 import moment from 'moment'
@@ -34,42 +31,14 @@ interface EnhancedStudentProfileProps {
 export function EnhancedStudentProfile({
     student,
 }: EnhancedStudentProfileProps) {
-    const [modal, setModal] = useState<ReactElement | null>(null)
-
     const router = useRouter()
-
-    const role = getUserCredentials()?.role
-
-    const urls = searchAiUrls(role, student?.id)
 
     const handleCopyEmail = () => {
         navigator.clipboard.writeText(student?.user?.email)
-        // toast.success('Email copied to clipboard')
     }
 
     const handleCopyStudentId = () => {
         navigator.clipboard.writeText(student.studentId)
-        // toast.success('Student ID copied to clipboard')
-    }
-
-    const onCancel = () => setModal(null)
-
-    const onCreateTicket = () => {
-        router.push(urls?.ticket + '')
-    }
-
-    const onAddNote = () => {
-        setModal(
-            <GlobalModal className="overflow-hidden!">
-                <div className="h-[88vh]! overflow-auto! custom-scrollbar">
-                    <CreateStudentNote
-                        studentId={student?.id}
-                        receiverId={Number(student?.user?.id)}
-                        onCancel={onCancel}
-                    />
-                </div>
-            </GlobalModal>
-        )
     }
 
     const daysRemaining = moment(student?.expiryDate).diff(moment(), 'days')
@@ -98,8 +67,6 @@ export function EnhancedStudentProfile({
 
     return (
         <>
-            {modal}
-
             <div className="space-y-6">
                 {/* Hero Card - Student Header */}
                 <motion.div
@@ -164,29 +131,6 @@ export function EnhancedStudentProfile({
                                         )}
                                     </div>
                                 </div>
-                            </div>
-
-                            {/* SS */}
-                            {/* Right: Quick Actions - Desktop */}
-                            <div className="hidden flex-wrap gap-2 md:flex">
-                                <Button
-                                    variant="primaryNew"
-                                    outline
-                                    className="gap-2"
-                                    onClick={onCreateTicket}
-                                >
-                                    <FileText className="h-4 w-4" />
-                                    Create Ticket
-                                </Button>
-                                <Button
-                                    variant="primaryNew"
-                                    outline
-                                    className="gap-2"
-                                    onClick={onAddNote}
-                                >
-                                    <FileText className="h-4 w-4" />
-                                    Add Note
-                                </Button>
                             </div>
                         </div>
 

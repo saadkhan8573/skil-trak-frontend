@@ -40,6 +40,7 @@ export interface Branch {
     contactPersonEmail: string
     contactPersonPhone: string
     studentIndustryContact: any
+    location: string
 }
 
 export interface Email {

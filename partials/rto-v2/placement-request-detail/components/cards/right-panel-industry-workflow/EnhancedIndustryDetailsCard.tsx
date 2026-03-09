@@ -5,7 +5,7 @@ import { DocumentsView } from '@hooks'
 import { VerifyCapacityComponent } from '@partials/common/StudentProfileDetail/components/Workplace/components/WorkplaceApprovalReq/VerifyCapacityComponent'
 import { WorkplaceMapBoxView } from '@partials/student'
 import { RtoV2Api } from '@queries'
-import { getUserCredentials, WorkplaceCurrentStatus } from '@utils'
+import { getLatLng, getUserCredentials, WorkplaceCurrentStatus } from '@utils'
 import {
     BadgeInfo,
     Building2,
@@ -17,8 +17,10 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouteInfo } from '../../../../student-detail/components/StudentOverview/hooks'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
+import { Student } from '@types'
 
 function getIndustryProfileLink(role: string, industryId: number) {
     switch (role) {
@@ -36,12 +38,40 @@ export const EnhancedIndustryDetailsCard = ({
     workplaceType,
     student,
     workplace,
-}: any) => {
+}: {
+    // showIndustryDetails,
+    workplaceType: any
+    student: Student
+    workplace: IWorkplaceIndustries
+}) => {
+    console.log({ workplace })
     const [showMap, setShowMap] = useState(false)
     const router = useRouter()
     const { onFileClicked, documentsViewModal } = DocumentsView()
     const wpId = router?.query?.id
     const role = getUserCredentials()?.role || ''
+    const [preferableLatLng, setPreferableLatLng] = useState<{
+        lat: number
+        lng: number
+    } | null>(null)
+
+    useEffect(() => {
+        const fetchLatLng = async () => {
+            if (workplace?.preferableLocation) {
+                try {
+                    const coords = await getLatLng(workplace.preferableLocation)
+                    console.log({ coords })
+                    setPreferableLatLng(coords)
+                } catch (error) {
+                    console.error('Error fetching latlng:', error)
+                }
+            }
+        }
+        fetchLatLng()
+    }, [workplace?.preferableLocation])
+
+    console.log({ preferableLatLng })
+
     const { data, isLoading, isError } =
         RtoV2Api.PlacementRequests.useStudentPlacementIndustryDetails(wpId, {
             skip: !wpId,
@@ -51,11 +81,13 @@ export const EnhancedIndustryDetailsCard = ({
             req.status !== 'rejected' && req.rtoApprovalStatus !== 'rejected'
     )
     const workplaceIndustry =
-        workplace?.industries?.length > 0
+        workplace?.industries && workplace?.industries?.length > 0
             ? data
-            : wpApprovalStatus?.length > 0
+            : wpApprovalStatus && wpApprovalStatus?.length > 0
               ? wpApprovalStatus?.[0]?.industry
               : null
+
+    const approvalReq = wpApprovalStatus?.[0]
 
     const workplaceEligibilityIndustry =
         workplace?.currentStatus === WorkplaceCurrentStatus.IndustryEligibility
@@ -64,8 +96,13 @@ export const EnhancedIndustryDetailsCard = ({
     const industry = workplaceEligibilityIndustry || workplaceIndustry
 
     const { travelInfo } = useRouteInfo({
-        studentLocation: student?.location?.split(',') || [],
-        industryLocation: industry?.location?.split(',') || [],
+        studentLocation: preferableLatLng
+            ? [String(preferableLatLng?.lat), String(preferableLatLng?.lng)]
+            : student?.location?.split(',') || [],
+        industryLocation:
+            approvalReq?.location?.location?.split(',') ||
+            industry?.location?.split(',') ||
+            [],
         modes: ['driving'],
     })
 
@@ -108,7 +145,7 @@ export const EnhancedIndustryDetailsCard = ({
                             ?.hasVerifiedCapacity &&
                         workplaceType === 'needs' && (
                             <VerifyCapacityComponent
-                                courseId={workplace?.courses?.[0]?.id}
+                                courseId={workplace?.courses?.[0]?.id!}
                                 wpReqApproval={workplace}
                             />
                         )}
@@ -121,7 +158,7 @@ export const EnhancedIndustryDetailsCard = ({
                                 </span>
                             </div>
                             <span className="text-[#044866] font-bold text-lg">
-                                {roundCustom(displayDistance)} km
+                                {displayDistance} km
                             </span>
                         </div>
                         <Button
@@ -138,12 +175,20 @@ export const EnhancedIndustryDetailsCard = ({
                         {showMap && (
                             <>
                                 <WorkplaceMapBoxView
-                                    industryLocation={industry?.location?.split(
-                                        ','
-                                    )}
-                                    studentLocation={student?.location?.split(
-                                        ','
-                                    )}
+                                    industryLocation={
+                                        approvalReq?.location?.location?.split(
+                                            ','
+                                        ) || industry?.location?.split(',')
+                                    }
+                                    studentLocation={
+                                        preferableLatLng
+                                            ? [
+                                                  String(preferableLatLng?.lat),
+                                                  String(preferableLatLng?.lng),
+                                              ]
+                                            : student?.location?.split(',') ||
+                                              []
+                                    }
                                     workplaceName={industry?.user?.name}
                                     showMap={
                                         !!industry?.location &&
@@ -160,7 +205,8 @@ export const EnhancedIndustryDetailsCard = ({
                             </div>
                             <div className="flex-1">
                                 <h4 className="text-[#044866] font-semibold text-lg">
-                                    {industry?.user?.name ?? '———'}
+                                    {industry?.user?.name ?? '———'}{' '}
+                                    {approvalReq?.location ? '(Branch)' : ''}
                                 </h4>
                                 <p className="text-slate-600 text-sm">
                                     Verified Industry{' '}
@@ -215,7 +261,9 @@ export const EnhancedIndustryDetailsCard = ({
                                     Location
                                 </p>
                                 <p className="text-slate-900 font-medium">
-                                    {industry?.addressLine1 ?? '———'}
+                                    {(approvalReq?.location?.address ||
+                                        industry?.addressLine1) ??
+                                        '———'}
                                 </p>
                             </div>
                             <div className="p-3 bg-linear-to-br from-slate-50 to-slate-100/50 rounded-lg">
@@ -223,7 +271,7 @@ export const EnhancedIndustryDetailsCard = ({
                                     Distance
                                 </p>
                                 <p className="text-slate-900 font-medium">
-                                    {roundCustom(displayDistance)} km
+                                    {displayDistance} km
                                 </p>
                             </div>
                         </div>

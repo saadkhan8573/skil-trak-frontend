@@ -258,9 +258,9 @@ export function StudentsPlacementList() {
 
             {/* Stats Overview */}
             <div className="grid grid-cols-4 gap-2">
-                <div className="bg-gradient-to-br from-[#F8FAFB] to-[#E8F4F8] rounded-lg p-2 border border-[#E2E8F0]">
+                <div className="bg-linear-to-br from-[#F8FAFB] to-[#E8F4F8] rounded-lg p-2 border border-[#E2E8F0]">
                     <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 bg-gradient-to-br from-[#044866] to-[#0D5468] rounded-md flex items-center justify-center shadow-sm">
+                        <div className="w-6 h-6 bg-linear-to-br from-[#044866] to-[#0D5468] rounded-md flex items-center justify-center shadow-sm">
                             <Users className="w-3 h-3 text-white" />
                         </div>
                         <div>
@@ -273,9 +273,9 @@ export function StudentsPlacementList() {
                         </div>
                     </div>
                 </div>
-                <div className="bg-gradient-to-br from-[#D1FAE5] to-[#A7F3D0] rounded-lg p-2 border border-[#10B981]/20">
+                <div className="bg-linear-to-br from-[#D1FAE5] to-[#A7F3D0] rounded-lg p-2 border border-[#10B981]/20">
                     <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 bg-gradient-to-br from-[#10B981] to-[#059669] rounded-md flex items-center justify-center shadow-sm">
+                        <div className="w-6 h-6 bg-linear-to-br from-[#10B981] to-[#059669] rounded-md flex items-center justify-center shadow-sm">
                             <CheckCircle className="w-3 h-3 text-white" />
                         </div>
                         <div>
@@ -288,9 +288,9 @@ export function StudentsPlacementList() {
                         </div>
                     </div>
                 </div>
-                <div className="bg-gradient-to-br from-[#FEF3C7] to-[#FDE68A] rounded-lg p-2 border border-[#F7A619]/20">
+                <div className="bg-linear-to-br from-[#FEF3C7] to-[#FDE68A] rounded-lg p-2 border border-[#F7A619]/20">
                     <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 bg-gradient-to-br from-[#F7A619] to-[#EA580C] rounded-md flex items-center justify-center shadow-sm">
+                        <div className="w-6 h-6 bg-linear-to-br from-[#F7A619] to-[#EA580C] rounded-md flex items-center justify-center shadow-sm">
                             <Clock className="w-3 h-3 text-white" />
                         </div>
                         <div>
@@ -303,9 +303,9 @@ export function StudentsPlacementList() {
                         </div>
                     </div>
                 </div>
-                <div className="bg-gradient-to-br from-[#F8FAFB] to-[#E2E8F0] rounded-lg p-2 border border-[#E2E8F0]">
+                <div className="bg-linear-to-br from-[#F8FAFB] to-[#E2E8F0] rounded-lg p-2 border border-[#E2E8F0]">
                     <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 bg-gradient-to-br from-[#64748B] to-[#475569] rounded-md flex items-center justify-center shadow-sm">
+                        <div className="w-6 h-6 bg-linear-to-br from-[#64748B] to-[#475569] rounded-md flex items-center justify-center shadow-sm">
                             <Circle className="w-3 h-3 text-white" />
                         </div>
                         <div>
@@ -336,7 +336,7 @@ export function StudentsPlacementList() {
                                 <div className="flex items-start justify-between mb-2">
                                     <div className="flex items-start gap-2 flex-1">
                                         {/* Avatar */}
-                                        <div className="w-7 h-7 bg-gradient-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center text-white text-[10px] font-bold shadow-sm">
+                                        <div className="w-7 h-7 bg-linear-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center text-white text-[10px] font-bold shadow-sm">
                                             {student.name
                                                 .split(' ')
                                                 .map((n) => n[0])
@@ -417,7 +417,7 @@ export function StudentsPlacementList() {
                                     </div>
                                     <div className="h-1 bg-[#E8F4F8] rounded-full overflow-hidden">
                                         <div
-                                            className="h-full bg-gradient-to-r from-[#044866] to-[#0D5468] rounded-full transition-all duration-1000"
+                                            className="h-full bg-linear-to-r from-[#044866] to-[#0D5468] rounded-full transition-all duration-1000"
                                             style={{
                                                 width: `${student.progress}%`,
                                             }}
@@ -456,7 +456,7 @@ export function StudentsPlacementList() {
                                 {/* Expand Button */}
                                 <button
                                     onClick={() => toggleExpand(student.id)}
-                                    className="w-full px-2 py-1 bg-gradient-to-br from-[#F8FAFB] to-[#E8F4F8] hover:from-[#E8F4F8] hover:to-[#D1E7F0] rounded-md text-[10px] font-medium text-[#044866] transition-all duration-300 flex items-center justify-center gap-1"
+                                    className="w-full px-2 py-1 bg-linear-to-br from-[#F8FAFB] to-[#E8F4F8] hover:from-[#E8F4F8] hover:to-[#D1E7F0] rounded-md text-[10px] font-medium text-[#044866] transition-all duration-300 flex items-center justify-center gap-1"
                                 >
                                     {isExpanded ? (
                                         <>
@@ -474,9 +474,9 @@ export function StudentsPlacementList() {
 
                             {/* Expanded Workflow Details */}
                             {isExpanded && (
-                                <div className="border-t border-[#E2E8F0] bg-gradient-to-br from-[#F8FAFB] to-[#FFFFFF] p-3">
+                                <div className="border-t border-[#E2E8F0] bg-linear-to-br from-[#F8FAFB] to-[#FFFFFF] p-3">
                                     <h4 className="text-xs font-bold text-[#1A2332] mb-2 flex items-center gap-1.5">
-                                        <div className="w-0.5 h-3 bg-gradient-to-b from-[#044866] to-[#0D5468] rounded-full" />
+                                        <div className="w-0.5 h-3 bg-linear-to-b from-[#044866] to-[#0D5468] rounded-full" />
                                         Placement Workflow Progress
                                     </h4>
 
@@ -496,14 +496,14 @@ export function StudentsPlacementList() {
 
                                                 {/* Status Icon */}
                                                 <div
-                                                    className={`w-5 h-5 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0 transition-all duration-300 ${
+                                                    className={`w-5 h-5 rounded-lg flex items-center justify-center shadow-sm shrink-0 transition-all duration-300 ${
                                                         step.status ===
                                                         'completed'
-                                                            ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
+                                                            ? 'bg-linear-to-br from-[#10B981] to-[#059669]'
                                                             : step.status ===
-                                                              'in-progress'
-                                                            ? 'bg-gradient-to-br from-[#F7A619] to-[#EA580C] animate-pulse'
-                                                            : 'bg-gradient-to-br from-[#F8FAFB] to-[#E2E8F0]'
+                                                                'in-progress'
+                                                              ? 'bg-linear-to-br from-[#F7A619] to-[#EA580C] animate-pulse'
+                                                              : 'bg-linear-to-br from-[#F8FAFB] to-[#E2E8F0]'
                                                     }`}
                                                 >
                                                     {step.status ===
@@ -526,9 +526,9 @@ export function StudentsPlacementList() {
                                                                 'completed'
                                                                     ? 'text-[#1A2332]'
                                                                     : step.status ===
-                                                                      'in-progress'
-                                                                    ? 'text-[#B45309]'
-                                                                    : 'text-[#94A3B8]'
+                                                                        'in-progress'
+                                                                      ? 'text-[#B45309]'
+                                                                      : 'text-[#94A3B8]'
                                                             }`}
                                                         >
                                                             {step.name}
@@ -576,7 +576,7 @@ export function StudentsPlacementList() {
                                                 <AlertTriangle className="w-2.5 h-2.5" />
                                                 Terminated
                                             </button>
-                                            <button className="px-2 py-1 bg-gradient-to-br from-[#044866] to-[#0D5468] hover:shadow-lg text-white rounded-md text-[10px] font-medium transition-all duration-300 flex items-center gap-1">
+                                            <button className="px-2 py-1 bg-linear-to-br from-[#044866] to-[#0D5468] hover:shadow-lg text-white rounded-md text-[10px] font-medium transition-all duration-300 flex items-center gap-1">
                                                 <Calendar className="w-2.5 h-2.5" />
                                                 Extension
                                             </button>

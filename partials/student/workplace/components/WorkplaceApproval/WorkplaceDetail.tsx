@@ -2,7 +2,6 @@ import { Typography } from '@components'
 import { Student } from '@types'
 import { getUserCredentials } from '@utils'
 import Image from 'next/image'
-import React from 'react'
 
 export const WorkplaceDetail = ({ student }: { student?: Student }) => {
     const credentials = getUserCredentials()

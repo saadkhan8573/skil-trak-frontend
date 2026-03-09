@@ -118,7 +118,7 @@ export const StudentOverViewUpdated = ({
                                         variant="small"
                                         className="font-medium text-slate-900"
                                     >
-                                        Need another placement?
+                                        Want to generate a workplace request?
                                     </Typography>
                                     <Typography
                                         variant="small"

@@ -6,9 +6,13 @@ import { FaCarSide } from 'react-icons/fa'
 export const DistanceIndicator = ({
     distance,
     mode = 'walking',
+    exactDistance,
+    duration,
 }: {
     distance: number
     mode?: 'walking' | 'car'
+    exactDistance?: string | null
+    duration?: string | null
 }) => {
     const MovingIcon = mode === 'car' ? FaCarSide : FaWalking
 
@@ -34,7 +38,16 @@ export const DistanceIndicator = ({
             </div>
 
             <Factory className="text-primary" size={20} />
-            <span className="text-xs text-gray-600">{distance} km away</span>
+            <div className="flex flex-col">
+                <span className="text-xs text-gray-600 font-medium whitespace-nowrap">
+                    {exactDistance ? exactDistance : `${distance} km`} away
+                </span>
+                {duration && (
+                    <span className="text-[10px] text-gray-500 whitespace-nowrap">
+                        {duration} drive
+                    </span>
+                )}
+            </div>
         </div>
     )
 }

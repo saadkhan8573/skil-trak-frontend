@@ -35,15 +35,7 @@ export const useColumns = () => {
         {
             accessorKey: 'industry',
             header: () => <span>Workplace Name</span>,
-            cell: (info) => (
-                <IndustryDetail
-                    createdAt={info?.row?.original?.createdAt}
-                    industries={info?.row?.original?.industries}
-                    workplaceApprovaleRequest={
-                        info?.row?.original?.workplaceApprovaleRequest
-                    }
-                />
-            ),
+            cell: (info) => <IndustryDetail workplace={info?.row?.original} />,
         },
         {
             header: () => 'RTO',

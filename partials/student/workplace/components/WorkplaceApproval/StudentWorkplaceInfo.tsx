@@ -8,14 +8,20 @@ export const StudentWorkplaceInfo = ({
     direction?: string
     industry: any
 }) => {
+    const industryBranch = industry?.location
     const industryData = [
         {
             name: 'Name',
-            data: industry?.industry?.user?.name || '---',
+            data: industry?.industry?.user?.name
+                ? `${industry?.industry?.user?.name} ${industryBranch ? '(Branch)' : ''}`
+                : '---',
         },
         {
             name: 'Address',
-            data: industry?.industry?.addressLine1 || '---',
+            data:
+                industryBranch?.address ||
+                industry?.industry?.addressLine1 ||
+                '---',
         },
         {
             name: 'Website',

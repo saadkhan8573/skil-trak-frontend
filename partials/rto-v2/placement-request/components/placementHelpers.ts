@@ -11,6 +11,7 @@ import {
     XCircle,
     CheckCircle,
 } from 'lucide-react'
+import { needsWorkplaceStagesEnum } from '@partials/rto-v2/placement-request-detail/components/workplaceStages'
 
 export type PlacementStatus =
     | 'applied'
@@ -54,91 +55,91 @@ export interface PlacementRequest {
 
 export const statusConfig: any = {
     applied: {
-        label: 'Industry sourcing',
+        label: needsWorkplaceStagesEnum.REQUEST_GENERATED,
         icon: Send,
         color: 'text-blue-600',
         bgColor: 'bg-blue-50',
         borderColor: 'border-blue-200 ',
     },
     caseOfficerAssigned: {
-        label: 'Industry sourcing',
+        label: needsWorkplaceStagesEnum.REQUEST_GENERATED,
         icon: UserCheck,
         color: 'text-purple-600',
         bgColor: 'bg-purple-50',
         borderColor: 'border-purple-200 ',
     },
     interview: {
-        label: 'Industry sourcing',
+        label: needsWorkplaceStagesEnum.REQUEST_GENERATED,
         icon: MessageSquare,
         color: 'text-indigo-600',
         bgColor: 'bg-indigo-50',
         borderColor: 'border-indigo-200',
     },
     industryEligibility: {
-        label: 'Industry Eligibility',
+        label: needsWorkplaceStagesEnum.Industry_Eligibility_Pending,
         icon: CheckCircle,
         color: 'text-teal-600',
         bgColor: 'bg-teal-50',
         borderColor: 'border-teal-200',
     },
     awaitingStudentResponse: {
-        label: 'Waiting For Student',
+        label: needsWorkplaceStagesEnum.WAITING_FOR_STUDENT,
         icon: Clock,
         color: 'text-amber-600',
         bgColor: 'bg-amber-50',
         borderColor: 'border-amber-200',
     },
     awaitingRtoResponse: {
-        label: 'Waiting For RTO',
+        label: needsWorkplaceStagesEnum.WAITING_FOR_RTO,
         icon: Clock,
         color: 'text-orange-600',
         bgColor: 'bg-orange-50',
         borderColor: 'border-orange-200',
     },
     awaitingWorkplaceResponse: {
-        label: 'Waiting For Industry',
+        label: needsWorkplaceStagesEnum.WAITING_FOR_INDUSTRY,
         icon: Clock,
         color: 'text-yellow-600',
         bgColor: 'bg-yellow-50',
         borderColor: 'border-yellow-200 ',
     },
     appointmentBooked: {
-        label: 'Appointment',
+        label: needsWorkplaceStagesEnum.APPOINTMENT,
         icon: Calendar,
         color: 'text-cyan-600',
         bgColor: 'bg-cyan-50 ',
         borderColor: 'border-cyan-200',
     },
     awaitingAgreementSigned: {
-        label: 'Agreement & Eligibility (Pending)',
+        label: needsWorkplaceStagesEnum.AGREEMENT_PENDING,
         icon: FileSignature,
         color: 'text-rose-600',
         bgColor: 'bg-rose-50',
         borderColor: 'border-rose-200',
     },
     AgreementSigned: {
-        label: 'Agreement & Eligibility (Signed)',
+        label: needsWorkplaceStagesEnum.AGREEMENT_SIGNED,
         icon: FileCheck,
         color: 'text-emerald-600',
         bgColor: 'bg-emerald-50 ',
         borderColor: 'border-emerald-200 ',
     },
     placementStarted: {
-        label: 'Placement Started',
+        label: needsWorkplaceStagesEnum.PLACEMENT_STARTED,
         icon: Play,
         color: 'text-green-600',
         bgColor: 'bg-green-50 ',
         borderColor: 'border-green-200 ',
     },
     completed: {
-        label: 'Schedule Completed',
+        label: needsWorkplaceStagesEnum.SCHEDULE_COMPLETED,
         icon: CheckCircle2,
         color: 'text-green-600',
         bgColor: 'bg-green-50',
         borderColor: 'border-success/20',
     },
     cancelled: {
-        label: 'Cancelled',
+        label: needsWorkplaceStagesEnum.CANCELLED,
         icon: XCircle,
         color: 'text-destructive',
         bgColor: 'bg-destructive/10',

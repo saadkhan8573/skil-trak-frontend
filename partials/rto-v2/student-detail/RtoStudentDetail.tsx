@@ -10,7 +10,13 @@ import {
     Tickets,
 } from './components'
 
-import { ConfigTabs, EmptyData, TabConfig, TechnicalError } from '@components'
+import {
+    ConfigTabs,
+    EmptyData,
+    TabConfig,
+    TechnicalError,
+    useAuthorizedUserComponent,
+} from '@components'
 import { Skeleton } from '@components/ui/skeleton'
 import { ProfileSupportTickets } from '@partials/common'
 import { Schedule } from '@partials/common/StudentProfileDetail/components'
@@ -41,13 +47,12 @@ import {
     StudentProfileHeaderSkeleton,
     StudentTopBarSkeleton,
 } from './skeletonLoader'
+import { UserRoles } from '@constants'
 
 export const RtoStudentDetail = () => {
     const router = useRouter()
 
     const dispatch = useDispatch()
-
-    const role = getUserCredentials()?.role
 
     const studentId = Number(router.query?.id)
     const profile = useGetSubAdminStudentDetailQuery(studentId, {
@@ -146,6 +151,9 @@ export const RtoStudentDetail = () => {
             label: 'Support Tickets',
             icon: Ticket,
             component: SupportTicketsComponent,
+            hidden: useAuthorizedUserComponent({
+                excludeRoles: [UserRoles.RTO],
+            }),
         },
     ]
 

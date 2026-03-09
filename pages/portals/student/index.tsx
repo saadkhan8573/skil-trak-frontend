@@ -60,8 +60,6 @@ const StudentDashboard: NextPageWithLayout = () => {
     const {
         data: industryAvailability,
         isLoading: isIndustryAvailabilityLoading,
-        isError: isIndustryAvailabilityError,
-        isSuccess: isIndustryAvailabilitySuccess,
     } = RtoV2Api.StudentsWorkplace.useIndustryAvailabilityForStudent(data?.id, {
         skip: !data?.id,
     })
@@ -79,9 +77,7 @@ const StudentDashboard: NextPageWithLayout = () => {
         CommonApi.Appointments.useAppointmentCompletionStatus({})
     const agreementSignedAndSchedule =
         CommonApi.Appointments.useStudentAgreementAndScheduleStatus()
-    // agreementSignedAndSchedule?.data
-    // const [bookAppointment, resultBookAppointment] =
-    //     RtoV2Api.Students.useBookAppointmentExternally()
+
     useEffect(() => {
         if (
             industryAvailability &&
@@ -103,8 +99,6 @@ const StudentDashboard: NextPageWithLayout = () => {
                                     }
                                     indId={industryAvailability?.industryId}
                                     availability={industryAvailability}
-                                    // resultBookAppointment={resultBookAppointment}
-                                    // bookAppointment={bookAppointment}
                                 />
                             )
                         )}

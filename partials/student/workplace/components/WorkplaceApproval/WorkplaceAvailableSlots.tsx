@@ -85,7 +85,7 @@ export const WorkplaceAvailableSlots = ({
             <Typography variant="label" medium>
                 Trading Hours
             </Typography>
-            <div className="border border-[#D5D5D5] rounded-[10px] px-2.5 py-2 flex flex-col gap-y-1.5 flex-grow">
+            <div className="border border-[#D5D5D5] rounded-[10px] px-2.5 py-2 flex flex-col gap-y-1.5 grow">
                 <div className="bg-[#F7910F26] rounded-[5px] py-[5px] grid grid-cols-7">
                     {['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'].map(
                         (day) => (
@@ -98,7 +98,7 @@ export const WorkplaceAvailableSlots = ({
                         )
                     )}
                 </div>
-                <div className="py-[5px] grid grid-cols-7 gap-x-2 flex-grow">
+                <div className="py-[5px] grid grid-cols-7 gap-x-2 grow">
                     {mergeScheduleData?.map((data, index) =>
                         data?.dayOn ? (
                             <div

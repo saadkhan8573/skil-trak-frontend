@@ -20,14 +20,6 @@ export const SkipWorkplaceModal = ({
             wpId: wpReqApproval?.workplaceRequest?.id,
         })
         onCancel()
-
-        // if (res?.data) {
-        //     notification.warning({
-        //         title: `Workplace Industry Skipped`,
-        //         description: `Workplace Industry Skipped Successfully!`,
-        //     })
-        //     onCancel()
-        // }
     }
 
     return (

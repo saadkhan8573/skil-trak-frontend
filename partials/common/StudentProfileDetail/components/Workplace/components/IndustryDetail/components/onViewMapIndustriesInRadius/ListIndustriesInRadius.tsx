@@ -11,6 +11,7 @@ import {
 export const ListIndustriesInRadius = ({
     workplaceId,
     courseId,
+    studentLocation,
     setSelectedBox,
 }: any) => {
     const counts = SubAdminApi.Workplace.useMapIndustriesInRadiusCount(
@@ -25,6 +26,7 @@ export const ListIndustriesInRadius = ({
                 <SignedUpIndustriesInRadiusTab
                     workplaceId={workplaceId}
                     courseId={courseId}
+                    studentLocation={studentLocation}
                     setSelectedBox={setSelectedBox}
                 />
             ),
@@ -35,6 +37,7 @@ export const ListIndustriesInRadius = ({
                 <FutureIndustriesInRadiusTab
                     workplaceId={workplaceId}
                     courseId={courseId}
+                    studentLocation={studentLocation}
                     setSelectedBox={setSelectedBox}
                 />
             ),

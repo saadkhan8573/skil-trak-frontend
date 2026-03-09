@@ -1,30 +1,25 @@
-import { useState, useMemo } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs'
-import { Button, Badge, Card, Typography, InitialAvatar } from '@components'
+import { Badge, Button, Card, Typography } from '@components'
 import { Select } from '@components/inputs/Select'
 import { TextInput } from '@components/inputs/TextInput'
-import { ScrollArea } from '@components/ui/scroll-area'
 import { GlobalModal } from '@components/Modal/GlobalModal'
+import { ScrollArea } from '@components/ui/scroll-area'
+import { OnViewMapTabs } from '@partials/common/StudentProfileDetail/components/Workplace/components/IndustryDetail'
+import { AnimatePresence, motion } from 'framer-motion'
+import moment from 'moment'
 import {
     Building2,
-    Phone,
-    Mail,
-    MapPin,
-    Users,
-    History,
+    CheckCircle2,
+    ChevronDown,
     ChevronLeft,
     ChevronRight,
-    ChevronDown,
     ChevronUp,
+    History,
     Lock,
-    CheckCircle2,
+    MapPin,
+    Users,
     XCircle,
-    User,
 } from 'lucide-react'
-import { FormProvider, useForm } from 'react-hook-form'
-import { OptionType } from '@types'
-import { OnViewMapTabs } from '@partials/common/StudentProfileDetail/components/Workplace/components/IndustryDetail'
+import { useMemo, useState } from 'react'
 
 interface IndustryItem {
     id: string
@@ -223,16 +218,8 @@ export function FindWorkplaceSection({
 
         if (!currentIndustryForContact || !currentContactAction) return
 
-        const now = new Date()
-        const timestamp = now.toLocaleString('en-AU', {
-            weekday: 'short',
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true,
-        })
+        const now = moment()
+        const timestamp = now.format('ddd, D MMM YYYY, h:mm a')
 
         // Add to contact history
         const newHistoryEntry: ContactHistory = {
@@ -562,19 +549,21 @@ function IndustryList({
                             className="relative"
                         >
                             <div
-                                className={`flex items-center gap-3 p-4 bg-white border-2 rounded-lg transition-all ${isLocked
-                                    ? 'border-slate-200 opacity-40 blur-sm pointer-events-none'
-                                    : isProcessed
-                                        ? 'border-emerald-300 bg-emerald-50/50 shadow-sm'
-                                        : 'border-slate-200 hover:shadow-md hover:border-[#044866]/40 cursor-pointer'
-                                    } group`}
+                                className={`flex items-center gap-3 p-4 bg-white border-2 rounded-lg transition-all ${
+                                    isLocked
+                                        ? 'border-slate-200 opacity-40 blur-sm pointer-events-none'
+                                        : isProcessed
+                                          ? 'border-emerald-300 bg-emerald-50/50 shadow-sm'
+                                          : 'border-slate-200 hover:shadow-md hover:border-[#044866]/40 cursor-pointer'
+                                } group`}
                             >
                                 {/* Avatar */}
                                 <div
-                                    className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 text-white shadow-sm ${isProcessed
-                                        ? 'bg-linear-to-br from-emerald-600 to-emerald-700'
-                                        : 'bg-linear-to-br from-[#044866] to-[#0D5468] group-hover:scale-105'
-                                        } transition-transform`}
+                                    className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 text-white shadow-sm ${
+                                        isProcessed
+                                            ? 'bg-linear-to-br from-emerald-600 to-emerald-700'
+                                            : 'bg-linear-to-br from-[#044866] to-[#0D5468] group-hover:scale-105'
+                                    } transition-transform`}
                                 >
                                     <span className="text-lg font-bold">
                                         {industry.avatar}
@@ -596,10 +585,11 @@ function IndustryList({
                                         )}
                                         {contactCount > 0 && (
                                             <Badge
-                                                text={`${contactCount} ${contactCount === 1
-                                                    ? 'call'
-                                                    : 'calls'
-                                                    }`}
+                                                text={`${contactCount} ${
+                                                    contactCount === 1
+                                                        ? 'call'
+                                                        : 'calls'
+                                                }`}
                                                 variant="warning"
                                                 size="xs"
                                                 Icon={History}

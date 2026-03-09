@@ -253,7 +253,7 @@ export const CaseOfficerAssignedStudent = ({
                     wpCreatedAt={updatedWorkplace?.createdAt}
                 />
             )}
-            <div className="flex items-center justify-between gap-x-2 mt-1">
+            <div className="flex items-center justify-between gap-x-2 mt-1 relative z-100">
                 {secondWorkplace && checkKeysLength(secondWorkplace) ? (
                     <div
                         className="bg-indigo-300 px-2 py-0.5 rounded-md cursor-pointer"

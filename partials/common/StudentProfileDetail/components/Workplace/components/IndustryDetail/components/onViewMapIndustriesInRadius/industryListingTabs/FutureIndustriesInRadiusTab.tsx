@@ -15,6 +15,7 @@ const TAB_KEY = 'future'
 export const FutureIndustriesInRadiusTab = ({
     workplaceId,
     courseId,
+    studentLocation,
     setSelectedBox,
 }: any) => {
     const [page, setPage] = useState(1)
@@ -111,6 +112,7 @@ export const FutureIndustriesInRadiusTab = ({
                         >
                             <FutureIndustryInRadiusListCard
                                 item={item}
+                                studentLocation={studentLocation}
                                 onSelect={(selected: any) => {
                                     router.push(
                                         {

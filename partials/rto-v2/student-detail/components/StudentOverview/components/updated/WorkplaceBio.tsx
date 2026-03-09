@@ -51,10 +51,12 @@ export function WorkplaceBio({ workplace, onAddNew }: WorkplaceBioProps) {
         (i: WorkplaceWorkIndustriesType) => i?.applied
     )
 
-    const industry =
-        workIndustry?.industry ||
-        latestWorkplaceApprovaleRequest?.industry ||
-        workplace?.studentProvidedWorkplaceRequestApproval?.industry
+    const industryData =
+        workIndustry ||
+        latestWorkplaceApprovaleRequest ||
+        workplace?.studentProvidedWorkplaceRequestApproval
+
+    const industry = industryData?.industry
 
     const supervisor: Supervisor =
         latestWorkplaceApprovaleRequest?.industry?.supervisors?.[0]
@@ -106,6 +108,7 @@ export function WorkplaceBio({ workplace, onAddNew }: WorkplaceBioProps) {
                                     latestWorkplaceApprovaleRequest={
                                         latestWorkplaceApprovaleRequest
                                     }
+                                    industryData={industryData}
                                 />
 
                                 {/* Right Column - Distance and Action Cards - Full Height Match */}
@@ -115,6 +118,10 @@ export function WorkplaceBio({ workplace, onAddNew }: WorkplaceBioProps) {
                                         industry={industry}
                                         distance={workIndustry?.distance || 0}
                                         student={studentDetail!}
+                                        industryData={industryData}
+                                        preferableLocation={
+                                            workplace?.preferableLocation
+                                        }
                                     />
 
                                     {/* Current Stage Actions Card - Flex-1 to Fill Remaining Space */}

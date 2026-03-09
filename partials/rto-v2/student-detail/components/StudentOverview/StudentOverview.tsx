@@ -1,4 +1,4 @@
-import { GlobalModal, LoadingAnimation } from '@components'
+import { GlobalModal, LoadingAnimation, TechnicalError } from '@components'
 import { UserRoles } from '@constants'
 import { AppointmentBookingModalV2 } from '@partials/rto-v2/placement-request-detail/modal'
 import { WorkplaceApprovalModal } from '@partials/student/workplace/modal'
@@ -11,6 +11,7 @@ import { useLogbookModals } from '../../hooks/useLogbookModals'
 import { sortedWorkplaceRequests } from '../../utils'
 import { CourseOverview } from './components'
 import { StudentOverViewUpdated } from './StudentOverViewUpdated'
+import { useSubadminProfile } from '@hooks'
 
 export const StudentOverview = () => {
     const [modal, setModal] = useState<ReactNode | null>(null)
@@ -31,14 +32,22 @@ export const StudentOverview = () => {
             }
         )
 
+    const subadmin = useSubadminProfile()
+
     useLogbookModals({
         selectedWorkplace,
         setModal,
         onClose,
+        skip: role === UserRoles.RTO || subadmin?.isAssociatedWithRto,
     })
 
     useEffect(() => {
-        if (wpApprovalRequest?.data && role !== UserRoles.RTO && !modal) {
+        if (
+            wpApprovalRequest?.data &&
+            role !== UserRoles.RTO &&
+            !subadmin?.isAssociatedWithRto &&
+            !modal
+        ) {
             setModal(
                 <WorkplaceApprovalModal
                     onCancel={onClose}
@@ -73,7 +82,8 @@ export const StudentOverview = () => {
         if (
             industryAvailability &&
             !industryAvailability?.existingAppointment &&
-            role !== UserRoles.RTO
+            role !== UserRoles.RTO &&
+            !subadmin?.isAssociatedWithRto
         ) {
             setModal(
                 <GlobalModal>
@@ -117,10 +127,13 @@ export const StudentOverview = () => {
             {modal}
             <div className="space-y-4">
                 <CourseOverview />
-                <StudentOverViewUpdated
-                    sortedWorkplaces={sortedWorkplaces}
-                    isLoading={studentWorkplaces?.isLoading}
-                />
+                {studentWorkplaces?.isError ? <TechnicalError /> : null}
+                {studentWorkplaces?.isSuccess && (
+                    <StudentOverViewUpdated
+                        sortedWorkplaces={sortedWorkplaces}
+                        isLoading={studentWorkplaces?.isLoading}
+                    />
+                )}
             </div>
         </>
     )

@@ -3,6 +3,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { ellipsisText } from '@utils'
 import Link from 'next/link'
 import {
+    IndustryDetail,
     RtoCellInfo,
     StudentWPCellInfo,
     UpdatedWorkplaceRequest,
@@ -41,32 +42,11 @@ export const UpdatedFilteredWorkplaces = ({
             accessorKey: 'industry',
             header: () => <span>Workplace Name</span>,
             cell: (info) => {
-                const appliedIndustry = info?.row?.original?.industries?.find(
-                    (industry: any) => industry?.applied
-                )
                 return (
-                    <>
-                        {appliedIndustry ? (
-                            <>
-                                <Typography variant="small" bold>
-                                    {ellipsisText(
-                                        appliedIndustry?.industry?.user?.name,
-                                        20
-                                    )}
-                                </Typography>
-                                <Link
-                                    href={`/portals/sub-admin/users/industries/${appliedIndustry?.industry?.id}?tab=students`}
-                                    className="text-blue-500 text-xs"
-                                >
-                                    View Details
-                                </Link>
-                            </>
-                        ) : (
-                            <Typography variant="small" semibold>
-                                N/A
-                            </Typography>
-                        )}
-                    </>
+                    <IndustryDetail
+                        workplace={info?.row?.original}
+                        createdAt={info?.row?.original?.createdAt}
+                    />
                 )
             },
         },

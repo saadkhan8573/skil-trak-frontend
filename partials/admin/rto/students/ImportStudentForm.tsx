@@ -4,7 +4,12 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useNotification } from '@hooks'
 import { AdminApi } from '@queries'
 import { Course, ImportStudentFormType } from '@types'
-import { CourseSelectOption, formatOptionLabel, getDate } from '@utils'
+import {
+    CourseSelectOption,
+    formatOptionLabel,
+    getDate,
+    getSuburb,
+} from '@utils'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -31,6 +36,7 @@ export const ImportStudentForm = ({
     const { notification } = useNotification()
     const [mount, setMount] = useState(false)
     const [studentsCount, setStudentsCount] = useState<number>(0)
+    const [isGeocoding, setIsGeocoding] = useState(false)
 
     const router = useRouter()
 
@@ -84,10 +90,28 @@ export const ImportStudentForm = ({
             const sheets = wb.SheetNames
 
             if (sheets.length) {
-                const rows = utils.sheet_to_json(wb.Sheets[sheets[0]])
+                const rows: any = utils.sheet_to_json(wb.Sheets[sheets[0]])
                 setStudentsCount(rows?.length)
                 if (rows?.length <= 50) {
-                    onStudentFound && onStudentFound(rows, fileData)
+                    setIsGeocoding(true)
+                    try {
+                        const updatedRows = await Promise.all(
+                            rows.map(async (row: any) => {
+                                const address = row.address || row.Address
+                                if (address) {
+                                    const suburb = await getSuburb(address)
+                                    return { ...row, suburb }
+                                }
+                                return row
+                            })
+                        )
+                        onStudentFound && onStudentFound(updatedRows, fileData)
+                    } catch (error) {
+                        console.error('Error fetching suburbs:', error)
+                        onStudentFound && onStudentFound(rows, fileData)
+                    } finally {
+                        setIsGeocoding(false)
+                    }
                 } else {
                     notification.error({
                         title: 'Student Length!',
@@ -162,7 +186,7 @@ export const ImportStudentForm = ({
                             name="list"
                             onChange={onFileChange}
                             fileAsObject={false}
-                        // acceptTypes={['.xlsx, .csv']}
+                            // acceptTypes={['.xlsx, .csv']}
                         />
                     </div>
                 </div>
@@ -171,8 +195,12 @@ export const ImportStudentForm = ({
                     <Button
                         text="Import"
                         submit
-                        loading={result.isLoading}
-                        disabled={result.isLoading || studentsCount > 50}
+                        loading={result.isLoading || isGeocoding}
+                        disabled={
+                            result.isLoading ||
+                            studentsCount > 50 ||
+                            isGeocoding
+                        }
                     />
                     {/* {checkEmailResult?.data?.length > 0 ? (
                         <Button text="Import" submit disabled />

@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import {
     User,
     FileText,
@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@components'
 import { StatusCard } from './InfoCard'
+import { needsWorkplaceStagesEnum } from './workplaceStages'
 
 interface WorkflowActionsProps {
     currentStatus: string
@@ -44,7 +45,7 @@ export function WorkflowActions({
 }: WorkflowActionsProps) {
     const renderActions = () => {
         switch (currentStatus) {
-            case 'Student Added':
+            case needsWorkplaceStagesEnum.STUDENT_ADDED:
                 return (
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -59,7 +60,11 @@ export function WorkflowActions({
                         <Button
                             variant="primaryNew"
                             fullWidth
-                            onClick={() => onStatusChange('Request Generated')}
+                            onClick={() =>
+                                onStatusChange(
+                                    needsWorkplaceStagesEnum.REQUEST_GENERATED
+                                )
+                            }
                             Icon={FileText}
                             text="Generate Workplace Request"
                             className="shadow-lg"
@@ -67,7 +72,7 @@ export function WorkflowActions({
                     </motion.div>
                 )
 
-            case 'Request Generated':
+            case needsWorkplaceStagesEnum.REQUEST_GENERATED:
                 return (
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -99,7 +104,7 @@ export function WorkflowActions({
                     </motion.div>
                 )
 
-            case 'Waiting for RTO':
+            case needsWorkplaceStagesEnum.WAITING_FOR_RTO:
                 return (
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -116,7 +121,9 @@ export function WorkflowActions({
                             variant="success"
                             fullWidth
                             onClick={() =>
-                                onStatusChange('Waiting for Student')
+                                onStatusChange(
+                                    needsWorkplaceStagesEnum.WAITING_FOR_STUDENT
+                                )
                             }
                             Icon={ThumbsUp}
                             text="RTO Approve"
@@ -126,7 +133,11 @@ export function WorkflowActions({
                             variant="error"
                             outline
                             fullWidth
-                            onClick={() => onStatusChange('Request Generated')}
+                            onClick={() =>
+                                onStatusChange(
+                                    needsWorkplaceStagesEnum.REQUEST_GENERATED
+                                )
+                            }
                             Icon={ThumbsDown}
                             text="RTO Reject"
                             className="border-red-400 text-red-400 hover:bg-red-50"
@@ -134,7 +145,7 @@ export function WorkflowActions({
                     </motion.div>
                 )
 
-            case 'Waiting for Student':
+            case needsWorkplaceStagesEnum.WAITING_FOR_STUDENT:
                 return (
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -151,7 +162,9 @@ export function WorkflowActions({
                             variant="success"
                             fullWidth
                             onClick={() =>
-                                onStatusChange('Waiting for Industry')
+                                onStatusChange(
+                                    needsWorkplaceStagesEnum.WAITING_FOR_INDUSTRY
+                                )
                             }
                             Icon={ThumbsUp}
                             text="Student Accept"
@@ -169,7 +182,7 @@ export function WorkflowActions({
                     </motion.div>
                 )
 
-            case 'Waiting for Industry':
+            case needsWorkplaceStagesEnum.WAITING_FOR_INDUSTRY:
                 return (
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -194,7 +207,11 @@ export function WorkflowActions({
                             variant="error"
                             outline
                             fullWidth
-                            onClick={() => onStatusChange('Request Generated')}
+                            onClick={() =>
+                                onStatusChange(
+                                    needsWorkplaceStagesEnum.REQUEST_GENERATED
+                                )
+                            }
                             Icon={ThumbsDown}
                             text="Industry Reject"
                             className="border-red-400 text-red-400 hover:bg-red-50"
@@ -202,7 +219,7 @@ export function WorkflowActions({
                     </motion.div>
                 )
 
-            case 'Appointment':
+            case needsWorkplaceStagesEnum.APPOINTMENT:
                 return (
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -218,7 +235,11 @@ export function WorkflowActions({
                         <Button
                             variant="primaryNew"
                             fullWidth
-                            onClick={() => onStatusChange('Agreement Pending')}
+                            onClick={() =>
+                                onStatusChange(
+                                    needsWorkplaceStagesEnum.AGREEMENT_PENDING
+                                )
+                            }
                             Icon={UserCheck}
                             text="Confirm Appointment Successful"
                             className="shadow-lg"
@@ -226,7 +247,7 @@ export function WorkflowActions({
                     </motion.div>
                 )
 
-            case 'Agreement Pending':
+            case needsWorkplaceStagesEnum.AGREEMENT_PENDING:
                 return (
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -250,7 +271,7 @@ export function WorkflowActions({
                     </motion.div>
                 )
 
-            case 'Agreement Signed':
+            case needsWorkplaceStagesEnum.AGREEMENT_SIGNED:
                 return (
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -274,7 +295,7 @@ export function WorkflowActions({
                     </motion.div>
                 )
 
-            case 'Placement Started':
+            case needsWorkplaceStagesEnum.PLACEMENT_STARTED:
                 return (
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -290,7 +311,11 @@ export function WorkflowActions({
                         <Button
                             variant="primaryNew"
                             fullWidth
-                            onClick={() => onStatusChange('Schedule Completed')}
+                            onClick={() =>
+                                onStatusChange(
+                                    needsWorkplaceStagesEnum.SCHEDULE_COMPLETED
+                                )
+                            }
                             Icon={CheckSquare}
                             text="Mark Schedule as Complete"
                             className="shadow-lg"
@@ -298,7 +323,7 @@ export function WorkflowActions({
                     </motion.div>
                 )
 
-            case 'Schedule Completed':
+            case needsWorkplaceStagesEnum.SCHEDULE_COMPLETED:
                 return (
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -314,7 +339,11 @@ export function WorkflowActions({
                         <Button
                             variant="primaryNew"
                             fullWidth
-                            onClick={() => onStatusChange('Completed')}
+                            onClick={() =>
+                                onStatusChange(
+                                    needsWorkplaceStagesEnum.COMPLETED
+                                )
+                            }
                             Icon={Award}
                             text="Mark as Completed"
                             className="shadow-lg"
@@ -322,7 +351,7 @@ export function WorkflowActions({
                     </motion.div>
                 )
 
-            case 'Completed':
+            case needsWorkplaceStagesEnum.COMPLETED:
                 return (
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}

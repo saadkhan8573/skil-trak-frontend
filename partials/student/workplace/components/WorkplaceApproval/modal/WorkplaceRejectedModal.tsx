@@ -13,6 +13,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { FcCancel } from 'react-icons/fc'
 import * as Yup from 'yup'
+import { WorkplaceProgressModal } from '@partials/rto-v2/student-detail/modals'
 
 interface onSubmitType {
     reason: string | null
@@ -30,6 +31,8 @@ export const WorkplaceRejectedModal = ({
         SubAdminApi.Workplace.changeWpReqStatus()
 
     const { notification } = useNotification()
+    const [showProgress, setShowProgress] = useState(false)
+    const [apiError, setApiError] = useState<any>(null)
 
     const validationSchema = Yup.object({
         reason: Yup.string()
@@ -43,20 +46,10 @@ export const WorkplaceRejectedModal = ({
         }),
     })
 
-    useEffect(() => {
-        if (changeStatusResult.isSuccess) {
-            notification.success({
-                title: 'Status Changed',
-                description: 'Rejected successfully',
-            })
-            onCancel(true)
-        }
-    }, [changeStatusResult])
     const reasonOptions = [
         { label: 'Location is too far from my residence', value: 'too-far' },
-        // { label: 'Workplace preference', value: 'workplace-preference' },
         { label: 'Found my own workplace', value: 'find-own-workplace' },
-        // { label: 'Other', value: 'other' },
+        { label: 'Other', value: 'other' },
     ]
 
     const methods = useForm<onSubmitType>({
@@ -69,6 +62,8 @@ export const WorkplaceRejectedModal = ({
 
     const onSubmit = async (values: onSubmitType) => {
         try {
+            setApiError(null)
+            setShowProgress(true)
             await changeStatus({
                 id: wpApprovalId,
                 body: {
@@ -79,35 +74,43 @@ export const WorkplaceRejectedModal = ({
                 },
                 status: WPApprovalStatus.Rejected,
             }).unwrap()
+        } catch (error) {
+            setApiError(error)
+        }
+    }
 
+    const handleProgressComplete = () => {
+        setShowProgress(false)
+        if (changeStatusResult.isSuccess) {
             notification.success({
                 title: 'Status Changed',
                 description: 'Rejected successfully',
             })
-
             onCancel(true)
-        } catch (error) {
-            // Error already handled by ShowErrorNotifications
+        } else if (apiError) {
+            notification.error({
+                title: 'Operation Failed',
+                description:
+                    apiError?.data?.message ||
+                    apiError?.message ||
+                    'Something went wrong',
+            })
+            onCancel(false)
         }
     }
 
     return (
         <>
             <div>
-                <ShowErrorNotifications result={changeStatusResult} />
+                {/* <ShowErrorNotifications result={changeStatusResult} /> */}
+
                 <Modal
                     title={'Reason for Rejection'}
                     subtitle={''}
                     onConfirmClick={methods.handleSubmit(onSubmit)}
                     onCancelClick={onCancel}
-                    loading={changeStatusResult.isLoading}
+                    loading={false}
                     titleIcon={FcCancel}
-
-                // disabled={
-                //     !password.password ||
-                //     !password.confirmPassword ||
-                //     password.password !== password.confirmPassword
-                // }
                 >
                     <FormProvider {...methods}>
                         <form className="w-full">
@@ -133,6 +136,10 @@ export const WorkplaceRejectedModal = ({
                         </form>
                     </FormProvider>
                 </Modal>
+                <WorkplaceProgressModal
+                    open={showProgress}
+                    onComplete={handleProgressComplete}
+                />
             </div>
         </>
     )

@@ -4,8 +4,8 @@ import { AvailableMeetingDates, WorkplaceMapBoxView } from '@partials/student'
 import { WorkplaceAvailableSlots } from '@partials/student/workplace/components/WorkplaceApproval/WorkplaceAvailableSlots'
 import { WorkplaceInfo } from '@partials/student/workplace/components/WorkplaceApproval/WorkplaceInfo'
 import { SubAdminApi } from '@queries'
-import { Course, SubAdmin } from '@types'
-import { getUserCredentials } from '@utils'
+import { Course, RtoApprovalWorkplaceRequest, SubAdmin } from '@types'
+import { getLatLng, getUserCredentials } from '@utils'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { AssignedCoordinator } from './AssignedCoordinator'
@@ -18,7 +18,7 @@ export const WorkplaceApprovalReq = ({
     course,
 }: {
     course: Course
-    wpReqApproval: any
+    wpReqApproval: RtoApprovalWorkplaceRequest
     coordinator: SubAdmin
 }) => {
     const [mount, setMount] = useState<boolean>(false)
@@ -33,11 +33,35 @@ export const WorkplaceApprovalReq = ({
         // refetchOnFocus: true,
     })
 
+    const [preferableLatLng, setPreferableLatLng] = useState<{
+        lat: number
+        lng: number
+    } | null>(null)
+
     useEffect(() => {
         if (!mount) {
             setMount(true)
         }
     }, [])
+
+    useEffect(() => {
+        const fetchLatLng = async () => {
+            const prefLoc = wpReqApproval?.workplaceRequest?.preferableLocation
+            if (prefLoc) {
+                try {
+                    const coords = await getLatLng(prefLoc)
+                    setPreferableLatLng(coords)
+                } catch (error) {
+                    console.error('Error fetching latlng:', error)
+                }
+            }
+        }
+        fetchLatLng()
+    }, [wpReqApproval?.workplaceRequest?.preferableLocation])
+
+    const studentLoc = preferableLatLng
+        ? [String(preferableLatLng?.lat), String(preferableLatLng?.lng)]
+        : wpReqApproval?.student?.location?.split(',') || []
 
     return (
         <div className="h-full">
@@ -76,18 +100,6 @@ export const WorkplaceApprovalReq = ({
                             </Typography>
                             <div className="rounded-xl w-full overflow-hidden mt-2">
                                 {mount ? (
-                                    // <WorkplaceMapView
-                                    //     industryLocation={wpReqApproval?.industry?.location?.split(
-                                    //         ','
-                                    //     )}
-                                    //     studentLocation={wpReqApproval?.student?.location?.split(
-                                    //         ','
-                                    //     )}
-                                    //     workplaceName={
-                                    //         wpReqApproval?.industry?.user?.name
-                                    //     }
-                                    //     showMap
-                                    // />
                                     <WorkplaceMapBoxView
                                         industryLocation={
                                             !wpReqApproval?.location
@@ -98,9 +110,7 @@ export const WorkplaceApprovalReq = ({
                                                       ','
                                                   )
                                         }
-                                        studentLocation={wpReqApproval?.student?.location?.split(
-                                            ','
-                                        )}
+                                        studentLocation={studentLoc}
                                         workplaceName={wpReqApproval?.industry}
                                         showMap
                                     />
@@ -166,7 +176,7 @@ export const WorkplaceApprovalReq = ({
                 <div className="px-4 py-2.5 flex flex-col gap-x-4 gap-y-3">
                     <div className="grid grid-cols-2 gap-x-4 h-full">
                         <div className="flex flex-col">
-                            <div className="flex-grow">
+                            <div className="grow">
                                 <div className="h-full flex flex-col gap-y-3">
                                     <div className="flex flex-col gap-y-1.5">
                                         <AssignedCoordinator
@@ -186,7 +196,7 @@ export const WorkplaceApprovalReq = ({
 
                         {/*  */}
                         <div className="flex flex-col">
-                            <div className="flex-grow ">
+                            <div className="grow">
                                 <div>
                                     <Typography variant="small" medium>
                                         Course
@@ -222,18 +232,6 @@ export const WorkplaceApprovalReq = ({
                             </Typography>
                             <div className="rounded-xl w-full overflow-hidden mt-2">
                                 {mount ? (
-                                    // <WorkplaceMapView
-                                    //     industryLocation={wpReqApproval?.industry?.location?.split(
-                                    //         ','
-                                    //     )}
-                                    //     studentLocation={wpReqApproval?.student?.location?.split(
-                                    //         ','
-                                    //     )}
-                                    //     workplaceName={
-                                    //         wpReqApproval?.industry?.user?.name
-                                    //     }
-                                    //     showMap
-                                    // />
                                     <WorkplaceMapBoxView
                                         industryLocation={
                                             !wpReqApproval?.location
@@ -244,9 +242,7 @@ export const WorkplaceApprovalReq = ({
                                                       ','
                                                   )
                                         }
-                                        studentLocation={wpReqApproval?.student?.location?.split(
-                                            ','
-                                        )}
+                                        studentLocation={studentLoc}
                                         workplaceName={wpReqApproval?.industry}
                                         showMap
                                     />

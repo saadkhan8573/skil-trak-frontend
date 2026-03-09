@@ -1,8 +1,8 @@
-import { BaseResponse } from './base.type'
-import { IWorkplaceIndustries } from '@redux/queryTypes'
+import { InvoiceTypeEnum } from '@partials/admin/invoices'
 import { ReportingType } from '@partials/admin/rto/enum'
 import { IndustryPlacementStatus } from '@partials/common'
-import { InvoiceTypeEnum } from '@partials/admin/invoices'
+import { Branch } from '@partials/common/StudentProfileDetail/components/Workplace/components/IndustryDetail/components/onViewMapIndustriesInRadius/contactHistoryTab/IndustryCommunications'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 import {
     AssessmentToolsType,
     Course,
@@ -13,6 +13,7 @@ import {
     Supervisor,
     WorkplaceType,
 } from '@types'
+import { BaseResponse } from './base.type'
 
 export enum WorkplaceTokenPlan {
     BASIC = 'basic',
@@ -250,12 +251,18 @@ export interface RtoApprovalWorkplaceRequest extends BaseResponse {
     status: 'pending' | 'approved' | 'rejected'
     isRtoApprovalRequired: boolean
     isRejectedByIndustry: boolean
+    hasVerifiedCapacity: boolean
+    isMarkedComplete: boolean
+    isEligible: boolean
     rtoApprovalStatus: 'pending' | 'approved' | 'rejected'
     declaration: string
     isAutomated: boolean
     comment: string
+    industryRejectionDate: string
+    industryRejectionComment: string
     dates: Dates
     approvalDate: string
+    location: Branch
     approvalChannal: string
     student: Student
     industry: Industry
@@ -419,6 +426,7 @@ export interface Industry extends BaseResponse {
     abn: string
     businessName: string
     phoneNumber: string
+    workingHours: any
     bio: string
     dob: Date
     contactPerson: string

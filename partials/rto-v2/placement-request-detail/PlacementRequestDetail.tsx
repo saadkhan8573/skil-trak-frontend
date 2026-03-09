@@ -1,9 +1,10 @@
 import { EmptyData, TechnicalError } from '@components'
 import { WorkplaceHookProvider } from '@partials/common/StudentProfileDetail/components/Workplace/hooks'
 import { RtoV2Api } from '@queries'
-import { setStudentDetail, useAppDispatch } from '@redux'
+import { setSelectedWorkplace, setStudentDetail, useAppDispatch } from '@redux'
 import { Student } from '@types'
 import { motion } from 'framer-motion'
+import moment from 'moment'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import {
@@ -22,6 +23,7 @@ import { FindWorkplaceSection } from './components/FindWorkplaceSection'
 import { PremiumWorkflowTracker } from './components/header'
 import {
     needsWorkplaceStages,
+    needsWorkplaceStagesEnum,
     providedWorkplaceStages,
 } from './components/workplaceStages'
 import { RejectionModal, ScheduleModal } from './modal'
@@ -49,8 +51,9 @@ export const PlacementRequestDetail = () => {
             skip: !wpId,
         })
 
-    const [currentStatus, setCurrentStatus] =
-        useState<string>('Request Generated')
+    const [currentStatus, setCurrentStatus] = useState<string>(
+        needsWorkplaceStagesEnum.REQUEST_GENERATED
+    )
 
     const [showScheduleDialog, setShowScheduleDialog] = useState(false)
     const [showRejectionDialog, setShowRejectionDialog] = useState(false)
@@ -73,7 +76,6 @@ export const PlacementRequestDetail = () => {
     const [selectedRequirements, setSelectedRequirements] = useState<string[]>([
         'acute-care',
     ])
-    const [showStudentDetails, setShowStudentDetails] = useState(false)
     const [verifiedPreferences, setVerifiedPreferences] = useState<number[]>([])
 
     const [isCancelled, setIsCancelled] = useState(false)
@@ -127,6 +129,19 @@ export const PlacementRequestDetail = () => {
             dispatch(setStudentDetail(null as unknown as Student))
         }
     }, [studentDetails])
+
+    useEffect(() => {
+        if (
+            placementRequestsDetails?.isSuccess &&
+            placementRequestsDetails?.data
+        ) {
+            dispatch(setSelectedWorkplace(placementRequestsDetails?.data))
+        }
+
+        return () => {
+            dispatch(setSelectedWorkplace(null))
+        }
+    }, [placementRequestsDetails])
 
     const getCurrentStageIndex = () => {
         const index = progressData?.data?.findIndex(
@@ -265,7 +280,7 @@ export const PlacementRequestDetail = () => {
 
     const handleSubmitRejection = () => {
         setShowRejectionDialog(false)
-        requestStatusChange('Request Generated')
+        requestStatusChange(needsWorkplaceStagesEnum.REQUEST_GENERATED)
     }
 
     const toggleRequirement = (id: string) => {
@@ -297,14 +312,7 @@ export const PlacementRequestDetail = () => {
         const cancelNote: StatusNote = {
             status: 'Request Cancelled',
             note: `Placement request cancelled. Reason: ${reason}`,
-            timestamp: new Date().toLocaleString('en-AU', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true,
-            }),
+            timestamp: moment().format('D MMM YYYY, h:mm a'),
             user: 'Lena',
         }
 
@@ -392,9 +400,9 @@ export const PlacementRequestDetail = () => {
                     />
 
                     {/* Main Content */}
-                    <div className="px-8 py-8">
+                    <div className="p-4">
                         <div className="max-w-475 mx-auto">
-                            <div className="grid grid-cols-2 gap-10">
+                            <div className="grid grid-cols-2 gap-4">
                                 {/* Left Panel - Student Information */}
                                 <motion.div
                                     ref={leftPanelRef}
@@ -508,9 +516,9 @@ export const PlacementRequestDetail = () => {
                                             student={studentDetails?.data}
                                         />
                                     </WorkplaceHookProvider>
-                                    {/* Find Workplace Section - Only shown when Request Generated */}
+                                    {/* Find Workplace Section - Only shown when Industry Sourcing */}
                                     {wpCurrentStatus?.stage ===
-                                        'Request Generated' &&
+                                        needsWorkplaceStagesEnum.REQUEST_GENERATED &&
                                         wpApprovalStatus?.length === 0 && (
                                             <FindWorkplaceSection
                                                 isExpanded={

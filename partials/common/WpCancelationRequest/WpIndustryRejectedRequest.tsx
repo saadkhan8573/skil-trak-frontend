@@ -23,16 +23,8 @@ import {
     IndustryRejectedWpAcceptModal,
     IndustryRejectedWpDeclineModal,
 } from './modals'
-
-const filterKeys = [
-    'name',
-    'email',
-    'phone',
-    'status',
-    'courseId',
-    'studentId',
-    'coordinatorId',
-]
+import { Popover, PopoverContent, PopoverTrigger } from '@components/ui'
+import { MessageSquare } from 'lucide-react'
 
 export const WpIndustryRejectedRequest = () => {
     const router = useRouter()
@@ -131,28 +123,80 @@ export const WpIndustryRejectedRequest = () => {
             ),
         },
         {
-            accessorKey: 'createdAt',
-            header: () => <span>Created At</span>,
+            accessorKey: 'industryRejectionDate',
+            header: () => <span>Rejection Date</span>,
             cell: (info) => {
+                const date = info?.row?.original?.industryRejectionDate
                 return (
                     <>
                         <Typography variant={'small'} color={'text-gray-600'}>
                             <span className="font-semibold whitespace-pre">
-                                {moment(info?.row?.original?.createdAt).format(
-                                    'Do MMM YYYY'
-                                )}
+                                {date
+                                    ? moment(date).format('Do MMM YYYY')
+                                    : 'N/A'}
                             </span>
                         </Typography>
-                        <Typography variant={'small'} color={'text-gray-600'}>
-                            <span className="font-semibold whitespace-pre">
-                                {moment(info?.row?.original?.createdAt).format(
-                                    'hh:mm:ss a'
-                                )}
-                            </span>
-                        </Typography>
+                        {date && (
+                            <Typography
+                                variant={'small'}
+                                color={'text-gray-600'}
+                            >
+                                <span className="font-semibold whitespace-pre">
+                                    {moment(date).format('hh:mm:ss a')}
+                                </span>
+                            </Typography>
+                        )}
                     </>
                 )
             },
+        },
+        {
+            accessorKey: 'industryRejectionComment',
+            header: () => <span>Industry Rejection Comment</span>,
+            cell: (info) => {
+                const comment = info?.row?.original?.industryRejectionComment
+                const isLarge = comment?.length > 20
+                return (
+                    <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-1.5 text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-100 max-w-37.5">
+                            <MessageSquare className="w-3.5 h-3.5 shrink-0" />
+                            <span className="text-[10px] font-semibold leading-tight truncate">
+                                {comment || 'N/A'}
+                            </span>
+                        </div>
+                        {isLarge && (
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <button className="text-[10px] text-[#044866] hover:text-[#0D5468] font-medium underline cursor-pointer text-left w-fit transition-colors">
+                                        View All
+                                    </button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-80">
+                                    <div className="space-y-2">
+                                        <h4 className="font-medium leading-none text-red-600 flex items-center gap-2">
+                                            <MessageSquare className="w-4 h-4" />
+                                            Rejection Reason
+                                        </h4>
+                                        <p className="text-sm text-slate-600 leading-relaxed text-wrap whitespace-normal">
+                                            {comment}
+                                        </p>
+                                    </div>
+                                </PopoverContent>
+                            </Popover>
+                        )}
+                    </div>
+                )
+            },
+            // cell: (info) => (
+            //     <div className="max-w-[200px]">
+            //         <Typography variant={'small'} color={'text-gray-600'}>
+            //             <span className="font-semibold text-wrap">
+            //                 {info?.row?.original?.industryRejectionComment ||
+            //                     'N/A'}
+            //             </span>
+            //         </Typography>
+            //     </div>
+            // ),
         },
         {
             accessorKey: 'actions',

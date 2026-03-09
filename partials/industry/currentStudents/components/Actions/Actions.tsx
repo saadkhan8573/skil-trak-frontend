@@ -9,17 +9,15 @@ import {
 } from '@components'
 
 // query
-import {
-    useWorkplaceActionsMutation,
-    useSignAgreementMutation,
-    useStartPlacementByIndustryMutation,
-} from '@queries'
-import { useState, ReactElement, useEffect } from 'react'
-import { ChangeStatusAction } from './components'
 import { useContextBar, useNotification } from '@hooks'
-import { Feedback, PlacementStartedModal, ReportModal } from '../../modals'
-import { UserStatus } from '@types'
 import { ViewAgreement } from '@partials/common'
+import {
+    useWorkplaceActionsMutation
+} from '@queries'
+import { UserStatus } from '@types'
+import { ReactElement, useEffect, useState } from 'react'
+import { Feedback, PlacementStartedModal, ReportModal } from '../../modals'
+import { ChangeStatusAction } from './components'
 
 export const Actions = ({ workplace, industry, student }: any) => {
     const [modal, setModal] = useState<ReactElement | null>(null)

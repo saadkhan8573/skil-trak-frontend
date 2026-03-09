@@ -1,26 +1,58 @@
 import { Button, Badge } from '@components'
 import { WorkplaceMapBoxView } from '@partials/student'
-import { Industry, Student } from '@types'
+import { Industry, RtoApprovalWorkplaceRequest, Student } from '@types'
 import { MapPin, Navigation, TrendingUp, X } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouteInfo } from '../../hooks'
+import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
+import { getLatLng } from '@utils'
 
 interface WorkplaceMapViewProps {
     industry: Industry
     student: Student
     distance: number
+    industryData: RtoApprovalWorkplaceRequest | WorkplaceWorkIndustriesType
+    preferableLocation?: string
 }
 
 export const WorkplaceMapView = ({
     industry,
     student,
     distance = 0,
+    industryData,
+    preferableLocation,
 }: WorkplaceMapViewProps) => {
     const [showMap, setShowMap] = useState(false)
+    const [preferableLatLng, setPreferableLatLng] = useState<{
+        lat: number
+        lng: number
+    } | null>(null)
 
+    useEffect(() => {
+        const fetchLatLng = async () => {
+            if (preferableLocation) {
+                try {
+                    const coords = await getLatLng(preferableLocation)
+                    setPreferableLatLng(coords)
+                } catch (error) {
+                    console.error('Error fetching latlng:', error)
+                }
+            }
+        }
+        fetchLatLng()
+    }, [preferableLocation])
+
+    const studentLoc = preferableLatLng
+        ? [String(preferableLatLng?.lat), String(preferableLatLng?.lng)]
+        : student?.location?.split(',') || []
+
+    // location
     const { travelInfo } = useRouteInfo({
-        studentLocation: student?.location?.split(',') || [],
-        industryLocation: industry?.location?.split(',') || [],
+        studentLocation: studentLoc,
+        industryLocation:
+            industryData?.location?.location?.split(',') ||
+            industry?.location?.split(',') ||
+            [],
         modes: ['driving'],
     })
 
@@ -74,8 +106,11 @@ export const WorkplaceMapView = ({
                 {showMap && (
                     <div className="mb-3 rounded-lg overflow-hidden border border-blue-100 shadow-inner animate-in fade-in slide-in-from-top-2 duration-300">
                         <WorkplaceMapBoxView
-                            industryLocation={industry?.location?.split(',')}
-                            studentLocation={student?.location?.split(',')}
+                            industryLocation={
+                                industryData?.location?.location?.split(',') ||
+                                industry?.location?.split(',')
+                            }
+                            studentLocation={studentLoc}
                             workplaceName={industry?.user?.name}
                             showMap={
                                 !!industry?.location && !!student?.location

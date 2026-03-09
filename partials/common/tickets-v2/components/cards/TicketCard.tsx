@@ -59,13 +59,6 @@ const teamStyles = {
     qa: 'bg-[#0D5468]/90',
 }
 
-const teamLabels: Record<string, string> = {
-    'student services': 'Student Services',
-    'sourcing team': 'Industry Sourcing',
-    'rto team': 'RTO Team',
-    'qa team': 'QA Team',
-}
-
 const TicketCardComponent = ({
     ticket,
     onClick,

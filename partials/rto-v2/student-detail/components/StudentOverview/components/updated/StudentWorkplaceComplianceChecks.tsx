@@ -107,14 +107,12 @@ export const StudentWorkplaceComplianceChecks = () => {
                 </div>
                 <div>
                     <h3 className="text-sm font-bold text-slate-900">
-                        {isAllApproved
-                            ? 'Compliance Verified'
-                            : 'Compliance Pending'}
+                        Industry Checks
                     </h3>
                     <p className="text-[10px] text-slate-500">
                         {isAllApproved
                             ? 'All requirements met and approved'
-                            : 'Required documents pending approval'}
+                            : 'Industry Checks pending approval'}
                     </p>
                 </div>
                 {isAllApproved && (
@@ -142,27 +140,27 @@ export const StudentWorkplaceComplianceChecks = () => {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: index * 0.05 }}
-                        className="flex items-center gap-2 p-2 bg-white rounded-xl border border-emerald-100 hover:border-emerald-300 hover:shadow-lg transition-all duration-300 cursor-pointer group/doc"
+                        className="flex items-center gap-3 p-4 bg-white rounded-xl border border-emerald-100 hover:border-emerald-300 hover:shadow-lg transition-all duration-300 cursor-pointer group/doc"
                     >
                         <div
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center shadow-sm shrink-0 transition-all duration-300 group-hover/doc:scale-110 ${item.isUploaded ? 'bg-emerald-100' : 'bg-amber-100'}`}
+                            className={`w-12 h-12 rounded-lg flex items-center justify-center shadow-sm shrink-0 transition-all duration-300 group-hover/doc:scale-110 ${item.isUploaded ? 'bg-emerald-100' : 'bg-amber-100'}`}
                         >
                             {item.isUploaded ? (
-                                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                                <CheckCircle2 className="w-6 h-6 text-emerald-600" />
                             ) : (
-                                <AlertCircle className="w-4 h-4 text-amber-600" />
+                                <AlertCircle className="w-6 h-6 text-amber-600" />
                             )}
                         </div>
                         <div className="min-w-0 flex-1">
-                            <p className="text-[11px] font-bold text-slate-900 truncate flex items-center gap-1">
+                            <p className="text-sm font-bold text-slate-900 truncate flex items-center gap-1">
                                 {item.name}
                                 {item.required && (
                                     <span className="text-red-500">*</span>
                                 )}
                             </p>
-                            <div className="flex items-center gap-1.5 mt-0.5">
+                            <div className="flex items-center gap-1.5 mt-1.5">
                                 <span
-                                    className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-full ${
+                                    className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
                                         item.fileStatus === 'approved'
                                             ? 'bg-emerald-50 text-emerald-600'
                                             : item.isUploaded
@@ -176,10 +174,10 @@ export const StudentWorkplaceComplianceChecks = () => {
                                           ? 'Uploaded'
                                           : 'Pending'}
                                 </span>
-                                <span className="text-[9px] text-slate-300">
+                                <span className="text-xs text-slate-300">
                                     •
                                 </span>
-                                <p className="text-[9px] font-medium text-slate-500">
+                                <p className="text-xs font-medium text-slate-500">
                                     {item.isUploaded
                                         ? `${item.filesCount} docs`
                                         : 'No file'}

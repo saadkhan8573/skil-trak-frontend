@@ -12,23 +12,26 @@ interface useLogbookModalsProps {
     selectedWorkplace: any
     setModal: (modal: ReactNode | null) => void
     onClose: () => void
+    skip?: boolean
 }
 
 export const useLogbookModals = ({
     selectedWorkplace,
     setModal,
     onClose,
+    skip,
 }: useLogbookModalsProps) => {
     const workplaceStudentDetail = SubAdminApi.Student.workplaceStudentDetail(
         Number(selectedWorkplace?.id),
         {
-            skip: !selectedWorkplace,
+            skip: !selectedWorkplace || skip,
             refetchOnMountOrArgChange: true,
         }
     )
 
     useEffect(() => {
         if (
+            !skip &&
             selectedWorkplace &&
             selectedWorkplace?.currentStatus ===
                 WorkplaceCurrentStatus.AgreementSigned &&
@@ -46,11 +49,12 @@ export const useLogbookModals = ({
                 />
             )
         }
-    }, [selectedWorkplace, workplaceStudentDetail?.data])
+    }, [selectedWorkplace, workplaceStudentDetail?.data, skip])
 
     // Logbook Not Released Modal
     useEffect(() => {
         if (
+            !skip &&
             selectedWorkplace &&
             selectedWorkplace?.currentStatus ===
                 WorkplaceCurrentStatus.PlacementStarted &&
@@ -68,11 +72,12 @@ export const useLogbookModals = ({
                 />
             )
         }
-    }, [selectedWorkplace, workplaceStudentDetail?.data])
+    }, [selectedWorkplace, workplaceStudentDetail?.data, skip])
 
     // Release Logbook Modal
     useEffect(() => {
         if (
+            !skip &&
             selectedWorkplace &&
             selectedWorkplace?.currentStatus ===
                 WorkplaceCurrentStatus.AgreementSigned &&
@@ -91,5 +96,5 @@ export const useLogbookModals = ({
                 />
             )
         }
-    }, [selectedWorkplace, workplaceStudentDetail?.data])
+    }, [selectedWorkplace, workplaceStudentDetail?.data, skip])
 }

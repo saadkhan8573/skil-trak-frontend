@@ -25,8 +25,9 @@ import {
     usePayAsNewUserMutation,
 } from '@queries'
 import { loadStripe } from '@stripe/stripe-js'
-import { UserStatus } from '@types'
-import { EsignDocumentStatus, getUserCredentials } from '@utils'
+import { StudentStatusEnum, UserStatus } from '@types'
+import { EsignDocumentStatus, getUserCredentials, userStatus } from '@utils'
+import { AccountExpiredModal } from '@partials/student/Profile/modal/AccountExpiredModal'
 import { useRouter } from 'next/router'
 import { ReactElement, ReactNode, useEffect, useState } from 'react'
 import Joyride from 'react-joyride'
@@ -120,7 +121,7 @@ export const StudentLayout = ({ pageTitle, children }: StudentLayoutProps) => {
     }
 
     useEffect(() => {
-        if (profile.isSuccess) {
+        if (profile.isSuccess && userData?.status === userStatus.APPROVED) {
             if (
                 profileCompletion &&
                 userData?.status !== 'pending' &&
@@ -187,11 +188,16 @@ export const StudentLayout = ({ pageTitle, children }: StudentLayoutProps) => {
         industryChecks,
     ])
 
+    const isAccountExpiredOrArchived =
+        userData?.status === UserStatus.Archived ||
+        profile?.data?.studentStatus === StudentStatusEnum.EXPIRED
+
     return (
         <RedirectUnApprovedUsers
             getRoutePath={getRoutePath}
             redirectUrls={redirectUrls}
         >
+            <AccountExpiredModal open={!!isAccountExpiredOrArchived} />
             {modal}
             <UserLayout>
                 <>
@@ -205,20 +211,6 @@ export const StudentLayout = ({ pageTitle, children }: StudentLayoutProps) => {
                             <div className="flex items-center gap-x-3 justify-between mb-2">
                                 <StudentNavbar />
                                 <div className="flex items-center gap-x-5 mt-3">
-                                    <div className="">
-                                        {userData?.status ===
-                                            UserStatus.Archived && (
-                                            <Button
-                                                text="make payment to reactivate"
-                                                // variant="success"
-                                                onClick={onPaymentClick}
-                                            />
-                                        )}
-                                        {/* userData?.status ===
-                                                UserStatus.Pending &&
-                                                (isRtoSelfPayment ||
-                                                    isSelfRegistered) */}
-                                    </div>
                                     {profile?.data?.expiryDate && (
                                         <StudentTimer
                                             studentId={profile.data?.user?.id}

@@ -16,6 +16,8 @@ import {
     User,
     X,
     Zap,
+    Building2,
+    Briefcase,
 } from 'lucide-react'
 import moment from 'moment'
 import { useMemo, useState } from 'react'
@@ -191,9 +193,26 @@ export function WorkplaceStatuses({
                 <div className="flex items-center gap-2">
                     <Badge
                         Icon={Search}
-                        className="bg-linear-to-r from-[#044866] to-[#0D5468] text-white px-2 py-0.5 shadow-lg shadow-[#044866]/30 hover:scale-105 transition-transform cursor-pointer text-xs"
+                        className="bg-linear-to-r from-[#044866] to-[#0D5468] text-white px-2 py-0.5 shadow-lg shadow-[#044866]/30 hover:scale-105 transition-transform text-xs"
                     >
                         {WorkplaceStatusLabels[workplace?.currentStatus]}
+                    </Badge>
+                    <Badge
+                        Icon={
+                            workplace?.studentProvidedWorkplace
+                                ? Briefcase
+                                : Building2
+                        }
+                        className={`text-white px-2 py-0.5 shadow-lg transition-transform text-xs ${
+                            workplace?.studentProvidedWorkplace
+                                ? 'bg-linear-to-r from-violet-500 to-purple-600 shadow-purple-500/30'
+                                : 'bg-linear-to-r from-orange-500 to-amber-600 shadow-orange-500/30'
+                        }`}
+                    >
+                        {workplace?.studentProvidedWorkplace ||
+                        workplace?.byExistingAbn
+                            ? 'Provided Workplace'
+                            : 'Need Workplace'}
                     </Badge>
                     <div className="flex items-center gap-1.5 px-2 py-1 bg-white/80 backdrop-blur-sm rounded-lg border border-slate-200 shadow-sm">
                         <TrendingUp className="w-3 h-3 text-emerald-600" />
@@ -245,6 +264,18 @@ export function WorkplaceStatuses({
 
             {/* Progress Bar with Steps - Ultra Premium */}
             <div className="relative pb-1">
+                {/* Cancelled Overlay */}
+                {workplace?.currentStatus ===
+                    WorkplaceCurrentStatus.Cancelled && (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg backdrop-blur-sm bg-white/60">
+                        <div className="flex items-center gap-2">
+                            <X className="w-5 h-5 text-red-500" />
+                            <span className="text-base font-semibold text-red-500 tracking-wide">
+                                Workplace Cancelled
+                            </span>
+                        </div>
+                    </div>
+                )}
                 {/* Background Line with Glow */}
                 <div className="absolute top-3 left-0 right-0 h-1 bg-slate-200 rounded-full shadow-inner"></div>
 

@@ -116,7 +116,6 @@ export const WorkplaceApprovalActions = ({
                         fullWidth
                         fullHeight
                         onClick={() => {
-                            // onChangeStatusClicked(WPApprovalStatus.Rejected)
                             onRejectedClicked()
                         }}
                         text="Reject"

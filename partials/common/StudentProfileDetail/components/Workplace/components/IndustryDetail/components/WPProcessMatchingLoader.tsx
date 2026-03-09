@@ -95,14 +95,14 @@ export const WPProcessMatchingLoader = () => {
     const currentColor = phases[currentPhase]?.color || 'primary-teal'
 
     return (
-        <div className="py-10 px-5 relative w-full h-full p-4 bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100/50">
+        <div className="py-10 px-5 relative w-full h-full p-4 bg-linear-to-br from-slate-50 via-blue-50/30 to-slate-100/50">
             {/* Enhanced Header Section */}
             <div className="text-center mb-6 animate-fade-in-up">
                 <div className="flex items-center justify-center gap-2 mb-9">
                     {/* Main rotating icon with orbiting elements */}
                     <div className="relative">
                         <div className="relative w-10 h-10 animate-spin-slow">
-                            <div className="w-full h-full rounded-full bg-gradient-to-br from-[#044866] via-[#0D5468] to-[#F7A619] flex items-center justify-center shadow-2xl">
+                            <div className="w-full h-full rounded-full bg-linear-to-br from-[#044866] via-[#0D5468] to-[#F7A619] flex items-center justify-center shadow-2xl">
                                 <div className="animate-spin-reverse-slow">
                                     <Brain className="h-5 w-5 text-white" />
                                 </div>
@@ -137,7 +137,7 @@ export const WPProcessMatchingLoader = () => {
                     </div>
                 </div>
 
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-[#044866] via-[#0D5468] to-[#F7A619] bg-clip-text text-transparent mb-2 animate-gradient-x">
+                <h2 className="text-2xl font-bold bg-linear-to-r from-[#044866] via-[#0D5468] to-[#F7A619] bg-clip-text text-transparent mb-2 animate-gradient-x">
                     Workplace Matching in Progress
                 </h2>
 
@@ -152,7 +152,7 @@ export const WPProcessMatchingLoader = () => {
                 <Card>
                     {/* Enhanced animated background */}
                     <div className="absolute inset-0">
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#04486620] via-[#F7A61920] to-dark-teal/5"></div>
+                        <div className="absolute inset-0 bg-linear-to-br from-[#04486620] via-[#F7A61920] to-dark-teal/5"></div>
 
                         {/* Floating particles */}
                         <div
@@ -206,8 +206,8 @@ export const WPProcessMatchingLoader = () => {
                     </div>
 
                     {/* Dynamic top scan lines */}
-                    <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#F7A619] to-transparent animate-scan-right"></div>
-                    <div className="absolute top-0.5 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary-teal/50 to-transparent animate-scan-left"></div>
+                    <div className="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-transparent via-[#F7A619] to-transparent animate-scan-right"></div>
+                    <div className="absolute top-0.5 left-0 w-full h-0.5 bg-linear-to-r from-transparent via-primary-teal/50 to-transparent animate-scan-left"></div>
 
                     <div className="relative z-10 text-center pb-4 pt-6">
                         {/* Enhanced Current Status with Icon Animation */}
@@ -216,12 +216,12 @@ export const WPProcessMatchingLoader = () => {
                                 {/* Animated current phase icon */}
                                 <div className="relative animate-bounce-subtle">
                                     <div
-                                        className={`p-2 rounded-xl shadow-lg bg-gradient-to-br transform transition-all duration-500 animate-pulse-glow ${
+                                        className={`p-2 rounded-xl shadow-lg bg-linear-to-br transform transition-all duration-500 animate-pulse-glow ${
                                             currentColor === 'orange'
                                                 ? 'from-[#F7A619] to-orange/80'
                                                 : currentColor === 'dark-teal'
-                                                ? 'from-[#0D5468] to-dark-teal/80'
-                                                : 'from-[#044866] to-primary-teal/80'
+                                                  ? 'from-[#0D5468] to-dark-teal/80'
+                                                  : 'from-[#044866] to-primary-teal/80'
                                         }`}
                                     >
                                         <CurrentIcon className="h-4 w-4 text-white animate-spin-slow" />
@@ -233,8 +233,8 @@ export const WPProcessMatchingLoader = () => {
                                             currentColor === 'orange'
                                                 ? 'border-orange/40'
                                                 : currentColor === 'dark-teal'
-                                                ? 'border-dark-teal/40'
-                                                : 'border-primary-teal/40'
+                                                  ? 'border-dark-teal/40'
+                                                  : 'border-primary-teal/40'
                                         }`}
                                     ></div>
                                 </div>
@@ -264,14 +264,14 @@ export const WPProcessMatchingLoader = () => {
 
                             {/* Enhanced Progress Bar */}
                             <div className="relative">
-                                <div className="h-3 bg-gradient-to-r from-gray-200 to-gray-100 rounded-full overflow-hidden shadow-inner">
+                                <div className="h-3 bg-linear-to-r from-gray-200 to-gray-100 rounded-full overflow-hidden shadow-inner">
                                     <div
-                                        className="h-full bg-gradient-to-r from-[#044866] via-[#F7A619] to-[#0D5468] rounded-full relative overflow-hidden animate-gradient-x transition-all duration-500 ease-out"
+                                        className="h-full bg-linear-to-r from-[#044866] via-[#F7A619] to-[#0D5468] rounded-full relative overflow-hidden animate-gradient-x transition-all duration-500 ease-out"
                                         style={{ width: `${progress}%` }}
                                     >
                                         {/* Multiple shine effects */}
-                                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shine"></div>
-                                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shine-reverse"></div>
+                                        <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/40 to-transparent animate-shine"></div>
+                                        <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent animate-shine-reverse"></div>
                                     </div>
                                 </div>
 
@@ -317,7 +317,7 @@ export const WPProcessMatchingLoader = () => {
                                 </div>
 
                                 {/* Enhanced Central Core */}
-                                <div className="absolute inset-8 bg-gradient-to-br from-[#044866] via-[#0D5468] to-[#F7A619] rounded-full flex items-center justify-center shadow-2xl animate-pulse-glow">
+                                <div className="absolute inset-8 bg-linear-to-br from-[#044866] via-[#0D5468] to-[#F7A619] rounded-full flex items-center justify-center shadow-2xl animate-pulse-glow">
                                     <div className="animate-spin-slow">
                                         <Brain className="h-5 w-5 text-white" />
                                     </div>

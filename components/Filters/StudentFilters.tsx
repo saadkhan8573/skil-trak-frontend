@@ -49,6 +49,10 @@ export const workplaceProgressOptions = [
         value: WorkplaceCurrentStatus.AwaitingStudentResponse,
     },
     {
+        label: 'Industry Eligibility',
+        value: WorkplaceCurrentStatus.IndustryEligibility,
+    },
+    {
         label: 'Waiting For Rto',
         value: WorkplaceCurrentStatus.AwaitingRtoResponse,
     },

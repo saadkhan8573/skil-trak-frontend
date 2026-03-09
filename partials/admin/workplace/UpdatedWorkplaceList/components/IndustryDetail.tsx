@@ -1,30 +1,20 @@
-import { Typography } from '@components'
-import { ellipsisText } from '@utils'
-import moment from 'moment'
 import Link from 'next/link'
-import React from 'react'
+import { Typography } from '@components'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
+import { ellipsisText, getWorkplaceIndustry } from '@utils'
 
 export const IndustryDetail = ({
-    industries,
-    createdAt,
-    workplaceApprovaleRequest,
+    workplace,
 }: {
-    createdAt?: string
-    workplaceApprovaleRequest: any
-    industries: any
+    workplace: IWorkplaceIndustries
 }) => {
-    const appliedIndustry = industries.find(
-        (industry: any) => industry?.applied
-    )
+    const { industry, isAutomated } = getWorkplaceIndustry(workplace)
 
     return (
         <>
-            {appliedIndustry ||
-            (workplaceApprovaleRequest &&
-                workplaceApprovaleRequest?.length > 0) ? (
+            {industry ? (
                 <>
-                    {(appliedIndustry?.isAutomated ||
-                        workplaceApprovaleRequest?.[0]?.isAutomated) && (
+                    {isAutomated && (
                         <div className="bg-success rounded px-1 py-0.5 w-fit mb-0.5">
                             <Typography variant="xs" color="text-white">
                                 Auto
@@ -32,23 +22,15 @@ export const IndustryDetail = ({
                         </div>
                     )}
                     <div
-                        title={appliedIndustry?.industry?.user?.name}
+                        title={industry?.user?.name}
                         className="bg-white px-3 py-1.5 rounded-md border border-[#128C7E]"
                     >
                         <Typography variant="small" bold>
-                            {ellipsisText(
-                                appliedIndustry?.industry?.user?.name ||
-                                    workplaceApprovaleRequest?.[0]?.industry
-                                        ?.user?.name,
-                                30
-                            )}
+                            {ellipsisText(industry?.user?.name, 30)}
                         </Typography>
                     </div>
                     <Link
-                        href={`/portals/admin/industry/${
-                            appliedIndustry?.industry?.id ||
-                            workplaceApprovaleRequest?.[0]?.industry?.id
-                        }`}
+                        href={`/portals/admin/industry/${industry?.id}`}
                         className="text-blue-500 text-xs"
                     >
                         View Details

@@ -129,3 +129,42 @@ export const studentsListWorkplace = (workplace: IWorkplaceIndustries[]) => {
 
     return appliedIndustry
 }
+export const getWorkplaceIndustry = (workplace: IWorkplaceIndustries) => {
+    const studentProvided = workplace?.studentProvidedWorkplaceRequestApproval
+    const latestPending = workplace?.latestPendingApproval
+    const appliedIndustry = workplace?.industries?.find((i) => i.applied)
+    const fallbackApproval = workplace?.workplaceApprovaleRequest?.[0]
+    console.log({ workplace })
+    if (studentProvided) {
+        return {
+            industry: studentProvided.industry,
+            isAutomated: false,
+        }
+    }
+
+    if (latestPending) {
+        return {
+            industry: latestPending.industry,
+            isAutomated: latestPending.isAutomated,
+        }
+    }
+
+    if (appliedIndustry) {
+        return {
+            industry: appliedIndustry.industry,
+            isAutomated: appliedIndustry.isAutomated,
+        }
+    }
+
+    if (fallbackApproval) {
+        return {
+            industry: fallbackApproval.industry,
+            isAutomated: fallbackApproval.isAutomated,
+        }
+    }
+
+    return {
+        industry: null,
+        isAutomated: false,
+    }
+}

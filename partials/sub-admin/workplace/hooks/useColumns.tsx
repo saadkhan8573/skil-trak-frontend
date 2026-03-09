@@ -34,51 +34,11 @@ export const useColumns = () => {
             accessorKey: 'industry',
             header: () => <span>Workplace Name</span>,
             cell: (info) => {
-                const appliedIndustry = info?.row?.original?.industries.find(
-                    (industry: any) => industry?.applied
-                )
                 return (
                     <IndustryDetail
                         createdAt={info?.row?.original?.createdAt}
-                        industries={info?.row?.original?.industries}
-                        workplaceApprovaleRequest={
-                            info?.row?.original?.workplaceApprovaleRequest
-                        }
+                        workplace={info?.row?.original}
                     />
-                )
-                return (
-                    <>
-                        {appliedIndustry ? (
-                            <>
-                                {appliedIndustry?.isAutomated && (
-                                    <div className="bg-success rounded px-1 py-0.5 w-fit mb-0.5">
-                                        <Typography
-                                            variant="xs"
-                                            color="text-white"
-                                        >
-                                            Auto
-                                        </Typography>
-                                    </div>
-                                )}
-                                <Typography variant="small" bold>
-                                    {ellipsisText(
-                                        appliedIndustry?.industry?.user?.name,
-                                        20
-                                    )}
-                                </Typography>
-                                <Link
-                                    href={`/portals/sub-admin/users/industries/${appliedIndustry?.industry?.id}?tab=students`}
-                                    className="text-blue-500 text-xs"
-                                >
-                                    View Details
-                                </Link>
-                            </>
-                        ) : (
-                            <Typography variant="small" semibold>
-                                N/A
-                            </Typography>
-                        )}
-                    </>
                 )
             },
         },

@@ -44,7 +44,6 @@ export const EnhancedIndustryDetailsCard = ({
     student: Student
     workplace: IWorkplaceIndustries
 }) => {
-    console.log({ workplace })
     const [showMap, setShowMap] = useState(false)
     const router = useRouter()
     const { onFileClicked, documentsViewModal } = DocumentsView()
@@ -60,7 +59,6 @@ export const EnhancedIndustryDetailsCard = ({
             if (workplace?.preferableLocation) {
                 try {
                     const coords = await getLatLng(workplace.preferableLocation)
-                    console.log({ coords })
                     setPreferableLatLng(coords)
                 } catch (error) {
                     console.error('Error fetching latlng:', error)

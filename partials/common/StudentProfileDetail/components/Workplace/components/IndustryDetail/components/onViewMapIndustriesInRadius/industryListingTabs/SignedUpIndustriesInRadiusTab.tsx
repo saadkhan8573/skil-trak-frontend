@@ -24,6 +24,7 @@ export const SignedUpIndustriesInRadiusTab = ({
     useEffect(() => {
         setPage(Number(router.query.page || 1))
     }, [router.query.page])
+
     const workplaceCourseIndustries =
         SubAdminApi.Workplace.useWorkplaceCourseIndustries(
             {

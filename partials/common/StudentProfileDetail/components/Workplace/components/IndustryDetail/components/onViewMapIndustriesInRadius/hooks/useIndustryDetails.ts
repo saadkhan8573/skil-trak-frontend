@@ -24,7 +24,7 @@ export const useIndustryDetails = ({
     const branchDetails =
         SubAdminApi.Workplace.useSubAdminMapIndustryBranchDetail(
             {
-                id: selectedBox?.id,
+                id: selectedBox?.activeBranch?.id,
                 params: { wpId: workplaceId },
             },
             {

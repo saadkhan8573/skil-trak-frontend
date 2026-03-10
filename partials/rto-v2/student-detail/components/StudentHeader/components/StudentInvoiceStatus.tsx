@@ -37,9 +37,11 @@ export const StudentInvoiceStatus = () => {
                 {data.map((d: any, index: number) => (
                     <div key={index} className="flex gap-x-2 group relative">
                         <Badge
-                            text={paymentStatusData(d?.paymentStatus)?.text + ''}
+                            text={
+                                paymentStatusData(d?.paymentStatus)?.text + ''
+                            }
                             variant={'error'}
-                            className="!py-0.5 !px-2 !text-[10px]"
+                            className="py-0.5! px-2! text-[10px]!"
                         />
 
                         {/* Hover Details */}

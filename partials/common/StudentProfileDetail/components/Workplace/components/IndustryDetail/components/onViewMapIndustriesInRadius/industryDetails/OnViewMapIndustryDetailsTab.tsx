@@ -90,7 +90,7 @@ export const OnViewMapIndustryDetailsTab = ({
                 industryUserId={industryDetails?.data?.user?.id}
                 industryUserName={industryDetails?.data?.user?.name}
                 industryCapacity={industryDetails?.data?.studentCapacity}
-                industryId={selectedBox?.id}
+                industryId={selectedBox?.activeBranch?.id || selectedBox?.id}
                 workplaceId={workplaceId}
                 onCancel={(cancel?: boolean) => {
                     onModalCancelClicked()
@@ -98,6 +98,7 @@ export const OnViewMapIndustryDetailsTab = ({
                         onCancel()
                     }
                 }}
+                type={'branch'}
             />
         )
     }

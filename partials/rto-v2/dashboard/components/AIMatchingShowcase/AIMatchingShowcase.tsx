@@ -43,7 +43,7 @@ export const AIMatchingShowcase = () => {
                                         />
                                     )}
                                     shape="rounded"
-                                // className="relative bg-gradient-to-r from-accent to-accent text-white border-0 shadow-accent hover-lift overflow-hidden group/new text-xs px-1.5 py-0.5"
+                                    // className="relative bg-gradient-to-r from-accent to-accent text-white border-0 shadow-accent hover-lift overflow-hidden group/new text-xs px-1.5 py-0.5"
                                 />
 
                                 {/* Info Icon with Popover */}
@@ -54,11 +54,11 @@ export const AIMatchingShowcase = () => {
                             </p>
                         </div>
                     </div>
-                    <Button
+                    {/* <Button
                         Icon={Zap}
                         text="Start Matching"
                         onClick={() => onStartMatching()}
-                    />
+                    /> */}
                 </div>
 
                 {/* Main Content - Compact Grid */}

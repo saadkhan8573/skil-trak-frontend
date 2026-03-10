@@ -14,10 +14,8 @@ import { IndustryPinnedNotes } from '../components'
 import { WorkplaceErrorMessage } from '../enum'
 import { InsuranceDocMisMatchModal } from './InsuranceDocMisMatchModal'
 import { PlacementOutSIde20KmModal } from './PlacementOutSIde20KmModal'
-import { SelectAppointDateModal } from './SelectAppointDateModal'
 import { TradingHoursNotFoundModal } from './TradingHoursNotFoundModal'
 import { WorkplaceTypeNotFoundModal } from './WorkplaceTypeNotFoundModal'
-import { WorkplaceTypeMisMatchModal } from './WorkplaceTypeMisMatchModal'
 import { WpServiceOfferedMisMatchModal } from './WpServiceOfferedMisMatchModal'
 
 export const ShowIndustryNotesAndTHModal = ({
@@ -214,7 +212,7 @@ export const ShowIndustryNotesAndTHModal = ({
                     <div className="py-2 border-b">
                         <Typography bold>{industryUserName}</Typography>
                     </div>
-                    <div className="grid grid-cols-5 divide-x-2 h-[380px] overflow-auto custom-scrollbar">
+                    <div className="grid grid-cols-5 divide-x-2 h-95 overflow-auto custom-scrollbar">
                         <div className="col-span-3">
                             <IndustryShiftingHours
                                 showTitle={false}

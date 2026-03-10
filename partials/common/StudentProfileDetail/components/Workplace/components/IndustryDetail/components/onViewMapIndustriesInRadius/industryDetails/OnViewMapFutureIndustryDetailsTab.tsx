@@ -8,20 +8,17 @@ import {
     ShowErrorNotifications,
 } from '@components'
 import { UserRoles } from '@constants'
-import { useContextBar, useNotification, useSubadminProfile } from '@hooks'
+import { useContextBar, useNotification } from '@hooks'
 import {
     ComposeListingIndustryMail,
     DoNotDisturbModal,
 } from '@partials/common/FindWorkplaces'
 import { IndustryListingCB } from '@partials/common/MapBox/contextBar'
-import {
-    CommonApi,
-    SubAdminApi,
-    useAddExistingIndustriesMutation,
-} from '@queries'
+import { CommonApi, SubAdminApi } from '@queries'
 import { IndustryStatus } from '@types'
 import { ellipsisText, getUserCredentials } from '@utils'
 import { CheckCircle2, MapPin, Phone, Sparkles } from 'lucide-react'
+import moment from 'moment'
 import { useRouter } from 'next/router'
 import { ReactElement, useCallback, useEffect, useState } from 'react'
 import { FiUserMinus, FiUserPlus } from 'react-icons/fi'
@@ -29,7 +26,6 @@ import { IoDocumentTextOutline, IoEyeOutline } from 'react-icons/io5'
 import { LuPhoneCall } from 'react-icons/lu'
 import { CallStatus } from './CallStatus'
 import { OnViewMapCallAnswer } from './OnViewMapCallAnswer'
-import moment from 'moment'
 export const OnViewMapFutureIndustryDetailsTab = ({
     selectedBox,
     workplace,
@@ -61,12 +57,6 @@ export const OnViewMapFutureIndustryDetailsTab = ({
     }
     const studentId = getStudentId()
 
-    const subadmin = useSubadminProfile()
-
-    // apply for industry
-    const [addExistingIndustry, addExistingIndustryResult] =
-        useAddExistingIndustriesMutation()
-
     const [addToContacted, addToContactedResult] =
         SubAdminApi.Workplace.contactWorkplaceIndustry()
     const [callLog, callLogResult] =
@@ -90,16 +80,6 @@ export const OnViewMapFutureIndustryDetailsTab = ({
             })
         }
     }, [addToContactedResult.isSuccess])
-
-    useEffect(() => {
-        if (addExistingIndustryResult.isSuccess) {
-            notification.success({
-                title: 'Industry Added Successfully',
-                description: 'Industry Added Successfully',
-            })
-            onCancel()
-        }
-    }, [addExistingIndustryResult])
 
     const onDoNotDisturbClicked = (industry: any) => {
         setModal(
@@ -151,16 +131,12 @@ export const OnViewMapFutureIndustryDetailsTab = ({
         setModal(null)
     }, [])
 
-    const rolesIncludes = [UserRoles.ADMIN, UserRoles.RTO]
-
     const toggleCall = () => setShowCall((prev) => !prev)
 
     return (
         <>
             {modal}
-            <ShowErrorNotifications
-                result={addExistingIndustryResult || addToContactedResult}
-            />
+            <ShowErrorNotifications result={addToContactedResult} />
             {industryDetails.isError && (
                 <NoData text="Something is not right...!" />
             )}

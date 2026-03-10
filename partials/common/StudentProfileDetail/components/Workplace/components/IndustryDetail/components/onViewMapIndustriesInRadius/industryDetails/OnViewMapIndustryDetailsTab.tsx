@@ -98,7 +98,11 @@ export const OnViewMapIndustryDetailsTab = ({
                         onCancel()
                     }
                 }}
-                type={'branch'}
+                type={
+                    selectedBox?.activeBranch?.id && selectedBox?.isBranch
+                        ? 'branch'
+                        : ''
+                }
             />
         )
     }

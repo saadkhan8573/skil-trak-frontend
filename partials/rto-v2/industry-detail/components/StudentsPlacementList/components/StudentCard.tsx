@@ -1,4 +1,4 @@
-import { Badge, Button, Portal } from '@components'
+import { AuthorizedUserComponent, Badge, Button, Portal } from '@components'
 import {
     Collapsible,
     CollapsibleContent,
@@ -166,39 +166,47 @@ export function StudentCard({ student }: StudentCardProps) {
                     {/* Workflow Status - Top Right */}
                     <div>
                         <div className="flex items-center gap-2">
-                            {workplace?.currentStatus ===
-                                WorkplaceCurrentStatus.AwaitingWorkplaceResponse && (
-                                <div className="flex gap-2 mb-2">
-                                    <Button
-                                        Icon={Send}
-                                        text={'Re-Email'}
-                                        variant={'info'}
-                                        onClick={() =>
-                                            onClickResendEmail(workplace)
-                                        }
-                                    />
-                                    <ActionButton
-                                        variant="success"
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            if (workplace?.id)
-                                                onApproveClicked(workplace.id)
-                                        }}
-                                    >
-                                        Accept
-                                    </ActionButton>
-                                    <ActionButton
-                                        variant="error"
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            if (workplace?.id)
-                                                onRejectClicked(workplace.id)
-                                        }}
-                                    >
-                                        Reject
-                                    </ActionButton>
-                                </div>
-                            )}
+                            <AuthorizedUserComponent
+                                excludeRoles={[UserRoles.RTO]}
+                            >
+                                {workplace?.currentStatus ===
+                                    WorkplaceCurrentStatus.AwaitingWorkplaceResponse && (
+                                    <div className="flex gap-2 mb-2">
+                                        <Button
+                                            Icon={Send}
+                                            text={'Re-Email'}
+                                            variant={'info'}
+                                            onClick={() =>
+                                                onClickResendEmail(workplace)
+                                            }
+                                        />
+                                        <ActionButton
+                                            variant="success"
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                if (workplace?.id)
+                                                    onApproveClicked(
+                                                        workplace.id
+                                                    )
+                                            }}
+                                        >
+                                            Accept
+                                        </ActionButton>
+                                        <ActionButton
+                                            variant="error"
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                if (workplace?.id)
+                                                    onRejectClicked(
+                                                        workplace.id
+                                                    )
+                                            }}
+                                        >
+                                            Reject
+                                        </ActionButton>
+                                    </div>
+                                )}
+                            </AuthorizedUserComponent>
                             <div className="text-right">
                                 <div className="flex items-center gap-1.5 justify-end mb-0.5">
                                     <span

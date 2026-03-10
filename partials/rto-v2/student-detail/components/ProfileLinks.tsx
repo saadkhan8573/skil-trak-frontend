@@ -104,7 +104,7 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
     const getProfileLinks = () => {
         const links = []
 
-        if (role === UserRoles.ADMIN || role === UserRoles.RTO) {
+        if (role === UserRoles.ADMIN) {
             links.push(
                 {
                     text: 'Edit Password',

@@ -32,15 +32,13 @@ export const IndustryInfoBoxCard = ({
     workplaceMapCard = false,
     onCancel,
 }: any) => {
+    console.log({ selectedBox })
     const workplaceId = workplace?.id
 
     const [modal, setModal] = useState<ReactElement | null>(null)
 
     const contextBar = useContextBar()
 
-    // apply for industry
-    const [addExistingIndustry, addExistingIndustryResult] =
-        useAddExistingIndustriesMutation()
     const sectors = getSectorsDetail(selectedBox?.courses)
 
     const onModalCancelClicked = () => setModal(null)
@@ -50,7 +48,7 @@ export const IndustryInfoBoxCard = ({
             <ShowIndustryNotesAndTHModal
                 industryUserId={item?.data?.user?.id}
                 industryUserName={item?.data?.user?.name}
-                industryId={industryId}
+                industryId={selectedBox?.activeBranch?.id || industryId}
                 workplaceId={workplaceId}
                 onCancel={(cancel?: boolean) => {
                     onModalCancelClicked()
@@ -58,6 +56,7 @@ export const IndustryInfoBoxCard = ({
                         onCancel()
                     }
                 }}
+                type={selectedBox?.activeBranch?.id && 'branch'}
             />
         )
     }
@@ -76,7 +75,6 @@ export const IndustryInfoBoxCard = ({
     return (
         <>
             {modal}
-            <ShowErrorNotifications result={addExistingIndustryResult} />
             <div className="min-w-80">
                 {item.isError && <NoData text="Something is not right...!" />}
                 {item?.isLoading ? (
@@ -285,11 +283,7 @@ export const IndustryInfoBoxCard = ({
                                                 // })
                                             }}
                                         >
-                                            {addExistingIndustryResult.isLoading ? (
-                                                <PulseLoader size={4} />
-                                            ) : (
-                                                'APPLY HERE'
-                                            )}
+                                            APPLY HERE
                                         </span>
                                     </Typography>
                                 )}

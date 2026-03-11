@@ -28,6 +28,7 @@ export const TabsView = ({
                         fieldData={fieldData}
                         outerIndex={index}
                         selectedFillDataField={selectedFillDataField}
+                        allFields={customFieldsData}
                     />
                 ))}
         </>

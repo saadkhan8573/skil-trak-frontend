@@ -218,7 +218,10 @@ export const Contextbar = ({
                                     semibold
                                     color={'text-gray-600'}
                                 >
-                                    Name
+                                    {content?.data?.type ===
+                                    FieldsTypeEnum.Radio
+                                        ? 'Group Name'
+                                        : 'Name'}
                                 </Typography>{' '}
                                 <input
                                     type="text"
@@ -236,14 +239,13 @@ export const Contextbar = ({
                                             : ''
                                     }`}
                                 />
-                                {/* {content?.data?.type !== FieldsTypeEnum.Checkbox &&
-                            content?.data?.type !== FieldsTypeEnum.Radio &&
-                            isExist('name') &&
-                            content?.data?.name && (
-                                <p className="text-xs text-error">
-                                    {content?.data?.name} Name Already exist
-                                </p>
-                            )} */}
+                                {content?.data?.type ===
+                                    FieldsTypeEnum.Radio && (
+                                    <p className="text-[10px] text-gray-400 mt-0.5">
+                                        Radio buttons with the same group name
+                                        allow only one selection.
+                                    </p>
+                                )}
                             </div>
                             <div className="mt-3">
                                 <Typography
@@ -251,7 +253,10 @@ export const Contextbar = ({
                                     semibold
                                     color={'text-gray-600'}
                                 >
-                                    Placeholder
+                                    {content?.data?.type ===
+                                    FieldsTypeEnum.Radio
+                                        ? 'Label (option text)'
+                                        : 'Placeholder'}
                                 </Typography>{' '}
                                 <input
                                     type="text"
@@ -269,6 +274,13 @@ export const Contextbar = ({
                                             : ''
                                     }`}
                                 />
+                                {content?.data?.type ===
+                                    FieldsTypeEnum.Radio && (
+                                    <p className="text-[10px] text-gray-400 mt-0.5">
+                                        This text will appear next to the radio
+                                        button when signing.
+                                    </p>
+                                )}
                             </div>
 
                             {content?.data?.type ===

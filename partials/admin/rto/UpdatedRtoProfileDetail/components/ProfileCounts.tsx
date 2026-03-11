@@ -91,8 +91,8 @@ export const ProfileCounts = ({
                     role === UserRoles.ADMIN || subadmin?.data?.isAdmin
                         ? '/portals/admin/student'
                         : role === UserRoles.SUBADMIN
-                        ? '/portals/sub-admin/students'
-                        : '',
+                          ? '/portals/sub-admin/students'
+                          : '',
                 query: {
                     tab: 'completed',
                     page: 1,
@@ -116,8 +116,8 @@ export const ProfileCounts = ({
                     role === UserRoles.ADMIN || subadmin?.data?.isAdmin
                         ? '/portals/admin/student'
                         : role === UserRoles.SUBADMIN
-                        ? '/portals/sub-admin/students'
-                        : '',
+                          ? '/portals/sub-admin/students'
+                          : '',
                 query: {
                     tab: 'archive',
                     page: 1,
@@ -141,8 +141,8 @@ export const ProfileCounts = ({
                     role === UserRoles.ADMIN || subadmin?.data?.isAdmin
                         ? '/portals/admin/student'
                         : role === UserRoles.SUBADMIN
-                        ? '/portals/sub-admin/students'
-                        : '',
+                          ? '/portals/sub-admin/students'
+                          : '',
                 query: {
                     tab: 'active',
                     page: 1,
@@ -166,8 +166,8 @@ export const ProfileCounts = ({
                     role === UserRoles.ADMIN || subadmin?.data?.isAdmin
                         ? '/portals/admin/student'
                         : role === UserRoles.SUBADMIN
-                        ? '/portals/sub-admin/students'
-                        : '',
+                          ? '/portals/sub-admin/students'
+                          : '',
                 query: {
                     tab: 'pending',
                     page: 1,
@@ -223,8 +223,8 @@ export const ProfileCounts = ({
             />
             <div className="mt-[18px] grid grid-cols-2 gap-x-3.5 gap-y-[18px]">
                 {countsData.map((data, i) => (
-                    <div className="mt-[18px]">
-                        <ProfileCountsCard key={i} data={data} />
+                    <div key={i} className="mt-[18px]">
+                        <ProfileCountsCard data={data} />
                     </div>
                 ))}
             </div>

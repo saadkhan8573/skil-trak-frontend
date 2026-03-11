@@ -69,6 +69,16 @@ export const EsignTabsView = ({
                         s?.responses[0]
                     )
 
+                    const radioGroupHasResponse =
+                        s?.type === FieldsTypeEnum.Radio &&
+                        s?.columnName &&
+                        customFieldsData.some(
+                            (f: any) =>
+                                f?.columnName === s?.columnName &&
+                                f?.type === FieldsTypeEnum.Radio &&
+                                f?.responses?.length > 0
+                        )
+
                     return s?.number === index + 1 ? (
                         <foreignObject
                             x={x}
@@ -77,30 +87,31 @@ export const EsignTabsView = ({
                                 s?.type === FieldsTypeEnum.Checkbox
                                     ? 13
                                     : s?.type === FieldsTypeEnum.Date
-                                        ? String(Number(width) + 10)
-                                        : width
+                                      ? String(Number(width) + 10)
+                                      : width
                             }
                             height={
                                 s?.type === FieldsTypeEnum.Checkbox
                                     ? 13
                                     : s?.type === FieldsTypeEnum.Date
-                                        ? String(Number(height) + 10)
-                                        : height
+                                      ? String(Number(height) + 10)
+                                      : height
                             }
                         >
-                            {true ? (
+                            {!s?.responses?.length && !radioGroupHasResponse ? (
                                 s?.type === FieldsTypeEnum.Text &&
-                                    s?.isCustom ? (
+                                s?.isCustom ? (
                                     <input
                                         onKeyDown={onHandleKeyDown}
                                         type="text"
                                         name=""
                                         id={`tabs-view-${s?.id}`}
                                         value={s?.fieldValue}
-                                        className={`w-full h-full border-2 rounded-md placeholder:text-xs ${selectedFillDataField === s?.id
-                                            ? 'border-primary'
-                                            : 'border-gray-500'
-                                            } text-sm p-1 outline-none`}
+                                        className={`w-full h-full border-2 rounded-md placeholder:text-xs ${
+                                            selectedFillDataField === s?.id
+                                                ? 'border-primary'
+                                                : 'border-gray-500'
+                                        } text-sm p-1 outline-none`}
                                         placeholder={s?.placeholder}
                                         onChange={(e: any) => {
                                             onAddCustomFieldsData({
@@ -110,7 +121,7 @@ export const EsignTabsView = ({
                                         }}
                                     />
                                 ) : s?.type === FieldsTypeEnum.TextArea &&
-                                    s?.isCustom ? (
+                                  s?.isCustom ? (
                                     <textarea
                                         onKeyDown={(e: any) => {
                                             onHandleKeyDown(e)
@@ -118,10 +129,11 @@ export const EsignTabsView = ({
                                         name=""
                                         id={`tabs-view-${s?.id}`}
                                         value={s?.fieldValue}
-                                        className={`w-full h-full border-2 rounded-md placeholder:text-xs ${selectedFillDataField === s?.id
-                                            ? 'border-primary'
-                                            : 'border-gray-500'
-                                            } text-sm p-1 outline-none`}
+                                        className={`w-full h-full border-2 rounded-md placeholder:text-xs ${
+                                            selectedFillDataField === s?.id
+                                                ? 'border-primary'
+                                                : 'border-gray-500'
+                                        } text-sm p-1 outline-none`}
                                         placeholder={s?.placeholder}
                                         onChange={(e: any) => {
                                             onAddCustomFieldsData({
@@ -149,10 +161,11 @@ export const EsignTabsView = ({
                                                 outline: 'none',
                                             }}
                                             value={s?.fieldValue}
-                                            className={`noDefault z-10  ${selectedFillDataField === s?.id
-                                                ? 'border-primary border-2'
-                                                : 'border-gray-500 border'
-                                                } w-full! h-full! rounded-sm text-sm p-1 outline-none`}
+                                            className={`noDefault z-10  ${
+                                                selectedFillDataField === s?.id
+                                                    ? 'border-primary border-2'
+                                                    : 'border-gray-500 border'
+                                            } w-full! h-full! rounded-sm text-sm p-1 outline-none`}
                                             placeholder={s?.label}
                                             onChange={(e: any) => {
                                                 onAddCustomFieldsData({
@@ -169,14 +182,16 @@ export const EsignTabsView = ({
                                         )}
                                     </div>
                                 ) : s?.type === FieldsTypeEnum.Radio ? (
-                                    <div className="flex items-center gap-x-2">
+                                    <div className="flex items-center gap-x-1.5 w-full h-full">
                                         <input
                                             onKeyDown={onHandleKeyDown}
                                             type={FieldsTypeEnum.Radio}
                                             name={s?.columnName}
                                             id={`tabs-view-${s?.id}`}
-                                            value={s?.fieldValue}
-                                            className="border rounded-md border-gray-500 text-sm p-1 outline-none"
+                                            value={
+                                                s?.placeholder || s?.fieldValue
+                                            }
+                                            className="border rounded-full border-gray-500 text-sm outline-none cursor-pointer flex-shrink-0"
                                             placeholder={s?.label}
                                             onChange={(e: any) => {
                                                 onAddCustomFieldsData({
@@ -186,9 +201,16 @@ export const EsignTabsView = ({
                                                 })
                                             }}
                                         />
-                                        {/* <label className="text-xs capitalize">
-                                {s?.label}
-                            </label> */}
+                                        {s?.placeholder &&
+                                            s?.placeholder !==
+                                                'Radio Button' && (
+                                                <label
+                                                    htmlFor={`tabs-view-${s?.id}`}
+                                                    className="text-[8px] truncate cursor-pointer"
+                                                >
+                                                    {s?.placeholder}
+                                                </label>
+                                            )}
                                     </div>
                                 ) : s?.type === FieldsTypeEnum.Dropdown ? (
                                     <select
@@ -223,8 +245,8 @@ export const EsignTabsView = ({
                                 )
                             ) : null}
                             {s?.type === FieldsTypeEnum.Date &&
-                                s?.responses &&
-                                s?.responses?.length > 0 ? (
+                            s?.responses &&
+                            s?.responses?.length > 0 ? (
                                 <AuthorizedUserComponent
                                     roles={[UserRoles.SUBADMIN]}
                                 >

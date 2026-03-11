@@ -137,9 +137,21 @@ export const ViewDocumentAndSign = () => {
     }, [tabs])
 
     const onAddCustomFieldsData = (e: any) => {
-        const updatedData = customFieldsData?.map((data: any) =>
-            data?.id === e?.id ? e : data
-        )
+        const updatedData = customFieldsData?.map((data: any) => {
+            if (data?.id === e?.id) return e
+
+            // If the incoming change is a radio selection, deselect all siblings in the same group
+            if (
+                e?.type === FieldsTypeEnum.Radio &&
+                e?.fieldValue &&
+                data?.type === FieldsTypeEnum.Radio &&
+                data?.columnName === e?.columnName
+            ) {
+                return { ...data, fieldValue: false }
+            }
+
+            return data
+        })
         setCustomFieldsData(updatedData)
     }
 
@@ -196,24 +208,44 @@ export const ViewDocumentAndSign = () => {
             customFields?.map((data: any) =>
                 data?.type === FieldsTypeEnum.Checkbox
                     ? {
-                        ...data,
-                        fieldValue: e.target.checked,
-                    }
+                          ...data,
+                          fieldValue: e.target.checked,
+                      }
                     : data
             )
         )
     }, [])
 
     const onFinishSignModal = () => {
-        const customValues = customFieldsData?.filter(
-            (data: any) => data?.isCustom && !data?.fieldValue && data?.required
+        // For radio buttons, group them by columnName — if at least one in the
+        // group is checked, the whole group is considered satisfied.
+        const satisfiedRadioGroups = new Set(
+            customFieldsData
+                ?.filter(
+                    (data: any) =>
+                        data?.type === FieldsTypeEnum.Radio && data?.fieldValue
+                )
+                ?.map((data: any) => data?.columnName)
         )
+
+        const customValues = customFieldsData?.filter((data: any) => {
+            if (!data?.isCustom || !data?.required || data?.fieldValue)
+                return false
+            // For radio buttons, skip if the group has a selection
+            if (
+                data?.type === FieldsTypeEnum.Radio &&
+                satisfiedRadioGroups.has(data?.columnName)
+            )
+                return false
+            return true
+        })
+
+        console.log({ customValuescustomValuescustomValues: customValues })
 
         if (
             customFieldsData
                 ?.filter((s: any) => s?.type === FieldsTypeEnum.Signature)
                 ?.filter((s: any) => !s?.fieldValue)?.length > 0
-            // ?.filter((s: any) => !s?.responses?.length)?.length > 0
         ) {
             notification.warning({
                 title: 'Sign',
@@ -281,17 +313,26 @@ export const ViewDocumentAndSign = () => {
     const processedItems = customFieldsAndSign
         .map(addNumberWithPosition)
         ?.filter((sign: any) => {
+            // For radio groups: if ANY radio in the same group has a response, hide all of them
+            if (sign?.type === FieldsTypeEnum.Radio) {
+                const groupHasResponse = customFieldsAndSign?.some(
+                    (other: any) =>
+                        other?.type === FieldsTypeEnum.Radio &&
+                        other?.columnName === sign?.columnName &&
+                        other?.responses?.length > 0
+                )
+                if (groupHasResponse) return false
+            }
+
             const latestResponse = sign?.responses?.reduce(
                 (accumulator: any, current: any) => {
-                    // Convert timestamps to Date objects for comparison
                     const accumulatorDate = new Date(accumulator.updatedAt)
                     const currentDate = new Date(current.updatedAt)
-
-                    // Return the item with the later updatedAt timestamp
                     return currentDate > accumulatorDate ? current : accumulator
                 },
                 sign?.responses[0]
             )
+
             if (!sign?.responses?.length) {
                 return sign
             } else if (latestResponse?.reSignRequested) {
@@ -368,9 +409,21 @@ export const ViewDocumentAndSign = () => {
                 const slicedData = sortedPositions?.slice(
                     customFieldsSelectedId
                 )
-                const requiredData = slicedData?.find(
-                    (field: any) => !field?.fieldValue && field?.required
-                )
+                const requiredData = slicedData?.find((field: any) => {
+                    if (!field?.fieldValue && field?.required) {
+                        // Skip radio buttons whose group already has a selection
+                        if (field?.type === FieldsTypeEnum.Radio) {
+                            return !sortedPositions?.some(
+                                (other: any) =>
+                                    other?.type === FieldsTypeEnum.Radio &&
+                                    other?.columnName === field?.columnName &&
+                                    other?.fieldValue
+                            )
+                        }
+                        return true
+                    }
+                    return false
+                })
 
                 if (!requiredData) {
                     setIsLastSelected(true)
@@ -417,7 +470,7 @@ export const ViewDocumentAndSign = () => {
         } else {
             setIsLastSelected(
                 sortedPositions?.[customFieldsSelectedId]?.id ===
-                sortedPositions?.[sortedPositions?.length - 1]?.id
+                    sortedPositions?.[sortedPositions?.length - 1]?.id
             )
             setSelectedFillDataField(sortedPositions?.[0]?.id)
             scrollToPage(-1, documentsTotalPages?.data?.pageCount - 1, 'end')
@@ -458,8 +511,15 @@ export const ViewDocumentAndSign = () => {
     return (
         <div>
             {modal}
-            <div className='flex justify-between items-center py-2'>
-                <Button className='lg:ml-20' Icon={MoveLeft} variant='primaryNew' text='Go Back' outline onClick={() => router.back()} />
+            <div className="flex justify-between items-center py-2">
+                <Button
+                    className="lg:ml-20"
+                    Icon={MoveLeft}
+                    variant="primaryNew"
+                    text="Go Back"
+                    outline
+                    onClick={() => router.back()}
+                />
                 <DownloadEsignDocument />
             </div>
             {isSignature && isDocumentLoaded?.isSuccess ? (
@@ -535,10 +595,11 @@ export const ViewDocumentAndSign = () => {
                         </div>
 
                         <div
-                            className={`${showSignersField
-                                ? 'lg:col-span-6'
-                                : 'lg:col-span-6'
-                                } max-w- lg:pl-20 mx-auto flex flex-col gap-y-3 relative w-full`}
+                            className={`${
+                                showSignersField
+                                    ? 'lg:col-span-6'
+                                    : 'lg:col-span-6'
+                            } max-w- lg:pl-20 mx-auto flex flex-col gap-y-3 relative w-full`}
                         >
                             {[
                                 ...Array(
@@ -549,7 +610,7 @@ export const ViewDocumentAndSign = () => {
                                     ref={(el: any) =>
                                         (scrollTargetRef.current[i] = el)
                                     }
-                                    onClick={() => { }}
+                                    onClick={() => {}}
                                     className="relative"
                                 >
                                     <Card key={i} noPadding>
@@ -630,9 +691,29 @@ export const ViewDocumentAndSign = () => {
                                                 setModal(null)
                                             }}
                                             remainingFields={sortedPositions?.filter(
-                                                (field: any) =>
-                                                    !field?.fieldValue &&
-                                                    field?.required
+                                                (field: any) => {
+                                                    if (
+                                                        !field?.fieldValue &&
+                                                        field?.required
+                                                    ) {
+                                                        // For radio groups, skip if any sibling in the group is selected
+                                                        if (
+                                                            field?.type ===
+                                                            FieldsTypeEnum.Radio
+                                                        ) {
+                                                            return !sortedPositions?.some(
+                                                                (other: any) =>
+                                                                    other?.type ===
+                                                                        FieldsTypeEnum.Radio &&
+                                                                    other?.columnName ===
+                                                                        field?.columnName &&
+                                                                    other?.fieldValue
+                                                            )
+                                                        }
+                                                        return true
+                                                    }
+                                                    return false
+                                                }
                                             )}
                                             asModal
                                         />

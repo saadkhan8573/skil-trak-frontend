@@ -6,6 +6,7 @@ interface RubberBandProps {
     onResize: Function
     onResized: Function
     checkBox: boolean
+    radio?: boolean
 }
 
 export const RubberBand = ({
@@ -13,7 +14,9 @@ export const RubberBand = ({
     onResize,
     onResized,
     checkBox,
+    radio,
 }: RubberBandProps) => {
+    const isFixed = checkBox || radio
     const { width: w, height: h } = item.size
 
     const circleStyle = {
@@ -71,15 +74,15 @@ export const RubberBand = ({
     return (
         <g>
             <rect
-                width={checkBox ? '12' : w}
-                height={checkBox ? '12' : h}
+                width={isFixed ? '13' : w}
+                height={isFixed ? '13' : h}
                 style={{ stroke: 'blue', fillOpacity: '0' }}
             />
             {/* Bottom Right */}
 
             <circle
-                cx={checkBox ? '12' : w}
-                cy={checkBox ? '12' : h}
+                cx={isFixed ? '13' : w}
+                cy={isFixed ? '13' : h}
                 r={circleRadius}
                 style={circleStyle}
                 cursor={'nwse-resize'}

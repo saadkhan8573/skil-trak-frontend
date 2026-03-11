@@ -43,7 +43,7 @@ export const Schedule = ({
         skip: !studentId || !isEntered,
         refetchOnMountOrArgChange: 300,
     })
-
+    console.log('selectedWorkplace', selectedWorkplace)
     const studentWorkplace = SubAdminApi.Student.getWorkplaceForSchedule(
         studentId,
         {
@@ -242,13 +242,16 @@ export const Schedule = ({
                                                         End Date
                                                     </Typography>
                                                     <Typography variant="label">
-                                                        {moment(
-                                                            schedules?.data
-                                                                ?.schedule
-                                                                ?.endDate
-                                                        ).format(
-                                                            'MMMM DD, YYYY'
-                                                        )}
+                                                        {schedules?.data
+                                                            ?.schedule?.endDate
+                                                            ? moment(
+                                                                  schedules.data
+                                                                      .schedule
+                                                                      .endDate
+                                                              ).format(
+                                                                  'MMMM DD, YYYY'
+                                                              )
+                                                            : 'NA'}
                                                     </Typography>
                                                 </div>
                                                 <div>
@@ -266,23 +269,54 @@ export const Schedule = ({
                                                 </div>
                                             </div>
 
-                                            <ScheduleTimetable
-                                                scheduleCourse={
-                                                    schedules?.data?.schedule
-                                                        ?.course
-                                                }
-                                                scheduleId={
-                                                    schedules?.data?.schedule
-                                                        ?.id
-                                                }
-                                                startDate={
-                                                    new Date(
+                                            {selectedWorkplace?.currentStatus ===
+                                            'awaitingAgreementSigned' ? (
+                                                <>
+                                                    <Typography variant="small">
+                                                        Start Date
+                                                    </Typography>
+                                                    <div className="blur pointer-events-none select-none">
+                                                        <ScheduleTimetable
+                                                            scheduleCourse={
+                                                                schedules?.data
+                                                                    ?.schedule
+                                                                    ?.course
+                                                            }
+                                                            scheduleId={
+                                                                schedules?.data
+                                                                    ?.schedule
+                                                                    ?.id
+                                                            }
+                                                            startDate={
+                                                                new Date(
+                                                                    schedules
+                                                                        ?.data
+                                                                        ?.schedule
+                                                                        ?.startDate
+                                                                )
+                                                            }
+                                                        />
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <ScheduleTimetable
+                                                    scheduleCourse={
                                                         schedules?.data
-                                                            ?.schedule
-                                                            ?.startDate
-                                                    )
-                                                }
-                                            />
+                                                            ?.schedule?.course
+                                                    }
+                                                    scheduleId={
+                                                        schedules?.data
+                                                            ?.schedule?.id
+                                                    }
+                                                    startDate={
+                                                        new Date(
+                                                            schedules?.data
+                                                                ?.schedule
+                                                                ?.startDate
+                                                        )
+                                                    }
+                                                />
+                                            )}
                                         </>
                                     ) : (
                                         <NoData text="No schedule found" />

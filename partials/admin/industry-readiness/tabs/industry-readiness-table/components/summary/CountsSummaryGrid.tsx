@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { ReadinessCountsCard } from './ReadinessCountsCard'
 import { AdminApi } from '@queries'
 
@@ -11,9 +11,23 @@ interface SummaryGridProps {
     data: SummaryData[]
 }
 
-export const IndustryReadinessSummary = () => {
+export const IndustryReadinessSummary = ({ filters }: any) => {
+    const searchString = useMemo(() => {
+        return Object.entries(filters || {})
+            .filter(
+                ([_, value]) =>
+                    value !== 'all' &&
+                    value !== '' &&
+                    value !== null &&
+                    value !== undefined
+            )
+            .map(([key, value]) => `${key}:${value}`)
+            .join(',')
+    }, [filters])
     const { data, isLoading, isError } =
-        AdminApi.IndustryReadiness.useForecastCounts()
+        AdminApi.IndustryReadiness.useForecastCounts({
+            search: searchString || undefined,
+        })
     const getCount = (status: string) => {
         return (
             (data?.length > 0 &&

@@ -1,3 +1,4 @@
+import { $createParagraphNode } from 'lexical'
 import { allCommunicationEndpoints } from './allCommunication'
 import { appointmentsEndpoints } from './appointments'
 import { changeProfileImageEndpoints } from './changeProfileImage'
@@ -474,6 +475,7 @@ const {
     useApprovePendingAppointmentMutation,
     useGetAppointmentsAvailableSlotsQuery,
     useUpdateAppointmentSuccessfullStatusMutation,
+    useAddScheduleOnAppointmentStatusMutation,
     useGetRescheduleAppointmentsAvailableSlotsQuery,
     useAllCoordinatorsQuery,
     useCoordinatorAvailablityQuery,
@@ -868,6 +870,8 @@ export const CommonApi = {
         getRescheduleAppointmentsAvailableSlots:
             useGetRescheduleAppointmentsAvailableSlotsQuery,
         updateSuccessFullStatus: useUpdateAppointmentSuccessfullStatusMutation,
+        useAddScheduleOnAppointmentStatus:
+            useAddScheduleOnAppointmentStatusMutation,
         appointmentDetail: useAppointmentDetailQuery,
         cancellAppointment: useCancellAppointmentMutation,
         addNoteOnAppointment: useAddNoteOnAppointmentMutation,

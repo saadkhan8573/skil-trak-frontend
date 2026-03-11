@@ -137,6 +137,15 @@ export const appointmentsEndpoints = (
         }),
         invalidatesTags: ['Appointments', 'SubAdminStudents'],
     }),
+    addScheduleOnAppointmentStatus: builder.mutation<any, any>({
+        query: ({ body, params }) => ({
+            url: `students/workplace-requests/appointment/schedule-add`,
+            method: 'POST',
+            body,
+            params,
+        }),
+        invalidatesTags: ['Appointments'],
+    }),
     getAppointmentCompletionStatus: builder.query<any, any>({
         query: (params) => ({
             url: `appointments/get/v2/for-student`,

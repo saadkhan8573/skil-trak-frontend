@@ -59,7 +59,7 @@ export const IndustryReadinessTableContainer = () => {
         }
         setSortConfig({ key, direction })
     }
-     // const sortedData = useMemo(() => {
+    // const sortedData = useMemo(() => {
     //     let sortableItems = [...data?.data]
     //     if (sortConfig !== null) {
     //         sortableItems.sort((a, b) => {
@@ -78,7 +78,7 @@ export const IndustryReadinessTableContainer = () => {
     // }, [data?.data, sortConfig])
     return (
         <div>
-            <IndustryReadinessSummary />
+            <IndustryReadinessSummary filters={filters} />
             <ReadinessFilterBar filters={filters} setFilters={setFilters} />
             {isError && <NoData isError text="Something went wrong" />}
             {isLoading ? (

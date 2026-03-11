@@ -52,7 +52,7 @@ export const FutureIndustriesInRadiusTab = ({
     }
 
     return (
-        <div className="h-[25rem] overflow-auto remove-scrollbar space-y-4">
+        <div className="h-100 overflow-auto remove-scrollbar space-y-4">
             {workplaceCourseIndustries?.isError ? (
                 <NoData isError text="there is some technical issue!" />
             ) : null}

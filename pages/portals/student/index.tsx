@@ -46,6 +46,7 @@ import { getSectors, getUserCredentials } from '@utils'
 import Link from 'next/link'
 import { useMediaQuery } from 'react-responsive'
 import { AppointmentBookingModalV2 } from '@partials/rto-v2/placement-request-detail/modal'
+import { SelectAppointmentStatusVII } from '@partials/common/ProfileAppointments/select-appointment-status-v2/SelectAppointmentStatusVII'
 
 const StudentDashboard: NextPageWithLayout = () => {
     const [modal, setModal] = useState<any | null>(null)
@@ -112,7 +113,7 @@ const StudentDashboard: NextPageWithLayout = () => {
     }
     const uponCompletionAppointment = () => {
         setModal(
-            <UponAppointmentCompletionModal
+            <SelectAppointmentStatusVII
                 appointment={appointmentCompletion?.data}
                 onClose={onClose}
             />

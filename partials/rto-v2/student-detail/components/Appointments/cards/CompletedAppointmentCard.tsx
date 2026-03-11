@@ -1,6 +1,7 @@
 import { Badge, ShowErrorNotifications } from '@components'
 import { useNotification } from '@hooks'
 import { SelectAppointmentStatus } from '@partials/common/ProfileAppointments/components'
+import { SelectAppointmentStatusVII } from '@partials/common/ProfileAppointments/select-appointment-status-v2/SelectAppointmentStatusVII'
 import { CommonApi } from '@queries'
 import { Appointment } from '@types'
 import {
@@ -12,13 +13,14 @@ import {
     XCircle,
 } from 'lucide-react'
 import moment from 'moment'
-import React from 'react'
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
 
 export const CompletedAppointmentCard = ({
     appointment,
 }: {
     appointment: Appointment
 }) => {
+    const [modal, setModal] = useState<ReactElement | null>(null)
     const { notification } = useNotification()
     const [updateStatus, updateStatusResult] =
         CommonApi.Appointments.updateSuccessFullStatus()
@@ -43,9 +45,23 @@ export const CompletedAppointmentCard = ({
             })
         }
     }
+    const onClose = () => {
+        setModal(null)
+    }
+    useEffect(() => {
+        if (appointment.isSuccessfull === null) {
+            setModal(
+                <SelectAppointmentStatusVII
+                    onClose={onClose}
+                    appointment={appointment}
+                />
+            )
+        }
+    }, [appointment])
 
     return (
         <>
+            {modal && modal}
             <ShowErrorNotifications result={updateStatusResult} />
             <div className="`bg-linear-to-br` from-slate-50 to-slate-100/50 rounded-xl border border-slate-200/60 p-3">
                 <div className="flex items-start justify-between mb-3">
@@ -122,12 +138,7 @@ export const CompletedAppointmentCard = ({
                                 Icon={XCircle}
                                 size="xs"
                             />
-                        ) : (
-                            <SelectAppointmentStatus
-                                onSubmit={onSubmit}
-                                result={updateStatusResult}
-                            />
-                        )}
+                        ) : null}
                     </div>
                 </div>
             </div>

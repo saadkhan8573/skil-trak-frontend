@@ -240,7 +240,7 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
             visible: subadmin?.data?.allowIndustryListing,
         },
         {
-            text: 'Industry Readiness',
+            text: 'Industry Forcast',
             path: getRoutePath('/industry-readiness?tab=forecast'),
             Icon: MdFindInPage,
             visible: subadmin?.data?.allowIndustryListing,

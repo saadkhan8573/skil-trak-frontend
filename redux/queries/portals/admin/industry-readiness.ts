@@ -18,8 +18,11 @@ export const industryReadinessEndpoints = (
         providesTags: ['StudentForecast'],
     }),
     //forecast/status/counts
-    getForecastCounts: builder.query<any, void>({
-        query: () => `/forecast/status/counts`,
+    getForecastCounts: builder.query<any, any>({
+        query: (params) => ({
+            url: `/forecast/status/counts`,
+            params,
+        }),
         providesTags: ['StudentForecast'],
     }),
     addDocuments: builder.mutation<any, FormData>({

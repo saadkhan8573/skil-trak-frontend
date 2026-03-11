@@ -37,8 +37,8 @@ export const AddAppointmentNote = ({ onCancel, id }: any) => {
     return (
         <>
             <ShowErrorNotifications result={addAppointmentNoteResult} />
-            <div className="bg-[#00000050] w-full h-screen flex items-center justify-center fixed top-0 left-0 z-[1001]">
-                <div className="relative bg-white rounded-2xl flex flex-col items-center gap-y-6 shadow-xl min-w-[450px] px-8 py-4">
+            <div className="bg-[#00000050] w-full h-screen flex items-center justify-center fixed top-0 left-0 z-1001">
+                <div className="relative bg-white rounded-2xl flex flex-col items-center gap-y-6 shadow-xl min-w-112.5 px-8 py-4">
                     <FaTimes
                         onClick={onCancel}
                         className="absolute top-3 right-3 text-lg text-gray-500 cursor-pointer"

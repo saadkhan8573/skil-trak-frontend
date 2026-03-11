@@ -115,4 +115,23 @@ export const placementRequestsEndPoints = (
         }),
         providesTags: ['RTO'],
     }),
+
+    removeRtoStudentFromBlackList: builder.mutation<
+        any,
+        { id: number; indId: number }
+    >({
+        query: ({ id, indId }) => ({
+            url: `${PREFIX}${id}/industry/${indId}/remove/from/black-list`,
+            method: 'DELETE',
+        }),
+        invalidatesTags: ['Workplaces'],
+    }),
+
+    removeIndustryFromBlackList: builder.mutation<any, number>({
+        query: (id) => ({
+            url: `${PREFIX}data/${id}/remove`,
+            method: 'DELETE',
+        }),
+        invalidatesTags: ['Workplaces'],
+    }),
 })

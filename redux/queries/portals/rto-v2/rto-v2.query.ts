@@ -53,6 +53,8 @@ export const {
     useAddManualNoteMutation,
     useConfirmHighlightedTaskMutation,
     useGetRtoCourseWpTypesQuery,
+    useRemoveRtoStudentFromBlackListMutation,
+    useRemoveIndustryFromBlackListMutation,
 
     // Courses
     useRtoCoursesQuery,
@@ -189,6 +191,8 @@ export const RtoV2Api = {
             useGetStudentPlacementStatusCheckNotesQuery,
         useAddManualNote: useAddManualNoteMutation,
         useConfirmHighlightedTask: useConfirmHighlightedTaskMutation,
+        removeRtoStudentFromBlackList: useRemoveRtoStudentFromBlackListMutation,
+        removeIndustryFromBlackList: useRemoveIndustryFromBlackListMutation,
     },
     Courses: {
         rtoCourses: useRtoCoursesQuery,

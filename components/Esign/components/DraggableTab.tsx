@@ -87,11 +87,39 @@ export const DraggableTab = ({
                         }
                         stroke="black"
                         strokeWidth="1"
-                        // onClick={handleCheckboxChange}
                     />
                     <text x="2" y="9" className="text-[9px]" fill={'white'}>
                         ✔
                     </text>
+                </>
+            ) : item?.data?.type === FieldsTypeEnum.Radio ? (
+                <>
+                    <circle
+                        cx="6"
+                        cy="6"
+                        r="6"
+                        fill={
+                            !item?.data?.role && isTabError
+                                ? 'red'
+                                : item.data?.color
+                        }
+                        stroke="black"
+                        strokeWidth="1"
+                    />
+                    <circle cx="6" cy="6" r="3" fill="white" />
+                    {item.data?.placeholder &&
+                        item.data?.placeholder !== 'Radio Button' && (
+                            <text
+                                x="15"
+                                y="10"
+                                style={{
+                                    fontSize: '8px',
+                                    fill: item.data?.color,
+                                }}
+                            >
+                                {item.data?.placeholder}
+                            </text>
+                        )}
                 </>
             ) : (
                 <>
@@ -203,6 +231,7 @@ export const DraggableTab = ({
                     onResize={onResize}
                     onResized={onResized}
                     checkBox={item?.data?.type === FieldsTypeEnum.Checkbox}
+                    radio={item?.data?.type === FieldsTypeEnum.Radio}
                 />
             )}
         </g>

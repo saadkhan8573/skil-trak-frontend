@@ -840,7 +840,8 @@ export const SubAdminApi = {
         useCancelRequestWP: useCancelRequestWorkplaceMutation,
         blockedStudentsWpList: useBlockedStudentsWorkplacesListQuery,
         updateWpAppliedIndustry: useUpdateWpAppliedIndustryMutation,
-        updateWorkplaceIndustryStatusFromEmail: useUpdateWorkplaceIndustryStatusFromEmailMutation,
+        updateWorkplaceIndustryStatusFromEmail:
+            useUpdateWorkplaceIndustryStatusFromEmailMutation,
         subadminCancelationRequest: useSubadminWpCancellationRequestsListQuery,
         useSendMeetingNotification: useSendMeetingNotificationMutation,
         contactWorkplaceIndustry: useContactWorkplaceIndustryMutation,

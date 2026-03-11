@@ -138,9 +138,21 @@ export const FillEsignFields = ({
     }, [tabs])
 
     const onAddCustomFieldsData = (e: any) => {
-        const updatedData = customFieldsData?.map((data: any) =>
-            data?.id === e?.id ? e : data
-        )
+        const updatedData = customFieldsData?.map((data: any) => {
+            if (data?.id === e?.id) return e
+
+            // If the incoming change is a radio selection, deselect all siblings in the same group
+            if (
+                e?.type === FieldsTypeEnum.Radio &&
+                e?.fieldValue &&
+                data?.type === FieldsTypeEnum.Radio &&
+                data?.columnName === e?.columnName
+            ) {
+                return { ...data, fieldValue: false }
+            }
+
+            return data
+        })
         setCustomFieldsData(updatedData)
     }
 
@@ -200,9 +212,27 @@ export const FillEsignFields = ({
     }, [])
 
     const onFinishSignModal = () => {
-        const customValues = customFieldsData?.filter(
-            (data: any) => data?.isCustom && !data?.fieldValue && data?.required
+        // For radio buttons, group by columnName — if at least one in the group
+        // is checked, the whole group is considered satisfied.
+        const satisfiedRadioGroups = new Set(
+            customFieldsData
+                ?.filter(
+                    (data: any) =>
+                        data?.type === FieldsTypeEnum.Radio && data?.fieldValue
+                )
+                ?.map((data: any) => data?.columnName)
         )
+
+        const customValues = customFieldsData?.filter((data: any) => {
+            if (!data?.isCustom || !data?.required || data?.fieldValue)
+                return false
+            if (
+                data?.type === FieldsTypeEnum.Radio &&
+                satisfiedRadioGroups.has(data?.columnName)
+            )
+                return false
+            return true
+        })
 
         if (customValues && customValues?.length > 0) {
             notification.warning({
@@ -270,7 +300,20 @@ export const FillEsignFields = ({
 
     const processedItems = customFieldsAndSign
         .map(addNumberWithPosition)
-        ?.filter((sign: any) => !sign?.responses?.length)
+        ?.filter((sign: any) => {
+            // For radio groups: if ANY radio in the same group has a response, hide all of them
+            if (sign?.type === FieldsTypeEnum.Radio) {
+                const groupHasResponse = customFieldsAndSign?.some(
+                    (other: any) =>
+                        other?.type === FieldsTypeEnum.Radio &&
+                        other?.columnName === sign?.columnName &&
+                        other?.responses?.length > 0
+                )
+                if (groupHasResponse) return false
+            }
+
+            return !sign?.responses?.length
+        })
 
     const sortedPositions = processedItems.sort((a: any, b: any) => {
         // First, prioritize 'signature' type
@@ -428,9 +471,21 @@ export const FillEsignFields = ({
         setCustomFieldsSelectedId(0)
     }
 
-    const remainingFields = sortedPositions?.filter(
-        (field: any) => !field?.fieldValue && field?.required
-    )
+    const remainingFields = sortedPositions?.filter((field: any) => {
+        if (!field?.fieldValue && field?.required) {
+            // For radio groups, skip if any sibling in the group is selected
+            if (field?.type === FieldsTypeEnum.Radio) {
+                return !sortedPositions?.some(
+                    (other: any) =>
+                        other?.type === FieldsTypeEnum.Radio &&
+                        other?.columnName === field?.columnName &&
+                        other?.fieldValue
+                )
+            }
+            return true
+        }
+        return false
+    })
 
     return (
         <div>

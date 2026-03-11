@@ -16,6 +16,7 @@ export const TabsField = ({
     onAddCustomFieldsData,
     onSignatureClicked,
     selectedFillDataField,
+    allFields,
 }: {
     outerIndex: number
     fieldData: any
@@ -23,11 +24,24 @@ export const TabsField = ({
     onAddCustomFieldsData: any
     onSignatureClicked: any
     selectedFillDataField?: any
+    allFields?: any[]
 }) => {
     const [x, y] = fieldData ? fieldData?.position?.split(',') : []
     const [width, height] = fieldData ? fieldData?.size?.split(',') : []
 
     const { notification } = useNotification()
+
+    // For radio buttons: check if ANY field in the same group (same columnName) has a response.
+    // If so, hide ALL radios in that group (including those without their own response).
+    const radioGroupHasResponse =
+        fieldData?.type === FieldsTypeEnum.Radio &&
+        fieldData?.columnName &&
+        (allFields ?? []).some(
+            (f: any) =>
+                f?.columnName === fieldData?.columnName &&
+                f?.type === FieldsTypeEnum.Radio &&
+                f?.responses?.length > 0
+        )
 
     const latestResponse = fieldData?.responses?.reduce(
         (accumulator: any, current: any) => {
@@ -74,15 +88,15 @@ export const TabsField = ({
                         fieldData?.type === FieldsTypeEnum.Checkbox
                             ? 13
                             : fieldData?.type === FieldsTypeEnum.Date
-                            ? String(Number(width) + 10)
-                            : width
+                              ? String(Number(width) + 10)
+                              : width
                     }
                     height={
                         fieldData?.type === FieldsTypeEnum.Checkbox
                             ? 13
                             : fieldData?.type === FieldsTypeEnum.Date
-                            ? String(Number(height) + 10)
-                            : height
+                              ? String(Number(height) + 10)
+                              : height
                     }
                 >
                     {fieldData?.type === FieldsTypeEnum.Signature ? (
@@ -116,7 +130,7 @@ export const TabsField = ({
                             </div>
                         )
                     ) : null}
-                    {!fieldData?.responses?.length ? (
+                    {!fieldData?.responses?.length && !radioGroupHasResponse ? (
                         fieldData?.type === FieldsTypeEnum.Text &&
                         fieldData?.isCustom ? (
                             <input

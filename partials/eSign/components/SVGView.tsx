@@ -68,22 +68,6 @@ export const SVGView = ({
 
     const doc = documentSvgData?.data?.data
 
-    // useEffect(() => {
-    //     if (customFieldsSelectedId < sortedPositions?.length) {
-    //         scrollToPage(
-    //             Number(sortedPositions?.[customFieldsSelectedId]?.id),
-    //             sortedPositions?.[customFieldsSelectedId]?.number - 1
-    //         )
-    //     } else if (customFieldsSelectedId <= 0) {
-    //         scrollToPage(-1, documentData?.pageCount - 1, 'end')
-    //     }
-    // }, [
-    //     documentData?.pageCount,
-    //     isLastSelected,
-    //     customFieldsSelectedId,
-    //     customFieldsSelectedId < sortedPositions?.length - 1 ? doc : null,
-    // ])
-
     const handleFocus = () => {
         if (documentSvgData?.isSuccess && doc) {
             if (isBrowser()) {
@@ -103,10 +87,6 @@ export const SVGView = ({
             }
         }
     }
-
-    // useEffect(() => {
-    //     handleFocus()
-    // }, [customFieldsSelectedId, documentSvgData])
 
     useEffect(() => {
         const parser = new DOMParser()

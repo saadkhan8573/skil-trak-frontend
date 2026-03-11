@@ -43,6 +43,7 @@ export const StartMatchingAutoWP = ({
     const [accumulatedResults, setAccumulatedResults] = useState<
         RtoApprovalWorkplaceRequest[]
     >([])
+
     const [failedIndices, setFailedIndices] = useState<number[]>([])
     const [errorMessages, setErrorMessages] = useState<{
         [key: number]: string
@@ -90,8 +91,8 @@ export const StartMatchingAutoWP = ({
                     id: Number(wp?.id),
                 }).unwrap()
 
-                if (res && res.length > 0) {
-                    setAccumulatedResults((prev) => [...prev, ...res])
+                if (res) {
+                    setAccumulatedResults((prev) => [...prev, res])
                     matchesCount++
                 }
             } catch (error: any) {

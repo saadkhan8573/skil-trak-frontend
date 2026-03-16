@@ -8,7 +8,12 @@ import {
 import { Button } from '@components'
 import { Label } from '@components/ui/label'
 import { cn } from '@utils'
-import { InputRichTextEditor, Select, TextInput, AttachmentUpload } from '@components'
+import {
+    InputRichTextEditor,
+    Select,
+    TextInput,
+    AttachmentUpload,
+} from '@components'
 import { useNotification, useRewritePhrase } from '@hooks'
 import { CommonApi } from '@queries'
 import { AuthUtils } from '@utils'
@@ -45,7 +50,9 @@ export const ComposeEmailDialog = ({
 }: ComposeEmailDialogProps) => {
     const { notification } = useNotification()
     const [mailContent, setMailContent] = useState<string>('')
-    const [templateAttachment, setTemplateAttachment] = useState<File | null>(null)
+    const [templateAttachment, setTemplateAttachment] = useState<File | null>(
+        null
+    )
     const [showCC, setShowCC] = useState(false)
 
     const [sendMessage, sendMessageResult] = CommonApi.Messages.useSendMessage()
@@ -55,7 +62,9 @@ export const ComposeEmailDialog = ({
     const getEmailDraft = CommonApi.Draft.useGetEmailDraft(Number(userId), {
         skip: !userId,
     })
-    const getTemplates = CommonApi.Messages.useAllTemplates()
+    const getTemplates = CommonApi.Messages.useAllTemplates(undefined, {
+        skip: !open, // Only fetch templates when modal is open
+    })
 
     const validationSchema = yup.object({
         subject: yup.string().required('Subject is required'),
@@ -65,8 +74,8 @@ export const ComposeEmailDialog = ({
         resolver: yupResolver(validationSchema),
         mode: 'all',
         defaultValues: {
-            attachments: []
-        }
+            attachments: [],
+        },
     })
 
     const {
@@ -78,12 +87,10 @@ export const ComposeEmailDialog = ({
 
     // Load Draft
     useEffect(() => {
-        if (open && getEmailDraft.isSuccess) { // Only load when opening
+        if (open && getEmailDraft.isSuccess) {
+            // Only load when opening
             if (getEmailDraft?.data?.content) {
-                setValue(
-                    'message',
-                    getEmailDraft?.data?.content
-                )
+                setValue('message', getEmailDraft?.data?.content)
                 setMailContent(getEmailDraft?.data?.content) // Sync local state
             }
             if (getEmailDraft?.data?.title) {
@@ -91,7 +98,6 @@ export const ComposeEmailDialog = ({
             }
         }
     }, [getEmailDraft.isSuccess, open])
-
 
     // Success Handler
     useEffect(() => {
@@ -107,22 +113,18 @@ export const ComposeEmailDialog = ({
         }
     }, [sendMessageResult.isSuccess])
 
-
     const templateOptions = getTemplates?.data?.length
         ? getTemplates?.data?.map((template: any) => ({
-            label: template?.subject,
-            value: template?.id,
-        }))
+              label: template?.subject,
+              value: template?.id,
+          }))
         : []
 
     const onFixGrammerClick = async () => {
         const data = await onRewritePhrase(mailContent)
         if (data?.correctedText) {
             setMailContent(data?.correctedText)
-            setValue(
-                'message',
-                data?.correctedText
-            )
+            setValue('message', data?.correctedText)
         }
     }
 
@@ -143,9 +145,9 @@ export const ComposeEmailDialog = ({
         const message = values.message
         const ccEmails = values.cc
             ? values.cc
-                .split(',')
-                .map((email) => email.trim())
-                .filter((email) => email.length > 0)
+                  .split(',')
+                  .map((email) => email.trim())
+                  .filter((email) => email.length > 0)
             : []
 
         const { attachments } = values
@@ -184,10 +186,7 @@ export const ComposeEmailDialog = ({
         )
         if (template) {
             setValue('subject', template?.subject)
-            setValue(
-                'message',
-                template?.content
-            )
+            setValue('message', template?.content)
             setMailContent(template?.content)
 
             if (template?.file) {
@@ -201,30 +200,40 @@ export const ComposeEmailDialog = ({
         }
     }
 
-
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-2xl! max-h-[90vh] overflow-y-auto flex flex-col p-0 gap-0">
                 <DialogHeader className="px-6 py-4 border-b">
                     <DialogTitle>Compose Email</DialogTitle>
                     <div className="text-sm text-muted-foreground mt-1">
-                        To <span className="font-medium text-foreground">{user?.name}</span> <span className="text-xs">({user?.role})</span>
+                        To{' '}
+                        <span className="font-medium text-foreground">
+                            {user?.name}
+                        </span>{' '}
+                        <span className="text-xs">({user?.role})</span>
                     </div>
                 </DialogHeader>
 
                 <div className="flex-1 overflow-y-auto px-6 py-4">
                     <FormProvider {...methods}>
                         <form onSubmit={handleSubmit(onSubmit)}>
-
                             <div className="grid gap-2">
                                 <div className="flex justify-between items-center">
-                                    <Label htmlFor="subject">Subject <span className="text-destructive">*</span></Label>
+                                    <Label htmlFor="subject">
+                                        Subject{' '}
+                                        <span className="text-destructive">
+                                            *
+                                        </span>
+                                    </Label>
                                     <Button
                                         variant="action"
                                         outline
                                         mini
                                         className="h-6 text-xs text-muted-foreground border-none shadow-none hover:bg-accent/50"
-                                        onClick={(e) => { e.preventDefault(); setShowCC(!showCC); }}
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            setShowCC(!showCC)
+                                        }}
                                     >
                                         {showCC ? 'Hide CC' : 'Add CC'}
                                     </Button>
@@ -267,8 +276,13 @@ export const ComposeEmailDialog = ({
                                         variant="action"
                                         outline
                                         className="py-1.5 text-xs gap-1.5 border! border-gray-300!"
-                                        onClick={(e) => { e.preventDefault(); onFixGrammerClick(); }}
-                                        disabled={!mailContent?.trim() || isRewriting}
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            onFixGrammerClick()
+                                        }}
+                                        disabled={
+                                            !mailContent?.trim() || isRewriting
+                                        }
                                         loading={isRewriting}
                                     >
                                         <Sparkles className="w-3 h-3 text-amber-500" />
@@ -288,7 +302,7 @@ export const ComposeEmailDialog = ({
                             <div className="grid gap-2">
                                 <AttachmentUpload
                                     name="attachments"
-                                // multiple={true} // Default is true
+                                    // multiple={true} // Default is true
                                 />
                             </div>
                         </form>
@@ -296,7 +310,11 @@ export const ComposeEmailDialog = ({
                 </div>
 
                 <DialogFooter className="px-6 py-4 border-t bg-muted/10 items-center sm:justify-between gap-3">
-                    <Button variant="action" outline onClick={() => onOpenChange(false)}>
+                    <Button
+                        variant="action"
+                        outline
+                        onClick={() => onOpenChange(false)}
+                    >
                         Cancel
                     </Button>
                     <Button

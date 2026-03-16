@@ -15,6 +15,12 @@ export const findWorkplaceEndpoints = (
         }),
         providesTags: ['FutureIndustries'],
     }),
+    getAbnDetails: builder.query<any, string>({
+        query: (abn) => ({
+            url: `industries/abn/get-details`,
+            params: { abn },
+        }),
+    }),
     getIndustryListingProfileDetails: builder.query<any, any>({
         query: (id) => ({
             url: `${PREFIX}/${id}/detail`,

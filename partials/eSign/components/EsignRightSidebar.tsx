@@ -94,7 +94,7 @@ export const EsignRightSidebar = ({
             </motion.div>
 
             {/* Action Buttons */}
-            <Activity
+            {/* <Activity
                 mode={checkJsxVisibility(
                     role === UserRoles.RTO &&
                         mySignature?.status !== 'signed' &&
@@ -240,14 +240,18 @@ export const EsignRightSidebar = ({
                         </p>
                     </motion.div>
                 </motion.div>
-            </Activity>
+            </Activity> */}
 
             <Activity
                 mode={checkJsxVisibility(
                     documentDetail?.status !== 'signed' &&
-                        mySignature?.status !== 'signed' &&
-                        role !== UserRoles.RTO
+                        mySignature?.status !== 'signed'
                 )}
+                // mode={checkJsxVisibility(
+                //     documentDetail?.status !== 'signed' &&
+                //         mySignature?.status !== 'signed' &&
+                //         role !== UserRoles.RTO
+                // )}
             >
                 <motion.div
                     initial={{ opacity: 0, x: 20 }}

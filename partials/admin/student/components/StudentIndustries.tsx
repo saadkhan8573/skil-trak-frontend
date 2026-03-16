@@ -45,8 +45,16 @@ export const StudentIndustries = ({
     const wpPendingApprovalIndustry = latestWP?.latestPendingApproval?.industry
 
     // Industry from the workplaceApprovaleRequest array (via utility)
-    const wpApprovalRequestIndustry = latestWpApprovalRequest(
+    const filteredWpApprovalRequests = (
         latestWP?.workplaceApprovaleRequest || []
+    )?.filter((req) => {
+        return (
+            req?.rtoApprovalStatus !== 'rejected' && !req?.isRejectedByIndustry
+        )
+    })
+
+    const wpApprovalRequestIndustry = latestWpApprovalRequest(
+        filteredWpApprovalRequests
     )?.industry
 
     // Industry from student-provided workplace approval

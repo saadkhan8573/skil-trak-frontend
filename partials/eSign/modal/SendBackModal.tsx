@@ -7,17 +7,19 @@ import {
 } from '@components/ui/dialog'
 import { UserRoles } from '@constants'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useNotification } from '@hooks'
 import { CommonApi } from '@redux'
 import { cn } from '@utils'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
     AlertCircle,
     Building2,
+    CheckCircle2,
     GraduationCap,
     Send,
     Users,
+    XCircle,
 } from 'lucide-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
@@ -46,6 +48,13 @@ const schema = yup.object().shape({
         .required('Reason is required'),
 })
 
+interface SendBackResult {
+    userId: number
+    name: string
+    status: 'success' | 'error'
+    message?: string
+}
+
 export function SendBackModal({
     isOpen,
     documentTitle,
@@ -53,7 +62,7 @@ export function SendBackModal({
     signers,
     onClose,
 }: SendBackModalProps) {
-    const { notification } = useNotification()
+    const [results, setResults] = useState<SendBackResult[] | null>(null)
 
     const {
         control,
@@ -95,36 +104,32 @@ export function SendBackModal({
             }).unwrap()
 
             if (Array.isArray(response)) {
-                response.forEach((item: any) => {
+                const mapped: SendBackResult[] = response.map((item: any) => {
                     const signer = signers?.find(
                         (s) => s?.user?.id === item.userId
                     )
-                    const signerName =
-                        signer?.user?.name || `User ${item.userId}`
-
-                    if (item.status === 'success') {
-                        notification.success({
-                            title: 'Success',
-                            description: `Document sent back to ${signerName} successfully`,
-                        })
-                    } else {
-                        notification.error({
-                            title: 'Failed',
-                            description: `${signerName}: ${item.message || 'Failed to send back'}`,
-                        })
+                    return {
+                        userId: item.userId,
+                        name: signer?.user?.name || `User ${item.userId}`,
+                        status: item.status === 'success' ? 'success' : 'error',
+                        message: item.message,
                     }
                 })
+                setResults(mapped)
             } else {
-                notification.success({
-                    title: 'Success',
-                    description: 'Document sent back for revision',
-                })
+                // Single success — close immediately
+                onClose()
+                reset()
             }
-            onClose()
-            reset()
         } catch (error) {
             console.error('Failed to send back:', error)
         }
+    }
+
+    const handleResultsClose = () => {
+        setResults(null)
+        onClose()
+        reset()
     }
 
     const getRoleInfo = (role: string) => {
@@ -177,8 +182,11 @@ export function SendBackModal({
         return selectedRecipients.includes(id)
     }
 
+    const successCount = results?.filter((r) => r.status === 'success').length ?? 0
+    const errorCount = results?.filter((r) => r.status === 'error').length ?? 0
+
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
+        <Dialog open={isOpen} onOpenChange={results ? handleResultsClose : onClose}>
             <ShowErrorNotifications result={sendBackForRevisionResult} />
             <DialogContent className="max-w-3xl! p-0 overflow-hidden rounded-2xl border-none shadow-2xl flex flex-col max-h-[95vh] sm:max-h-[90vh]">
                 <DialogHeader
@@ -208,7 +216,85 @@ export function SendBackModal({
                 </DialogHeader>
 
                 <div className="overflow-y-auto flex-1 custom-scrollbar">
-                    <form
+                    <AnimatePresence mode="wait">
+                    {results ? (
+                        /* ── Results Summary Screen ── */
+                        <motion.div
+                            key="results"
+                            initial={{ opacity: 0, y: 16 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -16 }}
+                            className="p-6 space-y-5"
+                        >
+                            {/* Summary pills */}
+                            <div className="flex gap-3">
+                                {successCount > 0 && (
+                                    <div className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold"
+                                        style={{ background: '#ECFDF5', color: '#065F46' }}>
+                                        <CheckCircle2 className="w-4 h-4" />
+                                        {successCount} Sent Successfully
+                                    </div>
+                                )}
+                                {errorCount > 0 && (
+                                    <div className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold"
+                                        style={{ background: '#FEF2F2', color: '#991B1B' }}>
+                                        <XCircle className="w-4 h-4" />
+                                        {errorCount} Failed
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Per-recipient rows */}
+                            <div className="space-y-2.5">
+                                {results.map((r, i) => (
+                                    <motion.div
+                                        key={r.userId}
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: i * 0.06 }}
+                                        className="flex items-start gap-3 p-4 rounded-xl border"
+                                        style={{
+                                            borderColor: r.status === 'success' ? '#6EE7B7' : '#FECACA',
+                                            background: r.status === 'success' ? '#F0FDF4' : '#FFF5F5',
+                                        }}
+                                    >
+                                        {r.status === 'success' ? (
+                                            <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0" style={{ color: '#059669' }} />
+                                        ) : (
+                                            <XCircle className="w-5 h-5 mt-0.5 shrink-0" style={{ color: '#DC2626' }} />
+                                        )}
+                                        <div className="min-w-0">
+                                            <p className="font-bold text-sm" style={{ color: '#0F172A' }}>
+                                                {r.name}
+                                            </p>
+                                            <p className="text-xs mt-0.5"
+                                                style={{ color: r.status === 'success' ? '#065F46' : '#991B1B' }}>
+                                                {r.status === 'success'
+                                                    ? 'Document sent back successfully. They will be notified via email.'
+                                                    : r.message || 'Failed to send back. Please try again.'}
+                                            </p>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
+
+                            <motion.button
+                                whileHover={{ scale: 1.01 }}
+                                whileTap={{ scale: 0.99 }}
+                                onClick={handleResultsClose}
+                                className="w-full py-3 text-white font-bold rounded-xl shadow-lg transition-all text-sm"
+                                style={{ background: 'linear-gradient(135deg, #E63946, #DC2626)' }}
+                            >
+                                Done
+                            </motion.button>
+                        </motion.div>
+                    ) : (
+                    /* ── Form Screen ── */
+                    <motion.form
+                        key="form"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                         onSubmit={handleFormSubmit(handleSubmit)}
                         className="p-6 space-y-6"
                     >
@@ -428,7 +514,9 @@ export function SendBackModal({
                                 )}
                             </motion.button>
                         </div>
-                    </form>
+                    </motion.form>
+                    )}
+                    </AnimatePresence>
                 </div>
             </DialogContent>
         </Dialog>

@@ -591,6 +591,9 @@ const {
     useGetContactedFutureIndustriesListQuery,
     useFutureIndustryInterestMutation,
 
+    useGetAbnDetailsQuery,
+    useLazyGetAbnDetailsQuery,
+
     // Impersonation
     useImpersonationToggleMutation,
     useAllowAsAdminMutation,
@@ -797,8 +800,7 @@ export const CommonApi = {
         useRemoveIndustryBranch: useRemoveIndustryBranchAddressMutation,
         bulkEmailSubadminIndustries: useGetBulkEmailSubadminIndustriesQuery,
         useIndustryEligibilityCriteria: useGetIndustryEligibilityCriteriaQuery,
-        useUpdateIndustryEligibilityCriteria:
-            useUpdateIndustryEligibilityCriteriaMutation,
+        useUpdateIndustryEligibilityCriteria: useUpdateIndustryEligibilityCriteriaMutation,
         useToggleIndustryPremiumFeature:
             useToggleIndustryPremiumFeatureMutation,
         useIndustryPremiumFeatures: useGetIndustryPremiumFeaturesQuery,
@@ -991,6 +993,8 @@ export const CommonApi = {
         useContactedFutureIndustriesList:
             useGetContactedFutureIndustriesListQuery,
         useFutureIndustryInterest: useFutureIndustryInterestMutation,
+        useGetAbnDetails: useGetAbnDetailsQuery,
+        useLazyGetAbnDetails: useLazyGetAbnDetailsQuery,
     },
     Impersonation: {
         useImpersonationToggle: useImpersonationToggleMutation,

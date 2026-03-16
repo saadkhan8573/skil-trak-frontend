@@ -30,6 +30,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { OptionType } from '@types'
+import { IndustryDetailConfirmationModal } from '../../common/FindWorkplaces/modal/IndustryDetailConfirmationModal'
 
 export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
     const router = useRouter()
@@ -40,6 +41,14 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
     const [onStateSelect, setOnStateSelect] = useState()
     const [checkEmailExists, emailCheckResult] = AuthApi.useEmailCheck()
     const [checkAbnExist, checkAbnExistResult] = AuthApi.useAbn()
+
+    const [
+        getAbnDetails,
+        { data: abnData, isFetching: isAbnFetching, isLoading: isAbnLoading },
+    ] = CommonApi.FindWorkplace.useLazyGetAbnDetails()
+    const [showAbnDialog, setShowAbnDialog] = useState(false)
+    const [abnConfirmed, setAbnConfirmed] = useState(false)
+    const [abnError, setAbnError] = useState<any>(null)
 
     // const [sectorOptions, setSectorOptions] = useState<any>([])
     // const [selectedSector, setSelectedSector] = useState<any>(null)
@@ -90,6 +99,8 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
             const suburbValue = formMethods.getValues('suburb')
 
             removeEmptySpaces(formMethods, abn)
+            setAbnConfirmed(false)
+            setAbnError(null)
 
             if (abn && suburbValue) {
                 checkAbnExist({ abn, suburb: suburbValue })
@@ -98,36 +109,6 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
             }
         }, 300)()
     }
-
-    // const onSectorChanged = (sectors: any) => {
-    //     setSelectedSector(sectors)
-    //     setCourseLoading(true)
-    //     const filteredCourses = sectors?.map((selectedSector: any) => {
-    //         const sectorExisting = sectorResponse?.data?.find(
-    //             (sector: any) => sector.id === selectedSector.value
-    //         )
-    //         if (sectorExisting && sectorExisting?.courses?.length) {
-    //             return sectorExisting.courses
-    //         }
-    //     })
-
-    //     const newCourseOptions: any = []
-    //     filteredCourses.map((courseList: any) => {
-    //         if (courseList && courseList.length) {
-    //             return courseList.map((course: any) =>
-    //                 newCourseOptions.push({
-    //                     item: course,
-    //                     value: course.id,
-    //                     label: course.title,
-    //                 })
-    //             )
-    //         }
-    //     })
-
-    //     setCourseOptions(newCourseOptions)
-    //     setCourseLoading(false)
-    // }
-
     const {
         courseLoading,
         courseOptions,
@@ -173,21 +154,6 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
         // Sector Information
         sectors: yup.array().min(1, 'Must select at least 1 sector').required(),
         courses: yup.array().min(1, 'Must select at least 1 course').required(),
-        // country and state
-        // country: yup
-        //     .object({
-        //         label: yup.string().required('Required '),
-        //         value: yup.number().required('Required '),
-        //     })
-        //     .typeError('Must provide country')
-        //     .required('Must provide country'),
-        // region: yup
-        //     .object({
-        //         label: yup.string().required('Required '),
-        //         value: yup.number().required('Required '),
-        //     })
-        //     .typeError('Must provide country')
-        //     .required('Must provide country'),
 
         // Contact Person Information
         contactPerson: yup
@@ -292,13 +258,44 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
         }
     }, [selectedSector])
 
-    const onHandleSubmit = (values: any) => {
+    const handleConfirmABN = () => {
+        if (abnData) {
+            formMethods.setValue(
+                'name',
+                abnData.legalName || abnData.businessName
+            )
+            if (abnData.area || abnData.address) {
+                formMethods.setValue('addressLine1', abnData.area || abnData.address)
+            }
+        }
+        setAbnConfirmed(true)
+        setShowAbnDialog(false)
+        formMethods.handleSubmit(onHandleSubmit)()
+    }
+
+    const onHandleSubmit = async (values: any) => {
         if (!onSuburbClicked) {
             notification.error({
                 title: 'You must select on Address Dropdown',
                 description: 'You must select on Address Dropdown',
             })
-        } else if (onSuburbClicked) {
+            return
+        }
+
+        if (values.abn && values.abn.length === 11 && !abnConfirmed) {
+            try {
+                setAbnError(null)
+                await getAbnDetails(values.abn).unwrap()
+                setShowAbnDialog(true)
+                return
+            } catch (error) {
+                setAbnError(error)
+                setShowAbnDialog(true)
+                return
+            }
+        }
+
+        if (onSuburbClicked) {
             onSubmit({ ...values, suburb: values?.suburb || 'NA', state: 'NA' })
         }
     }
@@ -616,7 +613,12 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
                     </div>
 
                     <div className="flex gap-x-4">
-                        <Button text={'Continue'} submit />
+                        <Button
+                            text={'Continue'}
+                            submit
+                            loading={isAbnFetching || isAbnLoading}
+                            disabled={isAbnFetching || isAbnLoading}
+                        />
                         {SignUpUtils.getEditingMode() && (
                             <Button
                                 onClick={onBackToReview}
@@ -627,6 +629,13 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
                     </div>
                 </div>
             </form>
+            <IndustryDetailConfirmationModal
+                showAbnDialog={showAbnDialog}
+                setShowAbnDialog={setShowAbnDialog}
+                abnResult={abnData}
+                error={abnError}
+                handleConfirmABN={handleConfirmABN}
+            />
         </FormProvider>
     )
 }

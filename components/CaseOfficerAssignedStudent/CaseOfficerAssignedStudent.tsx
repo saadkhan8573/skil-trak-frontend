@@ -68,7 +68,7 @@ export const CaseOfficerAssignedStudent = ({
     const appliedIndustry = getStudentWorkplaceAppliedIndustry(
         updatedWorkplace?.industries as WorkplaceWorkIndustriesType[]
     )
-    const updatedAlliedIndustry = {
+    const updatedAppliedIndustry = {
         ...appliedIndustry,
         appliedDate:
             appliedIndustry?.appliedDate || updatedWorkplace?.createdAt,
@@ -87,7 +87,7 @@ export const CaseOfficerAssignedStudent = ({
     const WorkplaceStatus = [
         {
             text: 'Industry sourcing',
-            date: updatedAlliedIndustry?.appliedDate,
+            date: updatedAppliedIndustry?.appliedDate,
         },
         {
             text: 'Industry sourcing',
@@ -95,31 +95,31 @@ export const CaseOfficerAssignedStudent = ({
         },
         {
             text: 'Industry sourcing',
-            date: updatedAlliedIndustry?.interviewDate,
+            date: updatedAppliedIndustry?.interviewDate,
         },
         {
             text: 'Meeting',
-            date: updatedAlliedIndustry?.appointmentBookedDate,
+            date: updatedAppliedIndustry?.appointmentBookedDate,
         },
         {
             text: 'Awaiting Workplace Responce',
-            date: updatedAlliedIndustry?.awaitingWorkplaceResponseDate,
+            date: updatedAppliedIndustry?.awaitingWorkplaceResponseDate,
         },
         {
             text: 'Agreement and Eligibility Pending',
-            date: updatedAlliedIndustry?.awaitingAgreementSignedDate,
+            date: updatedAppliedIndustry?.awaitingAgreementSignedDate,
         },
         {
             text: 'Agreement Signed',
-            date: updatedAlliedIndustry?.AgreementSignedDate,
+            date: updatedAppliedIndustry?.AgreementSignedDate,
         },
         {
             text: 'Placement Started',
-            date: updatedAlliedIndustry?.placementStartedDate,
+            date: updatedAppliedIndustry?.placementStartedDate,
         },
         {
             text: 'Schedule Completed',
-            date: updatedAlliedIndustry?.isCompletedDate,
+            date: updatedAppliedIndustry?.isCompletedDate,
         },
     ]
 
@@ -137,7 +137,7 @@ export const CaseOfficerAssignedStudent = ({
             {modal}
             {workplaceFilter ? (
                 <ProgressCell
-                    appliedIndustry={updatedAlliedIndustry}
+                    appliedIndustry={updatedAppliedIndustry}
                     assigned={updatedWorkplace?.assignedTo || student?.subadmin}
                     step={steps > 17 ? 17 : steps < 1 ? 1 : steps}
                     studentProvidedWorkplace={
@@ -149,7 +149,7 @@ export const CaseOfficerAssignedStudent = ({
                 />
             ) : student?.workplace && student?.workplace?.length > 0 ? (
                 <ProgressCell
-                    appliedIndustry={updatedAlliedIndustry}
+                    appliedIndustry={updatedAppliedIndustry}
                     assigned={updatedWorkplace?.assignedTo || student?.subadmin}
                     step={steps > 17 ? 17 : steps < 1 ? 1 : steps}
                     studentProvidedWorkplace={
@@ -172,7 +172,7 @@ export const CaseOfficerAssignedStudent = ({
                             ? 4
                             : studentStatus
                     }
-                    appliedIndustry={updatedAlliedIndustry}
+                    appliedIndustry={updatedAppliedIndustry}
                     studentProvidedWorkplace={
                         updatedWorkplace?.studentProvidedWorkplace ||
                         updatedWorkplace?.byExistingAbn
@@ -182,7 +182,7 @@ export const CaseOfficerAssignedStudent = ({
             ) : student?.user?.status === UserStatus.Archived ? (
                 updatedWorkplace?.assignedTo || student?.subadmin ? (
                     <ProgressCell
-                        appliedIndustry={updatedAlliedIndustry}
+                        appliedIndustry={updatedAppliedIndustry}
                         step={steps > 17 ? 17 : steps < 1 ? 1 : steps}
                         assigned={
                             updatedWorkplace?.assignedTo || student?.subadmin
@@ -196,7 +196,7 @@ export const CaseOfficerAssignedStudent = ({
                     />
                 ) : (
                     <ProgressCell
-                        appliedIndustry={updatedAlliedIndustry}
+                        appliedIndustry={updatedAppliedIndustry}
                         assigned={
                             updatedWorkplace?.assignedTo || student?.subadmin
                         }
@@ -221,7 +221,7 @@ export const CaseOfficerAssignedStudent = ({
             //             ? 4
             //             : studentStatus
             //     }
-            //     appliedIndustry={updatedAlliedIndustry}
+            //     appliedIndustry={updatedAppliedIndustry}
             //     studentProvidedWorkplace={
             //         updatedWorkplace?.studentProvidedWorkplace ||
             //         updatedWorkplace?.byExistingAbn
@@ -230,7 +230,7 @@ export const CaseOfficerAssignedStudent = ({
             // />
             student?.subadmin ? (
                 <ProgressCell
-                    appliedIndustry={updatedAlliedIndustry}
+                    appliedIndustry={updatedAppliedIndustry}
                     step={steps > 17 ? 17 : steps < 1 ? 1 : steps}
                     assigned={updatedWorkplace?.assignedTo || student?.subadmin}
                     studentProvidedWorkplace={
@@ -242,7 +242,7 @@ export const CaseOfficerAssignedStudent = ({
                 />
             ) : (
                 <ProgressCell
-                    appliedIndustry={updatedAlliedIndustry}
+                    appliedIndustry={updatedAppliedIndustry}
                     step={1}
                     assigned={updatedWorkplace?.assignedTo || student?.subadmin}
                     studentProvidedWorkplace={

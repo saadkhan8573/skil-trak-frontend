@@ -6,6 +6,8 @@ import {
     ArrowRight,
     CheckCircle2,
 } from 'lucide-react'
+import { useState } from 'react'
+import { FutureIndustriesRecruitment } from './recruit-now-industries/FutureIndustriesRecruitment'
 
 // --- Row Component ---
 interface TableRowProps {
@@ -56,6 +58,7 @@ const getStatusConfig = (status: string) => {
     }
 }
 export const ReadinessTableRow = ({ data }: { data: any }) => {
+    const [showRecruitmentModal, setShowRecruitmentModal] = useState(false)
     return (
         <div
             className={cn(
@@ -84,7 +87,7 @@ export const ReadinessTableRow = ({ data }: { data: any }) => {
             <div className="text-right text-xs text-slate-700 font-semibold">
                 {data?.industryCapacity ?? '___'}
             </div>
-             <div className="text-right text-xs text-slate-900 font-bold">
+            <div className="text-right text-xs text-slate-900 font-bold">
                 {data?.radiusRemainingCapacity ?? '___'}
             </div>
 
@@ -124,14 +127,29 @@ export const ReadinessTableRow = ({ data }: { data: any }) => {
 
             <div className="w-full flex justify-end gap-2">
                 {data?.capacityGap < 0 && (
-                    <RunListingAutomation
-                        studentAddress={`${data?.suburb}, ${data?.postalCode}`}
-                        sectorId={data?.sectorId}
-                        btnText="Recruit Now"
-                        icon={false}
-                    />
+                    <>
+                        {/* <RunListingAutomation
+                            studentAddress={`${data?.suburb}, ${data?.postalCode}`}
+                            sectorId={data?.sectorId}
+                            btnText="Recruit Now"
+                            icon={false}
+                        /> */}
+
+                        <button
+                            onClick={() => setShowRecruitmentModal(true)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#044866] text-white rounded-lg hover:bg-[#0D5468] transition-all text-xs shadow-lg font-semibold cursor-pointer"
+                        >
+                            <span>Recruit now</span>
+                            <ArrowRight className="w-3 h-3" />
+                        </button>
+                    </>
                 )}
             </div>
+            <FutureIndustriesRecruitment
+                isOpen={showRecruitmentModal}
+                onClose={() => setShowRecruitmentModal(false)}
+                data={data}
+            />
         </div>
     )
 }

@@ -526,6 +526,8 @@ const {
     useGetStudentForecastQuery,
     useGetForecastListQuery,
     useGetForecastCountsQuery,
+    useGetForecastFutureIndustriesListQuery,
+    useGetForecastSignedUpIndustriesListQuery,
 
     // ------ MARKETING ------ //
     useGetMarketingUsersQuery,
@@ -949,6 +951,10 @@ export const AdminApi = {
         useStudentForecast: useGetStudentForecastQuery,
         useForecastList: useGetForecastListQuery,
         useForecastCounts: useGetForecastCountsQuery,
+        useForecastFutureIndustriesList:
+            useGetForecastFutureIndustriesListQuery,
+        useForecastSignedUpIndustriesList:
+            useGetForecastSignedUpIndustriesListQuery,
     },
     Marketing: {
         useMarketingUsers: useGetMarketingUsersQuery,

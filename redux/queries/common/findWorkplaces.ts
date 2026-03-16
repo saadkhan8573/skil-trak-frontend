@@ -228,7 +228,14 @@ export const findWorkplaceEndpoints = (
             method: 'POST',
             params,
         }),
-        invalidatesTags: ['Industries'],
+        invalidatesTags: [
+            'Industries',
+            'FutureIndustries',
+            'SubAdminStudents',
+            'Industries',
+            'SubAdminIndustries',
+            'SubAdminWorkplace',
+        ],
     }),
 
     getContactedFutureIndustriesList: builder.query<any, void>({

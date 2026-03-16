@@ -15,6 +15,7 @@ import { ImportantDocuments, Supervisor } from '@partials/common'
 import { IndustryLocations } from '@partials/common/IndustryProfileDetail/components'
 import { UponAppointmentCompletionModal } from '@partials/common/StudentProfileDetail/components'
 import { getUserCredentials } from '@utils'
+import { SelectAppointmentStatusVII } from '@partials/common/ProfileAppointments/select-appointment-status-v2/SelectAppointmentStatusVII'
 
 export const IndustryUpdatedDashboard = () => {
     const [modal, setModal] = useState<any | null>(null)
@@ -30,10 +31,19 @@ export const IndustryUpdatedDashboard = () => {
     const userId = getUserCredentials()?.id
     const appointmentCompletion =
         CommonApi.Appointments.useAppointmentCompletionStatusIndustry({})
-    
+
+    // const uponCompletionAppointment = () => {
+    //     setModal(
+    //         <UponAppointmentCompletionModal
+    //             appointment={appointmentCompletion?.data}
+    //             onClose={onClose}
+    //         />
+    //     )
+    // }
     const uponCompletionAppointment = () => {
         setModal(
-            <UponAppointmentCompletionModal
+            <SelectAppointmentStatusVII
+                isOpen={true}
                 appointment={appointmentCompletion?.data}
                 onClose={onClose}
             />

@@ -17,6 +17,21 @@ export const industryReadinessEndpoints = (
         }),
         providesTags: ['StudentForecast'],
     }),
+    // forecast/future/industries
+    getForecastFutureIndustriesList: builder.query<any, any>({
+        query: (params) => ({
+            url: `forecast/future/industries`,
+            params,
+        }),
+        providesTags: ['StudentForecast', 'Industries'],
+    }),
+    getForecastSignedUpIndustriesList: builder.query<any, any>({
+        query: (params) => ({
+            url: `forecast/signup/industries`,
+            params,
+        }),
+        providesTags: ['StudentForecast', 'Industries'],
+    }),
     //forecast/status/counts
     getForecastCounts: builder.query<any, any>({
         query: (params) => ({

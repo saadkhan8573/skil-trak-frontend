@@ -19,25 +19,23 @@ import { useState } from 'react'
 import { ConfirmationSource } from '@types'
 import { ConfirmationSourceSelect } from './components/ConfirmationSourceSelect'
 
-interface ConfirmHighlightedTasksModalProps {
+interface BulkConfirmHighlightedTasksModalProps {
     isOpen: boolean
     onClose: () => void
-    taskId: number
+    tasks: { id: number; confirmationDetailId?: number }[]
     industryId: number
     showNotAvailable?: boolean
-    confirmationDetailId?: number
 }
 
-export function ConfirmHighlightedTasksModal({
+export function BulkConfirmHighlightedTasksModal({
     isOpen,
     onClose,
-    taskId,
+    tasks,
     industryId,
     showNotAvailable = true,
-    confirmationDetailId,
-}: ConfirmHighlightedTasksModalProps) {
-    const [confirmHighlightedTask, confirmHighlightedTaskResult] =
-        RtoV2Api.Industries.useConfirmHighlightedTask()
+}: BulkConfirmHighlightedTasksModalProps) {
+    const [confirmBulkHighlightedTasks, confirmBulkHighlightedTasksResult] =
+        RtoV2Api.Industries.useConfirmBulkHighlightedTasks()
     const { notification } = useNotification()
     const showErrorNotifications = useShowErrorNotification()
     const [confirmationSource, setConfirmationSource] =
@@ -45,19 +43,23 @@ export function ConfirmHighlightedTasksModal({
 
     const handleConfirm = async (isConfirmed: boolean = true) => {
         try {
-            await confirmHighlightedTask({
+            await confirmBulkHighlightedTasks({
                 industryId,
-                taskId,
-                confirmationSource,
                 isConfirmed,
-                confirmationDetailId,
+                confirmationSource,
+                tasks: tasks.map((task) => ({
+                    taskId: task.id,
+                    industryTaskId: task.confirmationDetailId,
+                })),
             }).unwrap()
 
             notification.success({
-                title: isConfirmed ? 'Task Confirmed' : 'Task Marked Not Available',
+                title: isConfirmed
+                    ? 'Tasks Confirmed'
+                    : 'Tasks Marked Not Available',
                 description: isConfirmed
-                    ? 'Highlighted task has been successfully confirmed.'
-                    : 'Highlighted task has been marked as Not Available.',
+                    ? `${tasks.length} tasks have been successfully confirmed.`
+                    : `${tasks.length} tasks have been marked as Not Available.`,
             })
             onClose()
         } catch (error) {
@@ -66,17 +68,19 @@ export function ConfirmHighlightedTasksModal({
     }
     return (
         <>
-            <ShowErrorNotifications result={confirmHighlightedTaskResult} />
+            <ShowErrorNotifications
+                result={confirmBulkHighlightedTasksResult}
+            />
             <Dialog open={isOpen} onOpenChange={onClose}>
                 <DialogContent className="max-w-xl!">
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
                             <CheckSquare className="w-5 h-5 text-primary" />
-                            Confirm Task
+                            Confirm {tasks.length} Tasks
                         </DialogTitle>
                         <DialogDescription>
-                            How did you confirm this highlighted task? Please
-                            select a confirmation method below.
+                            How did you confirm these tasks? Please select a
+                            confirmation method below.
                         </DialogDescription>
                     </DialogHeader>
 
@@ -97,18 +101,24 @@ export function ConfirmHighlightedTasksModal({
                                 variant="primary"
                                 outline
                                 className="border-red-200 text-red-600 hover:bg-red-50"
-                                disabled={confirmHighlightedTaskResult.isLoading}
+                                disabled={
+                                    confirmBulkHighlightedTasksResult.isLoading
+                                }
                             >
-                                Mark as Not Available
+                                Mark {tasks.length} as Not Available
                             </Button>
                         )}
                         <Button
                             onClick={() => handleConfirm(true)}
                             variant="primaryNew"
-                            disabled={confirmHighlightedTaskResult.isLoading}
-                            loading={confirmHighlightedTaskResult.isLoading}
+                            disabled={
+                                confirmBulkHighlightedTasksResult.isLoading
+                            }
+                            loading={
+                                confirmBulkHighlightedTasksResult.isLoading
+                            }
                         >
-                            Confirm Method
+                            Confirm All {tasks.length}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

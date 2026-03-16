@@ -11,8 +11,8 @@ export interface DaySchedule {
 
 export interface AppointmentStatusFormValues {
     status?: AppointmentStatus
-    addHours?: string
-    startingDate?: string
+    hours?: number
+    startDate?: string
     unsuccessfulReason?: UnsuccessfulReason
     rejectionReason?: string
     otherReason?: string

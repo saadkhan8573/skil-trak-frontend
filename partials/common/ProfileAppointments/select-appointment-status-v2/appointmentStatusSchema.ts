@@ -19,10 +19,10 @@ export const appointmentSchema = yup.object({
         .nullable()
         .required('Status is required'),
 
-    hours: yup.string().when('status', {
+    hours: yup.number().when('status', {
         is: 'successful',
-        then: (s) => s.required('Total hours required'),
-        otherwise: (s) => s.optional(),
+        then: (s) => s.required('Total hours required').typeError('Hours must be a number'),
+        otherwise: (s) => s.optional().nullable(),
     }),
 
     startDate: yup.string().when('status', {

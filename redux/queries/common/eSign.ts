@@ -317,6 +317,7 @@ export const eSignEndpoints = (
             url: `${PREFIX}/documents/${id}/retrieve-svgs`,
             params,
         }),
+        keepUnusedDataFor: 300,
         providesTags: ['E-Sign'],
     }),
 
@@ -411,7 +412,7 @@ export const eSignEndpoints = (
             url: `${PREFIX}/signature-tab/get-for-document/${docId}`,
             params,
         }),
-        providesTags: ['E-Sign'],
+        providesTags: ['E-Sign', 'E-Signssss'],
     }),
 
     addSignForUser: builder.mutation<
@@ -498,6 +499,23 @@ export const eSignEndpoints = (
         query: (signerId) => ({
             url: `${PREFIX}/signer/${signerId}/reminder-email/toggle`,
             method: 'PATCH',
+        }),
+        invalidatesTags: ['E-Sign'],
+    }),
+
+    getEsignDocumentDetail: builder.query<any, number>({
+        query: (id) => `${PREFIX}/document/${id}/details`,
+        providesTags: ['E-Sign'],
+    }),
+
+    sendBackForRevision: builder.mutation<
+        any,
+        { document: number; userIds: number[]; reason: string }
+    >({
+        query: ({ document, ...body }) => ({
+            url: `${PREFIX}/document/${document}/re-sign/request/from-rto`,
+            method: 'PATCH',
+            body,
         }),
         invalidatesTags: ['E-Sign'],
     }),

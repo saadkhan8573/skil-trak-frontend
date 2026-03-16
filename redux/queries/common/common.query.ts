@@ -647,6 +647,8 @@ const {
     useGetUserSignatureTabForTemplateQuery,
     useGetEsignDocumentsCountQuery,
     useGetRtoEsignDocumentsCountQuery,
+    useSendBackForRevisionMutation,
+    useGetEsignDocumentDetailQuery,
 
     // ---- Traineeship ---- //
     useGetTraineeshipProgramQuery,
@@ -1019,6 +1021,7 @@ export const CommonApi = {
         useGetESignStudent: useGetESignStudentDetailQuery,
         addCustomFieldData: useAddCustomFieldDataMutation,
         useResendEmailToUser: useResendEmailToUserMutation,
+        sendBackForRevision: useSendBackForRevisionMutation,
         useSubadminEsignList: useGetSubadminEsignListQuery,
         cancelEsignDocument: useCancelEsignDocumentMutation,
         useSignDocumentByUser: useSignDocumentByUserMutation,
@@ -1046,6 +1049,7 @@ export const CommonApi = {
         useTemplateDocumentForSign: useGetUserTemplateDocumentForSignQuery,
         useSignatureTabForTemplate: useGetUserSignatureTabForTemplateQuery,
         useGetRtoEsignDocumentsCount: useGetRtoEsignDocumentsCountQuery,
+        useGetEsignDocumentDetail: useGetEsignDocumentDetailQuery,
     },
     Traineeship: {
         useGetList: useGetTraineeshipProgramQuery,

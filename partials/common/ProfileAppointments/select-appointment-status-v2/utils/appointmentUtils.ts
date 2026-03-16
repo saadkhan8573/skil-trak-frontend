@@ -32,6 +32,7 @@ export const buildPayload = (
         unsuccessfulReason,
         rejectionReason,
         otherReason,
+        hours,
         ...rest
     } = formData
 
@@ -52,7 +53,7 @@ export const buildPayload = (
     return {
         body: {
             ...rest,
-            ...(isSuccessful && { scheduleTiming }),
+            ...(isSuccessful && { scheduleTiming, hours: Number(hours) }),
             ...(resolvedStatus === 'rejected' && { rejectionReason }),
             ...(resolvedStatus === 'other' && { otherReason }),
             course: appointment?.course?.id,

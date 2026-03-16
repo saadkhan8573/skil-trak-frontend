@@ -27,9 +27,6 @@ export function HighlightedTaskItem({
 }: HighlightedTaskItemProps) {
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
 
-    const [confirmHighlightedTask, confirmHighlightedTaskResult] =
-        RtoV2Api.Industries.useConfirmHighlightedTask()
-
     const industryId = useAppSelector(
         (state) => state.industry.industryDetail?.id
     )
@@ -156,7 +153,7 @@ export function HighlightedTaskItem({
                         setIsConfirmModalOpen(false)
                         onRefresh()
                     }}
-                    taskIds={[task.id]}
+                    taskId={task.id}
                     industryId={industryId!}
                     confirmationDetailId={confirmationDetail?.id}
                     showNotAvailable={!confirmationDetail}

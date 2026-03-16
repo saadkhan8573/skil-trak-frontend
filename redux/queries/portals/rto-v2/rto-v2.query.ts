@@ -124,6 +124,7 @@ export const {
     useAddSingleRtoIndustryMutation,
     useIndustryRtoChecklistListQuery,
     useConfirmIndustryHighlightedTaskMutation,
+    useConfirmBulkIndustryHighlightedTasksMutation,
     useAddBulkRtoIndustriesMutation,
     useGetIndustryAvailabilityV2Query,
     useGetIndustryInitiatedESignQuery,
@@ -150,7 +151,7 @@ export const {
     useGetIndustryWaitingForRtoStudentsQuery,
     useToggleIndustryCourseStatusMutation,
     useResendEmailIndustryAwaitingStudentMutation,
-
+    useGetStudentAppointmentDetailQuery,
     // ---- RTO Credits ---- //
     useGetRtoCreditsQuery,
     useChangeRtoNetworkMutation,
@@ -226,6 +227,7 @@ export const RtoV2Api = {
             useRunAutomationForAvailabeleStudentsMutation,
         useBookAppointmentExternally: useBookAppointmentExternallyMutation,
         useGetStudentRejectedIndustries: useGetStudentRejectedIndustriesQuery,
+        useGetStudentAppointmentDetail: useGetStudentAppointmentDetailQuery,
     },
     StudentsWorkplace: {
         getStudentWorkplaceList: useGetStudentWorkplaceListQuery,
@@ -268,6 +270,8 @@ export const RtoV2Api = {
         industryCoursesDetails: useIndustryCoursesDetailsQuery,
         industryRtoChecklistList: useIndustryRtoChecklistListQuery,
         useConfirmHighlightedTask: useConfirmIndustryHighlightedTaskMutation,
+        useConfirmBulkHighlightedTasks:
+            useConfirmBulkIndustryHighlightedTasksMutation,
         useIndustryAvailabilityV2: useGetIndustryAvailabilityV2Query,
         industryUserStatusChange: useIndustryUserStatusChangeMutation,
         getIndustryCancelledStudents: useGetIndustryCancelledStudentsQuery,

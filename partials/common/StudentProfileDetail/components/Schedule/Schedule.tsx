@@ -2,7 +2,6 @@ import {
     AuthorizedUserComponent,
     Button,
     Card,
-    EmptyData,
     LoadingAnimation,
     NoData,
     Select,
@@ -13,9 +12,12 @@ import {
 import { UserRoles } from '@constants'
 import { StudentApi, SubAdminApi } from '@queries'
 import { Course, Industry, User } from '@types'
-import { CourseSelectOption, formatOptionLabel } from '@utils'
+import {
+    CourseSelectOption,
+    formatOptionLabel,
+    WorkplaceCurrentStatus,
+} from '@utils'
 import moment from 'moment'
-import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { Waypoint } from 'react-waypoint'
 import { ViewAvailability } from '../Workplace'
@@ -43,7 +45,6 @@ export const Schedule = ({
         skip: !studentId || !isEntered,
         refetchOnMountOrArgChange: 300,
     })
-    console.log('selectedWorkplace', selectedWorkplace)
     const studentWorkplace = SubAdminApi.Student.getWorkplaceForSchedule(
         studentId,
         {
@@ -270,7 +271,7 @@ export const Schedule = ({
                                             </div>
 
                                             {selectedWorkplace?.currentStatus ===
-                                            'awaitingAgreementSigned' ? (
+                                            WorkplaceCurrentStatus.AwaitingAgreementSigned ? (
                                                 <>
                                                     <Typography variant="small">
                                                         Start Date

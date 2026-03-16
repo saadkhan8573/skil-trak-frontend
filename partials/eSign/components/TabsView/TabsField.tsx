@@ -6,6 +6,7 @@ import { useNotification } from '@hooks'
 import { CommonApi } from '@queries'
 import { debounce } from 'lodash'
 import Image from 'next/image'
+import moment from 'moment'
 import React, { KeyboardEvent, useCallback } from 'react'
 import { FaSignature } from 'react-icons/fa'
 
@@ -45,12 +46,9 @@ export const TabsField = ({
 
     const latestResponse = fieldData?.responses?.reduce(
         (accumulator: any, current: any) => {
-            // Convert timestamps to Date objects for comparison
-            const accumulatorDate = new Date(accumulator.updatedAt)
-            const currentDate = new Date(current.updatedAt)
-
-            // Return the item with the later updatedAt timestamp
-            return currentDate > accumulatorDate ? current : accumulator
+            return moment(current.updatedAt).isAfter(accumulator.updatedAt)
+                ? current
+                : accumulator
         },
         fieldData?.responses[0]
     )
@@ -104,7 +102,8 @@ export const TabsField = ({
                         fieldData?.responses?.length > 0 &&
                         !latestResponse?.reSignRequested ? (
                             ''
-                        ) : fieldData?.fieldValue ? (
+                        ) : fieldData?.fieldValue &&
+                          !latestResponse?.reSignRequested ? (
                             <Image
                                 src={fieldData?.fieldValue}
                                 alt={''}
@@ -130,7 +129,9 @@ export const TabsField = ({
                             </div>
                         )
                     ) : null}
-                    {!fieldData?.responses?.length && !radioGroupHasResponse ? (
+                    {(!fieldData?.responses?.length ||
+                        latestResponse?.reSignRequested) &&
+                    !radioGroupHasResponse ? (
                         fieldData?.type === FieldsTypeEnum.Text &&
                         fieldData?.isCustom ? (
                             <input
@@ -140,9 +141,12 @@ export const TabsField = ({
                                 id={`tabs-view-${fieldData?.id}`}
                                 value={fieldData?.fieldValue}
                                 className={`w-full h-full border-2 rounded-md placeholder:text-xs ${
-                                    selectedFillDataField === fieldData?.id
-                                        ? 'border-primary'
-                                        : 'border-gray-500'
+                                    !fieldData?.fieldValue
+                                        ? 'border-red-500'
+                                        : selectedFillDataField ===
+                                            fieldData?.id
+                                          ? 'border-primary'
+                                          : 'border-gray-500'
                                 } text-sm p-1 outline-none`}
                                 placeholder={fieldData?.placeholder}
                                 onChange={(e: any) => {
@@ -162,9 +166,12 @@ export const TabsField = ({
                                 id={`tabs-view-${fieldData?.id}`}
                                 value={fieldData?.fieldValue}
                                 className={`w-full h-full border-2 rounded-md placeholder:text-xs ${
-                                    selectedFillDataField === fieldData?.id
-                                        ? 'border-primary'
-                                        : 'border-gray-500'
+                                    !fieldData?.fieldValue
+                                        ? 'border-red-500'
+                                        : selectedFillDataField ===
+                                            fieldData?.id
+                                          ? 'border-primary'
+                                          : 'border-gray-500'
                                 } text-sm p-1 outline-none`}
                                 placeholder={fieldData?.placeholder}
                                 onChange={(e: any) => {
@@ -229,9 +236,6 @@ export const TabsField = ({
                                         })
                                     }}
                                 />
-                                {/* <label className="text-xs capitalize">
-                            {fieldData?.label}
-                        </label> */}
                             </div>
                         ) : fieldData?.type === FieldsTypeEnum.Dropdown ? (
                             <select
@@ -246,7 +250,12 @@ export const TabsField = ({
                                     })
                                 }}
                                 id={`tabs-view-${fieldData?.id}`}
-                                className="w-full h-4 border border-gray-600 rounded text-xs"
+                                className={`w-full h-4 border rounded text-xs ${
+                                    !fieldData?.fieldValue ||
+                                    fieldData?.fieldValue === 'Select'
+                                        ? 'border-red-500'
+                                        : 'border-gray-600'
+                                }`}
                             >
                                 <option>Select</option>
                                 {fieldData?.option &&
@@ -264,7 +273,8 @@ export const TabsField = ({
                     ) : null}
                     {fieldData?.type === FieldsTypeEnum.Date &&
                     fieldData?.responses &&
-                    fieldData?.responses?.length > 0 ? (
+                    fieldData?.responses?.length > 0 &&
+                    !latestResponse?.reSignRequested ? (
                         <AuthorizedUserComponent roles={[UserRoles.SUBADMIN]}>
                             <div className="bg-white relative flex flex-col ">
                                 <label htmlFor="" className="text-[8px]">
@@ -276,8 +286,14 @@ export const TabsField = ({
                                     type="date"
                                     name=""
                                     id={`tabs-view-${fieldData?.id}`}
-                                    value={fieldData?.fieldValue?.slice(0, 10)}
-                                    className="w-full h-5 border rounded-md border-gray-500 text-sm p-1 outline-none"
+                                    value={moment(fieldData?.fieldValue).format(
+                                        'YYYY-MM-DD'
+                                    )}
+                                    className={`w-full h-5 border rounded-md text-sm p-1 outline-none ${
+                                        !fieldData?.fieldValue
+                                            ? 'border-red-500'
+                                            : 'border-gray-500'
+                                    }`}
                                     placeholder={fieldData?.label}
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>

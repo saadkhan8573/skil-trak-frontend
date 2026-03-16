@@ -18,6 +18,7 @@ import {
     useAuthorizedUserComponent,
 } from '@components'
 import { Skeleton } from '@components/ui/skeleton'
+import { UserRoles } from '@constants'
 import { ProfileSupportTickets } from '@partials/common'
 import { Schedule } from '@partials/common/StudentProfileDetail/components'
 import { useGetSubAdminStudentDetailQuery } from '@queries'
@@ -29,7 +30,6 @@ import {
     setStudentDetail,
 } from '@redux'
 import { Course, Student } from '@types'
-import { getUserCredentials } from '@utils'
 import {
     Book,
     Building2,
@@ -47,7 +47,6 @@ import {
     StudentProfileHeaderSkeleton,
     StudentTopBarSkeleton,
 } from './skeletonLoader'
-import { UserRoles } from '@constants'
 
 export const RtoStudentDetail = () => {
     const router = useRouter()

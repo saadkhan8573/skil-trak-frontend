@@ -1,12 +1,13 @@
 import { Student } from '@types'
-import { maskText } from '@utils'
-import { Mail, MapPin, Phone, Smartphone } from 'lucide-react'
+import { checkJsxVisibility, maskText } from '@utils'
+import { MapPin, Phone, Smartphone } from 'lucide-react'
+import { Activity } from 'react'
 import { HeaderQuickActions } from './HeaderQuickActions'
 import { StudentQuickInfo } from './StudentQuickInfo'
-import { StudentTimeline } from './StudentTimeline'
-import { StudentStatusBanner } from './components/StudentStatusBanner'
 import { StudentStatusSwitches } from './StudentStatusSwitches'
+import { StudentTimeline } from './StudentTimeline'
 import { StudentInvoiceStatus } from './components/StudentInvoiceStatus'
+import { StudentStatusBanner } from './components/StudentStatusBanner'
 
 export const StudentHeader = ({ student }: { student: Student }) => {
     const studentContactInfo = [
@@ -14,6 +15,16 @@ export const StudentHeader = ({ student }: { student: Student }) => {
             id: 'address',
             icon: MapPin,
             value: student?.addressLine1,
+            bgGradient: 'from-[#F7A619]/10 to-[#F7A619]/20',
+            iconColor: 'text-[#F7A619]',
+            hasHover: false,
+        },
+    ]
+    const studentEmail = [
+        {
+            id: 'address',
+            icon: MapPin,
+            value: student?.user?.email,
             bgGradient: 'from-[#F7A619]/10 to-[#F7A619]/20',
             iconColor: 'text-[#F7A619]',
             hasHover: false,
@@ -89,12 +100,14 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                     {avatarBadges.map((badge) => (
                                         <div
                                             key={badge.id}
-                                            className={`absolute ${badge.position ===
+                                            className={`absolute ${
+                                                badge.position ===
                                                 'bottom-right'
-                                                ? 'bottom-0 right-0'
-                                                : 'bottom-0 left-0'
-                                                } w-4.5 h-4.5 ${badge.className
-                                                } rounded-full border-3 border-white shadow-lg flex items-center justify-center`}
+                                                    ? 'bottom-0 right-0'
+                                                    : 'bottom-0 left-0'
+                                            } w-4.5 h-4.5 ${
+                                                badge.className
+                                            } rounded-full border-3 border-white shadow-lg flex items-center justify-center`}
                                         >
                                             {badge.content === 'dot' ? (
                                                 <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
@@ -115,14 +128,17 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                         {studentBadges.map((badge) => (
                                             <div
                                                 key={badge.id}
-                                                className={`inline-flex items-center gap-${badge.icon || badge.emoji
-                                                    ? '1.5'
-                                                    : '2'
-                                                    } px-${badge.icon || badge.emoji
+                                                className={`inline-flex items-center gap-${
+                                                    badge.icon || badge.emoji
+                                                        ? '1.5'
+                                                        : '2'
+                                                } px-${
+                                                    badge.icon || badge.emoji
                                                         ? '2'
                                                         : '2.5'
-                                                    } py-1 rounded-full ${badge.className
-                                                    }`}
+                                                } py-1 rounded-full ${
+                                                    badge.className
+                                                }`}
                                             >
                                                 {badge.hasIndicator && (
                                                     <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
@@ -136,10 +152,11 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                                     </span>
                                                 )}
                                                 <span
-                                                    className={`text-sm ${badge.uppercase
-                                                        ? 'uppercase'
-                                                        : ''
-                                                        }`}
+                                                    className={`text-sm ${
+                                                        badge.uppercase
+                                                            ? 'uppercase'
+                                                            : ''
+                                                    }`}
                                                 >
                                                     {badge.label}
                                                 </span>
@@ -151,17 +168,20 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                         {studentContactInfo.map((contact) => (
                                             <div
                                                 key={contact.id}
-                                                className={`inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-slate-200 px-2.5 py-1 rounded-full shadow-sm ${contact.hasHover
-                                                    ? 'hover:shadow-md transition-all group cursor-pointer'
-                                                    : ''
-                                                    }`}
+                                                className={`inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-slate-200 px-2.5 py-1 rounded-full shadow-sm ${
+                                                    contact.hasHover
+                                                        ? 'hover:shadow-md transition-all group cursor-pointer'
+                                                        : ''
+                                                }`}
                                             >
                                                 <div
-                                                    className={`w-4.5 h-4.5 rounded-full bg-linear-to-br ${contact.bgGradient
-                                                        } flex items-center justify-center ${contact.hasHover
+                                                    className={`w-4.5 h-4.5 rounded-full bg-linear-to-br ${
+                                                        contact.bgGradient
+                                                    } flex items-center justify-center ${
+                                                        contact.hasHover
                                                             ? 'group-hover:scale-110 transition-transform'
                                                             : ''
-                                                        }`}
+                                                    }`}
                                                 >
                                                     <contact.icon
                                                         className={`w-2.5 h-2.5 ${contact.iconColor}`}
@@ -173,6 +193,43 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                             </div>
                                         ))}
                                     </div>
+                                    <Activity
+                                        mode={checkJsxVisibility(
+                                            process.env.NEXT_PUBLIC_NODE_ENV ===
+                                                'local'
+                                        )}
+                                    >
+                                        {/* Contact Info Pills */}
+                                        <div className="flex flex-wrap items-center gap-2 ">
+                                            {studentEmail.map((contact) => (
+                                                <div
+                                                    key={contact.id}
+                                                    className={`inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-slate-200 px-2.5 py-1 rounded-full shadow-sm ${
+                                                        contact.hasHover
+                                                            ? 'hover:shadow-md transition-all group cursor-pointer'
+                                                            : ''
+                                                    }`}
+                                                >
+                                                    <div
+                                                        className={`w-4.5 h-4.5 rounded-full bg-linear-to-br ${
+                                                            contact.bgGradient
+                                                        } flex items-center justify-center ${
+                                                            contact.hasHover
+                                                                ? 'group-hover:scale-110 transition-transform'
+                                                                : ''
+                                                        }`}
+                                                    >
+                                                        <contact.icon
+                                                            className={`w-2.5 h-2.5 ${contact.iconColor}`}
+                                                        />
+                                                    </div>
+                                                    <span className="text-sm text-slate-700">
+                                                        {contact.value}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </Activity>
                                     <div className="mt-2">
                                         <StudentInvoiceStatus />
                                     </div>

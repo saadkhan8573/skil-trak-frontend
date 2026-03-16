@@ -1,25 +1,25 @@
 import {
-    Button,
-    Card,
     EmptyData,
     GlobalModal,
     LoadingAnimation,
     TechnicalError,
-    Typography,
 } from '@components'
 import { FieldsTypeEnum } from '@components/Esign/components/SidebarData'
-import { useNotification } from '@hooks'
 import { CommonApi } from '@queries'
+import { getUserCredentials } from '@utils'
+import { motion } from 'framer-motion'
+import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react'
 import { useRouter } from 'next/router'
-import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { IoMdArrowDropleftCircle } from 'react-icons/io'
 import {
     DownloadEsignDocument,
+    EsignHeader,
+    EsignRightSidebar,
     FinishDocumentModal,
     SVGView,
 } from './components'
 import { EsignSignatureModal, FinishSignModal } from './modal'
-import { MoveLeft } from 'lucide-react'
 
 export const ViewDocumentAndSign = () => {
     const router = useRouter()
@@ -40,10 +40,22 @@ export const ViewDocumentAndSign = () => {
         useState<number>(-1)
     const [selectedFillDataField, setSelectedFillDataField] =
         useState<any>(null)
+    const [currentPage, setCurrentPage] = useState<number>(1)
+    const [zoom, setZoom] = useState<number>(100)
 
-    const { notification } = useNotification()
+    const handleZoomIn = () => setZoom((prev) => Math.min(prev + 10, 150))
+    const handleZoomOut = () => setZoom((prev) => Math.max(prev - 10, 70))
+
+    const role = getUserCredentials()?.role
 
     const documentsTotalPages = CommonApi.ESign.useGetDocumentTotalPages(
+        Number(router.query?.id),
+        {
+            skip: !router.query?.id,
+        }
+    )
+
+    const documentDetail = CommonApi.ESign.useGetEsignDocumentDetail(
         Number(router.query?.id),
         {
             skip: !router.query?.id,
@@ -77,26 +89,22 @@ export const ViewDocumentAndSign = () => {
     //     }
     // }, [tabs])
 
-    const scrollTargetRef = useRef<any>([])
-
     const scrollToPage = (
         tabId: number,
-        currentPage: number,
+        pageIndex: number,
         block?: ScrollLogicalPosition
     ) => {
-        const targetElement = scrollTargetRef.current[currentPage]
-        const detailItem = document.getElementById(`tabs-view-${tabId}`)
-
-        if (detailItem) {
-            detailItem.scrollIntoView({
-                behavior: 'smooth',
-                block: block || 'center',
-            })
-        } else if (targetElement) {
-            targetElement.scrollIntoView({
-                behavior: 'smooth',
-                block: block || 'center',
-            })
+        setCurrentPage(pageIndex + 1)
+        if (tabId !== -1) {
+            setTimeout(() => {
+                const detailItem = document.getElementById(`tabs-view-${tabId}`)
+                if (detailItem) {
+                    detailItem.scrollIntoView({
+                        behavior: 'smooth',
+                        block: block || 'center',
+                    })
+                }
+            }, 500)
         }
     }
 
@@ -240,22 +248,46 @@ export const ViewDocumentAndSign = () => {
             return true
         })
 
-        console.log({ customValuescustomValuescustomValues: customValues })
+        const remainingFields = sortedPositions?.filter((field: any) => {
+            if (!field?.fieldValue && field?.required) {
+                // For radio groups, skip if any sibling in the group is selected
+                if (field?.type === FieldsTypeEnum.Radio) {
+                    return !sortedPositions?.some(
+                        (other: any) =>
+                            other?.type === FieldsTypeEnum.Radio &&
+                            other?.columnName === field?.columnName &&
+                            other?.fieldValue
+                    )
+                }
+                return true
+            }
+            return false
+        })
 
         if (
             customFieldsData
                 ?.filter((s: any) => s?.type === FieldsTypeEnum.Signature)
-                ?.filter((s: any) => !s?.fieldValue)?.length > 0
+                ?.filter((s: any) => !s?.fieldValue)?.length > 0 ||
+            (customValues && customValues?.length > 0)
         ) {
-            notification.warning({
-                title: 'Sign',
-                description: 'Please sign before finish signing',
-            })
-        } else if (customValues && customValues?.length > 0) {
-            notification.warning({
-                title: 'Please fill all required fields',
-                description: 'Please fill all required fields',
-            })
+            setModal(
+                <GlobalModal>
+                    <FinishDocumentModal
+                        customFieldsData={customFieldsData}
+                        onCancelFinishSign={() => {
+                            setModal(null)
+                            onCancelFinishSign()
+                        }}
+                        onFinishSignModal={onFinishSignModal}
+                        onGoToSignFieldIfRemaining={(e: any) => {
+                            onGoToSignFieldIfRemaining(e)
+                            setModal(null)
+                        }}
+                        remainingFields={remainingFields}
+                        asModal
+                    />
+                </GlobalModal>
+            )
         } else {
             setModal(
                 <FinishSignModal
@@ -283,12 +315,6 @@ export const ViewDocumentAndSign = () => {
     const customFieldsAndSign = customFieldsData?.filter(
         (s: any) => s?.type === FieldsTypeEnum.Signature || s?.isCustom
     )
-
-    const [isChecked, setIsChecked] = useState(false)
-
-    const handleCheckboxChange = () => {
-        setIsChecked(!isChecked)
-    }
 
     const extractAndConvert = (position: string) => {
         const [x, y] = position.split(',').map(parseFloat)
@@ -369,41 +395,20 @@ export const ViewDocumentAndSign = () => {
             isLastSelected
         ) {
             setSelectedFillDataField(sortedPositions?.[0]?.id)
-            scrollToPage(-1, documentsTotalPages?.data?.pageCount - 1, 'end')
+            scrollToPage(
+                -1,
+                (documentsTotalPages?.data?.pageCount || 1) - 1,
+                'end'
+            )
         }
     }, [customFieldsSelectedId])
 
     const onDocumentScrollArrow = () => {
         if (customFieldsSelectedId < sortedPositions?.length - 1) {
             const fieldData = sortedPositions?.[customFieldsSelectedId + 1]
-            const isSign = fieldData?.type === FieldsTypeEnum.Signature
-
-            // if (isDocumentLoaded) {
-            //     if (isBrowser()) {
-            //         const inputElement = document?.getElementById(
-            //             `tabs-view-${fieldData?.id}`
-            //         ) as HTMLInputElement | null
-            //         if (inputElement) {
-            //             inputElement.scrollIntoView({
-            //                 behavior: 'smooth',
-            //                 block: 'center',
-            //             })
-            //             setTimeout(() => {
-            //                 inputElement.focus()
-            //             }, 400)
-            //         }
-            //     }
-            // }
 
             const isFieldValue =
                 sortedPositions?.[customFieldsSelectedId]?.fieldValue
-
-            // if (isSign) {
-            //     setTimeout(() => {
-            //         setIsSignature(true)
-            //         setSelectedSign(fieldData)
-            //     }, 500)
-            // }
 
             if (isFillRequiredFields) {
                 const slicedData = sortedPositions?.slice(
@@ -427,6 +432,12 @@ export const ViewDocumentAndSign = () => {
 
                 if (!requiredData) {
                     setIsLastSelected(true)
+                    scrollToPage(
+                        -1,
+                        (documentsTotalPages?.data?.pageCount || 1) - 1,
+                        'end'
+                    )
+                    return
                 }
 
                 const findMyIndex = sortedPositions?.findIndex(
@@ -436,6 +447,7 @@ export const ViewDocumentAndSign = () => {
                 if (isFieldValue) {
                     setCustomFieldsSelectedId(findMyIndex)
                     setSelectedFillDataField(requiredData?.id)
+                    scrollToPage(requiredData?.id, requiredData?.number - 1)
                 } else {
                     let updatedIndex = findMyIndex + 1
 
@@ -450,7 +462,7 @@ export const ViewDocumentAndSign = () => {
                     } else {
                         scrollToPage(
                             -1,
-                            documentsTotalPages?.data?.pageCount - 1,
+                            (documentsTotalPages?.data?.pageCount || 1) - 1,
                             'end'
                         )
                         setIsLastSelected(true)
@@ -462,10 +474,14 @@ export const ViewDocumentAndSign = () => {
 
                     setCustomFieldsSelectedId(updatedIndex)
                     setSelectedFillDataField(nextData?.id)
+                    if (nextData) {
+                        scrollToPage(nextData?.id, nextData?.number - 1)
+                    }
                 }
             } else {
                 setSelectedFillDataField(fieldData?.id)
                 setCustomFieldsSelectedId(customFieldsSelectedId + 1)
+                scrollToPage(fieldData?.id, fieldData?.number - 1)
             }
         } else {
             setIsLastSelected(
@@ -473,17 +489,11 @@ export const ViewDocumentAndSign = () => {
                     sortedPositions?.[sortedPositions?.length - 1]?.id
             )
             setSelectedFillDataField(sortedPositions?.[0]?.id)
-            scrollToPage(-1, documentsTotalPages?.data?.pageCount - 1, 'end')
-            // setCustomFieldsSelectedId(0)
-            // finishSign
-            // const detailItem = document.getElementById(`finishSign`)
-
-            // if (detailItem) {
-            //     detailItem.scrollIntoView({
-            //         behavior: 'smooth',
-            //         block: 'center',
-            //     })
-            // }
+            scrollToPage(
+                -1,
+                (documentsTotalPages?.data?.pageCount || 1) - 1,
+                'end'
+            )
         }
     }
 
@@ -509,19 +519,10 @@ export const ViewDocumentAndSign = () => {
     }
 
     return (
-        <div>
+        <div className="space-y-3.5">
             {modal}
-            <div className="flex justify-between items-center py-2">
-                <Button
-                    className="lg:ml-20"
-                    Icon={MoveLeft}
-                    variant="primaryNew"
-                    text="Go Back"
-                    outline
-                    onClick={() => router.back()}
-                />
-                <DownloadEsignDocument />
-            </div>
+            <EsignHeader documentDetail={documentDetail?.data} />
+
             {isSignature && isDocumentLoaded?.isSuccess ? (
                 <EsignSignatureModal
                     tab={selectedSign}
@@ -565,65 +566,109 @@ export const ViewDocumentAndSign = () => {
                 <LoadingAnimation />
             ) : documentsTotalPages.isSuccess && documentsTotalPages?.data ? (
                 <>
-                    <div className="grid grid-cols-1 lg:grid-cols-6 gap-x-2.5 relative">
-                        <div className="block lg:hidden">
-                            {/* <div className="flex justify-end items-center ">
-                                <div
-                                    onClick={() =>
-                                        setShowSignersField(!showSignersField)
-                                    }
-                                >
-                                    <Typography variant="small" semibold>
-                                        Show Fields
-                                    </Typography>
-                                </div>
-                                {showSignersField && (
-                                    <div className="absolute top-5 z-20 w-3/4">
-                                        <ScrollTabsView
-                                            onClick={() => {}}
-                                            customFieldsAndSign={
-                                                customFieldsAndSign
-                                            }
-                                            scrollToPage={scrollToPage}
-                                            setSelectedFillDataField={
-                                                setSelectedFillDataField
-                                            }
-                                        />
-                                    </div>
-                                )}
-                            </div> */}
-                        </div>
+                    <div className="flex flex-col lg:grid lg:grid-cols-4 gap-6 relative max-w-400 mx-auto p-0">
+                        <div className="lg:col-span-3 flex flex-col gap-y-4 relative w-full">
+                            <div className="flex justify-end items-center">
+                                <DownloadEsignDocument />
+                            </div>
 
-                        <div
-                            className={`${
-                                showSignersField
-                                    ? 'lg:col-span-6'
-                                    : 'lg:col-span-6'
-                            } max-w- lg:pl-20 mx-auto flex flex-col gap-y-3 relative w-full`}
-                        >
-                            {[
-                                ...Array(
-                                    Number(documentsTotalPages?.data?.pageCount)
-                                ),
-                            ]?.map((_, i: number) => (
+                            <div
+                                className="bg-white rounded-2xl shadow-lg border overflow-hidden w-full"
+                                style={{ borderColor: '#E2E8F0' }}
+                            >
+                                {/* PDF Viewer Header */}
                                 <div
-                                    ref={(el: any) =>
-                                        (scrollTargetRef.current[i] = el)
-                                    }
-                                    onClick={() => {}}
-                                    className="relative"
+                                    className="border-b px-6 py-4"
+                                    style={{
+                                        borderColor: '#E2E8F0',
+                                        background:
+                                            'linear-gradient(to right, #F8FAFC, white)',
+                                    }}
                                 >
-                                    <Card key={i} noPadding>
-                                        <div className="absolute top-1 left-1/2 flex justify-center">
-                                            <Typography
-                                                variant="label"
-                                                semibold
+                                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                        <h2
+                                            className="text-base md:text-lg font-bold flex items-center gap-2"
+                                            style={{ color: '#0F172A' }}
+                                        >
+                                            <span
+                                                className="w-2 h-2 rounded-full"
+                                                style={{
+                                                    background: '#00A651',
+                                                }}
+                                            ></span>
+                                            Document Preview
+                                        </h2>
+                                        <div className="flex items-center gap-3">
+                                            {/* Zoom Controls */}
+                                            <div
+                                                className="flex items-center gap-1 border-2 rounded-xl px-2 py-1.5 shadow-sm"
+                                                style={{
+                                                    borderColor: '#E2E8F0',
+                                                }}
                                             >
-                                                {i + 1}
-                                            </Typography>
+                                                <motion.button
+                                                    whileHover={{ scale: 1.1 }}
+                                                    whileTap={{ scale: 0.9 }}
+                                                    onClick={handleZoomOut}
+                                                    className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+                                                    title="Zoom out"
+                                                >
+                                                    <ZoomOut
+                                                        className="w-4 h-4"
+                                                        style={{
+                                                            color: '#0066CC',
+                                                        }}
+                                                    />
+                                                </motion.button>
+                                                <span
+                                                    className="text-sm font-semibold min-w-14 text-center"
+                                                    style={{ color: '#0F172A' }}
+                                                >
+                                                    {zoom}%
+                                                </span>
+                                                <motion.button
+                                                    whileHover={{ scale: 1.1 }}
+                                                    whileTap={{ scale: 0.9 }}
+                                                    onClick={handleZoomIn}
+                                                    className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+                                                    title="Zoom in"
+                                                >
+                                                    <ZoomIn
+                                                        className="w-4 h-4"
+                                                        style={{
+                                                            color: '#0066CC',
+                                                        }}
+                                                    />
+                                                </motion.button>
+                                            </div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                {/* PDF Content */}
+                                <div
+                                    className="p-0 lg:p-3.5 pb-0! overflow-auto"
+                                    style={{
+                                        background: '#F8FAFC',
+                                    }}
+                                >
+                                    <motion.div
+                                        key={currentPage}
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="bg-white shadow-2xl mx-auto p-2 md:p-4 mb-6 rounded-lg relative sm:max-w-full"
+                                        style={{
+                                            width: `${zoom}%`,
+                                            maxWidth:
+                                                zoom < 100 ? '100%' : 'none',
+                                            minHeight: '400px',
+                                            transform: 'translateZ(0)',
+                                            border: '1px solid #E2E8F0',
+                                        }}
+                                    >
                                         <SVGView
-                                            index={i}
+                                            index={currentPage - 1}
                                             scrollToPage={scrollToPage}
                                             sortedPositions={sortedPositions}
                                             onDocumentScrollArrow={() => {
@@ -662,67 +707,142 @@ export const ViewDocumentAndSign = () => {
                                                 onCancelFinishSign
                                             }
                                         />
-                                    </Card>
+                                    </motion.div>
                                 </div>
-                            ))}
-                        </div>
-                    </div>
-                    <div className="flex justify-center mt-3 mx-auto w-80 h-14">
-                        <Button
-                            fullHeight
-                            fullWidth
-                            text={'Finish Esign'}
-                            onClick={() => {
-                                setModal(
-                                    <GlobalModal>
-                                        <FinishDocumentModal
-                                            customFieldsData={customFieldsData}
-                                            onCancelFinishSign={() => {
-                                                setModal(null)
-                                                onCancelFinishSign()
-                                            }}
-                                            onFinishSignModal={
-                                                onFinishSignModal
-                                            }
-                                            onGoToSignFieldIfRemaining={(
-                                                e: any
-                                            ) => {
-                                                onGoToSignFieldIfRemaining(e)
-                                                setModal(null)
-                                            }}
-                                            remainingFields={sortedPositions?.filter(
-                                                (field: any) => {
-                                                    if (
-                                                        !field?.fieldValue &&
-                                                        field?.required
-                                                    ) {
-                                                        // For radio groups, skip if any sibling in the group is selected
-                                                        if (
-                                                            field?.type ===
-                                                            FieldsTypeEnum.Radio
-                                                        ) {
-                                                            return !sortedPositions?.some(
-                                                                (other: any) =>
-                                                                    other?.type ===
-                                                                        FieldsTypeEnum.Radio &&
-                                                                    other?.columnName ===
-                                                                        field?.columnName &&
-                                                                    other?.fieldValue
-                                                            )
-                                                        }
-                                                        return true
-                                                    }
-                                                    return false
-                                                }
-                                            )}
-                                            asModal
-                                        />
-                                    </GlobalModal>
-                                )
-                            }}
-                        />
-                    </div>
 
+                                {/* PDF Navigation Footer */}
+                                <div
+                                    className="border-t px-4 md:px-6 py-4"
+                                    style={{
+                                        borderColor: '#E2E8F0',
+                                        background:
+                                            'linear-gradient(to right, white, #F8FAFC)',
+                                    }}
+                                >
+                                    <div className="flex flex-wrap items-center justify-between gap-4">
+                                        <motion.button
+                                            whileHover={{ scale: 1.05, x: -2 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            onClick={() =>
+                                                setCurrentPage((prev) =>
+                                                    Math.max(1, prev - 1)
+                                                )
+                                            }
+                                            disabled={currentPage === 1}
+                                            className="flex items-center gap-2 px-3 md:px-5 py-2 md:py-2.5 text-xs md:text-sm font-semibold bg-white border-2 rounded-xl hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                                            style={{
+                                                borderColor: '#E2E8F0',
+                                                color:
+                                                    currentPage === 1
+                                                        ? '#94A3B8'
+                                                        : '#0066CC',
+                                            }}
+                                        >
+                                            <ChevronLeft className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                                            <span className="hidden sm:inline">
+                                                Previous
+                                            </span>
+                                            <span className="sm:hidden">
+                                                Prev
+                                            </span>
+                                        </motion.button>
+
+                                        <div className="flex items-center gap-2 md:gap-4 order-last sm:order-0 w-full sm:w-auto justify-center">
+                                            <span
+                                                className="text-xs md:text-sm font-medium whitespace-nowrap"
+                                                style={{ color: '#64748B' }}
+                                            >
+                                                Page{' '}
+                                                <strong
+                                                    style={{ color: '#0066CC' }}
+                                                >
+                                                    {currentPage}
+                                                </strong>{' '}
+                                                of{' '}
+                                                <strong>
+                                                    {
+                                                        documentsTotalPages
+                                                            ?.data?.pageCount
+                                                    }
+                                                </strong>
+                                            </span>
+                                            <select
+                                                value={currentPage}
+                                                onChange={(e) =>
+                                                    setCurrentPage(
+                                                        Number(e.target.value)
+                                                    )
+                                                }
+                                                className="px-2 md:px-4 py-1.5 md:py-2 text-xs md:text-sm border-2 rounded-xl focus:outline-none bg-white font-medium shadow-sm"
+                                                style={{
+                                                    borderColor: '#E2E8F0',
+                                                    color: '#0066CC',
+                                                }}
+                                            >
+                                                {Array.from(
+                                                    {
+                                                        length: documentsTotalPages
+                                                            ?.data?.pageCount,
+                                                    },
+                                                    (_, i) => i + 1
+                                                ).map((page) => (
+                                                    <option
+                                                        key={page}
+                                                        value={page}
+                                                    >
+                                                        Pg {page}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+
+                                        <motion.button
+                                            whileHover={{ scale: 1.05, x: 2 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            onClick={() =>
+                                                setCurrentPage((prev) =>
+                                                    Math.min(
+                                                        documentsTotalPages
+                                                            ?.data?.pageCount,
+                                                        prev + 1
+                                                    )
+                                                )
+                                            }
+                                            disabled={
+                                                currentPage ===
+                                                documentsTotalPages?.data
+                                                    ?.pageCount
+                                            }
+                                            className="flex items-center gap-2 px-3 md:px-5 py-2 md:py-2.5 text-xs md:text-sm font-semibold bg-white border-2 rounded-xl hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                                            style={{
+                                                borderColor: '#E2E8F0',
+                                                color:
+                                                    currentPage ===
+                                                    documentsTotalPages?.data
+                                                        ?.pageCount
+                                                        ? '#94A3B8'
+                                                        : '#0066CC',
+                                            }}
+                                        >
+                                            <span className="hidden sm:inline">
+                                                Next
+                                            </span>
+                                            <ChevronRight className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                                        </motion.button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="lg:col-span-1 sticky top-6 self-start w-full">
+                            <EsignRightSidebar
+                                documentDetail={documentDetail?.data}
+                                currentRole={role}
+                                onFinishSign={onFinishSignModal}
+                                onSignatureClicked={onSignatureClicked}
+                                signatureFields={sortedPositions}
+                            />
+                        </div>
+                    </div>{' '}
                     {/* {showSignersField && (
                             <div className="hidden lg:block sticky top-0 bg-white h-[85vh]">
                                 <div className="p-3 flex justify-end">
@@ -745,7 +865,6 @@ export const ViewDocumentAndSign = () => {
                                 />
                             </div>
                         )} */}
-
                     {/* <div className="flex justify-center bg-white px-5 py-2 shadow-md w-full rounded my-2">
                         <button
                             className={`${

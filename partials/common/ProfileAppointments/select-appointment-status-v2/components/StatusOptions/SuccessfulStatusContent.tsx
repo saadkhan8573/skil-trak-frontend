@@ -17,9 +17,8 @@ export function SuccessfulStatusContent({
     const { watch } = useFormContext()
     const weekSchedule = watch('weekSchedule')
     const minAllowedDate = moment().add(7, 'days').format('YYYY-MM-DD')
-    console.log('appointment', appointment)
     return (
-        <div className="p-4 bg-[#0D5468]/5 max-h-64 overflow-auto border-t-2 border-[#0D5468] animate-in slide-in-from-top-4 duration-500">
+        <div className="p-4 bg-[#0D5468]/5 overflow-auto border-t-2 border-[#0D5468] animate-in slide-in-from-top-4 duration-500">
             {/* Confirmation Message */}
             <div className="flex items-start gap-2 mb-4 p-2 bg-white/80 backdrop-blur-sm rounded-lg border border-[#0D5468]/30">
                 <CheckCircle2 className="w-4 h-4 text-[#0D5468] mt-0.5 shrink-0" />
@@ -52,11 +51,11 @@ export function SuccessfulStatusContent({
                         label="Total Hours Required"
                         name="hours"
                         type="number"
-                        defaultValue={
+                        defaultValue={Math.floor(
                             appointment?.course?.extraHours?.length > 0
                                 ? appointment?.course?.extraHours?.[0]?.hours
                                 : appointment?.course?.hours
-                        }
+                        ).toString()}
                     />
                     <TextInput
                         label="Placement Start Date"

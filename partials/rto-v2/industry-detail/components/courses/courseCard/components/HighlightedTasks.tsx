@@ -4,7 +4,7 @@ import { RtoV2Api } from '@queries'
 import { useAppSelector } from '@redux'
 import { CheckSquare, Loader2 } from 'lucide-react'
 import { useState } from 'react'
-import { ConfirmHighlightedTasksModal } from '../../modals/ConfirmHighlightedTasksModal'
+import { BulkConfirmHighlightedTasksModal } from '../../modals/BulkConfirmHighlightedTasksModal'
 import { HighlightedTaskItem } from './HighlightedTaskItem'
 
 interface HighlightedTasksProps {
@@ -40,42 +40,51 @@ export function HighlightedTasks({
             <Card className="flex items-center justify-center p-8 border border-gray-300!">
                 <Loader2 className="w-6 h-6 animate-spin text-[#044866]" />
             </Card>
-        );
+        )
     }
 
     if (!fetchedTasks || fetchedTasks.length === 0) {
-        return null;
+        return null
     }
 
     const unconfirmedTasks = fetchedTasks.filter((task: any) => {
-        const detail = task.industryHighlightedTasks?.[0];
-        return !detail || !detail.isConfirmed;
-    });
+        const detail = task.industryHighlightedTasks?.[0]
+        return !detail || !detail.isConfirmed
+    })
 
     const toggleTaskSelection = (taskId: number) => {
-        setSelectedTaskIds(prev =>
+        setSelectedTaskIds((prev) =>
             prev.includes(taskId)
-                ? prev.filter(id => id !== taskId)
+                ? prev.filter((id) => id !== taskId)
                 : [...prev, taskId]
-        );
-    };
+        )
+    }
 
     const toggleSelectAll = () => {
         if (selectedTaskIds.length === unconfirmedTasks.length) {
-            setSelectedTaskIds([]);
+            setSelectedTaskIds([])
         } else {
-            setSelectedTaskIds(unconfirmedTasks.map((t: any) => t.id));
+            setSelectedTaskIds(unconfirmedTasks.map((t: any) => t.id))
         }
-    };
+    }
 
     const handleBulkAction = (isConfirmed: boolean) => {
-        setIsConfirmedBulk(isConfirmed);
-        setIsBulkConfirmOpen(true);
-    };
+        setIsConfirmedBulk(isConfirmed)
+        setIsBulkConfirmOpen(true)
+    }
 
-    const confirmIds = selectedTaskIds.length > 0
-        ? selectedTaskIds
-        : unconfirmedTasks.map((t: any) => t.id);
+    const confirmIds =
+        selectedTaskIds.length > 0
+            ? selectedTaskIds
+            : unconfirmedTasks.map((t: any) => t.id)
+
+    const confirmTasks = confirmIds.map((id: number) => {
+        const task = unconfirmedTasks.find((t: any) => t.id === id)
+        return {
+            id,
+            confirmationDetailId: task?.industryHighlightedTasks?.[0]?.id
+        }
+    })
 
     return (
         <Card className="p-3 border border-gray-300! bg-gray-50/20! shadow-none space-y-3">
@@ -86,25 +95,34 @@ export function HighlightedTasks({
                         {title}
                     </h5>
 
-                    {/* {unconfirmedTasks.length > 0 && !isDeleted && (
+                    {unconfirmedTasks.length > 0 && !isDeleted && (
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Badge
                                     variant="primaryNew"
                                     onClick={toggleSelectAll}
-                                    outline={selectedTaskIds.length !== unconfirmedTasks.length}
+                                    outline={
+                                        selectedTaskIds.length !==
+                                        unconfirmedTasks.length
+                                    }
                                 >
-                                    {selectedTaskIds.length === unconfirmedTasks.length ? 'Deselect All' : `Select All (${unconfirmedTasks.length})`}
+                                    {selectedTaskIds.length ===
+                                    unconfirmedTasks.length
+                                        ? 'Deselect All'
+                                        : `Select All (${unconfirmedTasks.length})`}
                                 </Badge>
                             </TooltipTrigger>
                             <TooltipContent>
-                                {selectedTaskIds.length === unconfirmedTasks.length ? 'Clear current selection' : 'Select all pending tasks for bulk action'}
+                                {selectedTaskIds.length ===
+                                unconfirmedTasks.length
+                                    ? 'Clear current selection'
+                                    : 'Select all pending tasks for bulk action'}
                             </TooltipContent>
                         </Tooltip>
-                    )} */}
+                    )}
                 </div>
 
-                {/* <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
                     {unconfirmedTasks.length > 0 && !isDeleted && (
                         <>
                             <Tooltip>
@@ -127,12 +145,13 @@ export function HighlightedTasks({
                             </Tooltip>
                         </>
                     )}
-                </div> */}
+                </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2.5">
                 {fetchedTasks?.map((task: any, index: number) => {
-                    const isConfirmed = task.industryHighlightedTasks?.[0]?.isConfirmed;
+                    const isConfirmed =
+                        task.industryHighlightedTasks?.[0]?.isConfirmed
                     return (
                         <HighlightedTaskItem
                             key={task.id || index}
@@ -141,23 +160,24 @@ export function HighlightedTasks({
                             onRefresh={() => refetch()}
                             isDeleted={isDeleted}
                             isSelected={selectedTaskIds.includes(task.id)}
-                            onToggleSelection={() => toggleTaskSelection(task.id)}
+                            onToggleSelection={() =>
+                                toggleTaskSelection(task.id)
+                            }
                         />
                     )
                 })}
             </div>
 
             {isBulkConfirmOpen && (
-                <ConfirmHighlightedTasksModal
+                <BulkConfirmHighlightedTasksModal
                     isOpen={isBulkConfirmOpen}
                     onClose={() => {
                         setIsBulkConfirmOpen(false)
                         setSelectedTaskIds([])
                         refetch()
                     }}
-                    taskIds={confirmIds}
+                    tasks={confirmTasks}
                     industryId={industryId!}
-                    showNotAvailable={confirmIds.length > 0}
                 />
             )}
         </Card>

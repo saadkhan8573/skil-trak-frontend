@@ -403,6 +403,22 @@ export const industriesEndpoints = (
         }),
         invalidatesTags: ['RTOIndustries', 'Industry'],
     }),
+    confirmBulkIndustryHighlightedTasks: builder.mutation<
+        any,
+        {
+            industryId: number
+            isConfirmed: boolean
+            confirmationSource: ConfirmationSource
+            tasks: { taskId: number; confirmationDetailId?: number }[]
+        }
+    >({
+        query: ({ industryId, ...body }) => ({
+            url: `${INDUSTRIESPREFIX}${industryId}/highlighted-tasks/confirm-bulk`,
+            method: 'POST',
+            body,
+        }),
+        invalidatesTags: ['RTOIndustries', 'Industry'],
+    }),
     getHighlightedTasks: builder.query<
         any,
         { industryId: number; courseId: number }

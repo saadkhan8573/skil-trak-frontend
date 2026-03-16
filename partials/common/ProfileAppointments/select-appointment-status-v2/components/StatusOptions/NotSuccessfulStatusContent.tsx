@@ -1,8 +1,6 @@
 import { Select } from '@components'
-import { useFormContext } from 'react-hook-form'
-import { MissedAppointmentContent } from './ReasonContent/MissedAppointmentContent'
-import { RejectedByIndustryContent } from './ReasonContent/RejectedByIndustryContent'
 import { OtherReasonContent } from './ReasonContent/OtherReasonContent'
+import { RejectedByIndustryContent } from './ReasonContent/RejectedByIndustryContent'
 
 interface NotSuccessfulStatusContentProps {
     unsuccessfulReason: string | undefined

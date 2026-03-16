@@ -4,6 +4,8 @@ import { AdminLayout } from '@layouts'
 import { NextPageWithLayout } from '@types'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Button, TextInput, Card, Typography } from '@components'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 const WpAppReq: NextPageWithLayout = () => {
     const [appReq, appReqResult] = SubAdminApi.Workplace.removeWPApprovalReq()
@@ -12,9 +14,31 @@ const WpAppReq: NextPageWithLayout = () => {
     const [removeRtoStudentBlacklist, rtoBlacklistResult] =
         RtoV2Api.PlacementRequests.removeRtoStudentFromBlackList()
 
-    const formMethods = useForm({ mode: 'all' })
-    const industryBlacklistForm = useForm({ mode: 'all' })
-    const rtoBlacklistForm = useForm({ mode: 'all' })
+    const wpAppReqSchema = yup.object({
+        id: yup.string().required('Request ID is required'),
+    })
+
+    const industryBlacklistSchema = yup.object({
+        id: yup.string().required('Industry ID is required'),
+    })
+
+    const rtoBlacklistSchema = yup.object({
+        id: yup.string().required('ID is required'),
+        indId: yup.string().required('Industry ID is required'),
+    })
+
+    const formMethods = useForm({
+        mode: 'all',
+        resolver: yupResolver(wpAppReqSchema),
+    })
+    const industryBlacklistForm = useForm({
+        mode: 'all',
+        resolver: yupResolver(industryBlacklistSchema),
+    })
+    const rtoBlacklistForm = useForm({
+        mode: 'all',
+        resolver: yupResolver(rtoBlacklistSchema),
+    })
 
     const onSubmit = (values: any) => {
         appReq(values?.id)
@@ -52,7 +76,6 @@ const WpAppReq: NextPageWithLayout = () => {
                             >
                                 <TextInput
                                     name="id"
-                                    showError={false}
                                     placeholder="Enter Request ID"
                                 />
                                 <Button
@@ -87,7 +110,6 @@ const WpAppReq: NextPageWithLayout = () => {
                             >
                                 <TextInput
                                     name="id"
-                                    showError={false}
                                     placeholder="Enter Industry ID"
                                 />
                                 <Button
@@ -123,12 +145,10 @@ const WpAppReq: NextPageWithLayout = () => {
                                 <div className="space-y-4">
                                     <TextInput
                                         name="id"
-                                        showError={false}
                                         placeholder="Enter ID"
                                     />
                                     <TextInput
                                         name="indId"
-                                        showError={false}
                                         placeholder="Enter Industry ID"
                                     />
                                 </div>

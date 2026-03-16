@@ -10,26 +10,30 @@ const IndustryListingDetails: NextPageWithLayout = () => {
     const contextBar = useContextBar()
     const router = useRouter()
     const id = router.query.id
-    const { data, isSuccess, isLoading } =
+    const { data, isSuccess, isLoading, refetch } =
         CommonApi.FindWorkplace.useIndustryListingProfileDetails(id, {
             skip: !id,
         })
 
-    useEffect(() => {
-        if (isSuccess) {
-            contextBar.show(false)
-            contextBar.setContent(<CBListingProfile industry={data} />)
-        }
+    // useEffect(() => {
+    //     if (isSuccess) {
+    //         contextBar.show(false)
+    //         contextBar.setContent(<CBListingProfile industry={data} />)
+    //     }
 
-        return () => {
-            contextBar.setContent(null)
-            contextBar.hide()
-        }
-    }, [data])
+    //     return () => {
+    //         contextBar.setContent(null)
+    //         contextBar.hide()
+    //     }
+    // }, [data])
 
     return (
         <div>
-            <ListingProfileDetails industry={data} />
+            <ListingProfileDetails
+                industry={data}
+                onSetIndustryData={() => refetch()}
+                isLoading={isLoading}
+            />
         </div>
     )
 }

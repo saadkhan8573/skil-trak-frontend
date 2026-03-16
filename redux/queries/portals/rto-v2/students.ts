@@ -113,4 +113,11 @@ export const studentsEndpoints = (
         query: (studentId) => `students/${studentId}/rejected-industries/list`,
         providesTags: ['RTO'],
     }),
+    getStudentAppointmentDetail: builder.query<any, { userId?: number } | void>({
+        query: (params) => ({
+            url: `students/workplace-requests/past-appointment/get`,
+            params: params || {},
+        }),
+        providesTags: ['RTO'],
+    }),
 })

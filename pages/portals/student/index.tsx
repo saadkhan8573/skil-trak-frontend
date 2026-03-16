@@ -75,7 +75,7 @@ const StudentDashboard: NextPageWithLayout = () => {
         setModal(null)
     }
     const appointmentCompletion =
-        CommonApi.Appointments.useAppointmentCompletionStatus({})
+        RtoV2Api.Students.useGetStudentAppointmentDetail()
     const agreementSignedAndSchedule =
         CommonApi.Appointments.useStudentAgreementAndScheduleStatus()
 
@@ -111,10 +111,11 @@ const StudentDashboard: NextPageWithLayout = () => {
     const uponAgreementSignedAndNoSchedule = () => {
         setModal(<StudentWpScheduleModal student={data} onClose={onClose} />)
     }
-    const uponCompletionAppointment = () => {
+    const uponCompletionAppointment = (appointment: any) => {
         setModal(
             <SelectAppointmentStatusVII
-                appointment={appointmentCompletion?.data}
+                isOpen={true}
+                appointment={appointment}
                 onClose={onClose}
             />
         )
@@ -130,7 +131,7 @@ const StudentDashboard: NextPageWithLayout = () => {
             const oneMonthAgo = moment().subtract(1, 'months')
 
             if (appointmentDate.isAfter(oneMonthAgo)) {
-                uponCompletionAppointment()
+                uponCompletionAppointment(appointmentCompletion?.data)
             }
         }
     }, [appointmentCompletion?.data])

@@ -1,15 +1,14 @@
-import { Button, TechnicalError, Typography } from '@components'
+import { Button, TechnicalError } from '@components'
 import { MediaQueries } from '@constants'
 import { CommonApi } from '@queries'
 import { isBrowser } from '@utils'
 import { useRouter } from 'next/router'
-import { KeyboardEvent, useEffect, useRef, useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { useMediaQuery } from 'react-responsive'
 import { Waypoint } from 'react-waypoint'
-import { DocumentScrollArrow } from './DocumentScrollArrow'
 import { FinishDocumentModal } from './FinishDocumentModal'
 import { TabsView } from './TabsView/TabsView'
+import { KeyboardEvent, useEffect, useRef, useState } from 'react'
 
 export const SVGView = ({
     scrollToPage,
@@ -49,7 +48,6 @@ export const SVGView = ({
     const router = useRouter()
     const [viewport, setViewport] = useState<string | null>('')
     const [showEndDocument, setShowEndDocument] = useState(true)
-    const [showStartDocument, setShowStartDocument] = useState<boolean>(true)
 
     const isMobile = useMediaQuery(MediaQueries.Tablet)
 
@@ -57,12 +55,10 @@ export const SVGView = ({
 
     const [loadSvg, setLoadSvg] = useState(false)
 
-    const [x, y, width, height] = viewport?.split(' ') || []
-
     const documentSvgData = CommonApi.ESign.useTemplateDocumentForSign(
         { id: Number(router.query?.id), pageNumber: index },
         {
-            skip: !router?.query?.id || !loadSvg,
+            skip: !router?.query?.id,
         }
     )
 
@@ -168,103 +164,6 @@ export const SVGView = ({
                 }}
             >
                 <div className="relative">
-                    {(index === 0 ? !showStartDocument : true)
-                        ? ((sortedPositions &&
-                              sortedPositions?.[customFieldsSelectedId]
-                                  ?.number -
-                                  1 ===
-                                  index) ||
-                              customFieldsSelectedId === -1) && (
-                              <div
-                                  className={`absolute  lg:-left-24 z-[111] ${
-                                      customFieldsSelectedId < 0
-                                          ? 'rotate-90'
-                                          : ''
-                                  } transition-all duration-500`}
-                                  style={{
-                                      top:
-                                          customFieldsSelectedId >= 0
-                                              ? `${
-                                                    (Number(
-                                                        sortedPositions?.[
-                                                            customFieldsSelectedId
-                                                        ]?.position?.split(
-                                                            ','
-                                                        )?.[1]
-                                                    ) *
-                                                        100) /
-                                                    Number(height)
-                                                }%`
-                                              : 0,
-                                      ...(isMobile
-                                          ? {
-                                                // left: `${
-                                                //     ((Number(
-                                                //         sortedPositions?.[
-                                                //             customFieldsSelectedId
-                                                //         ]?.size?.split(',')?.[0]
-                                                //     ) -
-                                                //         45) /
-                                                //         Number(
-                                                //             sortedPositions?.[
-                                                //                 customFieldsSelectedId
-                                                //             ]?.position?.split(
-                                                //                 ','
-                                                //             )?.[0]
-                                                //         )) *
-                                                //         100 -
-                                                //     4
-                                                // }%`,
-                                                left:
-                                                    (Number(position) /
-                                                        Number(width)) *
-                                                    100,
-                                            }
-                                          : {}),
-
-                                      // top: '24%',
-                                  }}
-                                  onClick={() => {
-                                      onDocumentScrollArrow()
-                                  }}
-                              >
-                                  <DocumentScrollArrow />
-                              </div>
-                          )
-                        : null}
-                    {documentSvgData?.isSuccess &&
-                    index === 0 &&
-                    showStartDocument ? (
-                        <div className="w-full absolute h-full bg-[#00000050]">
-                            <div className="flex flex-col gap-y-2 bg-white w-full lg:w-[600px] p-5 rounded-md top-6 lg:top-24 absolute left-1/2 -translate-x-1/2">
-                                <Typography
-                                    center
-                                    variant={isMobile ? 'small' : 'label'}
-                                >
-                                    You can start by reading, filling in fields,
-                                    or signing—whatever works best for you. When
-                                    you're done, click the button at the end to
-                                    finish.
-                                </Typography>
-                                <label
-                                    htmlFor={`tabs-view-${sortedPositions?.[customFieldsSelectedId]?.id}`}
-                                    onClick={() => {
-                                        onDocumentScrollArrow()
-                                        setShowStartDocument(false)
-                                    }}
-                                    className=" cursor-pointer bg-primary w-36 lg:w-60 h-8 lg:h-12 mx-auto shadow-lg flex items-center justify-center rounded  "
-                                >
-                                    <Typography
-                                        color="text-white"
-                                        center
-                                        variant={isMobile ? 'small' : 'body'}
-                                    >
-                                        Start With Document
-                                    </Typography>
-                                </label>
-                            </div>
-                        </div>
-                    ) : null}
                     {documentSvgData?.isSuccess &&
                     index === documentData?.pageCount - 1 &&
                     (customFieldsSelectedId >= sortedPositions?.length - 1 ||
@@ -349,7 +248,8 @@ __html: svgContent,
                                 <Skeleton
                                     className="w-full rounded-lg"
                                     style={{
-                                        height: `${documentData?.size?.height}px`,
+                                        height: 'auto',
+                                        aspectRatio: `${documentData?.size?.width || 596} / ${documentData?.size?.height || 842}`,
                                     }}
                                 />
                                 <div className="absolute top-5 left-0 z-10 flex justify-center w-full">

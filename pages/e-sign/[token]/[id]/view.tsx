@@ -1,24 +1,27 @@
 import {
-    Button,
-    Card,
     EmptyData,
-    GlobalModal,
     LoadingAnimation,
     ShowErrorNotifications,
     TechnicalError,
-    Typography,
 } from '@components'
 import { FieldsTypeEnum } from '@components/Esign/components/SidebarData'
-import { PageHeading } from '@components/headings'
 import { useNotification } from '@hooks'
 import { SiteLayout } from '@layouts'
+import {
+    DownloadEsignDocument,
+    EsignHeader,
+    EsignRightSidebar,
+    SVGView,
+} from '@partials/eSign/components'
 import {
     EsignSignatureModal,
     FinishEmailSignModal,
 } from '@partials/eSign/modal'
-import { FinishDocumentModal, SVGView } from '@partials/eSign/components'
 import { CommonApi } from '@queries'
+import { motion } from 'framer-motion'
 import { jwtDecode as jwt } from 'jwt-decode'
+import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react'
+import moment from 'moment'
 import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 
@@ -35,15 +38,17 @@ const ESign = () => {
     const [customFieldsSelectedId, setCustomFieldsSelectedId] =
         useState<number>(-1)
     const [isLastSelected, setIsLastSelected] = useState<boolean>(false)
-
     const [isDocumentLoaded, setIsDocumentLoaded] = useState<any>([])
+
+    const [zoom, setZoom] = useState<number>(100)
+    const [currentPage, setCurrentPage] = useState<number>(1)
+
+    const handleZoomIn = () => setZoom((prev) => Math.min(prev + 10, 150))
+    const handleZoomOut = () => setZoom((prev) => Math.max(prev - 10, 70))
 
     const [decodeData, setDecodeData] = useState<any>(null)
     const [selectedFillDataField, setSelectedFillDataField] =
         useState<any>(null)
-    const [showSignersField, setShowSignersField] = useState<boolean>(false)
-
-    const scrollTargetRef = useRef<any>([])
 
     const { notification } = useNotification()
 
@@ -82,6 +87,13 @@ const ESign = () => {
         }
     )
 
+    const documentDetail = CommonApi.ESign.useGetEsignDocumentDetail(
+        Number(router.query?.id),
+        {
+            skip: !router.query?.id,
+        }
+    )
+
     useEffect(() => {
         if (tabs.isSuccess && tabs?.data && tabs?.data?.length > 0) {
             setCustomFieldsData(
@@ -90,14 +102,9 @@ const ESign = () => {
                     ?.map((tab: any) => {
                         const response = tab?.responses?.reduce(
                             (accumulator: any, current: any) => {
-                                // Convert timestamps to Date objects for comparison
-                                const accumulatorDate = new Date(
+                                return moment(current.updatedAt).isAfter(
                                     accumulator.updatedAt
                                 )
-                                const currentDate = new Date(current.updatedAt)
-
-                                // Return the item with the later updatedAt timestamp
-                                return currentDate > accumulatorDate
                                     ? current
                                     : accumulator
                             },
@@ -235,9 +242,9 @@ const ESign = () => {
             customFields?.map((data: any) =>
                 data?.type === FieldsTypeEnum.Checkbox
                     ? {
-                        ...data,
-                        fieldValue: e.target.checked,
-                    }
+                          ...data,
+                          fieldValue: e.target.checked,
+                      }
                     : data
             )
         )
@@ -245,31 +252,23 @@ const ESign = () => {
 
     const scrollToPage = (
         tabId: number,
-        currentPage: number,
+        pageIndex: number,
         block?: ScrollLogicalPosition
     ) => {
-        const targetElement = scrollTargetRef.current[currentPage]
-        const detailItem = document.getElementById(`tabs-view-${tabId}`)
+        pageIndex && setCurrentPage(pageIndex + 1)
+        if (tabId !== -1) {
+            setTimeout(() => {
+                const detailItem = document.getElementById(`tabs-view-${tabId}`)
 
-        if (detailItem) {
-            detailItem.scrollIntoView({
-                behavior: 'smooth',
-                block: block || 'center',
-            })
-        } else if (targetElement) {
-            targetElement.scrollIntoView({
-                behavior: 'smooth',
-                block: block || 'center',
-            })
+                if (detailItem) {
+                    detailItem.scrollIntoView({
+                        behavior: 'smooth',
+                        block: block || 'center',
+                    })
+                }
+            }, 500)
         }
     }
-
-    // useEffect(() => {
-    //     scrollToPage(
-    //         Number(sortedPositions?.[customFieldsSelectedId]?.id),
-    //         sortedPositions?.[customFieldsSelectedId]?.number - 1
-    //     )
-    // }, [customFieldsSelectedId])
 
     const onSaveCustomFieldsValue = async () => {
         const customValues = customFieldsData?.filter(
@@ -320,17 +319,9 @@ const ESign = () => {
     const onDocumentScrollArrow = () => {
         if (customFieldsSelectedId < sortedPositions?.length - 1) {
             const fieldData = sortedPositions?.[customFieldsSelectedId + 1]
-            const isSign = fieldData?.type === FieldsTypeEnum.Signature
 
             const isFieldValue =
                 sortedPositions?.[customFieldsSelectedId]?.fieldValue
-
-            // if (isSign) {
-            //     setTimeout(() => {
-            //         setIsSignature(true)
-            //         setSelectedSign(fieldData)
-            //     }, 500)
-            // }
 
             if (isFillRequiredFields) {
                 const slicedData = sortedPositions?.slice(
@@ -342,6 +333,12 @@ const ESign = () => {
 
                 if (!requiredData) {
                     setIsLastSelected(true)
+                    scrollToPage(
+                        -1,
+                        (documentsTotalPages?.data?.pageCount || 1) - 1,
+                        'end'
+                    )
+                    return
                 }
 
                 const findMyIndex = sortedPositions?.findIndex(
@@ -351,6 +348,7 @@ const ESign = () => {
                 if (isFieldValue) {
                     setCustomFieldsSelectedId(findMyIndex)
                     setSelectedFillDataField(requiredData?.id)
+                    scrollToPage(requiredData?.id, requiredData?.number - 1)
                 } else {
                     let updatedIndex = findMyIndex + 1
 
@@ -365,7 +363,7 @@ const ESign = () => {
                     } else {
                         scrollToPage(
                             -1,
-                            documentsTotalPages?.data?.pageCount - 1,
+                            (documentsTotalPages?.data?.pageCount || 1) - 1,
                             'end'
                         )
                     }
@@ -376,28 +374,26 @@ const ESign = () => {
 
                     setCustomFieldsSelectedId(updatedIndex)
                     setSelectedFillDataField(nextData?.id)
+                    if (nextData) {
+                        scrollToPage(nextData?.id, nextData?.number - 1)
+                    }
                 }
             } else {
                 setSelectedFillDataField(fieldData?.id)
                 setCustomFieldsSelectedId(customFieldsSelectedId + 1)
+                scrollToPage(fieldData?.id, fieldData?.number - 1)
             }
         } else {
             setIsLastSelected(
                 sortedPositions?.[customFieldsSelectedId]?.id ===
-                sortedPositions?.[sortedPositions?.length - 1]?.id
+                    sortedPositions?.[sortedPositions?.length - 1]?.id
             )
             setSelectedFillDataField(sortedPositions?.[0]?.id)
-            scrollToPage(-1, documentsTotalPages?.data?.pageCount - 1, 'end')
-            // setCustomFieldsSelectedId(0)
-            // finishSign
-            // const detailItem = document.getElementById(`finishSign`)
-
-            // if (detailItem) {
-            //     detailItem.scrollIntoView({
-            //         behavior: 'smooth',
-            //         block: 'center',
-            //     })
-            // }
+            scrollToPage(
+                -1,
+                (documentsTotalPages?.data?.pageCount || 1) - 1,
+                'end'
+            )
         }
     }
 
@@ -424,127 +420,154 @@ const ESign = () => {
 
     return (
         <SiteLayout title={'E Sign'}>
-            {modal}
-            {isSignature && isDocumentLoaded?.isSuccess ? (
-                <EsignSignatureModal
-                    setCustomFieldsData={setCustomFieldsData}
-                    tab={selectedSign}
-                    onCancel={(cancel?: boolean, isSigned?: boolean) => {
-                        onSignatureCancelClicked(cancel, isSigned)
-                    }}
-                    customFieldsData={customFieldsData}
-                    action={CommonApi.ESign.useAddSign}
-                    allSignAdded={allSignAdded}
-                    success={
-                        !tabs?.isLoading && !tabs?.isFetching && tabs?.isSuccess
-                    }
-                />
-            ) : null}
-            <ShowErrorNotifications result={checkIfUserSigned} />
-            <div className="max-w-7xl mx-auto py-10">
-                <PageHeading title="E-Sign" subtitle="E Sign" />
+            <div className="p-6 space-y-2">
+                {modal}
+                <EsignHeader documentDetail={documentDetail?.data} />
 
-                {(documentsTotalPages.isError || checkIfUserSigned.isError) && (
-                    <TechnicalError
-                        title={documentsTotalPages?.error?.data?.message as any}
+                {isSignature && isDocumentLoaded?.isSuccess ? (
+                    <EsignSignatureModal
+                        setCustomFieldsData={setCustomFieldsData}
+                        tab={selectedSign}
+                        onCancel={(cancel?: boolean, isSigned?: boolean) => {
+                            onSignatureCancelClicked(cancel, isSigned)
+                        }}
+                        customFieldsData={customFieldsData}
+                        action={CommonApi.ESign.useAddSign}
+                        allSignAdded={allSignAdded}
+                        success={
+                            !tabs?.isLoading &&
+                            !tabs?.isFetching &&
+                            tabs?.isSuccess
+                        }
                     />
-                )}
+                ) : null}
+
+                <ShowErrorNotifications result={checkIfUserSigned} />
+
+                {documentsTotalPages.isError && <TechnicalError />}
                 {documentsTotalPages.isLoading ? (
-                    <LoadingAnimation height="h-[60vh]" />
-                ) : documentsTotalPages.data ? (
+                    <LoadingAnimation />
+                ) : documentsTotalPages.isSuccess &&
+                  documentsTotalPages?.data ? (
                     <>
-                        <div className="grid grid-cols-1 lg:grid-cols-6 gap-x-2.5 relative">
-                            {/* {sign && (
-                            <div
-                                onClick={() => {
-                                    scrollToPage(Number(sign?.number - 1))
-                                }}
-                                className="w-fit mt-4 ml-auto z-10 px-7 py-2 h-full bg-red-600 flex justify-center items-center gap-x-2 text-white"
-                            >
-                                <FaSignature className="text-2xl" />
-                                <button className="text-lg">
-                                    {sign?.responses &&
-                                    sign?.responses?.length > 0
-                                        ? 'View Sign'
-                                        : 'Sign Here'}
-                                </button>
-                            </div>
-                        )} */}
-                            {/* <div className="block lg:hidden">
-                                <div className=" flex justify-end items-center ">
-                                    <div
-                                        onClick={() =>
-                                            setShowSignersField(
-                                                !showSignersField
-                                            )
-                                        }
-                                    >
-                                        <Typography variant="small" semibold>
-                                            Show Fields
-                                        </Typography>
-                                    </div>
-                                    {showSignersField && (
-                                        <div className="absolute top-5 z-20 w-3/4">
-                                            <ScrollTabsView
-                                                onClick={() =>
-                                                    setShowSignersField(false)
-                                                }
-                                                customFieldsAndSign={
-                                                    customFieldsAndSign
-                                                }
-                                                scrollToPage={scrollToPage}
-                                                setSelectedFillDataField={
-                                                    setSelectedFillDataField
-                                                }
-                                            />
-                                        </div>
-                                    )}
+                        <div className="flex flex-col lg:grid lg:grid-cols-4 gap-6 relative max-w-400 mx-auto p-0">
+                            <div className="lg:col-span-3 flex flex-col gap-y-4 relative w-full">
+                                <div className="flex justify-end items-center">
+                                    <DownloadEsignDocument />
                                 </div>
-                            </div> */}
-                            <div className="lg:col-span-6 flex flex-col gap-y-3 pl-0 lg:pl-0">
-                                {/* <div className="flex justify-end items-center gap-x-2">
-                                    <input
-                                        type={'checkbox'}
-                                        onChange={(e: any) => {
-                                            onSelectAll(e)
-                                        }}
-                                        id={'selectAll'}
-                                    />
-                                    <label htmlFor="selectAll">
-                                        Select All
-                                    </label>
-                                </div> */}
-                                {[
-                                    ...Array(
-                                        Number(
-                                            documentsTotalPages?.data?.pageCount
-                                        )
-                                    ),
-                                ]?.map((doc: any, i: number) => (
+
+                                <div
+                                    className="bg-white rounded-2xl shadow-lg border overflow-hidden w-full"
+                                    style={{ borderColor: '#E2E8F0' }}
+                                >
+                                    {/* PDF Viewer Header */}
                                     <div
-                                        key={i}
-                                        ref={(el: any) =>
-                                        (scrollTargetRef.current[i] =
-                                            el as any)
-                                        }
-                                        className="relative"
+                                        className="border-b px-6 py-4"
+                                        style={{
+                                            borderColor: '#E2E8F0',
+                                            background:
+                                                'linear-gradient(to right, #F8FAFC, white)',
+                                        }}
                                     >
-                                        <Card noPadding>
-                                            <div className="absolute top-1 left-1/2 flex justify-center">
-                                                <Typography
-                                                    variant="label"
-                                                    semibold
+                                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                            <h2
+                                                className="text-base md:text-lg font-bold flex items-center gap-2"
+                                                style={{ color: '#0F172A' }}
+                                            >
+                                                <span
+                                                    className="w-2 h-2 rounded-full"
+                                                    style={{
+                                                        background: '#00A651',
+                                                    }}
+                                                ></span>
+                                                Document Preview
+                                            </h2>
+                                            <div className="flex items-center gap-3">
+                                                {/* Zoom Controls */}
+                                                <div
+                                                    className="flex items-center gap-1 border-2 rounded-xl px-2 py-1.5 shadow-sm"
+                                                    style={{
+                                                        borderColor: '#E2E8F0',
+                                                    }}
                                                 >
-                                                    {i + 1}
-                                                </Typography>
+                                                    <motion.button
+                                                        whileHover={{
+                                                            scale: 1.1,
+                                                        }}
+                                                        whileTap={{
+                                                            scale: 0.9,
+                                                        }}
+                                                        onClick={handleZoomOut}
+                                                        className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+                                                        title="Zoom out"
+                                                    >
+                                                        <ZoomOut
+                                                            className="w-4 h-4"
+                                                            style={{
+                                                                color: '#0066CC',
+                                                            }}
+                                                        />
+                                                    </motion.button>
+                                                    <span
+                                                        className="text-sm font-semibold min-w-14 text-center"
+                                                        style={{
+                                                            color: '#0F172A',
+                                                        }}
+                                                    >
+                                                        {zoom}%
+                                                    </span>
+                                                    <motion.button
+                                                        whileHover={{
+                                                            scale: 1.1,
+                                                        }}
+                                                        whileTap={{
+                                                            scale: 0.9,
+                                                        }}
+                                                        onClick={handleZoomIn}
+                                                        className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+                                                        title="Zoom in"
+                                                    >
+                                                        <ZoomIn
+                                                            className="w-4 h-4"
+                                                            style={{
+                                                                color: '#0066CC',
+                                                            }}
+                                                        />
+                                                    </motion.button>
+                                                </div>
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    {/* PDF Content */}
+                                    <div
+                                        className="p-0 lg:p-3.5 pb-0! overflow-auto"
+                                        style={{
+                                            background: '#F8FAFC',
+                                        }}
+                                    >
+                                        <motion.div
+                                            key={currentPage}
+                                            initial={{ opacity: 0, x: 20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ duration: 0.3 }}
+                                            className="bg-white shadow-2xl mx-auto p-2 md:p-4 mb-6 rounded-lg relative sm:max-w-full"
+                                            style={{
+                                                width: `${zoom}%`,
+                                                maxWidth:
+                                                    zoom < 100
+                                                        ? '100%'
+                                                        : 'none',
+                                                minHeight: '400px',
+                                                transform: 'translateZ(0)',
+                                                border: '1px solid #E2E8F0',
+                                            }}
+                                        >
                                             <SVGView
-                                                customFieldsAndSign={
-                                                    customFieldsAndSign
-                                                }
+                                                index={currentPage - 1}
                                                 scrollToPage={scrollToPage}
-                                                customFieldsSelectedId={
-                                                    customFieldsSelectedId
+                                                sortedPositions={
+                                                    sortedPositions
                                                 }
                                                 onDocumentScrollArrow={() => {
                                                     onDocumentScrollArrow()
@@ -552,12 +575,14 @@ const ESign = () => {
                                                 setIsDocumentLoaded={
                                                     setIsDocumentLoaded
                                                 }
-                                                sortedPositions={
-                                                    sortedPositions
-                                                }
-                                                index={i}
                                                 customFieldsData={
                                                     customFieldsData
+                                                }
+                                                customFieldsAndSign={
+                                                    customFieldsAndSign
+                                                }
+                                                customFieldsSelectedId={
+                                                    customFieldsSelectedId
                                                 }
                                                 selectedFillDataField={
                                                     selectedFillDataField
@@ -582,85 +607,155 @@ const ESign = () => {
                                                     onCancelFinishSign
                                                 }
                                             />
-                                        </Card>
+                                        </motion.div>
                                     </div>
-                                ))}
-                            </div>
-                            {/* <div className="hidden lg:block sticky top-0 h-[85vh]">
-                                <ScrollTabsView
-                                    onClick={() => setShowSignersField(false)}
-                                    customFieldsAndSign={customFieldsAndSign}
-                                    scrollToPage={scrollToPage}
-                                    setSelectedFillDataField={
-                                        setSelectedFillDataField
-                                    }
-                                />
-                            </div> */}
-                        </div>{' '}
-                        <div className="flex justify-center mt-3 mx-auto w-80 h-14">
-                            <Button
-                                fullHeight
-                                fullWidth
-                                text={'Finish Esign'}
-                                onClick={() => {
-                                    setModal(
-                                        <GlobalModal>
-                                            <FinishDocumentModal
-                                                customFieldsData={
-                                                    customFieldsData
-                                                }
-                                                onCancelFinishSign={() => {
-                                                    setModal(null)
-                                                    onCancelFinishSign()
+
+                                    {/* PDF Navigation Footer */}
+                                    <div
+                                        className="border-t px-4 md:px-6 py-4"
+                                        style={{
+                                            borderColor: '#E2E8F0',
+                                            background:
+                                                'linear-gradient(to right, white, #F8FAFC)',
+                                        }}
+                                    >
+                                        <div className="flex flex-wrap items-center justify-between gap-4">
+                                            <motion.button
+                                                whileHover={{
+                                                    scale: 1.05,
+                                                    x: -2,
                                                 }}
-                                                onFinishSignModal={
-                                                    onSaveCustomFieldsValue
-                                                }
-                                                onGoToSignFieldIfRemaining={(
-                                                    e: any
-                                                ) => {
-                                                    onGoToSignFieldIfRemaining(
-                                                        e
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={() =>
+                                                    setCurrentPage((prev) =>
+                                                        Math.max(1, prev - 1)
                                                     )
-                                                    setModal(null)
+                                                }
+                                                disabled={currentPage === 1}
+                                                className="flex items-center gap-2 px-3 md:px-5 py-2 md:py-2.5 text-xs md:text-sm font-semibold bg-white border-2 rounded-xl hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                                                style={{
+                                                    borderColor: '#E2E8F0',
+                                                    color:
+                                                        currentPage === 1
+                                                            ? '#94A3B8'
+                                                            : '#0066CC',
                                                 }}
-                                                remainingFields={sortedPositions?.filter(
-                                                    (field: any) =>
-                                                        !field?.fieldValue &&
-                                                        field?.required
-                                                )}
-                                                asModal
-                                            />
-                                        </GlobalModal>
-                                    )
-                                }}
-                            />
-                        </div>
-                        {/* <div className="flex justify-center bg-white px-5 py-2 shadow-md w-full rounded my-2">
-                            <button
-                                className={`${
-                                    tabs?.isSuccess &&
-                                    customFieldsData &&
-                                    customFieldsData?.length > 0
-                                        ? 'bg-primary text-white hover:bg-primary-dark'
-                                        : 'bg-secondary-dark text-gray-400'
-                                }   border-transparent ring-primary-light text-[11px] 2xl:text-xs font-medium uppercase transition-all duration-300 border px-4 py-2 shadow focus:outline-none focus:ring-4 rounded-md w-full md:w-96 h-12 md:h-[60px]`}
-                                onClick={() => {
-                                    if (
-                                        tabs?.isSuccess &&
-                                        customFieldsData &&
-                                        customFieldsData?.length > 0
-                                    ) {
-                                        onSaveCustomFieldsValue()
-                                        // router.back()
-                                    }
-                                }}
-                            >
-                                <div className="flex items-center justify-center gap-x-2 text-xl">
-                                    Finish Signing
+                                            >
+                                                <ChevronLeft className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                                                <span className="hidden sm:inline">
+                                                    Previous
+                                                </span>
+                                                <span className="sm:hidden">
+                                                    Prev
+                                                </span>
+                                            </motion.button>
+
+                                            <div className="flex items-center gap-2 md:gap-4 order-last sm:order-0 w-full sm:w-auto justify-center">
+                                                <span
+                                                    className="text-xs md:text-sm font-medium whitespace-nowrap"
+                                                    style={{ color: '#64748B' }}
+                                                >
+                                                    Page{' '}
+                                                    <strong
+                                                        style={{
+                                                            color: '#0066CC',
+                                                        }}
+                                                    >
+                                                        {currentPage}
+                                                    </strong>{' '}
+                                                    of{' '}
+                                                    <strong>
+                                                        {
+                                                            documentsTotalPages
+                                                                ?.data
+                                                                ?.pageCount
+                                                        }
+                                                    </strong>
+                                                </span>
+                                                <select
+                                                    value={currentPage}
+                                                    onChange={(e) =>
+                                                        setCurrentPage(
+                                                            Number(
+                                                                e.target.value
+                                                            )
+                                                        )
+                                                    }
+                                                    className="px-2 md:px-4 py-1.5 md:py-2 text-xs md:text-sm border-2 rounded-xl focus:outline-none bg-white font-medium shadow-sm"
+                                                    style={{
+                                                        borderColor: '#E2E8F0',
+                                                        color: '#0066CC',
+                                                    }}
+                                                >
+                                                    {Array.from(
+                                                        {
+                                                            length: documentsTotalPages
+                                                                ?.data
+                                                                ?.pageCount,
+                                                        },
+                                                        (_, i) => i + 1
+                                                    ).map((page) => (
+                                                        <option
+                                                            key={page}
+                                                            value={page}
+                                                        >
+                                                            Pg {page}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
+                                            <motion.button
+                                                whileHover={{
+                                                    scale: 1.05,
+                                                    x: 2,
+                                                }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={() =>
+                                                    setCurrentPage((prev) =>
+                                                        Math.min(
+                                                            documentsTotalPages
+                                                                ?.data
+                                                                ?.pageCount,
+                                                            prev + 1
+                                                        )
+                                                    )
+                                                }
+                                                disabled={
+                                                    currentPage ===
+                                                    documentsTotalPages?.data
+                                                        ?.pageCount
+                                                }
+                                                className="flex items-center gap-2 px-3 md:px-5 py-2 md:py-2.5 text-xs md:text-sm font-semibold bg-white border-2 rounded-xl hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                                                style={{
+                                                    borderColor: '#E2E8F0',
+                                                    color:
+                                                        currentPage ===
+                                                        documentsTotalPages
+                                                            ?.data?.pageCount
+                                                            ? '#94A3B8'
+                                                            : '#0066CC',
+                                                }}
+                                            >
+                                                <span className="hidden sm:inline">
+                                                    Next
+                                                </span>
+                                                <ChevronRight className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                                            </motion.button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </button>
-                        </div> */}
+                            </div>
+                            <div className="lg:col-span-1 sticky top-6 self-start w-full">
+                                <EsignRightSidebar
+                                    documentDetail={documentDetail?.data}
+                                    currentRole={decodeData?.role}
+                                    onFinishSign={onSaveCustomFieldsValue}
+                                    onSignatureClicked={onSignatureClicked}
+                                    signatureFields={sortedPositions}
+                                />
+                            </div>
+                        </div>
                     </>
                 ) : (
                     (documentsTotalPages.isSuccess ||

@@ -6,12 +6,13 @@ import {
 } from '@components'
 import { FieldsTypeEnum } from '@components/Esign/components/SidebarData'
 import { CommonApi } from '@queries'
-import { getUserCredentials } from '@utils'
+import { checkJsxVisibility, getUserCredentials } from '@utils'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react'
 import { useRouter } from 'next/router'
-import { ReactNode, useCallback, useEffect, useState } from 'react'
+import { Activity, ReactNode, useCallback, useEffect, useState } from 'react'
 import { IoMdArrowDropleftCircle } from 'react-icons/io'
+import { UserRoles } from '@constants'
 import {
     DownloadEsignDocument,
     EsignHeader,
@@ -521,6 +522,39 @@ export const ViewDocumentAndSign = () => {
     return (
         <div className="space-y-3.5">
             {modal}
+
+            {/* <Activity
+                mode={checkJsxVisibility(
+                    role === UserRoles.RTO &&
+                        documentDetail?.data?.signers?.length > 0 &&
+                        !documentDetail?.data?.signers
+                            ?.filter(
+                                (s: any) => s?.user?.role !== UserRoles.RTO
+                            )
+                            ?.every((s: any) => s?.status === 'signed')
+                )}
+            >
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-4 rounded-xl border flex items-center gap-3 mb-2"
+                    style={{
+                        background: '#EFF6FF',
+                        borderColor: '#BFDBFE',
+                    }}
+                >
+                    <div
+                        className="w-2 h-2 rounded-full animate-pulse"
+                        style={{ background: '#3B82F6' }}
+                    />
+                    <p
+                        className="text-sm font-semibold"
+                        style={{ color: '#1E40AF' }}
+                    >
+                        Waiting for other parties to sign before RTO can finish.
+                    </p>
+                </motion.div>
+            </Activity> */}
             <EsignHeader documentDetail={documentDetail?.data} />
 
             {isSignature && isDocumentLoaded?.isSuccess ? (

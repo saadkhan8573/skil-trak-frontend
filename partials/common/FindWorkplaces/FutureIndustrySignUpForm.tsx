@@ -11,8 +11,6 @@ import { AuthApi, CommonApi } from '@queries'
 import {
     CourseSelectOption,
     formatOptionLabel,
-    getLatLng,
-    getPostalCode,
     isEmailValid,
     onlyAlphabets,
     onlyNumbersAcceptedInYup,
@@ -35,20 +33,21 @@ import { AddIndustryQuestionForm } from '../IndustryProfileDetail/forms'
 import { industryQuestions } from '@partials/admin/industry/components'
 import { IndustryQuestionsEnum } from '@partials/admin/industry/enum'
 import { OptionType } from '@types'
+import { IndustryDetailConfirmationModal } from './modal/IndustryDetailConfirmationModal'
 
 export const FutureIndustrySignUpForm = ({
     result,
     industryABN,
     onSubmit,
 }: // setActive,
-    // courses,
-    {
-        result?: any
-        industryABN?: string | null
-        onSubmit: any
-        // setActive: any
-        // courses?: Course[]
-    }) => {
+// courses,
+{
+    result?: any
+    industryABN?: string | null
+    onSubmit: any
+    // setActive: any
+    // courses?: Course[]
+}) => {
     const router = useRouter()
     const { notification } = useNotification()
     const [onSuburbClicked, setOnSuburbClicked] = useState<boolean>(true)
@@ -73,6 +72,14 @@ export const FutureIndustrySignUpForm = ({
     const [checkEmailExists, emailCheckResult] = AuthApi.useEmailCheck()
     const sectorResponse = AuthApi.useSectors({})
     const courses = sectorResponse?.data?.flatMap((obj: any) => obj?.courses)
+
+    const [
+        getAbnDetails,
+        { data: abnData, isFetching: isAbnFetching, isLoading: isAbnLoading },
+    ] = CommonApi.FindWorkplace.useLazyGetAbnDetails()
+    const [showAbnDialog, setShowAbnDialog] = useState(false)
+    const [abnConfirmed, setAbnConfirmed] = useState(false)
+    const [abnError, setAbnError] = useState<any>(null)
 
     const onSectorChanged = (sectors: any) => {
         setSelectedSector(sectors)
@@ -281,9 +288,47 @@ export const FutureIndustrySignUpForm = ({
     const onBlur = (e: any) => {
         const abn = e.target?.value
         removeEmptySpaces(formMethods, abn)
+        setAbnConfirmed(false)
+        setAbnError(null)
     }
 
-    const onHandleSubmit = (values: any) => {
+    const handleConfirmABN = () => {
+        if (abnData) {
+            formMethods.setValue(
+                'name',
+                abnData.legalName || abnData.businessName
+            )
+            if (abnData.area || abnData.address) {
+                formMethods.setValue('addressLine1', abnData.area || abnData.address)
+            }
+        }
+        setAbnConfirmed(true)
+        setShowAbnDialog(false)
+        formMethods.handleSubmit(onHandleSubmit)
+        // onHandleSubmit(formMethods.getValues())
+    }
+
+    const onHandleSubmit = async (values: any) => {
+        if (!onSuburbClicked) {
+            notification.error({
+                title: 'You must select on Address Dropdown',
+                description: 'You must select on Address Dropdown',
+            })
+            return
+        }
+        if (values.abn && values.abn.length === 11 && !abnConfirmed) {
+            try {
+                setAbnError(null)
+                await getAbnDetails(values.abn).unwrap()
+                setShowAbnDialog(true)
+                return
+            } catch (error) {
+                setAbnError(error)
+                setShowAbnDialog(true)
+                return
+            }
+        }
+
         let questions: {
             [key: string]: any
         }[] = []
@@ -329,18 +374,13 @@ export const FutureIndustrySignUpForm = ({
             questions.push({
                 question:
                     industryQuestions[
-                    IndustryQuestionsEnum.SECTORS_BASE_CAPACITY
+                        IndustryQuestionsEnum.SECTORS_BASE_CAPACITY
                     ],
                 answer: sectorBaseCapacity,
             })
         }
 
-        if (!onSuburbClicked) {
-            notification.error({
-                title: 'You must select on Address Dropdown',
-                description: 'You must select on Address Dropdown',
-            })
-        } else if (onSuburbClicked) {
+        if (onSuburbClicked) {
             onSubmit({
                 ...values,
                 state: values.state,
@@ -358,9 +398,9 @@ export const FutureIndustrySignUpForm = ({
                 className={
                     'group max-w-max transition-all text-xs flex justify-start items-center py-2.5 text-muted hover:text-muted-dark rounded-lg cursor-pointer'
                 }
-            // onClick={() => {
-            //     setActive((active: number) => active - 1)
-            // }}
+                // onClick={() => {
+                //     setActive((active: number) => active - 1)
+                // }}
             >
                 {/* <IoIosArrowRoundBack className="transition-all inline-flex text-base group-hover:-translate-x-1" />
                 <span className="ml-2">{'Back To Previous'}</span> */}
@@ -433,8 +473,8 @@ export const FutureIndustrySignUpForm = ({
                                 label={'Sector'}
                                 {...(storedData
                                     ? {
-                                        defaultValue: storedData.sectors,
-                                    }
+                                          defaultValue: storedData.sectors,
+                                      }
                                     : {})}
                                 value={selectedSector}
                                 name={'sectors'}
@@ -536,7 +576,6 @@ export const FutureIndustrySignUpForm = ({
                                             setOnSuburbClicked(false)
                                         }}
                                     />
-
                                 </div>
                                 <TextInput
                                     label={'Zip Code'}
@@ -622,18 +661,14 @@ export const FutureIndustrySignUpForm = ({
                                                 href="/terms-and-conditions"
                                                 className="text-link"
                                             >
-                                                
-                                                    Terms
-                                                
+                                                Terms
                                             </Link>{' '}
                                             {'&'}{' '}
                                             <Link
                                                 href="/privacy-policy"
                                                 className="text-link"
                                             >
-                                                
-                                                    Privacy Policy
-                                                
+                                                Privacy Policy
                                             </Link>
                                         </>
                                     }
@@ -644,8 +679,16 @@ export const FutureIndustrySignUpForm = ({
                                 <Button
                                     text={'Continue'}
                                     submit
-                                    loading={result?.isLoading}
-                                    disabled={result?.isLoading}
+                                    loading={
+                                        result?.isLoading ||
+                                        isAbnFetching ||
+                                        isAbnLoading
+                                    }
+                                    disabled={
+                                        result?.isLoading ||
+                                        isAbnFetching ||
+                                        isAbnLoading
+                                    }
                                 />
                                 {SignUpUtils.getEditingMode() && (
                                     <Button
@@ -659,6 +702,13 @@ export const FutureIndustrySignUpForm = ({
                     </form>
                 </FormProvider>
             </div>
+            <IndustryDetailConfirmationModal
+                showAbnDialog={showAbnDialog}
+                setShowAbnDialog={setShowAbnDialog}
+                abnResult={abnData}
+                error={abnError}
+                handleConfirmABN={handleConfirmABN}
+            />
         </Card>
-    );
+    )
 }

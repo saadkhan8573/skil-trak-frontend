@@ -151,7 +151,7 @@ export const RtoStudentDetail = () => {
             icon: Ticket,
             component: SupportTicketsComponent,
             hidden: useAuthorizedUserComponent({
-                excludeRoles: [UserRoles.RTO],
+                roles: [UserRoles.RTO],
             }),
         },
     ]

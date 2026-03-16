@@ -24,7 +24,15 @@ export const dashboardEndpoints = (
         void
     >({
         query: () => `${PREFIX}navbar/counts`,
-        providesTags: ['RTO'],
+        providesTags: [
+            'RTO',
+            'Mails',
+            'E-Sign',
+            'Appointments',
+            'Rto-Students',
+            'Notifications',
+            'AllNotifications',
+        ],
     }),
 
     last24HoursWp: builder.query<any, void>({

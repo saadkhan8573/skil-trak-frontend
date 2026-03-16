@@ -3,9 +3,9 @@ import {
     BasicDetails,
     InterviewAvailability,
     AssignedAgent,
-    QuickNotes,
     PremiumFeatures,
     PlacementFormUrl,
+    BusinessVerfication,
 } from './components'
 import { AuthorizedUserComponent } from '@components'
 import { UserRoles } from '@constants'
@@ -37,11 +37,11 @@ export function ProfileEssentials() {
                     <div className="space-y-3 flex flex-col h-full">
                         <InterviewAvailability checkRuntime />
                         <PlacementFormUrl />
+                        <BusinessVerfication />
                     </div>
 
                     {/* Right Column */}
                     <div className="space-y-3 flex flex-col h-full">
-                        {/* <QuickNotes /> */}
                         <AssignedAgent />
                         <PremiumFeatures />
                     </div>

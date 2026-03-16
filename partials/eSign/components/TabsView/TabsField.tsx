@@ -140,7 +140,7 @@ export const TabsField = ({
                                 name=""
                                 id={`tabs-view-${fieldData?.id}`}
                                 value={fieldData?.fieldValue}
-                                className={`w-full h-full border-2 rounded-md placeholder:text-xs ${
+                                className={`w-full h-full border-3 rounded-md placeholder:text-xs ${
                                     !fieldData?.fieldValue
                                         ? 'border-red-500'
                                         : selectedFillDataField ===

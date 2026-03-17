@@ -48,4 +48,21 @@ export const industryReadinessEndpoints = (
         }),
         invalidatesTags: ['Documents'],
     }),
+    contactForecastIndustry: builder.mutation<any, any>({
+        query: ({ id, params }) => ({
+            url: `subadmin/create/industry/contact/${id}`,
+            method: 'POST',
+            ...(params && { params }),
+        }),
+        invalidatesTags: [
+            'StudentForecast',
+            'Industries',
+            'SubAdminWorkplace',
+            'SubAdminIndustries',
+            'Industries',
+            'SubAdminStudents',
+            'SubAdmin',
+            'Workplace',
+        ],
+    }),
 })

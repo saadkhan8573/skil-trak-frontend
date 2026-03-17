@@ -528,6 +528,7 @@ const {
     useGetForecastCountsQuery,
     useGetForecastFutureIndustriesListQuery,
     useGetForecastSignedUpIndustriesListQuery,
+    useContactForecastIndustryMutation,
 
     // ------ MARKETING ------ //
     useGetMarketingUsersQuery,
@@ -955,6 +956,7 @@ export const AdminApi = {
             useGetForecastFutureIndustriesListQuery,
         useForecastSignedUpIndustriesList:
             useGetForecastSignedUpIndustriesListQuery,
+        useContactForecastIndustry: useContactForecastIndustryMutation,
     },
     Marketing: {
         useMarketingUsers: useGetMarketingUsersQuery,

@@ -44,19 +44,21 @@ export const OnViewMapFutureIndustryDetailsTab = ({
         if (!router.isReady) return undefined
 
         // SUB ADMIN → explicit param
-        if (role === 'subadmin') {
-            return Number(router.query.studentId)
-        }
+        // if (role === 'subadmin') {
+        return Number(router.query.studentId)
+        // }
 
         // RTO + ADMIN → last URL segment
-        if (role === 'rto' || role === 'admin') {
-            return Number(router.asPath.split('/').pop())
-        }
+        // if (role === 'rto' || role === 'admin') {
+        //     return Number(router.asPath.split('/').pop())
+        // }
 
         return undefined
     }
-    const studentId = getStudentId()
 
+    const studentId = getStudentId()
+    console.log('studentId', studentId)
+    console.log('router', router.query)
     const [addToContacted, addToContactedResult] =
         SubAdminApi.Workplace.contactWorkplaceIndustry()
     const [callLog, callLogResult] =

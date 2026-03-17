@@ -1,5 +1,7 @@
+import { Actions } from '@partials/common/StudentProfileDetail/components/Workplace/components/IndustryDetail/components/onViewMapIndustriesInRadius/contactHistoryTab/Actions'
 import { ellipsisText } from '@utils'
 import { MapPin, User, Users2, X } from 'lucide-react'
+import moment from 'moment'
 import React from 'react'
 
 export const FutureIndustryRowItem = ({
@@ -7,7 +9,6 @@ export const FutureIndustryRowItem = ({
     setSelectedPartner,
     index,
 }: any) => {
-    console.log('future industry', partner)
     const getInitials = (name: string) => {
         const words = name.split(' ')
         if (words.length >= 2) {
@@ -34,8 +35,7 @@ export const FutureIndustryRowItem = ({
     return (
         <div
             key={partner.id}
-            className="px-6 py-4 hover:bg-slate-50 transition-colors cursor-pointer"
-            onClick={() => setSelectedPartner(partner)}
+            className="px-6 py-4 hover:bg-slate-50 transition-colors "
         >
             <div className="flex items-center gap-4">
                 {/* Avatar */}
@@ -47,9 +47,11 @@ export const FutureIndustryRowItem = ({
                 >
                     {getFirstLetter(partner?.businessName)}
                 </div>
-
                 {/* Info */}
-                <div className="flex-1 min-w-0">
+                <div
+                    className="flex-1 min-w-0 cursor-pointer"
+                    onClick={() => setSelectedPartner(partner)}
+                >
                     <div className="flex items-center gap-2 mb-1">
                         <h3 className="text-slate-900 font-semibold text-sm">
                             {ellipsisText(partner?.businessName, 20)}
@@ -90,27 +92,78 @@ export const FutureIndustryRowItem = ({
                         </div>
                     </div>
                 </div>
-
                 {/* Status Badges */}
-                <div className="flex items-center gap-3 flex-shrink-0">
-                    <span
-                        className={`px-3 py-1.5 rounded-md text-xs font-semibold ${
-                            partner?.isContacted
-                                ? 'bg-green-50 text-green-700 border border-green-200'
-                                : 'bg-red-50 text-red-700 border border-red-200'
-                        }`}
-                    >
-                        {partner?.isContacted ? 'Contacted' : 'Not Contacted'}
-                    </span>
-                    <span
-                        className={`px-3 py-1.5 rounded-md text-xs font-semibold ${
-                            partner?.emailSent
-                                ? 'bg-green-50 text-green-700 border border-green-200'
-                                : 'bg-red-50 text-red-700 border border-red-200'
-                        }`}
-                    >
-                        {partner?.emailSent ? 'Email Sent' : 'No Email Sent'}
-                    </span>
+                <div className="flex flex-col justify-center items-center gap-y-4">
+                    {partner?.studentIndustryContact?.length > 0 && (
+                        // <Actions
+                        //     industry={partner?.studentIndustryContact?.at(-1)}
+                        // />
+                        <Actions
+                            alreadyContacted={partner?.studentIndustryContact}
+                            int={
+                                partner?.studentIndustryContact?.[0]?.intrested
+                            }
+                            contactId={partner?.studentIndustryContact?.[0]?.id}
+                        />
+                    )}
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                        <div className="flex flex-col gap-1 items-end">
+                            <span
+                                className={`
+                                            inline-flex justify-center
+                                            text-[10px] font-semibold
+                                            px-3 py-1.5 rounded-md
+                                            ${
+                                                partner?.studentIndustryContact
+                                                    ?.length > 0
+                                                    ? 'bg-green-50 text-green-700 border border-green-200'
+                                                    : 'bg-red-50 text-red-700 border border-red-200'
+                                            }
+                                        `}
+                            >
+                                {partner?.studentIndustryContact?.length > 0
+                                    ? 'Contacted'
+                                    : 'Not Contacted'}
+                            </span>
+
+                            {partner?.studentIndustryContact?.length > 0 && (
+                                <span className="text-[11px] text-slate-500 text-right">
+                                    {moment(
+                                        partner?.studentIndustryContact?.[0]
+                                            ?.updatedAt
+                                    ).format('DD MMM YYYY, hh:mm A')}
+                                </span>
+                            )}
+                        </div>
+
+                        <div className="flex flex-col gap-1 items-end">
+                            <span
+                                className={`
+                                            inline-flex justify-center
+                                            text-[10px] font-semibold
+                                            px-3 py-1.5 rounded-md
+                                            ${
+                                                partner?.user?.emails?.length >
+                                                0
+                                                    ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                                                    : 'bg-rose-50 text-rose-700 border border-rose-200'
+                                            }
+                                        `}
+                            >
+                                {partner?.user?.emails?.length > 0
+                                    ? 'Email Sent'
+                                    : 'No Email Sent'}
+                            </span>
+
+                            {partner?.user?.emails?.length > 0 && (
+                                <span className="text-[11px] text-slate-500 text-right">
+                                    {moment(
+                                        partner?.user?.emails?.[0]?.updatedAt
+                                    ).format('DD MMM YYYY, hh:mm A')}
+                                </span>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

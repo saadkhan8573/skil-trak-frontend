@@ -259,6 +259,7 @@ export const findWorkplaceEndpoints = (
             'SubAdmin',
             'Workplace',
             'Industries',
+            'StudentForecast'
         ],
     }),
 

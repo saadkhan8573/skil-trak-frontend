@@ -202,6 +202,7 @@ export const OnViewMapIndustryDetailsTab = ({
             })
         }
     }
+    console.log('router', router.query)
 
     return (
         <>

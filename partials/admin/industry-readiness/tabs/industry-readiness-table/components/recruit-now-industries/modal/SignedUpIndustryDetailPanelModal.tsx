@@ -1,25 +1,49 @@
 import { Button, Portal } from '@components'
+import { useNotification } from '@hooks'
 import { DoNotDisturbModal } from '@partials/common'
 import { ComposeMailModal } from '@partials/common/StudentProfileDetail/modals'
-import { SubAdminApi } from '@queries'
+import { AdminApi, CommonApi, SubAdminApi } from '@queries'
 import { ellipsisText } from '@utils'
 import { BellOff, Building2, Eye, Mail, Phone, X } from 'lucide-react'
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
+import { CallAnsweredOrNot } from './CallAnsweredOrNot'
 
 export const SignedUpIndustryDetailPanelModal = ({
     selectedPartner,
     setSelectedPartner,
 }: any) => {
     const [modal, setModal] = useState<ReactNode | null>(null)
+    const [isCalled, setIsCalled] = useState(false)
+    const [makeCallLog, makeCallLogResult] =
+        CommonApi.FindWorkplace.useFutureIndustryCallLog()
+    const [contactIndustry, contactIndustryResult] =
+        AdminApi.IndustryReadiness.useContactForecastIndustry()
+    const { notification } = useNotification()
+
+    useEffect(() => {
+        if (contactIndustryResult.isSuccess) {
+            notification.success({
+                title: 'Call made industry',
+                description: 'Call made successfully ',
+            })
+        }
+    }, [makeCallLogResult.isSuccess, contactIndustryResult.isSuccess])
+
     const getFirstLetter = (name: string) => {
         if (!name) return
         return name.charAt(0).toUpperCase()
     }
+    const { data, isLoading, isError } =
+        SubAdminApi.Workplace.useSubAdminMapSuggestedIndustryDetail(
+            { industryId: selectedPartner?.id },
+            {
+                skip: !selectedPartner?.id,
+            }
+        )
+    console.log('data', data)
     const onCancelComposeMail = () => {
         setModal(null)
     }
-    const [contactWorkplaceIndustry, contactWorkplaceIndustryResult] =
-        SubAdminApi.Workplace.contactWorkplaceIndustry()
     const onComposeMail = () => {
         setModal(
             <ComposeMailModal
@@ -39,12 +63,26 @@ export const SignedUpIndustryDetailPanelModal = ({
             </Portal>
         )
     }
+
+    const onCallClicked = () => {
+        if (!isCalled) {
+            setIsCalled(true)
+            makeCallLog({
+                params: {
+                    receiver: selectedPartner?.id,
+                },
+            })
+            contactIndustry({
+                id: selectedPartner?.id,
+            })
+        } else setIsCalled(false)
+    }
     return (
         <>
             {modal && modal}
             {selectedPartner && (
                 <div
-                    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+                    className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50"
                     onClick={() => setSelectedPartner(null)}
                 >
                     <div
@@ -73,13 +111,13 @@ export const SignedUpIndustryDetailPanelModal = ({
                                     style={{ backgroundColor: '#C0C0C0' }}
                                 >
                                     {getFirstLetter(
-                                        selectedPartner?.name ?? 'NA'
+                                        selectedPartner?.user?.name ?? 'NA'
                                     )}
                                 </div>
                                 <div className="flex-1">
                                     <h3 className="font-semibold text-slate-900">
                                         {ellipsisText(
-                                            selectedPartner?.name ?? 'NA',
+                                            selectedPartner?.user?.name ?? 'NA',
                                             20
                                         )}
                                     </h3>
@@ -92,16 +130,20 @@ export const SignedUpIndustryDetailPanelModal = ({
                             {/* Address */}
                             <div className="mb-6">
                                 <p className="text-sm text-slate-600">
-                                    {selectedPartner.address}
+                                    {selectedPartner?.addressLine1}
                                 </p>
                             </div>
 
                             {/* Action Buttons */}
                             <div className="grid grid-cols-2 gap-3 mb-6">
-                                <button className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border-2 border-[#044866] text-[#044866] rounded-lg hover:bg-[#044866] hover:text-white transition-all font-semibold text-sm">
-                                    <Phone className="w-4 h-4" />
-                                    Call
-                                </button>
+                                <Button
+                                    text={isCalled ? 'Hide' : 'Call'}
+                                    variant={isCalled ? 'secondary' : 'success'}
+                                    loading={makeCallLogResult.isLoading}
+                                    disabled={makeCallLogResult.isLoading}
+                                    onClick={onCallClicked}
+                                    Icon={Phone}
+                                />
                                 <button
                                     onClick={onComposeMail}
                                     className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border-2 border-[#044866] text-[#044866] rounded-lg hover:bg-[#044866] hover:text-white transition-all font-semibold text-sm"
@@ -110,6 +152,16 @@ export const SignedUpIndustryDetailPanelModal = ({
                                     Email
                                 </button>
                             </div>
+                            {isCalled && (
+                                <CallAnsweredOrNot
+                                    callLog={
+                                        data?.callLog?.[
+                                            data?.callLog.length - 1
+                                        ]
+                                    }
+                                    setShowCall={setIsCalled}
+                                />
+                            )}
 
                             {/* Quick Actions */}
                             <div>

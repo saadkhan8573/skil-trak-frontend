@@ -1,10 +1,16 @@
-import { Button, GlobalModal, Portal, TextArea } from '@components'
+import {
+    Button,
+    GlobalModal,
+    Portal,
+    ShowErrorNotifications,
+    TextArea,
+} from '@components'
 import { useNotification } from '@hooks'
 import { ComposeListingIndustryMail, DoNotDisturbModal } from '@partials/common'
-import { CommonApi, SubAdminApi } from '@queries'
+import { AdminApi, CommonApi, SubAdminApi } from '@queries'
 import { ellipsisText } from '@utils'
 import { BellOff, Building2, Ellipsis, Eye, Mail, Phone, X } from 'lucide-react'
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { CallAnsweredOrNot } from './CallAnsweredOrNot'
 
 export const FutureIndustryDetailPanelModal = ({
@@ -25,17 +31,24 @@ export const FutureIndustryDetailPanelModal = ({
                 skip: !selectedPartner?.id,
             }
         )
-    const [isAnsweredCall, isAnsweredCallResult] =
-        SubAdminApi.Student.useStudentAnsweredCall()
+    const [contactIndustry, contactIndustryResult] =
+        AdminApi.IndustryReadiness.useContactForecastIndustry()
     const getFirstLetter = (name: string) => {
         if (!name) return
         return name.charAt(0).toUpperCase()
     }
-    const [contactWorkplaceIndustry, contactWorkplaceIndustryResult] =
-        SubAdminApi.Workplace.contactWorkplaceIndustry()
+
     const onCancelComposeMail = () => {
         setModal(null)
     }
+    useEffect(() => {
+        if (contactIndustryResult.isSuccess) {
+            notification.success({
+                title: 'Call made industry',
+                description: 'Call made successfully ',
+            })
+        }
+    }, [makeCallLogResult.isSuccess, contactIndustryResult.isSuccess])
     const onChangeNotes = (e: any) => setCallNotes(e.target.value)
     const onComposeMail = () => {
         setModal(
@@ -55,6 +68,12 @@ export const FutureIndustryDetailPanelModal = ({
                     receiver: selectedPartner?.id,
                 },
             })
+            contactIndustry({
+                id: selectedPartner?.id,
+                params: {
+                    isListing: true,
+                },
+            })
         } else setIsCalled(false)
     }
     const onDoNotDisturbClicked = (industry: any) => {
@@ -70,6 +89,9 @@ export const FutureIndustryDetailPanelModal = ({
     return (
         <>
             {modal && modal}
+            <ShowErrorNotifications
+                result={contactIndustryResult || makeCallLogResult}
+            />
             {selectedPartner && (
                 <div
                     className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50"
@@ -149,7 +171,11 @@ export const FutureIndustryDetailPanelModal = ({
                             </div>
                             {isCalled && (
                                 <CallAnsweredOrNot
-                                    callLog={data?.callLog?.[0]}
+                                    callLog={
+                                        data?.callLog?.[
+                                            data?.callLog.length - 1
+                                        ]
+                                    }
                                     isListing
                                     setShowCall={setIsCalled}
                                 />

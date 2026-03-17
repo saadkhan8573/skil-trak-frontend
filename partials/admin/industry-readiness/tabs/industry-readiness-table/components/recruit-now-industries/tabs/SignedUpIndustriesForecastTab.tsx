@@ -59,17 +59,17 @@ export const SignedUpIndustriesForecastTab = ({
                             key={industry.id}
                             industry={industry}
                             index={index}
-                            setSelectedPartner={setSelectedPartner}
+                            setSelectedindustry={setSelectedPartner}
                         />
                     ))
                 ) : (
                     <NoData text="No future industry found" />
                 )}
             </div>
-            {/* <SignedUpIndustryDetailPanelModal
+            <SignedUpIndustryDetailPanelModal
                 selectedPartner={selectedPartner}
                 setSelectedPartner={setSelectedPartner}
-            /> */}
+            />
         </div>
     )
 }

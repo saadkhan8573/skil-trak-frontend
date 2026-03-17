@@ -1,18 +1,19 @@
 import { MapPin, Users2, Calendar, User } from 'lucide-react'
 import { format } from 'date-fns'
-
+import { Actions } from '@partials/common/StudentProfileDetail/components/Workplace/components/IndustryDetail/components/onViewMapIndustriesInRadius/contactHistoryTab/Actions'
+import moment from 'moment'
 interface SignedUpIndustryRowItemProps {
     industry: any
     index: number
-    setSelectedPartner: (industry: any) => void
+    setSelectedindustry: any
 }
 
 export const SignedUpIndustryRowItem = ({
     industry,
     index,
-    setSelectedPartner,
+    setSelectedindustry,
 }: SignedUpIndustryRowItemProps) => {
-    console.log('signed up industry', industry);
+    console.log('signed up industry', industry)
     const getAvatarColor = (index: number) => {
         const colors = [
             '#C0C0C0',
@@ -34,10 +35,7 @@ export const SignedUpIndustryRowItem = ({
         industry?.businessName || industry?.contactPerson || 'Unknown Business'
 
     return (
-        <div
-            className="px-6 py-4 hover:bg-slate-50 transition-colors cursor-pointer"
-            onClick={() => setSelectedPartner(industry)}
-        >
+        <div className="px-6 py-4 hover:bg-slate-50 transition-colors cursor-pointer">
             <div className="flex items-center gap-4">
                 {/* Avatar */}
 
@@ -50,7 +48,10 @@ export const SignedUpIndustryRowItem = ({
 
                 {/* Info */}
 
-                <div className="flex-1 min-w-0">
+                <div
+                    onClick={() => setSelectedindustry(industry)}
+                    className="flex-1 min-w-0"
+                >
                     <h3 className="text-sm font-semibold text-slate-900 truncate">
                         {name}
                     </h3>
@@ -101,6 +102,83 @@ export const SignedUpIndustryRowItem = ({
                                 width: `${industry?.profileCompletionPercentage ?? 0}%`,
                             }}
                         />
+                    </div>
+                </div>
+                {/* Status Badges */}
+                <div className="flex flex-col justify-center items-center gap-y-4">
+                    {industry?.studentIndustryContact?.length > 0 && (
+                        // <Actions
+                        //     industry={industry?.studentIndustryContact?.at(-1)}
+                        // />
+                        <Actions
+                            alreadyContacted={industry?.studentIndustryContact}
+                            int={
+                                industry?.studentIndustryContact?.[0]?.intrested
+                            }
+                            contactId={
+                                industry?.studentIndustryContact?.[0]?.id
+                            }
+                        />
+                    )}
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                        <div className="flex flex-col gap-1 items-end">
+                            <span
+                                className={`
+                                                            inline-flex justify-center
+                                                            text-[10px] font-semibold
+                                                            px-3 py-1.5 rounded-md
+                                                            ${
+                                                                industry
+                                                                    ?.studentIndustryContact
+                                                                    ?.length > 0
+                                                                    ? 'bg-green-50 text-green-700 border border-green-200'
+                                                                    : 'bg-red-50 text-red-700 border border-red-200'
+                                                            }
+                                                        `}
+                            >
+                                {industry?.studentIndustryContact?.length > 0
+                                    ? 'Contacted'
+                                    : 'Not Contacted'}
+                            </span>
+
+                            {industry?.studentIndustryContact?.length > 0 && (
+                                <span className="text-[11px] text-slate-500 text-right">
+                                    {moment(
+                                        industry?.studentIndustryContact?.[0]
+                                            ?.updatedAt
+                                    ).format('DD MMM YYYY, hh:mm A')}
+                                </span>
+                            )}
+                        </div>
+
+                        <div className="flex flex-col gap-1 items-end">
+                            <span
+                                className={`
+                                                            inline-flex justify-center
+                                                            text-[10px] font-semibold
+                                                            px-3 py-1.5 rounded-md
+                                                            ${
+                                                                industry?.user
+                                                                    ?.emails
+                                                                    ?.length > 0
+                                                                    ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                                                                    : 'bg-rose-50 text-rose-700 border border-rose-200'
+                                                            }
+                                                        `}
+                            >
+                                {industry?.user?.emails?.length > 0
+                                    ? 'Email Sent'
+                                    : 'No Email Sent'}
+                            </span>
+
+                            {industry?.user?.emails?.length > 0 && (
+                                <span className="text-[11px] text-slate-500 text-right">
+                                    {moment(
+                                        industry?.user?.emails?.[0]?.updatedAt
+                                    ).format('DD MMM YYYY, hh:mm A')}
+                                </span>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

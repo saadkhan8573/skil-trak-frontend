@@ -8,10 +8,12 @@ import {
 import { useNotification } from '@hooks'
 import { ComposeListingIndustryMail, DoNotDisturbModal } from '@partials/common'
 import { AdminApi, CommonApi, SubAdminApi } from '@queries'
-import { ellipsisText } from '@utils'
+import { ellipsisText, getUserCredentials } from '@utils'
 import { BellOff, Building2, Ellipsis, Eye, Mail, Phone, X } from 'lucide-react'
 import React, { ReactNode, useEffect, useState } from 'react'
 import { CallAnsweredOrNot } from './CallAnsweredOrNot'
+import { UserRoles } from '@constants'
+import Link from 'next/link'
 
 export const FutureIndustryDetailPanelModal = ({
     selectedPartner,
@@ -24,6 +26,7 @@ export const FutureIndustryDetailPanelModal = ({
         CommonApi.FindWorkplace.useFutureIndustryCallLog()
 
     const { notification } = useNotification()
+    const role = getUserCredentials()?.role
     const { data, isSuccess, isLoading } =
         CommonApi.FindWorkplace.useGetFutureIndustryDetail(
             selectedPartner?.id,
@@ -31,6 +34,14 @@ export const FutureIndustryDetailPanelModal = ({
                 skip: !selectedPartner?.id,
             }
         )
+    const viewProfile =
+        role === UserRoles.ADMIN
+            ? `/portals/admin/future-industries/${selectedPartner?.id}`
+            : `/portals/sub-admin/tasks/industry-listing/${selectedPartner?.id}`
+    const signUp =
+        role === UserRoles.ADMIN
+            ? `/portals/admin/future-industries/signup-future-industry`
+            : `/portals/sub-admin/tasks/industry-listing/signup-future-industry`
     const [contactIndustry, contactIndustryResult] =
         AdminApi.IndustryReadiness.useContactForecastIndustry()
     const getFirstLetter = (name: string) => {
@@ -202,22 +213,28 @@ export const FutureIndustryDetailPanelModal = ({
                                             </span>
                                         </div>
                                     </button>
-                                    <button className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors text-sm">
+                                    <Link
+                                        href={signUp ?? '#'}
+                                        className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors text-sm"
+                                    >
                                         <div className="flex items-center gap-3">
                                             <Building2 className="w-4 h-4 text-slate-600" />
                                             <span className="font-medium text-slate-700">
                                                 Signup
                                             </span>
                                         </div>
-                                    </button>
-                                    <button className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors text-sm">
+                                    </Link>
+                                    <Link
+                                        href={viewProfile ?? '#'}
+                                        className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors text-sm"
+                                    >
                                         <div className="flex items-center gap-3">
                                             <Eye className="w-4 h-4 text-slate-600" />
                                             <span className="font-medium text-slate-700">
                                                 View
                                             </span>
                                         </div>
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

@@ -3,10 +3,12 @@ import { useNotification } from '@hooks'
 import { DoNotDisturbModal } from '@partials/common'
 import { ComposeMailModal } from '@partials/common/StudentProfileDetail/modals'
 import { AdminApi, CommonApi, SubAdminApi } from '@queries'
-import { ellipsisText } from '@utils'
+import { ellipsisText, getUserCredentials } from '@utils'
 import { BellOff, Building2, Eye, Mail, Phone, X } from 'lucide-react'
 import React, { ReactNode, useEffect, useState } from 'react'
 import { CallAnsweredOrNot } from './CallAnsweredOrNot'
+import Link from 'next/link'
+import { UserRoles } from '@constants'
 
 export const SignedUpIndustryDetailPanelModal = ({
     selectedPartner,
@@ -19,7 +21,11 @@ export const SignedUpIndustryDetailPanelModal = ({
     const [contactIndustry, contactIndustryResult] =
         AdminApi.IndustryReadiness.useContactForecastIndustry()
     const { notification } = useNotification()
-
+    const role = getUserCredentials()?.role
+    const viewProfile =
+        role === UserRoles.ADMIN
+            ? `/portals/admin/industry/${selectedPartner?.id}`
+            : `/portals/sub-admin/users/industries/${selectedPartner?.id}?tab=students`
     useEffect(() => {
         if (contactIndustryResult.isSuccess) {
             notification.success({
@@ -40,7 +46,6 @@ export const SignedUpIndustryDetailPanelModal = ({
                 skip: !selectedPartner?.id,
             }
         )
-    console.log('data', data)
     const onCancelComposeMail = () => {
         setModal(null)
     }
@@ -180,22 +185,25 @@ export const SignedUpIndustryDetailPanelModal = ({
                                         }
                                         outline
                                     />
-                                    <button className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors text-sm">
+                                    {/* <button className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors text-sm">
                                         <div className="flex items-center gap-3">
                                             <Building2 className="w-4 h-4 text-slate-600" />
                                             <span className="font-medium text-slate-700">
                                                 Signup
                                             </span>
                                         </div>
-                                    </button>
-                                    <button className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors text-sm">
+                                    </button> */}
+                                    <Link
+                                        href={viewProfile ?? '#'}
+                                        className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors text-sm"
+                                    >
                                         <div className="flex items-center gap-3">
                                             <Eye className="w-4 h-4 text-slate-600" />
                                             <span className="font-medium text-slate-700">
                                                 View
                                             </span>
                                         </div>
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

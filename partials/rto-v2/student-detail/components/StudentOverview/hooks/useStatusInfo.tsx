@@ -7,7 +7,7 @@ import {
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
 // ─────────────────────────────────────────────────────────────────────────────
-interface StatusStep {
+export interface StatusStep {
     label: string
     completed: boolean
     current: boolean
@@ -151,18 +151,22 @@ const buildDateLookup = (
     [WorkplaceCurrentStatus.Interview]:
         (workIndustry?.interviewDate as unknown as string) ?? null,
     [WorkplaceCurrentStatus.IndustryEligibility]:
-        ((workIndustry as any)?.industryEligibilityDate as unknown as string) ?? null,
-    [WorkplaceCurrentStatus.AwaitingStudentResponse]:
-        ((workIndustry as any)?.awaitingStudentResponseDate as unknown as string) ??
+        ((workIndustry as any)?.industryEligibilityDate as unknown as string) ??
         null,
+    [WorkplaceCurrentStatus.AwaitingStudentResponse]:
+        ((workIndustry as any)
+            ?.awaitingStudentResponseDate as unknown as string) ?? null,
     [WorkplaceCurrentStatus.AwaitingRtoResponse]:
-        ((workIndustry as any)?.awaitingRtoResponseDate as unknown as string) ?? null,
+        ((workIndustry as any)?.awaitingRtoResponseDate as unknown as string) ??
+        null,
     [WorkplaceCurrentStatus.AwaitingWorkplaceResponse]:
-        (workIndustry?.awaitingWorkplaceResponseDate as unknown as string) ?? null,
+        (workIndustry?.awaitingWorkplaceResponseDate as unknown as string) ??
+        null,
     [WorkplaceCurrentStatus.AppointmentBooked]:
         (workIndustry?.appointmentBookedDate as unknown as string) ?? null,
     [WorkplaceCurrentStatus.AwaitingAgreementSigned]:
-        (workIndustry?.awaitingAgreementSignedDate as unknown as string) ?? null,
+        (workIndustry?.awaitingAgreementSignedDate as unknown as string) ??
+        null,
     [WorkplaceCurrentStatus.AgreementSigned]:
         (workIndustry?.AgreementSignedDate as unknown as string) ?? null,
     [WorkplaceCurrentStatus.PlacementStarted]:
@@ -205,7 +209,9 @@ export const useStatusInfo = ({
     const dateLookup = buildDateLookup(workIndustry)
 
     // Best date for a step = first non-null date among its mapped statuses
-    const getStepDate = (step: { statuses: WorkplaceCurrentStatus[] }): string | null => {
+    const getStepDate = (step: {
+        statuses: WorkplaceCurrentStatus[]
+    }): string | null => {
         for (const s of step.statuses) {
             const d = dateLookup[s]
             if (d) return d

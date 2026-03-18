@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react'
 
-import { LoadingAnimation, TechnicalError, Button } from '@components'
+import { Button } from '@components'
 
 import { AdminLayout } from '@layouts'
 import { NextPageWithLayout } from '@types'
@@ -10,8 +10,8 @@ import { CompleteProfileBeforeWpModal } from '@partials/common/StudentProfileDet
 import { Availability, PersonalInfo } from '@partials/sub-admin/students'
 import { SubAdminApi, useGetSubAdminStudentDetailQuery } from '@queries'
 import { checkStudentProfileCompletion } from '@utils'
+import { ArrowLeft, CalendarCheck, CheckCircle2, User } from 'lucide-react'
 import { useRouter } from 'next/router'
-import { ArrowLeft, User, CalendarCheck, CheckCircle2 } from 'lucide-react'
 
 const RequestWorkplaceDetail: NextPageWithLayout = () => {
     const [active, setActive] = useState(1)
@@ -113,8 +113,8 @@ const RequestWorkplaceDetail: NextPageWithLayout = () => {
                                             active === 1
                                                 ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30'
                                                 : active > 1
-                                                ? 'bg-emerald-500 text-white'
-                                                : 'bg-slate-200'
+                                                  ? 'bg-emerald-500 text-white'
+                                                  : 'bg-slate-200'
                                         }`}
                                     >
                                         {active > 1 ? (

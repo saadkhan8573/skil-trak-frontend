@@ -1,6 +1,7 @@
 // support-team
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
+import { BulkUpdateMembersRequest } from '@partials/common/teams/types'
 const PREFIX = 'support'
 export const teamsEndpoints = (
     builder: EndpointBuilder<BaseQueryFn, string, string>
@@ -153,6 +154,30 @@ export const teamsEndpoints = (
         query: ({ id, body }) => ({
             url: `${PREFIX}-task/${id}/add-note`,
             method: 'POST',
+            body,
+        }),
+        invalidatesTags: ['Team'],
+    }),
+
+    updateCanReceiveTickets: builder.mutation<
+        any,
+        {
+            id: string | number
+            canReceiveTickets?: boolean
+            ticketTypes?: string[]
+        }
+    >({
+        query: ({ id, ...body }) => ({
+            url: `${PREFIX}/member/${id}/update`,
+            method: 'PATCH',
+            body,
+        }),
+        invalidatesTags: ['Team'],
+    }),
+    bulkUpdateMembers: builder.mutation<any, BulkUpdateMembersRequest>({
+        query: (body) => ({
+            url: `${PREFIX}-team/member/update-receive/tickets`,
+            method: 'PATCH',
             body,
         }),
         invalidatesTags: ['Team'],

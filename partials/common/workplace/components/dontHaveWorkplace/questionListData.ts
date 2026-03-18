@@ -86,7 +86,7 @@ export const questionList = [
     },
     {
         name: workplaceQuestionsKeys.preferredContactTime,
-        index: 11,
+        index: 6,
         title: 'Preferred Contact Time',
         required: true,
         type: 'textarea',
@@ -99,7 +99,7 @@ export const questionList = [
     },
     {
         name: workplaceQuestionsKeys.serviceOffered,
-        index: 6,
+        index: 8,
         title: 'Selecting Hospitality reveals the meal-period question and enforces at least one choice:',
         required: true,
         multipleSelection: true,
@@ -147,7 +147,7 @@ export const questionList = [
     // },
     {
         name: workplaceQuestionsKeys.placementPreferences,
-        index: 10,
+        index: 9,
         title: 'Specific Placement Preferences:',
         required: false,
         type: 'textarea',

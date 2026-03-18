@@ -394,10 +394,8 @@ export const PlacementRequestDetail = () => {
 
                     {/* Premium Workflow Tracker */}
                     <PremiumWorkflowTracker
-                        workplaceType={workplaceType}
-                        workflowStages={workflowStages}
-                        currentStatus={wpCurrentStatus}
-                        placementRequest={placementRequestsDetails?.data}
+                        workplace={placementRequestsDetails?.data}
+                        workIndustry={placementRequestsDetails?.data?.industries?.[0]}
                     />
 
                     {/* Main Content */}

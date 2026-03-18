@@ -77,6 +77,10 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'skiltrak02.s3.ap-southeast-2.amazonaws.com',
             },
+            {
+                protocol: 'https',
+                hostname: 'flagcdn.com',
+            },
         ],
         formats: ['image/avif', 'image/webp'],
         deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],

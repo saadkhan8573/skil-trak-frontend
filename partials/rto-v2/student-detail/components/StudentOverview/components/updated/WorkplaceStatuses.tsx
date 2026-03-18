@@ -1,4 +1,4 @@
-import { Badge } from '@components'
+import { AuthorizedUserComponent, Badge } from '@components'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import {
     getUserCredentials,
@@ -14,10 +14,10 @@ import {
     Sparkles,
     TrendingUp,
     User,
-    X,
     Zap,
     Building2,
     Briefcase,
+    X,
 } from 'lucide-react'
 import moment from 'moment'
 import { useMemo, useState } from 'react'
@@ -29,18 +29,18 @@ import { useStatusInfo } from '../../hooks/useStatusInfo'
 import { RtoV2Api } from '@queries'
 import { STATUS_CONTENT } from './statusMapping'
 import { UserRoles } from '@constants'
+import { TerminateWorkplaceButton } from './TerminateWorkplaceButton'
+import { CancelWorkplaceButton } from './CancelWorkplaceButton'
 import { useRouter } from 'next/router'
 
 interface WorkplaceStatusesProps {
     workplace: IWorkplaceIndustries
     workIndustry: WorkplaceWorkIndustriesType | undefined
-    onCancelRequested: () => void
 }
 
 export function WorkplaceStatuses({
     workplace,
     workIndustry,
-    onCancelRequested,
 }: WorkplaceStatusesProps) {
     const wpId = workplace?.id
     const router = useRouter()
@@ -247,18 +247,19 @@ export function WorkplaceStatuses({
                         </span>
                     </span>
                     <div className="ml-1 h-3 w-px bg-slate-300"></div>
-                    <button
-                        onClick={canCancel ? onCancelRequested : undefined}
-                        disabled={!canCancel}
-                        className={`flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors ${
-                            !canCancel
-                                ? 'text-slate-400 cursor-not-allowed opacity-60'
-                                : 'text-red-600 hover:text-red-700 hover:bg-red-50'
-                        }`}
-                    >
-                        <X className="w-3 h-3" />
-                        <span className="font-medium">Cancel</span>
-                    </button>
+
+                    <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+                        <CancelWorkplaceButton
+                            workplaceId={Number(wpId)}
+                            canCancel={canCancel}
+                        />
+                    </AuthorizedUserComponent>
+                    <AuthorizedUserComponent roles={[UserRoles.SUBADMIN]}>
+                        <TerminateWorkplaceButton
+                            workplaceId={Number(wpId)}
+                            isTerminated={workplace?.isTerminated}
+                        />
+                    </AuthorizedUserComponent>
                 </div>
             </div>
 
@@ -270,7 +271,7 @@ export function WorkplaceStatuses({
                     <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg backdrop-blur-sm bg-white/60">
                         <div className="flex items-center gap-2">
                             <X className="w-5 h-5 text-red-500" />
-                            <span className="text-base font-semibold text-red-500 tracking-wide">
+                            <span className="font-semibold text-red-500 tracking-wide">
                                 Workplace Cancelled
                             </span>
                         </div>

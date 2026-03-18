@@ -4,21 +4,15 @@ import { ViewQuestionsModal } from '@partials/common/StudentProfileDetail/compon
 import { latestWpApprovalRequest } from '@partials/rto-v2'
 import { useAppSelector } from '@redux/hooks'
 import { Supervisor } from '@types'
-import { getUserCredentials } from '@utils'
 import { useMemo, useState } from 'react'
 
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
 } from '@redux/queryTypes'
-import {
-    CancelWorkplaceModal,
-    CancelWorkplaceRequestModal,
-} from '../../../AllWorkplaces/modals'
 import { ResendApprovalEmailModal } from '../../modal/ResendApprovalEmailModal'
 import { AbourtWorkplace } from './AbourtWorkplace'
 import { IndustryApprovalCard } from './IndustryApprovalCard'
-import { WorkplaceCancelModal } from './modals'
 import { StudentWorkplaceComplianceChecks } from './StudentWorkplaceComplianceChecks'
 import { WorkplaceIndustryInfo } from './WorkplaceIndustryInfo'
 import { WorkplaceMapView } from './WorkplaceMapView'
@@ -33,12 +27,6 @@ export function WorkplaceBio({ workplace, onAddNew }: WorkplaceBioProps) {
     const { studentDetail } = useAppSelector((state) => state?.student)
 
     const [isResendModalOpen, setIsResendModalOpen] = useState(false)
-    const [showCancelModal, setShowCancelModal] = useState(false)
-    const [showAdminCancelModal, setShowAdminCancelModal] = useState(false)
-    const [showSubAdminCancelModal, setShowSubAdminCancelModal] =
-        useState(false)
-    const [cancelComment, setCancelComment] = useState('')
-    const [isCancelling, setIsCancelling] = useState(false)
     const [showViewQuestionsModal, setShowViewQuestionsModal] = useState(false)
 
     const latestWorkplaceApprovaleRequest = useMemo(() => {
@@ -52,9 +40,9 @@ export function WorkplaceBio({ workplace, onAddNew }: WorkplaceBioProps) {
     )
 
     const industryData =
-        workIndustry ||
         latestWorkplaceApprovaleRequest ||
-        workplace?.studentProvidedWorkplaceRequestApproval
+        workplace?.studentProvidedWorkplaceRequestApproval ||
+        workIndustry
 
     const industry = industryData?.industry
 
@@ -63,19 +51,6 @@ export function WorkplaceBio({ workplace, onAddNew }: WorkplaceBioProps) {
 
     if (!workplace) return null
 
-    const handleCancelPlacement = () => {
-        if (!cancelComment.trim()) return
-        setIsCancelling(true)
-        setTimeout(() => {
-            setIsCancelling(false)
-            setShowCancelModal(false)
-            setCancelComment('')
-            alert(
-                'Placement cancelled. Notifications sent to industry and student.'
-            )
-        }, 1500)
-    }
-
     return (
         <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden flex flex-col h-full">
             <div className="flex-1 overflow-auto">
@@ -83,17 +58,6 @@ export function WorkplaceBio({ workplace, onAddNew }: WorkplaceBioProps) {
                 <WorkplaceStatuses
                     workplace={workplace}
                     workIndustry={workIndustry}
-                    onCancelRequested={() => {
-                        const role = getUserCredentials()?.role
-                        if (role === UserRoles.ADMIN) {
-                            setShowAdminCancelModal(true)
-                        } else if (role === UserRoles.SUBADMIN) {
-                            setShowSubAdminCancelModal(true)
-                        }
-                        // else {
-                        //     setShowCancelModal(true)
-                        // }
-                    }}
                 />
 
                 {/* Workplace Details - Two Column Premium Layout */}
@@ -145,15 +109,6 @@ export function WorkplaceBio({ workplace, onAddNew }: WorkplaceBioProps) {
                 )}
             </div>
 
-            <WorkplaceCancelModal
-                isOpen={showCancelModal}
-                onClose={() => setShowCancelModal(false)}
-                onConfirm={handleCancelPlacement}
-                comment={cancelComment}
-                setComment={setCancelComment}
-                isLoading={isCancelling}
-            />
-
             <ResendApprovalEmailModal
                 open={isResendModalOpen}
                 onOpenChange={setIsResendModalOpen}
@@ -166,18 +121,6 @@ export function WorkplaceBio({ workplace, onAddNew }: WorkplaceBioProps) {
                     wpId={Number(workplace?.id)}
                 />
             )}
-
-            <CancelWorkplaceModal
-                open={showAdminCancelModal}
-                onOpenChange={setShowAdminCancelModal}
-                workplaceId={Number(workplace?.id)}
-            />
-
-            <CancelWorkplaceRequestModal
-                open={showSubAdminCancelModal}
-                onOpenChange={setShowSubAdminCancelModal}
-                workplaceId={Number(workplace?.id)}
-            />
         </div>
     )
 }

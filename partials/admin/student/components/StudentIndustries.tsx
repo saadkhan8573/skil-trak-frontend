@@ -62,10 +62,10 @@ export const StudentIndustries = ({
         latestWP?.studentProvidedWorkplaceRequestApproval?.industry
 
     const resolvedIndustry =
-        appliedIndustry ||
         wpPendingApprovalIndustry ||
         wpApprovalRequestIndustry ||
-        wpStudentProvidedIndustry
+        wpStudentProvidedIndustry ||
+        appliedIndustry
 
     return resolvedIndustry ? (
         <IndustryCell industry={resolvedIndustry} />

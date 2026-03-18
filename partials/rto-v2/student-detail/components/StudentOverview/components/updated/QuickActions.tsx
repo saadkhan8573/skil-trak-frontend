@@ -31,9 +31,9 @@ export function QuickActions({
 }: QuickActionsProps) {
     return (
         <div
-            className={`bg-linear-to-br from-[#044866] via-[#0D5468] to-[#044866] bg-[length:200%_100%] animate-gradient backdrop-blur-sm rounded-xl border-2 border-[#0D5468] shadow-lg shadow-[#044866]/20 overflow-hidden hover:shadow-xl transition-all relative`}
+            className={`bg-linear-to-br from-[#044866] via-[#0D5468] to-[#044866] bg-size-[200%_100%] animate-gradient backdrop-blur-sm rounded-xl border-2 border-[#0D5468] shadow-lg shadow-[#044866]/20 overflow-hidden hover:shadow-xl transition-all relative`}
         >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+            <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
             {/* Compact Single Line Layout */}
             <div className="relative px-5 py-3 flex items-center justify-between gap-4">
                 {/* Left: Title */}

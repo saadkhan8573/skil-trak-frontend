@@ -56,4 +56,9 @@ export const statusConfigs: Record<
         label: 'Rejected',
         color: 'orange',
     },
+    [WorkplaceCurrentStatus.Terminated]: {
+        icon: XCircle,
+        label: 'Terminated',
+        color: 'red',
+    },
 }

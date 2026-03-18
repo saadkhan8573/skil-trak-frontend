@@ -64,6 +64,15 @@ export const StudentOverViewUpdated = ({
             return completed
         }
 
+        const terminated =
+            sortedWorkplaces?.filter(
+                (wp) => wp?.currentStatus === WorkplaceCurrentStatus.Terminated
+            ) || []
+
+        if (terminated.length > 0) {
+            return terminated.slice(0, 1)
+        }
+
         return (
             sortedWorkplaces
                 ?.filter(

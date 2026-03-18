@@ -212,6 +212,17 @@ export const workplaceEndpoints = (
         }),
         invalidatesTags: ['SubAdminWorkplace'],
     }),
+    terminateRequestWorkplace: builder.mutation<
+        any,
+        { id: number; comment: string }
+    >({
+        query: ({ id, ...body }) => ({
+            url: `${PREFIX}workplace-request/${id}/terminate-partially`,
+            body,
+            method: 'PATCH',
+        }),
+        invalidatesTags: ['SubAdminWorkplace'],
+    }),
 
     updateWorkplaceStatus: builder.mutation<
         any,

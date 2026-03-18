@@ -1,22 +1,13 @@
-import { Button, Typography } from '@components'
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from '@components/ui/collapsible'
+import { Typography } from '@components'
 import { useAppSelector } from '@redux/hooks'
 import {
     Building,
     FileText,
-    Users,
-    Phone,
-    Mail,
     Globe,
-    MapPin,
-    ExternalLink,
     LucideIcon,
+    MapPin,
+    Users,
 } from 'lucide-react'
-import { useState } from 'react'
 
 const CardItem = ({
     Icon,
@@ -45,8 +36,6 @@ const CardItem = ({
 }
 
 export function BasicDetails() {
-    const [showContactInfo, setShowContactInfo] = useState(false)
-
     const industryDetail = useAppSelector(
         (state) => state.industry.industryDetail
     )
@@ -54,7 +43,7 @@ export function BasicDetails() {
     return (
         <div
             id="basic-details"
-            className="bg-white rounded-xl shadow-sm border border-[#E2E8F0] hover:shadow-md transition-all flex-1"
+            className="h-auto bg-white rounded-xl shadow-sm border border-[#E2E8F0] hover:shadow-md transition-all flex-1"
         >
             <div className="p-2.5">
                 <div className="flex items-center justify-between mb-1.5">

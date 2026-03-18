@@ -16,6 +16,7 @@ import {
     WorkplaceCurrentStatus,
 } from '@utils'
 import { WorkplaceCancellationBanner } from './WorkplaceCancellationBanner'
+import { WorkplaceTerminationBanner } from './WorkplaceTerminationBanner'
 import { WpIndustryRejectedBanner } from './WpIndustryRejectedBanner'
 
 interface WorkplaceOverviewCardProps {
@@ -82,6 +83,7 @@ export const WorkplaceOverviewCard = ({
                 setShowHighlightedTasks={toggleHighlightedTasks}
             />
             <WorkplaceCancellationBanner workplace={workplace} role={role} />
+            <WorkplaceTerminationBanner workplace={workplace} />
             <WpIndustryRejectedBanner workplace={workplace} />
             <Collapsible open={showHighlightedTasks}>
                 <CollapsibleContent>

@@ -41,122 +41,40 @@ export const TEAM_TAGS = [
 export const TeamSetupGuideTab = ({ setActiveTab, setAddMemberOpen }: any) => {
     return (
         <>
-            <Card className="border-primaryNew/20 shadow-premium-lg bg-gradient-to-br from-primaryNew/5 via-background to-secondaryNew/5 overflow-hidden">
-                <div className="border-b border-primaryNew/10 relative text-center pb-8">
-                    <div className="flex flex-col items-center gap-3">
-                        <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primaryNew to-secondaryNew flex items-center justify-center shadow-premium">
-                            <Zap className="h-8 w-8 text-white" />
+            <Card className="border-primaryNew/20 shadow-premium-lg bg-linear-to-br from-primaryNew/5 via-background to-secondaryNew/5 overflow-hidden">
+                <div className="border-b border-primaryNew/10 relative text-center pb-4">
+                    <div className="flex flex-col items-center gap-2">
+                        <div className="h-10 w-10 rounded-xl bg-linear-to-br from-primaryNew to-secondaryNew flex items-center justify-center shadow-premium mt-2">
+                            <Zap className="h-5 w-5 text-white" />
                         </div>
-                        <h1 className="text-3xl">
+                        <h1 className="text-xl font-bold">
                             Get Started in 2 Easy Steps
                         </h1>
-                        <p className="text-muted-foreground text-lg max-w-2xl">
+                        <p className="text-muted-foreground text-sm max-w-2xl">
                             Set up your RTO team in minutes. Just add members,
                             assign roles, and you're ready to go!
                         </p>
                     </div>
                 </div>
 
-                <div className="p-8 relative space-y-6">
+                <div className="p-4 relative space-y-4">
                     {/* Step 1 - Simplified */}
-                    {/* <Card className="border-primaryNew/30 bg-gradient-to-br from-primaryNew/5 to-background hover:shadow-premium transition-all">
-                        <div className="p-6">
-                            <div className="flex items-start gap-6">
-                                <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primaryNew to-primaryNew flex items-center justify-center shadow-premium flex-shrink-0">
-                                    <span className="text-white text-2xl">
-                                        1
-                                    </span>
-                                </div>
-                                <div className="flex-1 space-y-4">
-                                    <div>
-                                        <h3 className="text-2xl mb-2 flex items-center gap-2">
-                                            Add Your Team Members
-                                            <Badge className="bg-primaryNew/10 text-primaryNew border-primaryNew/20">
-                                                Start Here
-                                            </Badge>
-                                        </h3>
-                                        <p className="text-muted-foreground">
-                                            Add each person who will use the
-                                            portal. They'll get an email
-                                            invitation automatically.
-                                        </p>
-                                    </div>
-
-                                    <div className="grid md:grid-cols-2 gap-4">
-                                        <div className="p-4 rounded-xl bg-card border border-border">
-                                            <div className="flex items-center gap-3 mb-3">
-                                                <div className="h-10 w-10 rounded-lg bg-primaryNew/10 flex items-center justify-center">
-                                                    <UserPlus className="h-5 w-5 text-primaryNew" />
-                                                </div>
-                                                <h4 className="font-semibold">
-                                                    What You Need
-                                                </h4>
-                                            </div>
-                                            <ul className="space-y-2 text-sm">
-                                                <li className="flex items-center gap-2">
-                                                    <CheckCircle className="h-4 w-4 text-success" />
-                                                    Full name & email
-                                                </li>
-                                                <li className="flex items-center gap-2">
-                                                    <CheckCircle className="h-4 w-4 text-success" />
-                                                    Job title/role
-                                                </li>
-                                                <li className="flex items-center gap-2">
-                                                    <CheckCircle className="h-4 w-4 text-success" />
-                                                    Access level
-                                                </li>
-                                            </ul>
-                                        </div>
-
-                                        <div className="p-4 rounded-xl bg-primaryNew/5 border border-primaryNew/20">
-                                            <div className="flex items-center gap-3 mb-3">
-                                                <div className="h-10 w-10 rounded-lg bg-primaryNew/10 flex items-center justify-center">
-                                                    <Sparkles className="h-5 w-5 text-primaryNew" />
-                                                </div>
-                                                <h4 className="font-semibold">
-                                                    Pro Tip
-                                                </h4>
-                                            </div>
-                                            <p className="text-sm text-muted-foreground">
-                                                Start with administrators first,
-                                                then add coordinators and
-                                                assessors. This makes it easier
-                                                to organize departments.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <Button
-                                        onClick={() => {
-                                            // setActiveTab('members')
-                                            setAddMemberOpen(true)
-                                        }}
-                                        className="gap-2 bg-gradient-to-r from-primaryNew to-secondaryNew w-full md:w-auto"
-                                        size="lg"
-                                    >
-                                        <UserPlus className="h-5 w-5" />
-                                        Add First Team Member
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    </Card> */}
 
                     {/* Step 2 - Simplified */}
-                    <Card className="border-secondaryNew/30 bg-gradient-to-br from-secondaryNew/5 to-background hover:shadow-premium transition-all">
-                        <div className="p-6">
-                            <div className="flex items-start gap-6">
-                                <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primaryNew to-yellow-400 flex items-center justify-center shadow-premium flex-shrink-0">
-                                    <span className="text-white text-2xl">
+                    <Card className="border-secondaryNew/30 bg-linear-to-br from-secondaryNew/5 to-background hover:shadow-premium transition-all">
+                        <div className="p-4">
+                            <div className="flex items-start gap-4">
+                                <div className="h-10 w-10 rounded-xl bg-linear-to-br from-primaryNew to-yellow-400 flex items-center justify-center shadow-premium shrink-0">
+                                    <span className="text-white text-lg">
                                         1
                                     </span>
                                 </div>
-                                <div className="flex-1 space-y-4">
+                                <div className="flex-1 space-y-3">
                                     <div>
-                                        <h3 className="text-2xl mb-2">
+                                        <h3 className="text-lg font-bold mb-1">
                                             Choose Access Levels & Departments
                                         </h3>
-                                        <p className="text-muted-foreground">
+                                        <p className="text-muted-foreground text-sm">
                                             Select what each person can do and
                                             which parts of the system they can
                                             access.
@@ -274,20 +192,20 @@ export const TeamSetupGuideTab = ({ setActiveTab, setAddMemberOpen }: any) => {
                     </Card>
 
                     {/* Step 3 - Simplified */}
-                    <Card className="border-accent/30 bg-gradient-to-br from-accent/5 to-background hover:shadow-premium transition-all">
-                        <div className="p-6">
-                            <div className="flex items-start gap-6">
-                                <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primary to-yellow-400 flex items-center justify-center shadow-premium flex-shrink-0">
-                                    <span className="text-white text-2xl">
+                    <Card className="border-accent/30 bg-linear-to-br from-accent/5 to-background hover:shadow-premium transition-all">
+                        <div className="p-4">
+                            <div className="flex items-start gap-4">
+                                <div className="h-10 w-10 rounded-xl bg-linear-to-br from-primary to-yellow-400 flex items-center justify-center shadow-premium shrink-0">
+                                    <span className="text-white text-lg">
                                         2
                                     </span>
                                 </div>
-                                <div className="flex-1 space-y-4">
+                                <div className="flex-1 space-y-3">
                                     <div>
-                                        <h3 className="text-2xl mb-2">
+                                        <h3 className="text-lg font-bold mb-1">
                                             Add Support Tags (Optional)
                                         </h3>
-                                        <p className="text-muted-foreground">
+                                        <p className="text-muted-foreground text-sm">
                                             Tag team members for automatic
                                             ticket routing and support task
                                             distribution.
@@ -332,16 +250,16 @@ export const TeamSetupGuideTab = ({ setActiveTab, setAddMemberOpen }: any) => {
                                             </h4>
                                             <ul className="space-y-1 text-xs text-muted-foreground">
                                                 <li className="flex items-start gap-2">
-                                                    <CheckCircle className="h-3 w-3 text-success mt-0.5 flex-shrink-0" />
+                                                    <CheckCircle className="h-3 w-3 text-success mt-0.5 shrink-0" />
                                                     Support tickets auto-assign
                                                     to tagged members
                                                 </li>
                                                 <li className="flex items-start gap-2">
-                                                    <CheckCircle className="h-3 w-3 text-success mt-0.5 flex-shrink-0" />
+                                                    <CheckCircle className="h-3 w-3 text-success mt-0.5 shrink-0" />
                                                     Work is distributed equally
                                                 </li>
                                                 <li className="flex items-start gap-2">
-                                                    <CheckCircle className="h-3 w-3 text-success mt-0.5 flex-shrink-0" />
+                                                    <CheckCircle className="h-3 w-3 text-success mt-0.5 shrink-0" />
                                                     Leave empty if not needed
                                                 </li>
                                             </ul>
@@ -353,20 +271,20 @@ export const TeamSetupGuideTab = ({ setActiveTab, setAddMemberOpen }: any) => {
                     </Card>
 
                     {/* Summary */}
-                    <Card className="border-success/30 bg-gradient-to-br from-success/10 via-success/5 to-background shadow-premium-lg">
-                        <div className="p-8">
-                            <div className="text-center space-y-6">
-                                <div className="h-20 w-20 rounded-2xl bg-gradient-to-br from-success to-emerald-500 flex items-center justify-center shadow-premium mx-auto">
-                                    <CheckCircle2 className="h-10 w-10 text-white" />
+                    <Card className="border-success/30 bg-linear-to-br from-success/10 via-success/5 to-background shadow-premium-lg">
+                        <div className="p-6">
+                            <div className="text-center space-y-4">
+                                <div className="h-14 w-14 rounded-xl bg-linear-to-br from-success to-emerald-500 flex items-center justify-center shadow-premium mx-auto">
+                                    <CheckCircle2 className="h-8 w-8 text-white" />
                                 </div>
 
                                 <div>
-                                    <h3 className="text-2xl mb-2">
+                                    <h3 className="text-xl font-bold mb-1">
                                         That's It! You're Ready to Go
                                     </h3>
-                                    <p className="text-muted-foreground max-w-xl mx-auto">
+                                    <p className="text-muted-foreground text-sm max-w-xl mx-auto">
                                         Your team is set up and ready to start
-                                        managing students and placements. 
+                                        managing students and placements.
                                         {/* Add
                                         your first member now to get started. */}
                                     </p>
@@ -378,7 +296,7 @@ export const TeamSetupGuideTab = ({ setActiveTab, setAddMemberOpen }: any) => {
                                             // setActiveTab('members')
                                             setAddMemberOpen(true)
                                         }}
-                                        className="gap-2 bg-gradient-to-r from-primaryNew to-secondaryNew"
+                                        className="gap-2 bg-linear-to-r from-primaryNew to-secondaryNew"
                                         size="lg"
                                     >
                                         <UserPlus className="h-5 w-5" />

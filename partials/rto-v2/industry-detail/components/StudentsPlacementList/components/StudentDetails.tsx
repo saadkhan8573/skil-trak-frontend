@@ -1,12 +1,8 @@
+import { StatusStep } from '@partials/rto-v2/student-detail/components/StudentOverview/hooks/useStatusInfo'
 import { CheckCircle, Circle, Clock, XCircle } from 'lucide-react'
 
 interface StudentDetailsProps {
-    workflow: {
-        label: string
-        completed: boolean
-        current: boolean
-        date: string
-    }[]
+    workflow: StatusStep[]
 }
 
 export function StudentDetails({ workflow }: StudentDetailsProps) {
@@ -25,9 +21,9 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
         : workflow.filter((step) => !terminalStatuses.includes(step?.label))
 
     return (
-        <div className="border-t border-[#E2E8F0] bg-gradient-to-br from-[#F8FAFB] to-[#FFFFFF] p-3">
+        <div className="border-t border-[#E2E8F0] bg-linear-to-br from-[#F8FAFB] to-[#FFFFFF] p-3">
             <h4 className="text-xs font-bold text-[#1A2332] mb-2 flex items-center gap-1.5">
-                <div className="w-0.5 h-3 bg-gradient-to-b from-[#044866] to-[#0D5468] rounded-full" />
+                <div className="w-0.5 h-3 bg-linear-to-b from-[#044866] to-[#0D5468] rounded-full" />
                 Placement Workflow Progress
             </h4>
 
@@ -42,19 +38,19 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
                         >
                             {/* Connector Line */}
                             {index < displayedWorkflow.length - 1 && (
-                                <div className="absolute left-[9px] top-5 w-0.5 h-4 bg-[#E2E8F0]" />
+                                <div className="absolute left-2.25 top-5 w-0.5 h-4 bg-[#E2E8F0]" />
                             )}
 
                             {/* Status Icon */}
                             <div
-                                className={`w-5 h-5 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0 transition-all duration-300 ${
+                                className={`w-5 h-5 rounded-lg flex items-center justify-center shadow-sm shrink-0 transition-all duration-300 ${
                                     step?.completed
-                                        ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
+                                        ? 'bg-linear-to-br from-[#10B981] to-[#059669]'
                                         : step?.current
                                           ? isTerminal
-                                              ? 'bg-gradient-to-br from-[#EF4444] to-[#B91C1C]'
-                                              : 'bg-gradient-to-br from-[#F7A619] to-[#EA580C] animate-pulse'
-                                          : 'bg-gradient-to-br from-[#F8FAFB] to-[#E2E8F0]'
+                                              ? 'bg-linear-to-br from-[#EF4444] to-[#B91C1C]'
+                                              : 'bg-linear-to-br from-[#F7A619] to-[#EA580C] animate-pulse'
+                                          : 'bg-linear-to-br from-[#F8FAFB] to-[#E2E8F0]'
                                 }`}
                             >
                                 {step?.completed ? (

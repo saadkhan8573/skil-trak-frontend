@@ -5,6 +5,7 @@ import {
     TechnicalError,
 } from '@components'
 import { FieldsTypeEnum } from '@components/Esign/components/SidebarData'
+import { UserRoles } from '@constants'
 import { useNotification } from '@hooks'
 import { SiteLayout } from '@layouts'
 import {
@@ -18,12 +19,20 @@ import {
     FinishEmailSignModal,
 } from '@partials/eSign/modal'
 import { CommonApi } from '@queries'
+import { checkJsxVisibility } from '@utils'
 import { motion } from 'framer-motion'
 import { jwtDecode as jwt } from 'jwt-decode'
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react'
 import moment from 'moment'
 import { useRouter } from 'next/router'
-import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import {
+    Activity,
+    ReactNode,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 
 const ESign = () => {
     const router = useRouter()
@@ -422,6 +431,39 @@ const ESign = () => {
         <SiteLayout title={'E Sign'}>
             <div className="p-6 space-y-2">
                 {modal}
+                {/* <Activity
+                    mode={checkJsxVisibility(
+                        decodeData?.role === UserRoles.RTO &&
+                            documentDetail?.data?.signers?.length > 0 &&
+                            !documentDetail?.data?.signers
+                                ?.filter(
+                                    (s: any) => s?.user?.role !== UserRoles.RTO
+                                )
+                                ?.every((s: any) => s?.status === 'signed')
+                    )}
+                >
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="p-4 rounded-xl border flex items-center gap-3 mb-2"
+                        style={{
+                            background: '#EFF6FF',
+                            borderColor: '#BFDBFE',
+                        }}
+                    >
+                        <div
+                            className="w-2 h-2 rounded-full animate-pulse"
+                            style={{ background: '#3B82F6' }}
+                        />
+                        <p
+                            className="text-sm font-semibold"
+                            style={{ color: '#1E40AF' }}
+                        >
+                            Waiting for other parties to sign before RTO can
+                            finish.
+                        </p>
+                    </motion.div>
+                </Activity> */}
                 <EsignHeader documentDetail={documentDetail?.data} />
 
                 {isSignature && isDocumentLoaded?.isSuccess ? (

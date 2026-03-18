@@ -371,46 +371,6 @@ export const WorkplaceCard = ({
                     </div>
                 </div>
 
-                {/* Progress Bar for Active/Completed */}
-                {/* {(workplace.status === 'active' ||
-                    workplace.status === 'completed') &&
-                    workplace.hoursCompleted &&
-                    workplace.hoursRequired && (
-                        <div className="bg-white border border-slate-200 rounded-xl p-4">
-                            <div className="flex items-center justify-between mb-2">
-                                <p className="text-sm text-slate-700">
-                                    Hours Progress
-                                </p>
-                                <p className="text-sm text-slate-900">
-                                    {workplace.hoursCompleted} /{' '}
-                                    {workplace.hoursRequired} hours
-                                </p>
-                            </div>
-                            <Progressbar
-                                value={
-                                    (workplace.hoursCompleted /
-                                        workplace.hoursRequired) *
-                                    100
-                                }
-                                variant={
-                                    workplace.status === 'active'
-                                        ? 'success'
-                                        : 'info'
-                                }
-                                size="sm"
-                                className="h-[7.2px]"
-                            />
-                            <p className="text-xs text-slate-500 mt-2">
-                                {workplace.status === 'active'
-                                    ? `${
-                                          workplace.hoursRequired -
-                                          workplace.hoursCompleted
-                                      } hours remaining`
-                                    : 'Placement completed successfully'}
-                            </p>
-                        </div>
-                    )} */}
-
                 {/* Pending Status Info */}
                 {status === 'pending' && (
                     <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
@@ -425,10 +385,6 @@ export const WorkplaceCard = ({
                                 }
                             </p>
                         </div>
-                        {/* <p className="text-xs text-amber-700 mt-2">
-                            Requires {workplace.hoursRequired} hours of
-                            placement
-                        </p> */}
                     </div>
                 )}
 
@@ -451,51 +407,6 @@ export const WorkplaceCard = ({
                 )}
 
                 {/* Cancel Section */}
-                {/* {[
-                    WorkplaceCurrentStatus.Applied,
-                    WorkplaceCurrentStatus.CaseOfficerAssigned,
-                    WorkplaceCurrentStatus.Interview,
-                    WorkplaceCurrentStatus.AwaitingStudentResponse,
-                    WorkplaceCurrentStatus.AwaitingRtoResponse,
-                    WorkplaceCurrentStatus.AwaitingWorkplaceResponse,
-                    WorkplaceCurrentStatus.AppointmentBooked,
-                    WorkplaceCurrentStatus.AwaitingAgreementSigned,
-                ].includes(workplace?.currentStatus as WorkplaceCurrentStatus) && ( */}
-                <div className="mt-4 border-t border-slate-100">
-                    {!workplace?.cancelledRequests?.length ? (
-                        [
-                            WorkplaceCurrentStatus.Applied,
-                            WorkplaceCurrentStatus.CaseOfficerAssigned,
-                            WorkplaceCurrentStatus.Interview,
-                            WorkplaceCurrentStatus.AwaitingStudentResponse,
-                            WorkplaceCurrentStatus.AwaitingRtoResponse,
-                            WorkplaceCurrentStatus.AwaitingWorkplaceResponse,
-                            WorkplaceCurrentStatus.AppointmentBooked,
-                            WorkplaceCurrentStatus.AwaitingAgreementSigned,
-                        ].includes(
-                            workplace?.currentStatus as WorkplaceCurrentStatus
-                        ) && (
-                            <CancelWpRequest
-                                onCancelWPClicked={onCancelWPClicked}
-                                onCancelWPRequestClicked={
-                                    onCancelWPRequestClicked
-                                }
-                            />
-                        )
-                    ) : (
-                        <div className="bg-amber-50 rounded-xl p-3 border border-amber-100 flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center shrink-0">
-                                <Clock className="w-4 h-4 text-amber-600" />
-                            </div>
-                            <p className="text-[11px] text-amber-800 leading-normal">
-                                <span className="font-bold block">
-                                    Cancellation Pending
-                                </span>
-                                Sent to Admin for approval.
-                            </p>
-                        </div>
-                    )}
-                </div>
 
                 <div className="flex items-center gap-2 pt-4 border-t border-slate-100">
                     <Button

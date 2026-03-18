@@ -133,6 +133,16 @@ export const workplaceEndpoints = (
         }),
         providesTags: ['Workplaces'],
     }),
+    wpTerminationRequestsList: builder.query<
+        PaginatedResponse<any>,
+        PaginationWithSearch
+    >({
+        query: (params) => ({
+            url: `${PREFIX}/partially-terminated/workplaces-list`,
+            params,
+        }),
+        providesTags: ['Workplaces'],
+    }),
     industryRejectedWpList: builder.query<
         PaginatedResponse<any>,
         PaginationWithSearch
@@ -202,6 +212,17 @@ export const workplaceEndpoints = (
             url: `${PREFIX}/workplace-cancelation-request/${id}/update`,
             method: 'PATCH',
             body,
+        }),
+        invalidatesTags: ['Workplaces', 'RTO', 'StudentsWorkplace'],
+    }),
+    changeStatusForWPTerminationRequest: builder.mutation<
+        PaginatedResponse<IWorkplaceIndustries>,
+        { id: number; status: CancelationRequestEnum }
+    >({
+        query: ({ id, ...params }) => ({
+            url: `${PREFIX}/workplace-request/${id}/terminate`,
+            method: 'PATCH',
+            params,
         }),
         invalidatesTags: ['Workplaces', 'RTO', 'StudentsWorkplace'],
     }),

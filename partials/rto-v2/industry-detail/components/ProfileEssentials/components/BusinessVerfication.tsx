@@ -8,7 +8,7 @@ import {
     Loader2,
     AlertCircle,
 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppSelector } from '@redux/hooks'
 import { CommonApi } from '@queries'
@@ -88,14 +88,14 @@ export function BusinessVerfication() {
                             {/* Summary Card */}
                             <div className="rounded-lg bg-white border-2 border-[#E2E8F0] p-3 hover:border-[#044866]/20 transition-colors shadow-xs">
                                 <div className="flex items-start gap-4">
-                                    <div className="w-12 h-12 bg-linear-to-br from-[#044866] to-[#0D5468] rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                                    <div className="w-12 h-12 bg-linear-to-br from-[#044866] to-[#0D5468] rounded-xl flex items-center justify-center shrink-0 shadow-md">
                                         <Building2 className="w-6 h-6 text-white" />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <p className="text-[9px] text-[#044866] uppercase tracking-widest font-bold mb-1">
                                             Registered Entity
                                         </p>
-                                        <p className="text-sm text-[#1A2332] font-extrabold mb-1 leading-tight break-words">
+                                        <p className="text-sm text-[#1A2332] font-extrabold mb-1 leading-tight wrap-break-word">
                                             {getAbnDetails?.data?.legalName ||
                                                 getAbnDetails?.data
                                                     ?.businessName}

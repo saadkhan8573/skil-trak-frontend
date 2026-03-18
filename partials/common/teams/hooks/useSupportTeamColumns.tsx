@@ -1,14 +1,11 @@
+import { useState } from 'react'
 import { TableAction, TableActionOption } from '@components'
-import {
-    HoverCard,
-    HoverCardTrigger,
-    HoverCardContent,
-} from '@components/ui/hover-card'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { Tags } from 'lucide-react'
 import Image from 'next/image'
 import { FaRegEdit, FaTrash } from 'react-icons/fa'
+import { TeamMembersModal } from '../modals'
 
 interface SupportTeamItem {
     id: number
@@ -61,37 +58,27 @@ export function useSupportTeamColumns({
             header: () => <span>Members</span>,
             accessorKey: 'membersCount',
             cell: ({ row }) => {
+                const [isModalOpen, setIsModalOpen] = useState(false)
                 const members = row.original?.members || []
+                const teamName = row.original?.name || ''
 
                 if (!members.length) return <span>0</span>
 
                 return (
-                    <HoverCard>
-                        <HoverCardTrigger asChild>
-                            <span className="cursor-pointer text-primary underline underline-offset-2">
-                                {members?.length} Members
-                            </span>
-                        </HoverCardTrigger>
-
-                        <HoverCardContent className="w-56 p-3">
-                            <div className="space-y-2">
-                                <p className="text-sm font-semibold">
-                                    Team Members
-                                </p>
-
-                                <ul className="space-y-1 text-sm">
-                                    {members?.map((m: any) => (
-                                        <li
-                                            key={m.id}
-                                            className="text-muted-foreground"
-                                        >
-                                            {m.subadmin?.user?.name}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </HoverCardContent>
-                    </HoverCard>
+                    <>
+                        <span
+                            onClick={() => setIsModalOpen(true)}
+                            className="cursor-pointer text-primary underline underline-offset-2 hover:text-primary/80 transition-colors"
+                        >
+                            {members?.length} Members
+                        </span>
+                        <TeamMembersModal
+                            isOpen={isModalOpen}
+                            onOpenChange={setIsModalOpen}
+                            members={members}
+                            teamName={teamName}
+                        />
+                    </>
                 )
             },
         },
@@ -166,16 +153,6 @@ export function useSupportTeamColumns({
                     : '---'
             },
         },
-        // {
-        //     header: () => <span>Date</span>,
-        //     accessorKey: "updatedAt",
-        //     cell: ({ row }) => {
-        //         const { updatedAt } = row.original
-        //         return updatedAt
-        //             ? format(new Date(updatedAt), "dd MMM yyyy")
-        //             : "---"
-        //     },
-        // },
         {
             header: () => <span>Actions</span>,
             accessorKey: 'actions',

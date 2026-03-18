@@ -172,6 +172,43 @@ export function PlacementRequest({
                                 </div>
                             )}
 
+                            {/* Group Section: Terminated */}
+                            {groupedRequests.terminated.length > 0 && (
+                                <div className="space-y-2">
+                                    <h5 className="text-xs font-bold text-red-600 uppercase tracking-wider px-1">
+                                        Terminated
+                                    </h5>
+                                    <div className="space-y-1.5">
+                                        {groupedRequests.terminated.map(
+                                            (request, index) => (
+                                                <PlacementRequestItem
+                                                    key={request.id}
+                                                    request={request}
+                                                    index={index}
+                                                    groupLength={
+                                                        groupedRequests
+                                                            .terminated.length
+                                                    }
+                                                    onSelect={onSelectWorkplace}
+                                                    onMouseEnter={
+                                                        handleMouseEnter
+                                                    }
+                                                    onMouseLeave={
+                                                        handleMouseLeave
+                                                    }
+                                                    hoveredCommentId={
+                                                        hoveredCommentId
+                                                    }
+                                                    tooltipPosition={
+                                                        tooltipPosition
+                                                    }
+                                                />
+                                            )
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+
                             {/* Group Section: Rejected */}
                             {groupedRequests.rejected.length > 0 && (
                                 <div className="space-y-2">

@@ -27,7 +27,7 @@ export function InterviewAvailability({
     onSuccess,
     workplaceId,
     checkRuntime,
-    isTemporary
+    isTemporary,
 }: InterviewAvailabilityProps = {}) {
     const [createAvailability, createAvailabilityResult] =
         RtoV2Api.Industries.createAvailability()
@@ -132,12 +132,12 @@ export function InterviewAvailability({
                             slots:
                                 daySlots.length > 0
                                     ? daySlots.map((s) => ({
-                                        startTime: s.startTime.substring(
-                                            0,
-                                            5
-                                        ),
-                                        endTime: s.endTime.substring(0, 5),
-                                    }))
+                                          startTime: s.startTime.substring(
+                                              0,
+                                              5
+                                          ),
+                                          endTime: s.endTime.substring(0, 5),
+                                      }))
                                     : day.slots,
                         }
                     })
@@ -179,9 +179,9 @@ export function InterviewAvailability({
                     slots:
                         slots && slots.length > 0
                             ? slots.map((s: any) => ({
-                                startTime: s.startTime.substring(0, 5),
-                                endTime: s.endTime.substring(0, 5),
-                            }))
+                                  startTime: s.startTime.substring(0, 5),
+                                  endTime: s.endTime.substring(0, 5),
+                              }))
                             : prev.slots,
                 }))
             }
@@ -227,7 +227,7 @@ export function InterviewAvailability({
                     slots,
                     userId: industryDetail?.user?.id,
                     workplaceRequest: workplaceId,
-                    isTemporary
+                    isTemporary,
                     // interviewer: selectedInterviewer,
                 }
             } else {
@@ -252,7 +252,7 @@ export function InterviewAvailability({
                     slots: monthlyData.slots,
                     userId: industryDetail?.user?.id,
                     workplaceRequest: workplaceId,
-                    isTemporary
+                    isTemporary,
                     // interviewer: selectedInterviewer,
                 }
             }
@@ -303,33 +303,47 @@ export function InterviewAvailability({
                         <Calendar className="w-4 h-4" />
                         Interview Availability
                     </h3>
-                    <AuthorizedUserComponent roles={[UserRoles.ADMIN, UserRoles.SUBADMIN, UserRoles.RTO]}>
-                        {checkRuntime && <div className="flex items-center gap-3">
-                            <div className="flex items-center gap-2 bg-white/10 px-2 py-1 rounded-lg backdrop-blur-sm">
-                                <span className="text-[10px] text-white font-medium">
-                                    {industryDetail?.isAvailabilityProvidedAtRuntime
-                                        ? 'Inactive'
-                                        : 'Active'}
-                                </span>
-                                <Switch
-                                    name="interviewAvailability"
-                                    customStyleClass="profileSwitch"
-                                    isChecked={
-                                        industryDetail?.isAvailabilityProvidedAtRuntime ?? false
-                                    }
-                                    onChange={(e: any) =>
-                                        handleUpdateAvailabilityStatus()
-                                    }
-                                    loading={updateIndustryAvailabilityResult.isLoading}
-                                    disabled={updateIndustryAvailabilityResult.isLoading}
-                                />
+                    <AuthorizedUserComponent
+                        roles={[
+                            UserRoles.ADMIN,
+                            UserRoles.SUBADMIN,
+                            UserRoles.RTO,
+                        ]}
+                    >
+                        {checkRuntime && (
+                            <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-2 bg-white/10 px-2 py-1 rounded-lg backdrop-blur-sm">
+                                    <span className="text-[10px] text-white font-medium">
+                                        {industryDetail?.isAvailabilityProvidedAtRuntime
+                                            ? 'Inactive'
+                                            : 'Active'}
+                                    </span>
+                                    <Switch
+                                        name="interviewAvailability"
+                                        customStyleClass="profileSwitch"
+                                        isChecked={
+                                            industryDetail?.isAvailabilityProvidedAtRuntime ??
+                                            false
+                                        }
+                                        onChange={(e: any) =>
+                                            handleUpdateAvailabilityStatus()
+                                        }
+                                        loading={
+                                            updateIndustryAvailabilityResult.isLoading
+                                        }
+                                        disabled={
+                                            updateIndustryAvailabilityResult.isLoading
+                                        }
+                                    />
+                                </div>
                             </div>
-                        </div>}
+                        )}
                     </AuthorizedUserComponent>
                 </div>
 
                 <div className="px-4 py-2 space-y-3">
-                    {!checkRuntime || !industryDetail?.isAvailabilityProvidedAtRuntime ? (
+                    {!checkRuntime ||
+                    !industryDetail?.isAvailabilityProvidedAtRuntime ? (
                         <>
                             <ConfigTabs
                                 tabs={tabs}
@@ -406,8 +420,8 @@ export function InterviewAvailability({
                                 Manual Scheduling Active
                             </h4>
                             <p className="text-xs text-slate-500 max-w-xs">
-                                The industry will receive interview availability timing
-                                for each student individually.
+                                The industry will receive interview availability
+                                timing for each student individually.
                             </p>
                         </div>
                     )}

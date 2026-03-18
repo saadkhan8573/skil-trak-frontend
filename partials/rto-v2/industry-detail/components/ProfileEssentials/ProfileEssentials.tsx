@@ -50,13 +50,14 @@ export function ProfileEssentials() {
                     {/* Left Column */}
                     <div className="space-y-3 flex flex-col h-full">
                         <AssignedAgent />
-                        <BasicDetails />
+                        <PlacementFormUrl />
                     </div>
 
                     {/* Right Column */}
                     <div className="space-y-3 flex flex-col h-full">
                         {/* <QuickNotes /> */}
                         <InterviewAvailability checkRuntime />
+                        <BusinessVerfication />
                     </div>
                 </AuthorizedUserComponent>
             </div>

@@ -33,7 +33,7 @@ export const SupportTeamFilter = ({ setFilter, filter }: any) => {
         value: tag,
     }))
     return (
-        <div className="bg-white grid grid-cols-4 gap-x-4 items-center p-3 mt-4 rounded-md shadow-premium">
+        <div className="bg-white grid grid-cols-4 gap-x-2 items-center p-2 mt-3 rounded-md shadow-premium">
             {' '}
             <Select
                 name="team"

@@ -6,11 +6,7 @@ import { NextPageWithLayout } from '@types'
 import { TeamsDashboard } from '@partials/common'
 
 const TeamsPage: NextPageWithLayout = () => {
-    return (
-        <div className="px-4 mt-8">
-            <TeamsDashboard />
-        </div>
-    )
+    return <TeamsDashboard />
 }
 
 TeamsPage.getLayout = (page: ReactElement) => {

@@ -212,6 +212,9 @@ export const usePlacementRequest = (
             cancelled: canceledCompletedRequests.filter(
                 (r) => r.status === WorkplaceCurrentStatus.Cancelled
             ),
+            terminated: canceledCompletedRequests.filter(
+                (r) => r.status === WorkplaceCurrentStatus.Terminated
+            ),
             rejected: canceledCompletedRequests.filter((r) =>
                 [
                     WorkplaceCurrentStatus.RejectedByStudent,

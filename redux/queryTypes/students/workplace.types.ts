@@ -8,6 +8,7 @@ import {
     Student,
     StudentProvidedWpAppRequest,
     SubAdmin,
+    User,
     UserStatus,
 } from '@types'
 import { WorkplaceCurrentStatus } from '@utils'
@@ -111,6 +112,15 @@ export interface CancelledRequestType extends BaseResponse {
     comment: string
     workplaceCurrentStatus: WorkplaceCurrentStatus
     status: RequestStatus
+    requestedBy?: any
+}
+
+export interface TerminatedRequestType extends BaseResponse {
+    id: number
+    comment: string
+    workplaceCurrentStatus: WorkplaceCurrentStatus
+    status: RequestStatus
+    requestedBy?: any
 }
 
 export interface IWorkplaceIndustries {
@@ -118,6 +128,10 @@ export interface IWorkplaceIndustries {
     approvalStatus?: string
     cancelledAt?: string
     byExistingAbn?: boolean
+    isTerminated?: boolean
+    terminationComment?: string
+    terminatedAt?: string
+    terminatedByUser?: User
     studentProvidedWorkplace?: boolean
     assignedTo?: SubAdmin
     industryStatus?: UserStatus

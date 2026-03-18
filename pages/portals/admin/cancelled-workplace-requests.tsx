@@ -6,6 +6,7 @@ import {
     WpCancelationRequest,
     WpRejectionList,
     WpIndustryRejectedRequest,
+    WpTerminationRequest,
 } from '@partials/common'
 import { TabNavigation, TabProps } from '@components'
 
@@ -44,6 +45,18 @@ const CancelledWorkplaceRequests: NextPageWithLayout = () => {
             },
 
             element: <WpIndustryRejectedRequest />,
+        },
+        {
+            label: 'Termination Requests',
+            href: {
+                pathname: '/portals/admin/cancelled-workplace-requests',
+                query: {
+                    tab: 'termination-requests',
+                    page: 1,
+                    pageSize: 50,
+                },
+            },
+            element: <WpTerminationRequest />,
         },
     ]
     return (

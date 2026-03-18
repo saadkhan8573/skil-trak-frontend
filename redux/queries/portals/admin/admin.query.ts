@@ -416,7 +416,9 @@ const {
     useGetSubadminForAssignWorkplaceQuery,
     useAllStudentProvidedWorkplaceListQuery,
     useChangeStatusForWPCancelationRequestMutation,
+    useChangeStatusForWPTerminationRequestMutation,
     useChangeStatusIndustryRejectedWpReqMutation,
+    useWpTerminationRequestsListQuery,
 
     // ------ FOLDERS ------ //
     useFolderAddMutation,
@@ -731,8 +733,11 @@ export const AdminApi = {
         useStudentProvidedWorkplace: useAllStudentProvidedWorkplaceListQuery,
         changeStatusCancelationReq:
             useChangeStatusForWPCancelationRequestMutation,
+        changeStatusTerminationReq:
+            useChangeStatusForWPTerminationRequestMutation,
         useChangeStatusIndustryRejectedWpReq:
             useChangeStatusIndustryRejectedWpReqMutation,
+        wpTerminationRequestsList: useWpTerminationRequestsListQuery,
     },
 
     Industries: {

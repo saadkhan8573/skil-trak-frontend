@@ -20,13 +20,12 @@ import {
     X,
 } from 'lucide-react'
 import moment from 'moment'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
 } from '@redux/queryTypes'
 import { useStatusInfo } from '../../hooks/useStatusInfo'
-import { RtoV2Api } from '@queries'
 import { STATUS_CONTENT } from './statusMapping'
 import { UserRoles } from '@constants'
 import { TerminateWorkplaceButton } from './TerminateWorkplaceButton'
@@ -45,89 +44,35 @@ export function WorkplaceStatuses({
     const wpId = workplace?.id
     const router = useRouter()
 
-    const progressData = RtoV2Api.PlacementRequests.useStudentPlacementProgress(
-        wpId!,
-        {
-            skip: !wpId,
-        }
-    )
+    const {
+        statuses: localStatuses,
+        progressPercent: localProgressPercent,
+    } = useStatusInfo({
+        workplace: workplace as any,
+        workIndustry: workIndustry as WorkplaceWorkIndustriesType,
+    })
 
-    const apiProgress = progressData?.data
-
-    const { statuses: localStatuses, progressPercent: localProgressPercent } =
-        useStatusInfo({
-            workplace: workplace as any,
-            workIndustry: workIndustry as WorkplaceWorkIndustriesType,
-        })
-
-    // Map dynamic statuses to components - Preferred API data, fallback to local logic
+    // Build workflow steps from frontend-driven statuses only
     const workflowSteps = useMemo(() => {
-        if (apiProgress && apiProgress.length > 0) {
-            // Find the last completed stage to treat it as "current" (In Progress)
-            const lastCompletedIndex = [...apiProgress]
-                .reverse()
-                .findIndex((s: any) => s.completed)
-            const currentStageIndex =
-                lastCompletedIndex !== -1
-                    ? apiProgress.length - 1 - lastCompletedIndex
-                    : -1
+        if (!localStatuses || localStatuses.length === 0) return []
 
-            return apiProgress.map((status: any, index: number) => {
-                let mappedStatus: 'completed' | 'current' | 'pending' =
-                    'pending'
-
-                if (currentStageIndex !== -1) {
-                    if (index < currentStageIndex) {
-                        mappedStatus = 'completed'
-                    } else if (index === currentStageIndex) {
-                        mappedStatus = 'current'
-                    } else {
-                        mappedStatus = 'pending'
-                    }
-                } else {
-                    // Fallback to original logic if none are completed
-                    mappedStatus = status.completed
-                        ? 'completed'
-                        : status.current
-                          ? 'current'
-                          : 'pending'
-                }
-
-                return {
-                    label: status.stage,
-                    status: mappedStatus,
-                    icon:
-                        mappedStatus === 'completed'
-                            ? CheckCircle
-                            : mappedStatus === 'current'
-                              ? Clock
-                              : Circle,
-                    date: status.date
-                        ? moment(status.date).format('DD/MM/YYYY')
-                        : null,
-                }
-            })
-        }
-
-        if (localStatuses && localStatuses.length > 0) {
-            return localStatuses.map((status: any) => ({
-                label: status.label,
-                status: status.completed
-                    ? 'completed'
-                    : status.current
-                      ? 'current'
-                      : 'pending',
-                icon: status.completed
-                    ? CheckCircle
-                    : status.current
-                      ? Clock
-                      : Circle,
-                date: status.date,
-            }))
-        }
-
-        return []
-    }, [apiProgress, localStatuses])
+        return localStatuses.map((status: any) => ({
+            label: status.label,
+            status: status.completed
+                ? 'completed'
+                : status.current
+                  ? 'current'
+                  : 'pending',
+            icon: status.completed
+                ? CheckCircle
+                : status.current
+                  ? Clock
+                  : Circle,
+            date: status.date
+                ? moment(status.date).format('DD/MM/YYYY')
+                : null,
+        }))
+    }, [localStatuses])
 
     const role = getUserCredentials()?.role
 
@@ -140,16 +85,7 @@ export function WorkplaceStatuses({
             ? currentStageIndex + 1
             : workflowSteps.filter((s) => s.status === 'completed').length
 
-    // Use API progress percent if available, otherwise fallback to local calculation
-    const currentProgressPercent = useMemo(() => {
-        if (apiProgress && apiProgress.length > 0) {
-            const completedCount = workflowSteps.filter(
-                (s: any) => s.status === 'completed'
-            ).length
-            return Math.round((completedCount / totalStages) * 100)
-        }
-        return localProgressPercent || 0
-    }, [apiProgress, localProgressPercent, workflowSteps, totalStages])
+    const currentProgressPercent = localProgressPercent || 0
 
     const hasCancelledRequests = (workplace?.cancelledRequests?.length ?? 0) > 0
 
@@ -184,6 +120,7 @@ export function WorkplaceStatuses({
             )
         }
     }
+
     return (
         <div className="px-4 py-3 bg-linear-to-br from-slate-50 via-white to-blue-50/30 border-b border-slate-200/60 relative overflow-hidden">
             {/* Decorative elements */}

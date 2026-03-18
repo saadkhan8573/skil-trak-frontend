@@ -235,6 +235,20 @@ export const industriesEndpoints = (
         providesTags: ['RTOIndustries'],
     }),
 
+    getIndustryTerminatedStudents: builder.query<
+        PaginatedResponse<IWorkplaceIndustries>,
+        {
+            params: PaginationWithSearch
+            industryId: number
+        }
+    >({
+        query: ({ params, industryId }) => ({
+            url: `${INDUSTRIESPREFIX}${industryId}/terminated/workplaces-list`,
+            params,
+        }),
+        providesTags: ['RTOIndustries'],
+    }),
+
     industryCoursesDetails: builder.query<
         IndustryCourseApproval[],
         { userId?: number; isDeleted?: boolean }

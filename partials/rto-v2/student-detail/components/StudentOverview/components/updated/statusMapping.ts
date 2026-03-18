@@ -2,25 +2,48 @@ export const STATUS_CONTENT: Record<
     string,
     { title: string; description: string }
 > = {
-    'Waiting for Student': {
-        title: 'Awaiting Student Approval',
+    // ── Shared ────────────────────────────────────────────────────────────────
+    'Student Added': {
+        title: 'Student Added',
         description:
-            'The Workplace option has been sent to the student. Student will review the details and approve the request to proceed further.',
-    },
-    'Waiting for RTO': {
-        title: 'Awaiting RTO Confirmation',
-        description:
-            'The student has approved the industry. The RTO will now review and confirm the placement shortly.',
+            'The student has been added to the system and a workplace placement request is pending.',
     },
     'Waiting for Industry': {
         title: 'Awaiting Industry Confirmation',
         description:
             'The workplace will review your placement request shortly.',
     },
+    'Placement Started': {
+        title: 'Placement in Progress',
+        description:
+            'The placement of the student has officially started. Please ensure the student follows the approved placement schedule and requirements.',
+    },
+    Completed: {
+        title: 'Placement Completed',
+        description:
+            'The placement has been successfully completed. Please ensure all required documentation and logs are submitted.',
+    },
+
+    // ── Need Workplace ────────────────────────────────────────────────────────
+    'Industry Sourcing': {
+        title: 'Sourcing Industry Partner',
+        description:
+            'A case officer has been assigned and is actively working to source a suitable industry partner for the student.',
+    },
+    'Waiting for Student': {
+        title: 'Awaiting Student Approval',
+        description:
+            'The workplace option has been sent to the student. The student will review the details and approve the request to proceed further.',
+    },
+    'Waiting for RTO': {
+        title: 'Awaiting RTO Confirmation',
+        description:
+            'The student has approved the industry. The RTO will now review and confirm the placement shortly.',
+    },
     Appointment: {
         title: 'Book Your Appointment',
         description:
-            'Student placement request has been approved. Student need to schedule their appointment with the industry to move forward.',
+            'The placement request has been approved. The student needs to schedule their appointment with the industry to move forward.',
     },
     'Agreement Pending': {
         title: 'Agreement & Eligibility Pending',
@@ -32,16 +55,30 @@ export const STATUS_CONTENT: Record<
         description:
             'All parties have signed the agreement. Please proceed to add your placement schedule to continue.',
     },
-    'Placement Started': {
-        title: 'Placement in Progress',
+
+    // ── Provided Workplace ────────────────────────────────────────────────────
+    'Provided Workplace Request': {
+        title: 'Workplace Request Submitted',
         description:
-            'The placement of the student has officially started. Please ensure that student follow the approved placement schedule and requirements.',
+            'The student has submitted their own workplace for approval. The RTO is currently reviewing the request.',
     },
-    'Schedule Completed': {
-        title: 'Schedule Completed',
+    'Industry Eligibility Pending': {
+        title: 'Industry Eligibility Check',
         description:
-            'The placement schedule has been successfully completed. Please ensure all required documentation and logs are submitted.',
+            'The nominated industry is being checked for eligibility to host student placements.',
     },
+    'Agreement and Eligibility Pending': {
+        title: 'Agreement & Eligibility Pending',
+        description:
+            'The placement agreement has been sent to all parties. Awaiting all required signatures and eligibility confirmation.',
+    },
+    'Agreement and Eligibility Signed': {
+        title: 'Agreement & Eligibility Confirmed',
+        description:
+            'All parties have signed the agreement. The student can now begin their placement.',
+    },
+
+    // ── Terminal States ───────────────────────────────────────────────────────
     Cancelled: {
         title: 'Placement Cancelled',
         description:
@@ -56,10 +93,5 @@ export const STATUS_CONTENT: Record<
         title: 'No Response from Industry',
         description:
             'The industry has not responded to your placement request yet. You may wait or contact your Industry for support.',
-    },
-    'Industry Eligibility Check': {
-        title: 'Industry Eligibility Check',
-        description:
-            'The industry is currently undergoing an eligibility check to host placements.',
     },
 }

@@ -132,6 +132,7 @@ export interface IWorkplaceIndustries {
     terminationComment?: string
     terminatedAt?: string
     terminatedByUser?: User
+    terminatedBy?: string
     studentProvidedWorkplace?: boolean
     assignedTo?: SubAdmin
     industryStatus?: UserStatus

@@ -9,7 +9,7 @@ export const TeamsHeader = ({ setAddMemberOpen }: any) => {
     return (
         <>
             {/* Header */}
-            <div className="space-y-1">
+            <div>
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-2xl mb-1 text-primaryNew">

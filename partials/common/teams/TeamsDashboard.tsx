@@ -27,7 +27,7 @@ export const TeamsDashboard = () => {
     ]
 
     return (
-        <div className="space-y-4 p-4">
+        <div className="space-y-2.5 px-4">
             <TeamsHeader setAddMemberOpen={setAddMemberOpen} />
             <TeamsStatsCard data={data} />
 
@@ -36,7 +36,7 @@ export const TeamsDashboard = () => {
                 <ConfigTabs
                     tabs={TAB_LIST}
                     defaultValue="teams"
-                    props={{ setAddMemberOpen }}
+                    className="space-y-0!"
                     tabsClasses="bg-white border-border/60 shadow-premium-lg p-1 rounded-xl grid grid-cols-2 gap-2"
                     tabsTriggerClasses="data-[state=active]:bg-primaryNew data-[state=active]:text-white data-[state=active]:shadow-premium rounded-lg py-2 transition-all hover:bg-muted/50 border border-border/60"
                 />

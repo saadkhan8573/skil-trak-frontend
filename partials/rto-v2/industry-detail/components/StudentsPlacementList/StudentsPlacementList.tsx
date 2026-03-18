@@ -6,6 +6,7 @@ import {
     WaitingStudents,
     RejectedStudentsList,
     CancelledStudentsList,
+    TerminatedStudentsList,
     WaitingForRtoStudents,
 } from './components'
 
@@ -56,6 +57,12 @@ export function StudentsPlacementList() {
             label: 'Cancelled Students',
             icon: XCircle,
             component: CancelledStudentsList,
+        },
+        {
+            value: 'terminated_students',
+            label: 'Terminated Students',
+            icon: Ban,
+            component: TerminatedStudentsList,
         },
     ]
 

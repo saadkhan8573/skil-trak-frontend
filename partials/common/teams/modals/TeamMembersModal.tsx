@@ -17,6 +17,7 @@ interface TeamMembersModalProps {
     onOpenChange: (open: boolean) => void
     members: any[]
     teamName: string
+    category?: string
 }
 
 export function TeamMembersModal({
@@ -24,6 +25,7 @@ export function TeamMembersModal({
     onOpenChange,
     members = [],
     teamName,
+    category,
 }: TeamMembersModalProps) {
     const [searchQuery, setSearchQuery] = useState('')
     const [localMembers, setLocalMembers] = useState<any[]>([])
@@ -32,12 +34,9 @@ export function TeamMembersModal({
         CommonApi.Teams.useBulkUpdateMembers()
     const { notification } = useNotification()
 
-    console.log({ localMembers })
-
     // Initialize local state when members prop changes or modal opens
     useEffect(() => {
         if (isOpen && members) {
-            console.log({ members })
             const mapped = members.map((m) => ({
                 id: m.id,
                 name: m.subadmin?.user?.name || 'Unknown',
@@ -54,7 +53,6 @@ export function TeamMembersModal({
         id: string | number,
         updates: { canReceiveTickets?: boolean; ticketTypes?: string[] }
     ) => {
-        console.log({ updates })
         setLocalMembers((prev) =>
             prev.map((m) => (m.id === id ? { ...m, ...updates } : m))
         )
@@ -129,7 +127,7 @@ export function TeamMembersModal({
         return 'ALL'
     }
 
-    const teamCategory = getTeamCategory(teamName)
+    const teamCategory = getTeamCategory(category || teamName)
 
     return (
         <Dialog open={isOpen} onOpenChange={onOpenChange}>

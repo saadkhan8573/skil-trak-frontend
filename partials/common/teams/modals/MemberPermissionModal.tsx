@@ -132,7 +132,7 @@ export const MemberPermissionModal = ({
                 <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader className="pb-3">
                         <DialogTitle className="text-xl flex items-center gap-2">
-                            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primaryNew to-primaryNew flex items-center justify-center">
+                            <div className="h-8 w-8 rounded-lg bg-linear-to-br from-primaryNew to-primaryNew flex items-center justify-center">
                                 <Edit className="h-4 w-4 text-white" />
                             </div>
                             Edit Member - John Doe
@@ -149,7 +149,7 @@ export const MemberPermissionModal = ({
                         <div className="p-3 rounded-lg bg-gray-100 border border-border">
                             <div className="flex items-center gap-3">
                                 <Avatar className="h-10 w-10 border-2 border-primaryNew/20">
-                                    <AvatarFallback className="bg-gradient-to-br from-primaryNew to-primaryNew text-white text-sm">
+                                    <AvatarFallback className="bg-linear-to-br from-primaryNew to-primaryNew text-white text-sm">
                                         {/* {editingMember &&
                                             getInitials(editingMember.name)} */}
                                         JD
@@ -460,7 +460,7 @@ export const MemberPermissionModal = ({
                             Cancel
                         </Button>
                         <Button
-                            className="bg-gradient-to-r from-primaryNew to-primaryNew gap-1.5 h-9"
+                            className="bg-linear-to-r from-primaryNew to-primaryNew gap-1.5 h-9"
                             variant="primaryNew"
                             // onClick={handleSaveEdit}
                         >

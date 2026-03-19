@@ -40,6 +40,7 @@ export function MemberRow({
     category = 'ALL',
     onUpdate,
 }: MemberRowProps) {
+    console.log({ category })
     const [isPanelOpen, setIsPanelOpen] = useState(false)
 
     const name = member.subadmin?.user?.name || 'Unknown Member'

@@ -135,7 +135,7 @@ export const TeamMemberModal = ({ addMemberOpen, setAddMemberOpen }: any) => {
             <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle className="text-2xl flex items-center gap-2">
-                        <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primaryNew to-secondaryNew flex items-center justify-center">
+                        <div className="h-10 w-10 rounded-lg bg-linear-to-br from-primaryNew to-secondaryNew flex items-center justify-center">
                             <UserPlus className="h-5 w-5 text-white" />
                         </div>
                         Add New Team Member
@@ -393,7 +393,7 @@ export const TeamMemberModal = ({ addMemberOpen, setAddMemberOpen }: any) => {
                                 Cancel
                             </Button>
                             <Button
-                                className="!bg-gradient-to-r from-primaryNew to-secondaryNew gap-2"
+                                className="bg-linear-to-r!` from-primaryNew to-secondaryNew gap-2"
                                 submit
                                 variant="primaryNew"
                             >

@@ -185,7 +185,7 @@ export const CreateTeamModal = ({
                 <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle className="text-2xl flex items-center gap-2">
-                            <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-yell-400 to-warning flex items-center justify-center">
+                            <div className="h-10 w-10 rounded-lg bg-linear-to-br from-yell-400 to-warning flex items-center justify-center">
                                 <Plus className="h-5 w-5 text-white" />
                             </div>
                             Create New Team
@@ -360,7 +360,7 @@ export const CreateTeamModal = ({
                                     Cancel
                                 </Button>
                                 <Button
-                                    className="bg-gradient-to-r from-accent to-warning gap-2"
+                                    className="bg-linear-to-r from-accent to-warning gap-2"
                                     submit
                                     variant={isEditMode ? 'info' : 'primaryNew'}
                                     loading={

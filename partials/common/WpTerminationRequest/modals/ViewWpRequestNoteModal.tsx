@@ -17,29 +17,29 @@ export const ViewWpRequestNoteModal = ({
 }) => {
     return (
         <Dialog open={true} onOpenChange={(open) => !open && onCancel()}>
-            <DialogContent className="w-[95vw] sm:max-w-[400px] p-0 overflow-hidden border-none shadow-2xl rounded-2xl">
+            <DialogContent className="w-[95vw] sm:max-w-3xl p-0 overflow-hidden border-none shadow-2xl rounded-2xl">
                 <div className="bg-slate-50/50 px-5 py-3 border-b">
                     <div className="flex items-center gap-2.5">
                         <div className="w-7 h-7 bg-blue-100 rounded-md flex items-center justify-center">
                             <FileText className="w-3.5 h-3.5 text-blue-600" />
                         </div>
-                        <DialogHeader className="text-left">
-                            <DialogTitle className="text-sm font-bold text-slate-900 leading-tight">
+                        <DialogHeader className="text-left gap-0">
+                            <DialogTitle className="font-bold text-slate-900 leading-tight">
                                 Termination Reason
                             </DialogTitle>
-                            <DialogDescription className="text-[9px] text-slate-500">
+                            <DialogDescription className="text-xs text-slate-500">
                                 The detailed reason for this request
                             </DialogDescription>
                         </DialogHeader>
                     </div>
                 </div>
 
-                <div className="px-5 py-5">
+                <div className="px-5">
                     <div className="bg-slate-50 border border-slate-100 rounded-xl p-3 relative">
-                        <div className="absolute -top-2 left-3 px-1.5 py-0.5 bg-white border border-slate-100 rounded-full text-[8px] font-bold text-slate-400 uppercase tracking-wider shadow-sm">
+                        <div className="absolute -top-2 left-3 px-1.5 py-0.5 bg-white border border-slate-100 rounded-full text-[11px] font-bold text-slate-400 uppercase tracking-wider shadow-sm">
                             Comment Details
                         </div>
-                        <p className="text-slate-700 text-[12px] leading-relaxed italic whitespace-pre-wrap">
+                        <p className="text-slate-700 text-sm leading-relaxed italic whitespace-pre-wrap break-all">
                             "{note || 'No additional comments provided.'}"
                         </p>
                     </div>

@@ -8,6 +8,9 @@ export const getGender = (gender?: string): string | undefined => {
         case 'm':
         case 'male':
             return 'Male'
+        case 'o':
+        case 'other':
+            return 'Other'
         default:
             return undefined
     }

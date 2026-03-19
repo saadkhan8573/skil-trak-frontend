@@ -413,10 +413,14 @@ export const StudentProfileForm = ({
                                         name={'gender'}
                                         label={'Gender'}
                                         options={[
-                                            { label: 'Male', value: 'M' },
+                                            { label: 'Male', value: 'Male' },
                                             {
                                                 label: 'Female',
-                                                value: 'F',
+                                                value: 'Female',
+                                            },
+                                            {
+                                                label: 'Other',
+                                                value: 'Other',
                                             },
                                         ]}
                                     />

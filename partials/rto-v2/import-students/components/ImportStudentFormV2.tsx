@@ -4,7 +4,12 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useNotification } from '@hooks'
 import { RtoApi } from '@queries'
 import { Course, ImportStudentFormType } from '@types'
-import { CourseSelectOption, formatOptionLabel, getDate } from '@utils'
+import {
+    CourseSelectOption,
+    formatOptionLabel,
+    genderOptions,
+    getDate,
+} from '@utils'
 import { Upload } from 'lucide-react'
 import { useState } from 'react'
 import { FormProvider, SubmitHandler, useForm, useWatch } from 'react-hook-form'
@@ -88,17 +93,25 @@ export const ImportStudentFormV2 = ({
                             label="Batch/Class"
                             placeholder="Batch/Class"
                         />
-                        <div>
-                            <Select
-                                name="courses"
-                                label="Courses"
-                                options={rtoCoursesOptions}
-                                multi
-                                onlyValue
-                                components={{ Option: CourseSelectOption }}
-                                formatOptionLabel={formatOptionLabel}
-                            />
-                        </div>
+                        <Select
+                            label={'Gender'}
+                            name={'gender'}
+                            options={genderOptions}
+                            placeholder={'Select Gender...'}
+                            validationIcons
+                            onlyValue
+                        />
+                    </div>
+                    <div>
+                        <Select
+                            name="courses"
+                            label="Courses"
+                            options={rtoCoursesOptions}
+                            multi
+                            onlyValue
+                            components={{ Option: CourseSelectOption }}
+                            formatOptionLabel={formatOptionLabel}
+                        />
                     </div>
                     <div className="flex items-center gap-x-2 justify-between">
                         {placementType === PlacementTypeEnum.BLOCK ? (
@@ -145,16 +158,21 @@ export const ImportStudentFormV2 = ({
                             Expected columns in your file:
                         </p>
                         <div className="flex flex-wrap gap-2">
-                            {['id', 'name', 'email', 'contact', 'address'].map(
-                                (col) => (
-                                    <div
-                                        key={col}
-                                        className="text-xs px-2 py-0.5 rounded-full bg-[#0D5468] text-white border border-[#0D5468]/20"
-                                    >
-                                        {col}
-                                    </div>
-                                )
-                            )}
+                            {[
+                                'id',
+                                'name',
+                                'email',
+                                'contact',
+                                'address',
+                                'gender',
+                            ].map((col) => (
+                                <div
+                                    key={col}
+                                    className="text-xs px-2 py-0.5 rounded-full bg-[#0D5468] text-white border border-[#0D5468]/20"
+                                >
+                                    {col}
+                                </div>
+                            ))}
                         </div>
                     </div>
 

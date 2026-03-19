@@ -1,5 +1,6 @@
 import {
     ActionAlert,
+    AddressFieldInput,
     Button,
     Select,
     ShowErrorNotifications,
@@ -14,6 +15,7 @@ import {
     CourseSelectOption,
     ageOptions,
     formatOptionLabel,
+    genderOptions,
     getDate,
     onlyAlphabets,
 } from '@utils'
@@ -61,7 +63,9 @@ export const AddIndividualStudentFormV2 = () => {
         studentId: yup.string().required('Must provide your student Id'),
         batch: yup.string().required('Must provide your Batch'),
         phone: yup.string().required('Must provide your phone number'),
+        addressLine1: yup.string().required('Must provide your address'),
         age: yup.string().nullable().required('Must Select age'),
+        gender: yup.string().required('Must provide gender'),
         email: yup
             .string()
             .email('Invalid Email')
@@ -142,11 +146,9 @@ export const AddIndividualStudentFormV2 = () => {
             familyName: 'N/A',
             emergencyPerson: 'N/A',
             emergencyPersonPhone: 'N/A',
-            gender: 'N/A',
-            addressLine1: 'N/A',
-            state: 'N/A',
-            suburb: 'N/A',
-            zipCode: 'N/A',
+            state: filteredValues?.state || 'N/A',
+            suburb: filteredValues?.suburb || 'N/A',
+            zipCode: filteredValues?.zipCode || 'N/A',
             password: 'N/A',
         })
 
@@ -226,6 +228,15 @@ export const AddIndividualStudentFormV2 = () => {
                                 onlyValue
                             />
 
+                            <Select
+                                label={'Gender'}
+                                name={'gender'}
+                                options={genderOptions}
+                                placeholder={'Select Gender...'}
+                                validationIcons
+                                onlyValue
+                            />
+
                             <TextInput
                                 label={'Email'}
                                 type={'email'}
@@ -261,6 +272,8 @@ export const AddIndividualStudentFormV2 = () => {
                                 components={{ Option: CourseSelectOption }}
                                 formatOptionLabel={formatOptionLabel}
                             />
+
+                            <AddressFieldInput />
                         </div>
 
                         <div className="flex items-center gap-x-2 justify-between">

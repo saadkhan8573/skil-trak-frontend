@@ -6,6 +6,7 @@ import { Tags } from 'lucide-react'
 import Image from 'next/image'
 import { FaRegEdit, FaTrash } from 'react-icons/fa'
 import { TeamMembersModal } from '../modals'
+import { TEAM_TAGS } from '../teams-tabs'
 
 interface SupportTeamItem {
     id: number
@@ -62,6 +63,8 @@ export function useSupportTeamColumns({
                 const members = row.original?.members || []
                 const teamName = row.original?.name || ''
 
+                console.log('row.original', row.original)
+
                 if (!members.length) return <span>0</span>
 
                 return (
@@ -77,6 +80,9 @@ export function useSupportTeamColumns({
                             onOpenChange={setIsModalOpen}
                             members={members}
                             teamName={teamName}
+                            category={row.original?.tags?.find((tag) =>
+                                TEAM_TAGS.includes(tag.toLowerCase())
+                            )}
                         />
                     </>
                 )

@@ -1,5 +1,6 @@
 import { StatusStep } from '@partials/rto-v2/student-detail/components/StudentOverview/hooks/useStatusInfo'
 import { CheckCircle, Circle, Clock, XCircle } from 'lucide-react'
+import moment from 'moment'
 
 interface StudentDetailsProps {
     workflow: StatusStep[]
@@ -16,9 +17,9 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
         (step) => step.current && terminalStatuses.includes(step?.label)
     )
 
-    const displayedWorkflow = isTerminalActive
-        ? workflow.filter((step) => !terminalStatuses.includes(step?.label))
-        : workflow.filter((step) => !terminalStatuses.includes(step?.label))
+    const displayedWorkflow = workflow.filter(
+        (step) => !terminalStatuses.includes(step?.label) || step.current
+    )
 
     return (
         <div className="border-t border-[#E2E8F0] bg-linear-to-br from-[#F8FAFB] to-[#FFFFFF] p-3">
@@ -45,7 +46,9 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
                             <div
                                 className={`w-5 h-5 rounded-lg flex items-center justify-center shadow-sm shrink-0 transition-all duration-300 ${
                                     step?.completed
-                                        ? 'bg-linear-to-br from-[#10B981] to-[#059669]'
+                                        ? isTerminalActive
+                                            ? 'bg-slate-300'
+                                            : 'bg-linear-to-br from-[#10B981] to-[#059669]'
                                         : step?.current
                                           ? isTerminal
                                               ? 'bg-linear-to-br from-[#EF4444] to-[#B91C1C]'
@@ -54,7 +57,11 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
                                 }`}
                             >
                                 {step?.completed ? (
-                                    <CheckCircle className="w-3 h-3 text-white" />
+                                    isTerminalActive ? (
+                                        <Circle className="w-2.5 h-2.5 text-white" />
+                                    ) : (
+                                        <CheckCircle className="w-3 h-3 text-white" />
+                                    )
                                 ) : step?.current ? (
                                     isTerminal ? (
                                         <XCircle className="w-3 h-3 text-white" />
@@ -84,7 +91,9 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
                                     </h5>
                                     {step.date && (
                                         <span className="text-[9px] text-[#64748B] bg-white px-1.5 py-0.5 rounded border border-[#E2E8F0]">
-                                            {step.date}
+                                            {moment(step.date).format(
+                                                'DD MMM YYYY · hh:mm A'
+                                            )}
                                         </span>
                                     )}
                                 </div>
@@ -98,7 +107,7 @@ export function StudentDetails({ workflow }: StudentDetailsProps) {
                                             }`}
                                         >
                                             {isTerminal
-                                                ? '❌ Request Cancelled'
+                                                ? `❌ Request ${step?.label}`
                                                 : '⚡ Currently in progress'}
                                         </p>
                                     )}

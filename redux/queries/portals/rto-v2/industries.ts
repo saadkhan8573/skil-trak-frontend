@@ -236,7 +236,7 @@ export const industriesEndpoints = (
     }),
 
     getIndustryTerminatedStudents: builder.query<
-        PaginatedResponse<IWorkplaceIndustries>,
+        PaginatedResponse<Student>,
         {
             params: PaginationWithSearch
             industryId: number

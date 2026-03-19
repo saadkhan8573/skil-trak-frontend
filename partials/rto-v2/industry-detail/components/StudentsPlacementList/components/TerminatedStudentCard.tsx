@@ -1,14 +1,41 @@
-import { Badge } from '@components'
-import { UserRoles } from '@constants'
+import { AuthorizedUserComponent, Badge, Button, Portal } from '@components'
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from '@components/ui/collapsible'
 import { useStatusInfo } from '@partials/rto-v2/student-detail/components/StudentOverview/hooks/useStatusInfo'
-import { IWorkplaceIndustries, WorkplaceWorkIndustriesType } from '@redux/queryTypes'
+import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
+import { Student } from '@types'
 import { getUserCredentials } from '@utils'
-import { ExternalLink } from 'lucide-react'
-import moment from 'moment'
+import {
+    AlertTriangle,
+    Calendar,
+    CheckCircle,
+    ChevronDown,
+    ChevronUp,
+    Circle,
+    Clock,
+    ExternalLink,
+    Pause,
+    Send,
+    XCircle,
+} from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
+import { StudentDetails } from './StudentDetails'
+
+import { ActionButton } from '@components'
+import { UserRoles } from '@constants'
+import { DeclineStudentByIndustryModal } from '@partials/common/StudentProfileDetail/components'
+import { ApproveRequestModal } from '@partials/sub-admin/workplace/modals'
+import { WorkplaceCurrentStatus } from '@utils'
+import moment from 'moment'
+import { ReactNode } from 'react'
+import { ResendEmailModal } from '../ResendEmailModal'
 
 interface StudentCardProps {
-    workplace: IWorkplaceIndustries
+    student: Student
 }
 
 function getStudentProfileLink(role: string, studentId: number) {
@@ -22,110 +49,272 @@ function getStudentProfileLink(role: string, studentId: number) {
     }
 }
 
-export function TerminatedStudentCard({ workplace }: StudentCardProps) {
+export function TerminatedStudentCard({ student }: StudentCardProps) {
     const role = getUserCredentials()?.role
-    const industry = workplace?.industries?.[0]
+    const [isOpen, setIsOpen] = useState(false)
+    const [modal, setModal] = useState<ReactNode | null>(null)
 
-    const { currentStep } = useStatusInfo({
-        workplace: workplace,
-        workIndustry: industry as WorkplaceWorkIndustriesType,
+    const workplace = student?.workplace?.[0]
+
+    const {
+        statuses,
+        progressPercent,
+        completedCount,
+        totalCount,
+        statusArrays,
+        validStatus,
+        currentStep,
+    } = useStatusInfo({
+        workplace,
+        workIndustry: workplace?.industries?.[0] as WorkplaceWorkIndustriesType,
     })
+    // ------------------- Action by Info START --------------------- //
+    const industry = workplace?.industries?.[0]
+    const isApproved = industry?.action === 'approved'
 
-    // Check for terminal states
-    const isTerminalState =
-        currentStep?.label &&
-        ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(
-            currentStep.label
-        )
+    const containerStyles = isApproved
+        ? 'bg-green-50 border-green-200'
+        : 'bg-red-50 border-red-200'
 
-    // Action info
-    const hasActionInfo = workplace?.terminatedBy
+    const textStyles = isApproved ? 'text-green-600' : 'text-red-600'
+
+    // ------------------- Action by Info END ----------------------- //
 
     return (
-        <div
-            className={`${isTerminalState
-                ? 'bg-red-50 border-red-200'
-                : 'bg-white border-[#E2E8F0]'
-                } border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300`}
+        <Collapsible
+            open={isOpen}
+            onOpenChange={setIsOpen}
+            className={`${
+                currentStep?.label &&
+                ['Cancelled', 'Terminated', 'Rejected', 'No Response'].includes(
+                    currentStep.label
+                )
+                    ? 'bg-red-100 border-red-200'
+                    : 'bg-white border-[#E2E8F0]'
+            } border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300`}
         >
-            <div className="p-4">
-                {/* Header Section */}
-                <div className="flex items-start justify-between mb-4">
-                    {/* Left: Student Info */}
-                    <div className="flex items-start gap-3 flex-1">
+            {/* Student Header */}
+            <div className="p-2">
+                <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-start gap-2 flex-1">
                         {/* Avatar */}
-                        <div className="w-10 h-10 bg-linear-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-sm">
-                            {workplace?.student?.user?.name
-                                ?.split(' ')
-                                .map((n: any) => n[0])
-                                .join('') || '?'}
+                        <div className="w-7 h-7 `bg-gradient-to-br` from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center text-white text-[10px] font-bold shadow-sm">
+                            {student?.user?.name
+                                .split(' ')
+                                .map((n) => n[0])
+                                .join('')}
                         </div>
 
-                        {/* Student Details */}
+                        {/* Info */}
                         <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                                <h3 className="text-sm font-bold text-[#1A2332]">
-                                    {workplace?.student?.user?.name}{' '}
-                                    {workplace?.student?.familyName || ''}
+                            <div className="flex items-center gap-1.5 mb-0.5">
+                                <h3 className="text-xs font-bold text-[#1A2332]">
+                                    {student?.user?.name} {student?.familyName}
                                 </h3>
-                                {workplace?.id && (
-                                    <Link
-                                        href={getStudentProfileLink(
-                                            role,
-                                            workplace?.student?.id!
-                                        )}
-                                    >
-                                        <ExternalLink className="w-4 h-4 text-[#64748B] hover:text-[#044866] cursor-pointer" />
-                                    </Link>
-                                )}
+                                <Link
+                                    href={getStudentProfileLink(
+                                        role,
+                                        student?.id
+                                    )}
+                                >
+                                    <ExternalLink className="w-3 h-3 text-[#64748B] hover:text-[#044866] cursor-pointer" />
+                                </Link>
                             </div>
-
-                            {/* Course Title - Only if exists */}
-                            {workplace?.courses?.[0]?.title && (
-                                <p className="text-xs text-[#64748B] mb-2">
-                                    {workplace?.courses?.[0]?.title}
-                                </p>
-                            )}
-
-                            {/* RTO Info - Only if exists */}
-                            {workplace?.student?.rto?.user?.name && (
+                            <p className="text-[10px] text-[#64748B] mb-0.5">
+                                {student?.workplace?.[0]?.courses?.[0]?.title}
+                            </p>
+                            <div className="flex flex-col gap-0.5">
                                 <span className="text-xs font-semibold text-[#64748B]">
-                                    {' '}
-                                    🏢 RTO:{' '}
-                                    {workplace?.student?.rto?.user?.name}{' '}
+                                    🏢 RTO: {student?.rto?.user?.name}
                                 </span>
-                            )}
+                            </div>
                         </div>
                     </div>
 
-                    {/* Right: Workflow Status */}
-                    <div className="">
-                        {hasActionInfo && (
+                    {/* Workflow Status - Top Right */}
+                    <div>
+                        <div className="flex items-center gap-2">
+                            <div className="text-right">
+                                <div className="flex items-center gap-1.5 justify-end mb-0.5">
+                                    <span
+                                        className={`text-[10px] font-bold ${
+                                            currentStep?.label &&
+                                            [
+                                                'Cancelled',
+                                                'Terminated',
+                                                'Rejected',
+                                                'No Response',
+                                            ].includes(currentStep.label)
+                                                ? 'text-red-600'
+                                                : 'text-[#044866]'
+                                        }`}
+                                    >
+                                        {currentStep?.label &&
+                                        [
+                                            'Cancelled',
+                                            'Terminated',
+                                            'Rejected',
+                                            'No Response',
+                                        ].includes(currentStep.label)
+                                            ? `${currentStep.label} · ${completedCount} of ${totalCount} steps`
+                                            : `${completedCount} of ${totalCount} steps`}
+                                    </span>
+                                    {!(
+                                        currentStep?.label &&
+                                        [
+                                            'Cancelled',
+                                            'Terminated',
+                                            'Rejected',
+                                        ].includes(currentStep.label)
+                                    ) && (
+                                        <>
+                                            <span className="text-[10px] font-bold text-[#64748B]">
+                                                •
+                                            </span>
+                                            <span className="text-[10px] font-bold text-[#044866]">
+                                                {progressPercent}%
+                                            </span>
+                                        </>
+                                    )}
+                                </div>
+                                <p
+                                    className={`text-[9px] ${
+                                        currentStep?.label &&
+                                        [
+                                            'Cancelled',
+                                            'Terminated',
+                                            'Rejected',
+                                            'No Response',
+                                        ].includes(currentStep.label)
+                                            ? 'text-red-500 font-bold'
+                                            : 'text-[#64748B]'
+                                    }`}
+                                >
+                                    {currentStep?.label}
+                                </p>
+                            </div>
+
+                            <CollapsibleTrigger asChild>
+                                <div className="h-6 w-6 p-0 hover:bg-slate-100 rounded-full flex items-center justify-center cursor-pointer transition-colors">
+                                    {isOpen ? (
+                                        <ChevronUp className="w-4 h-4 text-slate-500" />
+                                    ) : (
+                                        <ChevronDown className="w-4 h-4 text-slate-500" />
+                                    )}
+                                </div>
+                            </CollapsibleTrigger>
+                        </div>
+                        {workplace?.terminatedByUser && (
                             <div
-                                className={`mb-4 rounded-md border px-3 py-2 text-xs bg-red-50 border-red-200`}
+                                className={`mt-2 rounded-md border px-3 py-2 text-[10px] ${containerStyles}`}
                             >
                                 <div className="flex items-center gap-1 justify-between">
                                     <Badge
                                         text={'Terminated By'}
-                                        variant={'error'}
+                                        variant={'info'}
                                         size="xs"
                                     />
-                                    <p className="font-medium capitalize text-red-600">
-                                        {hasActionInfo}
+                                    <p
+                                        className={`font-medium capitalize ${textStyles}`}
+                                    >
+                                        {workplace.terminatedByUser?.name}
                                     </p>
                                 </div>
-                                {workplace?.terminatedAt && (
-                                    <p className="mt-1 text-gray-500">
-                                        {moment(workplace?.terminatedAt).format(
-                                            'DD MMM YYYY · hh:mm A'
-                                        )}
-                                    </p>
-                                )}
+
+                                <p className="mt-1 text-gray-500">
+                                    {workplace.terminatedAt
+                                        ? moment(workplace.terminatedAt).format(
+                                              'DD MMM YYYY · hh:mm A'
+                                          )
+                                        : '—'}
+                                </p>
                             </div>
                         )}
                     </div>
                 </div>
+
+                {/* Progress Bar - Schedule/Placement Workflow */}
+                <div className="mb-2">
+                    <div className="h-1.5 bg-[#E8F4F8] rounded-full overflow-hidden shadow-sm">
+                        <div
+                            className={`h-full rounded-full transition-all duration-1000 ${
+                                currentStep?.label &&
+                                [
+                                    'Cancelled',
+                                    'Terminated',
+                                    'Rejected',
+                                    'No Response',
+                                ].includes(currentStep.label)
+                                    ? 'bg-red-500'
+                                    : '`bg-gradient-to-r` from-[#044866] to-[#0D5468]'
+                            }`}
+                            style={{
+                                width: `${progressPercent}%`,
+                            }}
+                        />
+                    </div>
+                </div>
+
+                {/* Status Badges */}
+                <div className="flex items-center gap-1 mb-2">
+                    {currentStep?.label &&
+                    [
+                        'Cancelled',
+                        'Terminated',
+                        'Rejected',
+                        'No Response',
+                    ].includes(currentStep.label) ? (
+                        <div className="flex items-center gap-1 bg-[#FEE2E2] text-[#991B1B] px-2 py-0.5 rounded-md text-[10px] font-bold border border-[#EF4444]/20">
+                            <XCircle className="w-2.5 h-2.5" />
+                            <span>{currentStep.label}</span>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="flex items-center gap-1 bg-[#D1FAE5] text-[#065F46] px-2 py-0.5 rounded-md text-[10px] font-medium border border-[#10B981]/20">
+                                <CheckCircle className="w-2.5 h-2.5" />
+                                <span>{completedCount} Completed</span>
+                            </div>
+                            <div className="flex items-center gap-1 bg-[#FEF3C7] text-[#92400E] px-2 py-0.5 rounded-md text-[10px] font-medium border border-[#F7A619]/20">
+                                <Clock className="w-2.5 h-2.5" />
+                                <span>1 In Progress</span>
+                            </div>
+                            <div className="flex items-center gap-1 bg-[#F8FAFB] text-[#64748B] px-2 py-0.5 rounded-md text-[10px] font-medium border border-[#E2E8F0]">
+                                <Circle className="w-2.5 h-2.5" />
+                                <span>
+                                    {statusArrays?.pending?.length} Remaining
+                                </span>
+                            </div>
+                        </>
+                    )}
+                </div>
+
+                {/* Expand Button */}
+                <CollapsibleTrigger asChild>
+                    <Button
+                        variant="secondary"
+                        outline
+                        className="w-full px-2 py-1 `bg-gradient-to-br` from-[#F8FAFB] to-[#E8F4F8] hover:from-[#E8F4F8] hover:to-[#D1E7F0] rounded-md text-[10px] font-medium text-[#044866] transition-all duration-300 flex items-center justify-center gap-1 h-auto"
+                    >
+                        {isOpen ? (
+                            <>
+                                <ChevronUp className="w-3 h-3" />
+                                Hide Workflow Details
+                            </>
+                        ) : (
+                            <>
+                                <ChevronDown className="w-3 h-3" />
+                                View Workflow Details
+                            </>
+                        )}
+                    </Button>
+                </CollapsibleTrigger>
             </div>
-        </div>
+
+            {/* Expanded Workflow Details */}
+            <CollapsibleContent>
+                <StudentDetails workflow={statuses} />
+            </CollapsibleContent>
+            {modal}
+        </Collapsible>
     )
 }

@@ -1,4 +1,4 @@
-import { WorkplaceCurrentStatus } from '@utils'
+import { WorkplaceCurrentStatus, WorkplaceStatusLabels } from '@utils'
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
@@ -228,13 +228,11 @@ export const useStatusInfo = ({
      *                   steps after  = pending
      * Unknown status  → all pending
      */
-    const statuses: StatusStep[] = sequence.map((step, idx) => {
+    const baseStatuses: StatusStep[] = sequence.map((step, idx) => {
         let completed = false
         let current = false
 
-        if (isTerminal) {
-            completed = true
-        } else if (currentStepIndex === -1) {
+        if (currentStepIndex === -1) {
             // status not in sequence – leave all pending
         } else if (idx < currentStepIndex) {
             completed = true
@@ -249,6 +247,18 @@ export const useStatusInfo = ({
             date: getStepDate(step),
         }
     })
+
+    // If terminal but not in the sequence (e.g., Rejected, No Response), append it
+    let statuses = [...baseStatuses]
+    if (isTerminal && currentStepIndex === -1) {
+        statuses.push({
+            label:
+                (WorkplaceStatusLabels as any)[currentStatus] || currentStatus,
+            completed: false,
+            current: true,
+            date: dateLookup[currentStatus] || null,
+        })
+    }
 
     // ── Derived values ────────────────────────────────────────────────────────
     const getCurrentStep = (): StatusStep | null => {
@@ -271,13 +281,12 @@ export const useStatusInfo = ({
     }
 
     const currentStep = getCurrentStep()
-    const completedCount = isTerminal
-        ? statuses.length
-        : statuses.filter((s) => s.completed).length
+    const completedCount = statuses.filter((s) => s.completed).length
     const totalCount = statuses.length
 
     const progressPercent =
-        isTerminal || currentStep?.label === 'Completed'
+        currentStep?.label === 'Completed' ||
+        currentStep?.label === 'Schedule Completed'
             ? 100
             : Math.round((completedCount / totalCount) * 100)
 

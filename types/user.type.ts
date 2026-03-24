@@ -38,7 +38,7 @@ export enum UserStatus {
     Blocked = 'blocked',
 }
 
-interface StatusChangeHistory {
+export interface StatusChangeHistoryTypes {
     current: UserStatus
     previous: string
     updateAt: Date
@@ -55,7 +55,7 @@ export interface User extends BaseResponse {
     password: string
     avatar: string | undefined
     appointmentFor: any
-    statusChangeHistory: StatusChangeHistory
+    statusChangeHistory: StatusChangeHistoryTypes[]
     after_hours_access: boolean
     signers: any
     schedules: any

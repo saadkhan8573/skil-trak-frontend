@@ -1,10 +1,6 @@
 import { Badge, Button, ViewDocumentModal, ViewImageModal } from '@components'
 import { FileType, FolderStatusConfig } from '@types'
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import { getFileExtensionByUrl } from '@utils'
 import {
     AlertCircle,
@@ -32,7 +28,6 @@ export const FolderDocumentCard = ({
     config: FolderStatusConfig
     isOtherDoc?: boolean
 }) => {
-
     const DocStatusIcon = config.icon
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false)
@@ -40,7 +35,9 @@ export const FolderDocumentCard = ({
     const [isImageViewModalOpen, setIsImageViewModalOpen] = useState(false)
 
     const extension = getFileExtensionByUrl(doc?.file)
-    const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(extension || '')
+    const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(
+        extension || ''
+    )
     const isPdf = extension === 'pdf'
 
     const handleView = () => {
@@ -62,7 +59,9 @@ export const FolderDocumentCard = ({
                         <FileText className="w-4 h-4 text-[#044866]" />
                     </div>
                     <div className="flex-1">
-                        <p className="text-slate-900 mb-1">{doc?.filename || doc?.file?.substring(0, 30)}</p>
+                        <p className="text-slate-900 mb-1">
+                            {doc?.filename || doc?.file?.substring(0, 30)}
+                        </p>
                         <div className="flex items-center gap-3 text-sm text-slate-600">
                             <span className="px-2 py-0.5 bg-white rounded border border-slate-200">
                                 {extension}
@@ -85,10 +84,11 @@ export const FolderDocumentCard = ({
                         </div>
                         {doc?.comment && (
                             <div
-                                className={`flex items-start gap-2 mt-2 p-2 ${doc?.status === 'rejected'
-                                    ? 'bg-red-50 border border-red-200'
-                                    : 'bg-green-50 border border-green-200'
-                                    } rounded-lg`}
+                                className={`flex items-start gap-2 mt-2 p-2 ${
+                                    doc?.status === 'rejected'
+                                        ? 'bg-red-50 border border-red-200'
+                                        : 'bg-green-50 border border-green-200'
+                                } rounded-lg`}
                             >
                                 {doc?.status === 'rejected' ? (
                                     <AlertCircle className="w-3 h-3 text-red-600 mt-0.5 shrink-0" />
@@ -96,10 +96,11 @@ export const FolderDocumentCard = ({
                                     <CheckCircle className="w-3 h-3 text-green-600 mt-0.5 shrink-0" />
                                 )}
                                 <p
-                                    className={`text-xs ${doc?.status === 'rejected'
-                                        ? 'text-red-700'
-                                        : 'text-green-700'
-                                        }`}
+                                    className={`text-xs ${
+                                        doc?.status === 'rejected'
+                                            ? 'text-red-700'
+                                            : 'text-green-700'
+                                    }`}
                                 >
                                     {doc?.comment}
                                 </p>
@@ -109,22 +110,24 @@ export const FolderDocumentCard = ({
                 </div>
 
                 <div className="flex items-center gap-2">
-                    {doc?.status && <Badge
-                        text={
-                            doc.status.charAt(0).toUpperCase() +
-                            doc.status.slice(1)
-                        }
-                        variant={
-                            doc.status === 'approved'
-                                ? 'success'
-                                : doc.status === 'pending'
-                                    ? 'warning'
-                                    : doc.status === 'rejected'
+                    {doc?.status && (
+                        <Badge
+                            text={
+                                doc.status.charAt(0).toUpperCase() +
+                                doc.status.slice(1)
+                            }
+                            variant={
+                                doc.status === 'approved'
+                                    ? 'success'
+                                    : doc.status === 'pending'
+                                      ? 'warning'
+                                      : doc.status === 'rejected'
                                         ? 'error'
                                         : 'info'
-                        }
-                        Icon={DocStatusIcon}
-                    />}
+                            }
+                            Icon={DocStatusIcon}
+                        />
+                    )}
 
                     <Tooltip>
                         <TooltipTrigger>
@@ -182,18 +185,19 @@ export const FolderDocumentCard = ({
                                 />
                             </TooltipTrigger>
                             <TooltipContent>
-                                {doc?.isArchived ? 'Restore' : 'Delete'} Document
+                                {doc?.isArchived ? 'Restore' : 'Delete'}{' '}
+                                Document
                             </TooltipContent>
                         </Tooltip>
                     )}
 
                     {(doc.status === 'uploaded' ||
                         doc.status === 'pending') && (
-                            <>
-                                <ApproveFile file={doc} studentId={studentId} />
-                                <RejectFile file={doc} studentId={studentId} />
-                            </>
-                        )}
+                        <>
+                            <ApproveFile file={doc} studentId={studentId} />
+                            <RejectFile file={doc} studentId={studentId} />
+                        </>
+                    )}
                 </div>
             </div>
             <EditDocumentModal

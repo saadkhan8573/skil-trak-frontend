@@ -24,35 +24,12 @@ export const usePlacementRequest = (
 
     const [selectedRequest, setSelectedRequest] = useState<string | null>(null)
     const [showCanceledCompleted, setShowCanceledCompleted] = useState(true)
-    const [hoveredCommentId, setHoveredCommentId] = useState<string | null>(
-        null
-    )
-    const [tooltipPosition, setTooltipPosition] = useState<{
-        top: number
-        left: number
-    } | null>(null)
 
     const { data: rejectedIndustries, isLoading } =
         RtoV2Api.Students.useGetStudentRejectedIndustries(studentDetail?.id!, {
             skip: !studentDetail?.id,
         })
 
-    const handleMouseEnter = (
-        e: React.MouseEvent<HTMLDivElement>,
-        requestId: string
-    ) => {
-        setHoveredCommentId(requestId)
-        const rect = e.currentTarget.getBoundingClientRect()
-        setTooltipPosition({
-            top: rect.bottom + window.scrollY + 8,
-            left: rect.left + window.scrollX,
-        })
-    }
-
-    const handleMouseLeave = () => {
-        setHoveredCommentId(null)
-        setTooltipPosition(null)
-    }
 
     const activeRequests = useMemo((): PlacementHistoryItem[] => {
         if (!studentDetail?.workplace?.length) return []
@@ -264,13 +241,9 @@ export const usePlacementRequest = (
         setSelectedRequest,
         showCanceledCompleted,
         setShowCanceledCompleted,
-        hoveredCommentId,
-        tooltipPosition,
         groupedRequests,
         canceledCompletedRequests,
         canCreateNewRequest,
-        handleMouseEnter,
-        handleMouseLeave,
         onSelectWorkplace,
     }
 }

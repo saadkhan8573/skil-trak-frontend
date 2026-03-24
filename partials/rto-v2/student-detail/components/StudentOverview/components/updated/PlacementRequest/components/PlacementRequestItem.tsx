@@ -4,19 +4,17 @@ import { PlacementHistoryItem, statusConfigs } from '../types'
 import { WorkplaceCurrentStatus } from '@utils'
 import { useRouteInfo } from '../../../../hooks/useRouteInfo'
 import { useAppSelector } from '@redux/hooks'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@components/ui/tooltip'
 
 interface PlacementRequestItemProps {
     request: PlacementHistoryItem
     index: number
     groupLength: number
     onSelect: (request: any) => void
-    onMouseEnter: (
-        e: React.MouseEvent<HTMLDivElement>,
-        requestId: string
-    ) => void
-    onMouseLeave: () => void
-    hoveredCommentId: string | null
-    tooltipPosition: { top: number; left: number } | null
 }
 
 export const PlacementRequestItem = ({
@@ -24,10 +22,6 @@ export const PlacementRequestItem = ({
     index,
     groupLength,
     onSelect,
-    onMouseEnter,
-    onMouseLeave,
-    hoveredCommentId,
-    tooltipPosition,
 }: PlacementRequestItemProps) => {
     const { studentDetail } = useAppSelector((state) => state.student)
 
@@ -90,49 +84,39 @@ export const PlacementRequestItem = ({
                             {request.workplace}
                         </span>
                         {request.cancellationComment && (
-                            <div className="relative shrink-0">
-                                <div
-                                    className="w-5 h-5 rounded-full bg-[#044866] hover:bg-[#0D5468] flex items-center justify-center cursor-help transition-all"
-                                    onMouseEnter={(e) =>
-                                        onMouseEnter(e, request.id)
-                                    }
-                                    onMouseLeave={onMouseLeave}
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <div className="w-5 h-5 rounded-full bg-[#044866] hover:bg-[#0D5468] flex items-center justify-center cursor-help transition-all shrink-0">
+                                        <Info className="w-3 h-3 text-white" />
+                                    </div>
+                                </TooltipTrigger>
+                                <TooltipContent
+                                    className="bg-slate-900 text-white border-slate-700 p-0 overflow-hidden w-72 shadow-2xl"
+                                    side="top"
+                                    align="start"
                                 >
-                                    <Info className="w-3 h-3 text-white" />
-                                </div>
-                                {hoveredCommentId === request.id &&
-                                    tooltipPosition && (
-                                        <div
-                                            className="fixed z-9999"
-                                            style={{
-                                                left: `${tooltipPosition.left}px`,
-                                                top: `${tooltipPosition.top}px`,
-                                            }}
-                                        >
-                                            <div className="bg-slate-900 text-white text-xs rounded-lg p-3 shadow-2xl border border-slate-700 w-72">
-                                                <div className="flex items-start gap-2">
-                                                    <div className="w-7 h-7 rounded bg-[#F7A619] flex items-center justify-center shrink-0">
-                                                        <Info className="w-4 h-4 text-white" />
-                                                    </div>
-                                                    <div className="flex-1">
-                                                        <p className="font-semibold mb-1.5">
-                                                            {isCancelled
-                                                                ? 'Cancellation'
-                                                                : 'Rejection'}{' '}
-                                                            Reason
-                                                        </p>
-                                                        <p className="text-slate-300 leading-relaxed text-xs">
-                                                            {
-                                                                request.cancellationComment
-                                                            }
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div className="absolute -top-1.5 left-3 w-3 h-3 bg-slate-900 border-l border-t border-slate-700 transform rotate-45"></div>
+                                    <div className="p-3">
+                                        <div className="flex items-start gap-2">
+                                            <div className="w-7 h-7 rounded bg-[#F7A619] flex items-center justify-center shrink-0">
+                                                <Info className="w-4 h-4 text-white" />
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className="font-semibold mb-1.5">
+                                                    {isCancelled
+                                                        ? 'Cancellation'
+                                                        : 'Rejection'}{' '}
+                                                    Reason
+                                                </p>
+                                                <p className="text-slate-300 leading-relaxed text-xs">
+                                                    {
+                                                        request.cancellationComment
+                                                    }
+                                                </p>
                                             </div>
                                         </div>
-                                    )}
-                            </div>
+                                    </div>
+                                </TooltipContent>
+                            </Tooltip>
                         )}
                     </div>
                     <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">

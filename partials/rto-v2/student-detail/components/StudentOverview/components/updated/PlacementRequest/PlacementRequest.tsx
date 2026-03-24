@@ -16,12 +16,8 @@ export function PlacementRequest({
         isLoading,
         showCanceledCompleted,
         setShowCanceledCompleted,
-        hoveredCommentId,
-        tooltipPosition,
         groupedRequests,
         canCreateNewRequest,
-        handleMouseEnter,
-        handleMouseLeave,
         onSelectWorkplace,
         canceledCompletedRequests,
     } = usePlacementRequest(nonActiveWorkplaces)
@@ -116,18 +112,6 @@ export function PlacementRequest({
                                                             .completed.length
                                                     }
                                                     onSelect={onSelectWorkplace}
-                                                    onMouseEnter={
-                                                        handleMouseEnter
-                                                    }
-                                                    onMouseLeave={
-                                                        handleMouseLeave
-                                                    }
-                                                    hoveredCommentId={
-                                                        hoveredCommentId
-                                                    }
-                                                    tooltipPosition={
-                                                        tooltipPosition
-                                                    }
                                                 />
                                             )
                                         )}
@@ -153,18 +137,6 @@ export function PlacementRequest({
                                                             .cancelled.length
                                                     }
                                                     onSelect={onSelectWorkplace}
-                                                    onMouseEnter={
-                                                        handleMouseEnter
-                                                    }
-                                                    onMouseLeave={
-                                                        handleMouseLeave
-                                                    }
-                                                    hoveredCommentId={
-                                                        hoveredCommentId
-                                                    }
-                                                    tooltipPosition={
-                                                        tooltipPosition
-                                                    }
                                                 />
                                             )
                                         )}
@@ -190,18 +162,6 @@ export function PlacementRequest({
                                                             .terminated.length
                                                     }
                                                     onSelect={onSelectWorkplace}
-                                                    onMouseEnter={
-                                                        handleMouseEnter
-                                                    }
-                                                    onMouseLeave={
-                                                        handleMouseLeave
-                                                    }
-                                                    hoveredCommentId={
-                                                        hoveredCommentId
-                                                    }
-                                                    tooltipPosition={
-                                                        tooltipPosition
-                                                    }
                                                 />
                                             )
                                         )}
@@ -227,18 +187,6 @@ export function PlacementRequest({
                                                             .length
                                                     }
                                                     onSelect={onSelectWorkplace}
-                                                    onMouseEnter={
-                                                        handleMouseEnter
-                                                    }
-                                                    onMouseLeave={
-                                                        handleMouseLeave
-                                                    }
-                                                    hoveredCommentId={
-                                                        hoveredCommentId
-                                                    }
-                                                    tooltipPosition={
-                                                        tooltipPosition
-                                                    }
                                                 />
                                             )
                                         )}

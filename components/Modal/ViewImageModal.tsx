@@ -35,7 +35,7 @@ export function ViewImageModal({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-4xl! p-0 overflow-hidden border-none shadow-2xl">
+            <DialogContent className="max-w-4xl! p-0 overflow-hidden border-none shadow-2xl [&>button:last-child]:text-white [&>button:last-child]:opacity-100">
                 <DialogHeader className="w-full bg-primaryNew p-6 text-white sm:text-left">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center shadow-inner">

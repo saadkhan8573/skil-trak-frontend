@@ -182,24 +182,40 @@ export const CreateTeamModal = ({
         <>
             <ShowErrorNotifications result={createTeamResult} />
             <Dialog open={createTeamOpen} onOpenChange={setCreateTeamOpen}>
-                <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                    <DialogHeader>
-                        <DialogTitle className="text-2xl flex items-center gap-2">
-                            <div className="h-10 w-10 rounded-lg bg-linear-to-br from-yell-400 to-warning flex items-center justify-center">
-                                <Plus className="h-5 w-5 text-white" />
+                <DialogContent className="max-w-4xl! h-[90vh] p-0 overflow-hidden flex flex-col [&>button:last-child]:text-white [&>button:last-child]:opacity-100">
+                    <DialogHeader className="bg-primaryNew px-6 py-3 text-white rounded-t-lg border-b border-white/10 relative overflow-hidden shrink-0">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+                        <div className="relative flex items-center gap-4">
+                            <div className="h-9 w-9 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-xl shrink-0">
+                                {isEditMode ? (
+                                    <SquarePen className="h-6 w-6 text-white" />
+                                ) : (
+                                    <Plus className="h-6 w-6 text-white" />
+                                )}
                             </div>
-                            Create New Team
-                        </DialogTitle>
-                        <DialogDescription>
-                            Fill in the details below to create a new team
-                        </DialogDescription>
+                            <div className="space-y-1">
+                                <DialogTitle className="text-md font-bold tracking-tight text-white leading-none">
+                                    {isEditMode
+                                        ? 'Edit Team Details'
+                                        : 'Create New Support Team'}
+                                </DialogTitle>
+                                <DialogDescription className="text-blue-50/70 text-xs font-medium leading-relaxed">
+                                    {isEditMode
+                                        ? 'Update the team information and member assignments below'
+                                        : 'Fill in the details below to initialize a new team'}
+                                </DialogDescription>
+                            </div>
+                        </div>
                     </DialogHeader>
 
                     <FormProvider {...methods}>
-                        <form onSubmit={methods.handleSubmit(onSubmit)}>
-                            <div className="space-y-6 py-4">
+                        <form
+                            onSubmit={methods.handleSubmit(onSubmit)}
+                            className="flex flex-col flex-1 overflow-hidden"
+                        >
+                            <div className="flex-1 overflow-y-auto px-6 space-y-6">
                                 {/* Basic Info */}
-                                <div className="space-y-4">
+                                <div>
                                     <h3 className="font-semibold flex items-center gap-2 text-lg">
                                         <span className="h-6 w-6 rounded-full bg-primaryNew text-white flex items-center justify-center text-sm">
                                             1
@@ -281,7 +297,7 @@ export const CreateTeamModal = ({
                                         Assign Members
                                     </h3>
 
-                                    <Alert className="border-secondary/40 bg-secondary/5">
+                                    <Alert className="py-0! border-secondary/40 bg-secondary/5">
                                         <Briefcase className="h-4 w-4 text-secondary" />
                                         <AlertDescription className="ml-2 text-sm">
                                             Choose which team members will be
@@ -290,7 +306,7 @@ export const CreateTeamModal = ({
                                         </AlertDescription>
                                     </Alert>
 
-                                    <div className="grid grid-cols-2 gap-3">
+                                    <div>
                                         <Select
                                             name="members"
                                             label="Select Members"
@@ -350,8 +366,7 @@ export const CreateTeamModal = ({
                                     </div>
                                 </div>
                             </div>
-
-                            <DialogFooter className="gap-2">
+                            <DialogFooter className="px-6 py-2.5 border-t bg-slate-50/50 shrink-0 gap-2">
                                 <Button
                                     variant="secondary"
                                     onClick={() => setCreateTeamOpen(false)}

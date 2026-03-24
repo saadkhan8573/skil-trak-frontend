@@ -13,6 +13,7 @@ import {
 import {
     ConfigTabs,
     EmptyData,
+    StatusHistoryTimeline,
     TabConfig,
     TechnicalError,
     useAuthorizedUserComponent,
@@ -35,6 +36,7 @@ import {
     Building2,
     CalendarCheck,
     File,
+    History,
     MessageSquare,
     Ticket,
 } from 'lucide-react'
@@ -153,6 +155,17 @@ export const RtoStudentDetail = () => {
             hidden: useAuthorizedUserComponent({
                 roles: [UserRoles.RTO],
             }),
+        },
+        {
+            value: 'history',
+            label: 'History',
+            icon: History,
+            component: () => (
+                <StatusHistoryTimeline
+                    history={profile?.data?.user?.statusChangeHistory || []}
+                    className="mt-4"
+                />
+            ),
         },
     ]
 

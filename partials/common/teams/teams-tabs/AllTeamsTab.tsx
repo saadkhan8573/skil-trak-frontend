@@ -143,7 +143,10 @@ export const AllTeamsTab = () => {
                 </div>
                 <CreateTeamModal
                     createTeamOpen={createTeamOpen}
-                    setCreateTeamOpen={setCreateTeamOpen}
+                    setCreateTeamOpen={() => {
+                        setCreateTeamOpen(false)
+                        setEditData(null)
+                    }}
                     editData={editData}
                 />
             </Card>

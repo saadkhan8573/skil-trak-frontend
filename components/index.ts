@@ -120,3 +120,4 @@ export * from './Skeleton'
 export * from './Dropdown'
 
 export * from './ConfigTabs'
+export * from './StatusHistoryTimeline'

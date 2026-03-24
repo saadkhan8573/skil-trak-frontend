@@ -195,6 +195,10 @@ export function WorkplaceStatuses({
                         <TerminateWorkplaceButton
                             workplaceId={Number(wpId)}
                             isTerminated={workplace?.isTerminated}
+                            isCancelled={
+                                workplace?.currentStatus ===
+                                WorkplaceCurrentStatus.Cancelled
+                            }
                         />
                     </AuthorizedUserComponent>
                 </div>

@@ -123,7 +123,7 @@ export function ViewDocumentModal({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-4xl! p-0 overflow-hidden border-none shadow-2xl max-h-[90vh] flex flex-col">
+            <DialogContent className="max-w-4xl! p-0 overflow-hidden border-none shadow-2xl max-h-[90vh] flex flex-col [&>button:last-child]:text-white [&>button:last-child]:opacity-100">
                 <DialogHeader className="w-full bg-primaryNew px-6 py-3 text-white sm:text-left">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center shadow-inner">
@@ -217,7 +217,7 @@ export function ViewDocumentModal({
                             </h3>
                             <p className="text-slate-600 mb-6 max-w-md">
                                 {error?.includes('fetch') ||
-                                    error?.includes('Network')
+                                error?.includes('Network')
                                     ? "We couldn't load the preview for this document due to browser security restrictions."
                                     : 'This document cannot be previewed directly.'}
                                 <br />
@@ -236,6 +236,6 @@ export function ViewDocumentModal({
                     )}
                 </div>
             </DialogContent>
-        </Dialog >
+        </Dialog>
     )
 }

@@ -61,6 +61,11 @@ export function StudentStatusBanner() {
         description = snoozedEndDate
             ? `Student is snoozed until ${new Date(snoozedEndDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
             : 'This student is temporarily snoozed'
+
+        if (student?.snoozedBy?.name) {
+            description += ` • Snoozed By: ${student.snoozedBy.name}`
+        }
+
         Icon = Clock
         colorClasses =
             'bg-gradient-to-r from-[#F7A619] via-[#EA580C] to-[#F7A619]'

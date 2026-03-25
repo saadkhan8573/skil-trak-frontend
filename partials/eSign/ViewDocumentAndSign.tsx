@@ -519,11 +519,13 @@ export const ViewDocumentAndSign = () => {
         setCustomFieldsSelectedId(0)
     }
 
+    console.log({ isDocumentLoaded })
+
     return (
         <div className="space-y-3.5">
             {modal}
 
-            {/* <Activity
+            <Activity
                 mode={checkJsxVisibility(
                     role === UserRoles.RTO &&
                         documentDetail?.data?.signers?.length > 0 &&
@@ -554,7 +556,7 @@ export const ViewDocumentAndSign = () => {
                         Waiting for other parties to sign before RTO can finish.
                     </p>
                 </motion.div>
-            </Activity> */}
+            </Activity>
             <EsignHeader documentDetail={documentDetail?.data} />
 
             {isSignature && isDocumentLoaded?.isSuccess ? (
@@ -684,6 +686,7 @@ export const ViewDocumentAndSign = () => {
                                     className="p-0 lg:p-3.5 pb-0! overflow-auto"
                                     style={{
                                         background: '#F8FAFC',
+                                        maxHeight: '70vh',
                                     }}
                                 >
                                     <motion.div

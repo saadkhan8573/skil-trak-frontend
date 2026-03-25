@@ -136,7 +136,7 @@ export const FinishDocumentModal = ({
                         onClick={() =>
                             onGoToSignFieldIfRemaining(missingSignatureField)
                         }
-                        className="w-full flex items-center justify-center gap-2.5 px-5 py-3.5 text-white font-bold rounded-xl shadow transition-all text-base bg-[#0066CC] hover:bg-[#0055AA] hover:shadow-lg"
+                        className="w-full flex items-center justify-center gap-2.5 px-5 py-3.5 text-white font-bold rounded-xl shadow transition-all bg-[#0066CC] hover:bg-[#0055AA] hover:shadow-lg"
                     >
                         <PenTool className="w-5 h-5" />
                         <span>Sign Document Now</span>
@@ -168,7 +168,7 @@ export const FinishDocumentModal = ({
                     whileTap={!hasRemainingFields ? { scale: 0.99 } : {}}
                     disabled={hasRemainingFields}
                     onClick={onFinishSignModal}
-                    className={`group w-full flex items-center justify-center gap-2.5 px-5 py-3.5 text-white font-bold rounded-xl shadow transition-all text-base ${
+                    className={`group w-full flex items-center justify-center gap-2.5 px-5 py-3.5 text-white font-bold rounded-xl shadow transition-all ${
                         hasRemainingFields
                             ? 'bg-slate-300 cursor-not-allowed hidden'
                             : 'hover:shadow-lg active:shadow-inner'
@@ -215,12 +215,12 @@ export const FinishDocumentModal = ({
     return (
         <div
             id={'finishSign'}
-            className="fixed inset-0 bg-slate-900/10 backdrop-blur-[1px] z-[9999] flex items-center justify-center p-4"
+            className="fixed inset-0 bg-slate-900/10 backdrop-blur-[1px] z-9999 flex items-center justify-center p-4"
         >
             <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                className="bg-white w-full max-w-[440px] p-6 rounded-[1.5rem] shadow-[0_15px_40px_-12px_rgba(0,0,0,0.1)] border border-slate-100 relative"
+                className="bg-white w-full max-w-[440px] p-6 rounded-3xl shadow-[0_15px_40px_-12px_rgba(0,0,0,0.1)] border border-slate-100 relative"
             >
                 <div className="flex justify-between items-start mb-5">
                     <div>

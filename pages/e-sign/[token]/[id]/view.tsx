@@ -431,7 +431,7 @@ const ESign = () => {
         <SiteLayout title={'E Sign'}>
             <div className="p-6 space-y-2">
                 {modal}
-                {/* <Activity
+                <Activity
                     mode={checkJsxVisibility(
                         decodeData?.role === UserRoles.RTO &&
                             documentDetail?.data?.signers?.length > 0 &&
@@ -463,7 +463,7 @@ const ESign = () => {
                             finish.
                         </p>
                     </motion.div>
-                </Activity> */}
+                </Activity>
                 <EsignHeader documentDetail={documentDetail?.data} />
 
                 {isSignature && isDocumentLoaded?.isSuccess ? (

@@ -158,7 +158,12 @@ export const StudentCellInfo = ({
                         {student?.isSnoozed ? (
                             <div className="w-4 h-4 rounded  relative group">
                                 <MdSnooze size={17} className="text-red-500" />
-                                <Tooltip>Student Snoozed</Tooltip>
+                                <Tooltip>
+                                    Student Snoozed
+                                    {student?.snoozedBy?.name
+                                        ? ` by ${student.snoozedBy.name}`
+                                        : ''}
+                                </Tooltip>
                             </div>
                         ) : null}
                         {student?.studentStatus === StudentStatusEnum.EXPIRED &&

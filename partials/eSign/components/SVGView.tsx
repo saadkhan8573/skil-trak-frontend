@@ -95,16 +95,10 @@ export const SVGView = ({
     }, [doc])
 
     useEffect(() => {
-        if (
-            sortedPositions &&
-            sortedPositions?.length > 0 &&
-            sortedPositions?.[0]?.number === index + 1
-        ) {
-            if (setIsDocumentLoaded) {
-                setIsDocumentLoaded(documentSvgData)
-            }
+        if (setIsDocumentLoaded && documentSvgData?.isSuccess) {
+            setIsDocumentLoaded(documentSvgData)
         }
-    }, [doc, index])
+    }, [documentSvgData.isSuccess, index, setIsDocumentLoaded])
 
     const [timerId, setTimerId] = useState<any>(null)
 

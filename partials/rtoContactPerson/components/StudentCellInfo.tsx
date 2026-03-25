@@ -140,7 +140,12 @@ export const StudentCellInfo = ({
                     {student?.isSnoozed ? (
                         <div className="w-5 h-5 flex items-center justify-center rounded relative group">
                             <MdSnooze size={20} className="text-red-500" />
-                            <Tooltip>Snoozed Student</Tooltip>
+                            <Tooltip>
+                                Snoozed Student
+                                {student?.snoozedBy?.name
+                                    ? ` by ${student.snoozedBy.name}`
+                                    : ''}
+                            </Tooltip>
                         </div>
                     ) : null}
                 </div>

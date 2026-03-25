@@ -204,7 +204,7 @@ export const TabsField = ({
                                         selectedFillDataField === fieldData?.id
                                             ? 'border-primary border-2'
                                             : 'border-gray-500 border'
-                                    } !w-full !h-full rounded-sm text-sm p-1 outline-none`}
+                                    } w-full! h-full! rounded-sm text-sm p-1 outline-none`}
                                     placeholder={fieldData?.label}
                                     onChange={(e: any) => {
                                         onAddCustomFieldsData({

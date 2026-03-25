@@ -184,6 +184,7 @@ export interface Student extends BaseResponse {
     isReported: boolean
     statusHistory: any
     phone: string
+    snoozedBy: User
     dob: Date
     isHighPriority: boolean
     emergencyPerson: string

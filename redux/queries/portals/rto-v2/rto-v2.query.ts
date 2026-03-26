@@ -153,6 +153,7 @@ export const {
     useToggleIndustryCourseStatusMutation,
     useResendEmailIndustryAwaitingStudentMutation,
     useGetStudentAppointmentDetailQuery,
+    useManuallyUpdateWorkplaceStatusMutation,
     // ---- RTO Credits ---- //
     useGetRtoCreditsQuery,
     useChangeRtoNetworkMutation,
@@ -193,6 +194,7 @@ export const RtoV2Api = {
             useGetStudentPlacementStatusCheckNotesQuery,
         useAddManualNote: useAddManualNoteMutation,
         useConfirmHighlightedTask: useConfirmHighlightedTaskMutation,
+        useManuallyUpdateWorkplaceStatus: useManuallyUpdateWorkplaceStatusMutation,
         removeRtoStudentFromBlackList: useRemoveRtoStudentFromBlackListMutation,
         removeIndustryFromBlackList: useRemoveIndustryFromBlackListMutation,
     },

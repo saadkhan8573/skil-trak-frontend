@@ -16,7 +16,11 @@ export const availableShiftsEndpoints = (
             body,
             params: { userId },
         }),
-        invalidatesTags: ['AvailableShifts'],
+        invalidatesTags: [
+            'AvailableShifts',
+            'SubAdminIndustries',
+            'RTOIndustries',
+        ],
     }),
     addShift: builder.mutation<any, any>({
         query: (body) => ({

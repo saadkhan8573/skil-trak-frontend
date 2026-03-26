@@ -40,7 +40,7 @@ const adminTagTypes = [
     'TalentPoolProfiles',
     'AutoAssignWorkplace',
     'Industry-Course-Program',
-    'StudentForecast'
+    'StudentForecast',
 ]
 
 const subadminTagTypes = [
@@ -131,6 +131,7 @@ const commonTagTypes = [
     'Draft',
     'Notes',
     'Mails',
+    'Users',
     'Team',
     'Rating',
     'E-Sign',

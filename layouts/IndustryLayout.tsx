@@ -123,52 +123,6 @@ export const IndustryLayout = ({
         }
     }, [pendingDocuments, router])
 
-    // useEffect(() => {
-    //     const displayAlerts = () => {
-    //         switch (status) {
-    //             case UserStatus.Pending:
-    //                 alert.warning({
-    //                     title: 'Your account is pending',
-    //                     description: 'Please wait for admin approval',
-    //                     autoDismiss: false,
-    //                 })
-    //                 break
-    //             case UserStatus.Archived:
-    //                 alert.warning({
-    //                     title: 'Your account is Archived',
-    //                     description:
-    //                         'Please contact with admin to know about your status',
-    //                     autoDismiss: false,
-    //                 })
-    //                 break
-    //             case UserStatus.Blocked:
-    //                 alert.error({
-    //                     title: 'Your account is Blocked',
-    //                     description:
-    //                         'Please contact with admin to know about your status',
-    //                     autoDismiss: false,
-    //                 })
-    //                 break
-    //             case UserStatus.Rejected:
-    //                 alert.warning({
-    //                     title: 'Your account is rejected',
-    //                     description:
-    //                         'Please contact with admin to know about your status',
-    //                     autoDismiss: false,
-    //                 })
-    //                 break
-
-    //             default:
-    //                 break
-    //         }
-    //     }
-    //     displayAlerts()
-
-    //     return () => {
-    //         setAlerts([])
-    //     }
-    // }, [])
-
     // ===============================
     // PROFILE COMPLETION START
     // ===============================

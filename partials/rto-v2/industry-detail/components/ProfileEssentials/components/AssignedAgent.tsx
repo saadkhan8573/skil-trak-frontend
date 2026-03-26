@@ -16,28 +16,27 @@ export function AssignedAgent() {
     const user = getUserCredentials()
 
     return (
-            <div className="bg-linear-to-br from-[#FAFBFC] to-white rounded-xl border-2 border-[#E2E8F0] overflow-hidden shadow-sm hover:shadow-md transition-all">
-                {/* Header */}
-                <div className="bg-linear-to-r from-[#044866]/5 to-[#0D5468]/5 px-4 py-3 border-b border-[#E2E8F0]">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-lg bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-md">
-                                <User className="w-4 h-4 text-white" />
-                            </div>
-                            <div>
-                                <h3 className="font-bold text-[#1A2332] text-sm">
-                                    Assigned Agent
-                                </h3>
-                                <p className="text-[9px] text-[#64748B]">
-                                    Direct point of contact for this industry
-                                </p>
-                            </div>
+        <div className="bg-linear-to-br from-[#FAFBFC] to-white rounded-xl border-2 border-[#E2E8F0] overflow-hidden shadow-sm hover:shadow-md transition-all">
+            {/* Header */}
+            <div className="bg-linear-to-r from-[#044866]/5 to-[#0D5468]/5 px-4 py-3 border-b border-[#E2E8F0]">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-lg bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-md">
+                            <User className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                            <h3 className="font-bold text-[#1A2332] text-sm">
+                                Assigned Agent
+                            </h3>
+                            <p className="text-[9px] text-[#64748B]">
+                                Direct point of contact for this industry
+                            </p>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div className="px-4 py-4 space-y-3">
-
+            <div className="px-4 py-4 space-y-3">
                 <div className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-linear-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center">
                         {assignedAgent?.avatar ? (
@@ -65,7 +64,7 @@ export function AssignedAgent() {
                 </div>
 
                 {(user?.role === UserRoles.ADMIN ||
-                    [78].includes(user?.id)) && (
+                    [78, 4453].includes(user?.id)) && (
                     <div className="flex items-center gap-2">
                         <Button
                             fullWidth
@@ -77,16 +76,16 @@ export function AssignedAgent() {
                         </Button>
                     </div>
                 )}
-                </div>
-
-                {showAssignModal && industryId && (
-                    <ReassignAgentModal
-                        open={showAssignModal}
-                        onOpenChange={setShowAssignModal}
-                        industryId={industryId}
-                        currentAgentId={assignedAgent?.id}
-                    />
-                )}
             </div>
+
+            {showAssignModal && industryId && (
+                <ReassignAgentModal
+                    open={showAssignModal}
+                    onOpenChange={setShowAssignModal}
+                    industryId={industryId}
+                    currentAgentId={assignedAgent?.id}
+                />
+            )}
+        </div>
     )
 }

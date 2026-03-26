@@ -336,9 +336,9 @@ export function TradingHoursModule() {
 
     const handleCopyMonFri = () => {
         const mondayHours = getValues('hours.monday')
-            ;['tuesday', 'wednesday', 'thursday', 'friday'].forEach((day) => {
-                setValue(`hours.${day}`, mondayHours)
-            })
+        ;['tuesday', 'wednesday', 'thursday', 'friday'].forEach((day) => {
+            setValue(`hours.${day}`, mondayHours)
+        })
     }
 
     const handleReset = () => {
@@ -418,7 +418,7 @@ export function TradingHoursModule() {
                 <Button
                     onClick={handleSubmit(onSubmit)}
                     disabled={isSaving || isFetching}
-                    className="w-full bg-gradient-to-br from-[#044866] to-[#0D5468] hover:shadow-lg text-white text-sm font-medium"
+                    className="w-full bg-linear-to-br from-[#044866] to-[#0D5468] hover:shadow-lg text-white text-sm font-medium"
                 >
                     {isSaving ? (
                         'Saving...'

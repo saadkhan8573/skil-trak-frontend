@@ -19,7 +19,7 @@ export const ImportStudentsModal = ({ onCancel }: any) => {
             label: 'Add Individual',
             icon: UserPlus,
             color: 'from-[#044866] to-[#0C648A]',
-            content: <AddIndividualStudentTab />,
+            content: <AddIndividualStudentTab onCancel={onCancel} />,
         },
     ]
 
@@ -35,10 +35,10 @@ export const ImportStudentsModal = ({ onCancel }: any) => {
 
                 <div className="flex items-center gap-3">
                     <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#044866] to-[#044866] rounded-xl blur opacity-30"></div>
-                        <div className="relative h-10 w-10 rounded-xl bg-gradient-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-premium">
+                        <div className="absolute inset-0 bg-linear-to-br from-[#044866] to-[#044866] rounded-xl blur opacity-30"></div>
+                        <div className="relative h-10 w-10 rounded-xl bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-premium">
                             <Upload className="h-5 w-5 text-white" />
-                            <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-white/0 to-white/20"></div>
+                            <div className="absolute inset-0 rounded-xl bg-linear-to-t from-white/0 to-white/20"></div>
                         </div>
                     </div>
                     <span className="text-xl font-medium">Import Students</span>
@@ -65,7 +65,7 @@ export const ImportStudentsModal = ({ onCancel }: any) => {
                                     }
                                     className={`flex items-center gap-2 px-16 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${
                                         isActive
-                                            ? `text-white bg-gradient-to-r ${tab.color} shadow-md`
+                                            ? `text-white bg-linear-to-r ${tab.color} shadow-md`
                                             : 'text-gray-600 hover:text-gray-800'
                                     }`}
                                 >

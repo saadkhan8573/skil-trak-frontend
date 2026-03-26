@@ -239,7 +239,7 @@ export const FilteredStudents = ({
             Icon: FaEdit,
         },
         {
-            status: [UserStatus.Approved],
+            status: [UserStatus.Approved, UserStatus.Archived],
             text: 'Block',
             onClick: (student) => onBlockClicked(student),
             Icon: MdBlock,

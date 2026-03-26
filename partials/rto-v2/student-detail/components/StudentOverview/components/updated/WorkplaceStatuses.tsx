@@ -21,6 +21,8 @@ import {
 } from 'lucide-react'
 import moment from 'moment'
 import { useMemo } from 'react'
+import { useRouter } from 'next/router'
+
 import {
     IWorkplaceIndustries,
     WorkplaceWorkIndustriesType,
@@ -30,7 +32,7 @@ import { STATUS_CONTENT } from './statusMapping'
 import { UserRoles } from '@constants'
 import { TerminateWorkplaceButton } from './TerminateWorkplaceButton'
 import { CancelWorkplaceButton } from './CancelWorkplaceButton'
-import { useRouter } from 'next/router'
+import { ManualUpdateStatusDropdown } from './ManualUpdateStatusDropdown'
 
 interface WorkplaceStatusesProps {
     workplace: IWorkplaceIndustries
@@ -44,13 +46,11 @@ export function WorkplaceStatuses({
     const wpId = workplace?.id
     const router = useRouter()
 
-    const {
-        statuses: localStatuses,
-        progressPercent: localProgressPercent,
-    } = useStatusInfo({
-        workplace: workplace as any,
-        workIndustry: workIndustry as WorkplaceWorkIndustriesType,
-    })
+    const { statuses: localStatuses, progressPercent: localProgressPercent } =
+        useStatusInfo({
+            workplace: workplace as any,
+            workIndustry: workIndustry as WorkplaceWorkIndustriesType,
+        })
 
     // Build workflow steps from frontend-driven statuses only
     const workflowSteps = useMemo(() => {
@@ -68,9 +68,7 @@ export function WorkplaceStatuses({
                 : status.current
                   ? Clock
                   : Circle,
-            date: status.date
-                ? moment(status.date).format('DD/MM/YYYY')
-                : null,
+            date: status.date ? moment(status.date).format('DD/MM/YYYY') : null,
         }))
     }, [localStatuses])
 
@@ -128,12 +126,19 @@ export function WorkplaceStatuses({
 
             <div className="relative flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                    <Badge
-                        Icon={Search}
-                        className="bg-linear-to-r from-[#044866] to-[#0D5468] text-white px-2 py-0.5 shadow-lg shadow-[#044866]/30 hover:scale-105 transition-transform text-xs"
-                    >
-                        {WorkplaceStatusLabels[workplace?.currentStatus]}
-                    </Badge>
+                    {role === UserRoles.ADMIN && false ? (
+                        <ManualUpdateStatusDropdown
+                            workplaceId={Number(workplace.id)}
+                            currentStatus={workplace.currentStatus}
+                        />
+                    ) : (
+                        <Badge
+                            Icon={Search}
+                            className="bg-linear-to-r from-[#044866] to-[#0D5468] text-white px-2 py-0.5 shadow-lg shadow-[#044866]/30 hover:scale-105 transition-transform text-xs"
+                        >
+                            {WorkplaceStatusLabels[workplace?.currentStatus]}
+                        </Badge>
+                    )}
                     <Badge
                         Icon={
                             workplace?.studentProvidedWorkplace

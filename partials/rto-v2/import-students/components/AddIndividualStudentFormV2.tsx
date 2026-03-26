@@ -27,7 +27,11 @@ import { PlacementType } from './PlacementType'
 import { PlacementTypeEnum } from '../enum'
 import { useNotification } from '@hooks'
 
-export const AddIndividualStudentFormV2 = () => {
+export const AddIndividualStudentFormV2 = ({
+    onCancel,
+}: {
+    onCancel?: () => void
+}) => {
     const [isSuccess, setIsSuccess] = useState<boolean>(false)
     const router = useRouter()
 
@@ -182,9 +186,11 @@ export const AddIndividualStudentFormV2 = () => {
                         text: 'Back To List',
                         onClick: () => {
                             router.push({
-                                pathname: '/portals/rto/students',
+                                pathname:
+                                    '/portals/rto/students-and-placements/all-students',
                                 query: { tab: 'active' },
                             })
+                            onCancel && onCancel()
                         },
                     }}
                     secondaryAction={{

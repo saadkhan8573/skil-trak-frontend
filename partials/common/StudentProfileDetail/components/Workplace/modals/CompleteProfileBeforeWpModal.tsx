@@ -1,6 +1,7 @@
-import React from 'react'
+import { UserRoles } from '@constants'
 import { useRouter } from 'next/router'
 import { MdCancel } from 'react-icons/md'
+import { getUserCredentials } from '@utils'
 import { PiWarningOctagonThin } from 'react-icons/pi'
 import { Button, GlobalModal, Typography } from '@components'
 
@@ -12,6 +13,8 @@ export const CompleteProfileBeforeWpModal = ({
     workplaceType: string | null
 }) => {
     const router = useRouter()
+
+    const role = getUserCredentials()?.role
 
     return (
         <GlobalModal>
@@ -54,8 +57,28 @@ export const CompleteProfileBeforeWpModal = ({
                     <Button
                         text="Complete Profile"
                         onClick={() => {
+                            const studentId = router?.query?.id
+
+                            let editPath = `/portals/sub-admin/students/${studentId}/edit-student` // default
+
+                            if (role === UserRoles.ADMIN) {
+                                editPath = `/portals/admin/student/edit-student/${studentId}`
+                            } else if (role === UserRoles.RTO) {
+                                if (
+                                    router.pathname.includes(
+                                        'students-and-placements'
+                                    )
+                                ) {
+                                    editPath = `/portals/rto/students-and-placements/all-students/${studentId}/edit-student`
+                                } else {
+                                    editPath = `/portals/rto/students/${studentId}/edit-student`
+                                }
+                            } else if (role === UserRoles.SUBADMIN) {
+                                editPath = `/portals/sub-admin/students/${studentId}/edit-student`
+                            }
+
                             router.push({
-                                pathname: `/portals/sub-admin/students/${router?.query?.id}/edit-student`,
+                                pathname: editPath,
                                 query: { wpType: workplaceType },
                             })
                             if (onCancel) {

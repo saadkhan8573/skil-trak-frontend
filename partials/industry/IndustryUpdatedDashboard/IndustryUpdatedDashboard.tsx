@@ -1,21 +1,20 @@
-import { useContextBar } from '@hooks'
 import { MediaQueries } from '@constants'
-import { useEffect, useState } from 'react'
-import { useMediaQuery } from 'react-responsive'
-import { CommonApi, useIndustryProfileQuery } from '@queries'
-import {
-    IndustryServices,
-    IndustryDashboardRD,
-    IndustryShiftingHours,
-    IndustryDashboardStudents,
-    IndustryDashboardTypeDocs,
-} from './components'
-import { IndustryDashboardCB } from './IndustryDashboardCB'
+import { useContextBar } from '@hooks'
 import { ImportantDocuments, Supervisor } from '@partials/common'
 import { IndustryLocations } from '@partials/common/IndustryProfileDetail/components'
-import { UponAppointmentCompletionModal } from '@partials/common/StudentProfileDetail/components'
-import { getUserCredentials } from '@utils'
 import { SelectAppointmentStatusVII } from '@partials/common/ProfileAppointments/select-appointment-status-v2/SelectAppointmentStatusVII'
+import { CommonApi, useIndustryProfileQuery } from '@queries'
+import { useEffect, useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
+import {
+    IndustryDashboardRD,
+    IndustryDashboardStudents,
+    IndustryDashboardTypeDocs,
+    IndustryServices,
+    IndustryShiftingHours,
+} from './components'
+import { IndustryDashboardCB } from './IndustryDashboardCB'
+import { EsignDocumentStatus } from '@utils'
 
 export const IndustryUpdatedDashboard = () => {
     const [modal, setModal] = useState<any | null>(null)
@@ -28,18 +27,20 @@ export const IndustryUpdatedDashboard = () => {
     const onClose = () => {
         setModal(null)
     }
-    const userId = getUserCredentials()?.id
     const appointmentCompletion =
         CommonApi.Appointments.useAppointmentCompletionStatusIndustry({})
 
-    // const uponCompletionAppointment = () => {
-    //     setModal(
-    //         <UponAppointmentCompletionModal
-    //             appointment={appointmentCompletion?.data}
-    //             onClose={onClose}
-    //         />
-    //     )
-    // }
+    const pendingDocuments = CommonApi.ESign.usePendingDocumentsList(
+        {
+            status: [EsignDocumentStatus.PENDING, EsignDocumentStatus.ReSign],
+            skip: 0,
+            limit: 50,
+        },
+        {
+            refetchOnMountOrArgChange: true,
+        }
+    )
+
     const uponCompletionAppointment = () => {
         setModal(
             <SelectAppointmentStatusVII
@@ -51,14 +52,27 @@ export const IndustryUpdatedDashboard = () => {
     }
 
     useEffect(() => {
+        const hasPendingDocs =
+            pendingDocuments?.isSuccess &&
+            pendingDocuments?.data?.data &&
+            pendingDocuments?.data?.data?.length > 0
+
+        const isDismissed = contextBar.viewAgreementModal > 0
+
         if (
             appointmentCompletion?.data &&
             Object.keys(appointmentCompletion?.data).length > 0 &&
-            !appointmentCompletion?.data?.isSuccessfull
+            !appointmentCompletion?.data?.isSuccessfull &&
+            (isDismissed || (pendingDocuments.isSuccess && !hasPendingDocs))
         ) {
             uponCompletionAppointment()
         }
-    }, [appointmentCompletion?.data])
+    }, [
+        appointmentCompletion?.data,
+        pendingDocuments?.isSuccess,
+        pendingDocuments?.data,
+        contextBar.viewAgreementModal,
+    ])
 
     useEffect(() => {
         if (industry?.isSuccess && !isMobile) {

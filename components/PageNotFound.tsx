@@ -1,11 +1,4 @@
-import type { NextPage } from 'next'
-
-import { Animations } from '@animations'
-import { LottieAnimation, Navbar, Typography } from '@components'
 import { useRouter } from 'next/router'
-import { ReactElement } from 'react'
-import { MdSpaceDashboard, MdHomeWork } from '@icons'
-import Link from 'next/link'
 
 export const PageNotFound = () => {
     const router = useRouter()

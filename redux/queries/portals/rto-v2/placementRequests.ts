@@ -1,4 +1,5 @@
 import { WorkplaceProgress } from '@redux/queryTypes'
+import { providesTagsOnSuccess } from '@redux/utils'
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
 
@@ -133,5 +134,21 @@ export const placementRequestsEndPoints = (
             method: 'DELETE',
         }),
         invalidatesTags: ['Workplaces'],
+    }),
+    manuallyUpdateWorkplaceStatus: builder.mutation<
+        any,
+        { id: number; status: string }
+    >({
+        query: ({ id, status }) => ({
+            url: `students/workplace-requests/${id}/manually/update/status`,
+            method: 'PATCH',
+            params: { status },
+        }),
+        invalidatesTags: providesTagsOnSuccess([
+            'RTO',
+            'Workplaces',
+            'StudentsWorkplace',
+            'SubAdminWorkplace',
+        ]),
     }),
 })

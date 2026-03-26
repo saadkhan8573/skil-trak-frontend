@@ -34,7 +34,7 @@ export const UpdateFavIndustriesModal = ({
                 Icon={HiCheckBadge}
                 variant="success"
                 title="Transfer Fav Industries to Team"
-                description={`You are about to transfer the favorite industries of this coordinator to their department coordinators. Are you sure you want to continue?`}
+                description={`You are about to transfer the favorite industries of this coordinator to their team coordinators. Are you sure you want to continue?`}
                 onConfirm={onConfirmUClicked}
                 onCancel={onCancel}
                 input

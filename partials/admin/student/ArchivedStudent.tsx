@@ -24,12 +24,16 @@ import { Student, UserStatus } from '@types'
 import moment from 'moment'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { CgUnblock } from 'react-icons/cg'
+import { MdBlock } from 'react-icons/md'
 import { RiLockPasswordFill } from 'react-icons/ri'
 import { RtoCellInfo } from '../rto/components'
 import { SectorCell, StudentCellInfo, StudentIndustries } from './components'
 import { Phone } from 'lucide-react'
 import {
     AdminStudentModalType,
+    AcceptModal,
+    BlockModal,
     ChangeStatusModal,
     DeleteModal,
     getAdminStudentsModal,
@@ -72,6 +76,21 @@ export const ArchivedStudent = () => {
     const onDeleteClicked = (item: Student) => {
         setModal(
             <DeleteModal item={item} onCancel={() => onModalCancelClicked()} />
+        )
+    }
+
+    const onBlockClicked = (student: Student) => {
+        setModal(
+            <BlockModal
+                item={student}
+                onCancel={() => onModalCancelClicked()}
+            />
+        )
+    }
+
+    const onAcceptClicked = (item: Student) => {
+        setModal(
+            <AcceptModal item={item} onCancel={() => onModalCancelClicked()} />
         )
     }
 
@@ -145,6 +164,18 @@ export const ArchivedStudent = () => {
                 onChangeStatus(student)
             },
             Icon: FaEdit,
+        },
+        {
+            text: 'Un Archive',
+            onClick: (student: Student) => onAcceptClicked(student),
+            Icon: CgUnblock,
+            color: 'text-orange-500 hover:bg-orange-100 hover:border-orange-200',
+        },
+        {
+            text: 'Block',
+            onClick: (student: Student) => onBlockClicked(student),
+            Icon: MdBlock,
+            color: 'text-red-500 hover:bg-red-100 hover:border-red-200',
         },
         {
             text: 'Delete',

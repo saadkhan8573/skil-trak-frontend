@@ -11,6 +11,10 @@ import { AuthApi, CommonApi } from '@queries'
 import {
     CourseSelectOption,
     formatOptionLabel,
+    getAddressData,
+    getLatLng,
+    getPostalCode,
+    getSuburb,
     isEmailValid,
     onlyAlphabets,
     onlyNumbersAcceptedInYup,
@@ -217,6 +221,37 @@ export const FutureIndustrySignUpForm = ({
         mode: 'all',
         resolver: yupResolver(validationSchema),
     })
+
+    const watchAddress = formMethods.watch('addressLine1')
+
+    useEffect(() => {
+        const fetchAddressDetails = async () => {
+            if (watchAddress && watchAddress.length > 4) {
+                try {
+                    const latLng = await getLatLng(watchAddress)
+                    const postalCode = await getPostalCode(latLng)
+
+                    const suburb = await getSuburb(watchAddress)
+                    const { state } = await getAddressData(watchAddress)
+
+                    if (postalCode) {
+                        formMethods.setValue('zipCode', postalCode)
+                    }
+
+                    if (suburb) {
+                        formMethods.setValue('suburb', suburb)
+                    }
+
+                    if (state) {
+                        formMethods.setValue('state', state)
+                    }
+                } catch (error) {
+                    console.error('Error fetching postal code:', error)
+                }
+            }
+        }
+        fetchAddressDetails()
+    }, [watchAddress])
 
     useEffect(() => {
         if (courseOptions && courseOptions?.length > 0) {

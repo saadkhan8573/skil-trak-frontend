@@ -24,7 +24,7 @@ export const RtoListingNotes = () => {
                     <div className="flex-1">
                         <Typography variant="label">Notes</Typography>
                     </div>
-                    <div className="flex-shrink-0">
+                    <div className="shrink-0">
                         <Modal>
                             <Modal.Open opens="addRtoListingNote">
                                 <Button text="Add Note" />

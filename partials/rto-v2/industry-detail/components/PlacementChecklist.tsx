@@ -1,9 +1,4 @@
-import {
-    CheckCircle,
-    ChevronDown,
-    Sparkles,
-    Target,
-} from 'lucide-react'
+import { CheckCircle, ChevronDown, Sparkles, Target } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import {
     ChecklistTask,
@@ -32,7 +27,7 @@ export function PlacementChecklist() {
 
     useEffect(() => {
         if (!isLoading) {
-            // If they are not ready, show the modal. 
+            // If they are not ready, show the modal.
             // If they ARE ready, ensure it is closed (especially useful if they completed it while it was open)
             setIsModalOpen(!isPlacementReady)
         }
@@ -128,8 +123,9 @@ export function PlacementChecklist() {
                         >
                             {showProgress ? 'Hide Details' : 'View Details'}
                             <ChevronDown
-                                className={`w-3 h-3 transition-transform ${showProgress ? 'rotate-180' : ''
-                                    }`}
+                                className={`w-3 h-3 transition-transform ${
+                                    showProgress ? 'rotate-180' : ''
+                                }`}
                             />
                         </button>
                     </div>
@@ -186,13 +182,15 @@ export function PlacementChecklist() {
                                                 )
                                             }
                                             key={index}
-                                            className={`relative group overflow-hidden rounded-xl transition-all duration-300 ${isDone
-                                                ? 'bg-linear-to-br from-[#10B981]/10 to-transparent border border-[#10B981]/30 hover:border-[#10B981]/50 hover:shadow-lg'
-                                                : 'bg-white border border-[#E2E8F0] hover:border-[#044866]/30 hover:shadow-xl hover:scale-105'
-                                                }`}
+                                            className={`relative group overflow-hidden rounded-xl transition-all duration-300 ${
+                                                isDone
+                                                    ? 'bg-linear-to-br from-[#10B981]/10 to-transparent border border-[#10B981]/30 hover:border-[#10B981]/50 hover:shadow-lg'
+                                                    : 'bg-white border border-[#E2E8F0] hover:border-[#044866]/30 hover:shadow-xl hover:scale-105'
+                                            }`}
                                             style={{
-                                                animationDelay: `${index * 50
-                                                    }ms`,
+                                                animationDelay: `${
+                                                    index * 50
+                                                }ms`,
                                             }}
                                         >
                                             {/* Gradient Glow */}
@@ -204,10 +202,11 @@ export function PlacementChecklist() {
                                                 <div className="flex items-start gap-2 mb-2">
                                                     {/* Icon */}
                                                     <div
-                                                        className={`relative w-8 h-8 rounded-lg flex items-center justify-center shadow-lg transition-all duration-300 ${isDone
-                                                            ? 'bg-linear-to-br from-[#10B981] to-[#059669] group-hover:scale-110 group-hover:rotate-6'
-                                                            : 'bg-linear-to-br from-[#E8F4F8] to-[#F8FAFB] group-hover:scale-110'
-                                                            }`}
+                                                        className={`relative w-8 h-8 rounded-lg flex items-center justify-center shadow-lg transition-all duration-300 ${
+                                                            isDone
+                                                                ? 'bg-linear-to-br from-[#10B981] to-[#059669] group-hover:scale-110 group-hover:rotate-6'
+                                                                : 'bg-linear-to-br from-[#E8F4F8] to-[#F8FAFB] group-hover:scale-110'
+                                                        }`}
                                                     >
                                                         {isDone ? (
                                                             <CheckCircle
@@ -227,18 +226,20 @@ export function PlacementChecklist() {
 
                                                 <div>
                                                     <h4
-                                                        className={`text-xs font-semibold mb-1 ${isDone
-                                                            ? 'text-[#10B981]'
-                                                            : 'text-[#1A2332]'
-                                                            }`}
+                                                        className={`text-xs font-semibold mb-1 ${
+                                                            isDone
+                                                                ? 'text-[#10B981]'
+                                                                : 'text-[#1A2332]'
+                                                        }`}
                                                     >
                                                         {item.title}
                                                     </h4>
                                                     <p
-                                                        className={`text-[10px] mb-2 ${isDone
-                                                            ? 'text-[#059669]'
-                                                            : 'text-[#64748B]'
-                                                            }`}
+                                                        className={`text-[10px] mb-2 ${
+                                                            isDone
+                                                                ? 'text-[#059669]'
+                                                                : 'text-[#64748B]'
+                                                        }`}
                                                     >
                                                         {item.description}
                                                     </p>

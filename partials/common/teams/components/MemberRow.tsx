@@ -57,12 +57,20 @@ export function MemberRow({
 
     const handleToggle = (e: any) => {
         const newValue = e.target.checked
-        onUpdate({ canReceiveTickets: newValue })
 
         if (newValue && selectedTypes.length === 0) {
             setIsPanelOpen(true)
+            onUpdate({ canReceiveTickets: true })
         } else if (!newValue) {
             setIsPanelOpen(false)
+            onUpdate({
+                canReceiveTickets: false,
+                assignedRtoOnly: false,
+                assignedStudentOnly: false,
+                role: TeamMemberRole.MEMBER,
+            })
+        } else {
+            onUpdate({ canReceiveTickets: newValue })
         }
     }
 
@@ -141,7 +149,7 @@ export function MemberRow({
                             </span>
                         )}
                     </p>
-                    {canReceiveTickets && (
+                    {canReceiveTickets && role !== TeamMemberRole.LEAD && (
                         <div className="flex flex-wrap gap-1 mt-1.5">
                             {activeBadges.length > 0 ? (
                                 activeBadges.map((t) => (
@@ -181,7 +189,7 @@ export function MemberRow({
                 </div>
 
                 <div className="flex items-center gap-5">
-                    {canReceiveTickets && (
+                    {canReceiveTickets && role !== TeamMemberRole.LEAD && (
                         <button
                             onClick={() => setIsPanelOpen(!isPanelOpen)}
                             className={cn(
@@ -223,10 +231,12 @@ export function MemberRow({
                     <div className="flex flex-col items-end gap-1">
                         <span
                             className={cn(
-                                'text-[9px] uppercase tracking-wider font-extrabold',
-                                assignedRtoOnly
-                                    ? 'text-indigo-600'
-                                    : 'text-slate-400'
+                                'text-[9px] uppercase tracking-wider font-extrabold transition-colors',
+                                !canReceiveTickets
+                                    ? 'text-slate-300'
+                                    : assignedRtoOnly
+                                      ? 'text-indigo-600'
+                                      : 'text-slate-400'
                             )}
                         >
                             RTO Only
@@ -235,6 +245,7 @@ export function MemberRow({
                             name={`assignedRtoOnly_${member.id}`}
                             isChecked={assignedRtoOnly}
                             onChange={handleRtoOnlyToggle}
+                            disabled={!canReceiveTickets}
                             customStyleClass="profileSwitch"
                         />
                     </div>
@@ -242,10 +253,12 @@ export function MemberRow({
                     <div className="flex flex-col items-end gap-1">
                         <span
                             className={cn(
-                                'text-[9px] uppercase tracking-wider font-extrabold',
-                                assignedStudentOnly
-                                    ? 'text-purple-600'
-                                    : 'text-slate-400'
+                                'text-[9px] uppercase tracking-wider font-extrabold transition-colors',
+                                !canReceiveTickets
+                                    ? 'text-slate-300'
+                                    : assignedStudentOnly
+                                      ? 'text-purple-600'
+                                      : 'text-slate-400'
                             )}
                         >
                             Student Only
@@ -254,6 +267,7 @@ export function MemberRow({
                             name={`assignedStudentOnly_${member.id}`}
                             isChecked={assignedStudentOnly}
                             onChange={handleStudentOnlyToggle}
+                            disabled={!canReceiveTickets}
                             customStyleClass="profileSwitch"
                         />
                     </div>
@@ -262,10 +276,12 @@ export function MemberRow({
                     <div className="flex flex-col items-end gap-1">
                         <span
                             className={cn(
-                                'text-[9px] uppercase tracking-wider font-extrabold',
-                                role === TeamMemberRole.LEAD
-                                    ? 'text-amber-600'
-                                    : 'text-slate-400'
+                                'text-[9px] uppercase tracking-wider font-extrabold transition-colors',
+                                !canReceiveTickets
+                                    ? 'text-slate-300'
+                                    : role === TeamMemberRole.LEAD
+                                      ? 'text-amber-600'
+                                      : 'text-slate-400'
                             )}
                         >
                             Lead
@@ -274,6 +290,7 @@ export function MemberRow({
                             name={`role_${member.id}`}
                             isChecked={role === TeamMemberRole.LEAD}
                             onChange={handleLeadToggle}
+                            disabled={!canReceiveTickets}
                             customStyleClass="profileSwitch"
                         />
                     </div>
@@ -284,7 +301,7 @@ export function MemberRow({
             <div
                 className={cn(
                     'overflow-auto transition-all duration-500 ease-in-out',
-                    isPanelOpen && canReceiveTickets
+                    isPanelOpen && canReceiveTickets && role !== TeamMemberRole.LEAD
                         ? 'max-h-[400px] opacity-100'
                         : 'max-h-0 opacity-0'
                 )}

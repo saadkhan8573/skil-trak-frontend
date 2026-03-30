@@ -47,11 +47,16 @@ export default function ExternalImagePlugin(): null {
                             `ExternalImagePlugin: 📤 Uploading pasted base64 image...`
                         )
                         const res: any = await uploadImage(formData)
+                        if (res?.error) throw new Error(res.error?.data?.message || 'Upload failed')
                         uploadedUrl = res?.data?.url
                     } else {
                         // Handle external URL via server-side mirroring
                         const res: any = await uploadImageByUrl({ url: src })
-                        uploadedUrl = res?.data?.uploadedFile
+                        if (res?.error) {
+                            console.warn(`ExternalImagePlugin: ⚠️ Server could not mirror ${src}. Using original URL.`);
+                            return; // Leave the original URL in place
+                        }
+                        uploadedUrl = res?.data?.uploadedFile || res?.data?.url
                     }
 
                     if (uploadedUrl) {
@@ -65,7 +70,7 @@ export default function ExternalImagePlugin(): null {
                             }
                         })
                     } else {
-                        throw new Error('No URL in upload response')
+                        console.warn(`ExternalImagePlugin: ⚠️ No URL in upload response for ${src}. Using original URL.`)
                     }
                 } catch (e: any) {
                     // Check for CORS or network errors

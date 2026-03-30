@@ -8,7 +8,7 @@ import {
     TextArea,
     TextInput,
     Typography,
-    UploadFile
+    UploadFile,
 } from '@components'
 import { InputErrorMessage } from '@components/inputs/components'
 import { FileUpload } from '@hoc'
@@ -117,7 +117,6 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
             .optional(),
     })
 
-
     const formMethods = useForm<BlogFormData>({
         mode: 'all',
         resolver: yupResolver(validationSchema),
@@ -135,7 +134,7 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
     })
     const { append, remove, fields } = useFieldArray({
         control: formMethods.control,
-        name: 'blogQuestions'
+        name: 'blogQuestions',
     })
 
     const onSubmit: any = (data: any, publish: boolean) => {
@@ -206,10 +205,11 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                 formData.append('category', data?.category)
                 formData.append('author', data?.author)
                 formData.append('shortDescription', data?.shortDescription)
-                const filteredBlogQuestions = data?.blogQuestions?.filter(
-                    (q: any) =>
-                        q.question.trim() !== '' || q.answer.trim() !== ''
-                ) || []
+                const filteredBlogQuestions =
+                    data?.blogQuestions?.filter(
+                        (q: any) =>
+                            q.question.trim() !== '' || q.answer.trim() !== ''
+                    ) || []
                 formData.append(
                     'blogQuestions',
                     JSON.stringify(filteredBlogQuestions)
@@ -318,10 +318,11 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                         onChange={handleShortDescriptionChange}
                     />
                     <div
-                        className={`${shortDescriptionWordCount > 385
-                            ? 'text-red-500'
-                            : ' text-slate-500'
-                            } text-sm mb-5`}
+                        className={`${
+                            shortDescriptionWordCount > 385
+                                ? 'text-red-500'
+                                : ' text-slate-500'
+                        } text-sm mb-5`}
                     >
                         {`${shortDescriptionWordCount} / 385 words`}
                     </div>
@@ -329,6 +330,7 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                     <InputRichTextEditor
                         name="content"
                         label="Content"
+                        showHtmlToggle
                         placeholder="Type something amazing..."
                     />
                     {/* <InputErrorMessage name={'content'} /> */}
@@ -345,7 +347,6 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                             Add FAQ's here
                         </Typography>
                         <Card>
-
                             {fields.map((faq: any, index: number) => (
                                 <div
                                     key={faq.id}
@@ -361,7 +362,9 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                                             placeholder="Enter Question"
                                             defaultValue={faq.question}
                                         />
-                                        <InputErrorMessage name={'blogQuestions'} />
+                                        <InputErrorMessage
+                                            name={'blogQuestions'}
+                                        />
                                         <TextArea
                                             // {...formMethods.register(
                                             //     `blogQuestions.${index}.answer`
@@ -371,7 +374,9 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                                             placeholder="Enter Answer"
                                         />
 
-                                        <InputErrorMessage name={'blogQuestions'} />
+                                        <InputErrorMessage
+                                            name={'blogQuestions'}
+                                        />
                                     </div>
                                     <div className="mt-7">
                                         <Button

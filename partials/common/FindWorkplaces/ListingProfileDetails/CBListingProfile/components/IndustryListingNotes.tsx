@@ -1,13 +1,15 @@
 import { Button, Card, NoData, Typography } from '@components'
-import Modal from '@modals/Modal'
+import { Dialog, DialogContent, DialogTrigger } from '@components/ui/dialog'
 import { CommonApi } from '@queries'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { PulseLoader } from 'react-spinners'
 import { AddNoteModal } from '../modal'
 
 export const IndustryListingNotes = () => {
     const router = useRouter()
     const id = router.query.id
+    const [isOpen, setIsOpen] = useState(false)
 
     // futureindustries/id/notes/list-all
     const { data, isLoading, isError } =
@@ -22,15 +24,17 @@ export const IndustryListingNotes = () => {
                     <div className="flex-1">
                         <Typography variant="label">Notes</Typography>
                     </div>
-                    <div className="flex-shrink-0">
-                        <Modal>
-                            <Modal.Open opens="addIndustryListingNote">
+                    <div className="shrink-0">
+                        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                            <DialogTrigger asChild>
                                 <Button text="Add Note" />
-                            </Modal.Open>
-                            <Modal.Window name="addIndustryListingNote">
-                                <AddNoteModal />
-                            </Modal.Window>
-                        </Modal>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-3xl!">
+                                <AddNoteModal
+                                    onCloseModal={() => setIsOpen(false)}
+                                />
+                            </DialogContent>
+                        </Dialog>
                     </div>
                 </div>
                 <div className="flex flex-col gap-y-3 px-4 py-2 h-96 overflow-auto custom-scrollbar">

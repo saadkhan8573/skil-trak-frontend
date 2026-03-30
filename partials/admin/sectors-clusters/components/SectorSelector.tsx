@@ -60,8 +60,10 @@ export function SectorSelector({ data }: any) {
                 title: 'Sector Added',
                 description: 'Successfully added sector to cluster',
             })
+            setIsDialogOpen(false)
         }
     }, [addSectorToClusterResult.isSuccess])
+    console.log('isDialogOpen', isDialogOpen)
 
     const sectorOptions = getAllsectors?.data?.map((sector: any) => ({
         label: `${sector?.name} - ${sector?.code}`,
@@ -208,7 +210,7 @@ export function SectorSelector({ data }: any) {
                                                 : 'secondary'
                                         }
                                         className="px-3 py-1.5 text-sm cursor-pointer hover:bg-gray-100"
-                                        text={sector?.name}
+                                        text={`${sector?.name} - ${sector?.code}`}
                                     />
                                 ))}
                             </div>

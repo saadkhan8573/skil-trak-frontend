@@ -33,7 +33,16 @@ export const AddSectorQuestionModal = ({
     const [editQuestion, editQuestionResult] =
         AdminApi.SectorClusters.useUpdateSectorQuestion()
     const { notification } = useNotification()
+    const methods = useForm({
+        mode: 'all',
+        defaultValues: {
+            title: '',
+            question: '',
+            example: '',
+        },
+    })
 
+    const { reset } = methods
     useEffect(() => {
         if (addQuestionResult.isSuccess) {
             notification.success({
@@ -41,6 +50,7 @@ export const AddSectorQuestionModal = ({
                 description: 'Question Added Successfully',
             })
             setIsAddDialogOpen(false)
+            reset()
         }
     }, [addQuestionResult.isSuccess])
 
@@ -54,16 +64,6 @@ export const AddSectorQuestionModal = ({
         }
     }, [editQuestionResult.isSuccess])
 
-    const methods = useForm({
-        mode: 'all',
-        defaultValues: {
-            title: '',
-            question: '',
-            example: '',
-        },
-    })
-
-    const { reset } = methods
     useEffect(() => {
         if (isEdit && editValues) {
             reset({

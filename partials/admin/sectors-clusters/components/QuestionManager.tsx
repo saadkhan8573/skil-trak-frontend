@@ -89,8 +89,7 @@ export const QuestionManager = ({
                 <div className="space-y-3">
                     {isError && <NoData isError />}
                     {isLoading ? (
-                                            <PulseLoader color="#2563eb" size={10} margin={4} />
-                        
+                        <PulseLoader color="#2563eb" size={10} margin={4} />
                     ) : questions?.length > 0 ? (
                         questions?.map((question: any, index: any) => (
                             <Card
@@ -99,7 +98,8 @@ export const QuestionManager = ({
                             >
                                 <div className="pt-4">
                                     <div className="flex items-start justify-between gap-4">
-                                        <div className="flex-1 space-y-2">
+                                        {/* LEFT */}
+                                        <div className="flex-1 space-y-2 min-w-0">
                                             <div className="flex items-center gap-2">
                                                 <span className="font-semibold text-gray-900">
                                                     {index + 1}.{' '}
@@ -117,16 +117,20 @@ export const QuestionManager = ({
                                                         : 'Custom'}
                                                 </Badge>
                                             </div>
-                                            <p className="text-gray-700">
+
+                                            <p className="text-gray-700 break-all">
                                                 {question?.question}
                                             </p>
+
                                             {question?.example && (
-                                                <p className="text-sm text-gray-600 italic">
+                                                <p className="text-sm text-gray-600 italic break-words">
                                                     {question?.example}
                                                 </p>
                                             )}
                                         </div>
-                                        <div className="flex items-center gap-2">
+
+                                        {/* RIGHT */}
+                                        <div className="flex items-center gap-2 shrink-0">
                                             <div
                                                 onClick={() =>
                                                     openEditDialog(question)
@@ -135,6 +139,7 @@ export const QuestionManager = ({
                                             >
                                                 <Edit2 className="w-4 h-4" />
                                             </div>
+
                                             {!question?.isDefault && (
                                                 <div
                                                     onClick={() =>

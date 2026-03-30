@@ -117,8 +117,12 @@ export function SectorSupervisorRequirementsModal({
                                 variant="secondary"
                                 outline
                                 onClick={() => setIsEditDialogOpen(true)}
-                                Icon={Edit2}
-                                text="Edit Requirements"
+                                Icon={isFirstTime ? Plus : Edit2}
+                                text={
+                                    isFirstTime
+                                        ? 'Add Requirements'
+                                        : 'Edit Requirements'
+                                }
                             />
                         </DialogTrigger>
 

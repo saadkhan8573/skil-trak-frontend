@@ -1,6 +1,15 @@
-import { OnboardingFooter, OnboardingStepper, Step1ConfirmDetails, Step1Data, Step2SectorsCourses, StepsHeader } from '@partials'
+import {
+    OnboardingFooter,
+    OnboardingStepper,
+    Step1ConfirmDetails,
+    Step1Data,
+    Step2SectorsCourses,
+    StepsHeader,
+} from '@partials'
+import { CommonApi } from '@queries'
 import { NextPageWithLayout } from '@types'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 const defaultStep1Data: Step1Data = {
@@ -160,6 +169,13 @@ const IndustryPartnerOnboarding: NextPageWithLayout = () => {
         3: true,
         4: true,
     })
+    const router = useRouter()
+    const id = router.query.id
+    const { data, isSuccess, refetch } =
+        CommonApi.FindWorkplace.useIndustryListingProfileDetails(id, {
+            skip: !id,
+        })
+    console.log('future industry details', data)
     const handleSubmit = async () => {
         setIsLoading(true)
     }

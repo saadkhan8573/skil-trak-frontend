@@ -31,6 +31,7 @@ import { rtoMessageCenterEndpoints } from './rto-message-center'
 import { defaultDocumentsEndpoints } from './default-documents'
 import { industryReadinessEndpoints } from './industry-readiness'
 import { marketingEndpoints } from './marketing'
+import { sectorClustersEndpoints } from './sectorClusters'
 
 const PREFIX = 'admin'
 export const adminApi = apiSlice.injectEndpoints({
@@ -104,6 +105,7 @@ export const adminApi = apiSlice.injectEndpoints({
         ...defaultDocumentsEndpoints(build),
         ...industryReadinessEndpoints(build),
         ...marketingEndpoints(build),
+        ...sectorClustersEndpoints(build),
     }),
     // overrideExisting: false,
 })
@@ -534,6 +536,16 @@ const {
 
     // ------ MARKETING ------ //
     useGetMarketingUsersQuery,
+
+    // ---------- SECTOR CLUSTER ---------- //
+    useAddSectorToClusterMutation,
+    useGetAvailableLinkedSectorsQuery,
+    useGetClusterSectorsQuery,
+    useAddSectorQuestionMutation,
+    useUpdateSectorQuestionMutation,
+    useGetSectorClusterQuestionsQuery,
+    useUpdateRequirementsMutation,
+    useGetSupervisorRequirementsQuery,
 } = adminApi
 
 export const AdminApi = {
@@ -790,7 +802,16 @@ export const AdminApi = {
         useUpdateMutation: useSectorUpdateMutation,
         useRemoveMutation: useSectorRemoveMutation,
     },
-
+    SectorClusters: {
+        useAddSectorToCluster: useAddSectorToClusterMutation,
+        useAvailableLinkedSectors: useGetAvailableLinkedSectorsQuery,
+        useClusterSectors: useGetClusterSectorsQuery,
+        useAddSectorQuestion: useAddSectorQuestionMutation,
+        useUpdateSectorQuestion: useUpdateSectorQuestionMutation,
+        useSectorClusterQuestions: useGetSectorClusterQuestionsQuery,
+        useUpdateRequirements: useUpdateRequirementsMutation,
+        useSupervisorRequirements: useGetSupervisorRequirementsQuery,
+    },
     Courses: {
         useListQuery: useCoursesQuery,
         useDetailQuery: useCourseDetailQuery,

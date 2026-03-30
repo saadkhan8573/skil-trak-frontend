@@ -76,6 +76,7 @@ interface RichTextEditorProps {
     placeholder?: string
     className?: string
     height?: string
+    showHtmlToggle?: boolean
 }
 
 export const RichTextEditor = ({
@@ -85,8 +86,10 @@ export const RichTextEditor = ({
     placeholder,
     className,
     height,
+    showHtmlToggle = false,
 }: RichTextEditorProps) => {
     const [isMounted, setIsMounted] = useState(false)
+    const [viewMode, setViewMode] = useState<'visual' | 'html'>('visual')
 
     useEffect(() => {
         setIsMounted(true)
@@ -125,16 +128,53 @@ export const RichTextEditor = ({
 
     return (
         <div className={`w-full ${className || ''}`}>
-            {label && (
-                <div className="mb-2">
+            <div className="flex justify-between items-center mb-2">
+                {label ? (
                     <Typography variant={'label'}>{label}</Typography>
-                </div>
-            )}
+                ) : (
+                    <div />
+                )}
+                {showHtmlToggle && (
+                    <div className="flex bg-gray-100 p-0.5 rounded border border-gray-200">
+                        <button
+                            type="button"
+                            onClick={() => setViewMode('visual')}
+                            className={`text-xs px-3 py-1 rounded transition-colors ${
+                                viewMode === 'visual'
+                                    ? 'bg-white shadow-sm text-primary font-medium'
+                                    : 'text-gray-500 hover:text-gray-700'
+                            }`}
+                        >
+                            Visual
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setViewMode('html')}
+                            className={`text-xs px-3 py-1 rounded transition-colors ${
+                                viewMode === 'html'
+                                    ? 'bg-white shadow-sm text-primary font-medium'
+                                    : 'text-gray-500 hover:text-gray-700'
+                            }`}
+                        >
+                            Text (HTML)
+                        </button>
+                    </div>
+                )}
+            </div>
 
             <div
-                className={`border rounded-md overflow-hidden bg-white ${height ? height : 'min-h-50 max-h-125'} flex flex-col border-gray-300`}
+                className={`border rounded-md overflow-hidden bg-white ${
+                    height ? height : 'min-h-50 max-h-125'
+                } flex flex-col border-gray-300 relative`}
             >
-                <LexicalComposer initialConfig={initialConfig}>
+                <div
+                    className={
+                        viewMode === 'visual'
+                            ? 'flex flex-col flex-1 h-full min-h-0'
+                            : 'hidden'
+                    }
+                >
+                    <LexicalComposer initialConfig={initialConfig}>
                     <Toolbar />
                     <div className="relative flex-1 overflow-auto">
                         <RichTextPlugin
@@ -162,6 +202,17 @@ export const RichTextEditor = ({
                         <InitialValuePlugin value={value} />
                     </div>
                 </LexicalComposer>
+                </div>
+                {viewMode === 'html' && (
+                    <textarea
+                        className="flex-1 w-full h-full min-h-37.5 p-4 font-mono text-sm resize-none outline-none border-t-0"
+                        value={value || ''}
+                        onChange={(e) => {
+                            if (onChange) onChange(e.target.value)
+                        }}
+                        placeholder="<p>Write your HTML here...</p>"
+                    />
+                )}
             </div>
         </div>
     )

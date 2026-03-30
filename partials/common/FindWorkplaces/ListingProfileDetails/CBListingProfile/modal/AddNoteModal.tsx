@@ -6,7 +6,9 @@ import {
     ShowErrorNotifications,
     Typography,
 } from '@components'
+import { DialogHeader, DialogTitle } from '@components/ui/dialog'
 import { yupResolver } from '@hookform/resolvers/yup'
+
 import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { useNotification } from '@hooks'
@@ -60,8 +62,11 @@ export const AddNoteModal = ({ onCloseModal }: any) => {
     return (
         <div className="space-y-6">
             <ShowErrorNotifications result={addNoteResult} />
-            <Typography variant="title">Add note</Typography>
+            <DialogHeader>
+                <DialogTitle>Add note</DialogTitle>
+            </DialogHeader>
             <FormProvider {...methods}>
+
                 <form
                     className="space-y-6"
                     onSubmit={methods.handleSubmit(onSubmit)}

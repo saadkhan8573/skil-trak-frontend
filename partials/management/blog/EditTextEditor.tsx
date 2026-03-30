@@ -18,7 +18,12 @@ import { useNotification } from '@hooks'
 import { adminApi, AdminApi } from '@queries'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useMemo, useRef, useState } from 'react'
-import { FieldValues, FormProvider, useFieldArray, useForm } from 'react-hook-form'
+import {
+    FieldValues,
+    FormProvider,
+    useFieldArray,
+    useForm,
+} from 'react-hook-form'
 import * as yup from 'yup'
 
 interface BlogQuestion {
@@ -59,9 +64,7 @@ const validationSchema = yup.object({
         .of(yup.number().required())
         .min(1, 'Must select at least 1 category')
         .required(),
-    shortDescription: yup
-        .string()
-        .required('Short description is required'),
+    shortDescription: yup.string().required('Short description is required'),
     metaData: yup.string().optional(),
     featuredImage: yup.mixed<any>().nullable().optional(),
     isFeatured: yup.boolean().required(),
@@ -71,7 +74,9 @@ const validationSchema = yup.object({
         .of(
             yup.object({
                 id: yup.number().optional(),
-                question: yup.string().required('FAQ question should not be empty'),
+                question: yup
+                    .string()
+                    .required('FAQ question should not be empty'),
                 answer: yup.string().required('FAQ answer should not be empty'),
             })
         )
@@ -94,10 +99,7 @@ interface TextEditorProps {
     blogData: any
 }
 
-export default function EditTextEditor({
-    blogData,
-    tagIds,
-}: TextEditorProps) {
+export default function EditTextEditor({ blogData, tagIds }: TextEditorProps) {
     const autoUploadingRef = useRef<boolean>(false)
     const editorWrapperRef = useRef<HTMLDivElement | null>(null)
 
@@ -137,7 +139,6 @@ export default function EditTextEditor({
     const handleChecked = () => {
         setIsFeatured(!isFeatured)
     }
-
 
     const formMethods = useForm<FormValues>({
         mode: 'all',
@@ -204,8 +205,8 @@ export default function EditTextEditor({
                 fileObject={
                     coverUrl
                         ? {
-                            type: 'image',
-                        }
+                              type: 'image',
+                          }
                         : fileObject
                 }
             />
@@ -268,8 +269,7 @@ export default function EditTextEditor({
         const featuredImage = data.featuredImage as any
         if (
             !featuredImage ||
-            (typeof featuredImage === 'string' &&
-                featuredImage.trim() === '')
+            (typeof featuredImage === 'string' && featuredImage.trim() === '')
         ) {
             formMethods.setError('featuredImage', {
                 type: 'emptyImage',
@@ -278,7 +278,9 @@ export default function EditTextEditor({
             return
         }
 
-        const imageSizeError = imageSizeErrorMessage(featuredImage?.[0] || featuredImage)
+        const imageSizeError = imageSizeErrorMessage(
+            featuredImage?.[0] || featuredImage
+        )
         if (imageSizeError !== true) {
             formMethods.setError('featuredImage', {
                 type: 'imageSizeError',
@@ -297,7 +299,10 @@ export default function EditTextEditor({
             return
         }
 
-        if (data?.content === '<p><br></p>' || data?.content?.trim() === '<p><br></p>') {
+        if (
+            data?.content === '<p><br></p>' ||
+            data?.content?.trim() === '<p><br></p>'
+        ) {
             formMethods.setError('content', {
                 type: 'emptyContent',
                 message: 'Content is required',
@@ -321,7 +326,7 @@ export default function EditTextEditor({
         }
 
         if (tagIds) {
-            ; (values as any)['tags'] = tagIds
+            ;(values as any)['tags'] = tagIds
         }
 
         const formData = new FormData()
@@ -341,16 +346,16 @@ export default function EditTextEditor({
                         role === UserRoles.ADMIN
                             ? '/portals/admin/blogs?tab=draft&page=1&pageSize=50'
                             : role === UserRoles.MARKETING
-                                ? '/portals/management/blogs?tab=draft&page=1&pageSize=50'
-                                : ''
+                              ? '/portals/management/blogs?tab=draft&page=1&pageSize=50'
+                              : ''
                     )
                 } else if (blogPost === blogPostEnum.SaveAndPublish) {
                     router.push(
                         role === UserRoles.ADMIN
                             ? '/portals/admin/blogs?tab=published&page=1&pageSize=50'
                             : role === UserRoles.MARKETING
-                                ? '/portals/management/blogs?tab=published&page=1&pageSize=50'
-                                : ''
+                              ? '/portals/management/blogs?tab=published&page=1&pageSize=50'
+                              : ''
                     )
                 }
                 setIsPublish(false)
@@ -393,9 +398,11 @@ export default function EditTextEditor({
             <div>
                 <FormProvider {...formMethods}>
                     <form
-                        onSubmit={formMethods.handleSubmit((data: any) =>
-                            onSubmit(data, isPublish, blogPost)
-                        ) as any}
+                        onSubmit={
+                            formMethods.handleSubmit((data: any) =>
+                                onSubmit(data, isPublish, blogPost)
+                            ) as any
+                        }
                     >
                         <FileUpload
                             required
@@ -431,16 +438,18 @@ export default function EditTextEditor({
                             onChange={handleShortDescriptionChange}
                         />
                         <div
-                            className={`${shortDescriptionWordCount > 385
-                                ? 'text-red-500'
-                                : ' text-slate-500'
-                                } text-sm mb-5`}
+                            className={`${
+                                shortDescriptionWordCount > 385
+                                    ? 'text-red-500'
+                                    : ' text-slate-500'
+                            } text-sm mb-5`}
                         >
                             {`${shortDescriptionWordCount} / 385 words`}
                         </div>
                         <InputRichTextEditor
                             name="content"
                             label="Content"
+                            showHtmlToggle
                             placeholder="Type something amazing..."
                         />
                         <div className="mt-4">
@@ -468,8 +477,9 @@ export default function EditTextEditor({
                                             <div className="flex flex-col w-3/4">
                                                 <TextInput
                                                     name={`blogQuestions.${index}.question`}
-                                                    label={`Blog Question ${index + 1
-                                                        } Question`}
+                                                    label={`Blog Question ${
+                                                        index + 1
+                                                    } Question`}
                                                     placeholder="Enter Question"
                                                     defaultValue={item.question}
                                                     required
@@ -479,8 +489,9 @@ export default function EditTextEditor({
                                                 />
                                                 <TextArea
                                                     name={`blogQuestions.${index}.answer`}
-                                                    label={`Blog Question ${index + 1
-                                                        } Answer`}
+                                                    label={`Blog Question ${
+                                                        index + 1
+                                                    } Answer`}
                                                     placeholder="Enter Answer"
                                                     // defaultValue={item.answer}
                                                     required
@@ -493,7 +504,9 @@ export default function EditTextEditor({
                                                 <Button
                                                     text="Remove"
                                                     onClick={() =>
-                                                        handleRemoveBlogQuestion(index)
+                                                        handleRemoveBlogQuestion(
+                                                            index
+                                                        )
                                                     }
                                                     variant="error"
                                                 />
@@ -554,7 +567,7 @@ export default function EditTextEditor({
                         </div>
                     </form>
                 </FormProvider>
-            </div >
+            </div>
         </>
     )
 }

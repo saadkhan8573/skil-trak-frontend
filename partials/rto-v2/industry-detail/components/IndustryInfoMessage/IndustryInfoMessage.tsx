@@ -78,7 +78,8 @@ export const IndustryInfoMessage = ({ industryUserId }: AdminMessageProps) => {
 
     if (infoMessages?.isSuccess && infoMessages?.data) {
         const currentConfig =
-            config[infoMessages?.data?.urgencyLevel as UrgencyLevel] || config[UrgencyLevel.LOW]
+            config[infoMessages?.data?.urgencyLevel as UrgencyLevel] ||
+            config[UrgencyLevel.LOW]
 
         return (
             <div

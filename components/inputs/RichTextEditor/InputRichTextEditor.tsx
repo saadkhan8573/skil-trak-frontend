@@ -23,6 +23,7 @@ interface InputRichTextEditorProps {
     className?: string
     onChange?: (value: any) => void
     height?: string
+    showHtmlToggle?: boolean
 }
 
 export const inputRichTextEditorErrorMessage = (value: unknown): boolean => {
@@ -39,6 +40,7 @@ export const InputRichTextEditor = ({
     onChange,
     showError = true,
     height,
+    showHtmlToggle = false,
 }: InputRichTextEditorProps) => {
     const {
         control,
@@ -63,6 +65,7 @@ export const InputRichTextEditor = ({
                         placeholder={placeholder}
                         className={className}
                         height={height}
+                        showHtmlToggle={showHtmlToggle}
                     />
                 )
                 }

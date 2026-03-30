@@ -17,7 +17,13 @@ import { useNotification } from '@hooks'
 import { adminApi, AdminApi } from '@queries'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useMemo, useRef, useState } from 'react'
-import { FieldValues, FormProvider, useFieldArray, useForm, SubmitHandler } from 'react-hook-form'
+import {
+    FieldValues,
+    FormProvider,
+    useFieldArray,
+    useForm,
+    SubmitHandler,
+} from 'react-hook-form'
 import * as yup from 'yup'
 
 interface BlogQuestion {
@@ -90,10 +96,7 @@ interface TextEditorProps {
     // onSubmit: (values: any) => void
 }
 
-export default function EditTextEditor({
-    blogData,
-    tagIds,
-}: TextEditorProps) {
+export default function EditTextEditor({ blogData, tagIds }: TextEditorProps) {
     const router = useRouter()
 
     const [isPublish, setIsPublish] = useState<boolean>(true)
@@ -132,7 +135,6 @@ export default function EditTextEditor({
         setIsFeatured(!isFeatured)
     }
 
-
     const formMethods = useForm<FormValues>({
         mode: 'all',
         resolver: yupResolver(validationSchema) as any,
@@ -145,9 +147,10 @@ export default function EditTextEditor({
             isFeatured: blogData?.isFeatured || false,
             category: [],
             content: blogData?.content || '',
-            blogQuestions: blogData?.blogQuestions && blogData?.blogQuestions?.length > 0 ? blogData?.blogQuestions : [
-                { question: '', answer: '' },
-            ],
+            blogQuestions:
+                blogData?.blogQuestions && blogData?.blogQuestions?.length > 0
+                    ? blogData?.blogQuestions
+                    : [{ question: '', answer: '' }],
         } as FormValues,
     })
 
@@ -239,8 +242,8 @@ export default function EditTextEditor({
                 fileObject={
                     coverUrl
                         ? {
-                            type: 'image',
-                        }
+                              type: 'image',
+                          }
                         : fileObject
                 }
             />
@@ -324,7 +327,10 @@ export default function EditTextEditor({
             return
         }
 
-        if (data?.content === '<p><br></p>' || data?.content?.trim() === '<p><br></p>') {
+        if (
+            data?.content === '<p><br></p>' ||
+            data?.content?.trim() === '<p><br></p>'
+        ) {
             formMethods.setError('content', {
                 type: 'emptyContent',
                 message: 'Content is required',
@@ -353,7 +359,7 @@ export default function EditTextEditor({
         }
 
         if (tagIds) {
-            ; (values as any)['tags'] = tagIds
+            ;(values as any)['tags'] = tagIds
         }
 
         const formData = new FormData()
@@ -443,10 +449,11 @@ export default function EditTextEditor({
                             onChange={handleShortDescriptionChange}
                         />
                         <div
-                            className={`${shortDescriptionWordCount > 385
-                                ? 'text-red-500'
-                                : ' text-slate-500'
-                                } text-sm mb-5`}
+                            className={`${
+                                shortDescriptionWordCount > 385
+                                    ? 'text-red-500'
+                                    : ' text-slate-500'
+                            } text-sm mb-5`}
                         >
                             {`${shortDescriptionWordCount} / 385 words`}
                         </div>
@@ -464,6 +471,7 @@ export default function EditTextEditor({
                         <InputRichTextEditor
                             name="content"
                             label="Content"
+                            showHtmlToggle
                             placeholder="Type something amazing..."
                         />
                         <div className="mt-4">
@@ -491,8 +499,9 @@ export default function EditTextEditor({
                                             <div className="flex flex-col w-3/4">
                                                 <TextInput
                                                     name={`blogQuestions.${index}.question`}
-                                                    label={`FAQ ${index + 1
-                                                        } Question`}
+                                                    label={`FAQ ${
+                                                        index + 1
+                                                    } Question`}
                                                     placeholder="Enter Question"
                                                     defaultValue={faq.question}
                                                 />
@@ -501,10 +510,11 @@ export default function EditTextEditor({
                                                 />
                                                 <TextArea
                                                     name={`blogQuestions.${index}.answer`}
-                                                    label={`FAQ ${index + 1
-                                                        } Answer`}
+                                                    label={`FAQ ${
+                                                        index + 1
+                                                    } Answer`}
                                                     placeholder="Enter Answer"
-                                                // defaultValue={faq.answer}
+                                                    // defaultValue={faq.answer}
                                                 />
                                                 <InputErrorMessage
                                                     name={'blogQuestions'}

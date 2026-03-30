@@ -60,18 +60,19 @@ export function AnalyticsDashboard() {
         },
         {
             title: 'Capacity',
-            value: `${counts?.totalEnrolledStudents || 0}/${counts?.totalSectorCapacity || 0
-                }`,
+            value: `${counts?.totalEnrolledStudents || 0}/${
+                counts?.totalSectorCapacity || 0
+            }`,
             icon: Layers,
             gradient: 'from-[#0D5468] to-[#044866]',
             trend: 'neutral',
             showBar: true,
             percentage: counts?.totalSectorCapacity
                 ? Math.round(
-                    (counts.totalEnrolledStudents /
-                        counts.totalSectorCapacity) *
-                    100
-                )
+                      (counts.totalEnrolledStudents /
+                          counts.totalSectorCapacity) *
+                          100
+                  )
                 : 0,
             color: '#0D5468',
             targetTab: 'courses',
@@ -91,8 +92,9 @@ export function AnalyticsDashboard() {
             title: 'Rating',
             value: overAllRating?.data?.averageRating || 0,
             change: overAllRating?.data?.totalFeedbacks || '0',
-            changeText: `${(Number(overAllRating?.data?.averageRating) / 5) * 100
-                }% positive`,
+            changeText: `${
+                (Number(overAllRating?.data?.averageRating) / 5) * 100
+            }% positive`,
             icon: Star,
             gradient: 'from-[#F7A619] to-[#F59E0B]',
             trend: 'up',
@@ -132,7 +134,8 @@ export function AnalyticsDashboard() {
                                     dispatch(
                                         setNavigationTarget({
                                             tab: (card as any).targetTab,
-                                            section: (card as any).targetSection,
+                                            section: (card as any)
+                                                .targetSection,
                                         })
                                     )
                                 }

@@ -183,7 +183,7 @@ export function TeamMembersModal({
                                         {teamName} Members
                                     </span>
                                     <div className="flex items-center gap-2 mt-0.5">
-                                        <span className="text-[10px] text-white/60 font-medium">
+                                        <span className="text-[11px] text-white/60 font-medium">
                                             Manage ticket assignment permissions
                                         </span>
                                         <span className="text-[9px] font-bold text-white bg-white/20 px-1.5 py-0.5 rounded-md border border-white/10">

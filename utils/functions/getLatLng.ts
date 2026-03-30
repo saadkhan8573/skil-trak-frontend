@@ -20,9 +20,13 @@ export const getAddressData = async (value: string) => {
     const stateComponent = addressComponents.find((component: any) =>
         component.types.includes('administrative_area_level_1')
     )
+    const countryComponent = addressComponents.find((component: any) =>
+        component.types.includes('country')
+    )
     return {
         state: stateComponent?.long_name,
         stateCode: stateComponent?.short_name,
+        country: countryComponent?.long_name,
     }
 }
 

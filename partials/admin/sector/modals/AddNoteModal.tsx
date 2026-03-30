@@ -5,7 +5,7 @@ import { AdminApi } from '@queries'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 import { Sector } from '@types'
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from 'uuid'
 import { useEffect } from 'react'
 
 export interface SectorNoteType {

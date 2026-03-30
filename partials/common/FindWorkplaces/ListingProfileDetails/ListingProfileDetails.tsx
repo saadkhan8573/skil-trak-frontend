@@ -129,8 +129,8 @@ export const ListingProfileDetails = ({
         >
             {/* Premium Hero Identity Section */}
             <div className="relative overflow-hidden bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-50/50 to-transparent rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none" />
-                <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-green-50/30 to-transparent rounded-full -ml-10 -mb-10 blur-2xl pointer-events-none" />
+                <div className="absolute top-0 right-0 w-64 h-64 bg-linear-to-br from-blue-50/50 to-transparent rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-linear-to-tr from-green-50/30 to-transparent rounded-full -ml-10 -mb-10 blur-2xl pointer-events-none" />
 
                 <div className="relative flex flex-col md:flex-row items-center md:items-end justify-between gap-2">
                     <div className="flex flex-col md:flex-row items-center md:items-center gap-6 max-w-2xl">
@@ -181,13 +181,13 @@ export const ListingProfileDetails = ({
                         <Button
                             variant="info"
                             text="Edit Profile"
-                            className="flex-shrink-0"
+                            className="shrink-0"
                             Icon={Edit3}
                             onClick={onEditIndustry}
                         />
                         <Button
                             variant="info"
-                            className="flex-shrink-0"
+                            className="shrink-0"
                             text="Compose Mail"
                             Icon={Send}
                             onClick={() => setIsComposeMail(true)}
@@ -205,7 +205,7 @@ export const ListingProfileDetails = ({
                             <Typography
                                 variant="label"
                                 semibold
-                                className="mb-6 block flex items-center gap-2 text-blue-600"
+                                className="mb-6 flex items-center gap-2 text-blue-600"
                             >
                                 <ShieldCheck className="w-4 h-4" />
                                 Industry Identity
@@ -303,7 +303,7 @@ export const ListingProfileDetails = ({
                         <Typography
                             variant="label"
                             semibold
-                            className="text-white mb-8 block relative z-10 flex items-center gap-2"
+                            className="text-white mb-8 relative z-10 flex items-center gap-2"
                         >
                             <UserPlus className="w-4 h-4" />
                             Primary Contact
@@ -422,7 +422,7 @@ export const ListingProfileDetails = ({
                             </div>
                         </Card>
 
-                        <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 shadow-sm flex items-center gap-4">
+                        <div className="p-6 rounded-2xl bg-linear-to-br from-blue-50 to-indigo-50 border border-blue-100 shadow-sm flex items-center gap-4">
                             <div className="p-3 rounded-xl bg-white shadow-sm text-blue-600">
                                 <ShieldCheck className="w-6 h-6" />
                             </div>
@@ -456,7 +456,7 @@ export const ListingProfileDetails = ({
                             damping: 25,
                             stiffness: 200,
                         }}
-                        className="fixed bottom-4 right-4 z-[333] w-full max-w-lg"
+                        className="fixed bottom-4 right-4 z-333 w-full max-w-lg"
                     >
                         <div className="bg-white shadow-[0_20px_50px_rgba(0,0,0,0.15)] rounded-2xl border border-gray-100 overflow-hidden">
                             <ComposeListingIndustryMail

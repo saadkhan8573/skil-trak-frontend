@@ -18,7 +18,12 @@ import { useNotification } from '@hooks'
 import { AdminApi, adminApi } from '@queries'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { FieldValues, FormProvider, useFieldArray, useForm } from 'react-hook-form'
+import {
+    FieldValues,
+    FormProvider,
+    useFieldArray,
+    useForm,
+} from 'react-hook-form'
 import * as yup from 'yup'
 
 interface BlogQuestion {
@@ -124,7 +129,6 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
         setIsFeatured(!isFeatured)
     }
 
-
     const formMethods = useForm<FormValues>({
         mode: 'all',
         resolver: yupResolver(validationSchema) as any,
@@ -161,7 +165,10 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
 
         // const content = quillRef.current.getEditor().root.innerHTML
         const featuredImage = data.featuredImage as any
-        if (!featuredImage || (featuredImage instanceof FileList && !featuredImage[0])) {
+        if (
+            !featuredImage ||
+            (featuredImage instanceof FileList && !featuredImage[0])
+        ) {
             formMethods.setError('featuredImage', {
                 type: 'emptyImage',
                 message: 'Image must not be empty',
@@ -178,14 +185,19 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
             })
             return
         }
-        if (imageSizeErrorMessage(featuredImage?.[0] || featuredImage) !== true) {
+        if (
+            imageSizeErrorMessage(featuredImage?.[0] || featuredImage) !== true
+        ) {
             formMethods.setError('featuredImage', {
                 type: 'imageSizeError',
                 message: 'Image size must be less than 5MB',
             })
             return
         }
-        if (data?.content === '<p><br></p>' || data?.content?.trim() === '<p><br></p>') {
+        if (
+            data?.content === '<p><br></p>' ||
+            data?.content?.trim() === '<p><br></p>'
+        ) {
             formMethods.setError('content', {
                 type: 'emptyContent',
                 message: 'Content is required',
@@ -206,7 +218,10 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
             .then(() => {
                 // If the validation passes, proceed with form submission
                 const formData = new FormData()
-                formData.append('featuredImage', (featuredImage as any)?.[0] || featuredImage)
+                formData.append(
+                    'featuredImage',
+                    (featuredImage as any)?.[0] || featuredImage
+                )
                 formData.append('title', data?.title)
                 formData.append('metaData', data?.metaData || '')
                 formData.append('content', data?.content)
@@ -216,10 +231,11 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                 formData.append('category', data?.category as any)
                 formData.append('author', data?.author)
                 formData.append('shortDescription', data?.shortDescription)
-                const filteredBlogQuestions = data?.blogQuestions?.filter(
-                    (q: any) =>
-                        q.question.trim() !== '' || q.answer.trim() !== ''
-                ) || []
+                const filteredBlogQuestions =
+                    data?.blogQuestions?.filter(
+                        (q: any) =>
+                            q.question.trim() !== '' || q.answer.trim() !== ''
+                    ) || []
                 formData.append(
                     'blogQuestions',
                     JSON.stringify(filteredBlogQuestions)
@@ -296,9 +312,11 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
             )}
             <FormProvider {...formMethods}>
                 <form
-                    onSubmit={formMethods.handleSubmit((data: any) =>
-                        onSubmit(data, isPublish, blogPost)
-                    ) as any}
+                    onSubmit={
+                        formMethods.handleSubmit((data: any) =>
+                            onSubmit(data, isPublish, blogPost)
+                        ) as any
+                    }
                 >
                     <FileUpload
                         required
@@ -331,10 +349,11 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                         onChange={handleShortDescriptionChange}
                     />
                     <div
-                        className={`${shortDescriptionWordCount > 385
-                            ? 'text-red-500'
-                            : ' text-slate-500'
-                            } text-sm mb-5`}
+                        className={`${
+                            shortDescriptionWordCount > 385
+                                ? 'text-red-500'
+                                : ' text-slate-500'
+                        } text-sm mb-5`}
                     >
                         {`${shortDescriptionWordCount} / 385 words`}
                     </div>
@@ -349,6 +368,7 @@ export default function TextEditor({ tagIds }: TextEditorProps) {
                     <InputRichTextEditor
                         name="content"
                         label="Content"
+                        showHtmlToggle
                         placeholder="Type something amazing..."
                     />
                     <div className="mt-4">

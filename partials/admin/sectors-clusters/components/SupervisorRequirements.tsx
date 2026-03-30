@@ -36,7 +36,10 @@ export const SupervisorRequirements = () => {
                     sector
                 </Typography>
             </div>
-
+            <SectorSupervisorRequirementsModal
+                requirements={actualData?.supervisorRequirements}
+                jobTitles={actualData?.acceptableJobTitles}
+            />
             {isLoading ? (
                 <div className="flex justify-center items-center py-10">
                     <PulseLoader color="#2563eb" size={10} margin={4} />
@@ -47,11 +50,6 @@ export const SupervisorRequirements = () => {
                 <NoData text="No requirements or job titles found for this sector." />
             ) : (
                 <div className="space-y-6">
-                    <SectorSupervisorRequirementsModal
-                        requirements={actualData?.supervisorRequirements}
-                        jobTitles={actualData?.acceptableJobTitles}
-                    />
-
                     <div className="space-y-4 mt-4">
                         {/* Requirements Section */}
                         {actualData?.supervisorRequirements &&

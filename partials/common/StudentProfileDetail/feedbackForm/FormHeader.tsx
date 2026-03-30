@@ -18,11 +18,11 @@ export const FormHeader: React.FC<FormHeaderProps> = ({
     return (
         <div className="text-center space-y-6">
             <div className="relative">
-                <div className="bg-gradient-to-br from-primaryNew via-[#0d5468] to-[#f7a619] text-white p-8 rounded-3xl shadow-2xl backdrop-blur-sm">
-                    <h1 className="!text-white mb-3">
+                <div className="bg-linear-to-br from-primaryNew via-[#0d5468] to-[#f7a619] text-white p-8 rounded-3xl shadow-2xl backdrop-blur-sm">
+                    <h1 className="text-white! mb-3">
                         Student Placement Feedback Form
                     </h1>
-                    <p className="!text-white text-lg">
+                    <p className="text-white! text-lg">
                         Step {currentStep + 1} of {totalSteps}: Your feedback
                         shapes the future of student placements ✨
                     </p>
@@ -53,7 +53,7 @@ export const FormHeader: React.FC<FormHeaderProps> = ({
                     </div>
                     <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
                         <div
-                            className="h-3 bg-gradient-to-r from-primaryNew via-[#0d5468] to-[#f7a619] transition-all duration-500"
+                            className="h-3 bg-linear-to-r from-primaryNew via-[#0d5468] to-[#f7a619] transition-all duration-500"
                             style={{ width: `${progressPercentage}%` }}
                         />
                     </div>

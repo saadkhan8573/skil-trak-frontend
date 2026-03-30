@@ -30,11 +30,17 @@ export function WaitingForRtoStudents() {
             {workplaces?.isLoading || workplaces?.isFetching ? (
                 <StudentsTabSkeleton />
             ) : workplaces?.isSuccess &&
-                workplaces?.data &&
-                workplaces?.data?.length > 0 ? (
+              workplaces?.data &&
+              workplaces?.data?.length > 0 ? (
                 <>
                     {workplaces?.data?.map((workplace) => (
-                        <StudentCard key={workplace.id} student={{ ...workplace?.student!, workplace: [workplace?.workplaceRequest] }} />
+                        <StudentCard
+                            key={workplace.id}
+                            student={{
+                                ...workplace?.student!,
+                                workplace: [workplace?.workplaceRequest],
+                            }}
+                        />
                     ))}
                 </>
             ) : workplaces?.isSuccess ? (

@@ -1,7 +1,12 @@
-import { Activity, useState } from 'react'
-import { Collapsible, CollapsibleContent } from '@components/ui/collapsible'
 import { Card } from '@components'
+import { Collapsible, CollapsibleContent } from '@components/ui/collapsible'
 import { IWorkplaceIndustries } from '@redux/queryTypes'
+import {
+    checkJsxVisibility,
+    getUserCredentials,
+    WorkplaceCurrentStatus,
+} from '@utils'
+import { Activity, useState } from 'react'
 import {
     CourseProgress,
     HighlightedTasks,
@@ -10,11 +15,6 @@ import {
     WorkplaceBio,
     WorkplaceTypes,
 } from './index'
-import {
-    checkJsxVisibility,
-    getUserCredentials,
-    WorkplaceCurrentStatus,
-} from '@utils'
 import { WorkplaceCancellationBanner } from './WorkplaceCancellationBanner'
 import { WorkplaceTerminationBanner } from './WorkplaceTerminationBanner'
 import { WpIndustryRejectedBanner } from './WpIndustryRejectedBanner'
@@ -30,7 +30,8 @@ export const WorkplaceOverviewCard = ({
     index,
     setAddNewWorkplace,
 }: WorkplaceOverviewCardProps) => {
-    const role = getUserCredentials()?.role
+    const creds = getUserCredentials()
+    const role = creds?.role
 
     // Local state for toggling sections inside this specific card
     const [showWorkplaceTypes, setShowWorkplaceTypes] = useState(false)

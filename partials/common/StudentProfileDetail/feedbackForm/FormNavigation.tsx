@@ -31,7 +31,7 @@ export const FormNavigation: React.FC<FormNavigationProps> = ({
                 // variant="outline"
                 onClick={onPrevious}
                 disabled={isFirstStep}
-                className="group border-2 border-primaryNew/30 text-primaryNew hover:bg-primaryNew hover:text-white disabled:opacity-50 disabled:cursor-not-allowed px-6 py-3 text-base flex items-center rounded-md"
+                className="group border-2 border-primaryNew/30 text-primaryNew hover:bg-primaryNew hover:text-white disabled:opacity-50 disabled:cursor-not-allowed px-6 py-3 flex items-center rounded-md"
             >
                 <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
                 Previous
@@ -44,8 +44,8 @@ export const FormNavigation: React.FC<FormNavigationProps> = ({
                     type="button"
                     onClick={onSubmit}
                     disabled={resultPlacementFeedback.isLoading}
-                    className="group bg-gradient-to-r from-[#f7a619] to-primaryNew hover:from-[#f7a619]/90 hover:to-primaryNew/90 
-               text-white px-8 py-3 text-base shadow-lg hover:shadow-2xl transition-all 
+                    className="group bg-linear-to-r from-[#f7a619] to-primaryNew hover:from-[#f7a619]/90 hover:to-primaryNew/90 
+               text-white px-8 py-3 shadow-lg hover:shadow-2xl transition-all 
                disabled:opacity-70 disabled:cursor-not-allowed 
                flex items-center justify-center rounded-md"
                 >
@@ -65,7 +65,7 @@ export const FormNavigation: React.FC<FormNavigationProps> = ({
                 <button
                     type="button"
                     onClick={onNext}
-                    className="group bg-gradient-to-r from-primaryNew to-[#0d5468] hover:from-primaryNew/90 hover:to-[#0d5468]/90 text-white px-6 py-3 text-base shadow-lg hover:shadow-xl transition-all flex rounded-md"
+                    className="group bg-linear-to-r from-primaryNew to-[#0d5468] hover:from-primaryNew/90 hover:to-[#0d5468]/90 text-white px-6 py-3 shadow-lg hover:shadow-xl transition-all flex rounded-md"
                 >
                     Next
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />

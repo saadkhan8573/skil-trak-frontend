@@ -34,12 +34,16 @@ export const CancelledStatus = ({ reason, title }: ICancelledStatusProps) => (
                         longer active. Please contact your supervisor or RTO
                         administrator for further details.
                     </p>
-                    <div className="mt-3 p-3 bg-white/60 rounded-lg border border-red-200">
-                        <p className="text-red-800 text-xs font-medium">
-                            Reason:
-                        </p>
-                        <p className="text-red-700 text-sm mt-1">{reason}</p>
-                    </div>
+                    {reason && (
+                        <div className="mt-3 p-3 bg-white/60 rounded-lg border border-red-200">
+                            <p className="text-red-800 text-xs font-medium">
+                                Reason:
+                            </p>
+                            <p className="text-red-700 text-sm mt-1">
+                                {reason}
+                            </p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

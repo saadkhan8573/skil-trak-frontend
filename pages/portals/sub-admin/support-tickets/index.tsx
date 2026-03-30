@@ -3,11 +3,7 @@ import { TicketDashboard } from '@partials/common'
 import { ReactElement } from 'react'
 
 const TicketsPage = () => {
-    return (
-        <div>
-            <TicketDashboard />
-        </div>
-    )
+    return <TicketDashboard />
 }
 
 TicketsPage.getLayout = (page: ReactElement) => {

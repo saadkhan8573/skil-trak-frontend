@@ -86,7 +86,7 @@ export const WorkplaceTypeModal = ({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px] !max-w-lg w-full p-0 bg-white border border-border shadow-premium-lg">
+            <DialogContent className="sm:max-w-[425px] max-w-lg! w-full p-0 bg-white border border-border shadow-premium-lg [&>button]:text-white">
                 {currentType?.isLoading || currentType?.isFetching ? (
                     <div className="w-full">
                         <div className="px-6 py-4 bg-primaryNew/10 border-b border-border/50 rounded-t-lg">
@@ -126,29 +126,48 @@ export const WorkplaceTypeModal = ({
                                 result={{ isError, error } as any}
                             />
 
+                            {!isLoadingList &&
+                                !currentType?.data &&
+                                (!wpTypes || wpTypes.length === 0) && (
+                                    <div className="p-4 bg-amber-50 rounded-lg border border-amber-200">
+                                        <p className="text-sm text-amber-800 leading-relaxed">
+                                            No workplace types are currently
+                                            available. Please ensure that the
+                                            relevant courses are approved before
+                                            assigning workplace types to the
+                                            industry. Workplace types are
+                                            dependent on approved courses.
+                                        </p>
+                                    </div>
+                                )}
+
                             <div className="space-y-2">
-                                <Select
-                                    onlyValue
-                                    name="wpType"
-                                    value={selectedType}
-                                    label="Select Workplace Type"
-                                    options={wpTypesOptions || []}
-                                    onChange={(val: any) =>
-                                        setSelectedType(val)
-                                    }
-                                    loading={
-                                        isLoadingList || currentType?.isLoading
-                                    }
-                                    disabled={
-                                        isLoadingList || currentType?.isLoading
-                                    }
-                                    className="w-full"
-                                    placeholder="Select Type..."
-                                    showError={false}
-                                />
+                                {wpTypes && wpTypes.length > 0 && (
+                                    <Select
+                                        onlyValue
+                                        name="wpType"
+                                        value={selectedType}
+                                        label="Select Workplace Type"
+                                        options={wpTypesOptions || []}
+                                        onChange={(val: any) =>
+                                            setSelectedType(val)
+                                        }
+                                        loading={
+                                            isLoadingList ||
+                                            currentType?.isLoading
+                                        }
+                                        disabled={
+                                            isLoadingList ||
+                                            currentType?.isLoading
+                                        }
+                                        className="w-full"
+                                        placeholder="Select Type..."
+                                        showError={false}
+                                    />
+                                )}
                                 {currentType?.data &&
                                     currentType?.isSuccess && (
-                                        <div className="flex items-center gap-2">
+                                        <div className="flex items-center gap-2 py-4">
                                             <p className="text-[0.8rem] text-muted-foreground">
                                                 Current Type:{' '}
                                                 <span className="font-medium text-slate-700">
@@ -170,26 +189,30 @@ export const WorkplaceTypeModal = ({
                             </div>
                         </div>
 
-                        <DialogFooter className="px-6 py-4 !bg-slate-100 border-t border-border/50 flex-col sm:flex-row gap-2 rounded-b-lg justify-between">
-                            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                                <Button
-                                    variant="secondary"
-                                    onClick={() => onOpenChange(false)}
-                                    className="w-full sm:w-auto text-slate-600 hover:text-slate-800 hover:bg-slate-200/50"
-                                    text="Cancel"
-                                />
-                                <Button
-                                    variant="primaryNew"
-                                    onClick={handleSave}
-                                    disabled={
-                                        isSaving || isLoadingList || isDeleting
-                                    }
-                                    loading={isSaving}
-                                    text="Save Changes"
-                                    className="w-full sm:w-auto"
-                                />
-                            </div>
-                        </DialogFooter>
+                        {wpTypes && wpTypes.length > 0 && (
+                            <DialogFooter className="px-6 py-4 bg-slate-100! border-t border-border/50 flex-col sm:flex-row gap-2 rounded-b-lg justify-between">
+                                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                                    <Button
+                                        variant="secondary"
+                                        onClick={() => onOpenChange(false)}
+                                        className="w-full sm:w-auto text-slate-600 hover:text-slate-800 hover:bg-slate-200/50"
+                                        text="Cancel"
+                                    />
+                                    <Button
+                                        variant="primaryNew"
+                                        onClick={handleSave}
+                                        disabled={
+                                            isSaving ||
+                                            isLoadingList ||
+                                            isDeleting
+                                        }
+                                        loading={isSaving}
+                                        text="Save Changes"
+                                        className="w-full sm:w-auto"
+                                    />
+                                </div>
+                            </DialogFooter>
+                        )}
                     </>
                 )}
             </DialogContent>

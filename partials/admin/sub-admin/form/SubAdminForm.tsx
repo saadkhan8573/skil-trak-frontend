@@ -199,49 +199,6 @@ export const SubAdminForm = ({
                         validationIcons
                         required
                     />
-                    <AuthorizedUserComponent roles={[UserRoles.SUBADMIN]}>
-                        <Select
-                            label={'RTOs'}
-                            name={'rtos'}
-                            options={rtosOptions}
-                            value={rtosOptions?.filter((rto: OptionType) =>
-                                selectedRtos?.includes(rto?.value as number)
-                            )}
-                            onChange={(e: number[]) => {
-                                setSelectedRtos(e)
-                            }}
-                            multi
-                            validationIcons
-                            onlyValue
-                        />
-                        <Select
-                            label={'Sector'}
-                            value={selectedSector}
-                            name={'sectors'}
-                            options={sectorOptions}
-                            placeholder={'Select Sectors...'}
-                            multi
-                            loading={sectorLoading}
-                            disabled={sectorLoading}
-                            onChange={onSectorChanged}
-                            validationIcons
-                        />
-                        <Select
-                            label={'Courses'}
-                            name={'courses'}
-                            value={courseValues}
-                            defaultValue={courseOptions}
-                            options={courseOptions}
-                            multi
-                            loading={courseLoading}
-                            onChange={(e: any) => {
-                                onCourseChange(e)
-                            }}
-                            disabled={courseOptions.length === 0}
-                            validationIcons
-                            onlyValue
-                        />
-                    </AuthorizedUserComponent>
 
                     <AuthorizedUserComponent
                         roles={[UserRoles.ADMIN, UserRoles.SUBADMIN]}

@@ -41,6 +41,7 @@ const adminTagTypes = [
     'AutoAssignWorkplace',
     'Industry-Course-Program',
     'StudentForecast',
+    'SectorClusters'
 ]
 
 const subadminTagTypes = [

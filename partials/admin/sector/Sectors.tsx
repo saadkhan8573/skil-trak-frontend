@@ -23,6 +23,7 @@ import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
 import { SectorViewCB } from './contextBar'
 import { AddNoteModal, DeleteModal, ViewNoteModal } from './modals'
+import { AiOutlineCluster } from 'react-icons/ai'
 
 const filterKeys = ['code', 'name']
 
@@ -86,6 +87,13 @@ export const Sectors = () => {
                 router.push(`/portals/admin/sectors/form/${item.id}`)
             },
             Icon: FaEdit,
+        },
+        {
+            text: 'Cluster',
+            onClick: (item: any) => {
+                router.push(`/portals/admin/sectors/cluster/${item.id}`)
+            },
+            Icon: AiOutlineCluster,
         },
         {
             text: 'Delete',

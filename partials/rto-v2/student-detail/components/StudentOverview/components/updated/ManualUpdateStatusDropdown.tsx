@@ -72,8 +72,10 @@ export function ManualUpdateStatusDropdown({
                             Icon={Search}
                             className="bg-linear-to-r from-[#044866] to-[#0D5468] text-white px-2 py-0.5 shadow-lg shadow-[#044866]/30 group-hover:scale-105 transition-all text-xs flex items-center gap-1.5 pr-1"
                         >
-                            {WorkplaceStatusLabels[currentStatus]}
-                            <ChevronDown className="w-3 h-3 text-white/70 group-hover:text-white transition-colors" />
+                            <div className="flex items-center gap-1">
+                                {WorkplaceStatusLabels[currentStatus]}
+                                <ChevronDown className="w-3 h-3 text-white/70 group-hover:text-white transition-colors" />
+                            </div>
                         </Badge>
                     </div>
                 </PopoverTrigger>

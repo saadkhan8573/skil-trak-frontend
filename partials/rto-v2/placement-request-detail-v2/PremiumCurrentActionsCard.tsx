@@ -11,6 +11,8 @@ export const PremiumCurrentActionsCard = (props: IStatusActionsProps) => {
 
     const onCancelModal = () => setModal(null)
 
+    console.log({ props })
+
     const renderStatusActions = () => {
         return (
             <StatusActionsRenderer

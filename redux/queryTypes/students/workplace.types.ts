@@ -144,7 +144,7 @@ export interface IWorkplaceIndustries {
     haveDrivingLicense?: boolean
     haveTransport?: boolean
     isLogBookReleased?: boolean
-    studentFeedBack?: any
+    studentFeedBacks?: any
     id?: number
     isActive?: boolean
     isCancelled?: boolean

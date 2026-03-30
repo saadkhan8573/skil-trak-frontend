@@ -2,12 +2,23 @@ import { RtoV2Api } from '@redux'
 import { useAppSelector } from '@redux/hooks'
 import { EmptyData, PageSize, Pagination, TechnicalError } from '@components'
 import { StudentsTabSkeleton } from '../../../skeletonLoader'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import { CancelledStudentCard } from './CancelledStudentCard'
 
 export function CancelledStudentsList() {
     const [itemPerPage, setItemPerPage] = useState(20)
     const [page, setPage] = useState(1)
+    const router = useRouter()
+
+    useEffect(() => {
+        if (router.query.pageSize) {
+            setItemPerPage(Number(router.query.pageSize))
+        }
+        if (router.query.page) {
+            setPage(Number(router.query.page))
+        }
+    }, [router.query.pageSize, router.query.page])
 
     const industry = useAppSelector((state) => state.industry)
     const workplaceCancelledStudents = RtoV2Api.Industries.getIndustryCancelledStudents(

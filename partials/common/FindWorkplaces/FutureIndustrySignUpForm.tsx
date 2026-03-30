@@ -293,15 +293,6 @@ export const FutureIndustrySignUpForm = ({
     }
 
     const handleConfirmABN = () => {
-        if (abnData) {
-            formMethods.setValue(
-                'name',
-                abnData.legalName || abnData.businessName
-            )
-            if (abnData.area || abnData.address) {
-                formMethods.setValue('addressLine1', abnData.area || abnData.address)
-            }
-        }
         setAbnConfirmed(true)
         setShowAbnDialog(false)
         formMethods.handleSubmit(onHandleSubmit)

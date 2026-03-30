@@ -95,9 +95,6 @@ export const StatusActionsRenderer = ({
         case needsWorkplaceStagesEnum.WAITING_FOR_STUDENT:
             return <WaitingForStudentStatus />
 
-        case needsWorkplaceStagesEnum.Industry_Eligibility_Pending:
-            return <IndustryEligibilityPendingStatus />
-
         case needsWorkplaceStagesEnum.WAITING_FOR_INDUSTRY:
             return <WaitingForIndustryStatus />
 
@@ -153,7 +150,7 @@ export const StatusActionsRenderer = ({
             return <ProvidedWorkplaceRequestStatus />
 
         case providedWorkplaceStagesEnum.INDUSTRY_ELIGIBILITY_PENDING:
-            return <ProvidedIndustryEligibilityStatus />
+            return <ProvidedIndustryEligibilityStatus {...commonProps} />
 
         case providedWorkplaceStagesEnum.AGREEMENT_AND_ELIGIBILITY_PENDING:
             return (

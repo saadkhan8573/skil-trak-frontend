@@ -10,7 +10,10 @@ import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html'
+import { TablePlugin } from '@lexical/react/LexicalTablePlugin'
+import { TableNode, TableCellNode, TableRowNode } from '@lexical/table'
+import {
+    $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html'
 import {
     $getRoot,
     $createParagraphNode,
@@ -61,6 +64,9 @@ const theme = {
         strikethrough: 'line-through',
         underlineStrikethrough: 'underline line-through',
     },
+    table: 'w-full border-collapse border border-gray-300 my-4',
+    tableCell: 'border border-gray-300 p-2 min-w-[75px]',
+    tableCellHeader: 'bg-gray-100 font-bold',
 }
 
 interface RichTextEditorProps {
@@ -100,6 +106,9 @@ export const RichTextEditor = ({
             ListItemNode,
             LinkNode,
             AutoLinkNode,
+            TableNode,
+            TableCellNode,
+            TableRowNode,
         ],
     }
 
@@ -142,6 +151,7 @@ export const RichTextEditor = ({
                         <HistoryPlugin />
                         <ListPlugin />
                         <LinkPlugin />
+                        <TablePlugin />
                         <ImagePlugin />
                         <DragDropPastePlugin />
                         <ExternalImagePlugin />

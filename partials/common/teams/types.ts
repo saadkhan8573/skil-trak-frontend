@@ -203,10 +203,18 @@ export const TICKETS_CONFIG: Record<
     },
 }
 
+export enum TeamMemberRole {
+    MEMBER = 'member',
+    LEAD = 'lead',
+}
+
 export interface BulkUpdateMemberItem {
     memberId: number
     canReceiveTickets: boolean
     ticketTypes: TicketType[]
+    role?: TeamMemberRole
+    assignedRtoOnly?: boolean
+    assignedStudentOnly?: boolean
 }
 
 export interface BulkUpdateMembersRequest {

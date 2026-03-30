@@ -50,11 +50,6 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
     const [abnConfirmed, setAbnConfirmed] = useState(false)
     const [abnError, setAbnError] = useState<any>(null)
 
-    // const [sectorOptions, setSectorOptions] = useState<any>([])
-    // const [selectedSector, setSelectedSector] = useState<any>(null)
-    // const [courseOptions, setCourseOptions] = useState([])
-    // const [courseLoading, setCourseLoading] = useState(false)
-
     const [onSuburbClicked, setOnSuburbClicked] = useState<boolean>(true)
 
     const [storedData, setStoredData] = useState<any>(null)
@@ -79,19 +74,6 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
             }
         }, 300)()
     }
-
-    // const onAbnChange = (e: any) => {
-    //     _debounce(() => {
-    //         // Regex for email, only valid mail should be sent
-    //         const abn = e.target.value
-    //         if (abn) {
-    //             checkAbnExist({ abn })
-    //             setLastEnteredAbn(abn)
-    //         }
-    //     }, 300)()
-    // }
-
-    // ...
 
     const onAbnChange = (e: any) => {
         _debounce(() => {
@@ -259,15 +241,6 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
     }, [selectedSector])
 
     const handleConfirmABN = () => {
-        if (abnData) {
-            formMethods.setValue(
-                'name',
-                abnData.legalName || abnData.businessName
-            )
-            if (abnData.area || abnData.address) {
-                formMethods.setValue('addressLine1', abnData.area || abnData.address)
-            }
-        }
         setAbnConfirmed(true)
         setShowAbnDialog(false)
         formMethods.handleSubmit(onHandleSubmit)()

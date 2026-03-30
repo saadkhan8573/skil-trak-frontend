@@ -92,7 +92,6 @@ export const FeedbackForm = ({
         if (isValid) {
             setCurrentStep((s) => Math.min(totalSteps - 1, s + 1))
         }
-        
     }
 
     const handlePrevious = () => {
@@ -192,10 +191,10 @@ export const FeedbackForm = ({
                 <X className="text-red-400d" size={30} />
             </div>
             <div
-                className={`${styles.customForm} overflow-auto remove-scrollbar h-[32rem] rounded-md`}
+                className={`${styles.customForm} overflow-auto remove-scrollbar h-128 rounded-md`}
                 ref={scrollContainerRef}
             >
-                <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50  relative overflow-hidden">
+                <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50  relative overflow-hidden">
                     <div className="max-w-4xl mx-auto p-6 space-y-8 relative">
                         <FormHeader
                             currentStep={currentStep}

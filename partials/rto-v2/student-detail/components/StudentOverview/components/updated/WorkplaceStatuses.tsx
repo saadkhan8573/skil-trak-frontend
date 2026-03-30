@@ -34,6 +34,19 @@ import { TerminateWorkplaceButton } from './TerminateWorkplaceButton'
 import { CancelWorkplaceButton } from './CancelWorkplaceButton'
 import { ManualUpdateStatusDropdown } from './ManualUpdateStatusDropdown'
 
+import { CoordinatorFeedbackModal } from './CoordinatorFeedbackModal'
+import {
+    AddFeedbackModal,
+    PlacementFeedbackModal,
+    ViewPlacementFeedbackModal,
+} from './modals'
+import { FeedbackButton } from '@partials/common/StudentProfileDetail/feedbackForm/components'
+import { StarRating, ActionButton, Typography } from '@components'
+import { CommonApi } from '@queries'
+import { useAppSelector } from '@redux'
+import { checkJsxVisibility } from '@utils'
+import { useState, Activity } from 'react'
+
 interface WorkplaceStatusesProps {
     workplace: IWorkplaceIndustries
     workIndustry: WorkplaceWorkIndustriesType | undefined
@@ -45,6 +58,26 @@ export function WorkplaceStatuses({
 }: WorkplaceStatusesProps) {
     const wpId = workplace?.id
     const router = useRouter()
+
+    const student = useAppSelector((state) => state.student.studentDetail)
+
+    // Placement feedback eligible courses
+    const courseSchedules = CommonApi.Feedback.useGetCourseSchedules(
+        { userId: student?.user?.id },
+        { skip: !student?.user?.id }
+    )
+    const eligibleCourses =
+        courseSchedules?.data?.courses?.filter(
+            (course: any) => course.message === 'eligible for feedback'
+        ) || []
+
+    const [showFeedbackModal, setShowFeedbackModal] = useState(false)
+    const [showAddFeedbackModal, setShowAddFeedbackModal] = useState(false)
+    const [placementFeedbackCourseId, setPlacementFeedbackCourseId] = useState<
+        string | null
+    >(null)
+    const [showViewPlacementFeedback, setShowViewPlacementFeedback] =
+        useState(false)
 
     const { statuses: localStatuses, progressPercent: localProgressPercent } =
         useStatusInfo({
@@ -126,7 +159,7 @@ export function WorkplaceStatuses({
 
             <div className="relative flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                    {role === UserRoles.ADMIN && false ? (
+                    {role === UserRoles.ADMIN ? (
                         <ManualUpdateStatusDropdown
                             workplaceId={Number(workplace.id)}
                             currentStatus={workplace.currentStatus}
@@ -208,6 +241,100 @@ export function WorkplaceStatuses({
                     </AuthorizedUserComponent>
                 </div>
             </div>
+
+            {/* Feedback Actions Row */}
+            {workplace.id && (
+                <div className="flex items-center gap-x-3 mb-4 px-2 py-1.5 bg-white/60 backdrop-blur-sm rounded-lg border border-slate-200">
+                    {/* Coordinators Feedback Block */}
+                    {workplace?.studentFeedBacks &&
+                    workplace?.studentFeedBacks?.length > 0 ? (
+                        <div className="flex items-center gap-x-2 border-r border-slate-300 pr-3">
+                            <ActionButton
+                                variant={'link'}
+                                onClick={() => setShowFeedbackModal(true)}
+                            >
+                                Coordinators Feedback
+                            </ActionButton>
+                            <div className="flex items-center gap-x-1">
+                                <StarRating
+                                    count={5}
+                                    value={
+                                        workplace?.studentFeedBacks?.[0]?.rating
+                                    }
+                                    edit={false}
+                                />
+                                <Typography
+                                    variant="label"
+                                    className="text-xs text-slate-700"
+                                >
+                                    {workplace?.studentFeedBacks?.[0]?.rating}
+                                </Typography>
+                            </div>
+                        </div>
+                    ) : (
+                        <AuthorizedUserComponent
+                            roles={[UserRoles.ADMIN, UserRoles.SUBADMIN]}
+                        >
+                            <Activity
+                                mode={checkJsxVisibility(
+                                    workplace?.currentStatus ===
+                                        WorkplaceCurrentStatus.AgreementSigned
+                                )}
+                            >
+                                <div className="border-r border-slate-300 pr-3">
+                                    <ActionButton
+                                        variant={'link'}
+                                        onClick={() =>
+                                            setShowAddFeedbackModal(true)
+                                        }
+                                    >
+                                        Add Feedback
+                                    </ActionButton>
+                                </div>
+                            </Activity>
+                        </AuthorizedUserComponent>
+                    )}
+
+                    {/* Placement Feedback Block */}
+                    <div className="flex items-center gap-x-2">
+                        <AuthorizedUserComponent
+                            roles={[UserRoles.ADMIN, UserRoles.SUBADMIN]}
+                        >
+                            <Activity
+                                mode={checkJsxVisibility(
+                                    eligibleCourses?.length > 0
+                                )}
+                            >
+                                <FeedbackButton
+                                    eligibleCourses={eligibleCourses}
+                                    onPlacementFeedback={(courseId) => {
+                                        setPlacementFeedbackCourseId(courseId)
+                                    }}
+                                />
+                            </Activity>
+                        </AuthorizedUserComponent>
+                        <AuthorizedUserComponent
+                            roles={[
+                                UserRoles.ADMIN,
+                                UserRoles.SUBADMIN,
+                                UserRoles.RTO,
+                            ]}
+                        >
+                            {workplace?.studentFeedBacks &&
+                            workplace?.studentFeedBacks?.length > 0 ? (
+                                <ActionButton
+                                    variant={'link'}
+                                    onClick={() =>
+                                        setShowViewPlacementFeedback(true)
+                                    }
+                                >
+                                    View Placement Feedback
+                                </ActionButton>
+                            ) : null}
+                        </AuthorizedUserComponent>
+                    </div>
+                </div>
+            )}
 
             {/* Progress Bar with Steps - Ultra Premium */}
             <div className="relative pb-1">
@@ -341,6 +468,41 @@ export function WorkplaceStatuses({
                     })}
                 </div>
             </div>
+
+            {workplace.id && (
+                <>
+                    <CoordinatorFeedbackModal
+                        wpId={workplace.id}
+                        open={showFeedbackModal}
+                        onOpenChange={setShowFeedbackModal}
+                    />
+                    <AddFeedbackModal
+                        open={showAddFeedbackModal}
+                        onOpenChange={setShowAddFeedbackModal}
+                        wpId={workplace.id}
+                        industryId={workplace?.industries?.[0]?.industry?.id!}
+                        student={student}
+                        course={workplace?.courses?.[0]!}
+                        id={workplace?.industries?.[0]?.id}
+                        isStartPlacement={false}
+                    />
+                    {placementFeedbackCourseId && (
+                        <PlacementFeedbackModal
+                            open={!!placementFeedbackCourseId}
+                            onOpenChange={(open) => {
+                                if (!open) setPlacementFeedbackCourseId(null)
+                            }}
+                            stdUserId={student?.user?.id!}
+                            courseId={placementFeedbackCourseId}
+                        />
+                    )}
+                    <ViewPlacementFeedbackModal
+                        open={showViewPlacementFeedback}
+                        onOpenChange={setShowViewPlacementFeedback}
+                        userId={student?.user?.id!}
+                    />
+                </>
+            )}
         </div>
     )
 }

@@ -8,7 +8,11 @@ import {
 import { ScrollArea } from '@components/ui/scroll-area'
 import { User, Search, Info } from 'lucide-react'
 import { MemberRow } from '../components'
-import { BulkUpdateMemberItem, TicketTypeCategory } from '../types'
+import {
+    BulkUpdateMemberItem,
+    TeamMemberRole,
+    TicketTypeCategory,
+} from '../types'
 import { useNotification } from '@hooks'
 import { CommonApi } from '@redux'
 
@@ -41,6 +45,9 @@ export function TeamMembersModal({
                 id: m.id,
                 name: m.subadmin?.user?.name || 'Unknown',
                 canReceiveTickets: m?.canReceiveTickets || false,
+                role: m?.role || TeamMemberRole.MEMBER,
+                assignedRtoOnly: m?.assignedRtoOnly || false,
+                assignedStudentOnly: m?.assignedStudentOnly || false,
                 ticketTypes: m?.supportedTicketTypes || [],
                 original: m,
             }))
@@ -51,10 +58,25 @@ export function TeamMembersModal({
 
     const handleMemberUpdate = (
         id: string | number,
-        updates: { canReceiveTickets?: boolean; ticketTypes?: string[] }
+        updates: {
+            canReceiveTickets?: boolean
+            ticketTypes?: string[]
+            role?: TeamMemberRole
+            assignedRtoOnly?: boolean
+            assignedStudentOnly?: boolean
+        }
     ) => {
         setLocalMembers((prev) =>
-            prev.map((m) => (m.id === id ? { ...m, ...updates } : m))
+            prev.map((m) => {
+                if (m.id === id) {
+                    return { ...m, ...updates }
+                }
+                // If we're setting a new lead, disable all other leads
+                if (updates.role === TeamMemberRole.LEAD) {
+                    return { ...m, role: TeamMemberRole.MEMBER }
+                }
+                return m
+            })
         )
     }
 
@@ -83,15 +105,29 @@ export function TeamMembersModal({
 
                     const hasAccessChanged =
                         initial.canReceiveTickets !== m.canReceiveTickets
+                    const hasRoleChanged = initial.role !== m.role
+                    const hasRtoOnlyChanged =
+                        initial.assignedRtoOnly !== m.assignedRtoOnly
+                    const hasStudentOnlyChanged =
+                        initial.assignedStudentOnly !== m.assignedStudentOnly
                     const hasTypesChanged =
                         JSON.stringify(initial.ticketTypes) !==
                         JSON.stringify(m.ticketTypes)
 
-                    return hasAccessChanged || hasTypesChanged
+                    return (
+                        hasAccessChanged ||
+                        hasTypesChanged ||
+                        hasRoleChanged ||
+                        hasRtoOnlyChanged ||
+                        hasStudentOnlyChanged
+                    )
                 })
                 .map((m) => ({
                     memberId: m.id,
                     canReceiveTickets: m.canReceiveTickets,
+                    role: m.role,
+                    assignedRtoOnly: m.assignedRtoOnly,
+                    assignedStudentOnly: m.assignedStudentOnly,
                     ticketTypes: m.canReceiveTickets ? m.ticketTypes : [],
                 }))
 
@@ -131,7 +167,7 @@ export function TeamMembersModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-4xl! h-auto max-h-[90vh] p-0 gap-0 overflow-hidden border shadow-2xl rounded-2xl bg-white flex flex-col">
+            <DialogContent className="max-w-5xl! h-auto max-h-[90vh] p-0 gap-0 overflow-hidden border shadow-2xl rounded-2xl bg-white flex flex-col">
                 <div className="bg-primaryNew p-4 space-y-2.5 relative overflow-hidden">
                     {/* Decorative background element */}
                     <div className="absolute top-0 right-0 size-28 bg-white/10 rounded-full -mr-14 -mt-14 blur-2xl" />
@@ -194,6 +230,9 @@ export function TeamMembersModal({
                                     member={m.original}
                                     category={teamCategory}
                                     canReceiveTickets={m.canReceiveTickets}
+                                    role={m.role}
+                                    assignedRtoOnly={m.assignedRtoOnly}
+                                    assignedStudentOnly={m.assignedStudentOnly}
                                     selectedTypes={m.ticketTypes}
                                     onUpdate={(updates) =>
                                         handleMemberUpdate(m.id, updates)

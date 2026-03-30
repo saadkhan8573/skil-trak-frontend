@@ -68,8 +68,6 @@ export const EnhancedIndustryDetailsCard = ({
         fetchLatLng()
     }, [workplace?.preferableLocation])
 
-    console.log({ preferableLatLng })
-
     const { data, isLoading, isError } =
         RtoV2Api.PlacementRequests.useStudentPlacementIndustryDetails(wpId, {
             skip: !wpId,
@@ -110,11 +108,6 @@ export const EnhancedIndustryDetailsCard = ({
         : industry?.distance
 
     const displayDistance = calculatedDistanceValue || 0
-
-    const roundCustom = (value: number) => {
-        const decimal = value % 1
-        return decimal >= 0.7 ? Math.ceil(value) : Math.floor(value)
-    }
 
     const onToggleShowMap = () => {
         setShowMap(!showMap)

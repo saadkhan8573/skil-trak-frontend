@@ -1,9 +1,9 @@
 import { Button } from '@components'
 import { UserRoles } from '@constants'
 import { useAppSelector } from '@redux/hooks'
-import { getUserCredentials } from '@utils'
+import { checkJsxVisibility, getUserCredentials } from '@utils'
 import { User, UserPlus } from 'lucide-react'
-import { useState } from 'react'
+import { Activity, useState } from 'react'
 import { ReassignAgentModal } from './ReassignAgentModal'
 
 export function AssignedAgent() {
@@ -63,8 +63,12 @@ export function AssignedAgent() {
                     </div>
                 </div>
 
-                {(user?.role === UserRoles.ADMIN ||
-                    [78, 4453].includes(user?.id)) && (
+                <Activity
+                    mode={checkJsxVisibility(
+                        user?.role === UserRoles.ADMIN ||
+                            [78, 4453].includes(user?.id)
+                    )}
+                >
                     <div className="flex items-center gap-2">
                         <Button
                             fullWidth
@@ -75,7 +79,7 @@ export function AssignedAgent() {
                             {assignedAgent ? 'Reassign' : 'Assign'}
                         </Button>
                     </div>
-                )}
+                </Activity>
             </div>
 
             {showAssignModal && industryId && (

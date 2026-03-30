@@ -108,6 +108,7 @@ const industryTagTypes = [
 ]
 
 const studentTagTypes = [
+    'Feedback',
     'Workplace',
     'StudentJobs',
     'HighPriority',

@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react'
 import {
-    TicketType,
-    TicketTypeCategory,
+    getTicketTypeLabel,
     TICKETS_CONFIG,
     TICKET_TYPE_GROUPS,
-    getTicketTypeLabel,
+    TicketTypeCategory,
+    TeamMemberRole,
 } from '../types'
 import { InitialAvatar, Switch } from '@components'
 import { cn } from '@utils'
@@ -25,26 +25,35 @@ import {
 interface MemberRowProps {
     member: any
     canReceiveTickets: boolean
+    role: TeamMemberRole
+    assignedRtoOnly: boolean
+    assignedStudentOnly: boolean
     selectedTypes: string[]
     category: TicketTypeCategory
     onUpdate: (updates: {
         canReceiveTickets?: boolean
         ticketTypes?: string[]
+        role?: TeamMemberRole
+        assignedRtoOnly?: boolean
+        assignedStudentOnly?: boolean
     }) => void
 }
 
 export function MemberRow({
     member,
     canReceiveTickets,
+    role = TeamMemberRole.MEMBER,
+    assignedRtoOnly = false,
+    assignedStudentOnly = false,
     selectedTypes,
     category = 'ALL',
     onUpdate,
 }: MemberRowProps) {
-    console.log({ category })
     const [isPanelOpen, setIsPanelOpen] = useState(false)
 
     const name = member.subadmin?.user?.name || 'Unknown Member'
-    const role = member.subadmin?.role?.name || member?.role || 'Team Member'
+    const roleText =
+        member.subadmin?.role?.name || member?.role || 'Team Member'
 
     const handleToggle = (e: any) => {
         const newValue = e.target.checked
@@ -55,6 +64,22 @@ export function MemberRow({
         } else if (!newValue) {
             setIsPanelOpen(false)
         }
+    }
+
+    const handleLeadToggle = (e: any) => {
+        onUpdate({
+            role: e.target.checked
+                ? TeamMemberRole.LEAD
+                : TeamMemberRole.MEMBER,
+        })
+    }
+
+    const handleRtoOnlyToggle = (e: any) => {
+        onUpdate({ assignedRtoOnly: e.target.checked })
+    }
+
+    const handleStudentOnlyToggle = (e: any) => {
+        onUpdate({ assignedStudentOnly: e.target.checked })
     }
 
     const toggleType = (key: string) => {
@@ -108,8 +133,13 @@ export function MemberRow({
                     <p className="text-[13px] font-bold text-slate-800 truncate leading-none">
                         {name}
                     </p>
-                    <p className="text-[10px] font-medium text-slate-400 mt-1">
-                        {role}
+                    <p className="text-[10px] font-medium text-slate-400 mt-1 flex items-center gap-2">
+                        {roleText}
+                        {role === TeamMemberRole.LEAD && (
+                            <span className="bg-amber-100 text-amber-700 text-[10px] px-1.5 py-0 rounded-full font-bold uppercase tracking-wider border border-amber-200">
+                                Lead
+                            </span>
+                        )}
                     </p>
                     {canReceiveTickets && (
                         <div className="flex flex-wrap gap-1 mt-1.5">
@@ -170,10 +200,11 @@ export function MemberRow({
                         </button>
                     )}
 
+                    {/*  */}
                     <div className="flex flex-col items-end gap-1">
                         <span
                             className={cn(
-                                'text-[8px] uppercase tracking-wider font-extrabold',
+                                'text-[9px] uppercase tracking-wider font-extrabold',
                                 canReceiveTickets
                                     ? 'text-emerald-600'
                                     : 'text-slate-400'
@@ -185,6 +216,64 @@ export function MemberRow({
                             name={`canReceiveTickets_${member.id}`}
                             isChecked={canReceiveTickets}
                             onChange={handleToggle}
+                            customStyleClass="profileSwitch"
+                        />
+                    </div>
+
+                    <div className="flex flex-col items-end gap-1">
+                        <span
+                            className={cn(
+                                'text-[9px] uppercase tracking-wider font-extrabold',
+                                assignedRtoOnly
+                                    ? 'text-indigo-600'
+                                    : 'text-slate-400'
+                            )}
+                        >
+                            RTO Only
+                        </span>
+                        <Switch
+                            name={`assignedRtoOnly_${member.id}`}
+                            isChecked={assignedRtoOnly}
+                            onChange={handleRtoOnlyToggle}
+                            customStyleClass="profileSwitch"
+                        />
+                    </div>
+
+                    <div className="flex flex-col items-end gap-1">
+                        <span
+                            className={cn(
+                                'text-[9px] uppercase tracking-wider font-extrabold',
+                                assignedStudentOnly
+                                    ? 'text-purple-600'
+                                    : 'text-slate-400'
+                            )}
+                        >
+                            Student Only
+                        </span>
+                        <Switch
+                            name={`assignedStudentOnly_${member.id}`}
+                            isChecked={assignedStudentOnly}
+                            onChange={handleStudentOnlyToggle}
+                            customStyleClass="profileSwitch"
+                        />
+                    </div>
+
+                    {/*  */}
+                    <div className="flex flex-col items-end gap-1">
+                        <span
+                            className={cn(
+                                'text-[9px] uppercase tracking-wider font-extrabold',
+                                role === TeamMemberRole.LEAD
+                                    ? 'text-amber-600'
+                                    : 'text-slate-400'
+                            )}
+                        >
+                            Lead
+                        </span>
+                        <Switch
+                            name={`role_${member.id}`}
+                            isChecked={role === TeamMemberRole.LEAD}
+                            onChange={handleLeadToggle}
                             customStyleClass="profileSwitch"
                         />
                     </div>

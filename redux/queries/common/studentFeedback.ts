@@ -1,4 +1,5 @@
 import { StudentFeedbackType } from '@partials/common/StudentProfileDetail/components/Workplace/enum'
+import { providesTagsOnSuccess } from '@redux/utils'
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
 
@@ -24,7 +25,11 @@ export const studentFeedbackEndpoints = (
             method: 'POST',
             body,
         }),
-        invalidatesTags: ['Feedback', 'SubAdminWorkplace'],
+        invalidatesTags: providesTagsOnSuccess([
+            'Feedback',
+            'SubAdminWorkplace',
+            'StudentsWorkplace',
+        ]),
     }),
     getStudentCoordinatorFeedback: builder.query<
         any,
@@ -69,7 +74,7 @@ export const studentFeedbackEndpoints = (
                 params: stdUserId ? { stdUserId } : undefined,
                 body,
             }),
-            invalidatesTags: ['Rating'],
+            invalidatesTags: ['Rating', 'StudentsWorkplace'],
         }
     ),
     getPlacementFeedback: builder.query<any, { userId?: number }>({

@@ -425,7 +425,7 @@ export const IndustryProfileFrom = ({
                                     placeholder={'Select Sectors...'}
                                     multi
                                     loading={sectorResponse.isLoading}
-                                    disabled
+                                    disabled={role !== UserRoles.ADMIN}
                                     onChange={onSectorChanged}
                                     validationIcons
                                 />
@@ -438,7 +438,7 @@ export const IndustryProfileFrom = ({
                                     options={courseOptions}
                                     value={courseValues}
                                     multi
-                                    disabled
+                                    disabled={role !== UserRoles.ADMIN}
                                     // disabled={
                                     //     courseOptions?.length === 0 ||
                                     //     role === UserRoles.SUBADMIN

@@ -14,17 +14,17 @@ import { ConfigTabs, TabConfig } from '@components'
 import { Users, Clock, Ban, XCircle, FileCheck } from 'lucide-react'
 import { useState } from 'react'
 
+const AllStudents = () => (
+    <div className="space-y-4">
+        <ListHeader />
+        <CategoryFilters />
+        <StatsOverview />
+        <StudentsList />
+    </div>
+)
+
 export function StudentsPlacementList() {
     const [activeTab, setActiveTab] = useState<string>('all')
-
-    const AllStudents = () => (
-        <div className="space-y-4">
-            <ListHeader />
-            <CategoryFilters />
-            <StatsOverview />
-            <StudentsList />
-        </div>
-    )
 
     const tabs: TabConfig[] = [
         {

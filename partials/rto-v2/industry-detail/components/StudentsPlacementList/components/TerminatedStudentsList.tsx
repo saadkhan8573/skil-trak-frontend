@@ -1,13 +1,24 @@
 import { EmptyData, PageSize, Pagination, TechnicalError } from '@components'
 import { RtoV2Api } from '@redux'
 import { useAppSelector } from '@redux/hooks'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import { StudentsTabSkeleton } from '../../../skeletonLoader'
 import { TerminatedStudentCard } from './TerminatedStudentCard'
 
 export function TerminatedStudentsList() {
     const [itemPerPage, setItemPerPage] = useState(20)
     const [page, setPage] = useState(1)
+    const router = useRouter()
+
+    useEffect(() => {
+        if (router.query.pageSize) {
+            setItemPerPage(Number(router.query.pageSize))
+        }
+        if (router.query.page) {
+            setPage(Number(router.query.page))
+        }
+    }, [router.query.pageSize, router.query.page])
 
     const industry = useAppSelector((state) => state.industry)
     const workplaceTerminatedStudents =

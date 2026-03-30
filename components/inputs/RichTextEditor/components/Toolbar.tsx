@@ -37,6 +37,7 @@ import {
   HeadingTagType,
 } from '@lexical/rich-text';
 import { $isLinkNode, TOGGLE_LINK_COMMAND, LinkNode } from '@lexical/link';
+import { INSERT_TABLE_COMMAND } from '@lexical/table';
 import { $setBlocksType } from '@lexical/selection';
 import {
   Bold,
@@ -53,11 +54,13 @@ import {
   AlignRight,
   ChevronDown,
   Link,
+  Table,
 } from 'lucide-react';
 import { INSERT_IMAGE_COMMAND } from '../plugins/ImagePlugin';
 import { $createImageNode, $isImageNode } from '../nodes/ImageNode';
 import { AdminApi } from '@queries';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip';
+import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover';
 
 const LowPriority = 1;
 
@@ -158,6 +161,90 @@ const BlockOptionsDropdownList = ({
         </button>
       ))}
     </div>
+  );
+};
+
+const InsertTableDropdown = ({ editor }: { editor: any }) => {
+  const [rows, setRows] = useState('3');
+  const [cols, setCols] = useState('3');
+  const [includeHeaders, setIncludeHeaders] = useState(true);
+  const [open, setOpen] = useState(false);
+
+  const insertTable = () => {
+    editor.dispatchCommand(INSERT_TABLE_COMMAND, {
+      columns: cols,
+      rows: rows,
+      includeHeaders: includeHeaders ? { rows: true, columns: false } : false,
+    });
+    setOpen(false);
+  };
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <PopoverTrigger asChild>
+            <button
+              type="button"
+              className={`p-1.5 rounded hover:bg-gray-200 ${open ? 'bg-primary/10 text-primary' : ''}`}
+            >
+              <Table size={18} />
+            </button>
+          </PopoverTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Insert Table</p>
+        </TooltipContent>
+      </Tooltip>
+      <PopoverContent
+        className="w-64 p-3 shadow-xl border border-gray-200 z-9999"
+        align="start"
+      >
+        <h4 className="font-semibold text-sm mb-2 text-gray-700">Custom Table</h4>
+        <div className="flex gap-2 mb-3">
+          <div className="flex-1">
+            <label className="text-xs text-gray-500 mb-1 block">Rows</label>
+            <input
+              type="number"
+              min="1"
+              max="100"
+              className="border w-full rounded px-2 py-1 text-sm outline-none focus:border-primary"
+              value={rows}
+              onChange={(e) => setRows(e.target.value)}
+            />
+          </div>
+          <div className="flex-1">
+            <label className="text-xs text-gray-500 mb-1 block">Columns</label>
+            <input
+              type="number"
+              min="1"
+              max="100"
+              className="border w-full rounded px-2 py-1 text-sm outline-none focus:border-primary"
+              value={cols}
+              onChange={(e) => setCols(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="flex items-center gap-2 mb-4">
+          <input
+            type="checkbox"
+            id="includeHeaders"
+            checked={includeHeaders}
+            onChange={(e) => setIncludeHeaders(e.target.checked)}
+            className="w-3.5 h-3.5 accent-primary cursor-pointer"
+          />
+          <label htmlFor="includeHeaders" className="text-xs text-gray-600 cursor-pointer">
+            Include Header Row
+          </label>
+        </div>
+        <button
+          onClick={insertTable}
+          className="w-full bg-primary text-white py-1.5 rounded text-sm font-medium hover:bg-primary/90 transition-colors"
+        >
+          Insert Table
+        </button>
+      </PopoverContent>
+    </Popover>
   );
 };
 
@@ -553,6 +640,8 @@ export const Toolbar = () => {
       </Tooltip>
 
       <div className="w-px h-6 bg-gray-300 mx-1" />
+
+      <InsertTableDropdown editor={editor} />
 
       <Tooltip>
         <TooltipTrigger asChild>

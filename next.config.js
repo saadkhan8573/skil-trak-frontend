@@ -88,7 +88,6 @@ const nextConfig = {
         minimumCacheTTL: 60,
     },
     output: 'standalone',
-    allowedDevOrigins: ['192.168.1.3'],
     experimental: {
         optimizePackageImports: [
             '@radix-ui/react-*',

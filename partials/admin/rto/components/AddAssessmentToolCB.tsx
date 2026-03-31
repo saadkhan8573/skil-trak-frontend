@@ -75,7 +75,8 @@ export const AddAssessmentToolCB = ({ edit, assessment, rtoUser }: Props) => {
 
     const assessmentValues = {
         title: assessment?.title,
-        isLogBook: assessment?.isLogBook,
+        isStudentLogBook: assessment?.isStudentLogBook,
+        isIndustryLogBook: assessment?.isIndustryLogBook,
     }
 
     const methods = useForm<RtoAssessmentToolFormType>({
@@ -85,14 +86,22 @@ export const AddAssessmentToolCB = ({ edit, assessment, rtoUser }: Props) => {
 
     const onSubmit = async (values: RtoAssessmentToolFormType) => {
         // delete values.file
-        const valuesWithoutFile = omit(values, 'file', 'isLogBook')
+        const valuesWithoutFile = omit(
+            values,
+            'file',
+            'isStudentLogBook',
+            'isIndustryLogBook'
+        )
         const formData = new FormData()
         formData.append('file', fileData)
         Object.entries(valuesWithoutFile).map(([key, value]) => {
             formData.append(key, value as string)
         })
-        if (values?.isLogBook) {
-            formData.append('isLogBook', 'true')
+        if (values?.isStudentLogBook) {
+            formData.append('isStudentLogBook', 'true')
+        }
+        if (values?.isIndustryLogBook) {
+            formData.append('isIndustryLogBook', 'true')
         }
         edit
             ? update({ body: formData, assessment: assessment?.id })
@@ -147,7 +156,14 @@ export const AddAssessmentToolCB = ({ edit, assessment, rtoUser }: Props) => {
                             validationIcons
                             required
                         />
-                        <Checkbox name="isLogBook" label={'isLogBook'} />
+                        <Checkbox
+                            name="isStudentLogBook"
+                            label={'Logbook for Student'}
+                        />
+                        <Checkbox
+                            name="isIndustryLogBook"
+                            label={'Logbook for Industry'}
+                        />
                         <FileUpload
                             onChange={(docs: any) => {
                                 setFileData(docs)

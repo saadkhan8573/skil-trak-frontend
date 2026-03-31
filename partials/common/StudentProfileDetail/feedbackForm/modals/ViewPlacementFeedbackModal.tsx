@@ -29,7 +29,6 @@ interface ViewPlacementFeedbackModalProps {
 export const ViewPlacementFeedbackModal = ({
     feedbackData,
 }: ViewPlacementFeedbackModalProps) => {
-
     // Group by courseName first, then by step
     const groupedByCourse = feedbackData.reduce((acc: any, item) => {
         if (!acc[item.courseName]) {
@@ -48,37 +47,37 @@ export const ViewPlacementFeedbackModal = ({
         switch (step) {
             case 'Overall Placement Experience':
                 return (
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                    <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
                         <CheckCircle {...iconProps} />
                     </div>
                 )
             case 'Learning & Skills Development':
                 return (
-                    <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-sm">
+                    <div className="w-10 h-10 bg-linear-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-sm">
                         <BookOpen {...iconProps} />
                     </div>
                 )
             case 'Host Employer Feedback':
                 return (
-                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-sm">
+                    <div className="w-10 h-10 bg-linear-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-sm">
                         <Building2 {...iconProps} />
                     </div>
                 )
             case 'Skiltrak & Placement Process':
                 return (
-                    <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-sm">
+                    <div className="w-10 h-10 bg-linear-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-sm">
                         <Settings {...iconProps} />
                     </div>
                 )
             case 'Final Comments':
                 return (
-                    <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-sm">
+                    <div className="w-10 h-10 bg-linear-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-sm">
                         <MessageSquare {...iconProps} />
                     </div>
                 )
             default:
                 return (
-                    <div className="w-10 h-10 bg-gradient-to-br from-gray-500 to-gray-600 rounded-xl flex items-center justify-center shadow-sm">
+                    <div className="w-10 h-10 bg-linear-to-br from-gray-500 to-gray-600 rounded-xl flex items-center justify-center shadow-sm">
                         <FileText {...iconProps} />
                     </div>
                 )
@@ -144,7 +143,7 @@ export const ViewPlacementFeedbackModal = ({
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-2">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl mb-6 shadow-lg">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-blue-600 to-indigo-600 rounded-2xl mb-6 shadow-lg">
                         <Award size={32} className="text-white" />
                     </div>
                     <h1 className="text-xl font-bold text-gray-900 mb-3">
@@ -167,7 +166,7 @@ export const ViewPlacementFeedbackModal = ({
                             </span>
                         </div>
                     </div>
-                    <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto mt-6 rounded-full"></div>
+                    <div className="w-24 h-1 bg-linear-to-r from-blue-500 to-indigo-500 mx-auto mt-6 rounded-full"></div>
                 </div>
 
                 {/* Course Reviews */}
@@ -179,10 +178,10 @@ export const ViewPlacementFeedbackModal = ({
                                 className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden"
                             >
                                 {/* Course Header */}
-                                <div className="bg-gradient-to-r from-gray-50 to-slate-100 px-8 py-6 border-b border-gray-200">
+                                <div className="bg-linear-to-r from-gray-50 to-slate-100 px-8 py-6 border-b border-gray-200">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center space-x-4">
-                                            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                                            <div className="w-10 h-10 bg-linear-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
                                                 <GraduationCap
                                                     size={24}
                                                     className="text-white"
@@ -274,7 +273,7 @@ export const ViewPlacementFeedbackModal = ({
                                                                                 className="bg-white rounded-xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 group"
                                                                             >
                                                                                 <div className="flex items-start space-x-3 mb-4">
-                                                                                    <span className="inline-flex items-center justify-center w-6 h-6 bg-indigo-100 text-indigo-700 text-sm font-semibold rounded-full flex-shrink-0 mt-0.5">
+                                                                                    <span className="inline-flex items-center justify-center w-6 h-6 bg-indigo-100 text-indigo-700 text-sm font-semibold rounded-full shrink-0 mt-0.5">
                                                                                         {index +
                                                                                             1}
                                                                                     </span>
@@ -327,7 +326,7 @@ export const ViewPlacementFeedbackModal = ({
                 </div>
 
                 {/* Summary Footer */}
-                <div className="mt-12 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-3xl shadow-xl p-8 text-white">
+                <div className="mt-12 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-3xl shadow-xl p-8 text-white">
                     <div className="text-center">
                         <h3 className="text-2xl font-bold mb-3">
                             Feedback Analysis Complete

@@ -26,6 +26,7 @@ export const OurStorySkiltrakAppSection = () => {
                                         alt="Skiltrak App"
                                         width={106}
                                         height={34}
+                                        style={{ height: 'auto' }}
                                     />
                                 </div>
                             </Link>
@@ -39,6 +40,7 @@ export const OurStorySkiltrakAppSection = () => {
                                         alt="Skiltrak App"
                                         width={106}
                                         height={34}
+                                        style={{ height: 'auto' }}
                                     />
                                 </div>
                             </Link>
@@ -75,6 +77,7 @@ export const OurStorySkiltrakAppSection = () => {
                             width={535}
                             height={572}
                             className="hidden md:block"
+                            style={{ height: 'auto' }}
                         />
                         <Image
                             src={'/images/our-story/mobile-screens.png'}
@@ -82,6 +85,7 @@ export const OurStorySkiltrakAppSection = () => {
                             width={535}
                             height={572}
                             className="block md:hidden"
+                            style={{ height: 'auto' }}
                         />
                     </div>
                     <div>

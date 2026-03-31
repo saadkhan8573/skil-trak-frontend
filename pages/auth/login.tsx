@@ -192,6 +192,7 @@ const Login: NextPage = () => {
                                         alt="Skiltrak App"
                                         width={106}
                                         height={34}
+                                        style={{ height: 'auto' }}
                                     />
                                 </div>
                             </Link>
@@ -205,6 +206,7 @@ const Login: NextPage = () => {
                                         alt="Skiltrak App"
                                         width={106}
                                         height={34}
+                                        style={{ height: 'auto' }}
                                     />
                                 </div>
                             </Link>
@@ -227,6 +229,7 @@ const Login: NextPage = () => {
                                 width={535}
                                 height={500}
                                 className="hidden md:block"
+                                style={{ height: 'auto' }}
                             />
                             <Image
                                 src={'/images/our-story/mobile-screens.png'}
@@ -234,6 +237,7 @@ const Login: NextPage = () => {
                                 width={535}
                                 height={500}
                                 className="block md:hidden"
+                                style={{ height: 'auto' }}
                             />
                         </div>
                     </div>

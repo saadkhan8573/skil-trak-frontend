@@ -171,6 +171,27 @@ export const PedingCourseApprovalIndustries = () => {
             ),
         },
         {
+            accessorKey: 'createdAt',
+            header: () => <span>Created At</span>,
+            cell: (info) => (
+                <UserCreatedAt createdAt={info.row.original?.createdAt} />
+            ),
+        },
+        {
+            accessorKey: 'addedBy',
+            header: () => <span>Created By</span>,
+            cell: (info) => (
+                <div className="flex flex-col">
+                    <span className="text-sm font-medium">
+                        {info.row.original?.addedBy?.name || 'N/A'}
+                    </span>
+                    <span className="text-xs text-gray-400">
+                        {info.row.original?.addedBy?.email}
+                    </span>
+                </div>
+            ),
+        },
+        {
             accessorKey: 'status',
             header: () => <span>Status</span>,
             cell: (info) => (
@@ -180,8 +201,8 @@ export const PedingCourseApprovalIndustries = () => {
                         info.getValue() === 'pending'
                             ? 'warning'
                             : info.getValue() === 'approved'
-                                ? 'success'
-                                : 'error'
+                              ? 'success'
+                              : 'error'
                     }
                     size="xs"
                     shape="pill"
@@ -215,7 +236,7 @@ export const PedingCourseApprovalIndustries = () => {
                         <>
                             <Button
                                 variant="success"
-                                className="!px-3 !py-1 text-[10px] 2xl:text-xs min-w-[60px]"
+                                className="px-3! py-1! text-[10px] 2xl:text-xs min-w-[60px]"
                                 onClick={() => {
                                     dispatch(
                                         setIndustryDetail(
@@ -229,7 +250,7 @@ export const PedingCourseApprovalIndustries = () => {
                             </Button>
                             <Button
                                 variant="error"
-                                className="!px-3 !py-1 text-[10px] 2xl:text-xs min-w-[60px]"
+                                className="px-3! py-1! text-[10px] 2xl:text-xs min-w-[60px]"
                                 onClick={() =>
                                     onActionClick(info.row.original, 'rejected')
                                 }
@@ -241,7 +262,7 @@ export const PedingCourseApprovalIndustries = () => {
                         showActionButtons && (
                             <Button
                                 variant="primaryNew"
-                                className="!px-3 !py-1 text-[10px] 2xl:text-xs min-w-[120px]"
+                                className="px-3! py-1! text-[10px] 2xl:text-xs min-w-[120px]"
                                 onClick={() =>
                                     setUploadModal({
                                         isOpen: true,

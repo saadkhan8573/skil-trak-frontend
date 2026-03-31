@@ -54,15 +54,23 @@ export const AddAssessmentForm = ({ edit, assessment, courses }: Props) => {
     })
 
     const onSubmit = async (values: any) => {
-        const valuesWithoutFile = omit(values, 'file', 'isLogBook')
+        const valuesWithoutFile = omit(
+            values,
+            'file',
+            'isStudentLogBook',
+            'isIndustryLogBook'
+        )
 
         const formData = new FormData()
         formData.append('file', fileData)
         Object.entries(valuesWithoutFile).map(([key, value]) => {
             formData.append(key, value as string)
         })
-        if (values?.isLogBook) {
-            formData.append('isLogBook', 'true')
+        if (values?.isStudentLogBook) {
+            formData.append('isStudentLogBook', 'true')
+        }
+        if (values?.isIndustryLogBook) {
+            formData.append('isIndustryLogBook', 'true')
         }
 
         create(formData)
@@ -96,7 +104,14 @@ export const AddAssessmentForm = ({ edit, assessment, courses }: Props) => {
                             validationIcons
                             required
                         />
-                        <Checkbox name="isLogBook" label={'isLogBook'} />
+                        <Checkbox
+                            name="isStudentLogBook"
+                            label={'Logbook for Student'}
+                        />
+                        <Checkbox
+                            name="isIndustryLogBook"
+                            label={'Logbook for Industry'}
+                        />
                         <FileUpload
                             name={'file'}
                             component={UploadFile}

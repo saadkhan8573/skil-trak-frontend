@@ -577,7 +577,6 @@ export const FutureIndustrySignUpForm = ({
                                     onlyValue
                                     placeholder={'Select State...'}
                                     onChange={(e: any) => {
-                                        formMethods.setValue('state', e?.label)
                                         setOnStateSelect(e?.value)
                                     }}
                                     loading={statesLoading}

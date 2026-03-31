@@ -12,8 +12,7 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { TablePlugin } from '@lexical/react/LexicalTablePlugin'
 import { TableNode, TableCellNode, TableRowNode } from '@lexical/table'
-import {
-    $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html'
+import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html'
 import {
     $getRoot,
     $createParagraphNode,
@@ -116,6 +115,7 @@ export const RichTextEditor = ({
     }
 
     const handleOnChange = (editorState: EditorState, editor: any) => {
+        if (viewMode !== 'visual') return // Stop propagation in HTML mode
         editorState.read(() => {
             const htmlString = $generateHtmlFromNodes(editor, null)
             if (onChange) {
@@ -175,33 +175,33 @@ export const RichTextEditor = ({
                     }
                 >
                     <LexicalComposer initialConfig={initialConfig}>
-                    <Toolbar />
-                    <div className="relative flex-1 overflow-auto">
-                        <RichTextPlugin
-                            contentEditable={
-                                <ContentEditable className="outline-none py-4 px-4 min-h-37.5 prose prose-sm max-w-none" />
-                            }
-                            placeholder={
-                                <div className="absolute top-4 left-4 text-gray-400 pointer-events-none">
-                                    {placeholder || 'Start typing...'}
-                                </div>
-                            }
-                            ErrorBoundary={LexicalErrorBoundary}
-                        />
-                        <HistoryPlugin />
-                        <ListPlugin />
-                        <LinkPlugin />
-                        <TablePlugin />
-                        <ImagePlugin />
-                        <DragDropPastePlugin />
-                        <ExternalImagePlugin />
-                        <FloatingLinkEditorPlugin />
-                        <OnChangePlugin onChange={handleOnChange} />
+                        <Toolbar />
+                        <div className="relative flex-1 overflow-auto">
+                            <RichTextPlugin
+                                contentEditable={
+                                    <ContentEditable className="outline-none py-4 px-4 min-h-37.5 prose prose-sm max-w-none" />
+                                }
+                                placeholder={
+                                    <div className="absolute top-4 left-4 text-gray-400 pointer-events-none">
+                                        {placeholder || 'Start typing...'}
+                                    </div>
+                                }
+                                ErrorBoundary={LexicalErrorBoundary}
+                            />
+                            <HistoryPlugin />
+                            <ListPlugin />
+                            <LinkPlugin />
+                            <TablePlugin />
+                            <ImagePlugin />
+                            <DragDropPastePlugin />
+                            <ExternalImagePlugin />
+                            <FloatingLinkEditorPlugin />
+                            <OnChangePlugin onChange={handleOnChange} />
 
-                        {/* Initial Value Plugin */}
-                        <InitialValuePlugin value={value} />
-                    </div>
-                </LexicalComposer>
+                            {/* Initial Value Plugin */}
+                            <InitialValuePlugin value={value} viewMode={viewMode} />
+                        </div>
+                    </LexicalComposer>
                 </div>
                 {viewMode === 'html' && (
                     <textarea
@@ -219,7 +219,13 @@ export const RichTextEditor = ({
 }
 
 // Helper plugin to set and update HTML value
-function InitialValuePlugin({ value }: { value?: string }) {
+function InitialValuePlugin({
+    value,
+    viewMode,
+}: {
+    value?: string
+    viewMode: string
+}) {
     const [editor] = useLexicalComposerContext()
     const [isFirstRender, setIsFirstRender] = useState(true)
 
@@ -267,6 +273,9 @@ function InitialValuePlugin({ value }: { value?: string }) {
             }
             setIsFirstRender(false)
         } else {
+            // Skip synchronization if we are in HTML mode to avoid messy parsing/loops while typing
+            if (viewMode === 'html') return
+
             editor.read(() => {
                 const currentHtml = $generateHtmlFromNodes(editor, null)
                 // Treat undefined/null as empty string specifically for the reset case
@@ -283,7 +292,7 @@ function InitialValuePlugin({ value }: { value?: string }) {
                 }
             })
         }
-    }, [editor, value, isFirstRender])
+    }, [editor, value, isFirstRender, viewMode])
 
     return null
 }

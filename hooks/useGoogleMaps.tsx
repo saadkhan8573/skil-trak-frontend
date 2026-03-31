@@ -1,6 +1,6 @@
 // GoogleMapsContext.tsx
 import React, { createContext, useContext, ReactNode } from 'react'
-import { useJsApiLoader } from '@react-google-maps/api'
+import { useJsApiLoader, Libraries } from '@react-google-maps/api'
 
 interface GoogleMapsContextType {
     isLoaded: boolean
@@ -25,13 +25,15 @@ interface GoogleMapsProviderProps {
     children: ReactNode
 }
 
+const LIBRARIES: Libraries = ['places']
+
 export const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({
     children,
 }) => {
     const { isLoaded, loadError } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.NEXT_PUBLIC_MAP_KEY as string,
-        libraries: ['places'],
+        libraries: LIBRARIES,
     })
 
     return (

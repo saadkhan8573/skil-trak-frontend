@@ -232,7 +232,7 @@ export const ApprovalPlacementUserGuideModal = ({
                 className={`flex gap-3 ${color.bg} border ${color.border} rounded-lg p-4`}
             >
                 <div
-                    className={`w-8 h-8 ${color.iconBg} rounded-full flex items-center justify-center text-white text-base flex-shrink-0`}
+                    className={`w-8 h-8 ${color.iconBg} rounded-full flex items-center justify-center text-white shrink-0`}
                 >
                     {icon}
                 </div>
@@ -257,7 +257,7 @@ export const ApprovalPlacementUserGuideModal = ({
 
             <div className="bg-gray-50 rounded-xl max-h-[85vh] overflow-auto custom-scrollbar">
                 {/* Hero Header */}
-                <div className="bg-gradient-to-br from-[#044866] to-[#0d5468] py-12 px-4 text-center text-white rounded-t-xl">
+                <div className="bg-linear-to-br from-[#044866] to-[#0d5468] py-12 px-4 text-center text-white rounded-t-xl">
                     <h1 className="text-4xl font-extrabold mb-3">
                         RTO Approval Process Guide
                     </h1>
@@ -270,15 +270,15 @@ export const ApprovalPlacementUserGuideModal = ({
                 <div className="max-w-6xl mx-auto px-4 -mt-8 relative z-10 pb-12">
                     {/* Progress Tracker */}
                     <div className="bg-white rounded-xl p-8 shadow-lg mb-8">
-                        <h3 className="text-gray-900 mb-5 font-bold text-base">
+                        <h3 className="text-gray-900 mb-5 font-bold">
                             Placement Approval Journey
                         </h3>
 
                         <div className="relative mb-4">
-                            <div className="absolute top-4 left-0 right-0 h-[2px] bg-gray-200 z-0" />
-                            <div className="absolute top-4 left-0 h-[2px] bg-[#F7A619] z-[1] w-[83%]" />
+                            <div className="absolute top-4 left-0 right-0 h-0.5 bg-gray-200 z-0" />
+                            <div className="absolute top-4 left-0 h-0.5 bg-[#F7A619] z-1 w-[83%]" />
 
-                            <div className="flex justify-between items-center relative z-[2]">
+                            <div className="flex justify-between items-center relative z-2">
                                 {progressSteps.map((step, index) => (
                                     <div
                                         key={index}
@@ -305,8 +305,8 @@ export const ApprovalPlacementUserGuideModal = ({
                                             {step.status === 'complete'
                                                 ? '✓'
                                                 : step.status === 'current'
-                                                ? '6'
-                                                : '7'}
+                                                  ? '6'
+                                                  : '7'}
                                         </div>
                                         <div
                                             className={`text-[10px] font-medium whitespace-pre-line ${
@@ -517,12 +517,12 @@ export const ApprovalPlacementUserGuideModal = ({
                         {/* Compliance Tab */}
                         {activeTab === 'compliance' && (
                             <>
-                                <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-lg p-5 border border-green-500">
+                                <div className="bg-linear-to-br from-green-100 to-green-50 rounded-lg p-5 border border-green-500">
                                     <div className="flex items-center gap-3 mb-3">
                                         <div className="w-9 h-9 bg-green-600 rounded-lg flex items-center justify-center text-white text-lg">
                                             ✓
                                         </div>
-                                        <h4 className="text-green-900 text-base font-bold">
+                                        <h4 className="text-green-900 font-bold">
                                             All Compliance Verified
                                         </h4>
                                     </div>
@@ -536,7 +536,7 @@ export const ApprovalPlacementUserGuideModal = ({
                                 </div>
 
                                 <div className="bg-blue-50 rounded-lg p-5 mt-5 border border-blue-500">
-                                    <h4 className="text-[#044866] text-base font-bold mb-3 flex items-center gap-1.5">
+                                    <h4 className="text-[#044866] font-bold mb-3 flex items-center gap-1.5">
                                         📋 Highlighted Tasks
                                     </h4>
                                     <p className="text-blue-900 mb-3 text-xs">
@@ -548,7 +548,7 @@ export const ApprovalPlacementUserGuideModal = ({
                                             key={index}
                                             className="flex items-start gap-2 py-1.5 text-blue-900 text-xs"
                                         >
-                                            <div className="w-4 h-4 bg-green-600 rounded-full flex items-center justify-center text-white text-[10px] flex-shrink-0 mt-0.5">
+                                            <div className="w-4 h-4 bg-green-600 rounded-full flex items-center justify-center text-white text-[10px] shrink-0 mt-0.5">
                                                 ✓
                                             </div>
                                             <span>{task}</span>
@@ -563,7 +563,7 @@ export const ApprovalPlacementUserGuideModal = ({
                                             <div className="w-8 h-8 bg-[#044866] rounded-lg flex items-center justify-center text-white text-sm">
                                                 📋
                                             </div>
-                                            <h4 className="text-gray-900 text-base font-bold">
+                                            <h4 className="text-gray-900 font-bold">
                                                 Skiltrak Facility Checklist
                                             </h4>
                                         </div>
@@ -606,7 +606,7 @@ export const ApprovalPlacementUserGuideModal = ({
                                             <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white text-sm">
                                                 📋
                                             </div>
-                                            <h4 className="text-gray-900 text-base font-bold">
+                                            <h4 className="text-gray-900 font-bold">
                                                 RTO Facility Checklist
                                             </h4>
                                         </div>
@@ -636,7 +636,7 @@ export const ApprovalPlacementUserGuideModal = ({
 
                         <div className="bg-yellow-50 rounded-lg p-6 border-2 border-[#F7A619]">
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="w-9 h-9 bg-[#F7A619] rounded-full flex items-center justify-center text-white text-base">
+                                <div className="w-9 h-9 bg-[#F7A619] rounded-full flex items-center justify-center text-white">
                                     ⚖
                                 </div>
                                 <div>
@@ -670,7 +670,7 @@ export const ApprovalPlacementUserGuideModal = ({
                         </div>
 
                         <div className="bg-blue-50 rounded-lg p-5 mt-5 border border-blue-500">
-                            <h4 className="text-[#044866] text-base font-bold mb-3 flex items-center gap-1.5">
+                            <h4 className="text-[#044866] font-bold mb-3 flex items-center gap-1.5">
                                 ℹ️ What happens next?
                             </h4>
                             {nextSteps.map((step, index) => (
@@ -679,7 +679,7 @@ export const ApprovalPlacementUserGuideModal = ({
                                     className="flex items-start gap-2 py-1.5"
                                 >
                                     <div
-                                        className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs
+                                        className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-xs
                                             ${
                                                 step.type === 'success'
                                                     ? 'bg-green-100 text-green-600'
@@ -761,14 +761,14 @@ export const ApprovalPlacementUserGuideModal = ({
                         <h2 className="text-2xl text-gray-900 mb-2 font-extrabold">
                             Key Decision Points
                         </h2>
-                        <p className="text-gray-500 text-base mb-6">
+                        <p className="text-gray-500 mb-6">
                             Critical factors to consider before making your
                             decision
                         </p>
 
                         <div className="grid gap-4 mt-5">
-                            <div className="bg-gradient-to-br from-green-100 to-green-50 border-l-3 border-green-600 rounded-lg p-5">
-                                <h4 className="text-green-900 font-bold mb-2 flex items-center gap-2 text-base">
+                            <div className="bg-linear-to-br from-green-100 to-green-50 border-l-3 border-green-600 rounded-lg p-5">
+                                <h4 className="text-green-900 font-bold mb-2 flex items-center gap-2">
                                     <span className="text-lg">✅</span> Reasons
                                     to Approve
                                 </h4>
@@ -779,8 +779,8 @@ export const ApprovalPlacementUserGuideModal = ({
                                 </ul>
                             </div>
 
-                            <div className="bg-gradient-to-br from-red-100 to-red-50 border-l-3 border-red-600 rounded-lg p-5">
-                                <h4 className="text-red-900 font-bold mb-2 flex items-center gap-2 text-base">
+                            <div className="bg-linear-to-br from-red-100 to-red-50 border-l-3 border-red-600 rounded-lg p-5">
+                                <h4 className="text-red-900 font-bold mb-2 flex items-center gap-2">
                                     <span className="text-lg">❌</span> Reasons
                                     to Reject
                                 </h4>
@@ -798,7 +798,7 @@ export const ApprovalPlacementUserGuideModal = ({
                         <h2 className="text-2xl text-gray-900 mb-2 font-extrabold">
                             Understanding the Impact
                         </h2>
-                        <p className="text-gray-500 text-base mb-6">
+                        <p className="text-gray-500 mb-6">
                             How your decision affects future placements
                         </p>
 
@@ -825,58 +825,11 @@ export const ApprovalPlacementUserGuideModal = ({
                                     </p>
                                 </div>
                             ))}
-                            {/* <div className="bg-white rounded-lg p-6 border-2 border-green-600">
-                                <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white text-2xl mb-4">
-                                    ✓
-                                </div>
-                                <h4 className="text-green-900 font-bold text-lg mb-3">
-                                    When You Approve
-                                </h4>
-                                <p className="text-green-800 leading-relaxed mb-3">
-                                    <strong>Immediate Effect:</strong>
-                                </p>
-                                <p className="text-gray-700 leading-relaxed mb-3">
-                                    Student can proceed with placement. Status
-                                    moves to "Industry Confirmation" stage.
-                                </p>
-                                <p className="text-green-800 leading-relaxed mb-3">
-                                    <strong>Future Impact:</strong>
-                                </p>
-                                <p className="text-gray-700 leading-relaxed">
-                                    This workplace becomes pre-approved for
-                                    future students in the same course, speeding
-                                    up the approval process.
-                                </p>
-                            </div>
-
-                            <div className="bg-white rounded-lg p-6 border-2 border-red-600">
-                                <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white text-2xl mb-4">
-                                    ✗
-                                </div>
-                                <h4 className="text-red-900 font-bold text-lg mb-3">
-                                    When You Reject
-                                </h4>
-                                <p className="text-red-800 leading-relaxed mb-3">
-                                    <strong>Immediate Effect:</strong>
-                                </p>
-                                <p className="text-gray-700 leading-relaxed mb-3">
-                                    Student must find an alternative workplace.
-                                    Rejection note added to profile.
-                                </p>
-                                <p className="text-red-800 leading-relaxed mb-3">
-                                    <strong>Future Impact:</strong>
-                                </p>
-                                <p className="text-gray-700 leading-relaxed">
-                                    This workplace will not appear for any
-                                    future students in your organization,
-                                    protecting quality standards.
-                                </p>
-                            </div> */}
                         </div>
                     </div>
 
                     {/* Footer */}
-                    <div className="bg-gradient-to-br from-[#044866] to-[#0d5468] text-white p-8 text-center rounded-xl mt-8">
+                    <div className="bg-linear-to-br from-[#044866] to-[#0d5468] text-white p-8 text-center rounded-xl mt-8">
                         <h3 className="text-xl mb-3">
                             Skiltrak RTO Approval System
                         </h3>

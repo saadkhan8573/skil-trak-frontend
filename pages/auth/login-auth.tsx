@@ -210,6 +210,7 @@ const Login: NextPage = () => {
                                         alt="Skiltrak App"
                                         width={106}
                                         height={34}
+                                        style={{ height: 'auto' }}
                                     />
                                 </div>
                             </Link>
@@ -223,6 +224,7 @@ const Login: NextPage = () => {
                                         alt="Skiltrak App"
                                         width={106}
                                         height={34}
+                                        style={{ height: 'auto' }}
                                     />
                                 </div>
                             </Link>
@@ -245,6 +247,7 @@ const Login: NextPage = () => {
                                 width={535}
                                 height={500}
                                 className="hidden md:block"
+                                style={{ height: 'auto' }}
                             />
                             <Image
                                 src={'/images/our-story/mobile-screens.png'}
@@ -252,10 +255,11 @@ const Login: NextPage = () => {
                                 width={535}
                                 height={500}
                                 className="block md:hidden"
+                                style={{ height: 'auto' }}
                             />
                         </div>
                     </div>
-                    <div className="flex flex-col flex-grow mt-8 md:w-1/2 md:px-12 px-4">
+                    <div className="flex flex-col grow mt-8 md:w-1/2 md:px-12 px-4">
                         <Link href={'/'} className="mb-10">
                             <Image
                                 src="/images/auth/skiltrak-logo.png"

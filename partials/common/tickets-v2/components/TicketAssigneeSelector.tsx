@@ -1,11 +1,6 @@
-import {
-    AuthorizedUserComponent,
-    Select,
-    ShowErrorNotifications,
-} from '@components'
-import { UserRoles } from '@constants'
+import { Select, ShowErrorNotifications } from '@components'
 import { CommonApi } from '@queries'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useSupportTicketPermissions } from '../hooks'
 
 export const TicketAssigneeSelector = ({ taskId, teamId, member }: any) => {
@@ -29,7 +24,7 @@ export const TicketAssigneeSelector = ({ taskId, teamId, member }: any) => {
     return (
         <>
             <ShowErrorNotifications result={changeAssigneeResult} />
-            {canSeeAssignedFilter && (
+            {(canSeeAssignedFilter || true) && (
                 <div className="overflow-visible relative z-50">
                     <Select
                         name="assignee"

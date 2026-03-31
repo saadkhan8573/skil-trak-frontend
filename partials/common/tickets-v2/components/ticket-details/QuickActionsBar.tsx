@@ -115,7 +115,7 @@ export const QuickActionsBar = ({ ticket }: any) => {
                             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all text-sm ml-auto ${
                                 showResolveForm
                                     ? 'bg-gray-200 text-[#044866]'
-                                    : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg'
+                                    : 'bg-linear-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg'
                             }`}
                         >
                             <CheckCircle className="w-4 h-4" />
@@ -146,7 +146,7 @@ export const QuickActionsBar = ({ ticket }: any) => {
                                 updateStatusResult.isLoading
                             }
                             loading={updateStatusResult.isLoading}
-                            className="mt-2 px-4 py-2 text-sm bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="mt-2 px-4 py-2 text-sm bg-linear-to-r from-green-500 to-emerald-500 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Submit Resolution
                         </Button>

@@ -4,11 +4,7 @@ import React, { ReactElement, useState } from 'react'
 import { RtoApprovalWorkplaceRequest } from '@types'
 import { ApproveWpApprovalRequest, RejectWpApprovalRequest } from '../../modals'
 import { RtoV2Api } from '@queries'
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 
 export const PlacementActions = ({
     approval,
@@ -72,7 +68,7 @@ export const PlacementActions = ({
                             fullWidth
                             disabled={isDisabled}
                         >
-                            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                            <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                             <CheckCircle2 className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                             <span>Approve Workplace</span>
                         </Button>

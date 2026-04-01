@@ -169,6 +169,25 @@ export const CreateStudentNote = ({
         }
     }, [workplaceOptions])
 
+    const validationSchema = Yup.object().shape({
+        title: Yup.string().required('Title is required'),
+        body: Yup.string()
+            .ensure()
+            .test(
+                'Message',
+                'Must Provide Message',
+                inputRichTextEditorErrorMessage
+            ),
+    })
+
+    const localMethods = useForm<onSubmitType>({
+        mode: 'all',
+        resolver: yupResolver(validationSchema as any),
+        defaultValues: { ...editValues, body: editValues?.body || '' },
+    })
+
+    const methods = externalMethods || localMethods
+
     // Sync noteContent from methods when mounting (for minimize/restore persistence)
     useEffect(() => {
         const values = methods.getValues()
@@ -197,29 +216,11 @@ export const CreateStudentNote = ({
         }
     }, [editValues])
 
-    const validationSchema = Yup.object().shape({
-        title: Yup.string().required('Title is required'),
-        body: Yup.string()
-            .ensure()
-            .test(
-                'Message',
-                'Must Provide Message',
-                inputRichTextEditorErrorMessage
-            ),
-    })
-
-    const localMethods = useForm<onSubmitType>({
-        mode: 'all',
-        resolver: yupResolver(validationSchema as any),
-        defaultValues: { ...editValues, body: editValues?.body || '' },
-    })
-
-    const methods = externalMethods || localMethods
-
-    const noteBodyWordsCount = noteContent
-        ? HtmlToPlainText(noteContent)?.trim()?.replace(/\s+/g, ' ')?.split(' ')
-              ?.length
-        : ''
+    const noteBodyWordsCount = useMemo(() => {
+        if (!noteContent) return 0
+        const plainText = HtmlToPlainText(noteContent).trim()
+        return plainText === '' ? 0 : plainText.split(/\s+/).length
+    }, [noteContent])
 
     const isBodyGreaterThen30 = noteBodyWordsCount > 30
 

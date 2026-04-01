@@ -7,7 +7,7 @@ export interface RtoAssessmentToolFormType extends FormData {
     course: number
     title: string
     file: File
-    isStudentLogBook: boolean
+    isLogBook: boolean
     isIndustryLogBook: boolean
 }
 

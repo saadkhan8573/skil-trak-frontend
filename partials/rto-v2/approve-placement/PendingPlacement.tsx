@@ -3,7 +3,7 @@ import { RtoApi } from '@queries'
 import { ClipboardCheck, FileSignature } from 'lucide-react'
 import { useState } from 'react'
 import { ReadyForApprovalPlacement } from './ReadyForApprovalPlacement'
-import { Schedule4Pending } from './Schedule4Pending'
+import { RtoFacilityChecklistPending } from './RtoFacilityChecklistPending'
 
 export const PendingPlacement = () => {
     const [subTab, setSubTab] = useState('ready_for_approval')
@@ -18,11 +18,11 @@ export const PendingPlacement = () => {
             component: ReadyForApprovalPlacement,
         },
         {
-            value: 'schedule_4_pending',
-            label: 'Schedule 4 Pending',
+            value: 'rto_facility_checklist_pending',
+            label: 'Rto Facility Checklist Pending',
             icon: FileSignature,
             count: count?.data?.pending_s4 || 0,
-            component: Schedule4Pending,
+            component: RtoFacilityChecklistPending,
         },
     ]
 

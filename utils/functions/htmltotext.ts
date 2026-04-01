@@ -5,15 +5,20 @@ export const htmltotext = (value: string) => {
 }
 
 export const HtmlToPlainText = (html: string) => {
-    let div: any = {}
-    if (isBrowser()) {
-        div = document.createElement('div')
-    }
-    div.innerHTML = html
-
-    const plainText = div.textContent || div.innerText
-
-    return plainText
+    if (!html) return ''
+    
+    // Use an isomorphic regex approach for both SSR and CSR to guarantee text exact match
+    // and prevent React hydration mismatch errors due to whitespace or parsing differences.
+    return html
+        .replace(/<[^>]*>?/gm, '')
+        .replace(/&nbsp;/ig, ' ')
+        .replace(/&amp;/ig, '&')
+        .replace(/&quot;/ig, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/&lt;/ig, '<')
+        .replace(/&gt;/ig, '>')
+        .replace(/\s+/g, ' ') // Collapse multiple whitespace to single space
+        .trim()
 }
 
 export const plainTextWithSpaces = (html: string) => {

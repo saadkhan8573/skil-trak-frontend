@@ -35,8 +35,8 @@ export const StudentCellInfo = ({
     )
 
     const today = moment()
-    const startDate = today.startOf('week').format('MM-DD-YYYY')
-    const endDate = today.endOf('week').format('MM-DD-YYYY')
+    const startDate = today.startOf('week').format('YYYY-MM-DD')
+    const endDate = today.endOf('week').format('YYYY-MM-DD')
     const createdAt = moment(callLog?.createdAt, 'YYYY-MM-DD')
 
     const isDateExist = createdAt.isBetween(startDate, endDate, 'day')

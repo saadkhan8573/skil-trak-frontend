@@ -111,9 +111,9 @@ export const Button = ({
                 <div className="flex items-center justify-center gap-x-2">
                     {Icon && <Icon size={iconSize} />}
                     {!mini && (
-                        <p className="flex items-center gap-x-1">
+                        <div className="flex items-center gap-x-1">
                             {text || children}
-                        </p>
+                        </div>
                     )}
                 </div>
             )}

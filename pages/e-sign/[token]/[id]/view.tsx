@@ -1,5 +1,6 @@
 import {
     EmptyData,
+    GlobalModal,
     LoadingAnimation,
     ShowErrorNotifications,
     TechnicalError,
@@ -12,6 +13,7 @@ import {
     DownloadEsignDocument,
     EsignHeader,
     EsignRightSidebar,
+    FinishDocumentModal,
     SVGView,
 } from '@partials/eSign/components'
 import {
@@ -111,18 +113,28 @@ const ESign = () => {
                     ?.map((tab: any) => {
                         const response = tab?.responses?.reduce(
                             (accumulator: any, current: any) => {
-                                return moment(current.updatedAt).isAfter(
+                                // Convert timestamps to Date objects for comparison
+                                const accumulatorDate = new Date(
                                     accumulator.updatedAt
                                 )
+                                const currentDate = new Date(current.updatedAt)
+
+                                // Return the item with the later updatedAt timestamp
+                                return currentDate > accumulatorDate
                                     ? current
                                     : accumulator
                             },
                             tab?.responses[0]
                         )
 
+                        const fieldValue =
+                            tab?.columnName === FieldsTypeEnum.Signature
+                                ? response?.signature
+                                : response?.data
+
                         return {
                             ...tab,
-                            fieldValue: response ? response?.data : '',
+                            fieldValue,
                         }
                     })
             )
@@ -130,9 +142,21 @@ const ESign = () => {
     }, [tabs])
 
     const onAddCustomFieldsData = (e: any) => {
-        const updatedData = customFieldsData?.map((data: any) =>
-            data?.id === e?.id ? e : data
-        )
+        const updatedData = customFieldsData?.map((data: any) => {
+            if (data?.id === e?.id) return e
+
+            // If the incoming change is a radio selection, deselect all siblings in the same group
+            if (
+                e?.type === FieldsTypeEnum.Radio &&
+                e?.fieldValue &&
+                data?.type === FieldsTypeEnum.Radio &&
+                data?.columnName === e?.columnName
+            ) {
+                return { ...data, fieldValue: false }
+            }
+
+            return data
+        })
         setCustomFieldsData(updatedData)
     }
 
@@ -209,7 +233,33 @@ const ESign = () => {
 
     const processedItems = customFieldsAndSign
         .map(addNumberWithPosition)
-        ?.filter((sign: any) => !sign?.responses?.length)
+        ?.filter((sign: any) => {
+            // For radio groups: if ANY radio in the same group has a response, hide all of them
+            if (sign?.type === FieldsTypeEnum.Radio) {
+                const groupHasResponse = customFieldsAndSign?.some(
+                    (other: any) =>
+                        other?.type === FieldsTypeEnum.Radio &&
+                        other?.columnName === sign?.columnName &&
+                        other?.responses?.length > 0
+                )
+                if (groupHasResponse) return false
+            }
+
+            const latestResponse = sign?.responses?.reduce(
+                (accumulator: any, current: any) => {
+                    const accumulatorDate = new Date(accumulator.updatedAt)
+                    const currentDate = new Date(current.updatedAt)
+                    return currentDate > accumulatorDate ? current : accumulator
+                },
+                sign?.responses[0]
+            )
+
+            if (!sign?.responses?.length) {
+                return sign
+            } else if (latestResponse?.reSignRequested) {
+                return sign
+            }
+        })
 
     const sortedPositions = processedItems.sort((a: any, b: any) => {
         // First, prioritize 'signature' type
@@ -280,25 +330,69 @@ const ESign = () => {
     }
 
     const onSaveCustomFieldsValue = async () => {
-        const customValues = customFieldsData?.filter(
-            (data: any) => data?.isCustom && !data?.fieldValue && data?.required
+        // For radio buttons, group them by columnName — if at least one in the
+        // group is checked, the whole group is considered satisfied.
+        const satisfiedRadioGroups = new Set(
+            customFieldsData
+                ?.filter(
+                    (data: any) =>
+                        data?.type === FieldsTypeEnum.Radio && data?.fieldValue
+                )
+                ?.map((data: any) => data?.columnName)
         )
+
+        const customValues = customFieldsData?.filter((data: any) => {
+            if (!data?.isCustom || !data?.required || data?.fieldValue)
+                return false
+            // For radio buttons, skip if the group has a selection
+            if (
+                data?.type === FieldsTypeEnum.Radio &&
+                satisfiedRadioGroups.has(data?.columnName)
+            )
+                return false
+            return true
+        })
+
+        const remainingFields = sortedPositions?.filter((field: any) => {
+            if (!field?.fieldValue && field?.required) {
+                // For radio groups, skip if any sibling in the group is selected
+                if (field?.type === FieldsTypeEnum.Radio) {
+                    return !sortedPositions?.some(
+                        (other: any) =>
+                            other?.type === FieldsTypeEnum.Radio &&
+                            other?.columnName === field?.columnName &&
+                            other?.fieldValue
+                    )
+                }
+                return true
+            }
+            return false
+        })
 
         if (
             customFieldsData
                 ?.filter((s: any) => s?.type === FieldsTypeEnum.Signature)
-                ?.filter((s: any) => !s?.fieldValue)?.length > 0
-            // ?.filter((s: any) => !s?.responses?.length)?.length > 0
+                ?.filter((s: any) => !s?.fieldValue)?.length > 0 ||
+            (customValues && customValues?.length > 0)
         ) {
-            notification.warning({
-                title: 'Sign',
-                description: 'Please sign before finish signing',
-            })
-        } else if (customValues && customValues?.length > 0) {
-            notification.warning({
-                title: 'Please fill all required fields',
-                description: 'Please fill all required fields',
-            })
+            setModal(
+                <GlobalModal>
+                    <FinishDocumentModal
+                        customFieldsData={customFieldsData}
+                        onCancelFinishSign={() => {
+                            setModal(null)
+                            onCancelFinishSign()
+                        }}
+                        onFinishSignModal={onSaveCustomFieldsValue}
+                        onGoToSignFieldIfRemaining={(e: any) => {
+                            onGoToSignFieldIfRemaining(e)
+                            setModal(null)
+                        }}
+                        remainingFields={remainingFields}
+                        asModal
+                    />
+                </GlobalModal>
+            )
         } else {
             setModal(
                 <FinishEmailSignModal
@@ -336,9 +430,21 @@ const ESign = () => {
                 const slicedData = sortedPositions?.slice(
                     customFieldsSelectedId
                 )
-                const requiredData = slicedData?.find(
-                    (field: any) => !field?.fieldValue && field?.required
-                )
+                const requiredData = slicedData?.find((field: any) => {
+                    if (!field?.fieldValue && field?.required) {
+                        // Skip radio buttons whose group already has a selection
+                        if (field?.type === FieldsTypeEnum.Radio) {
+                            return !sortedPositions?.some(
+                                (other: any) =>
+                                    other?.type === FieldsTypeEnum.Radio &&
+                                    other?.columnName === field?.columnName &&
+                                    other?.fieldValue
+                            )
+                        }
+                        return true
+                    }
+                    return false
+                })
 
                 if (!requiredData) {
                     setIsLastSelected(true)

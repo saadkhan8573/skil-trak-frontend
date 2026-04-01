@@ -1,19 +1,31 @@
+import { Button } from '@components/buttons'
+import { useAppSelector } from '@redux/hooks'
 import { Clock, Edit2, Star } from 'lucide-react'
 import moment from 'moment'
-import React, { useState } from 'react'
-import { useAppSelector } from '@redux/hooks'
-import { ExtendStudentExpiryDialog } from './modals'
-import { Button } from '@components/buttons'
+import { useState } from 'react'
 import { PreferredContactTime } from './components'
+import { ExtendStudentExpiryDialog } from './modals'
 
 // Function 1: Calculate time remaining from expiry date using moment
-const calculateTimeRemaining = (expiryDate: string) => {
+const calculateTimeRemaining = (expiryDate?: Date | string | null) => {
+    if (!expiryDate || expiryDate === 'undefined' || expiryDate === 'null') {
+        return {
+            isExpired: false,
+            days: 0,
+            hours: 0,
+            minutes: 0,
+            totalDays: 0,
+            formattedTime: 'N/A',
+            formattedDate: 'N/A',
+        }
+    }
+
     const now = moment()
     const expiry = moment(expiryDate)
     const duration = moment.duration(expiry.diff(now))
 
     // If expired
-    if (duration.asMilliseconds() <= 0) {
+    if (!expiry.isValid() || duration.asMilliseconds() <= 0) {
         return {
             isExpired: true,
             days: 0,
@@ -21,7 +33,9 @@ const calculateTimeRemaining = (expiryDate: string) => {
             minutes: 0,
             totalDays: 0,
             formattedTime: 'Expired',
-            formattedDate: expiry.format('MMMM D, YYYY'),
+            formattedDate: expiry.isValid()
+                ? expiry.format('MMMM D, YYYY')
+                : 'Invalid Date',
         }
     }
 
@@ -43,7 +57,7 @@ const calculateTimeRemaining = (expiryDate: string) => {
 }
 
 // Function 2: Determine student status based on time remaining
-const getStudentStatus = (expiryDate: string) => {
+const getStudentStatus = (expiryDate?: Date | string | null) => {
     const timeRemaining = calculateTimeRemaining(expiryDate)
 
     if (timeRemaining.isExpired) {
@@ -96,8 +110,8 @@ export const StudentTimeline = () => {
     const expiryDate = studentDetail?.expiryDate
 
     // Calculate time remaining
-    const timeInfo = calculateTimeRemaining(expiryDate + '')
-    const statusInfo = getStudentStatus(expiryDate + '')
+    const timeInfo = calculateTimeRemaining(expiryDate)
+    const statusInfo = getStudentStatus(expiryDate)
 
     return (
         <div className="rounded-lg bg-linear-to-r from-[#044866]/5 via-[#0D5468]/5 to-transparent border border-[#044866]/20 p-3.5 shadow-sm space-y-2">
@@ -202,7 +216,11 @@ export const StudentTimeline = () => {
                             Extended To
                         </p>
                         <p className="text-xs font-semibold text-emerald-900">
-                            {moment(expiryDate).format('MMM D, YYYY')}
+                            {expiryDate
+                                ? moment(expiryDate).format(
+                                      'MMM D, YYYY'
+                                  )
+                                : 'N/A'}
                         </p>
                     </div>
                 </div>
@@ -216,7 +234,7 @@ export const StudentTimeline = () => {
                 open={isExtendModalOpen}
                 onOpenChange={setIsExtendModalOpen}
                 studentId={studentDetail?.user?.id}
-                currentExpiryDate={expiryDate + ''}
+                currentExpiryDate={expiryDate ? new Date(expiryDate).toISOString() : ''}
             />
         </div>
     )

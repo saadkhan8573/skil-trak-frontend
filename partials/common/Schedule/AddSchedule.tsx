@@ -381,9 +381,9 @@ export const AddScheduleContainer = ({
                             Select Time &amp; Days
                         </Typography>
                         <div className="flex flex-col gap-y-3">
-                            {scheduleTime?.map((day) => (
+                            {scheduleTime?.map((day, index) => (
                                 <ScheduleCard
-                                    key={day?.name}
+                                    key={`${day?.name}-${index}`}
                                     time={day}
                                     onScheduleChange={onScheduleChange}
                                 />

@@ -16,7 +16,7 @@ import { useCallback, useEffect, useState } from 'react'
 import debounce from 'lodash/debounce'
 import { PendingPlacementCard } from './card'
 
-export const Schedule4Pending = () => {
+export const RtoFacilityChecklistPending = () => {
     const router = useRouter()
 
     const [itemPerPage, setItemPerPage] = useState(50)

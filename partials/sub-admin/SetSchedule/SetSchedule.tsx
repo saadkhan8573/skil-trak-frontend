@@ -136,9 +136,9 @@ export const SetScheduleContainer = () => {
                         Select Time {'&'} Days
                     </Typography>
                     <div className="my-2 flex flex-col gap-y-2">
-                        {availabilities?.map((availability: any) => (
+                        {availabilities?.map((availability: any, index: number) => (
                             <ScheduleCard
-                                key={availability.name}
+                                key={`${availability.name}-${index}`}
                                 setScheduleTime={setScheduleTime}
                                 onScheduleChange={onScheduleChange}
                                 availability={availability}
@@ -148,9 +148,9 @@ export const SetScheduleContainer = () => {
                 </>
             ) : (
                 <div className="flex flex-col gap-y-2">
-                    {availabilities?.map((availability: any) => (
+                    {availabilities?.map((availability: any, index: number) => (
                         <ScheduleCard
-                            key={availability.name}
+                            key={`${availability.name}-${index}`}
                             setScheduleTime={setScheduleTime}
                             onScheduleChange={onScheduleChange}
                             availability={availability}

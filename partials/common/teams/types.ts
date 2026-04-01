@@ -1,22 +1,13 @@
 import {
     AlertTriangle,
     Calendar,
-    CheckCircle,
     ClipboardCheck,
-    CreditCard,
     FileCheck,
-    FileQuestion,
     FileStack,
     FileText,
-    Headphones,
-    HelpCircle,
     Layout,
-    Link,
-    Locate,
     Mail,
     MapPin,
-    MessageSquare,
-    Settings,
     ShieldCheck,
     Timer,
     UserCheck,
@@ -47,6 +38,11 @@ export enum TicketType {
     STU_SERV_ESIGN_PENDING_PLACEMENT_AGREEMENT = 'STU_SERV_ESIGN_PENDING_PLACEMENT_AGREEMENT',
     STU_SERV_ESIGN_PENDING_FACILITY_CHECKLIST = 'STU_SERV_ESIGN_PENDING_FACILITY_CHECKLIST',
 
+    // Follow ups & Requests
+    STU_SERV_GENERATE_WORKPLACE_REQUEST = 'STU_SERV_GENERATE_WORKPLACE_REQUEST',
+    STU_SERV_MID_PLACEMENT_FOLLOW_UP = 'STU_SERV_MID_PLACEMENT_FOLLOW_UP',
+    STU_SERV_TEAM_LEAD_ESCALATION = 'STU_SERV_TEAM_LEAD_ESCALATION',
+
     // ─────────────────────────────────────────────
     // INDUSTRY SOURCING TEAM
     // ─────────────────────────────────────────────
@@ -61,6 +57,10 @@ export enum TicketType {
 
     // eSign Documents
     IND_SRC_ESIGN_PENDING_DOCUMENT = 'IND_SRC_ESIGN_PENDING_DOCUMENT',
+
+    // Follow ups & Placements
+    IND_SRC_CATCH_UP_WITH_INDUSTRY_PARTNER = 'IND_SRC_CATCH_UP_WITH_INDUSTRY_PARTNER',
+    IND_SRC_CONVERT_SIGNUP_TO_PLACEMENT_READY = 'IND_SRC_CONVERT_SIGNUP_TO_PLACEMENT_READY',
 }
 
 export type TicketTypeCategory =
@@ -103,6 +103,9 @@ export const TICKET_TYPE_GROUPS: Record<TicketTypeCategory, TicketType[]> = {
         TicketType.STU_SERV_ESIGN_MULTIPLE_TEMPLATES_DETECTED,
         TicketType.STU_SERV_ESIGN_PENDING_PLACEMENT_AGREEMENT,
         TicketType.STU_SERV_ESIGN_PENDING_FACILITY_CHECKLIST,
+        TicketType.STU_SERV_GENERATE_WORKPLACE_REQUEST,
+        TicketType.STU_SERV_MID_PLACEMENT_FOLLOW_UP,
+        TicketType.STU_SERV_TEAM_LEAD_ESCALATION,
     ],
     INDUSTRY_SOURCING: [
         TicketType.IND_SRC_PLACEMENT_REQUEST_STUCK_AWAITING_RESPONSE,
@@ -110,6 +113,8 @@ export const TICKET_TYPE_GROUPS: Record<TicketTypeCategory, TicketType[]> = {
         TicketType.IND_SRC_NO_NEARBY_WORKPLACE_FOUND,
         TicketType.IND_SRC_INDUSTRY_NO_APPOINTMENT_AVAILABILITY,
         TicketType.IND_SRC_ESIGN_PENDING_DOCUMENT,
+        TicketType.IND_SRC_CATCH_UP_WITH_INDUSTRY_PARTNER,
+        TicketType.IND_SRC_CONVERT_SIGNUP_TO_PLACEMENT_READY,
     ],
     ALL: Object.values(TicketType),
 }
@@ -174,6 +179,21 @@ export const TICKETS_CONFIG: Record<
         color: 'slate',
         desc: 'Awaiting facility checklist',
     },
+    [TicketType.STU_SERV_GENERATE_WORKPLACE_REQUEST]: {
+        icon: FileText,
+        color: 'indigo',
+        desc: 'Generate workplace request',
+    },
+    [TicketType.STU_SERV_MID_PLACEMENT_FOLLOW_UP]: {
+        icon: ClipboardCheck,
+        color: 'blue',
+        desc: 'Mid placement follow up',
+    },
+    [TicketType.STU_SERV_TEAM_LEAD_ESCALATION]: {
+        icon: AlertTriangle,
+        color: 'rose',
+        desc: 'Team lead escalation',
+    },
 
     // Industry Sourcing
     [TicketType.IND_SRC_PLACEMENT_REQUEST_STUCK_AWAITING_RESPONSE]: {
@@ -200,6 +220,16 @@ export const TICKETS_CONFIG: Record<
         icon: FileText,
         color: 'emerald',
         desc: 'Pending industry document',
+    },
+    [TicketType.IND_SRC_CATCH_UP_WITH_INDUSTRY_PARTNER]: {
+        icon: UserCheck,
+        color: 'emerald',
+        desc: 'Catch up with industry partner',
+    },
+    [TicketType.IND_SRC_CONVERT_SIGNUP_TO_PLACEMENT_READY]: {
+        icon: FileCheck,
+        color: 'purple',
+        desc: 'Convert signup to placement ready',
     },
 }
 

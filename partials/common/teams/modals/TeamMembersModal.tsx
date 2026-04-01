@@ -4,6 +4,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
+    DialogDescription,
 } from '@components/ui/dialog'
 import { ScrollArea } from '@components/ui/scroll-area'
 import { User, Search, Info } from 'lucide-react'
@@ -173,6 +174,9 @@ export function TeamMembersModal({
                     <div className="absolute top-0 right-0 size-28 bg-white/10 rounded-full -mr-14 -mt-14 blur-2xl" />
 
                     <DialogHeader className="p-0">
+                        <DialogDescription className="sr-only">
+                            Manage team members and ticket assignment permissions.
+                        </DialogDescription>
                         <div className="flex items-start justify-between">
                             <DialogTitle className="text-lg font-bold flex items-center gap-2.5 text-white">
                                 <div className="size-8 rounded-lg bg-white/20 flex items-center justify-center border border-white/10 shadow-sm backdrop-blur-sm">

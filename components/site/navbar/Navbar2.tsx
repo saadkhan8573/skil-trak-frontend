@@ -142,10 +142,10 @@ export function Navbar2() {
         // <nav className={`md:active-nav ${show && 'hidden-nav'}`}>
         <nav className="shadow-sm border-b sticky top-0 z-50 bg-white">
             <div className="w-full mx-auto max-w-7xl px-4 lg:px-0">
-                <div className="relative max-w-[100%] w-full flex items-center justify-between h-24">
+                <div className="relative max-w-full w-full flex items-center justify-between h-24">
                     <div className="px-4 md:px-0 flex-1 flex items-center justify-between">
                         {/* Logo */}
-                        <div className="flex-shrink-0 flex items-center">
+                        <div className="shrink-0 flex items-center">
                             <Link href={'/'}>
                                 <Image
                                     width={0}

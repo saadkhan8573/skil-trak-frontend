@@ -1,13 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import {
-    useStripe,
-    useElements,
-    PaymentElement,
-    CardElement,
-} from '@stripe/react-stripe-js'
+import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
+import { useEffect, useState } from 'react'
 
 import { Button } from '@components/buttons'
-import { ShowErrorNotifications } from '@components/ShowErrorNotifications'
 import { useNotification } from '@hooks'
 
 export const CustomPaymentModal = ({

@@ -11,7 +11,7 @@ export const FooterVIII = () => {
         <div className="bg-[#F3F3F3] w-full py-4 md:py-8 px-4 md:px-0">
             <div className="md:max-w-7xl md:mx-auto">
                 <Image
-                    className={'w-24 md:w-32'}
+                    className={'w-24 md:w-32 h-auto'}
                     src={`/images/site/home-page-v3/footer/skiltrak-logo-2.svg`}
                     alt="Logo"
                     height={40}

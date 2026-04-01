@@ -1,5 +1,4 @@
 import {
-    Button,
     DisplayAlerts,
     GlobalModal,
     PageTitle,
@@ -7,11 +6,12 @@ import {
     PaymentModal,
     RedirectUnApprovedUsers,
     StudentNavbar,
-    StudentTimer,
+    StudentTimer
 } from '@components'
 
 import { useJoyRide } from '@hooks'
 import { UsersPendingEsignModal } from '@partials/eSign/modal/UsersPendingEsignModal'
+import { AccountExpiredModal } from '@partials/student/Profile/modal/AccountExpiredModal'
 import { ProfileModal } from '@partials/student/Profile/modal/ProfileModal'
 import { studentProfileKeys } from '@partials/student/components'
 import {
@@ -24,10 +24,8 @@ import {
     useGetStudentProfileDetailQuery,
     usePayAsNewUserMutation,
 } from '@queries'
-import { loadStripe } from '@stripe/stripe-js'
 import { StudentStatusEnum, UserStatus } from '@types'
 import { EsignDocumentStatus, getUserCredentials, userStatus } from '@utils'
-import { AccountExpiredModal } from '@partials/student/Profile/modal/AccountExpiredModal'
 import { useRouter } from 'next/router'
 import { ReactElement, ReactNode, useEffect, useState } from 'react'
 import Joyride from 'react-joyride'

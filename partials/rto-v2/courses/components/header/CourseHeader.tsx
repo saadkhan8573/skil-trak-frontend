@@ -12,6 +12,7 @@ import { PlacementRequirementsConfiguration } from '../collapsible-content/place
 import { Separator } from '@components/ui/separator'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
+import { AddAssessmentModal, ViewAssessmentsModal } from '../assessment-tools'
 
 export const CourseHeader = ({ coursesData }: any) => {
     const [expandedCourses, setExpandedCourses] = useState<string[]>([
@@ -46,17 +47,29 @@ export const CourseHeader = ({ coursesData }: any) => {
                                             <CourseHeaderTitle
                                                 course={course}
                                             />
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="h-9 w-9 rounded-full shrink-0 mt-1"
-                                            >
-                                                {isExpanded ? (
-                                                    <ChevronDown className="h-5 w-5" />
-                                                ) : (
-                                                    <ChevronRight className="h-5 w-5" />
-                                                )}
-                                            </Button>
+                                            <div className="flex items-center gap-2 shrink-0 mt-1">
+                                                <div
+                                                    onClick={(e) =>
+                                                        e.stopPropagation()
+                                                    }
+                                                >
+                                                    <ViewAssessmentsModal
+                                                        course={course}
+                                                    />
+                                                </div>
+
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-9 w-9 rounded-full"
+                                                >
+                                                    {isExpanded ? (
+                                                        <ChevronDown className="h-5 w-5" />
+                                                    ) : (
+                                                        <ChevronRight className="h-5 w-5" />
+                                                    )}
+                                                </Button>
+                                            </div>
                                         </div>
 
                                         {/* Stats Grid */}

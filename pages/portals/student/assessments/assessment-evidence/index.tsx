@@ -6,10 +6,8 @@ import { NextPageWithLayout } from '@types'
 
 // query
 import { MediaQueries } from '@constants'
-import { useNotification } from '@hooks'
 import { DesktopAssessment, MobileAssessment } from '@partials/student'
 import {
-    StudentApi,
     useGetAssessmentsCoursesQuery,
     useGetAssessmentsFoldersQuery,
     useGetWorkplaceIndustriesQuery,
@@ -26,8 +24,6 @@ const AssessmentEvidence: NextPageWithLayout = (props: Props) => {
     const [selectedFolder, setSelectedFolder] = useState<any | null>(null)
 
     const result = getCourseResult(selectedCourse?.results)
-
-    const { notification } = useNotification()
 
     // query
     const assessmentsCourses = useGetAssessmentsCoursesQuery(undefined, {
@@ -72,10 +68,6 @@ const AssessmentEvidence: NextPageWithLayout = (props: Props) => {
             !isMobile && setSelectedFolder(assessmentsFolders?.data[0])
         }
     }, [assessmentsFolders])
-
-    // const isFilesUploaded = assessmentsFolders?.data?.every(
-    //     (f: any) => f?.studentResponse[0]?.files?.length > 0
-    // )
 
     const isFilesUploaded =
         !assessmentsFolders.isLoading &&

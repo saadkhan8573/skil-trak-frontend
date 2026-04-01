@@ -36,7 +36,6 @@ export const AssessmentsToolsContainer = () => {
         null
     )
 
-    // hooks
     const { notification } = useNotification()
 
     const contextBar = useContextBar()
@@ -49,8 +48,7 @@ export const AssessmentsToolsContainer = () => {
         },
         { skip: !selectedCourseId }
     )
-    const [archiveAssessmentTool, archiveAssessmentToolResult] =
-        useUpdateAssessmentToolArchiveMutation()
+    const [archiveAssessmentTool] = useUpdateAssessmentToolArchiveMutation()
     const [remove, removeResult] = useRemoveRTOAssessmentToolsMutation()
 
     const onAddAssessment = () => {

@@ -20,8 +20,9 @@ export const TabsView = ({
         <>
             {customFieldsData &&
                 customFieldsData?.length > 0 &&
-                customFieldsData?.map((fieldData: any) => (
+                customFieldsData?.map((fieldData: any, innerIndex: number) => (
                     <TabsField
+                        key={`${fieldData?.id}-${index}-${innerIndex}`}
                         onAddCustomFieldsData={onAddCustomFieldsData}
                         onHandleKeyDown={onHandleKeyDown}
                         onSignatureClicked={onSignatureClicked}

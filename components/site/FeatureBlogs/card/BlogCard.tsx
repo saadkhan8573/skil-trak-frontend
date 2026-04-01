@@ -3,12 +3,17 @@ import { ellipsisText, HtmlToPlainText } from '@utils'
 import moment from 'moment'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { MediaQueries } from '@constants'
 
 export const BlogCard = ({ blog }: { blog: any }) => {
     const isMobile = useMediaQuery(MediaQueries.Mobile)
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     return (
         <div className="shadow-site rounded-xl p-2.5 bg-white">
@@ -34,10 +39,9 @@ export const BlogCard = ({ blog }: { blog: any }) => {
                 </Link>
                 <div className="h-12">
                     <Typography variant="label" color={'text-[#3E323280]'}>
-                        {ellipsisText(
-                            HtmlToPlainText(blog?.content),
-                            isMobile ? 45 : 77
-                        )}
+                        {mounted && isMobile
+                            ? ellipsisText(HtmlToPlainText(blog?.content), 45)
+                            : ellipsisText(HtmlToPlainText(blog?.content), 77)}
                     </Typography>
                 </div>
             </div>
@@ -45,7 +49,7 @@ export const BlogCard = ({ blog }: { blog: any }) => {
             {/*  */}
             <div className="bg-[#F5F5F5] px-4 py-3 rounded-xl">
                 <Typography variant="label" medium color="text-[#3E3232]">
-                    {moment(blog?.updatedAt).format('MMMM DD, YYYY')}
+                    {moment(blog?.updatedAt, [moment.ISO_8601, 'YYYY-MM-DD', 'MM-DD-YYYY', 'DD-MM-YYYY']).format('MMMM DD, YYYY')}
                 </Typography>
                 <Typography variant="small" color="text-[#3E323280]">
                     Published by {blog?.author}

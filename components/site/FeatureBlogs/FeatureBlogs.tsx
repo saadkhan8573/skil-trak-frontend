@@ -1,13 +1,12 @@
 import { Typography } from '@components/Typography'
 import Link from 'next/link'
-import React from 'react'
-import { BlogCard } from './card'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
+import { Pagination } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { BlogCard } from './card'
 import { FeatureBlogContainer } from './style'
 
 const FeatureBlogs = ({ blogs }: { blogs: any }) => {

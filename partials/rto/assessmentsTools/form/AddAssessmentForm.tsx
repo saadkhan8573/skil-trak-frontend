@@ -26,7 +26,7 @@ export const AddAssessmentForm = ({ edit, assessment, courses }: Props) => {
     const contextBar = useContextBar()
 
     const [create, createResult] = useCreateRtoAssessmentToolsMutation()
-    const [update, updateResult] = useUpdateRtoSubAdminAssessmentToolsMutation()
+
     useEffect(() => {
         if (courses?.data && courses.isSuccess) {
             const options = courses?.data?.map((course: any) => ({
@@ -53,11 +53,26 @@ export const AddAssessmentForm = ({ edit, assessment, courses }: Props) => {
         defaultValues: assessment,
     })
 
+    const isLogBook = methods.watch('isLogBook')
+    const isIndustryLogBook = methods.watch('isIndustryLogBook')
+
+    useEffect(() => {
+        if (isLogBook) {
+            methods.setValue('isIndustryLogBook', false)
+        }
+    }, [isLogBook, methods])
+
+    useEffect(() => {
+        if (isIndustryLogBook) {
+            methods.setValue('isLogBook', false)
+        }
+    }, [isIndustryLogBook, methods])
+
     const onSubmit = async (values: any) => {
         const valuesWithoutFile = omit(
             values,
             'file',
-            'isStudentLogBook',
+            'isLogBook',
             'isIndustryLogBook'
         )
 
@@ -66,8 +81,8 @@ export const AddAssessmentForm = ({ edit, assessment, courses }: Props) => {
         Object.entries(valuesWithoutFile).map(([key, value]) => {
             formData.append(key, value as string)
         })
-        if (values?.isStudentLogBook) {
-            formData.append('isStudentLogBook', 'true')
+        if (values?.isLogBook) {
+            formData.append('isLogBook', 'true')
         }
         if (values?.isIndustryLogBook) {
             formData.append('isIndustryLogBook', 'true')
@@ -78,10 +93,6 @@ export const AddAssessmentForm = ({ edit, assessment, courses }: Props) => {
 
     return (
         <div>
-            {/* <Typography variant={'small'} color={'text-gray-500'}>
-                Add Assessment
-            </Typography> */}
-            {/* <Typography variant={'label'}>Job Training Organization</Typography> */}
             <FormProvider {...methods}>
                 <form
                     className="mt-2 w-full"
@@ -105,7 +116,7 @@ export const AddAssessmentForm = ({ edit, assessment, courses }: Props) => {
                             required
                         />
                         <Checkbox
-                            name="isStudentLogBook"
+                            name="isLogBook"
                             label={'Logbook for Student'}
                         />
                         <Checkbox

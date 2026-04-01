@@ -4,13 +4,7 @@ import { useState } from 'react'
 // Icons
 
 // components
-import {
-    Badge,
-    FileViewModal,
-    LoadingAnimation,
-    NoData,
-    Typography,
-} from '@components'
+import { Badge, LoadingAnimation, NoData, Typography } from '@components'
 import { AssessmentFolderFileCard } from '../components'
 import { UploadFile } from './UploadFile'
 
@@ -67,8 +61,6 @@ export const AssessmentFolderDetailX = ({
     fileUpload,
 }: Props) => {
     const { onFileClicked, documentsViewModal } = DocumentsView()
-    // query
-    // fetch files
 
     const { notification } = useNotification()
 
@@ -96,53 +88,6 @@ export const AssessmentFolderDetailX = ({
     const onModalCancel = () => {
         setModal(null)
     }
-
-    const getImageViewModal = (file: any) => {
-        return (
-            <FileViewModal
-                title=""
-                subtitle=""
-                url={file?.file}
-                onCancelButtonClick={onModalCancel}
-            >
-                <div className="max-w-[650px] relative">
-                    <img src={file.file} alt="" className="max-w-full" />
-                </div>
-            </FileViewModal>
-        )
-    }
-
-    // const onFileClicked = (file: any) => {
-    //     setSelected(file)
-
-    //     if (['jpg', 'jpeg', 'png'].includes(file.extension.toLowerCase())) {
-    //         setModal(getImageViewModal(file))
-    //     } else if (['pdf'].includes(file.extension.toLowerCase())) {
-    //         const fileSplit = file.file.split('https://')
-    //         // const url = `https://www.${fileSplit[1]}`
-    //         const url = file.file
-    //         setModal(
-    //             <PdfViewModal
-    //                 downloadUrl={file.file}
-    //                 url={url}
-    //                 onCancelButtonClick={onModalCancel}
-    //             />
-    //         )
-    //     } else if (
-    //         ['mp4', 'mkv', 'avi', 'mpeg'].includes(file.extension.toLowerCase())
-    //     ) {
-    //         const fileSplit = file.file.split('https://')
-    //         // const url = `https://www.${fileSplit[1]}`
-    //         const url = file.file
-    //         setModal(
-    //             <VideoPlayModal
-    //                 url={url}
-    //                 downloadUrl={file?.file}
-    //                 onCancelButtonClick={onModalCancel}
-    //             />
-    //         )
-    //     }
-    // }
 
     return (
         <>

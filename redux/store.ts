@@ -24,7 +24,10 @@ export const store = configureStore({
     // Adding the api middleware enables caching, invalidation, polling,
     // and other useful features of `rtk-query`.
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat([
+        getDefaultMiddleware({
+            immutableCheck: false,
+            serializableCheck: false,
+        }).concat([
             authApi.middleware,
             apiSlice.middleware,
             stripeApi.middleware,

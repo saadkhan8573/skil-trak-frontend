@@ -11,16 +11,14 @@ import {
 import { UserRoles } from '@constants'
 import { useNotification } from '@hooks'
 import { InfoboxCard } from '@partials/common'
-import { PackageView } from '@partials/rto/components'
 import { AuthApi, RtoApi, usePayAsNewUserMutation } from '@queries'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
-import { OptionType, RtoFormData, StudentFormType } from '@types'
+import { OptionType, StudentFormType } from '@types'
 import { AuthUtils, SignUpUtils } from '@utils'
-import moment from 'moment'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from 'uuid'
 
 const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -47,12 +45,9 @@ export const StepReviewInfo = () => {
         setModal(null)
     }
 
-    const sectorResponse = AuthApi.useSectorsByRto(
-        Number(id),
-        {
-            skip: !id,
-        }
-    )
+    const sectorResponse = AuthApi.useSectorsByRto(Number(id), {
+        skip: !id,
+    })
 
     // rtos/id
     const onEditData = () => {
@@ -203,15 +198,19 @@ export const StepReviewInfo = () => {
     }
 
     // Map course IDs to full course objects using sectorResponse data
-    const mappedCourses = sectorResponse?.data
-        ?.filter((course: any) =>
-            formData?.courses?.includes(course?.id) ||
-            formData?.courses?.some((c: any) => (c?.value || c) === course?.id)
-        )
-        ?.map((course: any) => ({
-            label: course?.title,
-            value: course?.id
-        })) || []
+    const mappedCourses =
+        sectorResponse?.data
+            ?.filter(
+                (course: any) =>
+                    formData?.courses?.includes(course?.id) ||
+                    formData?.courses?.some(
+                        (c: any) => (c?.value || c) === course?.id
+                    )
+            )
+            ?.map((course: any) => ({
+                label: course?.title,
+                value: course?.id,
+            })) || []
 
     return (
         <>
@@ -230,7 +229,7 @@ export const StepReviewInfo = () => {
             ) : isLoading ? (
                 <LoadingAnimation />
             ) : (
-                <div className="max-w-screen-xl mx-auto mt-4 px-2 xl:px-0">
+                <div className="max-w-7xl mx-auto mt-4 px-2 xl:px-0">
                     <div>
                         <p className="font-semibold text-lg">
                             Please Review Your Information
@@ -245,7 +244,7 @@ export const StepReviewInfo = () => {
                         <div className="w-full pb-10 lg:pr-10">
                             <div className="">
                                 {/* RTO Information */}
-                                <div className="flex-grow">
+                                <div className="grow">
                                     <div className="border-b  border-secondary-dark mt-8">
                                         <Typography
                                             variant={'xs'}
@@ -299,7 +298,7 @@ export const StepReviewInfo = () => {
                                 </div>
 
                                 {/* Profile Information */}
-                                <div className="flex-grow">
+                                <div className="grow">
                                     <div className="border-b  border-secondary-dark mt-8">
                                         <Typography
                                             variant={'xs'}
@@ -341,7 +340,7 @@ export const StepReviewInfo = () => {
                             {/* Sector Info */}
                             <div>
                                 {formData?.sectors &&
-                                    formData?.sectors?.length > 0 ? (
+                                formData?.sectors?.length > 0 ? (
                                     <>
                                         <div className="border-b  border-secondary-dark mt-8">
                                             <Typography
@@ -367,10 +366,13 @@ export const StepReviewInfo = () => {
                                                         (
                                                             sector: OptionType
                                                         ) => (
-                                                            <InfoboxCard key={Number(sector?.value || sector)}>
-                                                                <div
-                                                                    className=""
-                                                                >
+                                                            <InfoboxCard
+                                                                key={Number(
+                                                                    sector?.value ||
+                                                                        sector
+                                                                )}
+                                                            >
+                                                                <div className="">
                                                                     <Typography
                                                                         variant={
                                                                             'label'
@@ -386,39 +388,43 @@ export const StepReviewInfo = () => {
                                                     )}
                                                 </div>
                                             </Card>
-                                            {mappedCourses?.length > 0 && <Card>
-                                                <div className="mb-2">
-                                                    <Typography
-                                                        variant={'xs'}
-                                                        color={'text-gray-500'}
-                                                    >
-                                                        Course(s)
-                                                    </Typography>
-                                                </div>
-                                                <div className="flex flex-col gap-y-1">
-                                                    {mappedCourses?.map(
-                                                        (
-                                                            course: any
-                                                        ) => (
-                                                            <InfoboxCard key={Number(course.value)}>
-                                                                <div
-                                                                    className=""
+                                            {mappedCourses?.length > 0 && (
+                                                <Card>
+                                                    <div className="mb-2">
+                                                        <Typography
+                                                            variant={'xs'}
+                                                            color={
+                                                                'text-gray-500'
+                                                            }
+                                                        >
+                                                            Course(s)
+                                                        </Typography>
+                                                    </div>
+                                                    <div className="flex flex-col gap-y-1">
+                                                        {mappedCourses?.map(
+                                                            (course: any) => (
+                                                                <InfoboxCard
+                                                                    key={Number(
+                                                                        course.value
+                                                                    )}
                                                                 >
-                                                                    <Typography
-                                                                        variant={
-                                                                            'label'
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            course?.label
-                                                                        }
-                                                                    </Typography>
-                                                                </div>
-                                                            </InfoboxCard>
-                                                        )
-                                                    )}
-                                                </div>
-                                            </Card>}
+                                                                    <div className="">
+                                                                        <Typography
+                                                                            variant={
+                                                                                'label'
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                course?.label
+                                                                            }
+                                                                        </Typography>
+                                                                    </div>
+                                                                </InfoboxCard>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                </Card>
+                                            )}
                                         </div>
                                     </>
                                 ) : (
@@ -502,7 +508,7 @@ export const StepReviewInfo = () => {
                             {/* Actions */}
                             <div className="mt-8 flex items-center gap-x-8">
                                 {data?.allowStudentSelfPayment ||
-                                    formData?.rtoInfo !== '' ? (
+                                formData?.rtoInfo !== '' ? (
                                     paymentConfirmed ? (
                                         <Button
                                             variant={'primary'}
@@ -536,7 +542,7 @@ export const StepReviewInfo = () => {
                             </div>
                         </div>
                     </div>
-                </div >
+                </div>
             )}
         </>
     )

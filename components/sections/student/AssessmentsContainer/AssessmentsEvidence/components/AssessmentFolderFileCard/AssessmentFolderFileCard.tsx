@@ -48,7 +48,9 @@ export const AssessmentFolderFileCard = ({
                 selected ? 'bg-blue-200' : ''
             }`}
         >
-            <AuthorizedUserComponent roles={[UserRoles.SUBADMIN]}>
+            <AuthorizedUserComponent
+                roles={[UserRoles.SUBADMIN, UserRoles.STUDENT]}
+            >
                 {!result?.isSubmitted ? (
                     archiveFileResult.isLoading ? (
                         <div className="bg-red-500 px-1 rounded-md absolute top-1 right-1 z-30">

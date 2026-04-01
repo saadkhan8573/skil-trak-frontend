@@ -1,23 +1,14 @@
+import { InitialAvatar, Switch } from '@components'
+import { cn } from '@utils'
+import { AlertTriangle, Check, ChevronDown, ChevronUp } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import {
     getTicketTypeLabel,
-    TICKETS_CONFIG,
-    TICKET_TYPE_GROUPS,
-    TicketTypeCategory,
     TeamMemberRole,
+    TICKET_TYPE_GROUPS,
+    TICKETS_CONFIG,
+    TicketTypeCategory,
 } from '../types'
-import { InitialAvatar, Switch } from '@components'
-import { cn } from '@utils'
-import {
-    AlertTriangle,
-    Check,
-    ChevronDown,
-    ChevronUp,
-    CreditCard,
-    Headphones,
-    MessageSquare,
-    Settings,
-} from 'lucide-react'
 
 // We will use the TicketType enum and a config object instead of a hardcoded array here
 // to support dynamic filtering by category
@@ -301,7 +292,9 @@ export function MemberRow({
             <div
                 className={cn(
                     'overflow-auto transition-all duration-500 ease-in-out',
-                    isPanelOpen && canReceiveTickets && role !== TeamMemberRole.LEAD
+                    isPanelOpen &&
+                        canReceiveTickets &&
+                        role !== TeamMemberRole.LEAD
                         ? 'max-h-[400px] opacity-100'
                         : 'max-h-0 opacity-0'
                 )}

@@ -53,6 +53,40 @@ export const ReleaseLogbookModal = ({
     }
 
     const extension = file?.file?.split('.')?.reverse()[0]
+    const renderAssessmentTool = (assessmentTool: any, index: number) => (
+        <div
+            key={index}
+            className=" bg-primaryNew-dark rounded-[5px] flex justify-between items-center px-5 py-2.5"
+        >
+            <Typography variant="small" medium color="text-white">
+                {assessmentTool?.title}
+            </Typography>
+            <Button
+                text="View Document"
+                onClick={() =>
+                    onFileClicked({
+                        ...assessmentTool,
+                        file: assessmentTool?.file
+                            .replaceAll('{"', '')
+                            .replaceAll('"}', ''),
+                        extension: assessmentTool?.file?.split('.').pop(),
+                        type: 'all',
+                        showEdit: false,
+                    })
+                }
+            />
+        </div>
+    )
+
+    const studentLogbooks =
+        rto?.assessmentTools?.filter((t: any) => t.isLogBook) || []
+    const industryLogbooks =
+        rto?.assessmentTools?.filter((t: any) => t.isIndustryLogBook) || []
+    const otherTools =
+        rto?.assessmentTools?.filter(
+            (t: any) => !t.isLogBook && !t.isIndustryLogBook
+        ) || []
+
     return (
         <>
             {documentsViewModal}
@@ -108,35 +142,58 @@ export const ReleaseLogbookModal = ({
                             </div>
                         </div>
                         <div className="mt-3 flex flex-col gap-y-3">
-                            {rto?.assessmentTools?.map(
-                                (assessmentTool: AssessmentToolsType) => (
-                                    <div className=" bg-primaryNew-dark rounded-[5px] flex justify-between items-center px-5 py-2.5">
-                                        <Typography
-                                            variant="small"
-                                            medium
-                                            color="text-white"
-                                        >
-                                            {assessmentTool?.title}
-                                        </Typography>
-                                        <Button
-                                            text="View Document"
-                                            onClick={() =>
-                                                onFileClicked({
-                                                    ...assessmentTool,
-                                                    file: assessmentTool?.file
-                                                        .replaceAll('{"', '')
-                                                        .replaceAll('"}', ''),
-                                                    extension:
-                                                        assessmentTool?.file
-                                                            ?.split('.')
-                                                            .pop(),
-                                                    type: 'all',
-                                                    showEdit: false,
-                                                })
-                                            }
-                                        />
-                                    </div>
-                                )
+                            {studentLogbooks.length > 0 && (
+                                <div className="space-y-3">
+                                    <Typography
+                                        semibold
+                                        className="text-slate-900 text-sm px-1"
+                                    >
+                                        Student Placement Documents
+                                    </Typography>
+                                    {studentLogbooks.map(
+                                        (assessmentTool: any, index: number) =>
+                                            renderAssessmentTool(
+                                                assessmentTool,
+                                                index
+                                            )
+                                    )}
+                                </div>
+                            )}
+
+                            {industryLogbooks.length > 0 && (
+                                <div className="space-y-3">
+                                    <Typography
+                                        semibold
+                                        className="text-slate-900 text-sm px-1"
+                                    >
+                                        Industry Placement Documents
+                                    </Typography>
+                                    {industryLogbooks.map(
+                                        (assessmentTool: any, index: number) =>
+                                            renderAssessmentTool(
+                                                assessmentTool,
+                                                index
+                                            )
+                                    )}
+                                </div>
+                            )}
+
+                            {otherTools.length > 0 && (
+                                <div className="space-y-3">
+                                    <Typography
+                                        semibold
+                                        className="text-slate-900 text-sm px-1"
+                                    >
+                                        Other Tools
+                                    </Typography>
+                                    {otherTools.map(
+                                        (assessmentTool: any, index: number) =>
+                                            renderAssessmentTool(
+                                                assessmentTool,
+                                                index
+                                            )
+                                    )}
+                                </div>
                             )}
                         </div>
                     </div>

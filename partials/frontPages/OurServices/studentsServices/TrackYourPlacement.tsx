@@ -36,7 +36,7 @@ export const TrackYourPlacement = () => {
                                 sizes="100vw"
                                 alt="Skiltrak App"
                                 className="object-contain bg-white"
-                                style={{ height: 'auto' }}
+                                style={{ width: 'auto', height: 'auto' }}
                                 src={'/images/skiltrak_IOS.svg'}
                             />
                         </div>
@@ -47,7 +47,7 @@ export const TrackYourPlacement = () => {
                                 sizes="100vw"
                                 alt="Skiltrak App"
                                 className="object-contain bg-white"
-                                style={{ height: 'auto' }}
+                                style={{ width: 'auto', height: 'auto' }}
                                 src={'/images/skiltrak_IOS.svg'}
                             />
                         </div>
@@ -65,7 +65,7 @@ export const TrackYourPlacement = () => {
                                     alt="Skiltrak App"
                                     width={148}
                                     height={47}
-                                    style={{ height: 'auto' }}
+                                    style={{ width: 'auto', height: 'auto' }}
                                 />
                             </div>
                         </a>
@@ -81,7 +81,7 @@ export const TrackYourPlacement = () => {
                                     alt="Skiltrak App"
                                     width={148}
                                     height={47}
-                                    style={{ height: 'auto' }}
+                                    style={{ width: 'auto', height: 'auto' }}
                                 />
                             </div>
                         </a>

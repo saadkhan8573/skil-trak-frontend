@@ -80,6 +80,42 @@ export function LogbookNotReleasedModal({
         }
     }
 
+    const renderAssessmentTool = (assessmentTool: any, index: number) => (
+        <div
+            key={index}
+            className="group bg-slate-50 hover:bg-slate-100/80 rounded-xl flex justify-between items-center px-4 py-3.5 border border-slate-100 transition-all hover:border-primaryNew/30"
+        >
+            <div className="flex items-center gap-2.5">
+                <div className="p-1.5 rounded-lg bg-white shadow-sm border border-slate-200 text-primaryNew group-hover:text-primaryNew-dark transition-colors">
+                    <FileText className="w-3.5 h-3.5" />
+                </div>
+                <Typography
+                    variant="small"
+                    medium
+                    className="text-slate-700 font-semibold text-xs leading-tight line-clamp-1"
+                >
+                    {assessmentTool?.title}
+                </Typography>
+            </div>
+            <Button
+                variant="primaryNew"
+                className="h-7 px-3 text-[10px] font-bold border-slate-200 hover:bg-white hover:text-primaryNew hover:border-primaryNew transition-all shrink-0"
+                onClick={() => onViewFile(assessmentTool)}
+            >
+                View
+            </Button>
+        </div>
+    )
+
+    const studentLogbooks =
+        rto?.assessmentTools?.filter((t: any) => t.isLogBook) || []
+    const industryLogbooks =
+        rto?.assessmentTools?.filter((t: any) => t.isIndustryLogBook) || []
+    const otherTools =
+        rto?.assessmentTools?.filter(
+            (t: any) => !t.isLogBook && !t.isIndustryLogBook
+        ) || []
+
     return (
         <>
             <Dialog open={isOpen} onOpenChange={onClose}>
@@ -141,45 +177,68 @@ export function LogbookNotReleasedModal({
                             </div>
 
                             {/* Assessment Tools List */}
-                            <div className="space-y-3">
-                                <Typography
-                                    semibold
-                                    className="text-slate-900 text-sm px-1"
-                                >
-                                    Assessment Tools
-                                </Typography>
-                                {rto?.assessmentTools?.map(
-                                    (
-                                        assessmentTool: AssessmentToolsType,
-                                        index
-                                    ) => (
-                                        <div
-                                            key={index}
-                                            className="group bg-slate-50 hover:bg-slate-100/80 rounded-xl flex justify-between items-center px-4 py-3.5 border border-slate-100 transition-all hover:border-primaryNew/30"
+                            <div className="space-y-4">
+                                {studentLogbooks.length > 0 && (
+                                    <div className="space-y-3">
+                                        <Typography
+                                            semibold
+                                            className="text-slate-900 text-sm px-1"
                                         >
-                                            <div className="flex items-center gap-2.5">
-                                                <div className="p-1.5 rounded-lg bg-white shadow-sm border border-slate-200 text-primaryNew group-hover:text-primaryNew-dark transition-colors">
-                                                    <FileText className="w-3.5 h-3.5" />
-                                                </div>
-                                                <Typography
-                                                    variant="small"
-                                                    medium
-                                                    className="text-slate-700 font-semibold text-xs leading-tight line-clamp-1"
-                                                >
-                                                    {assessmentTool?.title}
-                                                </Typography>
-                                            </div>
-                                            <Button
-                                                variant="primaryNew"
-                                                className="h-7 px-3 text-[10px] font-bold border-slate-200 hover:bg-white hover:text-primaryNew hover:border-primaryNew transition-all shrink-0"
-                                                onClick={() =>
-                                                    onViewFile(assessmentTool)
-                                                }
-                                            >
-                                                View
-                                            </Button>
-                                        </div>
-                                    )
+                                            Student Placement Documents
+                                        </Typography>
+                                        {studentLogbooks.map(
+                                            (
+                                                assessmentTool: any,
+                                                index: number
+                                            ) =>
+                                                renderAssessmentTool(
+                                                    assessmentTool,
+                                                    index
+                                                )
+                                        )}
+                                    </div>
+                                )}
+
+                                {industryLogbooks.length > 0 && (
+                                    <div className="space-y-3">
+                                        <Typography
+                                            semibold
+                                            className="text-slate-900 text-sm px-1"
+                                        >
+                                            Industry Placement Documents
+                                        </Typography>
+                                        {industryLogbooks.map(
+                                            (
+                                                assessmentTool: any,
+                                                index: number
+                                            ) =>
+                                                renderAssessmentTool(
+                                                    assessmentTool,
+                                                    index
+                                                )
+                                        )}
+                                    </div>
+                                )}
+
+                                {otherTools.length > 0 && (
+                                    <div className="space-y-3">
+                                        <Typography
+                                            semibold
+                                            className="text-slate-900 text-sm px-1"
+                                        >
+                                            Other Tools
+                                        </Typography>
+                                        {otherTools.map(
+                                            (
+                                                assessmentTool: any,
+                                                index: number
+                                            ) =>
+                                                renderAssessmentTool(
+                                                    assessmentTool,
+                                                    index
+                                                )
+                                        )}
+                                    </div>
                                 )}
                             </div>
                         </div>

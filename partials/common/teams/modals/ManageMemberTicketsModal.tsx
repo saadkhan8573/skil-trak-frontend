@@ -5,6 +5,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
+    DialogDescription,
 } from '@components/ui/dialog'
 import { ScrollArea } from '@components/ui/scroll-area'
 import { Ticket, Hash, Clock, AlertCircle } from 'lucide-react'
@@ -75,6 +76,9 @@ export function ManageMemberTicketsModal({
                     <div className="absolute top-0 right-0 size-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl" />
 
                     <DialogHeader className="p-0">
+                        <DialogDescription className="sr-only">
+                            Manage and view assigned support tickets for the selected member.
+                        </DialogDescription>
                         <DialogTitle className="text-lg font-bold flex items-center gap-2.5 text-white">
                             <div className="size-8 rounded-lg bg-white/20 flex items-center justify-center border border-white/10 shadow-sm">
                                 <Ticket className="size-4 text-white" />

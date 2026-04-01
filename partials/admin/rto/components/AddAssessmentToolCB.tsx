@@ -75,7 +75,7 @@ export const AddAssessmentToolCB = ({ edit, assessment, rtoUser }: Props) => {
 
     const assessmentValues = {
         title: assessment?.title,
-        isStudentLogBook: assessment?.isStudentLogBook,
+        isLogBook: assessment?.isLogBook,
         isIndustryLogBook: assessment?.isIndustryLogBook,
     }
 
@@ -84,12 +84,27 @@ export const AddAssessmentToolCB = ({ edit, assessment, rtoUser }: Props) => {
         defaultValues: assessmentValues,
     })
 
+    const isLogBook = methods.watch('isLogBook')
+    const isIndustryLogBook = methods.watch('isIndustryLogBook')
+
+    useEffect(() => {
+        if (isLogBook) {
+            methods.setValue('isIndustryLogBook', false)
+        }
+    }, [isLogBook, methods])
+
+    useEffect(() => {
+        if (isIndustryLogBook) {
+            methods.setValue('isLogBook', false)
+        }
+    }, [isIndustryLogBook, methods])
+
     const onSubmit = async (values: RtoAssessmentToolFormType) => {
         // delete values.file
         const valuesWithoutFile = omit(
             values,
             'file',
-            'isStudentLogBook',
+            'isLogBook',
             'isIndustryLogBook'
         )
         const formData = new FormData()
@@ -97,8 +112,8 @@ export const AddAssessmentToolCB = ({ edit, assessment, rtoUser }: Props) => {
         Object.entries(valuesWithoutFile).map(([key, value]) => {
             formData.append(key, value as string)
         })
-        if (values?.isStudentLogBook) {
-            formData.append('isStudentLogBook', 'true')
+        if (values?.isLogBook) {
+            formData.append('isLogBook', 'true')
         }
         if (values?.isIndustryLogBook) {
             formData.append('isIndustryLogBook', 'true')
@@ -157,7 +172,7 @@ export const AddAssessmentToolCB = ({ edit, assessment, rtoUser }: Props) => {
                             required
                         />
                         <Checkbox
-                            name="isStudentLogBook"
+                            name="isLogBook"
                             label={'Logbook for Student'}
                         />
                         <Checkbox

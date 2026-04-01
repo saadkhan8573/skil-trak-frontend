@@ -1,87 +1,58 @@
-import { FileViewModal, PdfViewModal, VideoPlayModal } from '@components'
-import Image from 'next/image'
+import { ViewDocumentModal, ViewImageModal, VideoPlayModal } from '@components'
 import React, { ReactElement, useState } from 'react'
 
 export const DocumentsView = () => {
     const [modal, setModal] = useState<ReactElement | null>(null)
 
-    const onModalCancel = () => {
-        setModal(null)
-    }
-
-    const getImageViewModal = (file: any) => {
-        return (
-            <FileViewModal
-                title=""
-                subtitle=""
-                url={file?.file}
-                onCancelButtonClick={onModalCancel}
-            >
-                <div className="max-w-[650px] relative">
-                    <Image
-                        width={0}
-                        height={0}
-                        sizes="100vw 100vh"
-                        src={file?.file}
-                        alt=""
-                        className="w-full h-full"
-                        blurDataURL={'/images/blur_image.png'}
-                        placeholder="blur"
-                    />
-                </div>
-            </FileViewModal>
-        )
-    }
-
     const onFileClicked = (file: any) => {
-        if (
-            [
-                'jpg',
-                'jpeg',
-                'png',
-                'jfif',
-                'heiv',
-                'JPG',
-                'webp',
-                'heic',
-            ].includes(file?.extension?.toLowerCase())
-        ) {
-            setModal(getImageViewModal(file))
-        } else if (
-            ['pdf', 'document', 'msword'].includes(
-                file?.extension?.toLowerCase()
-            )
-        ) {
-            // const fileSplit = file.file.split('https://')
-            // const url = `https://www.${fileSplit[1]}`
-            const url = `${file?.file}`
+        const fileExtension = file?.extension?.toLowerCase()
+        const isImage = [
+            'jpg',
+            'jpeg',
+            'png',
+            'jfif',
+            'heiv',
+            'JPG',
+            'webp',
+            'heic',
+        ].includes(fileExtension)
+        const isPdf = ['pdf', 'document', 'msword'].includes(fileExtension)
+        const isVideo = [
+            'mp4',
+            'mkv',
+            'avi',
+            'mpeg',
+            'quicktime',
+            'mov',
+            'octet-stream',
+        ].includes(fileExtension)
+
+        if (isImage) {
             setModal(
-                <PdfViewModal
-                    url={url}
-                    downloadUrl={file?.file}
-                    onCancelButtonClick={onModalCancel}
-                    extension={file?.extension}
+                <ViewImageModal
+                    open={true}
+                    onOpenChange={(open) => !open && setModal(null)}
+                    fileUrl={file?.file}
+                    title={file?.filename || 'Image Preview'}
                 />
             )
-        } else if (
-            [
-                'mp4',
-                'mkv',
-                'avi',
-                'mpeg',
-                'quicktime',
-                'mov',
-                'octet-stream',
-            ].includes(file?.extension?.toLowerCase())
-        ) {
-            // const fileSplit = file.file.split('https://')
-            // const url = `https://www.${fileSplit[1]}`
+        } else if (isPdf) {
+            setModal(
+                <ViewDocumentModal
+                    open={true}
+                    onOpenChange={(open) => !open && setModal(null)}
+                    fileUrl={file?.file}
+                    title={file?.filename || 'Document Preview'}
+                />
+            )
+        } else if (isVideo) {
             setModal(
                 <VideoPlayModal
-                    // url={url}
                     url={file?.file}
                     downloadUrl={file?.file}
-                    onCancelButtonClick={onModalCancel}
+                    onCancelButtonClick={() => {
+                        setModal(null)
+                    }}
                 />
             )
         }

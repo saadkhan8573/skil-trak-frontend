@@ -82,8 +82,6 @@ export function ReleaseLogbookModal({
         }
     }
 
-    console.log(':rto?.assessmentTools', rto?.assessmentTools)
-
     const renderAssessmentTool = (assessmentTool: any, index: number) => (
         <div
             key={index}

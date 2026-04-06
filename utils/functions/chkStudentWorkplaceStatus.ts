@@ -134,7 +134,7 @@ export const getWorkplaceIndustry = (workplace: IWorkplaceIndustries) => {
     const latestPending = workplace?.latestPendingApproval
     const appliedIndustry = workplace?.industries?.find((i) => i.applied)
     const fallbackApproval = workplace?.workplaceApprovaleRequest?.[0]
-    console.log({ workplace })
+
     if (studentProvided) {
         return {
             industry: studentProvided.industry,

@@ -21,9 +21,6 @@ export default function ExternalImagePlugin(): null {
                 // Verify the node is still in the processing set (not removed or updated)
                 if (!processingNodes.current.has(nodeKey)) return
 
-                console.log(
-                    `ExternalImagePlugin: 🔄 [Queue] Mirroring ${src.startsWith('data:') ? 'base64 image' : src}`
-                )
                 try {
                     let uploadedUrl = ''
 
@@ -42,52 +39,34 @@ export default function ExternalImagePlugin(): null {
                         const formData = new FormData()
                         formData.append('file', file)
 
-                        // 3. Upload to server
-                        console.log(
-                            `ExternalImagePlugin: 📤 Uploading pasted base64 image...`
-                        )
                         const res: any = await uploadImage(formData)
-                        if (res?.error) throw new Error(res.error?.data?.message || 'Upload failed')
+                        if (res?.error)
+                            throw new Error(
+                                res.error?.data?.message || 'Upload failed'
+                            )
                         uploadedUrl = res?.data?.url
                     } else {
                         // Handle external URL via server-side mirroring
                         const res: any = await uploadImageByUrl({ url: src })
                         if (res?.error) {
-                            console.warn(`ExternalImagePlugin: ⚠️ Server could not mirror ${src}. Using original URL.`);
-                            return; // Leave the original URL in place
+                            console.warn(
+                                `ExternalImagePlugin: ⚠️ Server could not mirror ${src}. Using original URL.`
+                            )
+                            return // Leave the original URL in place
                         }
                         uploadedUrl = res?.data?.uploadedFile || res?.data?.url
                     }
 
                     if (uploadedUrl) {
-                        console.log(
-                            `ExternalImagePlugin: ✅ Successfully mirrored to ${uploadedUrl}`
-                        )
                         editor.update(() => {
                             const node = $getNodeByKey(nodeKey)
                             if ($isImageNode(node)) {
                                 node.setSrc(uploadedUrl)
                             }
                         })
-                    } else {
-                        console.warn(`ExternalImagePlugin: ⚠️ No URL in upload response for ${src}. Using original URL.`)
                     }
                 } catch (e: any) {
                     // Check for CORS or network errors
-                    if (
-                        e.name === 'TypeError' &&
-                        (e.message.includes('fetch') ||
-                            e.message.includes('NetworkError'))
-                    ) {
-                        console.warn(
-                            `ExternalImagePlugin: ⚠️ CORS block for ${src}. Manual upload available via button.`
-                        )
-                    } else {
-                        console.error(
-                            'ExternalImagePlugin: ❌ Mirroring failed:',
-                            e
-                        )
-                    }
                 } finally {
                     processingNodes.current.delete(nodeKey)
                 }
@@ -108,9 +87,6 @@ export default function ExternalImagePlugin(): null {
             // Only process external images (not internal, not blob URLs)
             // Now including data: URLs to ensure they get uploaded
             if (src && !src.startsWith('blob:') && !isServerImageUrl(src)) {
-                console.log(
-                    `ExternalImagePlugin: [NodeTransform] Found external or base64 image to mirror: ${src.startsWith('data:') ? 'base64 data' : src}`
-                )
                 processingNodes.current.add(nodeKey)
                 handleExternalImage(src, nodeKey)
             } else if (src && isServerImageUrl(src)) {

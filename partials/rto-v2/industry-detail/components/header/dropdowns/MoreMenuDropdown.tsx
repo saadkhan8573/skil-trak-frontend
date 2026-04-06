@@ -15,6 +15,7 @@ import {
     Briefcase,
     Ban,
     Unlock,
+    ClipboardList,
 } from 'lucide-react'
 import { UserStatus } from '@types'
 
@@ -35,6 +36,7 @@ interface MoreMenuDropdownProps {
         onWorkplaceType: () => void
         onStatusChange: () => void
         onBranchLocations: () => void
+        onEligibilityCriteria: () => void
     }
     role: string | undefined
     industry: Industry
@@ -88,6 +90,15 @@ export function MoreMenuDropdown({
             color: 'text-[#8B5CF6]',
             bg: 'bg-[#8B5CF6]/10',
             groupHoverBg: 'group-hover:bg-[#8B5CF6]/20',
+            show: true,
+        },
+        {
+            label: 'Eligibility Criteria',
+            icon: ClipboardList,
+            action: actions.onEligibilityCriteria,
+            color: 'text-indigo-500',
+            bg: 'bg-indigo-500/10',
+            groupHoverBg: 'group-hover:bg-indigo-500/20',
             show: true,
         },
         {

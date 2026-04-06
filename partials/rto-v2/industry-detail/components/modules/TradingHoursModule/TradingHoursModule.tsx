@@ -379,7 +379,6 @@ export function TradingHoursModule() {
                 description: 'Trading hours saved',
             })
         } catch (error) {
-            console.error('Failed to save trading hours', error)
             notification.error({
                 title: 'Error',
                 description:

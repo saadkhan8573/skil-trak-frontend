@@ -321,7 +321,6 @@ export const InitiateSignStudent = ({
                 setIsLoading(false)
                 setIsError(true)
                 // Handle errors
-                console.error('Axios Error:', error)
 
                 // Assuming you want to show an error notification
                 notification.error({

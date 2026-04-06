@@ -1,4 +1,9 @@
-import { Tooltip } from '@components/Tooltip'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@components/ui/tooltip'
 import classNames from 'classnames'
 import { LucideProps } from 'lucide-react'
 import {
@@ -104,25 +109,35 @@ export const ActionButton = ({
     })
 
     return (
-        <button
-            disabled={disabled}
-            type={submit ? 'submit' : 'button'}
-            className={`${simple ? simpleClasses : classes} relative group`}
-            {...(!submit ? { onClick: (e) => onClick && onClick(e) } : {})}
-        >
-            <div className="flex items-center justify-center gap-x-2">
-                {loading ? (
-                    <PulseLoader size={6} />
-                ) : mini ? (
-                    Icon && <Icon />
-                ) : (
-                    <>
-                        {Icon && <Icon size={16} />}
-                        {text || children}
-                    </>
-                )}
-            </div>
-            {title && <Tooltip>{title}</Tooltip>}
-        </button>
+        <TooltipProvider>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <button
+                        disabled={disabled}
+                        type={submit ? 'submit' : 'button'}
+                        className={`${
+                            simple ? simpleClasses : classes
+                        } relative group`}
+                        {...(!submit
+                            ? { onClick: (e) => onClick && onClick(e) }
+                            : {})}
+                    >
+                        <div className="flex items-center justify-center gap-x-2">
+                            {loading ? (
+                                <PulseLoader size={6} />
+                            ) : mini ? (
+                                Icon && <Icon />
+                            ) : (
+                                <>
+                                    {Icon && <Icon size={16} />}
+                                    {text || children}
+                                </>
+                            )}
+                        </div>
+                    </button>
+                </TooltipTrigger>
+                {title && <TooltipContent side="top">{title}</TooltipContent>}
+            </Tooltip>
+        </TooltipProvider>
     )
 }

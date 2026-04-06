@@ -56,7 +56,7 @@ export function CancelInitiatedEsignModal({
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[440px] p-0 overflow-hidden bg-white/95 backdrop-blur-xl rounded-[28px] border-none shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)]">
                 {/* Header Section with Red Aesthetic */}
-                <div className="relative h-32 bg-gradient-to-br from-rose-500 via-red-500 to-red-600 overflow-hidden">
+                <div className="relative h-32 bg-linear-to-br from-rose-500 via-red-500 to-red-600 overflow-hidden">
                     <div className="absolute inset-0 opacity-20">
                         <div className="absolute top-0 -left-4 w-32 h-32 bg-white rounded-full blur-3xl animate-pulse" />
                         <div className="absolute bottom-0 -right-4 w-24 h-24 bg-red-300 rounded-full blur-2xl" />
@@ -73,7 +73,7 @@ export function CancelInitiatedEsignModal({
                 </div>
 
                 <div className="p-8">
-                    <DialogDescription className="text-slate-600 text-base leading-relaxed mb-10 text-center">
+                    <DialogDescription className="text-slate-600 leading-relaxed mb-10 text-center">
                         Confirm cancellation for{' '}
                         <span className="font-extrabold text-[#1A2332] underline decoration-rose-500/30 decoration-4 underline-offset-2">
                             {sectorName}
@@ -96,7 +96,7 @@ export function CancelInitiatedEsignModal({
                         <Button
                             onClick={handleCancel}
                             disabled={isLoading}
-                            className="h-13 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white shadow-xl shadow-red-500/25 font-bold transition-all hover:scale-[1.02] active:scale-[0.98] border-none flex items-center justify-center"
+                            className="h-13 rounded-2xl bg-linear-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white shadow-xl shadow-red-500/25 font-bold transition-all hover:scale-[1.02] active:scale-[0.98] border-none flex items-center justify-center"
                         >
                             {isLoading ? (
                                 <Loader2 className="w-5 h-5 animate-spin" />

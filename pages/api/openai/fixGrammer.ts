@@ -139,8 +139,6 @@ Keep the tone and style similar to the original text.`,
             changesMade: result.changes_made || [],
         })
     } catch (error) {
-        console.error('Error in grammar correction API:', error)
-
         // Handle specific errors that might not have been caught above
         if (error instanceof Error) {
             if (error.message.includes('API key')) {

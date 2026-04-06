@@ -57,8 +57,7 @@ export const OnViewMapFutureIndustryDetailsTab = ({
     }
 
     const studentId = getStudentId()
-    console.log('studentId', studentId)
-    console.log('router', router.query)
+
     const [addToContacted, addToContactedResult] =
         SubAdminApi.Workplace.contactWorkplaceIndustry()
     const [callLog, callLogResult] =

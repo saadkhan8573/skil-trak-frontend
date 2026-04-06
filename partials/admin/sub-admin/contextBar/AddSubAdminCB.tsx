@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
-import { SubAdminForm } from '../form'
 import { UserRoles } from '@constants'
+import { useEffect } from 'react'
+import { SubAdminForm } from '../form'
 
 // query
-import { AdminApi } from '@queries'
-import { SubAdmin, User } from '@types'
 import { useContextBar, useNotification } from '@hooks'
+import { AdminApi } from '@queries'
+import { SubAdmin } from '@types'
 
 export const AddSubAdminCB = ({
     subAdmin,

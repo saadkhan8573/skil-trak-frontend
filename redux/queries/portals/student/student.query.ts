@@ -29,7 +29,7 @@ export const studentApi = apiSlice.injectEndpoints({
         ...studentsScheduleEndpoints(build),
         ...studentAssessmentEvidenceEndpoints(build),
     }),
-    // overrideExisting: true,
+    overrideExisting: true,
 })
 
 export const {
@@ -122,6 +122,8 @@ export const {
     useUpdateTalentPoolProfileMutation,
     useGetIndustryRequestCountQuery,
     useReadIndustryRequestMutation,
+    useGetStudentWorkplaceQuestionsQuery,
+    useUpdateStudentWorkplaceQuestionMutation,
     useGetTalentPoolConnectionRequestCountQuery,
 } = studentApi
 
@@ -190,6 +192,8 @@ export const StudentApi = {
             useGetWpApprovalRequestIndustryChecksQuery,
         useCompleteWorkplaceApprovalRequest:
             useCompleteWorkplaceApprovalRequestMutation,
+        useGetStudentWorkplaceQuestions: useGetStudentWorkplaceQuestionsQuery,
+        useUpdateStudentWorkplaceQuestionMutation,
     },
     Schedule: {
         useAddScheduleNote: useAddScheduleNoteMutation,

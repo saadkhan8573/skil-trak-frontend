@@ -269,8 +269,8 @@ export const StudentProfileForm = ({
                 isInternational
                     ? 'international'
                     : isInternational === false
-                    ? 'domestic'
-                    : ''
+                      ? 'domestic'
+                      : ''
             )
             setSelectedRto(profile?.data?.rto?.id)
             setSelectedAge(profile?.data?.age)
@@ -756,12 +756,7 @@ export const StudentProfileForm = ({
                                                                 state
                                                             )
                                                         }
-                                                    } catch (error) {
-                                                        console.error(
-                                                            'Error fetching postal code:',
-                                                            error
-                                                        )
-                                                    }
+                                                    } catch (error) {}
                                                 }
                                             }}
                                         />

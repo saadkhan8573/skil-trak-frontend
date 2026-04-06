@@ -131,8 +131,9 @@ export const IndustryProfileDetail = ({
                 {/* <InterviewAvailability data={industry} /> */}
                 <div className="flex gap-x-4 h-[490px] mt-5 items-stretch">
                     <div
-                        className={`h-full ${role === UserRoles.RTO ? 'w-full' : 'w-2/3 '
-                            }`}
+                        className={`h-full ${
+                            role === UserRoles.RTO ? 'w-full' : 'w-2/3 '
+                        }`}
                     >
                         <Card noPadding fullHeight>
                             <CourseManagement industry={industry} />
@@ -148,29 +149,30 @@ export const IndustryProfileDetail = ({
 
                 {/*  */}
                 <div
-                    className={`grid ${excludeRoles ? 'grid-cols-2' : 'grid-cols-1'
-                        }  gap-3 h-[570px]`}
+                    className={`grid ${
+                        excludeRoles ? 'grid-cols-2' : 'grid-cols-1'
+                    }  gap-3 h-[570px]`}
                 >
                     <div className="h-full">
                         <ProfileAppointments
                             link={
                                 role === UserRoles.ADMIN
                                     ? {
-                                        pathname:
-                                            '/portals/admin/appointment-type/create-appointment',
-                                        query: {
-                                            industry: industry?.user?.id,
-                                        },
-                                    }
+                                          pathname:
+                                              '/portals/admin/appointment-type/create-appointment',
+                                          query: {
+                                              industry: industry?.user?.id,
+                                          },
+                                      }
                                     : role === UserRoles.SUBADMIN
-                                        ? {
+                                      ? {
                                             pathname:
                                                 '/portals/sub-admin/tasks/appointments/create-appointment',
                                             query: {
                                                 industry: industry?.user?.id,
                                             },
                                         }
-                                        : null
+                                      : null
                             }
                             userId={industry?.user?.id}
                         />

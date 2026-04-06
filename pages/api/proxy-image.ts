@@ -29,7 +29,6 @@ export default async function handler(
         )
         response.data.pipe(res)
     } catch (error: any) {
-        console.error('Proxy Error:', error.message)
         res.status(500).json({ error: 'Failed to fetch image' })
     }
 }

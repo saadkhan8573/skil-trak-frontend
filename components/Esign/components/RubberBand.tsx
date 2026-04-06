@@ -57,9 +57,7 @@ export const RubberBand = ({
                     })
                     document.removeEventListener('mousemove', onMouseMove)
                     document.removeEventListener('mouseup', onMouseUp)
-                } catch (err) {
-                    console.error(err)
-                }
+                } catch (err) {}
             }
 
             return (e) => {

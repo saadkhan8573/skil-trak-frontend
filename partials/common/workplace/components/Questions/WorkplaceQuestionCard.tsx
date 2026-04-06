@@ -49,33 +49,43 @@ export const WorkplaceQuestionCard = ({
 
     useEffect(() => {
         if (data?.answer) {
-            setAnswer(
-                multipleSelection
-                    ? data?.answer
-                        ? data?.answer?.split(',')
-                        : []
-                    : data?.answer
-            )
+            if (multipleSelection) {
+                setAnswer(Array.isArray(data.answer) ? data.answer : data.answer.split(','))
+            } else {
+                setAnswer(data.answer)
+            }
         }
     }, [data])
 
+    const isYesActive =
+        answer === WorkplaceAnswerEnum.Yes ||
+        (answer &&
+            answer !== WorkplaceAnswerEnum.No &&
+            !multipleSelection &&
+            !customAnswers)
+
     const numberClasses = classNames({
         'bg-[#BF0000]': WorkplaceAnswerEnum.No === answer,
-        'bg-[#30AF22]': WorkplaceAnswerEnum.Yes === answer,
+        'bg-[#30AF22]': isYesActive,
         'bg-muted-dark':
             !answer ||
-            (answer !== WorkplaceAnswerEnum.Yes &&
-                answer !== WorkplaceAnswerEnum.No),
+            (answer !== WorkplaceAnswerEnum.No && !isYesActive),
     })
 
     const answerIconClasses = (text: string, type?: string) => {
-        return classNames({
-            'text-[#BF0000]':
-                text === answer && WorkplaceAnswerEnum.No === answer,
-            'text-[#30AF22]': customAnswers
+        const isActive =
+            multipleSelection && Array.isArray(answer)
+                ? answer.includes(text)
+                : customAnswers
                 ? text === answer
-                : text === answer && WorkplaceAnswerEnum.Yes === answer,
-            'text-secondary-dark': answer !== text,
+                : (text === WorkplaceAnswerEnum.Yes && isYesActive) ||
+                  (text === WorkplaceAnswerEnum.No &&
+                      answer === WorkplaceAnswerEnum.No)
+
+        return classNames({
+            'text-[#BF0000]': text === WorkplaceAnswerEnum.No && isActive,
+            'text-[#30AF22]': text !== WorkplaceAnswerEnum.No && isActive,
+            'text-secondary-dark': !isActive,
         })
     }
 
@@ -88,7 +98,7 @@ export const WorkplaceQuestionCard = ({
     return (
         <div>
             <div
-                className={`flex-grow  border-dashed ${
+                className={`grow  border-dashed ${
                     error ? 'border-2 border-error' : 'border border-[#A5A3A9]'
                 }  p-2.5 h-auto ${
                     height ? height : 'lg:h-[104px]'

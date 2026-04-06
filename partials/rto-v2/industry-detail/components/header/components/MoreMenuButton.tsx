@@ -1,5 +1,4 @@
 import { Badge } from '@components'
-import { UserRoles } from '@constants'
 import { useActionModal } from '@hooks'
 import {
     AcceptingStudentModal,
@@ -16,7 +15,12 @@ import { getUserCredentials, cn } from '@utils'
 import { MoreVertical, X } from 'lucide-react'
 import { ReactNode, useState } from 'react'
 import { MoreMenuDropdown } from '../dropdowns'
-import { IndustryInfoMessageModal, ServicesOfferedModal, WorkplaceTypeModal } from '@partials/rto-v2/industry-detail/modal'
+import {
+    IndustryInfoMessageModal,
+    PlacementEligibilityCriteriaModal,
+    ServicesOfferedModal,
+    WorkplaceTypeModal,
+} from '@partials/rto-v2/industry-detail/modal'
 import { BranchLocationsDialog, IndustryStatusChangeModal } from '../modals'
 import { UserStatus } from '@types'
 
@@ -28,7 +32,9 @@ export function MoreMenuButton() {
     const { passwordModal, onViewPassword, onUpdatePassword } = useActionModal()
     const [modal, setModal] = useState<ReactNode | null>(null)
     const [showStatusChangeModal, setShowStatusChangeModal] = useState(false)
-    const [showBranchLocationsDialog, setShowBranchLocationsDialog] = useState(false)
+    const [showBranchLocationsDialog, setShowBranchLocationsDialog] =
+        useState(false)
+    const [showEligibilityModal, setShowEligibilityModal] = useState(false)
     const role = getUserCredentials()?.role
 
     const onCancelModal = () => {
@@ -119,6 +125,11 @@ export function MoreMenuButton() {
         setShowMenu(false)
     }
 
+    const onEligibilityCriteria = () => {
+        setShowEligibilityModal(true)
+        setShowMenu(false)
+    }
+
     const actions = {
         onEditPassword: () => {
             onUpdatePassword({ user: industry!.user })
@@ -146,6 +157,7 @@ export function MoreMenuButton() {
         onSendInfoMessage: onSendInfoMessage,
         onServiceOffered: onServiceOffered,
         onWorkplaceType: onWorkplaceType,
+        onEligibilityCriteria: onEligibilityCriteria,
         onStatusChange: () => {
             setShowStatusChangeModal(true)
             setShowMenu(false)
@@ -164,7 +176,7 @@ export function MoreMenuButton() {
                 onClick={() => setShowMenu(!showMenu)}
                 Icon={showMenu ? X : MoreVertical}
                 className={cn(
-                    '!bg-white !text-[#044866] border border-[#044866]/20 cursor-pointer hover:bg-slate-50 transition-all active:scale-95',
+                    'bg-white! text-[#044866]! border border-[#044866]/20 cursor-pointer hover:bg-slate-50 transition-all active:scale-95',
                     showMenu && 'border-primary/40 shadow-sm'
                 )}
                 title="More Options"
@@ -189,6 +201,11 @@ export function MoreMenuButton() {
             <BranchLocationsDialog
                 open={showBranchLocationsDialog}
                 onOpenChange={setShowBranchLocationsDialog}
+            />
+
+            <PlacementEligibilityCriteriaModal
+                open={showEligibilityModal}
+                onOpenChange={setShowEligibilityModal}
             />
         </div>
     )

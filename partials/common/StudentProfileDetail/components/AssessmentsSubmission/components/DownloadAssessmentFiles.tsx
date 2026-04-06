@@ -39,13 +39,7 @@ export const DownloadAssessmentFiles = ({
                         })
                         const fileName = urls[i]?.split('/')?.reverse()?.[0]
                         zip.file(`${fileName}`, response.data) // You might want to adjust the filename and extension
-                    } catch (error) {
-                        console.error(
-                            `Error fetching or adding file ${i}:`,
-                            error
-                        )
-                        // Optionally, you can log or handle the error here
-                    }
+                    } catch (error) {}
                 }
                 try {
                     const zipContent = await zip.generateAsync({

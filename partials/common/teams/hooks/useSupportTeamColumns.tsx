@@ -63,8 +63,6 @@ export function useSupportTeamColumns({
                 const members = row.original?.members || []
                 const teamName = row.original?.name || ''
 
-                console.log('row.original', row.original)
-
                 if (!members.length) return <span>0</span>
 
                 return (

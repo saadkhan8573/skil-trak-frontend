@@ -39,7 +39,6 @@ export function DayCard({ day, dayKey }: DayCardProps) {
             })
             return true
         } catch (error) {
-            console.error('Failed to delete shift', error)
             notification.error({
                 title: 'Error',
                 description: 'Failed to delete shift. Please try again.',
@@ -93,7 +92,7 @@ export function DayCard({ day, dayKey }: DayCardProps) {
                         )}
                     </>
                 ) : (
-                    <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-br from-[#F8FAFB] to-[#E8F4F8] rounded-lg">
+                    <div className="flex items-center gap-2 px-3 py-2 bg-linear-to-br from-[#F8FAFB] to-[#E8F4F8] rounded-lg">
                         <span className="text-sm font-medium text-[#94A3B8]">
                             Closed
                         </span>

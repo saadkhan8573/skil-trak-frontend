@@ -4,4 +4,5 @@ export interface FindWorkplaceFilter {
     isPartnered: boolean
     isContacted: boolean
     address: string
+    wpType: number
 }

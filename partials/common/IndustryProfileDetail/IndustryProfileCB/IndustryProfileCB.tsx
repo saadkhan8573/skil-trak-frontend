@@ -286,24 +286,6 @@ export const IndustryProfileCB = ({
                 <div>
                     <IndustryWpType industryUserId={industry?.user?.id} />
                 </div>
-                {/* <div className="flex justify-between items-center gap-x-3 mt-2">
-                    <AuthorizedUserComponent
-                        roles={[UserRoles.ADMIN, UserRoles.SUBADMIN]}
-                        isAssociatedWithRto={false}
-                    >
-                        <div
-                            onClick={onClickPremiumFeatures}
-                            className="flex items-center gap-x-2 mt-4 cursor-pointer"
-                        >
-                            <div className="">
-                                <IoDiamondOutline className="text-indigo-500" />
-                            </div>
-                            <Typography variant="muted" color="text-gray-500">
-                                Premium
-                            </Typography>
-                        </div>
-                    </AuthorizedUserComponent>
-                </div> */}
 
                 <AuthorizedUserComponent
                     roles={[UserRoles.SUBADMIN, UserRoles.ADMIN]}

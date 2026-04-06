@@ -6,7 +6,7 @@ export async function TextToSpeech(request: any) {
 
         if (!text) {
             return NextResponse.json(
-            { error: 'Text is required' },
+                { error: 'Text is required' },
                 { status: 400 }
             )
         }
@@ -70,8 +70,6 @@ export async function TextToSpeech(request: any) {
             },
         })
     } catch (error) {
-        console.error('Error generating speech:', error)
-
         // Handle specific errors
         if (error instanceof Error) {
             if (error.message.includes('API key')) {

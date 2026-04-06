@@ -5,28 +5,41 @@ export const AddressFieldInput = ({
     placesSuggetions,
     onChange,
     helpText,
+    name,
+    label,
+    placeholder,
+    value,
+    defaultValue,
 }: {
+    label?: string
+    placeholder?: string
+    name?: string
+    value?: string
     helpText?: string
-    onChange?: () => void
+    onChange?: (value: string) => void
     placesSuggetions?: {
         placesSuggetions: boolean
         setIsPlaceSelected: (value: boolean) => void
     }
+    defaultValue?: string
 }) => {
     const { onAddressToPostcodeClicked } = useAddressToPostCode()
     return (
         <TextInput
-            label={'Primary Address'}
-            name={'addressLine1'}
-            placeholder={'Your Primary Address...'}
+            label={label || 'Primary Address'}
+            name={name || 'addressLine1'}
+            placeholder={placeholder || 'Your Primary Address...'}
             validationIcons
+            defaultValue={defaultValue}
             placesSuggetions
+            value={value}
             onChange={async (e: any) => {
+                const val = e.target?.value
                 if (onChange) {
-                    onChange()
+                    onChange(val)
                 }
 
-                onAddressToPostcodeClicked(e.target?.value)
+                onAddressToPostcodeClicked(val)
             }}
             onPlaceSuggetions={placesSuggetions}
             helpText={helpText}

@@ -1,14 +1,12 @@
 import { Badge, LoadingAnimation, Modal, NoData, Typography } from '@components'
 import {
-    WorkplaceAnswerEnum,
     WorkplaceQuestionCard,
     workplaceQuestions,
     workplaceQuestionsKeys,
 } from '@partials/common/workplace'
 import { SubAdminApi } from '@queries'
-import moment from 'moment'
-import React, { ReactNode } from 'react'
 import { WorkplaceQuestionType } from '@redux/queryTypes'
+import { ReactNode } from 'react'
 
 export const ViewQuestionsModal = ({
     wpId,
@@ -78,14 +76,21 @@ export const ViewQuestionsModal = ({
                                         <WorkplaceQuestionUpdatedCard
                                             data={data}
                                             index={i}
+                                            key={i}
                                         >
                                             <div className="flex items-center gap-x-1">
                                                 <Typography variant={'label'}>
                                                     Answer:
                                                 </Typography>
                                                 {Object.entries(suburb)?.map(
-                                                    ([key, value]: any) => (
-                                                        <div className="flex items-center gap-x-1">
+                                                    (
+                                                        [key, value]: any,
+                                                        ind: number
+                                                    ) => (
+                                                        <div
+                                                            key={ind}
+                                                            className="flex items-center gap-x-1"
+                                                        >
                                                             <Typography
                                                                 variant={
                                                                     'small'
@@ -127,6 +132,7 @@ export const ViewQuestionsModal = ({
                                         <WorkplaceQuestionUpdatedCard
                                             data={data}
                                             index={i}
+                                            key={i}
                                         >
                                             <div className="flex items-start gap-x-3">
                                                 <Typography variant={'label'}>
@@ -175,12 +181,13 @@ export const ViewQuestionsModal = ({
                                         <WorkplaceQuestionUpdatedCard
                                             data={data}
                                             index={i}
+                                            key={i}
                                         >
                                             <div className="flex items-start gap-x-1.5">
                                                 <Typography variant={'label'}>
                                                     Answer:
                                                 </Typography>
-                                                <div className="flex-grow flex flex-wrap gap-1">
+                                                <div className="grow flex flex-wrap gap-1">
                                                     {data?.answer
                                                         ?.split(',')
                                                         ?.map(
@@ -206,6 +213,7 @@ export const ViewQuestionsModal = ({
                                     <WorkplaceQuestionUpdatedCard
                                         data={data}
                                         index={i}
+                                        key={i}
                                     />
                                 )
                             }

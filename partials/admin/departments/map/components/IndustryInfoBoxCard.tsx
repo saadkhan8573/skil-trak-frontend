@@ -32,7 +32,6 @@ export const IndustryInfoBoxCard = ({
     workplaceMapCard = false,
     onCancel,
 }: any) => {
-    console.log({ selectedBox })
     const workplaceId = workplace?.id
 
     const [modal, setModal] = useState<ReactElement | null>(null)

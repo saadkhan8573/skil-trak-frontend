@@ -17,6 +17,11 @@ export const SubAdminIndustryFilter = ({
     // query
     const getCourses = CommonApi.Filter.useCourses()
     const getPremiumFeaturesList = CommonApi.Industries.usePremiumFeaturesList()
+    const getWpTypes = AdminApi.WpTypes.wpTypes({
+        search: '',
+        skip: 0,
+        limit: 1000,
+    })
 
     const coursesOptions = getCourses?.data?.map((course: any) => ({
         item: course,
@@ -66,6 +71,11 @@ export const SubAdminIndustryFilter = ({
         { value: 'ready', label: 'Ready' },
         { value: 'notReady', label: 'Not Ready' },
     ]
+
+    const wpTypesOptions = getWpTypes?.data?.data?.map((wpType: any) => ({
+        value: wpType?.id,
+        label: wpType?.name,
+    }))
 
     return (
         <>
@@ -222,6 +232,23 @@ export const SubAdminIndustryFilter = ({
                         })
                     }
                     placeholder="Readiness"
+                    showError={false}
+                />
+                <Select
+                    label={'Search by Workplace Type'}
+                    name={'wpType'}
+                    options={wpTypesOptions}
+                    placeholder={'Select Workplace Type...'}
+                    value={wpTypesOptions?.find(
+                        (wpType: OptionType) =>
+                            wpType?.value === Number(filter?.wpType)
+                    )}
+                    onChange={(e: any) => {
+                        onFilterChange({ ...filter, wpType: e })
+                    }}
+                    loading={getWpTypes.isLoading}
+                    disabled={getWpTypes.isLoading}
+                    onlyValue
                     showError={false}
                 />
                 {/* <Select

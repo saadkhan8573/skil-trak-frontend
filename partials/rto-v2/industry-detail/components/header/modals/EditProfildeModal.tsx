@@ -163,10 +163,10 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                         e.preventDefault()
                     }
                 }}
-                className="!max-w-4xl h-[90vh] flex flex-col p-0 gap-0 overflow-hidden"
+                className="max-w-4xl! h-[90vh] flex flex-col p-0 gap-0 overflow-hidden"
             >
                 <ShowErrorNotifications result={updateProfileResult} />
-                <DialogHeader className="bg-gradient-to-r from-[#044866] to-[#0D5468] px-6 py-5 relative overflow-hidden shrink-0">
+                <DialogHeader className="bg-linear-to-r from-[#044866] to-[#0D5468] px-6 py-5 relative overflow-hidden shrink-0">
                     <div className="absolute inset-0 opacity-10">
                         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')]"></div>
                     </div>
@@ -188,7 +188,7 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                         {/* Edit Mode Toggle */}
                         <div className="flex items-center justify-between p-4 bg-[#F8FAFB] rounded-xl border border-[#E2E8F0]">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gradient-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center">
+                                <div className="w-10 h-10 bg-linear-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center">
                                     <Edit2 className="w-5 h-5 text-white" />
                                 </div>
                                 <div>
@@ -207,7 +207,7 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                             {!isEditing && (
                                 <Button
                                     onClick={() => setIsEditing(true)}
-                                    className="px-4 py-2 bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white rounded-lg text-sm font-medium transition-all h-auto"
+                                    className="px-4 py-2 bg-linear-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white rounded-lg text-sm font-medium transition-all h-auto"
                                 >
                                     <Edit2 className="w-4 h-4 mr-2" />
                                     Edit Profile
@@ -524,7 +524,7 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                                     <div className="flex gap-3">
                                         <Button
                                             submit
-                                            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#059669] hover:to-[#10B981] text-white rounded-xl font-medium transition-all shadow-lg hover:shadow-xl h-auto"
+                                            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-linear-to-r from-[#10B981] to-[#059669] hover:from-[#059669] hover:to-[#10B981] text-white rounded-xl font-medium transition-all shadow-lg hover:shadow-xl h-auto"
                                             loading={
                                                 updateProfileResult.isLoading
                                             }
@@ -558,7 +558,7 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
                     <p className="text-xs text-[#64748B]">* Required fields</p>
                     <Button
                         onClick={onClose}
-                        className="px-4 py-2 bg-gradient-to-br from-[#044866] to-[#0D5468] text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all h-auto"
+                        className="px-4 py-2 bg-linear-to-br from-[#044866] to-[#0D5468] text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all h-auto"
                     >
                         Close
                     </Button>

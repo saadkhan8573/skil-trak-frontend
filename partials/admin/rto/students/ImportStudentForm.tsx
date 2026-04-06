@@ -107,7 +107,6 @@ export const ImportStudentForm = ({
                         )
                         onStudentFound && onStudentFound(updatedRows, fileData)
                     } catch (error) {
-                        console.error('Error fetching suburbs:', error)
                         onStudentFound && onStudentFound(rows, fileData)
                     } finally {
                         setIsGeocoding(false)

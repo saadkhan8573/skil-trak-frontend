@@ -2,7 +2,7 @@ import { Typography } from '@components'
 import { Upload } from 'lucide-react'
 import React, { useCallback } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from 'uuid'
 
 export interface FileWithId {
     id: string
@@ -48,13 +48,6 @@ export const FileUpload = ({ label }: { label?: string }) => {
                         file,
                     })
                 })
-
-                // Show validation errors if any
-                if (errors.length > 0) {
-                    // You could use a toast notification here
-                    console.warn('File validation errors:', errors)
-                    // For now, we'll just log the errors
-                }
 
                 // Only add valid files
                 if (validFiles.length > 0) {

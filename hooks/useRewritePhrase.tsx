@@ -23,7 +23,6 @@ export const useRewritePhrase = () => {
 
             return data
         } catch (err) {
-            console.error('Error:', err)
         } finally {
             setIsLoading(false)
         }

@@ -117,7 +117,6 @@ export function InterviewAvailability({ data }: any) {
                 description: 'Availability updated successfully!',
             })
         } catch (error) {
-            console.error('Failed to save availability', error)
             notification.error({
                 title: 'Error',
                 description: 'Failed to update availability. Please try again.',

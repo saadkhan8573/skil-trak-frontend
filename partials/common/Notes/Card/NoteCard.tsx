@@ -99,7 +99,6 @@ export const NoteCard = ({ note }: { note: NoteType | any }) => {
                 })
             }
         } catch (err: any) {
-            console.log({ err })
         } finally {
             setAudioLoading(false)
         }

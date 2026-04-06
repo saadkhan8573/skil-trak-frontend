@@ -86,7 +86,7 @@ export const WorkplaceTypeModal = ({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px] max-w-lg! w-full p-0 bg-white border border-border shadow-premium-lg [&>button]:text-white">
+            <DialogContent className="sm:max-w-[425px] max-w-lg! w-full p-0 bg-white border border-border shadow-premium-lg [&>button[data-slot=dialog-close]]:text-white">
                 {currentType?.isLoading || currentType?.isFetching ? (
                     <div className="w-full">
                         <div className="px-6 py-4 bg-primaryNew/10 border-b border-border/50 rounded-t-lg">

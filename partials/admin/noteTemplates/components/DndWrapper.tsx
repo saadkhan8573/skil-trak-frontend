@@ -27,12 +27,6 @@ export const DndWrapper = ({ children, items, onDragEnd }: DndWrapperProps) => {
         <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
-            onDragMove={() => {
-                console.log('Move')
-            }}
-            onDragOver={() => {
-                console.log('Over')
-            }}
             onDragEnd={(event) => {
                 const { active, over } = event
                 if (over && active.id !== over.id) {

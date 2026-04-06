@@ -18,6 +18,8 @@ export const studentEndpoints = (
             blocked: number
             rejected: number
             archived: number
+            placementStarted: number
+            schedule: number
         },
         void
     >({

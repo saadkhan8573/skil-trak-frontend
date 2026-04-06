@@ -24,6 +24,7 @@ import { ESignModule } from './modules/ESignModule'
 import { GalleryModule } from './modules/GalleryModule'
 import { RTOChecklistModule } from './modules/RtoChecklistModule'
 import { TradingHoursModule } from './modules/TradingHoursModule'
+import { InsuranceModule } from './modules/InsuranceModule'
 import { StudentsPlacementList } from './StudentsPlacementList'
 
 export function OperationalModules({ profile }: { profile: Industry }) {
@@ -98,6 +99,12 @@ export function OperationalModules({ profile }: { profile: Industry }) {
             label: 'RTO Checklist',
             icon: Shield,
             component: RTOChecklistModule,
+        },
+        {
+            value: 'insurance',
+            label: 'Insurance Documents',
+            icon: FileText,
+            component: InsuranceModule,
         },
         {
             value: 'gallery',

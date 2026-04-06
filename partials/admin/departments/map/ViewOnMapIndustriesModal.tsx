@@ -266,10 +266,6 @@ export const ViewOnMapIndustriesModal = ({
                 (result, status) => {
                     if (status === google.maps.DirectionsStatus.OK) {
                         setDirections(result)
-                    } else {
-                        console.error(
-                            `Directions request failed due to ${status}`
-                        )
                     }
                 }
             )
@@ -385,12 +381,12 @@ export const ViewOnMapIndustriesModal = ({
                                                                         'student'
                                                                         ? '/images/icons/student-red-map-pin.png'
                                                                         : marker?.placementStatus ===
-                                                                          IndustryPlacementStatus.ACCEPTING_STUDENTS
-                                                                        ? '/images/icons/industry-pin-map-pin-check.png'
-                                                                        : marker?.placementStatus ===
-                                                                          IndustryPlacementStatus.NOT_ACCEPTING_STUDENTS
-                                                                        ? '/images/icons/industry-pin-map-pin-uncheck.png'
-                                                                        : '/images/icons/industry-pin-map-pin.png',
+                                                                            IndustryPlacementStatus.ACCEPTING_STUDENTS
+                                                                          ? '/images/icons/industry-pin-map-pin-check.png'
+                                                                          : marker?.placementStatus ===
+                                                                              IndustryPlacementStatus.NOT_ACCEPTING_STUDENTS
+                                                                            ? '/images/icons/industry-pin-map-pin-uncheck.png'
+                                                                            : '/images/icons/industry-pin-map-pin.png',
                                                                 scaledSize:
                                                                     new google.maps.Size(
                                                                         29,
@@ -463,10 +459,8 @@ export const ViewOnMapIndustriesModal = ({
                                                                     '#AA0000',
                                                                 strokeOpacity: 0.7,
                                                                 strokeWeight: 1,
-                                                                clickable:
-                                                                    false,
-                                                                draggable:
-                                                                    false,
+                                                                clickable: false,
+                                                                draggable: false,
                                                                 editable: false,
                                                                 visible: true,
                                                                 zIndex: 1,
@@ -494,8 +488,7 @@ export const ViewOnMapIndustriesModal = ({
                                                                     }}
                                                                     options={{
                                                                         closeBoxURL: ``,
-                                                                        enableEventPropagation:
-                                                                            true,
+                                                                        enableEventPropagation: true,
                                                                     }}
                                                                 >
                                                                     {marker
@@ -583,12 +576,12 @@ export const ViewOnMapIndustriesModal = ({
                                                                         'student'
                                                                         ? '/images/icons/student-red-map-pin.png'
                                                                         : marker?.placementStatus ===
-                                                                          IndustryPlacementStatus.ACCEPTING_STUDENTS
-                                                                        ? '/images/icons/industry-pin-map-pin-check.png'
-                                                                        : marker?.placementStatus ===
-                                                                          IndustryPlacementStatus.NOT_ACCEPTING_STUDENTS
-                                                                        ? '/images/icons/industry-pin-map-pin-uncheck.png'
-                                                                        : '/images/icons/industry-pin-map-pin.png',
+                                                                            IndustryPlacementStatus.ACCEPTING_STUDENTS
+                                                                          ? '/images/icons/industry-pin-map-pin-check.png'
+                                                                          : marker?.placementStatus ===
+                                                                              IndustryPlacementStatus.NOT_ACCEPTING_STUDENTS
+                                                                            ? '/images/icons/industry-pin-map-pin-uncheck.png'
+                                                                            : '/images/icons/industry-pin-map-pin.png',
                                                                 scaledSize:
                                                                     new google.maps.Size(
                                                                         29,
@@ -671,8 +664,7 @@ export const ViewOnMapIndustriesModal = ({
                                                                     }}
                                                                     options={{
                                                                         closeBoxURL: ``,
-                                                                        enableEventPropagation:
-                                                                            true,
+                                                                        enableEventPropagation: true,
                                                                     }}
                                                                 >
                                                                     {marker
@@ -764,12 +756,12 @@ export const ViewOnMapIndustriesModal = ({
                                                                         'student'
                                                                         ? '/images/icons/student-red-map-pin.png'
                                                                         : marker?.placementStatus ===
-                                                                          IndustryPlacementStatus.ACCEPTING_STUDENTS
-                                                                        ? '/images/icons/partnered-industry-marker-check.png'
-                                                                        : marker?.placementStatus ===
-                                                                          IndustryPlacementStatus.NOT_ACCEPTING_STUDENTS
-                                                                        ? '/images/icons/partnered-industry-marker-uncheck.png'
-                                                                        : '/images/icons/partnered-industry-marker.png',
+                                                                            IndustryPlacementStatus.ACCEPTING_STUDENTS
+                                                                          ? '/images/icons/partnered-industry-marker-check.png'
+                                                                          : marker?.placementStatus ===
+                                                                              IndustryPlacementStatus.NOT_ACCEPTING_STUDENTS
+                                                                            ? '/images/icons/partnered-industry-marker-uncheck.png'
+                                                                            : '/images/icons/partnered-industry-marker.png',
                                                                 scaledSize:
                                                                     new google.maps.Size(
                                                                         29,
@@ -851,8 +843,7 @@ export const ViewOnMapIndustriesModal = ({
                                                                     }}
                                                                     options={{
                                                                         closeBoxURL: ``,
-                                                                        enableEventPropagation:
-                                                                            true,
+                                                                        enableEventPropagation: true,
                                                                     }}
                                                                 >
                                                                     {marker
@@ -1037,8 +1028,7 @@ export const ViewOnMapIndustriesModal = ({
                                                                         }}
                                                                         options={{
                                                                             closeBoxURL: ``,
-                                                                            enableEventPropagation:
-                                                                                true,
+                                                                            enableEventPropagation: true,
                                                                         }}
                                                                     >
                                                                         {marker?.department &&

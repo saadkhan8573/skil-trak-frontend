@@ -82,9 +82,7 @@ const DynamicSvgLoader = ({
                 const response = await fetch(path) // Adjust the path based on your setup
                 const svgText = await response.text()
                 setSvgContent(svgText)
-            } catch (error) {
-                console.error('Error fetching SVG:', error)
-            }
+            } catch (error) {}
         }
 
         const parser = new DOMParser()

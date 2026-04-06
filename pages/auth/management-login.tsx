@@ -29,7 +29,6 @@ const Login: NextPage = () => {
             )
         } else {
             // Handle other roles or default behavior as needed
-            console.warn(`Unhandled role: ${role}`) // Or implement appropriate logic
         }
     }
 

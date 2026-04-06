@@ -60,9 +60,7 @@ export const AutoLogoutProvider = ({
                 AuthUtils.logout()
                 setIsUserActive(false)
                 setModal(<SessionExpireModal onCancel={() => setModal(null)} />)
-            } catch (error) {
-                console.error('Logout failed:', error)
-            }
+            } catch (error) {}
         }
     }, [logoutActivity])
 
@@ -85,7 +83,6 @@ export const AutoLogoutProvider = ({
             }
             return false
         } catch (error) {
-            console.error('Token refresh failed:', error)
             return false
         }
     }, [refreshToken])

@@ -458,12 +458,7 @@ export const RTOProfileEditForm = ({
                                                                         state
                                                                     )
                                                                 }
-                                                            } catch (error) {
-                                                                console.error(
-                                                                    'Error fetching postal code:',
-                                                                    error
-                                                                )
-                                                            }
+                                                            } catch (error) {}
                                                         }
                                                     }}
                                                     onPlaceSuggetions={{

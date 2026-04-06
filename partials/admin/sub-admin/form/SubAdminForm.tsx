@@ -216,6 +216,7 @@ export const SubAdminForm = ({
                             multi
                             validationIcons
                             onlyValue
+                            disabled={!!edit && role === UserRoles.SUBADMIN}
                         />
                         <Select
                             label={'Sector'}
@@ -225,7 +226,7 @@ export const SubAdminForm = ({
                             placeholder={'Select Sectors...'}
                             multi
                             loading={sectorLoading}
-                            disabled={sectorLoading}
+                            disabled={sectorLoading || (!!edit && role === UserRoles.SUBADMIN)}
                             onChange={onSectorChanged}
                             validationIcons
                         />
@@ -240,7 +241,7 @@ export const SubAdminForm = ({
                             }}
                             multi
                             loading={courseLoading}
-                            disabled={courseOptions.length === 0}
+                            disabled={courseOptions.length === 0 || (!!edit && role === UserRoles.SUBADMIN)}
                             validationIcons
                             onlyValue
                         />

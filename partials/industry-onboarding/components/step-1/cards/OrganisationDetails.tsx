@@ -1,26 +1,17 @@
-import {
-    Button,
-    Card,
-    Select,
-    TextArea,
-    TextInput,
-    Typography
-} from '@components'
+import { Card, Select, TextArea, TextInput, Typography } from '@components'
 import { Label } from '@components/ui/label'
 import { motion } from 'framer-motion'
 import {
     Briefcase,
     Building,
-    CheckCircle,
     FileText,
     Globe,
     Mail,
     Phone,
-    Sparkles,
-    Upload,
-    User
+    User,
 } from 'lucide-react'
 import { Step1Data } from '../Step1ConfirmDetails'
+import { AbnLookUpCard } from './AbnLookUpCard'
 export const OrganisationDetails = ({ onChange, data, errors }: any) => {
     const handleInputChange = (
         field: keyof Step1Data,
@@ -34,6 +25,7 @@ export const OrganisationDetails = ({ onChange, data, errors }: any) => {
             onChange({ ...data, logo: file })
         }
     }
+    console.log('data?.workplaceType::', data)
     return (
         <>
             <motion.div
@@ -144,6 +136,8 @@ export const OrganisationDetails = ({ onChange, data, errors }: any) => {
                             </motion.div>
                         </div>
 
+                        <AbnLookUpCard abn={data?.abn} />
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <motion.div
                                 className="space-y-3"
@@ -196,8 +190,8 @@ export const OrganisationDetails = ({ onChange, data, errors }: any) => {
                                     Workplace Type{' '}
                                     <span className="text-destructive">*</span>
                                 </Label>
-                                <Select
-                                    value={data.workplaceType}
+                                {/* <Select
+                                    value={data?.workplaceType}
                                     onChange={(value: any) =>
                                         handleInputChange(
                                             'workplaceType',
@@ -263,6 +257,11 @@ export const OrganisationDetails = ({ onChange, data, errors }: any) => {
                                             value: 'IT Services Provider',
                                         },
                                     ]}
+                                /> */}
+                                <TextInput
+                                    name="workplaceType"
+                                    value={data?.workplaceType?.name ?? ''}
+                                    disabled
                                 />
 
                                 {errors.workplaceType && (
@@ -274,10 +273,10 @@ export const OrganisationDetails = ({ onChange, data, errors }: any) => {
                                         <span>⚠️</span> {errors.workplaceType}
                                     </motion.p>
                                 )}
-                                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                                {/* <p className="text-xs text-muted-foreground flex items-center gap-1">
                                     <span>🏢</span> Select your workplace type
                                     or choose "To be confirmed" to update later
-                                </p>
+                                </p> */}
                             </motion.div>
                         </div>
 
@@ -314,7 +313,7 @@ export const OrganisationDetails = ({ onChange, data, errors }: any) => {
                             </p>
                         </motion.div>
 
-                        <motion.div
+                        {/* <motion.div
                             className="space-y-4"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -378,7 +377,7 @@ export const OrganisationDetails = ({ onChange, data, errors }: any) => {
                                 2MB. This will appear on student placement
                                 documentation.
                             </p>
-                        </motion.div>
+                        </motion.div> */}
 
                         <div className="space-y-6">
                             <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
@@ -444,9 +443,9 @@ export const OrganisationDetails = ({ onChange, data, errors }: any) => {
                                     >
                                         <Building className="w-4 h-4 text-primary" />
                                         Job title{' '}
-                                        <span className="text-destructive">
+                                        {/* <span className="text-destructive">
                                             *
-                                        </span>
+                                        </span> */}
                                     </Label>
                                     <div className="relative">
                                         <TextInput
@@ -491,9 +490,9 @@ export const OrganisationDetails = ({ onChange, data, errors }: any) => {
                                     >
                                         <Mail className="w-4 h-4 text-primary" />
                                         Email address{' '}
-                                        <span className="text-destructive">
+                                        {/* <span className="text-destructive">
                                             *
-                                        </span>
+                                        </span> */}
                                     </Label>
                                     <div className="relative">
                                         <TextInput

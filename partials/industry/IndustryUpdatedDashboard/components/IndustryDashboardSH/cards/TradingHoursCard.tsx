@@ -45,22 +45,16 @@ export const TradingHoursCard = ({
             <div className="pt-3">
                 <div className="bg-[#FFFFFFCC] rounded border border-white grid grid-cols-7">
                     {workingHoursTime?.map((timing: any) => (
-                        <div>
+                        <div key={timing?.day}>
                             <div className="py-2.5 flex justify-center border-r border-b border-white">
                                 <Typography variant="small" capitalize>
                                     {timing?.day?.substring(0, 3)}
                                 </Typography>
                             </div>
-                            <div
-                                key={timing?.day}
-                                className="w-full h-[68px] flex justify-center items-center"
-                            >
+                            <div className="w-full h-[68px] flex justify-center items-center">
                                 <TimingCard timing={timing} />
                             </div>
-                            <div
-                                key={timing?.day}
-                                className="w-full rounded-b h-[72px] flex justify-center items-center"
-                            >
+                            <div className="w-full rounded-b h-[72px] flex justify-center items-center">
                                 <TimingBreakCard timing={timing} />
                             </div>
                         </div>

@@ -76,7 +76,7 @@ export function OnboardingFooter({
                             </motion.div>
                         )}
 
-                        <motion.div
+                        {/* <motion.div
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                         >
@@ -88,7 +88,7 @@ export function OnboardingFooter({
                                 <Save className="w-4 h-4 mr-2" />
                                 Save draft
                             </Button>
-                        </motion.div>
+                        </motion.div> */}
 
                         {/* Step indicator */}
                         <div className="hidden sm:flex items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-4 py-2">

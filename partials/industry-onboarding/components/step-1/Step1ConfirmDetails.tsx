@@ -10,7 +10,7 @@ export interface Step1Data {
     abn: string
     website?: string
     industryBio?: string
-    workplaceType: string // Now mandatory
+    workplaceType: any // Now mandatory
     logo?: File
     primaryContactName: string
     primaryContactRole: string
@@ -19,7 +19,7 @@ export interface Step1Data {
     // Address Information
     streetAddress: string
     suburb: string
-    state: string
+    state: any
     postcode: string
     country: string
     // Consent
@@ -95,7 +95,7 @@ export const Step1ConfirmDetails = ({
             newErrors.abn = 'Enter a valid ABN (11 digits)'
         }
 
-        if (!data?.workplaceType || !data?.workplaceType?.trim()) {
+        if (!data?.workplaceType?.name?.trim()) {
             newErrors.workplaceType = 'Workplace type is required'
         }
 
@@ -103,13 +103,11 @@ export const Step1ConfirmDetails = ({
             newErrors.primaryContactName = 'Primary contact name is required'
         }
 
-        if (!data.primaryContactRole.trim()) {
-            newErrors.primaryContactRole = 'Primary contact role is required'
-        }
-
-        if (!data.primaryContactEmail.trim()) {
-            newErrors.primaryContactEmail = 'Primary contact email is required'
-        } else if (!validateEmail(data.primaryContactEmail)) {
+        if (
+            data.primaryContactEmail &&
+            data.primaryContactEmail.trim() &&
+            !validateEmail(data.primaryContactEmail)
+        ) {
             newErrors.primaryContactEmail = 'Enter a valid email address'
         }
 
@@ -126,13 +124,26 @@ export const Step1ConfirmDetails = ({
             newErrors.suburb = 'Suburb is required'
         }
 
-        if (!data.state.trim()) {
+        // if (!data.state.trim()) {
+        //     newErrors.state = 'State is required'
+        // }
+        const stateValue =
+            typeof data.state === 'object' ? data.state?.value : data.state
+
+        if (!stateValue || !stateValue.toString().trim()) {
             newErrors.state = 'State is required'
         }
 
-        if (!data.postcode.trim()) {
+        // if (!data.postcode.trim()) {
+        //     newErrors.postcode = 'Postcode is required'
+        // } else if (!validatePostcode(data.postcode)) {
+        //     newErrors.postcode = 'Enter a valid 4-digit postcode'
+        // }
+        const postcode = data.postcode?.toString().trim()
+
+        if (!postcode) {
             newErrors.postcode = 'Postcode is required'
-        } else if (!validatePostcode(data.postcode)) {
+        } else if (!validatePostcode(postcode)) {
             newErrors.postcode = 'Enter a valid 4-digit postcode'
         }
 

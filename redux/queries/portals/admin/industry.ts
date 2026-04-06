@@ -233,4 +233,14 @@ export const industryEndpoints = (
         }),
         invalidatesTags: ['Industry-Course-Program'],
     }),
+
+    // /update/onboarding/:id
+    onBoardingSubmission: builder.mutation<any, any>({
+        query: ({ id, body }) => ({
+            url: `industries/update/onboarding/${id}`,
+            method: 'PATCH',
+            body,
+        }),
+        invalidatesTags: ['Industries'],
+    }),
 })

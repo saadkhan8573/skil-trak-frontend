@@ -37,8 +37,9 @@ export function InterestedStatusModal({
         if (updateResult.isSuccess) {
             notification.success({
                 title: 'Status Updated',
-                description: `Industry marked as ${isInterested ? 'Interested' : 'Not Interested'
-                    } successfuly.`,
+                description: `Industry marked as ${
+                    isInterested ? 'Interested' : 'Not Interested'
+                } successfuly.`,
             })
             onClose()
         }
@@ -59,7 +60,7 @@ export function InterestedStatusModal({
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[425px] p-0 overflow-hidden border-none shadow-premium">
                 <ShowErrorNotifications result={updateResult} />
-                <DialogHeader className="bg-gradient-to-r from-[#044866] to-[#0D5468] p-6 text-white relative overflow-hidden">
+                <DialogHeader className="bg-linear-to-r from-[#044866] to-[#0D5468] p-6 text-white relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4 opacity-10">
                         <Heart className="w-24 h-24" />
                     </div>
@@ -91,8 +92,9 @@ export function InterestedStatusModal({
                     <Typography className="text-[#1A2332] text-center mb-6">
                         Are you sure you want to mark this industry as{' '}
                         <span
-                            className={`font-bold ${isInterested ? 'text-success' : 'text-warning'
-                                }`}
+                            className={`font-bold ${
+                                isInterested ? 'text-success' : 'text-warning'
+                            }`}
                         >
                             {isInterested ? 'Interested' : 'Not Interested'}
                         </span>
@@ -110,14 +112,17 @@ export function InterestedStatusModal({
                         </Button>
                         <Button
                             onClick={handleConfirm}
-                            className={`flex-1 text-white shadow-lg hover:shadow-xl transition-all ${isInterested
-                                    ? 'bg-gradient-to-r from-success to-success/80'
-                                    : 'bg-gradient-to-r from-warning to-warning/80'
-                                }`}
+                            className={`flex-1 text-white shadow-lg hover:shadow-xl transition-all ${
+                                isInterested
+                                    ? 'bg-linear-to-r from-success to-success/80'
+                                    : 'bg-linear-to-r from-warning to-warning/80'
+                            }`}
                             loading={updateResult.isLoading}
                             disabled={updateResult.isLoading}
                         >
-                            {isInterested ? 'Mark Interested' : 'Mark Not Interested'}
+                            {isInterested
+                                ? 'Mark Interested'
+                                : 'Mark Not Interested'}
                         </Button>
                     </DialogFooter>
                 </div>

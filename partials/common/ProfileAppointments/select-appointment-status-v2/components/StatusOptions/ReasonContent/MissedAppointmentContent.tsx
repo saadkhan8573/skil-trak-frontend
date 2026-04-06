@@ -2,10 +2,6 @@ import { Calendar } from 'lucide-react'
 import { Button } from '@components'
 
 export function MissedAppointmentContent() {
-    const handleBookAnotherAppointment = () => {
-        console.log('Book another appointment')
-    }
-
     return (
         <div className="mt-3 p-3 bg-white rounded-lg border-2 border-[#F7A619]/50 animate-in slide-in-from-top-2 duration-300">
             <div className="flex items-start gap-2">
@@ -17,7 +13,8 @@ export function MissedAppointmentContent() {
                         Book Another Appointment
                     </h4>
                     <p className="text-xs text-gray-600 mb-2">
-                        The student missed the appointment. System will auto generate another one.
+                        The student missed the appointment. System will auto
+                        generate another one.
                     </p>
                     {/* <Button
                         onClick={handleBookAnotherAppointment}

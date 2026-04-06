@@ -40,7 +40,8 @@ export const TextTypeQuestions = ({
     })
 
     useEffect(() => {
-        const address = student?.data?.addressLine1 || studentProfile?.data?.addressLine1
+        const address =
+            student?.data?.addressLine1 || studentProfile?.data?.addressLine1
         const zip = student?.data?.zipCode || studentProfile?.data?.zipCode
 
         if (address) {
@@ -71,8 +72,9 @@ export const TextTypeQuestions = ({
     return (
         <>
             <div
-                className={`${ques?.fullWidth ? 'col-span-2' : ''
-                    } flex flex-col gap-y-1`}
+                className={`${
+                    ques?.fullWidth ? 'col-span-2' : ''
+                } flex flex-col gap-y-1`}
             >
                 <div>
                     <Typography variant="label" semibold block>
@@ -82,22 +84,24 @@ export const TextTypeQuestions = ({
                     <Typography variant="label" block>
                         {
                             workplaceQuestions[
-                            ques?.name as keyof typeof workplaceQuestions
+                                ques?.name as keyof typeof workplaceQuestions
                             ]
                         }
                     </Typography>
                 </div>
                 {ques?.inputValues && ques?.inputValues?.length > 0 ? (
                     <div
-                        className={`grid grid-cols-1 ${ques?.inputValues?.length > 1
-                            ? 'lg:grid-cols-2'
-                            : 'lg:grid-cols-1'
-                            }  gap-3`}
+                        className={`grid grid-cols-1 ${
+                            ques?.inputValues?.length > 1
+                                ? 'lg:grid-cols-2'
+                                : 'lg:grid-cols-1'
+                        }  gap-3`}
                     >
-                        {ques?.inputValues?.map((inp: any) => {
+                        {ques?.inputValues?.map((inp: any, i: number) => {
                             return inp?.name === 'suburb' ||
                                 inp?.name === 'zip' ? (
                                 <TextInput
+                                    key={i}
                                     name={inp?.name}
                                     label={inp?.label}
                                     placeholder={inp?.placeholder}
@@ -153,13 +157,9 @@ export const TextTypeQuestions = ({
                                                                     }
                                                                 )
                                                                 .catch(
-                                                                    (error) => {
-                                                                        console.error(
-                                                                            {
-                                                                                error,
-                                                                            }
-                                                                        )
-                                                                    }
+                                                                    (
+                                                                        error
+                                                                    ) => {}
                                                                 )
                                                         }
                                                     )
@@ -167,23 +167,28 @@ export const TextTypeQuestions = ({
                                             }
                                         }
 
-                                        formMethods.setValue(inp?.name, e?.target?.value, {
-                                            shouldValidate: true,
-                                            shouldDirty: true,
-                                        })
+                                        formMethods.setValue(
+                                            inp?.name,
+                                            e?.target?.value,
+                                            {
+                                                shouldValidate: true,
+                                                shouldDirty: true,
+                                            }
+                                        )
                                     }}
                                     defaultValue={
                                         inp.name === 'suburb'
                                             ? student?.data?.addressLine1 ||
-                                            studentProfile?.data?.addressLine1
+                                              studentProfile?.data?.addressLine1
                                             : inp.name === 'zip'
-                                                ? student?.data?.zipCode ||
+                                              ? student?.data?.zipCode ||
                                                 studentProfile?.data?.zipCode
-                                                : ''
+                                              : ''
                                     }
                                 />
                             ) : inp.type === 'date' ? (
                                 <TextInput
+                                    key={i}
                                     name={inp?.name}
                                     label={inp?.label}
                                     placeholder={inp?.placeholder}
@@ -193,6 +198,7 @@ export const TextTypeQuestions = ({
                                 />
                             ) : (
                                 <TextInput
+                                    key={i}
                                     name={inp?.name}
                                     label={inp?.label}
                                     placeholder={inp?.placeholder}
@@ -262,10 +268,14 @@ export const TextTypeQuestions = ({
                                             }
                                         }
 
-                                        formMethods.setValue(inp?.name, e?.target?.value, {
-                                            shouldValidate: true,
-                                            shouldDirty: true,
-                                        })
+                                        formMethods.setValue(
+                                            inp?.name,
+                                            e?.target?.value,
+                                            {
+                                                shouldValidate: true,
+                                                shouldDirty: true,
+                                            }
+                                        )
                                     }}
                                 />
                             )

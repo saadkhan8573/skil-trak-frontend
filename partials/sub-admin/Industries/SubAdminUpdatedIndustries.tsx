@@ -4,9 +4,7 @@ import {
     SubAdminIndustryFilter,
     TabConfig,
 } from '@components'
-import {
-    Building2
-} from 'lucide-react'
+import { Building2 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import {
     ArchivedIndustries,
@@ -16,7 +14,7 @@ import {
     PendingIndustries,
     SnoozedIndustries,
     StateWiseIndustries,
-    YourPartnerIndustries
+    YourPartnerIndustries,
 } from './tabs'
 //Layouts
 import { PedingCourseApprovalIndustries } from '@partials/common'
@@ -33,6 +31,7 @@ const filterKeys = [
     'suburb',
     'address',
     'courseId',
+    'wpType',
     'isHiring',
     'isPartner',
     'subAdminId',

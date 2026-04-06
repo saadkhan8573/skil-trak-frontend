@@ -57,12 +57,7 @@ export const OurStoryMapSection = () => {
                                             key: process.env
                                                 .NEXT_PUBLIC_MAP_KEY,
                                         } as GeocodeOptions)
-                                            .then((response) => {
-                                                console.log({ response })
-                                            })
-                                            .catch((error) => {
-                                                console.error({ error })
-                                            })
+
                                         setSuburbLocation({ lat, lng })
                                     })
                                     .catch(console.error)

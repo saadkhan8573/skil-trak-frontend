@@ -61,7 +61,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover'
 
 const LowPriority = 1
 
-
 const blockTypeToBlockName = {
     bullet: 'Bulleted List',
     check: 'Check List',
@@ -134,7 +133,6 @@ const BlockOptionsContent = ({
         </div>
     )
 }
-
 
 const InsertTableDropdown = ({ editor }: { editor: any }) => {
     const [rows, setRows] = useState('3')
@@ -243,7 +241,6 @@ export const Toolbar = () => {
     const [blockType, setBlockType] = useState('paragraph')
     const [showBlockOptions, setShowBlockOptions] = useState(false)
     const [uploadImage] = AdminApi.Blogs.uploadImage()
-
 
     const updateToolbar = useCallback(() => {
         const selection = $getSelection()
@@ -398,7 +395,6 @@ export const Toolbar = () => {
                             })
                         }
                     } catch (e) {
-                        console.error('Upload failed', e)
                         editor.update(() => {
                             const node = $getNodeByKey(nodeKey!)
                             if (node) {

@@ -68,7 +68,7 @@ export function ReassignAgentModal({
             <ShowErrorNotifications result={assignAgentResult} />
             <Dialog open={open} onOpenChange={onOpenChange}>
                 <DialogContent className="max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden p-0 [&>button]:text-white">
-                    <DialogHeader className="bg-gradient-to-r from-[#044866] to-[#0D5468] px-6 py-3">
+                    <DialogHeader className="bg-linear-to-r from-[#044866] to-[#0D5468] px-6 py-3">
                         <div className="flex items-center gap-3">
                             <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center">
                                 <UserPlus className="w-6 h-6 text-white" />
@@ -93,7 +93,7 @@ export function ReassignAgentModal({
                             <input
                                 type="text"
                                 placeholder="Search coordinators..."
-                                className="block w-full pl-10 pr-3 py-2 bg-gradient-to-br from-[#F8FAFB] to-[#E8F4F8] border border-[#E2E8F0] rounded-md text-sm text-[#1A2332] placeholder-[#94A3B8] hover:border-[#044866]/30 focus:outline-none focus:ring-2 focus:ring-[#044866]/20 focus:border-[#044866] transition-all"
+                                className="block w-full pl-10 pr-3 py-2 bg-linear-to-br from-[#F8FAFB] to-[#E8F4F8] border border-[#E2E8F0] rounded-md text-sm text-[#1A2332] placeholder-[#94A3B8] hover:border-[#044866]/30 focus:outline-none focus:ring-2 focus:ring-[#044866]/20 focus:border-[#044866] transition-all"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -106,7 +106,7 @@ export function ReassignAgentModal({
                                     {[1, 2, 3].map((i) => (
                                         <div
                                             key={i}
-                                            className="h-16 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl animate-pulse"
+                                            className="h-16 bg-linear-to-br from-gray-50 to-gray-100 rounded-xl animate-pulse"
                                         />
                                     ))}
                                 </div>
@@ -126,8 +126,8 @@ export function ReassignAgentModal({
                                             group flex items-center justify-between px-4 py-2 rounded-lg border-2 transition-all cursor-pointer
                                             ${
                                                 isSelected
-                                                    ? 'border-[#044866] bg-gradient-to-br from-[#044866]/5 to-[#0D5468]/5 shadow-md'
-                                                    : 'border-[#E2E8F0] hover:border-[#044866]/30 hover:bg-gradient-to-br hover:from-gray-50 hover:to-gray-100'
+                                                    ? 'border-[#044866] bg-linear-to-br from-[#044866]/5 to-[#0D5468]/5 shadow-md'
+                                                    : 'border-[#E2E8F0] hover:border-[#044866]/30 hover:bg-linear-to-br hover:from-gray-50 hover:to-gray-100'
                                             }
                                         `}
                                         >
@@ -137,8 +137,8 @@ export function ReassignAgentModal({
                                                 w-12 h-12 rounded-full flex items-center justify-center text-sm font-medium transition-all
                                                 ${
                                                     isSelected
-                                                        ? 'bg-gradient-to-br from-[#044866] to-[#0D5468] text-white shadow-lg'
-                                                        : 'bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 group-hover:from-white group-hover:to-gray-50'
+                                                        ? 'bg-linear-to-br from-[#044866] to-[#0D5468] text-white shadow-lg'
+                                                        : 'bg-linear-to-br from-gray-100 to-gray-200 text-gray-600 group-hover:from-white group-hover:to-gray-50'
                                                 }
                                             `}
                                                 >

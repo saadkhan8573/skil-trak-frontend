@@ -54,6 +54,16 @@ export const PersonalInfoForm = ({
         }
     }, [personalInfoData, courses?.data])
 
+    useEffect(() => {
+        if (personalInfoData?.questions && personalInfoData?.questions?.length > 0) {
+            formMethods.reset({
+                ...formMethods.getValues(),
+                ...personalInfoData,
+                ...questionsDefaultValues(personalInfoData?.questions),
+            })
+        }
+    }, [personalInfoData?.questions])
+
     const coursesOptions = courses?.data?.map((course: Course) => ({
         label: course.title,
         value: course.id,

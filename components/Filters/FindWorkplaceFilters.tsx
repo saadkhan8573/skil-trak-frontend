@@ -1,5 +1,5 @@
 import { Checkbox, Select, TextInput } from '@components/inputs'
-import { AuthApi, CommonApi } from '@queries'
+import { AdminApi, AuthApi, CommonApi } from '@queries'
 import { SetQueryFilters } from './SetQueryFilters'
 import { StatusOptions } from './StatusOptions'
 import { SelectOption } from './types'
@@ -18,6 +18,16 @@ export const FindWorkplaceFilters = ({
 }: ItemFilterProps) => {
     const sectorResponse = AuthApi.useSectors({})
     const [sectorOptions, setSectorOptions] = useState<any>([])
+    const getWpTypes = AdminApi.WpTypes.wpTypes({
+        search: '',
+        skip: 0,
+        limit: 1000,
+    })
+
+    const wpTypesOptions = getWpTypes?.data?.data?.map((wpType: any) => ({
+        value: wpType?.id,
+        label: wpType?.name,
+    }))
 
     const onSectorChanged = (sectors: any) => {
         const sectorExisting = sectorResponse?.data?.find((sector: any) => {
@@ -163,6 +173,23 @@ export const FindWorkplaceFilters = ({
                     onlyValue
                 />
 
+                <Select
+                    label={'Search by Workplace Type'}
+                    name={'wpType'}
+                    options={wpTypesOptions}
+                    placeholder={'Select Workplace Type...'}
+                    value={wpTypesOptions?.find(
+                        (wpType: any) =>
+                            wpType?.value === Number(filter?.wpType)
+                    )}
+                    onChange={(e: any) => {
+                        onFilterChange({ ...filter, wpType: e })
+                    }}
+                    loading={getWpTypes.isLoading}
+                    disabled={getWpTypes.isLoading}
+                    onlyValue
+                    showError={false}
+                />
                 <Checkbox
                     name="myListing"
                     label={'My Listing'}

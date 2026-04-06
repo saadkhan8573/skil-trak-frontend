@@ -34,6 +34,7 @@ const filterKeys = [
     'email',
     'phone',
     'status',
+    'wpType',
 ]
 const FutureIndustryListing: NextPageWithLayout = (props: Props) => {
     const [filterAction, setFilterAction] = useState(null)

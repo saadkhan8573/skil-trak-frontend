@@ -23,7 +23,9 @@ import {
     FilteredStudents,
     IncompleteSubmissionStudent,
     PendingStudent,
+    PlacementStarted,
     RejectedStudent,
+    ScheduleCompleted,
 } from '@partials/rto/student'
 import { RtoApi, useGetRtoStudentsQuery } from '@queries'
 import { checkFilteredDataLength } from '@utils'
@@ -107,6 +109,27 @@ export const RtoAllStudents = () => {
             component: ApprovedStudent,
         },
         {
+            value: 'placement-started',
+            label: 'Placement Started',
+            icon: Users,
+            count: count?.data?.placementStarted,
+            component: PlacementStarted,
+        },
+        {
+            value: 'schedule-completed',
+            label: 'Schedule Completed',
+            icon: Users,
+            count: count?.data?.schedule,
+            component: ScheduleCompleted,
+        },
+        {
+            value: 'completed',
+            label: 'Placement Completed',
+            icon: Users,
+            count: count?.data?.completed,
+            component: CompletedStudents,
+        },
+        {
             value: 'incomplete-submission',
             label: 'Incomplete Submission',
             icon: Users,
@@ -133,13 +156,6 @@ export const RtoAllStudents = () => {
             icon: Users,
             count: count?.data?.archived,
             component: ArchivedStudent,
-        },
-        {
-            value: 'completed',
-            label: 'Completed',
-            icon: Users,
-            count: count?.data?.completed,
-            component: CompletedStudents,
         },
     ]
 
@@ -205,9 +221,7 @@ export const RtoAllStudents = () => {
                                         showError={false}
                                     />
                                 </div>
-                                <div className="shrink-0">
-                                    {filterAction}
-                                </div>
+                                <div className="shrink-0">{filterAction}</div>
                             </div>
                         </div>
                     </div>

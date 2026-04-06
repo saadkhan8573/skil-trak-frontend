@@ -43,6 +43,7 @@ const filterKeys = [
     'suburb',
     'state',
     'abn',
+    'wpType',
     'courseId',
     'isHiring',
     'isPartner',

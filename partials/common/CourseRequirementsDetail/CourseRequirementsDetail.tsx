@@ -33,7 +33,6 @@ export const CourseRequirementsDetail = ({
     const isMobile = useMediaQuery(MediaQueries.Mobile)
 
     const [selectedCourse, setSelectedCourse] = useState<Course | undefined>()
-    console.group({ selectedCourse })
 
     useEffect(() => {
         const firstCourse = getFirstCourse(sectorsWithCourses)
@@ -170,7 +169,7 @@ export const CourseRequirementsDetail = ({
                                 'No Course Selected'
                             )}
                         </div>
-                        <div className="overflow-auto custom-scrollbar min-h-[23rem] max-h-96">
+                        <div className="overflow-auto custom-scrollbar min-h-92 max-h-96">
                             {selectedCourse?.courseRequirements &&
                             selectedCourse?.courseRequirements?.length ? (
                                 <div className="p-4 flex flex-col gap-y-4">

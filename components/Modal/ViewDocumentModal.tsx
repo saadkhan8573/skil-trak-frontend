@@ -65,7 +65,6 @@ export function ViewDocumentModal({
             setTotalPages(pdf.numPages)
             setCurrentPage(1)
         } catch (err: any) {
-            console.error('Error loading PDF', err)
             setError(err.message || 'Failed to load PDF')
         } finally {
             setLoading(false)
@@ -99,11 +98,7 @@ export function ViewDocumentModal({
                 const renderTask = page.render(renderContext)
                 renderTaskRef.current = renderTask
                 await renderTask.promise
-            } catch (error: any) {
-                if (error.name !== 'RenderingCancelledException') {
-                    console.error('Render error:', error)
-                }
-            }
+            } catch (error: any) {}
         }
 
         renderPage()

@@ -13,4 +13,5 @@ export interface SubadminIndustryFilter {
     subAdminId: any
     feature: number
     placementReady: string
+    wpType: number
 }

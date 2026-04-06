@@ -1,14 +1,14 @@
 import { EmptyData, TechnicalError } from '@components'
 import {
-    CommonApi,
     RtoV2Api,
+    CommonApi,
     setIndustryDetail,
     setNavigationTarget,
 } from '@redux'
-import { useAppDispatch, useAppSelector } from '@redux/hooks'
 import { scrollToSection } from '@utils'
 import { useRouter } from 'next/router'
 import { useEffect, useRef } from 'react'
+import { useAppDispatch, useAppSelector } from '@redux/hooks'
 import { AnalyticsDashboard } from './components/AnalyticsDashboard'
 import { OperationalModules } from './components/OperationalModules'
 import { PlacementChecklist } from './components/PlacementChecklist'

@@ -97,7 +97,6 @@ export function SectorCapacityModal({
             onClose()
         } catch (error) {
             console.error(error)
-            // Error notification is usually handled globally or we can add it here
         }
     }
 
@@ -161,8 +160,8 @@ export function SectorCapacityModal({
                                                 utilization >= 100
                                                     ? 'bg-red-500'
                                                     : utilization >= 80
-                                                        ? 'bg-amber-500'
-                                                        : 'bg-teal-500'
+                                                      ? 'bg-amber-500'
+                                                      : 'bg-teal-500'
                                             )}
                                         />
                                     </div>

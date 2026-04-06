@@ -97,9 +97,7 @@ export const RichTextEditor = ({
     const initialConfig = {
         namespace: 'SkilTrakEditor',
         theme,
-        onError: (error: Error) => {
-            console.error(error)
-        },
+        onError: (error: Error) => {},
         nodes: [
             ImageNode,
             HeadingNode,
@@ -199,7 +197,10 @@ export const RichTextEditor = ({
                             <OnChangePlugin onChange={handleOnChange} />
 
                             {/* Initial Value Plugin */}
-                            <InitialValuePlugin value={value} viewMode={viewMode} />
+                            <InitialValuePlugin
+                                value={value}
+                                viewMode={viewMode}
+                            />
                         </div>
                     </LexicalComposer>
                 </div>

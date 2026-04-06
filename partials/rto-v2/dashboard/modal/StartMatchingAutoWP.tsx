@@ -96,7 +96,6 @@ export const StartMatchingAutoWP = ({
                     matchesCount++
                 }
             } catch (error: any) {
-                console.error('Automation failed for ID:', wp.id, error)
                 const errorMsg =
                     error?.data?.message || error?.message || 'Technical Error'
                 setErrorMessages((prev) => ({ ...prev, [i]: errorMsg }))

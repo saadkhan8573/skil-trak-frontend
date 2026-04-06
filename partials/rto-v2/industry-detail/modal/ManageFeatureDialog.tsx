@@ -110,7 +110,7 @@ export const ManageFeatureDialog = () => {
                         {editingFeatures.map((feature, index) => (
                             <div
                                 key={index}
-                                className="bg-gradient-to-br from-[#044866]/5 to-[#0D5468]/5 rounded-lg p-4 border border-[#044866]/10"
+                                className="bg-linear-to-br from-[#044866]/5 to-[#0D5468]/5 rounded-lg p-4 border border-[#044866]/10"
                             >
                                 <div className="flex items-start gap-3 mb-4">
                                     <Button

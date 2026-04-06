@@ -20,12 +20,10 @@ const HomeV3: NextPageWithLayout = ({ featuredBlogs, homepageCounts }: any) => {
             <TrustedByMarquee />
             <WhoWeServe />
 
-
             <CountsSection homepageCounts={homepageCounts} />
 
             <AssuredPlacement />
             <CollaborationAddOns />
-
 
             <ContactAndBlogs featuredBlogs={featuredBlogs} />
 
@@ -65,7 +63,6 @@ export const getStaticProps = async () => {
             revalidate: 60, // ISR - rebuild every 60 seconds
         }
     } catch (error) {
-        console.error('Error fetching homepage data:', error)
         return {
             props: {
                 featuredBlogs: [],

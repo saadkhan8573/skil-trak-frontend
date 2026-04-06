@@ -58,7 +58,7 @@ export const ServicesOfferedModal = ({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px] !max-w-lg w-full p-0  bg-white border border-border shadow-premium-lg">
+            <DialogContent className="sm:max-w-[425px] max-w-lg! w-full p-0 bg-white border border-border shadow-premium-lg [&>button[data-slot=dialog-close]]:text-white">
                 <DialogHeader className="px-6 py-2 bg-primaryNew border-b border-border/50 rounded-t-lg">
                     <DialogTitle className="text-xl font-bold text-white">
                         Services Offered
@@ -93,7 +93,7 @@ export const ServicesOfferedModal = ({
                     </div>
                 </div>
 
-                <DialogFooter className="px-6 py-4 !bg-slate-100 border-t border-border/50 flex-col sm:flex-row gap-2 rounded-b-lg">
+                <DialogFooter className="px-6 py-4 bg-slate-100! border-t border-border/50 flex-col sm:flex-row gap-2 rounded-b-lg">
                     <Button
                         variant="secondary"
                         onClick={() => onOpenChange(false)}

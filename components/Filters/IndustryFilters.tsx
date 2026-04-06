@@ -4,7 +4,13 @@ import { StatusOptions } from './StatusOptions'
 
 // queries
 import { CommonApi, AuthApi, AdminApi } from '@queries'
-import { AdminIndustryFormFilter, Course, OptionType, SubAdmin, UserStatus } from '@types'
+import {
+    AdminIndustryFormFilter,
+    Course,
+    OptionType,
+    SubAdmin,
+    UserStatus,
+} from '@types'
 import { SetQueryFilters } from './SetQueryFilters'
 import { CourseSelectOption, formatOptionLabel } from '@utils'
 import { State } from 'country-state-city'
@@ -23,6 +29,11 @@ export const IndustryFilters = ({
     const getCourses = CommonApi.Filter.useCourses()
     const getSectors = AuthApi.useSectors({})
     const getPremiumFeaturesList = CommonApi.Industries.usePremiumFeaturesList()
+    const getWpTypes = AdminApi.WpTypes.wpTypes({
+        search: '',
+        skip: 0,
+        limit: 1000,
+    })
 
     const coursesOptions = getCourses?.data?.map((course: Course) => ({
         item: course,
@@ -30,15 +41,11 @@ export const IndustryFilters = ({
         label: course?.title,
     }))
 
-    const { isLoading, isFetching, data, } =
-        AdminApi.SubAdmins.useListQuery(
-            {
-                search: `status:${UserStatus.Approved
-                    },isAssociatedWithRto:${false}`,
-                skip: 0,
-                limit: 100,
-            },
-        )
+    const { isLoading, isFetching, data } = AdminApi.SubAdmins.useListQuery({
+        search: `status:${UserStatus.Approved},isAssociatedWithRto:${false}`,
+        skip: 0,
+        limit: 100,
+    })
 
     const updatedFilter = {
         ...filter,
@@ -73,6 +80,11 @@ export const IndustryFilters = ({
     const coordinatorsOptions = data?.data?.map((coordinator: SubAdmin) => ({
         value: coordinator?.id,
         label: coordinator?.user?.name,
+    }))
+
+    const wpTypesOptions = getWpTypes?.data?.data?.map((wpType: any) => ({
+        value: wpType?.id,
+        label: wpType?.name,
     }))
 
     return (
@@ -269,7 +281,7 @@ export const IndustryFilters = ({
                     showError={false}
                 />
 
-                {/* <Select
+                <Select
                     label={'Search by Workplace Type'}
                     name={'wpType'}
                     options={wpTypesOptions}
@@ -281,11 +293,11 @@ export const IndustryFilters = ({
                     onChange={(e: any) => {
                         onFilterChange({ ...filter, wpType: e })
                     }}
-                    loading={getCourses.isLoading}
-                    disabled={getCourses.isLoading}
+                    loading={getWpTypes.isLoading}
+                    disabled={getWpTypes.isLoading}
                     onlyValue
                     showError={false}
-                /> */}
+                />
 
                 <div className="flex items-center gap-x-2">
                     <div className={'mt-7'}>

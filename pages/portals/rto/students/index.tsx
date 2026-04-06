@@ -26,7 +26,9 @@ import {
     FilteredStudents,
     IncompleteSubmissionStudent,
     PendingStudent,
+    PlacementStarted,
     RejectedStudent,
+    ScheduleCompleted,
 } from '@partials/rto/student'
 import { RtoApi, useGetRtoStudentsQuery } from '@queries'
 import { checkFilteredDataLength } from '@utils'
@@ -131,6 +133,24 @@ const RtoStudents: NextPageWithLayout = (props: Props) => {
             },
             href: { pathname: 'students', query: { tab: 'active' } },
             element: <ApprovedStudent />,
+        },
+        {
+            label: 'Placement Started',
+            badge: {
+                text: count?.data?.placementStarted,
+                loading: count.isLoading,
+            },
+            href: { pathname: 'students', query: { tab: 'placement-started' } },
+            element: <PlacementStarted />,
+        },
+        {
+            label: 'Schedule Completed',
+            badge: {
+                text: count?.data?.schedule,
+                loading: count.isLoading,
+            },
+            href: { pathname: 'students', query: { tab: 'schedule-completed' } },
+            element: <ScheduleCompleted />,
         },
         // IncompleteSubmissionStudent
         {

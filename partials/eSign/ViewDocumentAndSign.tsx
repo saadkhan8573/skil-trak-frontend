@@ -519,8 +519,6 @@ export const ViewDocumentAndSign = () => {
         setCustomFieldsSelectedId(0)
     }
 
-    console.log({ isDocumentLoaded })
-
     return (
         <div className="space-y-3.5">
             {modal}

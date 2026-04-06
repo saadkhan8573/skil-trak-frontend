@@ -33,7 +33,6 @@ const getUserCredentials = (access_token: string) => {
     try {
         return jwt(access_token) as { exp: number }
     } catch (error) {
-        console.error('Error decoding JWT:', error)
         return null
     }
 }
@@ -72,7 +71,6 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
             refreshToken: refreshedTokens?.refreshToken ?? token.refreshToken,
         }
     } catch (error) {
-        console.error('RefreshAccessTokenError', error)
         return {
             ...token,
             error: 'RefreshAccessTokenError',
@@ -109,7 +107,8 @@ export const authOptions: NextAuthOptions = {
 
                 try {
                     const response = await axios.post(
-                        `${process.env.NEXT_PUBLIC_END_POINT}/auth/${url || 'login'
+                        `${process.env.NEXT_PUBLIC_END_POINT}/auth/${
+                            url || 'login'
                         }`,
                         restCredentials
                     )
@@ -134,7 +133,6 @@ export const authOptions: NextAuthOptions = {
                     }
                     return null
                 } catch (error: any) {
-                    console.error('Login error:', error?.response?.data)
                     throw new Error(JSON.stringify(error?.response?.data))
                 }
             },
@@ -157,7 +155,7 @@ export const authOptions: NextAuthOptions = {
             if (
                 token.accessTokenExpires &&
                 Date.now() <
-                token.accessTokenExpires - REFRESH_TOKEN_THRESHOLD * 1000
+                    token.accessTokenExpires - REFRESH_TOKEN_THRESHOLD * 1000
             ) {
                 return token
             }

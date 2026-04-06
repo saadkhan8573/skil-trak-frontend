@@ -159,7 +159,6 @@ const SessionManager: React.FC = () => {
                                 setLastActivity(currentTime)
                             }
                         } catch (error) {
-                            console.error('Token refresh failed:', error)
                             // If token refresh fails, logout
                             handleLogout()
                         }

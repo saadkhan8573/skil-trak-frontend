@@ -144,18 +144,11 @@ function ImageComponent({
                 const blob = await response.blob()
                 fileToUpload = blobToFile(blob, src)
             }
-        } catch (err) {
-            console.warn(
-                'ImageNode: ⚠️ Phase 1 (Direct Fetch) failed due to CORS.'
-            )
-        }
+        } catch (err) {}
 
         // Phase 2: Deep Fallback - Transient CORS Test
         // We create a NEW image object to test CORS without breaking the main preview
         if (!fileToUpload) {
-            console.warn(
-                'ImageNode: 🔄 Trying Phase 2 (Transient CORS Test)...'
-            )
             try {
                 const testImg = new Image()
                 testImg.crossOrigin = 'anonymous' // Test if they allow CORS

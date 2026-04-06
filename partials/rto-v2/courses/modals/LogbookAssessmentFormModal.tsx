@@ -267,10 +267,6 @@ export const LogbookAssessmentForm = ({
         }
     }
 
-    const handleGeneratePDF = () => {
-        console.log('Generating PDF for::', courseId)
-    }
-
     const canStudentEdit =
         canEdit && currentRole === 'student' && status !== 'pendingSign'
     const canSupervisorEdit =
@@ -1542,17 +1538,6 @@ export const LogbookAssessmentForm = ({
                         </div>
 
                         <div className="flex items-center gap-2">
-                            {isLocked && (
-                                <Button
-                                    onClick={handleGeneratePDF}
-                                    variant="default"
-                                    className="gap-2"
-                                >
-                                    <Download className="h-4 w-4" />
-                                    Download PDF
-                                </Button>
-                            )}
-
                             {canEdit && (
                                 <Button
                                     onClick={handleSave}

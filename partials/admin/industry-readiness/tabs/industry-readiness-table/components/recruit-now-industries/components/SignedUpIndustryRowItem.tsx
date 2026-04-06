@@ -13,7 +13,6 @@ export const SignedUpIndustryRowItem = ({
     index,
     setSelectedindustry,
 }: SignedUpIndustryRowItemProps) => {
-    console.log('signed up industry', industry)
     const getAvatarColor = (index: number) => {
         const colors = [
             '#C0C0C0',
@@ -120,7 +119,7 @@ export const SignedUpIndustryRowItem = ({
                             }
                         />
                     )}
-                    <div className="flex items-center gap-3 flex-shrink-0">
+                    <div className="flex items-center gap-3 shrink-0">
                         <div className="flex flex-col gap-1 items-end">
                             <span
                                 className={`

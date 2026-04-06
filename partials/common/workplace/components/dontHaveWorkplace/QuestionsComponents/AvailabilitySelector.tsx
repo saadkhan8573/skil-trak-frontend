@@ -10,6 +10,22 @@ export const AvailabilitySelector = ({ name }: { name: string }) => {
     const formContext = useFormContext()
     const [selectedDays, setSelectedDays] = useState<string[]>([])
     const [selectedTime, setSelectedTime] = useState<string>('')
+    const [hasInitialized, setHasInitialized] = useState(false)
+
+    const initialValue = formContext.watch(name)
+
+    useEffect(() => {
+        if (!hasInitialized && initialValue && typeof initialValue === 'object') {
+            if (initialValue.days?.length > 0) {
+                setSelectedDays(initialValue.days)
+                setHasInitialized(true)
+            }
+            if (initialValue.timeSlot) {
+                setSelectedTime(initialValue.timeSlot)
+                setHasInitialized(true)
+            }
+        }
+    }, [initialValue, hasInitialized])
 
     const error =
         formContext &&
@@ -31,18 +47,16 @@ export const AvailabilitySelector = ({ name }: { name: string }) => {
 
     const handleTimeChange = useCallback((slot: string) => {
         setSelectedTime(slot)
-        // setValue('preferredContactTime', {
-        //     timeSlot: selectedTime,
-        //     days: selectedDays,
-        // })
     }, [])
 
     useEffect(() => {
-        formContext.setValue('preferredContactTime', {
-            days: selectedDays,
-            timeSlot: selectedTime,
-        })
-    }, [selectedDays, selectedTime, formContext.setValue])
+        if (selectedDays.length > 0 || selectedTime) {
+            formContext.setValue('preferredContactTime', {
+                days: selectedDays,
+                timeSlot: selectedTime,
+            })
+        }
+    }, [selectedDays, selectedTime])
 
     return (
         <div

@@ -1,5 +1,6 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
+import { workplaceQuestionsKeys } from '@partials/common/workplace/enum'
 
 const PREFIX = 'students'
 export const workplaceEndpoints = (
@@ -177,5 +178,42 @@ export const workplaceEndpoints = (
             method: 'PATCH',
         }),
         invalidatesTags: ['Workplace'],
+    }),
+    getStudentWorkplaceQuestions: builder.query<
+        {
+            questions: {
+                id: number
+                isActive: boolean
+                createdAt: string
+                updatedAt: string
+                question: string
+                answer: string
+                type: workplaceQuestionsKeys
+            }[]
+        },
+        { userId?: number } | void
+    >({
+        query: (params) => ({
+            url: `students/workplace-requests/autofill/questionaire`,
+            params: params || {},
+        }),
+        providesTags: ['Workplace'],
+    }),
+    updateStudentWorkplaceQuestion: builder.mutation<
+        any,
+        {
+            qId: number | string
+            answer: string
+            stdId?: number | string
+            wpId?: number | string
+        }
+    >({
+        query: ({ qId, stdId, wpId, ...body }) => ({
+            url: `students/workplace-requests/question/${qId}`,
+            method: 'PATCH',
+            params: { stdId, wpId },
+            body,
+        }),
+        invalidatesTags: ['Workplace', 'SubAdminWorkplace'],
     }),
 })

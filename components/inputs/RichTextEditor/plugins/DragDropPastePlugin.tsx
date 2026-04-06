@@ -41,7 +41,6 @@ export default function DragDropPastePlugin(): ReactElement | null {
                             });
 
                             if (!nodeKey) {
-                                console.error(`DragDropPastePlugin: ❌ Failed to create node for ${file.name}`);
                                 continue;
                             }
 
@@ -60,11 +59,9 @@ export default function DragDropPastePlugin(): ReactElement | null {
                                 });
                                 notification.success({ title: 'Upload Success', description: 'Image uploaded successfully' });
                             } else {
-                                console.error('DragDropPastePlugin: ❌ No URL in response');
                                 notification.error({ title: 'Upload Failed', description: 'Server did not return an image URL' });
                             }
                         } catch (e) {
-                            console.error(`DragDropPastePlugin: ❌ Failed to process ${file.name}:`, e);
                             notification.error({ title: 'Upload Error', description: 'Failed to process image' });
                             // Cleanup placeholder on failure
                             editor.update(() => {

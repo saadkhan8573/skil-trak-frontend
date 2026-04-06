@@ -395,7 +395,9 @@ export const PlacementRequestDetail = () => {
                     {/* Premium Workflow Tracker */}
                     <PremiumWorkflowTracker
                         workplace={placementRequestsDetails?.data}
-                        workIndustry={placementRequestsDetails?.data?.industries?.[0]}
+                        workIndustry={
+                            placementRequestsDetails?.data?.industries?.[0]
+                        }
                     />
 
                     {/* Main Content */}
@@ -420,13 +422,7 @@ export const PlacementRequestDetail = () => {
                                     <StudentQuickSummaryCard
                                         studentDetails={studentDetails?.data}
                                     />
-                                    {/* <CollapsibleStudentDetailsCard
-                                        setShowStudentDetails={
-                                            setShowStudentDetails
-                                        }
-                                        showStudentDetails={showStudentDetails}
-                                        studentDetails={studentDetails?.data}
-                                    /> */}
+
                                     <EnhancedComplianceChecks />
                                     <EnhancedPlacementProgramCard
                                         toggleRequirement={toggleRequirement}
@@ -461,24 +457,9 @@ export const PlacementRequestDetail = () => {
                                             : ''
                                     }`}
                                 >
-                                    {/* Industry Match Validation - Shown from workflow start through completion */}
-                                    {/* {workplaceType === 'needs' && (
-                                        <IndustryMatchValidationCard
-                                            wpCurrentStatus={wpCurrentStatus}
-                                            workplaceType={workplaceType}
-                                        />
-                                    )} */}
-
                                     {/* Enhanced Industry Details */}
                                     <EnhancedIndustryDetailsCard
-                                        // showIndustryDetails={
-                                        //     showIndustryDetails
-                                        // }
                                         workplaceType={workplaceType}
-                                        // industry={
-                                        //     placementRequestsDetails?.data
-                                        //         ?.industries?.[0]?.industry
-                                        // }
                                         workplace={
                                             placementRequestsDetails?.data
                                         }
@@ -542,11 +523,6 @@ export const PlacementRequestDetail = () => {
                                     {/* Enhanced Status Notes */}
                                     <EnhancedStatusNotesCard />
                                 </motion.div>
-
-                                {/* Right Panel - Industry Information & Workflow */}
-                                {/* <IndustryInformationWorkflowCard
-                            showIndustryDetails={showIndustryDetails}
-                        /> */}
                             </div>
                         </div>
                     </div>

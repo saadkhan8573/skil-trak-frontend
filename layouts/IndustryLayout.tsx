@@ -17,7 +17,9 @@ import { UserLayout } from './UserLayout'
 import { useAlert, useContextBar, useJoyRide } from '@hooks'
 import { UsersPendingEsignModal } from '@partials/eSign/modal/UsersPendingEsignModal'
 import { ProfileModal } from '@partials/industry'
-import { CommonApi, useIndustryProfileQuery } from '@queries'
+import { IndustryOnboardingFlow } from '@partials/industry-onboarding/IndustryOnboardingFlow'
+import { OnboardingPendingScreen } from '@partials/industry-onboarding/components/OnboardingPendingScreen'
+import { CommonApi, IndustryApi, useIndustryProfileQuery } from '@queries'
 import { UserStatus } from '@types'
 import { AuthUtils, EsignDocumentStatus } from '@utils'
 
@@ -129,6 +131,10 @@ export const IndustryLayout = ({
     const profile = useIndustryProfileQuery(undefined, {
         refetchOnMountOrArgChange: true,
     })
+    const { data: industryProfile, refetch: refetchProfile } =
+        IndustryApi.Profile.useIndustryProfileQuery(undefined, {
+            refetchOnMountOrArgChange: true,
+        })
     const values = { ...profile?.data, ...profile?.data?.user }
     const keys = [
         'name',
@@ -179,6 +185,27 @@ export const IndustryLayout = ({
     useEffect(() => {
         setMounted(true)
     }, [])
+
+    // Show onboarding flow immediately after signup
+    if (industryProfile?.showOnboarding) {
+        return (
+            <UserLayout>
+                <IndustryOnboardingFlow
+                    id={industryProfile.id}
+                    onSuccess={refetchProfile}
+                />
+            </UserLayout>
+        )
+    }
+
+    // Show pending approval screen after onboarding is submitted
+    if (industryProfile?.user?.status === UserStatus.Pending) {
+        return (
+            <UserLayout>
+                <OnboardingPendingScreen />
+            </UserLayout>
+        )
+    }
 
     return (
         <RedirectUnApprovedUsers

@@ -20,6 +20,7 @@ import {
 import { Edit2, Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { AddSectorQuestionModal } from '../modals/AddSectorQuestionModal'
+import { EditSectorQuestionModal } from '../modals/EditSectorQuestionModal'
 import { useRouter } from 'next/router'
 import { AdminApi } from '@queries'
 import { PulseLoader } from 'react-spinners'
@@ -40,7 +41,6 @@ export const QuestionManager = ({
     onUpdateQuestions,
 }: QuestionManagerProps) => {
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
-    const [isEdit, setIsEdit] = useState(false)
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
     const [editingQuestion, setEditingQuestion] = useState<Question | null>(
         null
@@ -59,9 +59,8 @@ export const QuestionManager = ({
         onUpdateQuestions(questions.filter((q: any) => q.id !== id))
     }
     const openEditDialog = (question: Question) => {
-        setIsEdit(true)
         setEditingQuestion(question)
-        setIsAddDialogOpen(true)
+        setIsEditDialogOpen(true)
     }
 
     return (
@@ -81,7 +80,10 @@ export const QuestionManager = ({
                     <AddSectorQuestionModal
                         isAddDialogOpen={isAddDialogOpen}
                         setIsAddDialogOpen={setIsAddDialogOpen}
-                        isEdit={isEdit}
+                    />
+                    <EditSectorQuestionModal
+                        isEditDialogOpen={isEditDialogOpen}
+                        setIsEditDialogOpen={setIsEditDialogOpen}
                         editValues={editingQuestion}
                     />
                 </div>

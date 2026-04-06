@@ -15,6 +15,15 @@ export const insuranceEndpoints = (
         },
         providesTags: ['Insurance-Type'],
     }),
+    // industries/insurance-document/onboarding/type/:id
+    getIndustryInsuraceById: builder.query<any, any>({
+        query: (id) => {
+            return {
+                url: `${PREFIX}/insurance-document/onboarding/type/${id}`,
+            }
+        },
+        providesTags: ['Insurance-Type'],
+    }),
     requiredIndustryInsuranceType: builder.mutation<
         any,
         { docId: number; userId?: number }

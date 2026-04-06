@@ -17,11 +17,12 @@ export interface Sector {
     industryChecks: IndustryCheck[]
     capacity: number
     capacityPeriod: string
-    eligibilityChecks: {
+    eligibilityChecks?: {
         directSupport: boolean
         supervision: boolean
         equipmentResources: boolean
     }
+    questionChecks?: Record<number, boolean>
     coursePrerequisites?: {
         [courseId: string]: {
             directSupport: boolean

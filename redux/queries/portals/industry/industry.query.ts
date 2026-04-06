@@ -60,6 +60,11 @@ export const industryApi = apiSlice.injectEndpoints({
             query: () => 'industries/favorite-by',
             providesTags: ['Industries'],
         }),
+        // industries/onboarding/industry/:id
+        getIndustryOnboarding: build.query<any, any>({
+            query: (id) => `industries/onboarding/industry/${id}`,
+            providesTags: ['Industries'],
+        }),
         updateIndustryProfile: build.mutation<any, any>({
             query: ({ id, body }) => ({
                 url: 'industries/profile/update',
@@ -109,6 +114,7 @@ export const {
     useGetIndustryFavByCoordinatorQuery,
     useUpdateIndustryProfileMutation,
     useUpdateIndustryDataMutation,
+    useGetIndustryOnboardingQuery,
 
     // ------ AVAILABLE SHIFTS ------ //
     useGetShiftsQuery,
@@ -238,6 +244,7 @@ export const {
     useGetSupervisorBySectorQuery,
     useLazyGetSupervisorBySectorQuery,
     useRemoveSupervisorMutation,
+    useGetCoursesBySupervisorLevelQuery,
 
     // ----- BRANCHES ----- //
     useGetBranchesQuery,
@@ -258,6 +265,7 @@ export const {
     // ---- INSURANCE ---- //
     useGetIndustryInsuranceDocsQuery,
     useRequiredIndustryInsuranceTypeMutation,
+    useGetIndustryInsuraceByIdQuery,
 
     // ---- GALLERY ---- //
     useIndustryGalleryQuery,
@@ -272,6 +280,7 @@ export const IndustryApi = {
         useUpdateIndustryProfileMutation,
         useUpdateIndustryDataMutation,
         useIndustryFavByCoordinator: useGetIndustryFavByCoordinatorQuery,
+        useIndustryOnboarding: useGetIndustryOnboardingQuery,
     },
     AvailableShifts: {
         useGetShiftsQuery,
@@ -400,6 +409,7 @@ export const IndustryApi = {
         getSupervisorBySector: useGetSupervisorBySectorQuery,
         useLazyGetSupervisorBySectorQuery: useLazyGetSupervisorBySectorQuery,
         removeSupervisor: useRemoveSupervisorMutation,
+        useCoursesBySupervisorLevel: useGetCoursesBySupervisorLevelQuery,
     },
     Branches: {
         useBranchesList: useGetBranchesQuery,
@@ -420,6 +430,7 @@ export const IndustryApi = {
     Insurance: {
         industryInsuranceDocs: useGetIndustryInsuranceDocsQuery,
         requiredInduranceDoc: useRequiredIndustryInsuranceTypeMutation,
+        useIndustryInsuraceById: useGetIndustryInsuraceByIdQuery,
     },
     Gallery: {
         industryGallery: useIndustryGalleryQuery,

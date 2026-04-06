@@ -1,27 +1,38 @@
-import {
-    Card,
-    Select,
-    TextInput,
-    Typography
-} from '@components'
+import { Card, Select, TextInput, Typography } from '@components'
 import { Label } from '@components/ui/label'
+import { CommonApi } from '@queries'
 import { motion } from 'framer-motion'
-import {
-    MapPin
-} from 'lucide-react'
+import { MapPin } from 'lucide-react'
+import { useState } from 'react'
 
 export const AddressInformationCard = ({
     handleInputChange,
     data,
     errors,
 }: any) => {
+    const [itemPerPage, setItemPerPage] = useState(50)
+    const [page, setPage] = useState(1)
+    const statesList = CommonApi.Countries.useStatesList({
+        skip: itemPerPage * page - itemPerPage,
+        limit: itemPerPage,
+    })
+    const stateOptions =
+        statesList?.data?.data &&
+        statesList?.data?.data?.length > 0 &&
+        statesList?.data?.data?.map((state: any) => ({
+            label: state?.name,
+            value: state?.id,
+        }))
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
         >
-            <Card noPadding className="border-0 shadow-xl bg-linear-to-br from-white to-gray-50/30 hover-lift">
+            <Card
+                noPadding
+                className="border-0 shadow-xl bg-linear-to-br from-white to-gray-50/30 hover-lift"
+            >
                 <div className="bg-linear-to-r from-[#F7A619]/5 to-primary/5 rounded-t-xl p-4">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-linear-to-br from-[#F7A619] to-primary rounded-xl flex items-center justify-center">
@@ -137,35 +148,14 @@ export const AddressInformationCard = ({
                             </Label>
                             <Select
                                 name="state"
-                                value={data.state}
+                                // value={data?.state}
                                 onChange={(value: any) =>
-                                    handleInputChange('state', value)
+                                    handleInputChange('state', value?.value)
                                 }
-                                options={[
-                                    {
-                                        label: 'New South Wales',
-                                        value: 'NSW',
-                                    },
-                                    { label: 'Victoria', value: 'VIC' },
-                                    { label: 'Queensland', value: 'QLD' },
-                                    {
-                                        label: 'Western Australia',
-                                        value: 'WA',
-                                    },
-                                    {
-                                        label: 'South Australia',
-                                        value: 'SA',
-                                    },
-                                    { label: 'Tasmania', value: 'TAS' },
-                                    {
-                                        label: 'Australian Capital Territory',
-                                        value: 'ACT',
-                                    },
-                                    {
-                                        label: 'Northern Territory',
-                                        value: 'NT',
-                                    },
-                                ]}
+                                options={stateOptions}
+                                value={stateOptions?.find(
+                                    (opt: any) => opt.label === data?.state
+                                )}
                             />
 
                             {errors.state && (
@@ -235,7 +225,16 @@ export const AddressInformationCard = ({
                                 <MapPin className="w-4 h-4 text-primary" />
                                 Country
                             </Label>
-                            <Select
+                            <TextInput
+                                name="country"
+                                value={data?.country?.trim() || 'Australia'}
+                                onChange={(e: any) =>
+                                    handleInputChange('country', e.target.value)
+                                }
+                                placeholder="Australia"
+                                disabled
+                            />
+                            {/* <Select
                                 name="country"
                                 value={data.country}
                                 onChange={(value: any) =>
@@ -251,7 +250,7 @@ export const AddressInformationCard = ({
                                         value: 'new-zealand',
                                     },
                                 ]}
-                            />
+                            /> */}
                         </motion.div>
                     </div>
                 </div>

@@ -11,23 +11,19 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from '@components/ui'
 import { useNotification } from '@hooks'
 import { AdminApi } from '@queries'
-import { Plus } from 'lucide-react'
-import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-export const AddSectorQuestionModal = ({
-    isAddDialogOpen,
-    setIsAddDialogOpen,
+export const EditSectorQuestionModal = ({
+    isEditDialogOpen,
+    setIsEditDialogOpen,
+    editValues,
 }: any) => {
-    const router = useRouter()
-    const secId = router.query.id
-    const [addQuestion, addQuestionResult] =
-        AdminApi.SectorClusters.useAddSectorQuestion()
+    const [editQuestion, editQuestionResult] =
+        AdminApi.SectorClusters.useUpdateSectorQuestion()
     const { notification } = useNotification()
     const methods = useForm({
         mode: 'all',
@@ -41,44 +37,38 @@ export const AddSectorQuestionModal = ({
     const { reset } = methods
 
     useEffect(() => {
-        if (addQuestionResult.isSuccess) {
+        if (editQuestionResult.isSuccess) {
             notification.success({
-                title: 'Question Added',
-                description: 'Question Added Successfully',
+                title: 'Question Updated',
+                description: 'Question Updated Successfully',
             })
-            setIsAddDialogOpen(false)
-            reset()
+            setIsEditDialogOpen(false)
         }
-    }, [addQuestionResult.isSuccess])
+    }, [editQuestionResult.isSuccess])
 
     useEffect(() => {
-        if (!isAddDialogOpen) {
-            reset()
+        if (isEditDialogOpen && editValues) {
+            reset({
+                title: editValues.title || '',
+                question: editValues.question || '',
+                example: editValues.example || '',
+            })
         }
-    }, [isAddDialogOpen])
+    }, [isEditDialogOpen, editValues])
 
     const onSubmit = (data: any) => {
-        addQuestion({ ...data, sectorId: secId })
+        editQuestion({ id: editValues?.id, body: data })
     }
 
     return (
         <>
-            <ShowErrorNotifications result={addQuestionResult} />
-            <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-                <DialogTrigger asChild>
-                    <Button
-                        variant="secondary"
-                        Icon={Plus}
-                        text="Add Custom Question"
-                        outline
-                    />
-                </DialogTrigger>
+            <ShowErrorNotifications result={editQuestionResult} />
+            <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
                 <DialogContent className="max-w-2xl">
                     <DialogHeader>
-                        <DialogTitle>Add Custom Question</DialogTitle>
+                        <DialogTitle>Edit Question</DialogTitle>
                         <DialogDescription>
-                            Create a custom prerequisite question for this
-                            sector
+                            Update the prerequisite question for this sector
                         </DialogDescription>
                     </DialogHeader>
                     <FormProvider {...methods}>
@@ -117,15 +107,15 @@ export const AddSectorQuestionModal = ({
                             <DialogFooter>
                                 <Button
                                     variant="error"
-                                    onClick={() => setIsAddDialogOpen(false)}
+                                    onClick={() => setIsEditDialogOpen(false)}
                                     outline
                                     text="Cancel"
                                 />
                                 <Button
-                                    text="Add Question"
+                                    text="Update Question"
                                     variant="primaryNew"
                                     submit
-                                    loading={addQuestionResult.isLoading}
+                                    loading={editQuestionResult.isLoading}
                                 />
                             </DialogFooter>
                         </form>

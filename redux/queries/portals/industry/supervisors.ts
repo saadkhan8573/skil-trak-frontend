@@ -43,4 +43,13 @@ export const supervisorsEndpoints = (
         }),
         invalidatesTags: ['Industries'],
     }),
+
+    // sectors/:id/courses-by-level
+    getCoursesBySupervisorLevel: builder.query<any, any>({
+        query: ({ id, params }) => ({
+            url: `sectors/${id}/courses-by-level`,
+            params,
+        }),
+        providesTags: ['Industries'],
+    }),
 })

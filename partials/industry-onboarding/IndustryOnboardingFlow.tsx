@@ -244,7 +244,10 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
             abn: step1Data.abn,
             website: step1Data.website ?? null,
             industryBio: step1Data.industryBio ?? null,
-            workplaceType: step1Data.workplaceType ?? null,
+            workplaceType:
+                typeof step1Data.workplaceType === 'object'
+                    ? step1Data.workplaceType?.id ?? step1Data.workplaceType?.name ?? null
+                    : step1Data.workplaceType || null,
             primaryContactName: step1Data.primaryContactName,
             primaryContactRole: step1Data.primaryContactRole ?? null,
             primaryContactEmail: step1Data.primaryContactEmail ?? null,

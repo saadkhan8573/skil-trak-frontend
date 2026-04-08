@@ -95,9 +95,7 @@ export const Step1ConfirmDetails = ({
             newErrors.abn = 'Enter a valid ABN (11 digits)'
         }
 
-        if (!data?.workplaceType?.name?.trim()) {
-            newErrors.workplaceType = 'Workplace type is required'
-        }
+        // workplaceType is optional for now
 
         if (!data.primaryContactName.trim()) {
             newErrors.primaryContactName = 'Primary contact name is required'

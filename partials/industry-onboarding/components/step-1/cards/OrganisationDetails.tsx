@@ -187,8 +187,7 @@ export const OrganisationDetails = ({ onChange, data, errors }: any) => {
                                     className="flex items-center gap-2"
                                 >
                                     <Briefcase className="w-4 h-4 text-primary" />
-                                    Workplace Type{' '}
-                                    <span className="text-destructive">*</span>
+                                    Workplace Type
                                 </Label>
                                 {/* <Select
                                     value={data?.workplaceType}
@@ -260,7 +259,24 @@ export const OrganisationDetails = ({ onChange, data, errors }: any) => {
                                 /> */}
                                 <TextInput
                                     name="workplaceType"
-                                    value={data?.workplaceType?.name ?? ''}
+                                    value={
+                                        typeof data?.workplaceType === 'object'
+                                            ? data?.workplaceType?.name ?? ''
+                                            : data?.workplaceType ?? ''
+                                    }
+                                    onChange={(e: any) => {
+                                        const prev = data?.workplaceType
+                                        const name = e.target.value
+                                        // Preserve the API id if it was an object, otherwise store as string
+                                        onChange({
+                                            ...data,
+                                            workplaceType:
+                                                typeof prev === 'object' && prev?.id
+                                                    ? { ...prev, name }
+                                                    : name,
+                                        })
+                                    }}
+                                    placeholder="e.g., Residential Aged Care"
                                 />
 
                                 {errors.workplaceType && (

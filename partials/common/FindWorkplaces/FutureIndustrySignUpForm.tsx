@@ -9,8 +9,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useNotification } from '@hooks'
 import { AuthApi, CommonApi } from '@queries'
 import {
-    CourseSelectOption,
-    formatOptionLabel,
     getAddressData,
     getLatLng,
     getPostalCode,
@@ -28,7 +26,6 @@ import {
     Card,
     Checkbox,
     Select,
-    SelectOption,
     TextInput,
     Typography,
 } from '@components'
@@ -59,10 +56,7 @@ export const FutureIndustrySignUpForm = ({
     const [lastEnteredEmail, setLastEnteredEmail] = useState('')
     const [sectorOptions, setSectorOptions] = useState<any>([])
     const [selectedSector, setSelectedSector] = useState<any>(null)
-    const [courseOptions, setCourseOptions] = useState([])
-    const [courseLoading, setCourseLoading] = useState(false)
     const [storedData, setStoredData] = useState<any>(null)
-    const [courseValues, setCourseValues] = useState<SelectOption[]>([])
     // countries and states
     const [countryId, setCountryId] = useState(null)
     const [onStateSelect, setOnStateSelect] = useState()
@@ -75,7 +69,6 @@ export const FutureIndustrySignUpForm = ({
     // check email
     const [checkEmailExists, emailCheckResult] = AuthApi.useEmailCheck()
     const sectorResponse = AuthApi.useSectors({})
-    const courses = sectorResponse?.data?.flatMap((obj: any) => obj?.courses)
 
     const [
         getAbnDetails,
@@ -87,31 +80,6 @@ export const FutureIndustrySignUpForm = ({
 
     const onSectorChanged = (sectors: any) => {
         setSelectedSector(sectors)
-        setCourseLoading(true)
-        const filteredCourses = sectors?.map((selectedSector: any) => {
-            const sectorExisting = sectorResponse?.data?.find(
-                (sector: any) => sector?.id === selectedSector?.value
-            )
-            if (sectorExisting && sectorExisting?.courses?.length) {
-                return sectorExisting.courses
-            }
-        })
-
-        const newCourseOptions: any = []
-        filteredCourses.map((courseList: any) => {
-            if (courseList && courseList.length) {
-                return courseList.map((course: any) =>
-                    newCourseOptions.push({
-                        item: course,
-                        value: course.id,
-                        label: course.title,
-                    })
-                )
-            }
-        })
-
-        setCourseOptions(newCourseOptions)
-        setCourseLoading(false)
     }
 
     useEffect(() => {
@@ -128,7 +96,6 @@ export const FutureIndustrySignUpForm = ({
         if (SignUpUtils.getEditingMode()) {
             const values = SignUpUtils.getValuesFromStorage()
             setStoredData(values)
-            setCourseOptions(values.courses)
         }
     }, [])
 
@@ -187,7 +154,6 @@ export const FutureIndustrySignUpForm = ({
                 'Please check if you agree with our terms & policies'
             ),
         sectors: yup.array().min(1, 'Must select at least 1 sector'),
-        courses: yup.array().min(1, 'Must select at least 1 course'),
         // [IndustryQuestionsEnum.CAPACITY]: yup
         //     .string()
         //     .required('Must provide Capacity')
@@ -208,7 +174,6 @@ export const FutureIndustrySignUpForm = ({
         if (SignUpUtils.getEditingMode()) {
             const values = SignUpUtils.getValuesFromStorage()
             setStoredData(values)
-            setCourseOptions(values?.courses)
         }
     }, [])
 
@@ -253,12 +218,6 @@ export const FutureIndustrySignUpForm = ({
         fetchAddressDetails()
     }, [watchAddress])
 
-    useEffect(() => {
-        if (courseOptions && courseOptions?.length > 0) {
-            formMethods.setValue('courses', courseOptions)
-        }
-    }, [courseOptions])
-
     // get data from local storage
     const selectedRowDataString = localStorage?.getItem('signup-data')
     const jsonData = selectedRowDataString
@@ -293,30 +252,13 @@ export const FutureIndustrySignUpForm = ({
 
         if (selectedRowData?.sectors) {
             setSelectedSector(selectedRowData.sectors)
-            onSectorChanged(selectedRowData.sectors)
         }
     }, [selectedRowDataString])
-
-    // useEffect(() => {
-    //     if (selectedSector) {
-    //         onSectorChanged(selectedSector)
-    //     }
-    // }, [selectedSector])
-    useEffect(() => {
-        if (
-            selectedSector &&
-            sectorResponse?.data &&
-            sectorResponse?.data?.length > 0
-        ) {
-            onSectorChanged(selectedSector)
-        }
-    }, [selectedSector, sectorResponse])
     const signUpValues = {
         name: formMethods.watch('name'),
         email: formMethods.watch('email'),
         phoneNumber: formMethods.watch('phoneNumber'),
         addressLine1: formMethods.watch('addressLine1'),
-        courses: formMethods.watch('courses'),
         sectors: selectedSector,
     }
 
@@ -494,7 +436,7 @@ export const FutureIndustrySignUpForm = ({
                         </div>
 
                         {/* Sector Information */}
-                        <div className="grid grid-cols-2 gap-x-3">
+                        <div>
                             <Select
                                 label={'Sector'}
                                 {...(storedData
@@ -511,20 +453,6 @@ export const FutureIndustrySignUpForm = ({
                                 disabled={sectorResponse.isLoading}
                                 onChange={onSectorChanged}
                                 validationIcons
-                            />
-                            <Select
-                                label={'Courses'}
-                                name={'courses'}
-                                defaultValue={courseOptions}
-                                options={courseOptions}
-                                multi
-                                loading={courseLoading}
-                                components={{
-                                    Option: CourseSelectOption,
-                                }}
-                                disabled={courseOptions.length === 0}
-                                validationIcons
-                                formatOptionLabel={formatOptionLabel}
                             />
                         </div>
 

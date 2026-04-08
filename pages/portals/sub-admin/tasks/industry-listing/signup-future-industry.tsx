@@ -21,7 +21,7 @@ const SignUpFutureIndustryPage: NextPageWithLayout = () => {
             ...values,
             role: UserRoles.INDUSTRY,
             sectors: values.sectors.map((s: any) => s.value),
-            courses: values.courses.map((c: any) => c.value),
+            // courses: values.courses.map((c: any) => c.value),
         }).then((res: any) => {
             if (res?.data) {
                 notification.success({

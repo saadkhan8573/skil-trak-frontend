@@ -46,6 +46,7 @@ interface ButtonProps {
     fullWidth?: boolean
     noPadding?: boolean
     text?: string
+    className?: string
 }
 
 export const ActionButton = ({
@@ -64,6 +65,7 @@ export const ActionButton = ({
     text,
     fullWidth,
     noPadding,
+    className,
 }: ButtonProps) => {
     const classes = classNames({
         'text-xs font-medium uppercase transition-all duration-300 focus:outline-none shadow cursor-pointer':
@@ -117,7 +119,7 @@ export const ActionButton = ({
                         type={submit ? 'submit' : 'button'}
                         className={`${
                             simple ? simpleClasses : classes
-                        } relative group`}
+                        } ${className} relative group`}
                         {...(!submit
                             ? { onClick: (e) => onClick && onClick(e) }
                             : {})}

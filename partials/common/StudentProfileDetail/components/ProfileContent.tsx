@@ -18,9 +18,9 @@ export const WorkplaceNotesSection: React.FC<any> = ({
 }) => (
     <div
         className={`grid grid-cols-1 h-auto  px-2 gap-x-3`}
-    // className={`grid grid-cols-1 h-auto ${
-    //     isAdminRole ? 'xl:grid-cols-1 gap-3' : `xl:grid-cols-5 `
-    // } px-2 gap-x-3`}
+        // className={`grid grid-cols-1 h-auto ${
+        //     isAdminRole ? 'xl:grid-cols-1 gap-3' : `xl:grid-cols-5 `
+        // } px-2 gap-x-3`}
     >
         <div
             className={`h-[99%] ${getActiveBorder(ProfileIds.Workplace)}`}
@@ -66,7 +66,7 @@ export const CommunicationSection: React.FC<any> = ({
             ProfileIds['All Communications']
         )}`}
     >
-        <div className="!h-[99%] col-span-2">
+        <div className="h-[99%]! col-span-2">
             <MailsCommunication user={profile} />
         </div>
     </div>
@@ -100,7 +100,7 @@ export const AppointmentsTicketsSection: React.FC<any> = ({
                 id={`student-profile-${ProfileIds.Appointments}`}
                 className={`${getActiveBorder(
                     ProfileIds.Appointments
-                )} !h-[99%] overflow-hidden`}
+                )} h-[99%]! overflow-hidden`}
             >
                 <ProfileAppointments
                     link={getAppointmentLink()}
@@ -111,7 +111,7 @@ export const AppointmentsTicketsSection: React.FC<any> = ({
                 id={`student-profile-${ProfileIds.Tickets}`}
                 className={`${getActiveBorder(
                     ProfileIds.Tickets
-                )} !h-[99%] overflow-hidden`}
+                )} h-[99%]! overflow-hidden`}
             >
                 <Tickets studentId={profile?.id} />
             </div>

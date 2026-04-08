@@ -44,6 +44,7 @@ export const CourseFolderForm = ({
         capacity: yup.number().required('Capacity is Required'),
         isAgreement: yup.boolean(),
         isFacilityCheckList: yup.boolean(),
+        isLogbook: yup.boolean(),
     })
 
     const methods = useForm<AddFolderFormType>({
@@ -124,6 +125,7 @@ export const CourseFolderForm = ({
                                                 'isFacilityCheckList',
                                                 false
                                             )
+                                            methods.setValue('isLogbook', false)
                                         }
                                     }}
                                 />
@@ -134,6 +136,23 @@ export const CourseFolderForm = ({
                                         if (e.target.checked) {
                                             methods.setValue(
                                                 'isAgreement',
+                                                false
+                                            )
+                                            methods.setValue('isLogbook', false)
+                                        }
+                                    }}
+                                />
+                                <Checkbox
+                                    label={'Is Logbook'}
+                                    name="isLogbook"
+                                    onChange={(e: any) => {
+                                        if (e.target.checked) {
+                                            methods.setValue(
+                                                'isAgreement',
+                                                false
+                                            )
+                                            methods.setValue(
+                                                'isFacilityCheckList',
                                                 false
                                             )
                                         }

@@ -23,7 +23,10 @@ export const WpCourse = ({
                         {wpCourse?.title}
                     </Typography>
                 </div>
-                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+                <AuthorizedUserComponent
+                    roles={[UserRoles.ADMIN]}
+                    customUserIds={[20365]}
+                >
                     <ActionButton
                         Icon={RiPencilFill}
                         mini

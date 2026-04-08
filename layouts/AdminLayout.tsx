@@ -116,29 +116,29 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
         return updatedUrl
     }
 
-    useEffect(() => {
-        const handleRouteChange = () => {
-            if (router.pathname.includes('/portals/admin/sub-admin/[id]')) {
-                return
-            }
+    // useEffect(() => {
+    //     const handleRouteChange = () => {
+    //         if (router.pathname.includes('/portals/admin/sub-admin/[id]')) {
+    //             return
+    //         }
 
-            if (childrenRef.current) {
-                childrenRef.current.scrollTo({
-                    top: 0,
-                    left: 0,
-                    behavior: 'smooth',
-                })
-            }
-        }
+    //         if (childrenRef.current) {
+    //             childrenRef.current.scrollTo({
+    //                 top: 0,
+    //                 left: 0,
+    //                 behavior: 'smooth',
+    //             })
+    //         }
+    //     }
 
-        // Add event listener for route changes
-        router.events.on('routeChangeComplete', handleRouteChange)
+    //     // Add event listener for route changes
+    //     router.events.on('routeChangeComplete', handleRouteChange)
 
-        // Remove event listener when component unmounts
-        return () => {
-            router.events.off('routeChangeComplete', handleRouteChange)
-        }
-    }, [router])
+    //     // Remove event listener when component unmounts
+    //     return () => {
+    //         router.events.off('routeChangeComplete', handleRouteChange)
+    //     }
+    // }, [router])
     const checkIsHod = subadmin?.data?.departmentMember?.isHod
 
     const routesData: RouteNavLink[] = [
@@ -185,6 +185,12 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
             text: 'Marketing',
             path: getRoutePath('/marketing'),
             Icon: FaUsers,
+            visible: role === UserRoles.ADMIN,
+        },
+        {
+            text: 'Permissions',
+            path: getRoutePath('/permissions'),
+            Icon: RiShieldUserFill,
             visible: role === UserRoles.ADMIN,
         },
         {

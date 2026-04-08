@@ -41,7 +41,6 @@ export enum TicketType {
     // Follow ups & Requests
     STU_SERV_GENERATE_WORKPLACE_REQUEST = 'STU_SERV_GENERATE_WORKPLACE_REQUEST',
     STU_SERV_MID_PLACEMENT_FOLLOW_UP = 'STU_SERV_MID_PLACEMENT_FOLLOW_UP',
-    STU_SERV_TEAM_LEAD_ESCALATION = 'STU_SERV_TEAM_LEAD_ESCALATION',
 
     // ─────────────────────────────────────────────
     // INDUSTRY SOURCING TEAM
@@ -61,6 +60,7 @@ export enum TicketType {
     // Follow ups & Placements
     IND_SRC_CATCH_UP_WITH_INDUSTRY_PARTNER = 'IND_SRC_CATCH_UP_WITH_INDUSTRY_PARTNER',
     IND_SRC_CONVERT_SIGNUP_TO_PLACEMENT_READY = 'IND_SRC_CONVERT_SIGNUP_TO_PLACEMENT_READY',
+    IND_SRC_TEAM_LEAD_ESCALATION = 'IND_SRC_TEAM_LEAD_ESCALATION',
 }
 
 export type TicketTypeCategory =
@@ -105,7 +105,6 @@ export const TICKET_TYPE_GROUPS: Record<TicketTypeCategory, TicketType[]> = {
         TicketType.STU_SERV_ESIGN_PENDING_FACILITY_CHECKLIST,
         TicketType.STU_SERV_GENERATE_WORKPLACE_REQUEST,
         TicketType.STU_SERV_MID_PLACEMENT_FOLLOW_UP,
-        TicketType.STU_SERV_TEAM_LEAD_ESCALATION,
     ],
     INDUSTRY_SOURCING: [
         TicketType.IND_SRC_PLACEMENT_REQUEST_STUCK_AWAITING_RESPONSE,
@@ -115,6 +114,7 @@ export const TICKET_TYPE_GROUPS: Record<TicketTypeCategory, TicketType[]> = {
         TicketType.IND_SRC_ESIGN_PENDING_DOCUMENT,
         TicketType.IND_SRC_CATCH_UP_WITH_INDUSTRY_PARTNER,
         TicketType.IND_SRC_CONVERT_SIGNUP_TO_PLACEMENT_READY,
+        TicketType.IND_SRC_TEAM_LEAD_ESCALATION,
     ],
     ALL: Object.values(TicketType),
 }
@@ -189,11 +189,6 @@ export const TICKETS_CONFIG: Record<
         color: 'blue',
         desc: 'Mid placement follow up',
     },
-    [TicketType.STU_SERV_TEAM_LEAD_ESCALATION]: {
-        icon: AlertTriangle,
-        color: 'rose',
-        desc: 'Team lead escalation',
-    },
 
     // Industry Sourcing
     [TicketType.IND_SRC_PLACEMENT_REQUEST_STUCK_AWAITING_RESPONSE]: {
@@ -230,6 +225,11 @@ export const TICKETS_CONFIG: Record<
         icon: FileCheck,
         color: 'purple',
         desc: 'Convert signup to placement ready',
+    },
+    [TicketType.IND_SRC_TEAM_LEAD_ESCALATION]: {
+        icon: AlertTriangle,
+        color: 'rose',
+        desc: 'Team lead escalation',
     },
 }
 

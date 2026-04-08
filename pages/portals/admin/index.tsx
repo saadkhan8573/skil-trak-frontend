@@ -25,7 +25,6 @@ const AdminDashboard: NextPageWithLayout = () => {
 
     const [name, setName] = useState('')
     const credentials = AuthUtils.getUserCredentials()
-    const getRtos = CommonApi.Filter.useRtos()
     const stats = AdminApi.Admin.useCount()
     const sectorsStudentsCount = AdminApi.Admin.useSectorsStudentsCount()
 
@@ -154,7 +153,7 @@ const AdminDashboard: NextPageWithLayout = () => {
                 {sectorsStudentsCount.isLoading ? (
                     <LoadingAnimation size={80} height={'h-48'} />
                 ) : sectorsStudentsCount?.data &&
-                    sectorsStudentsCount?.data?.length > 0 ? (
+                  sectorsStudentsCount?.data?.length > 0 ? (
                     <MasonryGrid
                         columnWidth={
                             isMobile ? '100%' : isTablet ? '50%' : '33%'

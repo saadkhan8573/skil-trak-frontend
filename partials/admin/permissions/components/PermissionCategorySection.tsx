@@ -45,7 +45,7 @@ export const PermissionCategorySection: React.FC<
 
                 try {
                     // Call API to assign/revoke permission
-                    const res: any = await toggleRtoPermission({
+                    await toggleRtoPermission({
                         userId: rtoUserId,
                         permissionId: p.permissionId,
                         userPermissionId: p.userPermissionId,

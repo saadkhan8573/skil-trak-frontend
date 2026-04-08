@@ -24,6 +24,7 @@ const adminTagTypes = [
     'SubAdmins',
     'Industries',
     'Workplaces',
+    'Permissions',
     'Departments',
     'Subscribers',
     'Generate-Key',

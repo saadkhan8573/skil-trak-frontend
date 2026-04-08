@@ -11,7 +11,7 @@ import {
     ValidationIcon,
 } from './components'
 
-import { getMethodsForInput } from '@utils'
+import { cn, getMethodsForInput } from '@utils'
 
 import { InputErrorMessage, PasswordView } from './components'
 import { InputProps } from './InputPropType'
@@ -47,6 +47,7 @@ export type TextInputProps = InputProps & {
     defaultValue?: string
     showError?: boolean
     shadow?: string
+    className?: string
 }
 
 export const TextInput = ({
@@ -79,6 +80,8 @@ export const TextInput = ({
     onFocus,
     showError = true,
     shadow,
+
+    className,
 }: TextInputProps) => {
     const [passwordType, setPasswordType] = useState<string | null>(
         type || null
@@ -132,7 +135,13 @@ export const TextInput = ({
             <div className="w-full">
                 <div className="relative">
                     <input
-                        className={`${inputFieldClasses} ${shadow} ${color ? color : 'bg-white'} caret-black`}
+                        className={cn(
+                            inputFieldClasses,
+                            shadow,
+                            color ? color : 'bg-white',
+                            'caret-black',
+                            className
+                        )}
                         {...(id ? { id } : {})}
                         {...formRef}
                         type={passwordType || type}
@@ -155,13 +164,13 @@ export const TextInput = ({
                         }}
                         {...(value ? { value } : {})}
                         {...(onPlaceSuggetions?.placesSuggetions ||
-                            placesSuggetions
+                        placesSuggetions
                             ? {
-                                ref: (e: any) => {
-                                    formRef && formRef.ref(e)
-                                    ref.current = e
-                                },
-                            }
+                                  ref: (e: any) => {
+                                      formRef && formRef.ref(e)
+                                      ref.current = e
+                                  },
+                              }
                             : {})}
                     />
 

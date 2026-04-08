@@ -24,6 +24,7 @@ export interface Folder extends BaseResponse {
     description: string
     isAgreement: boolean
     isFacilityCheckList: boolean
+    isLogbook: boolean
     isRequired: boolean
     isMandatory: boolean
     isCustom?: boolean

@@ -1,0 +1,301 @@
+import {
+    Activity,
+    AlertCircle,
+    BarChart3,
+    Bell,
+    BookOpen,
+    Building2,
+    Calendar,
+    CalendarDays,
+    CheckCircle2,
+    CreditCard,
+    Database,
+    FileSignature,
+    Flag,
+    GraduationCap,
+    Headphones,
+    Key,
+    Lock,
+    Mail,
+    MapPin,
+    MessageSquare,
+    Send,
+    Settings,
+    ShieldCheck,
+    Sparkles,
+    Upload,
+    UserCog,
+    Users,
+    Zap,
+} from 'lucide-react'
+import { PermissionType } from '@types'
+
+export interface PermissionCardData {
+    id: string
+    permissionId: number
+    label: string
+    description: string
+    icon: any
+    category: string
+    userPermissionId?: number
+    enabled: boolean
+    type: 'all' | 'permission'
+}
+
+export const permissionMetadata: Partial<Record<PermissionType, any>> = {
+    [PermissionType.SIGN_DOCUMENTS]: {
+        label: 'Sign Documents',
+        description: 'Ability to e-sign placement and compliance documents',
+        icon: FileSignature,
+        category: 'actions',
+    },
+    [PermissionType.APPROVE_PLACEMENTS]: {
+        label: 'Approve Placements',
+        description: 'Review and approve student placement requests',
+        icon: CheckCircle2,
+        category: 'actions',
+    },
+    [PermissionType.SUBMISSIONS]: {
+        label: 'Submissions',
+        description: 'View and manage student work submissions',
+        icon: Send,
+        category: 'actions',
+    },
+    [PermissionType.RESOLVE_ISSUES]: {
+        label: 'Resolve Issues',
+        description: 'Handle and resolve placement and student issues',
+        icon: Flag,
+        category: 'actions',
+    },
+    [PermissionType.ALL_STUDENTS]: {
+        label: 'All Students',
+        description: 'View and manage all student records',
+        icon: Users,
+        category: 'students',
+    },
+    [PermissionType.PLACEMENT_REQUESTS]: {
+        label: 'Placement Requests',
+        description: 'Manage incoming placement requests',
+        icon: MapPin,
+        category: 'students',
+    },
+    [PermissionType.STUDENT_SCHEDULE]: {
+        label: 'Student Schedule',
+        description: 'View and manage student placement schedules',
+        icon: Calendar,
+        category: 'students',
+    },
+    [PermissionType.IMPORT_STUDENTS]: {
+        label: 'Import Students',
+        description: 'Bulk import student data via CSV/Excel',
+        icon: Upload,
+        category: 'students',
+    },
+    [PermissionType.EMAILS]: {
+        label: 'Emails',
+        description: 'Send and manage email communications',
+        icon: Mail,
+        category: 'communications',
+    },
+    [PermissionType.TEXT_MESSAGES]: {
+        label: 'Text Messages (SMS)',
+        description: 'Send SMS notifications to students',
+        icon: MessageSquare,
+        category: 'communications',
+    },
+    [PermissionType.APPOINTMENTS]: {
+        label: 'Appointments',
+        description: 'Schedule and manage appointments',
+        icon: CalendarDays,
+        category: 'communications',
+    },
+    [PermissionType.AUTO_SUPPORT_TICKETS]: {
+        label: 'Auto Support Tickets',
+        description: 'Automated support ticket creation',
+        icon: Headphones,
+        category: 'communications',
+    },
+    [PermissionType.TEAM_TICKETS]: {
+        label: 'Team Tickets',
+        description: 'Manage team support tickets',
+        icon: Headphones,
+        category: 'communications',
+    },
+    [PermissionType.NOTIFICATIONS]: {
+        label: 'Notifications',
+        description: 'System and push notifications',
+        icon: Bell,
+        category: 'communications',
+    },
+    [PermissionType.SETUP_AUTOMATION]: {
+        label: 'Setup for Automation',
+        description: 'Configure automation rules and workflows',
+        icon: Zap,
+        category: 'manage',
+    },
+    [PermissionType.INDUSTRIES]: {
+        label: 'Industries Management',
+        description: 'Add, edit, and manage industry partners',
+        icon: Building2,
+        category: 'manage',
+    },
+    [PermissionType.TEAM_MANAGEMENT]: {
+        label: 'Team Management',
+        description: 'Manage staff members and permissions',
+        icon: UserCog,
+        category: 'manage',
+    },
+    [PermissionType.COURSES]: {
+        label: 'Courses Management',
+        description: 'Configure courses and qualifications',
+        icon: GraduationCap,
+        category: 'manage',
+    },
+    [PermissionType.DATA_STORAGE]: {
+        label: 'Data Storage',
+        description: 'File storage and document management',
+        icon: Database,
+        category: 'tools',
+    },
+    [PermissionType.REPORTS]: {
+        label: 'Reports & Analytics',
+        description: 'Generate and export reports',
+        icon: BarChart3,
+        category: 'tools',
+    },
+    [PermissionType.SUPPORT]: {
+        label: 'Support Center',
+        description: 'Access to support and help resources',
+        icon: Headphones,
+        category: 'tools',
+    },
+    [PermissionType.SETTINGS]: {
+        label: 'Settings',
+        description: 'System and account settings',
+        icon: Settings,
+        category: 'tools',
+    },
+    [PermissionType.ALLOW_LOGBOOK]: {
+        label: 'Allow Logbook',
+        description: 'Digital logbook tracking',
+        icon: FileSignature,
+        category: 'student-features',
+    },
+    [PermissionType.ALLOW_UPDATE_PROFILE]: {
+        label: 'Allow Update Profile',
+        description: 'Update student and placement info',
+        icon: Activity,
+        category: 'student-features',
+    },
+    [PermissionType.ALLOW_NEW_DASHBOARD]: {
+        label: 'Allow New Dashboard',
+        description: 'Access to latest dashboard version',
+        icon: Activity,
+        category: 'student-features',
+    },
+    [PermissionType.CAN_VIEW_PAYMENT_STATUS]: {
+        label: 'Can View Payment Status',
+        description: 'View financial transactions',
+        icon: CreditCard,
+        category: 'billing',
+    },
+    [PermissionType.SEND_PASSWORD]: {
+        label: 'Send Password',
+        description: 'Send password reset emails to students',
+        icon: Send,
+        category: 'security',
+    },
+    [PermissionType.VIEW_PASSWORD]: {
+        label: 'View Password',
+        description: 'Securely view student login credentials',
+        icon: Lock,
+        category: 'security',
+    },
+    [PermissionType.EDIT_PASSWORD]: {
+        label: 'Edit Password',
+        description: 'Modify and update student passwords',
+        icon: Key,
+        category: 'security',
+    },
+    [PermissionType.VIEW_PLACEMENT_PROFILE]: {
+        label: 'View Placement Profile',
+        description: 'Access to view detailed placement profiles',
+        icon: GraduationCap,
+        category: 'students',
+    },
+}
+
+export const categoryConfig = {
+    actions: {
+        label: 'Action Required',
+        icon: AlertCircle,
+        description: 'Critical actions and urgent tasks',
+        bg: 'bg-linear-to-r from-red-500/5 to-accent/5',
+        bgHover: 'hover:from-red-500/10 hover:to-accent/10',
+        iconBg: 'bg-red-100',
+        iconColor: 'text-red-500',
+    },
+    students: {
+        label: 'Students & Placements',
+        icon: Users,
+        description: 'Student management and placement coordination',
+        bg: 'bg-linear-to-r from-primary/5 to-secondary/5',
+        bgHover: 'hover:from-primary/10 hover:to-secondary/10',
+        iconBg: 'bg-primary/10',
+        iconColor: 'text-primary',
+    },
+    communications: {
+        label: 'Communications',
+        icon: Mail,
+        description: 'Email, SMS, notifications, and messaging',
+        bg: 'bg-linear-to-r from-accent/5 to-secondary/5',
+        bgHover: 'hover:from-accent/10 hover:to-secondary/10',
+        iconBg: 'bg-accent/10',
+        iconColor: 'text-accent',
+    },
+    manage: {
+        label: 'Manage',
+        icon: Settings,
+        description: 'Core management functions and configuration',
+        bg: 'bg-linear-to-r from-secondary/5 to-primary/5',
+        bgHover: 'hover:from-secondary/10 hover:to-primary/10',
+        iconBg: 'bg-primary/10',
+        iconColor: 'text-primary',
+    },
+    tools: {
+        label: 'More Tools',
+        icon: BookOpen,
+        description: 'Additional utilities and resources',
+        bg: 'bg-linear-to-r from-primary/5 to-accent/5',
+        bgHover: 'hover:from-primary/10 hover:to-accent/10',
+        iconBg: 'bg-primary/10',
+        iconColor: 'text-primary',
+    },
+    'student-features': {
+        label: 'Student Features',
+        icon: Sparkles,
+        description: 'Features and capabilities for students',
+        bg: 'bg-linear-to-r from-accent/5 to-secondary/5',
+        bgHover: 'hover:from-accent/10 hover:to-secondary/10',
+        iconBg: 'bg-accent/10',
+        iconColor: 'text-accent',
+    },
+    billing: {
+        label: 'Billing',
+        icon: CreditCard,
+        description: 'Billing and payment controls',
+        bg: 'bg-linear-to-r from-accent/5 to-secondary/5',
+        bgHover: 'hover:from-accent/10 hover:to-secondary/10',
+        iconBg: 'bg-accent/10',
+        iconColor: 'text-accent',
+    },
+    security: {
+        label: 'Security & Access',
+        icon: ShieldCheck,
+        description: 'Password management and access controls',
+        bg: 'bg-linear-to-r from-red-500/5 to-primary/5',
+        bgHover: 'hover:from-red-500/10 hover:to-primary/10',
+        iconBg: 'bg-red-50',
+        iconColor: 'text-red-600',
+    },
+}

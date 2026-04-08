@@ -39,6 +39,8 @@ export type SelectProps = {
     passValue?: boolean
     menuPortalTarget?: HTMLElement | null
     menuPosition?: 'absolute' | 'fixed'
+    height?: string
+    maxMenuHeight?: number
 } & InputProps
 
 export const Select = forwardRef(
@@ -76,6 +78,8 @@ export const Select = forwardRef(
             menuPortalTarget,
             menuPosition,
             showError = true,
+            height,
+            maxMenuHeight,
         }: SelectProps,
         ref: any
     ) => {
@@ -174,7 +178,18 @@ export const Select = forwardRef(
                         ? `1px solid ${Colors.muted} !important`
                         : `1px solid ${Colors.muted} !important`,
                 },
+                height: height || 'auto',
+                minHeight: height || '38px',
                 // border: '1px solid blue',
+            }),
+            valueContainer: (base: any) => ({
+                ...base,
+                height: height ? `calc(${height} - 2px)` : 'auto',
+                padding: '0 8px',
+            }),
+            indicatorsContainer: (base: any) => ({
+                ...base,
+                height: height ? `calc(${height} - 2px)` : 'auto',
             }),
             input: (base: any, state: any) => ({
                 ...base,
@@ -248,6 +263,15 @@ export const Select = forwardRef(
                     backgroundColor: 'orange',
                     color: 'white',
                 },
+            }),
+            menuPortal: (base: any) => ({
+                ...base,
+                zIndex: 9999,
+                pointerEvents: 'auto',
+            }),
+            menuList: (base: any) => ({
+                ...base,
+                maxHeight: maxMenuHeight || 300,
             }),
         }
 

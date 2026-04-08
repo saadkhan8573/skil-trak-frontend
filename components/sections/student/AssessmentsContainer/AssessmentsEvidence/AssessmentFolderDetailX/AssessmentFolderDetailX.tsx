@@ -1,8 +1,6 @@
 import moment from 'moment'
 import { useState } from 'react'
 
-// Icons
-
 // components
 import { Badge, LoadingAnimation, NoData, Typography } from '@components'
 import { AssessmentFolderFileCard } from '../components'

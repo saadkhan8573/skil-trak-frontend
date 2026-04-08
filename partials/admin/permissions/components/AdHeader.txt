@@ -1,0 +1,106 @@
+<div className="relative overflow-hidden rounded-2xl border-2 border-primary/20 bg-gradient-to-br from-primary/10 via-accent/5 to-background p-8">
+        <div className="absolute inset-0 bg-grid-white/5 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.5))]" />
+        <div className="relative">
+          <div className="flex items-start justify-between mb-6">
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-2xl blur-xl opacity-50" />
+                <div className="relative h-16 w-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-2xl">
+                  <Shield className="h-8 w-8 text-white" />
+                </div>
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold tracking-tight mb-2">SkilTrak Admin Panel</h1>
+                <p className="text-muted-foreground text-base">
+                  Complete control over RTO permissions, features, and package settings
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button variant="outline" onClick={handleExportConfig} size="lg">
+                <Download className="h-4 w-4 mr-2" />
+                Export Config
+              </Button>
+              <Button variant="outline" onClick={handleResetDefaults} size="lg">
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Reset
+              </Button>
+              <Button
+                className="bg-gradient-to-r from-primary to-accent shadow-lg hover:shadow-xl"
+                onClick={handleSaveChanges}
+                size="lg"
+              >
+                <Save className="h-4 w-4 mr-2" />
+                Save Changes
+              </Button>
+            </div>
+          </div>
+
+          {/* RTO Selector & Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div className="md:col-span-2">
+              <Label htmlFor="rto-select" className="mb-2 block font-semibold text-sm">
+                Selected Training Organisation
+              </Label>
+              <Select value={selectedRTO} onValueChange={setSelectedRTO}>
+                <SelectTrigger id="rto-select" className="bg-background/80 backdrop-blur-sm h-12 border-2">
+                  <SelectValue placeholder="Select RTO" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Melbourne Training Institute">
+                    Melbourne Training Institute
+                  </SelectItem>
+                  <SelectItem value="Sydney Skills Academy">Sydney Skills Academy</SelectItem>
+                  <SelectItem value="Brisbane Education Centre">
+                    Brisbane Education Centre
+                  </SelectItem>
+                  <SelectItem value="Perth Training Group">Perth Training Group</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Quick Stats Cards */}
+            <Card className="bg-background/60 backdrop-blur-sm border-primary/20">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <Users className="h-4 w-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Active Students</p>
+                    <p className="text-xl font-bold">{rtoStats.activeStudents}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-background/60 backdrop-blur-sm border-accent/20">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-accent/10">
+                    <Building2 className="h-4 w-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Partners</p>
+                    <p className="text-xl font-bold">{rtoStats.industryPartners}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-background/60 backdrop-blur-sm border-destructive/20">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-destructive/10">
+                    <AlertCircle className="h-4 w-4 text-destructive" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Pending</p>
+                    <p className="text-xl font-bold">{rtoStats.pendingActions}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>

@@ -1,8 +1,8 @@
+import Image from 'next/image'
+import { ellipsisText } from '@utils'
 import { Typography } from '@components/Typography'
 import { VideoPreview } from '@components/VideoPreview'
 import { useArchiveAssessmentFilesMutation } from '@queries'
-import { ellipsisText } from '@utils'
-import Image from 'next/image'
 import { AiFillDelete } from 'react-icons/ai'
 import { IoMdDocument } from 'react-icons/io'
 import { PulseLoader } from 'react-spinners'
@@ -115,14 +115,7 @@ export const AssessmentFolderFileCard = ({
                                 />
                             </div>
                         )}
-                        {/* <Typography variant="body" center>
-                        {filename
-                            ? ellipsisText(filename?.split('_')[0], 11)
-                            : ellipsisText(
-                                  pathname?.split('/')?.slice(1)[0],
-                                  7
-                              )}
-                    </Typography> */}
+
                         <div title={fileName}>
                             <Typography variant="small" center>
                                 {filename

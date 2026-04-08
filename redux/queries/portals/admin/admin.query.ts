@@ -31,6 +31,7 @@ import { rtoMessageCenterEndpoints } from './rto-message-center'
 import { defaultDocumentsEndpoints } from './default-documents'
 import { industryReadinessEndpoints } from './industry-readiness'
 import { marketingEndpoints } from './marketing'
+import { permissionEndpoints } from './permissions'
 
 const PREFIX = 'admin'
 export const adminApi = apiSlice.injectEndpoints({
@@ -104,6 +105,7 @@ export const adminApi = apiSlice.injectEndpoints({
         ...defaultDocumentsEndpoints(build),
         ...industryReadinessEndpoints(build),
         ...marketingEndpoints(build),
+        ...permissionEndpoints(build),
     }),
     // overrideExisting: false,
 })
@@ -534,6 +536,14 @@ const {
 
     // ------ MARKETING ------ //
     useGetMarketingUsersQuery,
+
+    // ------ PERMISSIONS ------ //
+    useGetPermissionsQuery,
+    useAddPermissionMutation,
+    useUpdatePermissionMutation,
+    useDeletePermissionMutation,
+    useToggleRtoPermissionMutation,
+    useGetMyPermissionsQuery,
 } = adminApi
 
 export const AdminApi = {
@@ -965,5 +975,13 @@ export const AdminApi = {
     },
     Marketing: {
         useMarketingUsers: useGetMarketingUsersQuery,
+    },
+    Permissions: {
+        useListQuery: useGetPermissionsQuery,
+        useMyPermissions: useGetMyPermissionsQuery,
+        useCreate: useAddPermissionMutation,
+        useUpdate: useUpdatePermissionMutation,
+        useRemove: useDeletePermissionMutation,
+        useToggleRto: useToggleRtoPermissionMutation,
     },
 }

@@ -1,8 +1,9 @@
-import React from 'react'
-import { ChevronDown, ChevronUp } from 'lucide-react'
-import { Card, Typography, Badge } from '@components'
-import { PermissionCard } from '@partials/admin/permissions/components/PermissionCard'
+import { Badge, Card, ShowErrorNotifications, Typography } from '@components'
 import { PermissionCardData } from '@partials/admin/permissions'
+import { PermissionCard } from '@partials/admin/permissions/components/PermissionCard'
+import { AdminApi } from '@redux'
+import { ChevronDown } from 'lucide-react'
+import React from 'react'
 
 interface PermissionCategorySectionProps {
     category: string
@@ -15,7 +16,6 @@ interface PermissionCategorySectionProps {
     setLoadingPermissions: React.Dispatch<React.SetStateAction<Set<string>>>
     notification: any
     rtoUserId: string | number | undefined
-    toggleRtoPermission: (data: any) => Promise<any>
 }
 
 export const PermissionCategorySection: React.FC<
@@ -31,8 +31,10 @@ export const PermissionCategorySection: React.FC<
     setLoadingPermissions,
     notification,
     rtoUserId,
-    toggleRtoPermission,
 }) => {
+    const [toggleRtoPermission, toggleRtoPermissionResult] =
+        AdminApi.Permissions.useToggleRto()
+
     const renderPermissionCard = (p: PermissionCardData) => {
         const isLoading = loadingPermissions.has(p.id)
 
@@ -47,7 +49,7 @@ export const PermissionCategorySection: React.FC<
                         userId: rtoUserId,
                         permissionId: p.permissionId,
                         userPermissionId: p.userPermissionId,
-                    })
+                    }).unwrap()
 
                     // Show success notification
                     notification.success({
@@ -63,12 +65,12 @@ export const PermissionCategorySection: React.FC<
                     })
                 } catch (error: any) {
                     // Show error notification
-                    notification.error({
-                        title: 'Failed to update permission',
-                        description:
-                            error?.message ||
-                            'Unable to update the permission. Please try again.',
-                    })
+                    // notification.error({
+                    //     title: 'Failed to update permission',
+                    //     description:
+                    //         error?.message ||
+                    //         'Unable to update the permission. Please try again.',
+                    // })
                     // Remove from loading state
                     setLoadingPermissions((prev) => {
                         const next = new Set(prev)
@@ -86,6 +88,7 @@ export const PermissionCategorySection: React.FC<
                     isLoading ? 'opacity-60 pointer-events-none' : ''
                 }`}
             >
+                <ShowErrorNotifications result={toggleRtoPermissionResult} />
                 <PermissionCard
                     permission={
                         {

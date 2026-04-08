@@ -27,7 +27,7 @@ export const DynamicPermissionsTab: FC<DynamicPermissionsTabProps> = ({
             skip: !rtoUserId,
         }
     )
-    const [toggleRtoPermission] = AdminApi.Permissions.useToggleRto()
+
     const [searchQuery, setSearchQuery] = useState('')
     const [showDisabledOnly, setShowDisabledOnly] = useState(false)
     const [expandedSections, setExpandedSections] = useState<string[]>([
@@ -219,7 +219,6 @@ export const DynamicPermissionsTab: FC<DynamicPermissionsTabProps> = ({
                                 setLoadingPermissions={setLoadingPermissions}
                                 notification={notification}
                                 rtoUserId={rtoUserId}
-                                toggleRtoPermission={toggleRtoPermission}
                             />
                         )
                     }

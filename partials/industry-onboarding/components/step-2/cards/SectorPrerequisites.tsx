@@ -1,5 +1,27 @@
 import { AlertCircle, CheckCircle, X } from 'lucide-react'
 
+const STATIC_QUESTIONS = [
+    {
+        id: 'static_1',
+        title: 'Direct Support Environment',
+        question:
+            'Do you provide direct client support (personal care, daily living, community support) in a residential, community, home or centre-based setting?',
+    },
+    {
+        id: 'static_2',
+        title: 'Supervision',
+        question:
+            'Will the student be supervised by a qualified worker (same qualification or higher) or experienced support staff?',
+    },
+    {
+        id: 'static_3',
+        title: 'Equipment & Resources',
+        question: 'Do you have appropriate equipment and systems in place?',
+        example:
+            'hoists, mobility aids, transfer equipment, PPE, care plans, incident reporting, documentation systems.',
+    },
+]
+
 interface SectorPrerequisitesProps {
     sector: any
     sectorState: any
@@ -7,7 +29,7 @@ interface SectorPrerequisitesProps {
     questionsLoading: boolean
     questionsError: boolean
     allQuestionsChecked: boolean
-    onToggleQuestion: (questionId: number, checked: boolean) => void
+    onToggleQuestion: (questionId: any, checked: boolean) => void
 }
 
 export function SectorPrerequisites({
@@ -65,6 +87,45 @@ export function SectorPrerequisites({
                     </div>
                 )}
 
+                {STATIC_QUESTIONS.map((q, qi) => {
+                    const checked = !!sectorState?.questionChecks?.[q.id]
+                    return (
+                        <div
+                            key={q.id}
+                            className="bg-white rounded-xl p-4 border-2 transition-all duration-300"
+                            style={{
+                                borderColor: checked ? '#10B981' : '#E5E7EB',
+                            }}
+                        >
+                            <div className="flex items-start gap-3">
+                                <div className="pt-1">
+                                    <div
+                                        className="w-6 h-6 rounded border-2 flex items-center justify-center cursor-pointer transition-all duration-200"
+                                        style={{
+                                            borderColor: checked ? '#10B981' : '#D1D5DB',
+                                            backgroundColor: checked ? '#10B981' : 'white',
+                                        }}
+                                        onClick={() => onToggleQuestion(q.id, !checked)}
+                                    >
+                                        {checked && <CheckCircle className="w-4 h-4 text-white" />}
+                                    </div>
+                                </div>
+                                <div className="flex-1">
+                                    <div className="font-semibold text-sm mb-1">
+                                        {qi + 1}. {q.title}
+                                    </div>
+                                    <p className="text-xs text-muted-foreground">{q.question}</p>
+                                    {q.example && (
+                                        <p className="text-xs italic text-muted-foreground mt-1">
+                                            Examples: {q.example}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })}
+
                 {!questionsLoading &&
                     !questionsError &&
                     questions?.map((q: any, qi: number) => {
@@ -102,7 +163,7 @@ export function SectorPrerequisites({
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <div className="font-semibold text-sm mb-1 break-words">
-                                            {qi + 1}. {q.title}
+                                            {qi + 1 + STATIC_QUESTIONS.length}. {q.title}
                                         </div>
                                         <p className="text-xs text-muted-foreground break-words whitespace-pre-wrap">
                                             {q.question}

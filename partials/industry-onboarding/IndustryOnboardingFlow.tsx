@@ -68,17 +68,11 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
 
     const [submitOnboarding, submitOnboardingResult] =
         AdminApi.Industries.useOnBoardingSubmission()
-
+    // API returns { id, sector: { id, name, ... } } — flatten to the inner sector object
     const uniqueSectors = useMemo(() => {
-        if (!data?.industryCourseApprovals?.length) return []
-        return Object.values(
-            data.industryCourseApprovals.reduce((acc: any, item: any) => {
-                const sector = item?.course?.sector
-                if (sector && !acc[sector.id]) acc[sector.id] = sector
-                return acc
-            }, {})
-        )
-    }, [data?.industryCourseApprovals])
+        if (!data?.sectors?.length) return []
+        return data.sectors.map((entry: any) => entry?.sector ?? entry)
+    }, [data?.sectors])
 
     // -------------------------------------------------------------------------
     // Step data state
@@ -154,14 +148,20 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
     useEffect(() => {
         if (!id) return
         try {
-            localStorage.setItem(`onboarding_step2_${id}`, JSON.stringify(step2Data))
+            localStorage.setItem(
+                `onboarding_step2_${id}`,
+                JSON.stringify(step2Data)
+            )
         } catch {}
     }, [step2Data, id])
 
     useEffect(() => {
         if (!id) return
         try {
-            localStorage.setItem(`onboarding_step3_${id}`, JSON.stringify(step3Data))
+            localStorage.setItem(
+                `onboarding_step3_${id}`,
+                JSON.stringify(step3Data)
+            )
         } catch {}
     }, [step3Data, id])
 
@@ -184,43 +184,60 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
     // -------------------------------------------------------------------------
 
     const buildPayload = () => {
-        const tasksBySectorId: Record<string, any> = step2Data?.selectedTaskIds || {}
+        const tasksBySectorId: Record<string, any> =
+            step2Data?.selectedTaskIds || {}
 
-        const sectors = (step2Data.sectors || []).map((sector: any) => {
-            const selectedQuestionIds = Object.entries(sector.questionChecks || {})
-                .filter(([, checked]) => checked)
-                .map(([qId]) => Number(qId))
+        const sectors = (step2Data.sectors || [])
+            .filter((sector: any) => {
+                // Only include sectors that have highlighted tasks selected
+                const courseMap = tasksBySectorId[sector.id] || {}
+                const hasTasks = Object.values(courseMap).some(
+                    (taskIds: any) => taskIds?.length > 0
+                )
+                return hasTasks
+            })
+            .map((sector: any) => {
+                const selectedQuestionIds = Object.entries(
+                    sector.questionChecks || {}
+                )
+                    .filter(([, checked]) => checked)
+                    .map(([qId]) => Number(qId))
 
-            const industryChecks = (sector.industryChecks || [])
-                .filter((c: any) => !c.required)
-                .map((c: any) => ({ id: c.id }))
+                const industryChecks = (sector.industryChecks || [])
+                    .filter((c: any) => !c.required)
+                    .map((c: any) => ({ id: c.id }))
 
-            const courseMap = tasksBySectorId[sector.id] || {}
-            const courses = Object.entries(courseMap).map(
-                ([courseId, taskIds]: [string, any]) => ({
-                    id: Number(courseId),
-                    taskIds: taskIds as number[],
-                })
-            )
+                const courseMap = tasksBySectorId[sector.id] || {}
+                const courses = Object.entries(courseMap).map(
+                    ([courseId, taskIds]: [string, any]) => ({
+                        id: Number(courseId),
+                        taskIds: taskIds as number[],
+                    })
+                )
 
-            const base: Record<string, any> = {
-                id: sector.id,
-                name: sector.name,
-                isClusterSector: !!sector.isClusterSector,
-                supervisorName: sector.supervisorName ?? '',
-                supervisorLevel: sector.supervisorLevel ?? null,
-                qualificationTitle: sector.qualificationTitle ?? '',
-                capacity: sector.capacity ?? null,
-                capacityPeriod: sector.capacityPeriod ?? null,
-                confirmed: !!sector.confirmed,
-                industryChecks,
-                selectedQuestionIds,
-                courses,
-            }
+                const base: Record<string, any> = {
+                    id: sector.id,
+                    name: sector.name,
+                    // isClusterSector: !!sector.isClusterSector,
+                    supervisorName: sector.supervisorName ?? '',
+                    position: sector.position ?? '',
+                    email: sector.email ?? '',
+                    phone: sector.phone ?? '',
+                    supervisorLevel: sector.supervisorLevel ?? null,
+                    experience: sector.experience ?? null,
+                    title: sector.title ?? '',
+                    capacity: sector.capacity ?? null,
+                    capacityPeriod: sector.capacityPeriod ?? null,
+                    confirmed: !!sector.confirmed,
+                    industryChecks,
+                    // selectedQuestionIds,
+                    courses,
+                }
 
-            if (sector.customCheck?.enabled) base.customCheck = sector.customCheck
-            return base
-        })
+                if (sector.customCheck?.enabled)
+                    base.customCheck = sector.customCheck
+                return base
+            })
 
         return {
             entityName: step1Data.entityName,
@@ -248,12 +265,13 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
                 ])
             ),
             insurance: {
-                selectedInsuranceIds: step3Data.insurance?.selectedInsuranceIds ?? [],
-                additionalDetails: step3Data.insurance?.additionalDetails ?? null,
+                selectedInsuranceIds:
+                    step3Data.insurance?.selectedInsuranceIds ?? [],
+                // additionalDetails:
+                //     step3Data.insurance?.additionalDetails ?? null,
             },
         }
     }
-
     // -------------------------------------------------------------------------
     // Navigation
     // -------------------------------------------------------------------------
@@ -266,7 +284,10 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
         setIsLoading(true)
         try {
             const body = buildPayload()
-            console.log('[Onboarding] submit payload:', JSON.stringify(body, null, 2))
+            // console.log(
+            //     '[Onboarding] submit payload::::::',
+            //     JSON.stringify(body, null, 2)
+            // )
             await submitOnboarding({ id, body })
         } finally {
             setIsLoading(false)
@@ -336,7 +357,10 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: -20 }}
-                                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                transition={{
+                                    duration: 0.3,
+                                    ease: 'easeInOut',
+                                }}
                             >
                                 {stepComponents[currentStep]}
                             </motion.div>
@@ -352,7 +376,9 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
                 totalSteps={STEPS.length}
                 onBack={handleBack}
                 onContinue={handleNext}
-                canContinue={stepValidation[currentStep as keyof typeof stepValidation]}
+                canContinue={
+                    stepValidation[currentStep as keyof typeof stepValidation]
+                }
                 isLastStep={currentStep === STEPS.length}
                 isLoading={isLoading}
             />

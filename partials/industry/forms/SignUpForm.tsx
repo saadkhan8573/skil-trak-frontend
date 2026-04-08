@@ -9,9 +9,7 @@ import * as yup from 'yup'
 import { useNotification, useSectorsAndCoursesOptions } from '@hooks'
 import { AuthApi, CommonApi } from '@queries'
 import {
-    CourseSelectOption,
     SignUpUtils,
-    formatOptionLabel,
     isEmailValid,
     onlyAlphabets,
     onlyNumbersAcceptedInYup,
@@ -23,7 +21,6 @@ import {
     Button,
     Checkbox,
     Select,
-    SelectOption,
     TextInput,
     Typography,
 } from '@components'
@@ -92,17 +89,11 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
         }, 300)()
     }
     const {
-        courseLoading,
-        courseOptions,
-        courseValues,
-        onCourseChange,
         onSectorChanged,
         sectorOptions,
         selectedSector,
         setSelectedSector,
-        setCourseOptions,
         sectorLoading,
-        setSelectedCourses,
     } = useSectorsAndCoursesOptions()
 
     const validationSchema = yup.object({
@@ -135,7 +126,7 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
 
         // Sector Information
         sectors: yup.array().min(1, 'Must select at least 1 sector').required(),
-        courses: yup.array().min(1, 'Must select at least 1 course').required(),
+        // courses: yup.array().min(1, 'Must select at least 1 course').required(),
 
         // Contact Person Information
         contactPerson: yup
@@ -171,7 +162,6 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
         if (SignUpUtils.getEditingMode()) {
             const values = SignUpUtils.getValuesFromStorage()
             setStoredData(values)
-            setCourseOptions(values.courses)
         }
     }, [])
 
@@ -212,8 +202,8 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
             : {}
 
         const sectors = selectedRowData?.sector?.map((s: any) => ({
-            label: s?.name,
-            value: s?.id,
+            label: s?.name ?? s?.label,
+            value: s?.id ?? s?.value,
         }))
 
         formMethods.setValue('name', selectedRowData?.businessName || '')
@@ -371,7 +361,7 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
                         Sector Information
                     </Typography>
                     <p className="text-gray-400 text-sm leading-6">
-                        Select your eligible sectors, and related courses.
+                        Select your eligible sectors.
                     </p>
                 </div>
                 <div className="flex flex-col lg:flex-row gap-x-16 border-t py-4">
@@ -393,31 +383,6 @@ export const IndustrySignUpForm = ({ onSubmit }: { onSubmit: any }) => {
                                 disabled={sectorResponse.isLoading}
                                 onChange={onSectorChanged}
                                 validationIcons
-                            />
-                        </div>
-                        <div>
-                            <Select
-                                label={'Courses'}
-                                name={'courses'}
-                                value={courseValues}
-                                defaultValue={courseOptions}
-                                options={courseOptions}
-                                multi
-                                onChange={(e: SelectOption[]) => {
-                                    onCourseChange(
-                                        e?.map(
-                                            (course: SelectOption) =>
-                                                course?.value
-                                        )
-                                    )
-                                }}
-                                loading={courseLoading}
-                                components={{
-                                    Option: CourseSelectOption,
-                                }}
-                                disabled={courseOptions.length === 0}
-                                validationIcons
-                                formatOptionLabel={formatOptionLabel}
                             />
                         </div>
                     </div>

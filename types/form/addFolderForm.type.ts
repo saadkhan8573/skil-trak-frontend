@@ -11,6 +11,7 @@ export interface AddFolderFormType {
     category: string
     isAgreement: boolean
     isFacilityCheckList: boolean
+    isLogbook: boolean
 }
 
 export interface AddFolderFormQueryType extends AddFolderFormType {

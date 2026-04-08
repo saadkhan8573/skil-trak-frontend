@@ -17,78 +17,111 @@ import {
     getProfileUrl,
 } from './helper'
 import { UserRoles } from '@constants'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@components/ui'
 
 export const UserTicketInfoCard = ({ ticket }: any) => {
+    console.log({ ticket })
     const role = getUserCredentials().role
-    const profileUrl = getProfileUrl({
-        role,
-        origin: ticket?.origin,
-        studentId: ticket?.user?.student?.id,
-        industryId: ticket?.user?.industry?.id,
-    })
     const studentId =
         ticket?.origin === 'STUDENT'
             ? ticket?.user?.student?.id
             : ticket?.relatedUser?.student?.id
-    const placementUrl = ticket?.workplaceRequestId
-        ? getPlacementProfileUrl({
-              role,
-              origin: ticket?.origin,
-              workplaceRequestId: ticket?.workplaceRequestId,
-              studentId,
-          })
-        : null
+    const industryId =
+        ticket?.origin === 'INDUSTRY'
+            ? ticket?.user?.industry?.id
+            : ticket?.relatedUser?.industry?.id
+
+    const studentUrl =
+        ticket?.workplaceRequestId && studentId
+            ? getPlacementProfileUrl({
+                  role,
+                  origin: 'STUDENT',
+                  workplaceRequestId: ticket?.workplaceRequestId,
+                  studentId,
+              })
+            : getProfileUrl({
+                  role,
+                  origin: 'STUDENT',
+                  studentId,
+              })
+
+    const industryUrl = getProfileUrl({
+        role,
+        origin: 'INDUSTRY',
+        industryId,
+    })
 
     return (
         <div className="bg-white rounded-2xl shadow-xl mb-4 overflow-hidden border border-gray-200">
-            <div className="h-2 bg-gradient-to-r from-[#044866] via-[#F7A619] to-[#0D5468]"></div>
+            <div className="h-2 bg-linear-to-r from-[#044866] via-[#F7A619] to-[#0D5468]"></div>
 
             <div className="p-5">
                 {/* Student Info and Badges Row */}
                 <div className="flex flex-wrap items-center gap-2 mb-4">
-                    {ticket?.origin === 'STUDENT' && (
-                        <Link
-                            href={placementUrl ?? profileUrl}
-                            className="inline-flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-[#044866] to-[#0D5468] text-white rounded-lg shadow-md hover:shadow-xl transition-all group/student"
-                            title="View student details"
-                        >
-                            <div className="size-6 bg-white/20 rounded-full flex items-center justify-center">
-                                <User className="size-4" />
-                            </div>
-                            <div>
-                                <div className="text-xs flex items-center gap-1.5">
-                                    {ticket?.user?.name ?? '---'}
-                                    <ExternalLink className="size-3 opacity-0 group-hover/student:opacity-100 transition-opacity" />
+                    {(ticket?.origin === 'STUDENT' ||
+                        ticket?.relatedUser?.role === UserRoles.STUDENT) && (
+                        <div className="inline-flex items-center gap-4 px-4 py-2 bg-linear-to-r from-[#044866] to-[#0D5468] text-white rounded-lg shadow-md group/student">
+                            <div className="flex items-center gap-3">
+                                <div className="size-8 bg-white/20 rounded-full flex items-center justify-center">
+                                    <User className="size-5" />
                                 </div>
-                                <div className="text-white/70 text-xs">
-                                    {ellipsisText(
-                                        ticket?.user?.student?.studentId,
-                                        8
-                                    ) ?? '---'}
-                                </div>
-                            </div>
-                        </Link>
-                    )}
-                    {ticket?.relatedUser?.role === UserRoles.STUDENT && (
-                        <Link
-                            href={placementUrl ?? profileUrl}
-                            className="inline-flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-[#044866] to-[#0D5468] text-white rounded-lg shadow-md hover:shadow-xl transition-all group/student"
-                            title="View student details"
-                        >
-                            <div className="size-6 bg-white/20 rounded-full flex items-center justify-center">
-                                <User className="size-4" />
-                            </div>
-                            <div>
-                                <div className="text-xs flex items-center gap-1.5">
-                                    {ticket?.relatedUser?.name ?? '---'}
-                                    <ExternalLink className="size-3 opacity-0 group-hover/student:opacity-100 transition-opacity" />
-                                </div>
-                                <div className="text-white/70 text-xs">
-                                    {ticket?.relatedUser?.student?.studentId ??
-                                        '---'}
+                                <div>
+                                    <div className="text-xs font-medium">
+                                        {ticket?.origin === 'STUDENT'
+                                            ? ticket?.user?.name
+                                            : ticket?.relatedUser?.name ??
+                                              '---'}
+                                    </div>
+                                    <div className="text-white/60 text-[10px]">
+                                        {ellipsisText(
+                                            ticket?.origin === 'STUDENT'
+                                                ? ticket?.user?.student
+                                                      ?.studentId
+                                                : ticket?.relatedUser?.student
+                                                      ?.studentId,
+                                            10
+                                        ) ?? '---'}
+                                    </div>
                                 </div>
                             </div>
-                        </Link>
+
+                            {/* Action Buttons */}
+                            <div className="flex items-center gap-2 border-l border-white/20 pl-4 ml-2">
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={studentUrl}
+                                            className="size-7 bg-white/20 hover:bg-white/40 border border-white/30 rounded-md flex items-center justify-center transition-all hover:scale-110"
+                                        >
+                                            <User className="size-3.5 text-white" />
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="top">
+                                        Student Profile
+                                    </TooltipContent>
+                                </Tooltip>
+
+                                {industryId && (
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Link
+                                                href={industryUrl}
+                                                className="size-7 bg-white/20 hover:bg-white/40 border border-white/30 rounded-md flex items-center justify-center transition-all hover:scale-110"
+                                            >
+                                                <Building2 className="size-3.5 text-white" />
+                                            </Link>
+                                        </TooltipTrigger>
+                                        <TooltipContent side="top">
+                                            Industry Profile
+                                        </TooltipContent>
+                                    </Tooltip>
+                                )}
+                            </div>
+                        </div>
                     )}
 
                     <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-500/10 border border-purple-500/30 text-purple-700 rounded-lg">
@@ -201,7 +234,7 @@ export const UserTicketInfoCard = ({ ticket }: any) => {
                 {ticket?.origin === 'INDUSTRY' && (
                     <div className="mt-3 grid grid-cols-2 gap-2">
                         <Link
-                            href={`${profileUrl}`}
+                            href={`${industryUrl}`}
                             className="bg-[#F7A619]/10 rounded-lg p-2.5 border border-[#F7A619]/20 hover:bg-[#F7A619]/20 transition-colors group/industry"
                             title="View industry profile"
                         >
@@ -237,7 +270,7 @@ export const UserTicketInfoCard = ({ ticket }: any) => {
                     ticket?.relatedUser?.role === UserRoles.INDUSTRY && (
                         <div className="mt-3 grid grid-cols-2 gap-2">
                             <Link
-                                href={`${profileUrl}`}
+                                href={`${industryUrl}`}
                                 className="bg-[#F7A619]/10 rounded-lg p-2.5 border border-[#F7A619]/20 hover:bg-[#F7A619]/20 transition-colors group/industry"
                                 title="View industry profile"
                             >

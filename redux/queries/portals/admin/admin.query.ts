@@ -32,6 +32,7 @@ import { defaultDocumentsEndpoints } from './default-documents'
 import { industryReadinessEndpoints } from './industry-readiness'
 import { marketingEndpoints } from './marketing'
 import { sectorClustersEndpoints } from './sectorClusters'
+import { permissionEndpoints } from './permissions'
 
 const PREFIX = 'admin'
 export const adminApi = apiSlice.injectEndpoints({
@@ -106,6 +107,7 @@ export const adminApi = apiSlice.injectEndpoints({
         ...industryReadinessEndpoints(build),
         ...marketingEndpoints(build),
         ...sectorClustersEndpoints(build),
+        ...permissionEndpoints(build),
     }),
     // overrideExisting: false,
 })
@@ -547,6 +549,13 @@ const {
     useGetSectorClusterQuestionsQuery,
     useUpdateRequirementsMutation,
     useGetSupervisorRequirementsQuery,
+    // ------ PERMISSIONS ------ //
+    useGetPermissionsQuery,
+    useAddPermissionMutation,
+    useUpdatePermissionMutation,
+    useDeletePermissionMutation,
+    useToggleRtoPermissionMutation,
+    useGetMyPermissionsQuery,
 } = adminApi
 
 export const AdminApi = {
@@ -988,5 +997,13 @@ export const AdminApi = {
     },
     Marketing: {
         useMarketingUsers: useGetMarketingUsersQuery,
+    },
+    Permissions: {
+        useListQuery: useGetPermissionsQuery,
+        useMyPermissions: useGetMyPermissionsQuery,
+        useCreate: useAddPermissionMutation,
+        useUpdate: useUpdatePermissionMutation,
+        useRemove: useDeletePermissionMutation,
+        useToggleRto: useToggleRtoPermissionMutation,
     },
 }

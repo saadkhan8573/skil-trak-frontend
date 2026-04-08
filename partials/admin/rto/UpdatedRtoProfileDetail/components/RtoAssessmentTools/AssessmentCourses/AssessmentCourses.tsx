@@ -22,6 +22,7 @@ export const AssessmentCourses = ({
                         {courses?.map((course: any) => (
                             <AssessmentCourseCard
                                 course={course}
+                                key={course?.id}
                                 onClick={() => onSelectedCourse(course)}
                                 active={selectedCourseId === course?.id}
                             />

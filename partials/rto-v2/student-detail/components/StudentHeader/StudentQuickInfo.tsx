@@ -1,13 +1,17 @@
+import { ActionButton, AuthorizedUserComponent } from '@components'
 import { Student } from '@types'
 import { Award, Clock, User } from 'lucide-react'
 import moment from 'moment'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useAppSelector } from '@redux/hooks'
 import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
 import { latestWpApprovalRequest } from '../../utils'
 import { useStatusInfo } from '../StudentOverview/hooks/useStatusInfo'
+import { ReassignStudentCoordinatorModal } from './modals/ReassignStudentCoordinatorModal'
+import { UserRoles } from '@constants'
 
 export const StudentQuickInfo = () => {
+    const [showAssignModal, setShowAssignModal] = useState(false)
     const { selectedCourse, studentDetail, selectedWorkplace } = useAppSelector(
         (state) => state.student
     )
@@ -80,7 +84,7 @@ export const StudentQuickInfo = () => {
             subText: (
                 <div className="mt-2">
                     <div className="flex items-center gap-1.5 mb-1.5">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#F7A619] animate-pulse flex-shrink-0"></div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#F7A619] animate-pulse shrink-0"></div>
                         <p className="text-sm text-white font-medium whitespace-nowrap">
                             {currentStep?.label || '---'}
                         </p>
@@ -88,13 +92,31 @@ export const StudentQuickInfo = () => {
                     <p className="text-[10px] text-white/60 whitespace-nowrap">
                         Assigned to:
                     </p>
-                    <div className="flex items-center gap-1 mt-1.5">
-                        <User className="w-3 h-3 text-white/80" />
-                        <p className="text-[10px] text-white/60 whitespace-nowrap">
-                            <span className="font-semibold text-white/80">
-                                {studentDetail?.subadmin?.user?.name || '---'}
-                            </span>
-                        </p>
+                    <div className="flex items-center justify-between gap-1 mt-1.5">
+                        <div className="flex items-center gap-1">
+                            <User className="w-3 h-3 text-white/80" />
+                            <p className="text-[10px] text-white/60 whitespace-nowrap">
+                                <span className="font-semibold text-white/80">
+                                    {studentDetail?.subadmin?.user?.name ||
+                                        '---'}
+                                </span>
+                            </p>
+                        </div>
+                        <AuthorizedUserComponent
+                            isHod
+                            isManager
+                            customUserIds={[20365, 24631]} // Shaheer
+                            roles={[UserRoles.ADMIN]}
+                        >
+                            <ActionButton
+                                onClick={() => setShowAssignModal(true)}
+                                variant="light"
+                                small
+                                noPadding
+                                className="px-2! py-0.5! text-[9px]! rounded!"
+                                text="Change"
+                            />
+                        </AuthorizedUserComponent>
                     </div>
                 </div>
             ),
@@ -123,7 +145,7 @@ export const StudentQuickInfo = () => {
             {studentInfoCards.map((card) => (
                 <div
                     key={card.id}
-                    className={`group relative overflow-hidden rounded-xl bg-gradient-to-br ${card.gradient} p-3.5 shadow-xl hover:shadow-2xl transition-all`}
+                    className={`group relative overflow-hidden rounded-xl bg-linear-to-br ${card.gradient} p-3.5 shadow-xl hover:shadow-2xl transition-all`}
                 >
                     {/* Decorative circles */}
                     <div className="absolute top-0 right-0 w-16 h-16 bg-white/5 rounded-full -mr-8 -mt-8"></div>
@@ -155,6 +177,14 @@ export const StudentQuickInfo = () => {
                     </div>
                 </div>
             ))}
+
+            {showAssignModal && (
+                <ReassignStudentCoordinatorModal
+                    open={showAssignModal}
+                    onOpenChange={setShowAssignModal}
+                    student={studentDetail}
+                />
+            )}
         </div>
     )
 }

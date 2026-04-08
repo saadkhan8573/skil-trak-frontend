@@ -156,11 +156,11 @@ export function SectorItemHeader({
                             variant="info"
                         /> */}
 
-                        {sector?.qualificationTitle && (
+                        {(sectorState?.title || sector?.qualificationTitle) && (
                             <Badge
                                 className="text-xs bg-purple-50 border-purple-300 text-purple-700 hover:bg-purple-100"
                                 Icon={GraduationCap}
-                                text={sector?.qualificationTitle}
+                                text={sectorState?.title || sector?.qualificationTitle}
                                 title="Qualification title"
                             />
                         )}

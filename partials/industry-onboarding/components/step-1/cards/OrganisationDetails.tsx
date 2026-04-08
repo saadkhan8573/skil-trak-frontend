@@ -261,7 +261,6 @@ export const OrganisationDetails = ({ onChange, data, errors }: any) => {
                                 <TextInput
                                     name="workplaceType"
                                     value={data?.workplaceType?.name ?? ''}
-                                    disabled
                                 />
 
                                 {errors.workplaceType && (

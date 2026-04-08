@@ -37,6 +37,45 @@ export function SupervisorForm({
                 </div>
 
                 <div className="space-y-3">
+                    <Label className="text-sm font-semibold">Position</Label>
+                    <TextInput
+                        name="position"
+                        value={sectorState?.position || ''}
+                        onChange={(e: any) => onUpdateSector({ position: e.target.value })}
+                        placeholder="e.g., Site Manager, Team Leader"
+                        className="bg-white/90 backdrop-blur-sm border-2 hover:border-primary/50 focus:border-primary"
+                    />
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                    <Label className="text-sm font-semibold">Email</Label>
+                    <TextInput
+                        name="email"
+                        type="email"
+                        value={sectorState?.email || ''}
+                        onChange={(e: any) => onUpdateSector({ email: e.target.value })}
+                        placeholder="supervisor@company.com"
+                        className="bg-white/90 backdrop-blur-sm border-2 hover:border-primary/50 focus:border-primary"
+                    />
+                </div>
+
+                <div className="space-y-3">
+                    <Label className="text-sm font-semibold">Phone</Label>
+                    <TextInput
+                        name="phone"
+                        type="tel"
+                        value={sectorState?.phone || ''}
+                        onChange={(e: any) => onUpdateSector({ phone: e.target.value })}
+                        placeholder="0412 345 678"
+                        className="bg-white/90 backdrop-blur-sm border-2 hover:border-primary/50 focus:border-primary"
+                    />
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-3">
                     <Label className="text-sm font-semibold">Supervisor Qualification Level</Label>
                     <Select
                         name="qualificationLevel"
@@ -52,14 +91,32 @@ export function SupervisorForm({
                         <p className="text-xs text-destructive">{errors[`sector_${index}_supervisor_level`]}</p>
                     )}
                 </div>
+
+                <div className="space-y-3">
+                    <Label className="text-sm font-semibold">
+                        Experience (years)
+                    </Label>
+                    <TextInput
+                        name="experience"
+                        type="number"
+                        min="0"
+                        value={sectorState?.experience ?? ''}
+                        onChange={(e: any) => {
+                            const val = parseInt(e.target.value)
+                            onUpdateSector({ experience: isNaN(val) ? undefined : val })
+                        }}
+                        placeholder="e.g., 5"
+                        className="bg-white/90 backdrop-blur-sm border-2 hover:border-primary/50 focus:border-primary"
+                    />
+                </div>
             </div>
 
             <div className="space-y-3">
-                <Label className="text-sm font-semibold">Qualification Title</Label>
+                <Label className="text-sm font-semibold">Title</Label>
                 <TextInput
-                    name="qualificationTitle"
-                    value={sectorState?.qualificationTitle || ''}
-                    onChange={(e: any) => onUpdateSector({ qualificationTitle: e.target.value })}
+                    name="title"
+                    value={sectorState?.title || ''}
+                    onChange={(e: any) => onUpdateSector({ title: e.target.value })}
                     placeholder="e.g., Diploma of Community Services"
                     className="bg-white/90 backdrop-blur-sm border-2 hover:border-primary/50 focus:border-primary"
                 />

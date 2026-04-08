@@ -8,7 +8,7 @@ interface StepperProps {
 
 export const OnboardingStepper = ({ currentStep, steps }: StepperProps) => {
     return (
-        <div className="sticky top-0 z-50 glass shadow-lg border-b border-white/20">
+        <div className="sticky top-0 z-20 glass shadow-lg border-b border-white/20">
             <div className="max-w-260 mx-auto px-6 py-6">
                 <div className="flex items-center justify-between">
                     {steps.map((step, index) => {

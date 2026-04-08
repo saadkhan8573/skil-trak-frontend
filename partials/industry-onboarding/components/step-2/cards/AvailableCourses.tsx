@@ -1,6 +1,7 @@
-import { AlertCircle, BookOpen, CheckCircle } from 'lucide-react'
+import { AlertCircle, ArrowUpCircle, BookOpen, CheckCircle } from 'lucide-react'
 import { Badge } from '@components'
 import { Label } from '@components/ui/label'
+import { SupervisorQualification } from '@partials/common'
 
 interface AvailableCoursesProps {
     qualificationLevel: string
@@ -26,6 +27,13 @@ export function AvailableCourses({
     if (!qualificationLevel) return null
 
     const courses = coursesByLevel?.data ?? []
+
+    const currentLevelIndex = SupervisorQualification.findIndex(
+        (q) => q.value === Number(qualificationLevel)
+    )
+    const currentLabel =
+        SupervisorQualification[currentLevelIndex]?.label ?? qualificationLevel
+    const nextLevel = SupervisorQualification[currentLevelIndex + 1]
 
     return (
         <>
@@ -55,16 +63,42 @@ export function AvailableCourses({
                 !coursesError &&
                 coursesByLevel &&
                 courses.length === 0 && (
-                    <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4 flex items-start gap-3">
-                        <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                        <div>
-                            <div className="font-semibold text-amber-800 text-sm">
-                                No Courses Available
+                    <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-5 space-y-3">
+                        <div className="flex items-start gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shrink-0 shadow-md">
+                                <ArrowUpCircle className="w-5 h-5 text-white" />
                             </div>
-                            <p className="text-xs text-amber-700 mt-0.5">
-                                No courses found for the selected qualification
-                                level in this sector. Try a different level.
-                            </p>
+                            <div>
+                                <div className="font-semibold text-amber-900 text-sm">
+                                    No courses available at{' '}
+                                    <span className="text-amber-700">
+                                        {currentLabel}
+                                    </span>{' '}
+                                    level
+                                </div>
+                                <p className="text-xs text-amber-700 mt-1 leading-relaxed">
+                                    The supervisor's current qualification level
+                                    does not match any courses in this sector.
+                                    {nextLevel ? (
+                                        <>
+                                            {' '}
+                                            Consider upgrading to{' '}
+                                            <span className="font-semibold">
+                                                {nextLevel.label}
+                                            </span>{' '}
+                                            or higher to unlock available course
+                                            options.
+                                        </>
+                                    ) : (
+                                        <>
+                                            {' '}
+                                            This is the highest qualification
+                                            level — please check that this sector
+                                            has courses configured.
+                                        </>
+                                    )}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 )}

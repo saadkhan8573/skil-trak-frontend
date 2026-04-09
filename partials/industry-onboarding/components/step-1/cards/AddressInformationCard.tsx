@@ -148,14 +148,23 @@ export const AddressInformationCard = ({
                             </Label>
                             <Select
                                 name="state"
-                                // value={data?.state}
                                 onChange={(value: any) =>
                                     handleInputChange('state', value?.value)
                                 }
                                 options={stateOptions}
-                                value={stateOptions?.find(
-                                    (opt: any) => opt.label === data?.state
-                                )}
+                                value={
+                                    typeof data?.state === 'object'
+                                        ? stateOptions?.find(
+                                              (opt: any) =>
+                                                  opt.value === data?.state?.id ||
+                                                  opt.label === data?.state?.name
+                                          )
+                                        : stateOptions?.find(
+                                              (opt: any) =>
+                                                  opt.label === data?.state ||
+                                                  opt.value === data?.state
+                                          )
+                                }
                             />
 
                             {errors.state && (

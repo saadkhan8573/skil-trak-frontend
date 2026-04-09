@@ -30,12 +30,12 @@ export const StepForm = () => {
         //     query: 'notification-method',
         //     element: <StepNotificationMethod />,
         // },
-        {
-            label: 'On Boarding',
-            visited: false,
-            query: 'on-boarding',
-            element: <StepOnBoarding />,
-        },
+        // {
+        //     label: 'On Boarding',
+        //     visited: false,
+        //     query: 'on-boarding',
+        //     element: <StepOnBoarding />,
+        // },
         {
             label: 'Review Info',
             visited: false,

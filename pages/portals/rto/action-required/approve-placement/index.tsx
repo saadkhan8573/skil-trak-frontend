@@ -1,5 +1,7 @@
+import { withPermission } from '@components/Permissions/hooks'
 import { RtoLayoutV2 } from '@layouts'
 import { RtoWpApprovalPlacements } from '@partials'
+import { PermissionType } from '@types'
 import { Users } from 'lucide-react'
 import { ReactElement } from 'react'
 
@@ -8,11 +10,19 @@ const ApprovePlacementsPage = () => {
 }
 
 ApprovePlacementsPage.getLayout = (page: ReactElement) => {
-    return <RtoLayoutV2 titleProps={{
-        title: "Approve Placements",
-        description: "Approve placements for students",
-        Icon: Users
-    }}>{page}</RtoLayoutV2>
+    return (
+        <RtoLayoutV2
+            titleProps={{
+                title: 'Approve Placements',
+                description: 'Approve placements for students',
+                Icon: Users,
+            }}
+        >
+            {page}
+        </RtoLayoutV2>
+    )
 }
 
-export default ApprovePlacementsPage
+export default withPermission(ApprovePlacementsPage, {
+    permissions: PermissionType.APPROVE_PLACEMENTS,
+})

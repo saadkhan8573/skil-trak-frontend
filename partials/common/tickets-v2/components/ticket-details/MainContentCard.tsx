@@ -13,6 +13,7 @@ import { CommonApi } from '@queries'
 import { Button, ShowErrorNotifications } from '@components'
 import { useNotification } from '@hooks'
 import moment from 'moment'
+import { TicketHistoryCard } from './TicketHistoryCard'
 
 export const MainContentCard = ({ ticket }: any) => {
     const [newNote, setNewNote] = useState('')
@@ -55,16 +56,16 @@ export const MainContentCard = ({ ticket }: any) => {
     return (
         <>
             <ShowErrorNotifications result={addNoteResult} />
-            <div className="">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
                 {/* Left Column - Main Content */}
-                <div className=" space-y-4">
+                <div className="lg:col-span-2 space-y-4">
                     {/* Description Card */}
                     <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-5">
                         <h3 className="text-[#044866] text-sm mb-3 flex items-center gap-2">
                             <MessageSquare className="size-3 text-[#F7A619]" />
                             Description
                         </h3>
-                        <div className="bg-gradient-to-br from-[#044866]/5 via-[#0D5468]/5 to-[#F7A619]/5 rounded-lg p-4 border border-[#044866]/10">
+                        <div className="bg-linear-to-br from-[#044866]/5 via-[#0D5468]/5 to-[#F7A619]/5 rounded-lg p-4 border border-[#044866]/10">
                             <p className="text-[#044866] leading-relaxed text-xs">
                                 {ticket?.description}
                             </p>
@@ -164,7 +165,7 @@ export const MainContentCard = ({ ticket }: any) => {
 
                     {/* Resolution (if resolved) */}
                     {ticket?.resolution && (
-                        <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-5 text-white shadow-xl border-2 border-green-400">
+                        <div className="bg-linear-to-br from-green-500 to-emerald-600 rounded-xl p-5 text-white shadow-xl border-2 border-green-400">
                             <div className="flex items-center gap-3 mb-3">
                                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                                     <CheckCircle className="w-6 h-6" />
@@ -186,9 +187,9 @@ export const MainContentCard = ({ ticket }: any) => {
                     )}
                 </div>
 
-                {/* Right Column - Nothing here for now, can be used for other features */}
+                {/* Right Column - Additional Features */}
                 <div className="space-y-4">
-                    {/* Optional: Additional widgets could go here */}
+                    <TicketHistoryCard history={ticket?.history} />
                 </div>
             </div>
         </>

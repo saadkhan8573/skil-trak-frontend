@@ -1,27 +1,30 @@
 'use client'
-import { Fragment, ReactElement, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import {
-    LayoutDashboard,
-    Users,
-    FileSignature,
-    CheckSquare,
-    Send,
-    Flag,
-    Upload,
-    Mail,
-    Calendar,
-    Bell as BellIcon,
-    Building2,
-    Settings,
-    GraduationCap,
-    Briefcase,
-    User2,
-    Tickets,
-} from 'lucide-react'
-import { useRouter } from 'next/router'
+import { Permissions } from '@components'
 import { ImportStudentsModal } from '@partials'
 import { RtoV2Api } from '@redux'
+import { PermissionType } from '@types'
+import { AnimatePresence, motion } from 'framer-motion'
+import {
+    Bell as BellIcon,
+    Briefcase,
+    Building2,
+    Calendar,
+    CheckSquare,
+    Clock,
+    FileSignature,
+    Flag,
+    GraduationCap,
+    LayoutDashboard,
+    Mail,
+    Send,
+    Tickets,
+    Upload,
+    User2,
+    Users,
+    UserX,
+} from 'lucide-react'
+import { useRouter } from 'next/router'
+import { Fragment, ReactElement, useState } from 'react'
 
 const menuSections = (navBarCounts: {
     waitingForRto: number
@@ -65,28 +68,30 @@ const menuSections = (navBarCounts: {
                 text: 'text-slate-700',
                 path: '/portals/rto/action-required/sign-documents?tab=pending',
             },
-            // {
-            //     icon: CheckSquare,
-            //     label: 'Approve Placements',
-            //     key: 'Approve Placements',
-            //     badge: navBarCounts?.waitingForRto,
-            //     bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
-            //     iconBg: 'bg-red-200 !text-red-500',
-            //     badgeBg: 'bg-red-500',
-            //     text: 'text-slate-700',
-            //     path: '/portals/rto/action-required/approve-placement?tab=pending',
-            // },
-            // {
-            //     icon: Send,
-            //     label: 'Submissions',
-            //     key: 'Submissions',
-            //     badge: navBarCounts?.pendingSubmissions,
-            //     path: '/portals/rto/action-required/submissions?tab=submissions-requiring-review',
-            //     bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
-            //     iconBg: 'bg-red-200 !text-red-500',
-            //     badgeBg: 'bg-red-500',
-            //     text: 'text-slate-700',
-            // },
+            {
+                icon: CheckSquare,
+                label: 'Approve Placements',
+                key: 'Approve Placements',
+                badge: navBarCounts?.waitingForRto,
+                bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
+                iconBg: 'bg-red-200 !text-red-500',
+                badgeBg: 'bg-red-500',
+                text: 'text-slate-700',
+                path: '/portals/rto/action-required/approve-placement?tab=pending',
+                permissions: [PermissionType.APPROVE_PLACEMENTS],
+            },
+            {
+                icon: Send,
+                label: 'Submissions',
+                key: 'Submissions',
+                badge: navBarCounts?.pendingSubmissions,
+                path: '/portals/rto/action-required/submissions?tab=submissions-requiring-review',
+                bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
+                iconBg: 'bg-red-200 !text-red-500',
+                badgeBg: 'bg-red-500',
+                text: 'text-slate-700',
+                permissions: [PermissionType.SUBMISSIONS],
+            },
             {
                 icon: Flag,
                 label: 'Resolve Issues',
@@ -96,6 +101,24 @@ const menuSections = (navBarCounts: {
                 bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
                 iconBg: 'bg-red-200 !text-red-500',
                 badgeBg: 'bg-red-500',
+                text: 'text-slate-700',
+            },
+            {
+                icon: UserX,
+                label: 'Non Contactable',
+                key: 'Non Contactable',
+                path: '/portals/rto/action-required/non-contactable',
+                bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
+                iconBg: 'bg-red-200 !text-red-500',
+                text: 'text-slate-700',
+            },
+            {
+                icon: Clock,
+                label: 'Snoozed',
+                key: 'Snoozed',
+                path: '/portals/rto/action-required/snoozed',
+                bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
+                iconBg: 'bg-red-200 !text-red-500',
                 text: 'text-slate-700',
             },
         ],
@@ -298,36 +321,53 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
                         </div>
 
                         <ul className="space-y-1">
-                            {section.items.map((item: any) => (
-                                <li key={item.key}>
-                                    <button
-                                        onClick={() => onNavigate?.(item.key)}
-                                        className={`w-full flex justify-between items-center gap-3 p-2 rounded-xl transition ${item.bg} hover:opacity-90 cursor-pointer`}
-                                    >
-                                        <div className="flex items-center gap-x-2">
-                                            <div
-                                                className={`p-2 rounded-xl shrink-0 ${item.iconBg} text-white`}
-                                            >
-                                                <item.icon className="h-4 w-4" />
+                            {section.items.map((item: any) => {
+                                const MenuItem = (
+                                    <li key={item.key}>
+                                        <button
+                                            onClick={() =>
+                                                onNavigate?.(item.key)
+                                            }
+                                            className={`w-full flex justify-between items-center gap-3 p-2 rounded-xl transition ${item.bg} hover:opacity-90 cursor-pointer`}
+                                        >
+                                            <div className="flex items-center gap-x-2">
+                                                <div
+                                                    className={`p-2 rounded-xl shrink-0 ${item.iconBg} text-white`}
+                                                >
+                                                    <item.icon className="h-4 w-4" />
+                                                </div>
+
+                                                <span
+                                                    className={`flex text-sm font-medium ${item.text}`}
+                                                >
+                                                    {item.label}
+                                                </span>
                                             </div>
 
-                                            <span
-                                                className={`flex text-sm font-medium ${item.text}`}
-                                            >
-                                                {item.label}
-                                            </span>
-                                        </div>
-
-                                        {/* {item.badge && (
+                                            {/* {item.badge && (
                                             <span
                                                 className={`text-[11px] px-2 py-0.5 rounded-full text-white ${item.badgeBg}`}
                                             >
                                                 {item.badge}
                                             </span>
                                         )} */}
-                                    </button>
-                                </li>
-                            ))}
+                                        </button>
+                                    </li>
+                                )
+
+                                if (item.permissions) {
+                                    return (
+                                        <Permissions
+                                            key={item.key}
+                                            permission={item.permissions}
+                                        >
+                                            {MenuItem}
+                                        </Permissions>
+                                    )
+                                }
+
+                                return MenuItem
+                            })}
                         </ul>
                     </div>
                 ))}
@@ -407,49 +447,64 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
                             </div>
 
                             <ul className="space-y-2">
-                                {section.items.map((item: any) => (
-                                    <li
-                                        key={item.key}
-                                        className="cursor-pointer"
-                                    >
-                                        <button
-                                            onClick={() => {
-                                                if (
-                                                    item.key ===
-                                                    'Import Students'
-                                                ) {
-                                                    onClickImportStudents()
-                                                } else if (item.path) {
-                                                    router.push(item.path)
-                                                }
-                                                onNavigate?.(item.key)
-                                            }}
-                                            className={`w-full flex justify-between items-center p-2 rounded-md transition ${item.bg} hover:opacity-90 cursor-pointer`}
+                                {section.items.map((item: any) => {
+                                    const MenuItem = (
+                                        <li
+                                            key={item.key}
+                                            className="cursor-pointer"
                                         >
-                                            <div className="flex items-center gap-x-2">
-                                                <div
-                                                    className={`p-1.5 rounded-xl shrink-0 ${item.iconBg} text-white`}
-                                                >
-                                                    <item.icon className="h-4 w-4" />
+                                            <button
+                                                onClick={() => {
+                                                    if (
+                                                        item.key ===
+                                                        'Import Students'
+                                                    ) {
+                                                        onClickImportStudents()
+                                                    } else if (item.path) {
+                                                        router.push(item.path)
+                                                    }
+                                                    onNavigate?.(item.key)
+                                                }}
+                                                className={`w-full flex justify-between items-center p-2 rounded-md transition ${item.bg} hover:opacity-90 cursor-pointer`}
+                                            >
+                                                <div className="flex items-center gap-x-2">
+                                                    <div
+                                                        className={`p-1.5 rounded-xl shrink-0 ${item.iconBg} text-white`}
+                                                    >
+                                                        <item.icon className="h-4 w-4" />
+                                                    </div>
+
+                                                    <span
+                                                        className={`flex text-xs font-medium ${item.text}`}
+                                                    >
+                                                        {item.label}
+                                                    </span>
                                                 </div>
 
-                                                <span
-                                                    className={`flex text-xs font-medium ${item.text}`}
-                                                >
-                                                    {item.label}
-                                                </span>
-                                            </div>
+                                                {item.badge && (
+                                                    <span
+                                                        className={`text-[11px] px-2 py-0.5 rounded-full text-white ${item.badgeBg}`}
+                                                    >
+                                                        {item.badge}
+                                                    </span>
+                                                )}
+                                            </button>
+                                        </li>
+                                    )
 
-                                            {item.badge && (
-                                                <span
-                                                    className={`text-[11px] px-2 py-0.5 rounded-full text-white ${item.badgeBg}`}
-                                                >
-                                                    {item.badge}
-                                                </span>
-                                            )}
-                                        </button>
-                                    </li>
-                                ))}
+                                    if (item.permissions) {
+                                        return (
+                                            <Permissions
+                                                key={item.key}
+                                                permission={item.permissions}
+                                            >
+                                                {MenuItem}
+                                            </Permissions>
+                                        )
+                                    }
+
+                                    return MenuItem
+                                })}
                             </ul>
                         </div>
                     ))}

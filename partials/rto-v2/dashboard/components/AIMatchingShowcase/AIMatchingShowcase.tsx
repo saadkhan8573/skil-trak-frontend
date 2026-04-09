@@ -1,8 +1,9 @@
-import { Badge, Button } from '@components'
+import { Badge, Button, Permissions } from '@components'
 import { Sparkles, Zap } from 'lucide-react'
 import { HowItWorks, MatchingStats, RecentMatches } from './components'
 import { ReactElement, useState } from 'react'
 import { StartMatchingAutoWP } from '../../modal'
+import { PermissionType } from '@types'
 
 export const AIMatchingShowcase = () => {
     const [modal, setModal] = useState<ReactElement | null>(null)
@@ -54,11 +55,13 @@ export const AIMatchingShowcase = () => {
                             </p>
                         </div>
                     </div>
-                    {/* <Button
-                        Icon={Zap}
-                        text="Start Matching"
-                        onClick={() => onStartMatching()}
-                    /> */}
+                    <Permissions permission={[PermissionType.START_MATCHING]}>
+                        <Button
+                            Icon={Zap}
+                            text="Start Matching"
+                            onClick={() => onStartMatching()}
+                        />
+                    </Permissions>
                 </div>
 
                 {/* Main Content - Compact Grid */}

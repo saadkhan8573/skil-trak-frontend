@@ -1,4 +1,9 @@
-import { AuthorizedUserComponent, Button, TextInput } from '@components'
+import {
+    AuthorizedUserComponent,
+    Button,
+    Permissions,
+    TextInput,
+} from '@components'
 import { UserRoles } from '@constants'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
@@ -15,6 +20,7 @@ import { useState } from 'react'
 import { AddCourseRequestDialog } from '../modals'
 import { getUserCredentials } from '@utils'
 import { RtoV2Api } from '@queries'
+import { PermissionType } from '@types'
 
 interface CoursesHeaderSectionProps {
     showSearch: boolean
@@ -155,15 +161,19 @@ export function CoursesHeaderSection({
                         Filters
                     </Button>
                 </div> */}
-                <div className="flex items-center gap-2">
-                    <Button
-                        onClick={() => setIsAddCourseOpen(true)}
-                        className="bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white gap-2 h-10 shadow-md shadow-[#044866]/10"
-                    >
-                        <Plus className="w-4 h-4" />
-                        Add Course
-                    </Button>
-                </div>
+                <Permissions
+                    permission={PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS}
+                >
+                    <div className="flex items-center gap-2">
+                        <Button
+                            onClick={() => setIsAddCourseOpen(true)}
+                            className="bg-linear-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white gap-2 h-10 shadow-md shadow-[#044866]/10"
+                        >
+                            <Plus className="w-4 h-4" />
+                            Add Course
+                        </Button>
+                    </div>
+                </Permissions>
             </div>
 
             <AddCourseRequestDialog
@@ -260,10 +270,10 @@ export function CoursesHeaderSection({
                                         transition={{ duration: 1, delay: 0.5 }}
                                         className={`h-full rounded-full ${
                                             overallCapacity >= 80
-                                                ? 'bg-gradient-to-r from-[#10B981] to-[#059669]'
+                                                ? 'bg-linear-to-r from-[#10B981] to-[#059669]'
                                                 : overallCapacity >= 50
-                                                  ? 'bg-gradient-to-r from-[#F7A619] to-[#EA580C]'
-                                                  : 'bg-gradient-to-r from-[#64748B] to-[#475569]'
+                                                  ? 'bg-linear-to-r from-[#F7A619] to-[#EA580C]'
+                                                  : 'bg-linear-to-r from-[#64748B] to-[#475569]'
                                         }`}
                                     />
                                 </div>
@@ -278,11 +288,11 @@ export function CoursesHeaderSection({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="bg-gradient-to-r from-[#E8F4F8] to-[#F8FAFB] border border-[#044866]/10 rounded-xl p-4"
+                className="bg-linear-to-r from-[#E8F4F8] to-[#F8FAFB] border border-[#044866]/10 rounded-xl p-4"
             >
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 bg-linear-to-br from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center">
                             <Sparkles className="w-5 h-5 text-white" />
                         </div>
                         <div>

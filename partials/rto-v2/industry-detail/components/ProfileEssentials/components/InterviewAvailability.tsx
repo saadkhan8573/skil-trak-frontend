@@ -5,6 +5,7 @@ import {
     TabConfig,
     Switch,
     AuthorizedUserComponent,
+    Permissions,
 } from '@components'
 import { useNotification } from '@hooks/useNotification'
 import { RtoV2Api } from '@queries/portals/rto-v2/rto-v2.query'
@@ -15,6 +16,7 @@ import { useEffect, useState } from 'react'
 import { MonthlySchedule, MonthlyScheduleData } from './MonthlySchedule'
 import { DaySchedule, WeeklySchedule } from './WeeklySchedule'
 import { UserRoles } from '@constants'
+import { PermissionType } from '@types'
 
 interface InterviewAvailabilityProps {
     workplaceId?: number
@@ -309,8 +311,13 @@ export function InterviewAvailability({
                             UserRoles.SUBADMIN,
                             UserRoles.RTO,
                         ]}
+                        customCondition={checkRuntime}
                     >
-                        {checkRuntime && (
+                        <Permissions
+                            permission={
+                                PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS
+                            }
+                        >
                             <div className="flex items-center gap-3">
                                 <div className="flex items-center gap-2 bg-white/10 px-2 py-1 rounded-lg backdrop-blur-sm">
                                     <span className="text-[10px] text-white font-medium">
@@ -337,7 +344,7 @@ export function InterviewAvailability({
                                     />
                                 </div>
                             </div>
-                        )}
+                        </Permissions>
                     </AuthorizedUserComponent>
                 </div>
 

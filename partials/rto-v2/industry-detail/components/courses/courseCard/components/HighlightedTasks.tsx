@@ -1,4 +1,4 @@
-import { Badge, Button, Card } from '@components'
+import { Badge, Button, Card, Permissions } from '@components'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui'
 import { RtoV2Api } from '@queries'
 import { useAppSelector } from '@redux'
@@ -6,6 +6,7 @@ import { CheckSquare, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { BulkConfirmHighlightedTasksModal } from '../../modals/BulkConfirmHighlightedTasksModal'
 import { HighlightedTaskItem } from './HighlightedTaskItem'
+import { PermissionType } from '@types'
 
 interface HighlightedTasksProps {
     title?: string
@@ -82,7 +83,7 @@ export function HighlightedTasks({
         const task = unconfirmedTasks.find((t: any) => t.id === id)
         return {
             id,
-            confirmationDetailId: task?.industryHighlightedTasks?.[0]?.id
+            confirmationDetailId: task?.industryHighlightedTasks?.[0]?.id,
         }
     })
 
@@ -96,62 +97,74 @@ export function HighlightedTasks({
                     </h5>
 
                     {unconfirmedTasks.length > 0 && !isDeleted && (
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Badge
-                                    variant="primaryNew"
-                                    onClick={toggleSelectAll}
-                                    outline={
-                                        selectedTaskIds.length !==
+                        <Permissions
+                            permission={
+                                PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS
+                            }
+                        >
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Badge
+                                        variant="primaryNew"
+                                        onClick={toggleSelectAll}
+                                        outline={
+                                            selectedTaskIds.length !==
+                                            unconfirmedTasks.length
+                                        }
+                                    >
+                                        {selectedTaskIds.length ===
                                         unconfirmedTasks.length
-                                    }
-                                >
+                                            ? 'Deselect All'
+                                            : `Select All (${unconfirmedTasks.length})`}
+                                    </Badge>
+                                </TooltipTrigger>
+                                <TooltipContent>
                                     {selectedTaskIds.length ===
                                     unconfirmedTasks.length
-                                        ? 'Deselect All'
-                                        : `Select All (${unconfirmedTasks.length})`}
-                                </Badge>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                {selectedTaskIds.length ===
-                                unconfirmedTasks.length
-                                    ? 'Clear current selection'
-                                    : 'Select all pending tasks for bulk action'}
-                            </TooltipContent>
-                        </Tooltip>
+                                        ? 'Clear current selection'
+                                        : 'Select all pending tasks for bulk action'}
+                                </TooltipContent>
+                            </Tooltip>
+                        </Permissions>
                     )}
                 </div>
 
                 <div className="flex items-center gap-2">
                     {unconfirmedTasks.length > 0 && !isDeleted && (
-                        <>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button
-                                        onClick={() => handleBulkAction(true)}
-                                        variant="primaryNew"
-                                    >
-                                        <CheckSquare className="w-3 h-3" />
+                        <Permissions
+                            permission={
+                                PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS
+                            }
+                        >
+                            <>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            onClick={() =>
+                                                handleBulkAction(true)
+                                            }
+                                            variant="primaryNew"
+                                        >
+                                            <CheckSquare className="w-3 h-3" />
+                                            {selectedTaskIds.length > 0
+                                                ? `Confirm Selected (${selectedTaskIds.length})`
+                                                : `Confirm All (${unconfirmedTasks.length})`}
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
                                         {selectedTaskIds.length > 0
-                                            ? `Confirm Selected (${selectedTaskIds.length})`
-                                            : `Confirm All (${unconfirmedTasks.length})`}
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    {selectedTaskIds.length > 0
-                                        ? `Confirm the ${selectedTaskIds.length} selected tasks`
-                                        : 'Confirm all pending tasks at once'}
-                                </TooltipContent>
-                            </Tooltip>
-                        </>
+                                            ? `Confirm the ${selectedTaskIds.length} selected tasks`
+                                            : 'Confirm all pending tasks at once'}
+                                    </TooltipContent>
+                                </Tooltip>
+                            </>
+                        </Permissions>
                     )}
                 </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2.5">
                 {fetchedTasks?.map((task: any, index: number) => {
-                    const isConfirmed =
-                        task.industryHighlightedTasks?.[0]?.isConfirmed
                     return (
                         <HighlightedTaskItem
                             key={task.id || index}

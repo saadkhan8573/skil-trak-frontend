@@ -1,5 +1,6 @@
-import { ReactNode } from 'react'
+import { Activity, ReactNode } from 'react'
 import { useAuthorizedUserComponent } from './useAuthorizedUserComponent'
+import { checkJsxVisibility } from '@utils'
 
 export const AuthorizedUserComponent = ({
     isHod,
@@ -30,5 +31,7 @@ export const AuthorizedUserComponent = ({
         customCondition,
     })
 
-    return hasPermission ? <>{children}</> : null
+    return (
+        <Activity mode={checkJsxVisibility(hasPermission)}>{children}</Activity>
+    )
 }

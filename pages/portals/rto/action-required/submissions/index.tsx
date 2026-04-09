@@ -1,14 +1,12 @@
+import { ReactElement } from 'react'
 import { RtoLayoutV2 } from '@layouts'
 import { Submissions } from '@partials'
+import { PermissionType } from '@types'
 import { ClipboardList } from 'lucide-react'
-import React, { ReactElement } from 'react'
+import { withPermission } from '@components/Permissions/hooks'
 
 const SubmissionsPage = () => {
-    return (
-        <div>
-            <Submissions />
-        </div>
-    )
+    return <Submissions />
 }
 SubmissionsPage.getLayout = (page: ReactElement) => {
     return (
@@ -24,4 +22,6 @@ SubmissionsPage.getLayout = (page: ReactElement) => {
     )
 }
 
-export default SubmissionsPage
+export default withPermission(SubmissionsPage, {
+    permissions: PermissionType.SUBMISSIONS,
+})

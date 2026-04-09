@@ -1,17 +1,27 @@
-import { Link2, ExternalLink, Edit2, Plus, CheckCircle, Trash2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@components';
-import { useAppSelector } from '@redux/hooks';
-import { usePlacementFormUrl } from './hooks/usePlacementFormUrl';
-import { PlacementFormUrlForm } from './components/PlacementFormUrlForm';
+import {
+    Link2,
+    ExternalLink,
+    Edit2,
+    Plus,
+    CheckCircle,
+    Trash2,
+} from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Button, Permissions } from '@components'
+import { useAppSelector } from '@redux/hooks'
+import { usePlacementFormUrl } from './hooks/usePlacementFormUrl'
+import { PlacementFormUrlForm } from './components/PlacementFormUrlForm'
+import { PermissionType } from '@types'
 
 /**
  * PlacementFormUrl Component
- * 
+ *
  * Manages industry partner-specific form URLs that automatically open when students approve placements.
  */
 export function PlacementFormUrl() {
-    const industryDetail = useAppSelector((state) => state.industry.industryDetail);
+    const industryDetail = useAppSelector(
+        (state) => state.industry.industryDetail
+    )
 
     const {
         isEditing,
@@ -20,17 +30,17 @@ export function PlacementFormUrl() {
         handleEdit,
         handleSave,
         handleCancel,
-        handleRemove
-    } = usePlacementFormUrl(industryDetail);
+        handleRemove,
+    } = usePlacementFormUrl(industryDetail)
 
     // Derived values from Redux
-    const formUrl = industryDetail?.placementUrl;
+    const formUrl = industryDetail?.placementUrl
 
     const openUrl = () => {
         if (formUrl) {
-            window.open(formUrl, '_blank', 'noopener,noreferrer');
+            window.open(formUrl, '_blank', 'noopener,noreferrer')
         }
-    };
+    }
 
     return (
         <div className="bg-linear-to-br from-[#FAFBFC] to-white rounded-xl border-2 border-[#E2E8F0] overflow-hidden shadow-sm hover:shadow-md transition-all">
@@ -42,14 +52,20 @@ export function PlacementFormUrl() {
                             <Link2 className="w-4 h-4 text-white" />
                         </div>
                         <div>
-                            <h3 className="font-bold text-[#1A2332] text-sm">Placement Form URL</h3>
-                            <p className="text-[9px] text-[#64748B]">Auto-opens when student approves placement</p>
+                            <h3 className="font-bold text-[#1A2332] text-sm">
+                                Placement Form URL
+                            </h3>
+                            <p className="text-[9px] text-[#64748B]">
+                                Auto-opens when student approves placement
+                            </p>
                         </div>
                     </div>
                     {formUrl && !isEditing && (
                         <div className="flex items-center gap-1 px-2 py-1 bg-[#10B981]/10 rounded-full border border-[#10B981]/30">
                             <CheckCircle className="w-3 h-3 text-[#10B981]" />
-                            <span className="text-[9px] font-semibold text-[#10B981]">Active</span>
+                            <span className="text-[9px] font-semibold text-[#10B981]">
+                                Active
+                            </span>
                         </div>
                     )}
                 </div>
@@ -100,9 +116,14 @@ export function PlacementFormUrl() {
                                         <ExternalLink className="w-3 h-3 text-white" />
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-[10px] font-semibold text-[#1A2332] mb-1">Auto-Open Workflow</p>
+                                        <p className="text-[10px] font-semibold text-[#1A2332] mb-1">
+                                            Auto-Open Workflow
+                                        </p>
                                         <p className="text-[9px] text-[#64748B] leading-relaxed">
-                                            When a student approves their placement at this workplace, this form will automatically open for the industry partner to complete.
+                                            When a student approves their
+                                            placement at this workplace, this
+                                            form will automatically open for the
+                                            industry partner to complete.
                                         </p>
                                     </div>
                                 </div>
@@ -117,23 +138,29 @@ export function PlacementFormUrl() {
                                     className="flex-1 bg-linear-to-br from-[#044866] to-[#0D5468] border-none text-white hover:shadow-lg transition-all"
                                     text="Test URL"
                                 />
-                                <Button
-                                    variant="secondary"
-                                    onClick={handleEdit}
-                                    outline
-                                    Icon={Edit2}
-                                    className="px-4"
-                                    text="Edit"
-                                />
-                                <Button
-                                    variant="error"
-                                    onClick={handleRemove}
-                                    outline
-                                    Icon={Trash2}
-                                    className="px-4"
-                                    text="Remove"
-                                    loading={isLoading}
-                                />
+                                <Permissions
+                                    permission={
+                                        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS
+                                    }
+                                >
+                                    <Button
+                                        variant="secondary"
+                                        onClick={handleEdit}
+                                        outline
+                                        Icon={Edit2}
+                                        className="px-4"
+                                        text="Edit"
+                                    />
+                                    <Button
+                                        variant="error"
+                                        onClick={handleRemove}
+                                        outline
+                                        Icon={Trash2}
+                                        className="px-4"
+                                        text="Remove"
+                                        loading={isLoading}
+                                    />
+                                </Permissions>
                             </div>
                         </motion.div>
                     ) : (
@@ -147,22 +174,31 @@ export function PlacementFormUrl() {
                             <div className="w-16 h-16 mx-auto rounded-2xl bg-linear-to-br from-[#E8F4F8] to-[#F8FAFB] flex items-center justify-center mb-3 shadow-sm">
                                 <Link2 className="w-8 h-8 text-[#64748B]" />
                             </div>
-                            <p className="text-sm font-semibold text-[#1A2332] mb-1">No Form URL Set</p>
-                            <p className="text-xs text-[#64748B] mb-4 px-4">
-                                Add a placement form URL that will open automatically when students approve placements
+                            <p className="text-sm font-semibold text-[#1A2332] mb-1">
+                                No Form URL Set
                             </p>
-                            <Button
-                                variant="primary"
-                                onClick={handleEdit}
-                                Icon={Plus}
-                                className="bg-linear-to-br from-[#F7A619] to-[#EA580C] border-none text-white hover:shadow-lg transition-all mx-auto"
-                                text="Add Form URL"
-                            />
+                            <Permissions
+                                permission={
+                                    PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS
+                                }
+                            >
+                                <p className="text-xs text-[#64748B] mb-4 px-4">
+                                    Add a placement form URL that will open
+                                    automatically when students approve
+                                    placements
+                                </p>
+                                <Button
+                                    variant="primary"
+                                    onClick={handleEdit}
+                                    Icon={Plus}
+                                    className="bg-linear-to-br from-[#F7A619] to-[#EA580C] border-none text-white hover:shadow-lg transition-all mx-auto"
+                                    text="Add Form URL"
+                                />
+                            </Permissions>
                         </motion.div>
                     )}
                 </AnimatePresence>
             </div>
         </div>
-    );
+    )
 }
-

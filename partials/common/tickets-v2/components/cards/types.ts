@@ -1,3 +1,5 @@
+import { TicketHistory } from '@types'
+
 export type Team = 'student-services' | 'industry-sourcing' | 'qa' | 'rto'
 export type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' | null | undefined
 
@@ -55,6 +57,7 @@ export interface Ticket {
     user?: any
     industryType?: string
     notes?: TicketNote[]
+    history?: TicketHistory[]
 }
 
 export interface TicketNote {

@@ -37,7 +37,7 @@ export const useAuthorizedUserComponent = ({
     const isCustomUser =
         customUserIds && userId ? customUserIds.includes(userId) : false
 
-    return (
+    return !!(
         ((hasPermission && isNotExcluded) ||
             checkIsHod ||
             checkIsManager ||

@@ -1,16 +1,16 @@
 import { UserRoles } from '@constants'
 import { ProfileCountsCard, RtoProfileCountDataType } from '@partials/admin/rto'
 import { ViewWorkplaceDetailModal } from '@partials/admin/sub-admin/modals'
+import { SubAdminApi } from '@queries'
 import { getUserCredentials } from '@utils'
 import { useRouter } from 'next/router'
-import React, { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import { CgFileDocument } from 'react-icons/cg'
 import { HiOutlineDocumentDuplicate, HiUserCircle } from 'react-icons/hi'
 import {
     SiHomeassistantcommunitystore,
     SiSimpleanalytics,
 } from 'react-icons/si'
-import { SubAdminApi } from '@queries'
 
 export const SubadminProfileCounts = ({
     subadminId,
@@ -272,18 +272,19 @@ export const SubadminProfileCounts = ({
                                                   },
                                               }
                                             : item.customDetail?.text ===
-                                              'View Daily'
-                                            ? {
-                                                  ...item,
-                                                  count:
-                                                      subAdminProfileCount?.data
-                                                          ?.listing || 0,
-                                                  customDetail: {
-                                                      ...item.customDetail,
-                                                      text: 'View Monthly',
-                                                  },
-                                              }
-                                            : item
+                                                'View Daily'
+                                              ? {
+                                                    ...item,
+                                                    count:
+                                                        subAdminProfileCount
+                                                            ?.data?.listing ||
+                                                        0,
+                                                    customDetail: {
+                                                        ...item.customDetail,
+                                                        text: 'View Monthly',
+                                                    },
+                                                }
+                                              : item
                                 )
                                 return updatedCountsData
                             })
@@ -303,7 +304,7 @@ export const SubadminProfileCounts = ({
             {modal}
             <div className="mt-[18px] grid grid-cols-3  h-[calc(100%-18px)] gap-y-8 gap-x-3.5 justify-between">
                 {countsData?.map((data) => (
-                    <ProfileCountsCard data={data} />
+                    <ProfileCountsCard key={data.title} data={data} />
                 ))}
             </div>
         </>

@@ -32,10 +32,6 @@ export const WelcomeCard = () => {
                     <h1 className="text-2xl md:text-3xl font-bold text-white mb-1.5 drop-shadow-2xl tracking-tight">
                         Welcome back, {rto?.user?.name}! 👋
                     </h1>
-                    <p className="text-white/95 text-sm max-w-2xl leading-relaxed">
-                        Complete 40 urgent tasks today to keep your students'
-                        placements on track
-                    </p>
                 </div>
 
                 {/* Quick stats bar */}

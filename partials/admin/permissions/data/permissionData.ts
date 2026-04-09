@@ -223,6 +223,31 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         icon: GraduationCap,
         category: 'students',
     },
+    [PermissionType.START_MATCHING]: {
+        label: 'Start Matching',
+        description: 'Initiate AI-driven student to workplace matching',
+        icon: Zap,
+        category: 'ai-matching',
+    },
+    [PermissionType.BULK_STUDENT_MATCHING]: {
+        label: 'Bulk Student Matching',
+        description: 'Run matching automation for multiple students at once',
+        icon: Sparkles,
+        category: 'ai-matching',
+    },
+    [PermissionType.AI_SEARCH]: {
+        label: 'AI Student Search',
+        description: 'Advanced semantic search for student profiles',
+        icon: Sparkles,
+        category: 'ai-matching',
+    },
+    [PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS]: {
+        label: 'Can Perform Industry Actions',
+        description:
+            'Enable core actions for industrial partners and workplaces',
+        icon: Building2,
+        category: 'manage',
+    },
 }
 
 export const categoryConfig = {
@@ -297,5 +322,14 @@ export const categoryConfig = {
         bgHover: 'hover:from-red-500/10 hover:to-primary/10',
         iconBg: 'bg-red-50',
         iconColor: 'text-red-600',
+    },
+    'ai-matching': {
+        label: 'AI & Matching',
+        icon: Sparkles,
+        description: 'Advanced AI matching and search capabilities',
+        bg: 'bg-linear-to-r from-primary/5 to-secondary/5',
+        bgHover: 'hover:from-primary/10 hover:to-secondary/10',
+        iconBg: 'bg-primary/10',
+        iconColor: 'text-primary',
     },
 }

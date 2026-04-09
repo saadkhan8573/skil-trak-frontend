@@ -83,6 +83,7 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
         abn: '',
         website: '',
         workplaceType: '',
+        isPartner: true,
         industryBio: '',
         primaryContactName: '',
         primaryContactRole: '',
@@ -109,6 +110,7 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
             abn: data?.abn ?? '',
             website: data?.website ?? '',
             workplaceType: data?.workplaceType ?? '',
+            isPartner: !!data?.isPartner,
             industryBio: data?.bio ?? '',
             primaryContactName: data?.contactPerson ?? '',
             primaryContactRole: '',
@@ -116,7 +118,7 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
             primaryContactPhone: data?.contactPersonNumber ?? '',
             streetAddress: data?.addressLine1 ?? '',
             suburb: data?.suburb ?? '',
-            state: data?.state ?? '',
+            state: data?.region ?? data?.state ?? '',
             postcode: data?.zipCode ?? '',
             country: data?.country?.name ?? '',
             termsAccepted: true,
@@ -248,13 +250,17 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
                 typeof step1Data.workplaceType === 'object'
                     ? step1Data.workplaceType?.id ?? step1Data.workplaceType?.name ?? null
                     : step1Data.workplaceType || null,
+            isPartner: step1Data.isPartner,
             primaryContactName: step1Data.primaryContactName,
             primaryContactRole: step1Data.primaryContactRole ?? null,
             primaryContactEmail: step1Data.primaryContactEmail ?? null,
             primaryContactPhone: step1Data.primaryContactPhone,
             streetAddress: step1Data.streetAddress,
             suburb: step1Data.suburb,
-            stateId: step1Data.state ?? null,
+            stateId:
+                typeof step1Data.state === 'object'
+                    ? step1Data.state?.id ?? step1Data.state?.value ?? null
+                    : step1Data.state || null,
             postcode: step1Data.postcode,
             country: step1Data.country ?? null,
             termsAccepted: step1Data.termsAccepted,

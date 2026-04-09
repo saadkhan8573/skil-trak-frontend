@@ -355,7 +355,7 @@ export const FutureIndustrySignUpForm = ({
                 country: values.country,
                 suburb: values?.suburb || 'N/A',
                 isAddressUpdated: true,
-                questions,
+                // questions,
             })
         }
     }
@@ -590,7 +590,7 @@ export const FutureIndustrySignUpForm = ({
                         </div>
 
                         <div>
-                            <Typography variant="title">
+                            {/* <Typography variant="title">
                                 You are about to register a new industry from
                                 the future industry list. Please provide
                                 accurate and detailed information about the
@@ -600,7 +600,7 @@ export const FutureIndustrySignUpForm = ({
                             <AddIndustryQuestionForm
                                 methods={formMethods}
                                 signUpValues={signUpValues}
-                            />
+                            /> */}
                         </div>
 
                         <div className="">

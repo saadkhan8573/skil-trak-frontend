@@ -26,3 +26,10 @@ export interface TicketMessage extends BaseResponse {
     pin: boolean
     action: string
 }
+
+export interface TicketHistory {
+    updatedAt: string
+    updatedBy: string
+    assignedTo?: string
+    previouslyAssigned?: string
+}

@@ -1,6 +1,6 @@
-import { Button, ShowErrorNotifications } from '@components'
+import { Button, Permissions, ShowErrorNotifications } from '@components'
 import { AddCourseProgramIndustry } from '@partials/common/IndustryProfileDetail/components/CourseManagement/components/AddCourseProgramIndustry'
-import { Industry, IndustryCourseApproval } from '@types'
+import { Industry, IndustryCourseApproval, PermissionType } from '@types'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
     AlertCircle,
@@ -10,6 +10,8 @@ import {
     FileCheck,
     Trash2,
     UploadCloud,
+    User2,
+    Clock,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { FacilityChecklistActions } from '../FacilityChecklistActions'
@@ -68,12 +70,12 @@ export function CourseCard({
         try {
             await toggleStatus(approval?.id).unwrap()
             notification.success({
-                title: "Success",
+                title: 'Success',
                 description: `Course ${isActive ? 'enabled' : 'disabled'} successfully`,
             })
         } catch (error) {
             notification.error({
-                title: "Error",
+                title: 'Error',
                 description: 'Failed to update course status',
             })
         }
@@ -105,14 +107,15 @@ export function CourseCard({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: courseIndex * 0.05 }}
-            className={`rounded-xl overflow-hidden transition-all duration-300 ${isApproved
-                ? 'bg-linear-to-br from-[#10B981]/10 via-white to-[#059669]/10 border-2 border-[#10B981]/30 shadow-lg'
-                : needsApproval
-                    ? 'bg-linear-to-br from-[#F7A619]/10 via-white to-[#EA580C]/10 border-2 border-[#F7A619]/40 shadow-lg animate-pulse-slow'
-                    : isRejected
+            className={`rounded-xl overflow-hidden transition-all duration-300 ${
+                isApproved
+                    ? 'bg-linear-to-br from-[#10B981]/10 via-white to-[#059669]/10 border-2 border-[#10B981]/30 shadow-lg'
+                    : needsApproval
+                      ? 'bg-linear-to-br from-[#F7A619]/10 via-white to-[#EA580C]/10 border-2 border-[#F7A619]/40 shadow-lg animate-pulse-slow'
+                      : isRejected
                         ? 'bg-linear-to-br from-[#EF4444]/5 via-white to-[#DC2626]/5 border-2 border-[#EF4444]/30'
                         : 'bg-white border border-[#E2E8F0] hover:shadow-md hover:border-[#044866]/20'
-                }`}
+            }`}
         >
             <ShowErrorNotifications result={toggleStatusResult} />
             {/* Course Header */}
@@ -122,10 +125,11 @@ export function CourseCard({
                         {/* Course Title & Code */}
                         <div className="flex items-center gap-2 mb-2">
                             <div
-                                className={`px-2 py-1 rounded-md text-[10px] font-bold ${isApproved
-                                    ? 'bg-[#10B981]/20 text-[#10B981]'
-                                    : 'bg-[#044866]/10 text-[#044866]'
-                                    }`}
+                                className={`px-2 py-1 rounded-md text-[10px] font-bold ${
+                                    isApproved
+                                        ? 'bg-[#10B981]/20 text-[#10B981]'
+                                        : 'bg-[#044866]/10 text-[#044866]'
+                                }`}
                             >
                                 {approval?.course.code}
                             </div>
@@ -174,14 +178,15 @@ export function CourseCard({
                                 {/* Facility Checklist Status */}
                                 {!isDeletedInternal && (
                                     <div
-                                        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-medium ${isApproved
-                                            ? 'bg-[#10B981]/10 text-[#10B981]'
-                                            : needsApproval
-                                                ? 'bg-[#F7A619]/20 text-[#F7A619]'
-                                                : isRejected
+                                        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-medium ${
+                                            isApproved
+                                                ? 'bg-[#10B981]/10 text-[#10B981]'
+                                                : needsApproval
+                                                  ? 'bg-[#F7A619]/20 text-[#F7A619]'
+                                                  : isRejected
                                                     ? 'bg-[#EF4444]/10 text-[#EF4444]'
                                                     : 'bg-[#64748B]/10 text-[#64748B]'
-                                            }`}
+                                        }`}
                                     >
                                         <FileCheck className="w-3 h-3" />
                                         {isApproved && 'Checklist Approved'}
@@ -194,12 +199,20 @@ export function CourseCard({
 
                                 {/* Programs / Streams Integration */}
                                 {industry && approval && (
-                                    <div onClick={(e) => e.stopPropagation()}>
-                                        <AddCourseProgramIndustry
-                                            industry={industry}
-                                            approval={approval}
-                                        />
-                                    </div>
+                                    <Permissions
+                                        permission={
+                                            PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS
+                                        }
+                                    >
+                                        <div
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <AddCourseProgramIndustry
+                                                industry={industry}
+                                                approval={approval}
+                                            />
+                                        </div>
+                                    </Permissions>
                                 )}
                             </div>
                             {/* Document Actions (if signed or approved) */}
@@ -213,53 +226,90 @@ export function CourseCard({
 
                     {/* Action Buttons */}
                     <div className="flex items-center gap-2 shrink-0">
+                        {!isDeletedInternal && approval?.actionBy && (
+                            <div
+                                className="hidden lg:flex items-center bg-[#F8FAFB] hover:bg-[#E8F4F8] transition-colors border border-[#E2E8F0] rounded-lg px-2.5 py-1.5 mr-1 group cursor-default shadow-xs"
+                                title={`Last action by ${approval.actionBy.name} on ${moment(approval?.actionAt).format('MMMM Do YYYY, h:mm A')}`}
+                            >
+                                <div className="flex flex-col items-end mr-2">
+                                    <span className="text-[9px] font-bold text-[#64748B] uppercase tracking-wider mb-0.5 leading-none group-hover:text-[#044866]/70 transition-colors">
+                                        Approved By:
+                                    </span>
+                                    <span className="text-[11px] font-semibold text-[#1A2332] leading-none truncate max-w-[110px]">
+                                        {approval.actionBy.name}
+                                    </span>
+                                </div>
+                                <div className="h-5 w-px bg-[#E2E8F0] mx-0.5 group-hover:bg-[#CBD5E1] transition-colors" />
+                                {approval?.actionAt && (
+                                    <div className="flex items-center gap-1 text-[#64748B] group-hover:text-[#044866] transition-colors ml-1.5">
+                                        <Clock className="w-3.5 h-3.5" />
+                                        <span className="text-[10px] font-medium whitespace-nowrap">
+                                            {moment(approval?.actionAt).format(
+                                                'MMM DD, HH:mm'
+                                            )}
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                         {showActionButtons &&
                             canDelete &&
                             !isDeletedInternal && (
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        setIsDeleteOpen(true)
-                                    }}
-                                    className="w-8 h-8 rounded-lg flex items-center justify-center bg-red-50 hover:bg-red-100 text-red-500 transition-colors"
-                                    title="Remove Course"
-                                >
-                                    <Trash2 className="w-4 h-4" />
-                                </button>
-                            )}
-
-                        {showActionButtons && (
-                            <div className="flex items-center gap-2 mr-2 bg-gray-50 px-2 py-1 rounded-lg border border-gray-100">
-                                <span className="text-[10px] font-bold text-gray-500 uppercase">
-                                    {approval?.isDisabled
-                                        ? 'Disabled'
-                                        : 'Enabled'}
-                                </span>
-                                <Switch
-                                    name="isDisabled"
-                                    customStyleClass='profileSwitch'
-                                    isChecked={!approval?.isDisabled}
-                                    onChange={(e: any) =>
-                                        handleToggleStatus(e.target.checked)
+                                <Permissions
+                                    permission={
+                                        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS
                                     }
-                                    disabled={toggleStatusResult?.isLoading}
-                                    loading={toggleStatusResult?.isLoading}
-                                />
-                            </div>
+                                >
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            setIsDeleteOpen(true)
+                                        }}
+                                        className="w-8 h-8 rounded-lg flex items-center justify-center bg-red-50 hover:bg-red-100 text-red-500 transition-colors"
+                                        title="Remove Course"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </Permissions>
+                            )}
+                        {showActionButtons && (
+                            <Permissions
+                                permission={
+                                    PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS
+                                }
+                            >
+                                <div className="flex items-center gap-2 mr-2 bg-gray-50 px-2 py-1 rounded-lg border border-gray-100">
+                                    <span className="text-[10px] font-bold text-gray-500 uppercase">
+                                        {approval?.isDisabled
+                                            ? 'Disabled'
+                                            : 'Enabled'}
+                                    </span>
+                                    <Switch
+                                        name="isDisabled"
+                                        customStyleClass="profileSwitch"
+                                        isChecked={!approval?.isDisabled}
+                                        onChange={(e: any) =>
+                                            handleToggleStatus(e.target.checked)
+                                        }
+                                        disabled={toggleStatusResult?.isLoading}
+                                        loading={toggleStatusResult?.isLoading}
+                                    />
+                                </div>
+                            </Permissions>
                         )}
-
                         <motion.button
                             onClick={() =>
                                 setIsCourseExpanded(!isCourseExpanded)
                             }
                             animate={{ rotate: isCourseExpanded ? 180 : 0 }}
                             transition={{ duration: 0.3 }}
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isApproved
-                                ? 'bg-[#10B981]/10 hover:bg-[#10B981]/20 text-[#10B981]'
-                                : needsApproval
-                                    ? 'bg-[#F7A619]/10 hover:bg-[#F7A619]/20 text-[#F7A619]'
-                                    : 'bg-[#F8FAFB] hover:bg-[#E8F4F8] text-[#044866]'
-                                }`}
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                                isApproved
+                                    ? 'bg-[#10B981]/10 hover:bg-[#10B981]/20 text-[#10B981]'
+                                    : needsApproval
+                                      ? 'bg-[#F7A619]/10 hover:bg-[#F7A619]/20 text-[#F7A619]'
+                                      : 'bg-[#F8FAFB] hover:bg-[#E8F4F8] text-[#044866]'
+                            }`}
                         >
                             <ChevronDown className="w-4 h-4" />
                         </motion.button>
@@ -300,67 +350,77 @@ export function CourseCard({
 
                 {/* Success Banner for Approved Courses */}
                 {isApproved && !isDeletedInternal && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="bg-linear-to-r from-[#10B981]/10 to-[#059669]/10 border border-[#10B981]/30 rounded-lg p-3 flex items-center gap-2"
+                    <Permissions
+                        permission={PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS}
                     >
-                        <div className="w-8 h-8 bg-linear-to-br from-[#10B981] to-[#059669] rounded-lg flex items-center justify-center">
-                            <CheckCircle2 className="w-4 h-4 text-white" />
-                        </div>
-                        <div className="flex-1">
-                            <p className="text-xs font-bold text-[#10B981]">
-                                Course Fully Approved & Active
-                            </p>
-                        </div>
-                        {!isDeletedInternal && (
-                            <Button
-                                onClick={() => {
-                                    setIsReassignCourse(true)
-                                    setUploadFacilityChecklist(true)
-                                }}
-                                className="bg-linear-to-r from-[#044866] to-[#0D5468] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#044866]/30"
-                            >
-                                <UploadCloud className="w-3.5 h-3.5" />
-                                {approval?.file
-                                    ? 'Update Facility Checklist'
-                                    : 'Manual E-sign Upload'}
-                            </Button>
-                        )}
-                    </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="bg-linear-to-r from-[#10B981]/10 to-[#059669]/10 border border-[#10B981]/30 rounded-lg p-3 flex items-center gap-2"
+                        >
+                            <div className="w-8 h-8 bg-linear-to-br from-[#10B981] to-[#059669] rounded-lg flex items-center justify-center">
+                                <CheckCircle2 className="w-4 h-4 text-white" />
+                            </div>
+                            <div className="flex-1">
+                                <p className="text-xs font-bold text-[#10B981]">
+                                    Course Fully Approved & Active
+                                </p>
+                            </div>
+                            {!isDeletedInternal && (
+                                <Button
+                                    onClick={() => {
+                                        setIsReassignCourse(true)
+                                        setUploadFacilityChecklist(true)
+                                    }}
+                                    className="bg-linear-to-r from-[#044866] to-[#0D5468] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#044866]/30"
+                                >
+                                    <UploadCloud className="w-3.5 h-3.5" />
+                                    {approval?.file
+                                        ? 'Update Facility Checklist'
+                                        : 'Manual E-sign Upload'}
+                                </Button>
+                            )}
+                        </motion.div>
+                    </Permissions>
                 )}
 
                 {/* Rejected Status */}
                 {isRejected && !isDeletedInternal && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="bg-linear-to-r from-[#EF4444]/10 to-[#DC2626]/10 border border-[#EF4444]/30 rounded-lg p-3"
+                    <Permissions
+                        permission={PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS}
                     >
-                        <div className="flex items-center justify-between gap-3">
-                            <div className="flex items-center gap-2">
-                                <div className="w-8 h-8 bg-linear-to-br from-[#EF4444] to-[#DC2626] rounded-lg flex items-center justify-center">
-                                    <AlertTriangle className="w-4 h-4 text-white" />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="bg-linear-to-r from-[#EF4444]/10 to-[#DC2626]/10 border border-[#EF4444]/30 rounded-lg p-3"
+                        >
+                            <div className="flex items-center justify-between gap-3">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-8 h-8 bg-linear-to-br from-[#EF4444] to-[#DC2626] rounded-lg flex items-center justify-center">
+                                        <AlertTriangle className="w-4 h-4 text-white" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-[#EF4444]">
+                                            Changes Requested
+                                        </p>
+                                        <p className="text-[10px] text-[#DC2626]">
+                                            Facility checklist requires
+                                            modifications
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-xs font-bold text-[#EF4444]">
-                                        Changes Requested
-                                    </p>
-                                    <p className="text-[10px] text-[#DC2626]">
-                                        Facility checklist requires
-                                        modifications
-                                    </p>
-                                </div>
+                                <Button
+                                    onClick={() =>
+                                        setUploadFacilityChecklist(true)
+                                    }
+                                    className="bg-linear-to-r from-[#044866] to-[#0D5468] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#044866]/30"
+                                >
+                                    <UploadCloud className="w-3.5 h-3.5" />
+                                    Manual E-sign Upload
+                                </Button>
                             </div>
-                            <Button
-                                onClick={() => setUploadFacilityChecklist(true)}
-                                className="bg-linear-to-r from-[#044866] to-[#0D5468] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#044866]/30"
-                            >
-                                <UploadCloud className="w-3.5 h-3.5" />
-                                Manual E-sign Upload
-                            </Button>
-                        </div>
-                    </motion.div>
+                        </motion.div>
+                    </Permissions>
                 )}
             </div>
 

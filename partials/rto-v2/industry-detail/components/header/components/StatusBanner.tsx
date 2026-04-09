@@ -1,8 +1,8 @@
 import { Ban, XCircle, Clock, Sparkles } from 'lucide-react'
 import { IndustryStatus } from '../types'
-import { Typography, Badge } from '@components'
+import { Typography, Badge, Permissions } from '@components'
 import { useAppSelector } from '@redux/hooks'
-import { UserStatus } from '@types'
+import { PermissionType, UserStatus } from '@types'
 import { useState } from 'react'
 import { PlacementReadyModal } from '../modals'
 import moment from 'moment'
@@ -14,7 +14,7 @@ interface StatusBannerProps {
 
 export function StatusBanner({
     profileCompletion,
-    isProfileComplete
+    isProfileComplete,
 }: StatusBannerProps) {
     const [showPlacementReadyModal, setShowPlacementReadyModal] =
         useState(false)
@@ -30,14 +30,15 @@ export function StatusBanner({
 
     return (
         <div
-            className={`relative rounded-t-xl px-4 py-2 overflow-hidden ${isBlocked
-                ? 'bg-linear-to-r from-[#EF4444] via-[#DC2626] to-[#EF4444]'
-                : isSnoozed
-                    ? 'bg-linear-to-r from-[#F7A619] via-[#EA580C] to-[#F7A619]'
-                    : isPlacementReady
+            className={`relative rounded-t-xl px-4 py-2 overflow-hidden ${
+                isBlocked
+                    ? 'bg-linear-to-r from-[#EF4444] via-[#DC2626] to-[#EF4444]'
+                    : isSnoozed
+                      ? 'bg-linear-to-r from-[#F7A619] via-[#EA580C] to-[#F7A619]'
+                      : isPlacementReady
                         ? 'bg-linear-to-r from-[#10B981] via-[#059669] to-[#10B981]'
                         : 'bg-linear-to-r from-[#F7A619] via-[#EA580C] to-[#F7A619]'
-                } bg-size-[200%_100%] animate-gradient`}
+            } bg-size-[200%_100%] animate-gradient`}
         >
             {/* Animated Shimmer Effect */}
             <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
@@ -74,26 +75,27 @@ export function StatusBanner({
                             {isBlocked
                                 ? '🚫 Industry Blocked'
                                 : isSnoozed
-                                    ? '💤 Industry Snoozed'
-                                    : isPlacementReady
-                                        ? '✓ Placement Ready'
-                                        : '⚡ Complete Your Profile'}
+                                  ? '💤 Industry Snoozed'
+                                  : isPlacementReady
+                                    ? '✓ Placement Ready'
+                                    : '⚡ Complete Your Profile'}
                         </Typography>
                         <Typography variant="label" color={'text-white/95'}>
                             {isBlocked
                                 ? 'This industry is currently blocked and cannot accept placements'
                                 : isSnoozed
-                                    ? snoozedStartDate && snoozedEndDate
-                                        ? `Snoozed from ${moment(
+                                  ? snoozedStartDate && snoozedEndDate
+                                      ? `Snoozed from ${moment(
                                             snoozedStartDate
                                         ).format('MMM D')} to ${moment(
                                             snoozedEndDate
                                         ).format('MMM D, YYYY')}`
-                                        : 'This industry is temporarily snoozed for placements'
-                                    : isPlacementReady
-                                        ? 'Your industry profile is optimized and ready for placements'
-                                        : `Just ${100 - profileCompletion
-                                        }% more to unlock full placement capabilities`}
+                                      : 'This industry is temporarily snoozed for placements'
+                                  : isPlacementReady
+                                    ? 'Your industry profile is optimized and ready for placements'
+                                    : `Just ${
+                                          100 - profileCompletion
+                                      }% more to unlock full placement capabilities`}
                         </Typography>
                     </div>
                 </div>
@@ -107,29 +109,37 @@ export function StatusBanner({
                                 <div className="flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-md rounded-lg border border-white/30 shadow-sm">
                                     <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
                                     <span className="text-white text-xs font-bold whitespace-nowrap uppercase tracking-tight">
-                                        Ready by {industryDetail.placementReadyBy.name}
+                                        Ready by{' '}
+                                        {industryDetail.placementReadyBy.name}
                                     </span>
                                 </div>
                                 <span className="text-white/90 text-[10px] mt-1 mr-1 font-bold uppercase tracking-wider">
-                                    {moment(industryDetail.placementReadyAt).format(
-                                        'MMM D, YYYY'
-                                    )}
+                                    {moment(
+                                        industryDetail.placementReadyAt
+                                    ).format('MMM D, YYYY')}
                                 </span>
                             </div>
                         ) : (
                             isProfileComplete && (
-                                <Badge
-                                    text="Placement Ready"
-                                    variant="success"
-                                    Icon={Sparkles}
-                                    size="sm"
-                                    shape="pill"
-                                    className="bg-white! text-green-600! shadow-md hover:scale-110 transition-transform cursor-pointer px-4 py-1.5 font-bold"
-                                    onClick={() => setShowPlacementReadyModal(true)}
-                                />
+                                <Permissions
+                                    permission={
+                                        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS
+                                    }
+                                >
+                                    <Badge
+                                        text="Placement Ready"
+                                        variant="success"
+                                        Icon={Sparkles}
+                                        size="sm"
+                                        shape="pill"
+                                        className="bg-white! text-green-600! shadow-md hover:scale-110 transition-transform cursor-pointer px-4 py-1.5 font-bold"
+                                        onClick={() =>
+                                            setShowPlacementReadyModal(true)
+                                        }
+                                    />
+                                </Permissions>
                             )
                         )}
-
 
                         <div className="relative w-12 h-12">
                             <svg className="w-12 h-12 transform -rotate-90">
@@ -150,11 +160,12 @@ export function StatusBanner({
                                     strokeWidth="3"
                                     fill="none"
                                     strokeDasharray={`${2 * Math.PI * 19}`}
-                                    strokeDashoffset={`${2 *
+                                    strokeDashoffset={`${
+                                        2 *
                                         Math.PI *
                                         19 *
                                         (1 - profileCompletion / 100)
-                                        }`}
+                                    }`}
                                     strokeLinecap="round"
                                     className="transition-all duration-1000 drop-shadow-lg"
                                 />

@@ -1,10 +1,12 @@
 import { useUserPermissions } from '@hooks/useUserPermissions'
 import { IAssignedPermission, IPermission, PermissionType } from '@types'
+import { getUserCredentials } from '@utils'
 
 export const usePermissions = (
     permission?: PermissionType | PermissionType[]
 ): boolean => {
     const { allPermissions, myPermissions } = useUserPermissions()
+    const role = getUserCredentials()?.role
 
     if (!permission) return false
 
@@ -14,17 +16,23 @@ export const usePermissions = (
 
         // Check if the permission exists in the system (all permissions list)
         // If systemPerms is empty (e.g. still loading), we treat it as "not created" per user request
-        const isPermissionCreated = systemPerms.some(
-            (sp) => sp.code === permCode
-        )
+        const systemPerm = systemPerms.find((sp) => sp.code === permCode)
 
         // If permission is not created/found in the system, return true (grant access)
-        if (!isPermissionCreated) return true
+        if (!systemPerm) return true
+
+        // If a roles list exists and the current user's role is NOT in it, 
+        // then the permission is allowed by default (not restricted for this role)
+        if (role && systemPerm.roles && systemPerm.roles.length > 0) {
+            if (!systemPerm.roles.includes(role)) {
+                return true
+            }
+        }
 
         // myPermissions.data is IAssignedPermission[]
         const userPerms: IAssignedPermission[] = myPermissions?.data || []
 
-        // If permission exists in system, find it in user's permissions
+        // If permission exists in system and role matches (if restricted), find it in user's permissions
         const assignedPermission = userPerms.find(
             (up) => up.permission.code === permCode
         )

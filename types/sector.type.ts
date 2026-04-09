@@ -70,6 +70,7 @@ export interface IndustryCourseApproval extends BaseResponse {
     course: Course
     industry?: Industry
     isDisabled: boolean
+    actionAt: string
 }
 
 export interface AssessmentResult extends BaseResponse {

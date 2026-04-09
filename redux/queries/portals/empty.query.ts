@@ -42,7 +42,7 @@ const adminTagTypes = [
     'AutoAssignWorkplace',
     'Industry-Course-Program',
     'StudentForecast',
-    'SectorClusters'
+    'SectorClusters',
 ]
 
 const subadminTagTypes = [
@@ -79,6 +79,7 @@ const rtoTagTypes = [
     'RtoDocuments',
     'RTO-Documents',
     'RTOIndustries',
+    'RTO-WORKPLACE',
     'RTO-V2-Courses',
     'RTOAppointment',
     'ContactPersons',

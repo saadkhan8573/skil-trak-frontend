@@ -6,7 +6,7 @@ import {
     LoadingAnimation,
     Table,
     TableActionOption,
-    TechnicalError
+    TechnicalError,
 } from '@components'
 import { ColumnDef } from '@tanstack/react-table'
 import { FaEdit, FaEye } from 'react-icons/fa'
@@ -134,11 +134,13 @@ export const ResolvedIssuesHistoryTab = () => {
                     <div className="flex items-center gap-2">
                         <GraduationCap className="h-3 w-3 text-gray-500" />
                         <p className="text-xs truncate">
-                            {`${info.row.original?.workplaceRequest?.courses![0]
-                                ?.code ?? '————'
-                                } - ${info.row.original?.workplaceRequest?.courses![0]
+                            {`${
+                                info.row.original?.workplaceRequest?.courses![0]
+                                    ?.code ?? '————'
+                            } - ${
+                                info.row.original?.workplaceRequest?.courses![0]
                                     ?.title ?? '————'
-                                }`}
+                            }`}
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -178,16 +180,6 @@ export const ResolvedIssuesHistoryTab = () => {
                 <PriorityBadge priority={info?.row?.original?.priority} />
             ),
         },
-        // {
-        //     accessorKey: 'expiry',
-        //     header: () => <span>Expiry Countdown</span>,
-        //     cell: (info) => (
-        //         <StudentExpiryDaysLeft
-        //             expiryDate={info.row.original?.expiryDate}
-        //         />
-        //     ),
-        // },
-
         {
             accessorKey: 'resolvedAt',
             header: () => <span>Resolution Date</span>,
@@ -195,7 +187,11 @@ export const ResolvedIssuesHistoryTab = () => {
                 <div className="flex items-center gap-2">
                     <Calendar className="h-3 w-3 text-green-500" />
                     <span className="text-xs">
-                        {info.row.original?.resolutionDate ? moment(String(info.row.original?.resolutionDate)).format('Do MMM YYYY') : '—'}
+                        {info.row.original?.resolutionDate
+                            ? moment(
+                                  String(info.row.original?.resolutionDate)
+                              ).format('Do MMM YYYY')
+                            : '—'}
                     </span>
                 </div>
             ),
@@ -205,7 +201,7 @@ export const ResolvedIssuesHistoryTab = () => {
             header: () => <span>Resolution Time</span>,
             cell: (info) => {
                 const created = moment(info.row.original?.createdAt)
-                const resolved = moment(info.row.original?.resolutionDate + "")
+                const resolved = moment(info.row.original?.resolutionDate + '')
                 const days = resolved.diff(created, 'days')
                 const hours = resolved.diff(created, 'hours') % 24
                 return (
@@ -228,18 +224,6 @@ export const ResolvedIssuesHistoryTab = () => {
                 />
             ),
         },
-        // {
-        //     accessorKey: 'action',
-        //     header: () => <span>Action</span>,
-        //     cell: (info) => (
-        //         <div className="flex gap-x-1 items-center">
-        //             <TableAction
-        //                 options={tableActionOptions}
-        //                 rowItem={info.row.original}
-        //             />
-        //         </div>
-        //     ),
-        // },
     ]
 
     const quickActionsElements = {
@@ -299,15 +283,11 @@ export const ResolvedIssuesHistoryTab = () => {
         <>
             {modal && modal}
             <div className="flex flex-col gap-y-4 mb-32">
-                {/* <PageHeading
-                    title={'Problematic Students'}
-                    subtitle={'List of Problematic Students'}
-                ></PageHeading> */}
-                <div className="grid grid-cols-4 gap-4">
+                {/* <div className="grid grid-cols-4 gap-4">
                     {stats.map((stat) => (
                         <CountCard stat={stat} />
                     ))}
-                </div>
+                </div> */}
                 <Card noPadding>
                     {isError && <TechnicalError />}
                     {isLoading ? (
@@ -317,7 +297,7 @@ export const ResolvedIssuesHistoryTab = () => {
                             columns={columns}
                             data={data.data}
                             quickActions={quickActionsElements}
-                        // enableRowSelection
+                            // enableRowSelection
                         >
                             {({
                                 table,

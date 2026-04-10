@@ -132,6 +132,14 @@ export const {
     useRejectMOUByRTOMutation,
 
     // --- STUDENTS --- //
+    useGetActiveStudentsListQuery,
+    useGetPendingStudentsListQuery,
+    useGetInProgressStudentsListQuery,
+    useGetNoWorkplaceStudentsListQuery,
+    useGetPlacementStartedStudentsListQuery,
+    useGetScheduleCompletedStudentsListQuery,
+    useGetExpiredStudentsListQuery,
+    useGetBlockedStudentsListQuery,
     useGetRtoStudentsQuery,
     useGetRtoResolveIssuesStudentsQuery,
     useRtoResolveIssueMutation,
@@ -193,6 +201,14 @@ export const RtoApi = {
         useRtoSelfPayment: useGetRtoSelfPaymentQuery,
     },
     Students: {
+        useActiveStudentsList: useGetActiveStudentsListQuery,
+        usePendingStudentsList: useGetPendingStudentsListQuery,
+        useInProgressStudentsList: useGetInProgressStudentsListQuery,
+        useNoWorkplaceStudentsList: useGetNoWorkplaceStudentsListQuery,
+        usePlacementStartedStudentsList: useGetPlacementStartedStudentsListQuery,
+        useScheduleCompletedStudentsList: useGetScheduleCompletedStudentsListQuery,
+        useExpiredStudentsList: useGetExpiredStudentsListQuery,
+        useBlockedStudentsList: useGetBlockedStudentsListQuery,
         useCount: useStudentsCountQuery,
         useRtoResolveIssuesStudents: useGetRtoResolveIssuesStudentsQuery,
         useRtoResolveIssuesStudentsCount:

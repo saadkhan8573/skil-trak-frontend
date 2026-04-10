@@ -80,14 +80,14 @@ export const ProblematicStudent = () => {
             accessorKey: 'student.title',
             cell: (info) => {
                 const title = info.row?.original?.title || ''
-                const isLarge = title.length > 20
+                const isLarge = title.length > 30
 
                 return (
                     <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-1.5 text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-100 max-w-[150px]">
                             <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
                             <span className="text-xs font-semibold leading-tight truncate">
-                                {title}
+                                {isLarge ? `${title.substring(0, 30)}...` : title}
                             </span>
                         </div>
                         {isLarge && (

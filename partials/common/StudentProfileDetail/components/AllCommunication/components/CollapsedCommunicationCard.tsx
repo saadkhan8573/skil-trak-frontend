@@ -24,8 +24,9 @@ export const CollapsedCommunicationCard: React.FC<CommunicationCardProps> = ({
                     <div className="flex items-start justify-between">
                         <div className="flex items-start space-x-3 flex-1">
                             <div
-                                className={`text-2xl ${getCommunicationIcon(item)?.bg
-                                    }`}
+                                className={`text-2xl ${
+                                    getCommunicationIcon(item)?.bg
+                                }`}
                             >
                                 {getCommunicationIcon(item)?.icon}
                             </div>
@@ -46,8 +47,9 @@ export const CollapsedCommunicationCard: React.FC<CommunicationCardProps> = ({
                                             {getCommunicationDate(item)}
                                         </Typography>
                                         <div
-                                            className={`transform transition-transform text-gray-400 ${isOpened ? 'rotate-180' : ''
-                                                }`}
+                                            className={`transform transition-transform text-gray-400 ${
+                                                isOpened ? 'rotate-180' : ''
+                                            }`}
                                         >
                                             <IoIosArrowDown />
                                         </div>

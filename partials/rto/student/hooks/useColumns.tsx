@@ -1,4 +1,5 @@
 import {
+    Badge,
     CaseOfficerAssignedStudent,
     StudentExpiryDaysLeft,
     TableAction,
@@ -16,6 +17,8 @@ import { InitiateAiCallModal } from '@partials/common/modal'
 import { Phone } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
+import moment from 'moment'
+import { Popover, PopoverContent, PopoverTrigger } from '@components/ui'
 import {
     AcceptModal,
     AssignCoordinatorModal,
@@ -50,6 +53,7 @@ type ColumnKey =
     | 'progress'
     | 'assigned'
     | 'createdAt'
+    | 'snoozed'
     | 'action'
 
 interface GetTableConfigOptions {
@@ -175,8 +179,8 @@ export const useColumns = () => {
                         '/portals/rto/students-and-placements/all-students'
                     )
                         ? {
-                            link: `/portals/rto/students-and-placements/all-students/${info?.row?.original?.id}/detail`,
-                        }
+                              link: `/portals/rto/students-and-placements/all-students/${info?.row?.original?.id}/detail`,
+                          }
                         : {})}
                     student={info.row.original}
                     call
@@ -198,8 +202,8 @@ export const useColumns = () => {
                         industries={info.row.original?.industries}
                     />
                 ) : info.row.original?.workplace &&
-                    info.row.original?.workplace?.length > 0 &&
-                    appliedIndustry ? (
+                  info.row.original?.workplace?.length > 0 &&
+                  appliedIndustry ? (
                     <SubadminStudentIndustries
                         workplace={info.row.original?.workplace}
                         industries={info.row.original?.industries}
@@ -265,6 +269,57 @@ export const useColumns = () => {
             cell: ({ row }) => (
                 <UserCreatedAt createdAt={row.original?.createdAt} />
             ),
+        },
+        {
+            accessorKey: 'snoozed',
+            header: () => <span>Snoozed</span>,
+            cell: ({ row }) => {
+                const snoozes = row.original?.snoozeComments || []
+                const snooze =
+                    Array.isArray(snoozes) && snoozes.length > 0
+                        ? snoozes[0]
+                        : null
+                if (!snooze) return <span className="text-gray-400">---</span>
+
+                return (
+                    <Popover>
+                        <PopoverTrigger>
+                            <Badge
+                                variant="info"
+                                className="whitespace-pre cursor-pointer"
+                            >
+                                View Details
+                            </Badge>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-64 p-4 shadow-xl rounded-xl border border-slate-100 bg-white">
+                            <div className="space-y-3">
+                                <h4 className="font-semibold text-sm text-[#044866] border-b pb-2 flex items-center gap-2">
+                                    <span className="bg-amber-100 p-1 rounded">
+                                        ⏰
+                                    </span>{' '}
+                                    Snoozed Details
+                                </h4>
+                                <div className="space-y-2">
+                                    <p className="text-xs text-slate-600">
+                                        <span className="font-semibold text-slate-800">
+                                            Date:
+                                        </span>{' '}
+                                        {moment(snooze.createdAt).format(
+                                            'MMM DD, YYYY hh:mm A'
+                                        )}
+                                    </p>
+                                    <p className="text-xs text-slate-600">
+                                        <span className="font-semibold text-slate-800">
+                                            Comment:
+                                        </span>{' '}
+                                        {snooze.comment}
+                                    </p>
+                                </div>
+                            </div>
+                        </PopoverContent>
+                    </Popover>
+                )
+            },
         },
     ]
 
@@ -349,7 +404,9 @@ export const useColumns = () => {
         {
             text: 'Edit',
             onClick: (student: Student) =>
-                router.push(`/portals/rto/students-and-placements/all-students/${student.id}/edit-student`),
+                router.push(
+                    `/portals/rto/students-and-placements/all-students/${student.id}/edit-student`
+                ),
             Icon: FaEdit,
         },
     ]

@@ -159,6 +159,7 @@ export const {
     useChangeRtoNetworkMutation,
     useCreateIndustryCreditMutation,
     useConfirmRtoWorkplacePaymentMutation,
+    useAddExpectedDelayMutation,
 } = rtoV2Api
 
 export const RtoV2Api = {
@@ -231,6 +232,7 @@ export const RtoV2Api = {
         useBookAppointmentExternally: useBookAppointmentExternallyMutation,
         useGetStudentRejectedIndustries: useGetStudentRejectedIndustriesQuery,
         useGetStudentAppointmentDetail: useGetStudentAppointmentDetailQuery,
+        addExpectedDelay: useAddExpectedDelayMutation,
     },
     StudentsWorkplace: {
         getStudentWorkplaceList: useGetStudentWorkplaceListQuery,

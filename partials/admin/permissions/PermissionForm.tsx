@@ -125,6 +125,7 @@ export const PermissionForm = ({
                         validationIcons
                         required
                         multi
+                        disabled={edit}
                         onlyValue
                     />
 

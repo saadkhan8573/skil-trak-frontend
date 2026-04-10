@@ -27,8 +27,8 @@ export const SnoozedStudents = () => {
     const { getTableConfig, modal: newModal } = useColumns()
 
     const { columns } = getTableConfig({
-        removeColumnKeys: ['assigned'],
-        actionKeys: ['assign', 'block', 'changeStatus', 'changeExpiry'],
+        removeColumnKeys: ['assigned', 'batch', 'expiry'],
+        actionKeys: ['block'],
     })
 
     const [itemPerPage, setItemPerPage] = useState(50)

@@ -9,7 +9,7 @@ import {
 } from '@components'
 import { FaEdit } from 'react-icons/fa'
 
-import { RtoApi, useGetRtoStudentsQuery } from '@queries'
+import { RtoApi } from '@queries'
 import { Student, UserStatus } from '@types'
 import { getUserCredentials } from '@utils'
 import { saveAs } from 'file-saver'
@@ -42,8 +42,7 @@ export const ApprovedStudent = () => {
 
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
-    const { isLoading, data, isError } = useGetRtoStudentsQuery({
-        search: `status:${UserStatus.Approved}`,
+    const { isLoading, data, isError } = RtoApi.Students.useActiveStudentsList({
         skip: itemPerPage * page - itemPerPage,
         limit: itemPerPage,
     })

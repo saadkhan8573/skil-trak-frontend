@@ -22,6 +22,9 @@ import {
     User2,
     Users,
     UserX,
+    FileWarning,
+    ChevronDown,
+    ChevronUp,
 } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { Fragment, ReactElement, useState } from 'react'
@@ -35,6 +38,9 @@ const menuSections = (navBarCounts: {
     appointments: number
     emails: number
     notification: number
+    nonContactable: number
+    snoozed: number
+    inCompleteSubmissions?: number
 }) => [
     {
         title: 'Dashboard',
@@ -108,8 +114,10 @@ const menuSections = (navBarCounts: {
                 label: 'Non Contactable',
                 key: 'Non Contactable',
                 path: '/portals/rto/action-required/non-contactable',
+                badge: navBarCounts?.nonContactable,
                 bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
                 iconBg: 'bg-red-200 !text-red-500',
+                badgeBg: 'bg-red-500',
                 text: 'text-slate-700',
             },
             {
@@ -117,8 +125,21 @@ const menuSections = (navBarCounts: {
                 label: 'Snoozed',
                 key: 'Snoozed',
                 path: '/portals/rto/action-required/snoozed',
+                badge: navBarCounts?.snoozed,
                 bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
                 iconBg: 'bg-red-200 !text-red-500',
+                badgeBg: 'bg-red-500',
+                text: 'text-slate-700',
+            },
+            {
+                icon: FileWarning,
+                label: 'Incomplete Submission',
+                key: 'Incomplete Submission',
+                path: '/portals/rto/action-required/incomplete-submission',
+                badge: navBarCounts?.inCompleteSubmissions,
+                bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
+                iconBg: 'bg-red-200 !text-red-500',
+                badgeBg: 'bg-red-500',
                 text: 'text-slate-700',
             },
         ],
@@ -141,7 +162,6 @@ const menuSections = (navBarCounts: {
                 icon: Briefcase,
                 label: 'Placement Requests',
                 key: 'Placement Requests',
-                // badge: '11',
                 path: '/portals/rto/students-and-placements/placement-requests?tab=student-need-wp',
                 bg: 'hover:bg-gray-100 border border-gray-200',
                 iconBg: 'bg-gray-200 !text-slate-700',
@@ -267,6 +287,16 @@ const menuSections = (navBarCounts: {
 
 export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
     const { data: navBarCounts } = RtoV2Api.Dashboard.navBarCounts()
+    const [expandedSections, setExpandedSections] = useState<
+        Record<string, boolean>
+    >({})
+
+    const toggleSection = (title: string) => {
+        setExpandedSections((prev) => ({
+            ...prev,
+            [title]: !prev[title],
+        }))
+    }
 
     const [modal, setModal] = useState<ReactElement | null>(null)
     const router = useRouter()
@@ -321,7 +351,10 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
                         </div>
 
                         <ul className="space-y-1">
-                            {section.items.map((item: any) => {
+                            {(expandedSections[section.title]
+                                ? section.items
+                                : section.items.slice(0, 4)
+                            ).map((item: any) => {
                                 const MenuItem = (
                                     <li key={item.key}>
                                         <button
@@ -368,6 +401,25 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
 
                                 return MenuItem
                             })}
+                            {section.items.length > 4 && (
+                                <li>
+                                    <button
+                                        onClick={() =>
+                                            toggleSection(section.title)
+                                        }
+                                        className="w-full flex justify-center items-center py-2 text-[11px] font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100/50 rounded-xl transition cursor-pointer mt-1 border border-dashed border-slate-200"
+                                    >
+                                        {expandedSections[section.title]
+                                            ? 'Show Less'
+                                            : 'Show More'}
+                                        {expandedSections[section.title] ? (
+                                            <ChevronUp className="h-3 w-3 ml-1" />
+                                        ) : (
+                                            <ChevronDown className="h-3 w-3 ml-1" />
+                                        )}
+                                    </button>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 ))}
@@ -447,7 +499,10 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
                             </div>
 
                             <ul className="space-y-2">
-                                {section.items.map((item: any) => {
+                                {(expandedSections[section.title]
+                                    ? section.items
+                                    : section.items.slice(0, 4)
+                                ).map((item: any) => {
                                     const MenuItem = (
                                         <li
                                             key={item.key}
@@ -505,6 +560,25 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
 
                                     return MenuItem
                                 })}
+                                {section.items.length > 4 && (
+                                    <li>
+                                        <button
+                                            onClick={() =>
+                                                toggleSection(section.title)
+                                            }
+                                            className="w-full flex justify-center items-center py-1.5 text-[11px] font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100/50 rounded-xl transition cursor-pointer mt-1 border border-dashed border-slate-200"
+                                        >
+                                            {expandedSections[section.title]
+                                                ? 'Show Less'
+                                                : 'Show More'}
+                                            {expandedSections[section.title] ? (
+                                                <ChevronUp className="h-3 w-3 ml-1" />
+                                            ) : (
+                                                <ChevronDown className="h-3 w-3 ml-1" />
+                                            )}
+                                        </button>
+                                    </li>
+                                )}
                             </ul>
                         </div>
                     ))}

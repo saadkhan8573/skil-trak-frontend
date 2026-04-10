@@ -1,4 +1,8 @@
-import { PersonalInfoForm, workplaceQuestions, workplaceQuestionsKeys } from '@partials/common'
+import {
+    PersonalInfoForm,
+    workplaceQuestions,
+    workplaceQuestionsKeys,
+} from '@partials/common'
 import { StudentApi, SubAdminApi } from '@queries'
 import { useEffect } from 'react'
 import { SkeletonLoader } from '@components'
@@ -28,22 +32,24 @@ export const PersonalInfo = ({
 
     useEffect(() => {
         const questionsArray = existingQuestions?.questions || []
-        if (questionsArray && questionsArray.length > 0) {
-            const transformedQuestions = questionsArray.map((q) => {
+        if (questionsArray && questionsArray?.length > 0) {
+            const transformedQuestions = questionsArray?.map((q) => {
                 let parsedAnswer: any = q.answer
-                
+
                 // Specialized parsing for preferredContactTime string
                 if (q.type === workplaceQuestionsKeys.preferredContactTime) {
-                    const match = q.answer.match(
-                        /Days\s*:\s*(.*),\s*Time Slots\s*:\s*(.*)/
-                    )
-                    if (match) {
-                        parsedAnswer = {
-                            days: match[1]
-                                .split(',')
-                                .map((d) => d.trim())
-                                .filter(Boolean),
-                            timeSlot: match[2].trim(),
+                    if (typeof q.answer === 'string') {
+                        const match = q.answer.match(
+                            /Days\s*:\s*(.*),\s*Time Slots\s*:\s*(.*)/
+                        )
+                        if (match) {
+                            parsedAnswer = {
+                                days: match[1]
+                                    .split(',')
+                                    .map((d) => d.trim())
+                                    .filter(Boolean),
+                                timeSlot: match[2].trim(),
+                            }
                         }
                     }
                 } else {

@@ -91,6 +91,14 @@ export const getChecklistItems = (data: any) => {
             color: '#F59E0B',
             targetSection: 'email-verified',
         },
+        {
+            title: 'Partner Verified',
+            description: 'Industry is a verified partner',
+            status: getStatus(data?.isPartner),
+            icon: Target,
+            color: '#3B82F6',
+            targetTab: 'partner-status',
+        },
     ]
 }
 

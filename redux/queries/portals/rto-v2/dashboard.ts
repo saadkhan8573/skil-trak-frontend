@@ -20,6 +20,8 @@ export const dashboardEndpoints = (
             appointments: number
             emails: number
             notification: number
+            nonContactable: number
+            snoozed: number
         },
         void
     >({

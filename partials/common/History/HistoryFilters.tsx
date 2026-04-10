@@ -1,13 +1,19 @@
-import { Badge, Button, Card, OutsideClickHandler, Select, TextInput, Typography } from '@components'
+import {
+    Badge,
+    Button,
+    Card,
+    OutsideClickHandler,
+    Select,
+    TextInput,
+} from '@components'
 import { CalendarStyles } from '@components/Calendar/style'
+import { FilterType } from '@pages/portals/sub-admin/history'
 import { AdminApi } from '@queries'
 import { debounce } from 'lodash'
 import moment from 'moment'
 import { useRouter } from 'next/router'
-import { FilterType } from '@pages/portals/sub-admin/history'
 import { useCallback } from 'react'
 import Calendar from 'react-calendar'
-
 
 export const HistoryFilters = ({
     filterType,
@@ -39,9 +45,8 @@ export const HistoryFilters = ({
         debounce((value) => setSearchedValue(value), 700),
         []
     )
-    const { data, isLoading, isError } =
-        AdminApi.SubAdmins.useSubAdminAsAdminList()
-    const subAdminOptions = data?.map((subAdmin: any) => ({
+    const { data } = AdminApi.SubAdmins.useSubAdminAsAdminList()
+    const subAdminOptions = data?.map((subAdmin) => ({
         label: subAdmin?.user?.name,
         value: subAdmin?.user?.id,
     }))
@@ -58,45 +63,45 @@ export const HistoryFilters = ({
             </div>
             {router.pathname ===
                 '/portals/admin/sub-admin-as-admin-activities' && (
-                    <div className="w-full">
-                        <Select
-                            // label={'Filter By Sub Admin'}
-                            name={'subAdmin'}
-                            placeholder={'Filter Subadmin...'}
-                            options={subAdminOptions}
-                            // value={subAdminId}
-                            // loading={isLoading}
-                            // disabled={isLoading}
-                            onChange={(e: any) => {
-                                setSubAdminId(e)
-                            }}
-                            onlyValue
-                        />
-                    </div>
-                )}
+                <div className="w-full">
+                    <Select
+                        // label={'Filter By Sub Admin'}
+                        name={'subAdmin'}
+                        placeholder={'Filter Subadmin...'}
+                        options={subAdminOptions}
+                        // value={subAdminId}
+                        // loading={isLoading}
+                        // disabled={isLoading}
+                        onChange={(e: any) => {
+                            setSubAdminId(e)
+                        }}
+                        onlyValue
+                    />
+                </div>
+            )}
 
-            <Typography>
-                <span className="font-semibold whitespace-pre mt-1.5 block">
+            <div className="text-typography">
+                <div className="font-semibold whitespace-pre mt-1.5 block">
                     <Badge
                         text={
                             filterType === FilterType.Today
                                 ? 'Today'
                                 : filterType === FilterType.Range
-                                    ? customRangeDate?.startDate &&
+                                  ? customRangeDate?.startDate &&
                                     customRangeDate?.endDate &&
-                                    `${moment(customRangeDate?.startDate).format(
-                                        'MMM, DD YYYY'
-                                    )} - ${moment(
+                                    `${moment(
+                                        customRangeDate?.startDate
+                                    ).format('MMM, DD YYYY')} - ${moment(
                                         customRangeDate?.endDate
                                     ).format('MMM, DD YYYY')}`
-                                    : filterType === FilterType['7Days']
-                                        ? 'Last 7 Days'
-                                        : 'Last 7 Days'
+                                  : filterType === FilterType['7Days']
+                                    ? 'Last 7 Days'
+                                    : 'Last 7 Days'
                         }
                         variant={'info'}
                     />
-                </span>
-            </Typography>
+                </div>
+            </div>
             <Button
                 text={'Today'}
                 variant={'action'}

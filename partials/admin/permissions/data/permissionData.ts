@@ -241,6 +241,12 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         icon: Sparkles,
         category: 'ai-matching',
     },
+    [PermissionType.TALENT_POOL_ACCESS]: {
+        label: 'Talent Pool Access',
+        description: 'Access and manage the exclusive talent pool feature',
+        icon: Users,
+        category: 'ai-matching',
+    },
     [PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS]: {
         label: 'Can Perform Industry Actions',
         description:

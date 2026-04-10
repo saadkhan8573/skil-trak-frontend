@@ -79,7 +79,7 @@ export const getCommunicationSenderName = (item: CommunicationItem): string => {
 }
 
 export const getCommunicationDate = (item: CommunicationItem) => {
-    const date = item.updatedAt || item.createdAt
+    const date = item.createdAt
     return moment(date).format('MMM DD, YYYY [at] hh:mm A')
 }
 

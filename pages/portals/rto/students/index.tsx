@@ -20,15 +20,16 @@ import {
 import { useContextBar, useJoyRide } from '@hooks'
 import {
     ApprovedStudent,
-    ArchivedStudent,
-    BlockedStudent,
     CompletedStudents,
     FilteredStudents,
-    IncompleteSubmissionStudent,
     PendingStudent,
     PlacementStarted,
-    RejectedStudent,
     ScheduleCompleted,
+    InProgressStudent,
+    RtoNoWorkplaceStudents,
+    ExpiredStudent,
+    BlockedStudent,
+    RejectedStudent,
 } from '@partials/rto/student'
 import { RtoApi, useGetRtoStudentsQuery } from '@queries'
 import { checkFilteredDataLength } from '@utils'
@@ -117,7 +118,7 @@ const RtoStudents: NextPageWithLayout = (props: Props) => {
 
     const tabs: TabProps[] = [
         {
-            label: 'Pending',
+            label: 'Pending Students',
             href: { pathname: 'students', query: { tab: UserStatus.Pending } },
             badge: {
                 text: count?.data?.pending,
@@ -126,13 +127,31 @@ const RtoStudents: NextPageWithLayout = (props: Props) => {
             element: <PendingStudent />,
         },
         {
-            label: 'Active',
+            label: 'All Active Students',
             badge: {
-                text: count?.data?.approved,
+                text: count?.data?.active,
                 loading: count.isLoading,
             },
             href: { pathname: 'students', query: { tab: 'active' } },
             element: <ApprovedStudent />,
+        },
+        {
+            label: 'In Progress Students',
+            badge: {
+                text: count?.data?.inProgress,
+                loading: count.isLoading,
+            },
+            href: { pathname: 'students', query: { tab: 'in-progress' } },
+            element: <InProgressStudent />,
+        },
+        {
+            label: 'No Workplace Request',
+            badge: {
+                text: count?.data?.noWorkplace,
+                loading: count.isLoading,
+            },
+            href: { pathname: 'students', query: { tab: 'no-workplace' } },
+            element: <RtoNoWorkplaceStudents />,
         },
         {
             label: 'Placement Started',
@@ -146,53 +165,36 @@ const RtoStudents: NextPageWithLayout = (props: Props) => {
         {
             label: 'Schedule Completed',
             badge: {
-                text: count?.data?.schedule,
-                loading: count.isLoading,
-            },
-            href: { pathname: 'students', query: { tab: 'schedule-completed' } },
-            element: <ScheduleCompleted />,
-        },
-        // IncompleteSubmissionStudent
-        {
-            label: 'Incomplete Submission',
-            badge: {
-                text: count?.data?.inCompleteSubmissions,
+                text: count?.data?.scheduleCompleted,
                 loading: count.isLoading,
             },
             href: {
                 pathname: 'students',
-                query: { tab: 'incomplete-submission' },
+                query: { tab: 'schedule-completed' },
             },
-            element: <IncompleteSubmissionStudent />,
+            element: <ScheduleCompleted />,
         },
-        // TODO: uncomment IncompleteSubmissionStudent
-        // ...(rto?.allowPartialSubmission
-        //     ? [
-        //           {
-        //               label: 'Incomplete Submission',
-        //               badge: {
-        //                   text: count?.data?.inCompleteSubmissions,
-        //                   loading: count.isLoading,
-        //               },
-        //               href: {
-        //                   pathname: 'students',
-        //                   query: { tab: 'incomplete-submission' },
-        //               },
-        //               element: <IncompleteSubmissionStudent />,
-        //           },
-        //       ]
-        //     : []),
         {
-            label: 'Rejected',
+            label: 'Completed Students',
             badge: {
-                text: count?.data?.rejected,
+                text: count?.data?.completed,
                 loading: count.isLoading,
             },
-            href: { pathname: 'students', query: { tab: UserStatus.Rejected } },
-            element: <RejectedStudent />,
+            href: { pathname: 'students', query: { tab: 'completed' } },
+            element: <CompletedStudents />,
         },
         {
-            label: 'Blocked',
+            label: 'Expired Students',
+            badge: {
+                text: count?.data?.expired,
+                loading: count.isLoading,
+            },
+            href: { pathname: 'students', query: { tab: 'expired' } },
+            element: <ExpiredStudent />,
+        },
+
+        {
+            label: 'Blocked Students',
             badge: {
                 text: count?.data?.blocked,
                 loading: count.isLoading,
@@ -201,43 +203,14 @@ const RtoStudents: NextPageWithLayout = (props: Props) => {
             element: <BlockedStudent />,
         },
         {
-            label: 'Archived',
+            label: 'Accounts Rejected',
             badge: {
-                text: count?.data?.archived,
+                text: count?.data?.rejected,
                 loading: count.isLoading,
             },
-            href: { pathname: 'students', query: { tab: UserStatus.Archived } },
-            element: <ArchivedStudent />,
+            href: { pathname: 'students', query: { tab: UserStatus.Rejected } },
+            element: <RejectedStudent />,
         },
-        {
-            label: 'Completed',
-            badge: {
-                text: count?.data?.completed,
-                loading: count.isLoading,
-            },
-            href: { pathname: 'students', query: { tab: 'completed' } },
-            element: <CompletedStudents />,
-        },
-        // {
-        //     label: 'Problematic Student',
-        //     badge: {
-        //         text: count?.data?.problematicStudents,
-        //         loading: count.isLoading,
-        //     },
-        //     href: { pathname: 'students', query: { tab: 'problem' } },
-        //     element: <ProblematicStudent />,
-        // },
-        // {
-        //     label: 'Reported Student',
-        //     badge: {
-        //         text: count?.data?.reported,
-        //         loading: count.isLoading,
-        //     },
-        //     href: { pathname: 'students', query: { tab: 'reported' } },
-        //     element: <ReportedStudentsList />,
-        // },
-
-        //TODO: Un Comment Reported student
     ]
 
     const delayedSearch = useCallback(

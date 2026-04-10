@@ -15,11 +15,11 @@ import { ReactNode, useState } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { CiUnlock } from 'react-icons/ci'
 import { IoMdEyeOff } from 'react-icons/io'
-import { MdInfo, MdSnooze } from 'react-icons/md'
+import { MdInfo, MdSnooze, MdAccessTime } from 'react-icons/md'
 import { RiEditFill, RiFootprintFill } from 'react-icons/ri'
 import { TbMessage2Up } from 'react-icons/tb'
 import { StudentMessageModal } from '../modals/StudentMessageModal'
-import { StudentInfoMessageModal, StudentStatusModal } from '../modals'
+import { StudentInfoMessageModal, StudentStatusModal, AddExpectedDelayModal, RemoveExpectedDelayModal } from '../modals'
 
 export const ProfileLinks = ({ profile }: { profile: Student }) => {
     const router = useRouter()
@@ -167,6 +167,26 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
                 text: 'Update Status',
                 Icon: MdInfo,
                 onClick: () => onUpdateStatus(),
+            },
+            {
+                text: profile?.expectedDelay ? 'Delay Info' : 'Expected Delay',
+                Icon: MdAccessTime,
+                onClick: () =>
+                    setModal(
+                        profile?.expectedDelay ? (
+                            <RemoveExpectedDelayModal
+                                student={profile}
+                                isOpen={true}
+                                onClose={onCancelClicked}
+                            />
+                        ) : (
+                            <AddExpectedDelayModal
+                                student={profile}
+                                isOpen={true}
+                                onClose={onCancelClicked}
+                            />
+                        )
+                    ),
             }
         )
 

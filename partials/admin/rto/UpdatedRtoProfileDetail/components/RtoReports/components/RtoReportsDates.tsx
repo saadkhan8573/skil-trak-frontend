@@ -93,6 +93,7 @@ export const RtoReportsDates = ({
                 >
                     {dateObjects?.reverse().map((dateObject: any) => (
                         <RtoReportDateCard
+                            key={dateObject?.startDate}
                             dateObject={dateObject}
                             onClick={() => {
                                 onSetDates(

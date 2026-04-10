@@ -7,7 +7,7 @@ import {
     TechnicalError,
 } from '@components'
 
-import { useGetRtoStudentsQuery } from '@queries'
+import { RtoApi } from '@queries'
 import { UserStatus } from '@types'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
@@ -16,11 +16,11 @@ import { useColumns } from './hooks'
 export const PendingStudent = () => {
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
-    const { isLoading, data, isError, isSuccess } = useGetRtoStudentsQuery({
-        search: `status:${UserStatus.Pending}`,
-        skip: itemPerPage * page - itemPerPage,
-        limit: itemPerPage,
-    })
+    const { isLoading, data, isError, isSuccess } =
+        RtoApi.Students.usePendingStudentsList({
+            skip: itemPerPage * page - itemPerPage,
+            limit: itemPerPage,
+        })
 
     const { getTableConfig, modal } = useColumns()
 

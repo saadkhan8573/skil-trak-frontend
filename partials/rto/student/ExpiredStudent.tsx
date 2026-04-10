@@ -9,9 +9,8 @@ import {
 } from '@components'
 import { FaEdit } from 'react-icons/fa'
 
-import { RtoApi, useGetRtoStudentsQuery } from '@queries'
+import { RtoApi } from '@queries'
 import { Student } from '@types'
-import { getUserCredentials } from '@utils'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
 import { MdBlock, MdChangeCircle } from 'react-icons/md'
@@ -19,25 +18,25 @@ import { useColumns } from './hooks'
 import { AssignCoordinatorModal, BlockModal } from './modals'
 import { AssignMultipleCoordinatorModal } from './modals/AssignMultipleCoordinatorModal'
 
-export const NonContactableStudents = () => {
+export const ExpiredStudent = () => {
     const router = useRouter()
     const [modal, setModal] = useState<ReactElement | null>(null)
-    const userId = getUserCredentials()?.id
 
     const { getTableConfig, modal: newModal } = useColumns()
 
     const { columns } = getTableConfig({
-        removeColumnKeys: ['assigned', 'batch', 'expiry', 'snoozed'],
-        actionKeys: ['block'],
+        actionKeys: ['assign', 'block', 'changeStatus', 'changeExpiry'],
     })
 
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
-    const { isLoading, data, isError } = useGetRtoStudentsQuery({
-        search: `nonContactable:true`,
-        skip: itemPerPage * page - itemPerPage,
-        limit: itemPerPage,
-    })
+
+    const { isLoading, data, isError } = RtoApi.Students.useExpiredStudentsList(
+        {
+            skip: itemPerPage * page - itemPerPage,
+            limit: itemPerPage,
+        }
+    )
 
     const onModalCancelClicked = () => setModal(null)
 
@@ -189,9 +188,9 @@ export const NonContactableStudents = () => {
                     ) : (
                         !isError && (
                             <EmptyData
-                                title={'No Non-Contactable Students'}
+                                title={'No Expired Students Found'}
                                 description={
-                                    'There are no students marked as non-contactable right now.'
+                                    'There are no students with expired status.'
                                 }
                                 height={'50vh'}
                             />

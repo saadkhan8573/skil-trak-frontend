@@ -5,19 +5,23 @@ import {
     EmptyData,
     LoadingAnimation,
     Table,
-    TableActionOption,
-    TechnicalError,
+    TechnicalError
 } from '@components'
 import { ColumnDef } from '@tanstack/react-table'
-import { FaEdit, FaEye } from 'react-icons/fa'
+import { FaEdit } from 'react-icons/fa'
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from '@components/ui'
 
-import { EditTimer } from '@components/StudentTimer/EditTimer'
 import { ResolveIssuesCompletedModal } from '@partials/rto-v2'
-import { CountCard } from '@partials/rto-v2/cards/CountCard'
 import { StudentCellInfo } from '@partials/rto/student/components'
-import { ChangeStudentStatusModal } from '@partials/sub-admin/students/modals'
 import { RtoApi } from '@queries'
-import { Student, StudentIssue } from '@types'
+import { StudentIssue } from '@types'
 import { ellipsisText } from '@utils'
 import {
     AlertTriangle,
@@ -50,14 +54,6 @@ export const ResolvedIssuesHistoryTab = () => {
     const count = RtoApi.Students.useRtoResolveIssuesStudentsCount()
     const onModalCancelClicked = () => setModal(null)
 
-    const onChangeStatus = (student: Student) => {
-        setModal(
-            <ChangeStudentStatusModal
-                student={student}
-                onCancel={onModalCancelClicked}
-            />
-        )
-    }
     const onClickCompleted = (reportedIssue: any) => {
         setModal(
             <ResolveIssuesCompletedModal
@@ -68,48 +64,44 @@ export const ResolvedIssuesHistoryTab = () => {
         )
     }
 
-    const onDateClick = (student: Student) => {
-        setModal(
-            <EditTimer
-                studentId={student?.user?.id}
-                date={student?.expiryDate}
-                onCancel={onModalCancelClicked}
-            />
-        )
-    }
-
-    const tableActionOptions: TableActionOption<Student>[] = [
-        {
-            text: 'View',
-            onClick: (student) =>
-                router.push(`/portals/rto/students/${student.id}?tab=overview`),
-            Icon: FaEye,
-        },
-        {
-            text: 'Change Status',
-            onClick: (student) => onChangeStatus(student),
-            Icon: FaEdit,
-        },
-        {
-            text: 'Change Expiry',
-            onClick: (student) => onDateClick(student),
-            Icon: FaEdit,
-        },
-        // {
-        //     text: 'Completed',
-        //     onClick: () => onClickCompleted(),
-        //     Icon: FaCheckCircle,
-        // },
-    ]
-
     const columns: ColumnDef<StudentIssue>[] = [
         {
             accessorKey: 'student.title',
-            cell: (info) => (
-                <span title={info.row?.original?.title}>
-                    {ellipsisText(info.row?.original?.title, 15)}
-                </span>
-            ),
+            cell: (info) => {
+                const title = info.row?.original?.title || ''
+                const isLarge = title.length > 30
+
+                return (
+                    <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-1.5 text-slate-700 bg-slate-50 px-2 py-0.5 rounded border border-slate-200 max-w-[150px]">
+                            <LuFileCheck className="w-3.5 h-3.5 shrink-0 text-emerald-600" />
+                            <span className="text-xs font-semibold leading-tight truncate">
+                                {isLarge ? `${title.substring(0, 30)}...` : title}
+                            </span>
+                        </div>
+                        {isLarge && (
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <button className="text-[10px] text-[#044866] hover:text-[#0D5468] font-medium underline cursor-pointer text-left w-fit transition-colors">
+                                        View All
+                                    </button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-80">
+                                    <div className="space-y-2">
+                                        <h4 className="font-medium leading-none text-emerald-600 flex items-center gap-2">
+                                            <LuFileCheck className="w-4 h-4" />
+                                            Resolved Issue
+                                        </h4>
+                                        <p className="text-sm text-slate-600 leading-relaxed">
+                                            {title}
+                                        </p>
+                                    </div>
+                                </PopoverContent>
+                            </Popover>
+                        )}
+                    </div>
+                )
+            },
             header: () => <span>Issue</span>,
         },
         {
@@ -129,30 +121,78 @@ export const ResolvedIssuesHistoryTab = () => {
         {
             accessorKey: 'workplaceRequest',
             header: () => <span>Course & Industry</span>,
-            cell: (info) => (
-                <div className="">
-                    <div className="flex items-center gap-2">
-                        <GraduationCap className="h-3 w-3 text-gray-500" />
-                        <p className="text-xs truncate">
-                            {`${
-                                info.row.original?.workplaceRequest?.courses![0]
-                                    ?.code ?? '————'
-                            } - ${
-                                info.row.original?.workplaceRequest?.courses![0]
-                                    ?.title ?? '————'
-                            }`}
-                        </p>
+            cell: (info) => {
+                const courses =
+                    info.row.original?.workplaceRequest?.courses || []
+                const primaryCourse = courses[0]
+                const courseText = primaryCourse
+                    ? `${primaryCourse.code ?? '————'} - ${primaryCourse.title ?? '————'}`
+                    : '————'
+                const isLarge = courseText.length > 25 || courses.length > 1
+
+                return (
+                    <div className="flex flex-col gap-1">
+                        {isLarge ? (
+                            <HoverCard openDelay={0}>
+                                <HoverCardTrigger asChild>
+                                    <div className="flex items-center gap-2 max-w-[150px] cursor-pointer">
+                                        <GraduationCap className="h-3 w-3 shrink-0 text-gray-500" />
+                                        <span className="text-xs font-semibold leading-tight truncate hover:text-[#0D5468] hover:underline underline-offset-2">
+                                            {courseText}
+                                        </span>
+                                    </div>
+                                </HoverCardTrigger>
+                                <HoverCardContent
+                                    className="w-80 border-none p-0 outline-none bg-transparent shadow-none"
+                                    sideOffset={5}
+                                    align="start"
+                                >
+                                    <div className="space-y-3 bg-white p-4 rounded-lg shadow-xl border border-gray-100">
+                                        <h4 className="font-medium leading-none text-[#044866] flex items-center gap-2 mb-2 border-b pb-2">
+                                            <GraduationCap className="w-4 h-4 text-[#F7A619]" />
+                                            Enrolled Courses
+                                        </h4>
+                                        <div className="space-y-2 max-h-[200px] overflow-y-auto pr-1">
+                                            {courses.map(
+                                                (course: any, idx: number) => (
+                                                    <div
+                                                        key={idx}
+                                                        className="bg-slate-50 p-2 rounded border border-slate-100"
+                                                    >
+                                                        <p className="text-xs font-medium text-[#044866]">
+                                                            {course.code ||
+                                                                'N/A'}
+                                                        </p>
+                                                        <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
+                                                            {course.title ||
+                                                                'Unknown Course'}
+                                                        </p>
+                                                    </div>
+                                                )
+                                            )}
+                                        </div>
+                                    </div>
+                                </HoverCardContent>
+                            </HoverCard>
+                        ) : (
+                            <div className="flex items-center gap-2 max-w-[150px]">
+                                <GraduationCap className="h-3 w-3 shrink-0 text-gray-500" />
+                                <span className="text-xs font-semibold leading-tight truncate">
+                                    {courseText}
+                                </span>
+                            </div>
+                        )}
+                        <div className="flex items-center gap-2 mt-1">
+                            <Building2 className="h-3 w-3 shrink-0 text-gray-500" />
+                            <p className="text-[10px] text-[#64748b] truncate max-w-[150px]">
+                                {info.row.original?.workplaceRequest
+                                    ?.industries?.[0]?.industry?.user?.name ??
+                                    '————'}
+                            </p>
+                        </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <Building2 className="h-3 w-3 text-gray-500" />
-                        <p className="text-xs text-[#64748b] truncate">
-                            {info.row.original?.workplaceRequest
-                                ?.industries?.[0]?.industry?.user?.name ??
-                                '————'}
-                        </p>
-                    </div>
-                </div>
-            ),
+                )
+            },
         },
         {
             accessorKey: 'requestedBy',

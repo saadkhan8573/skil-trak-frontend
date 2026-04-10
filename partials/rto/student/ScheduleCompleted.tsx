@@ -9,7 +9,7 @@ import {
 } from '@components'
 import { FaEdit } from 'react-icons/fa'
 
-import { useGetRtoStudentsQuery } from '@queries'
+import { RtoApi } from '@queries'
 import { Student, UserStatus } from '@types'
 import { WorkplaceCurrentStatus } from '@utils'
 import { useRouter } from 'next/router'
@@ -31,11 +31,11 @@ export const ScheduleCompleted = () => {
 
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
-    const { isLoading, data, isError } = useGetRtoStudentsQuery({
-        search: `currentStatus:${WorkplaceCurrentStatus.Completed}`,
-        skip: itemPerPage * page - itemPerPage,
-        limit: itemPerPage,
-    })
+    const { isLoading, data, isError } =
+        RtoApi.Students.useScheduleCompletedStudentsList({
+            skip: itemPerPage * page - itemPerPage,
+            limit: itemPerPage,
+        })
 
     const onModalCancelClicked = () => setModal(null)
 

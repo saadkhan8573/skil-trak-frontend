@@ -9,21 +9,20 @@ export const studentEndpoints = (
 ) => ({
     studentsCount: builder.query<
         {
-            approved: number
+            active: number
             pending: number
-            problematicStudents: number
-            reported: number
-            inCompleteSubmissions: number
+            inProgress: number
+            noWorkplace: number
+            placementStarted: number
+            scheduleCompleted: number
             completed: number
             blocked: number
-            rejected: number
-            archived: number
-            placementStarted: number
-            schedule: number
+            expired: number
+            rejected?: number
         },
         void
     >({
-        query: () => `${PREFIX}/students/count`,
+        query: () => `${PREFIX}/all-students/count`,
         providesTags: ['Rto-Students'],
     }),
     studentsImport: builder.mutation<any, any>({
@@ -87,6 +86,62 @@ export const studentEndpoints = (
         },
         providesTags: ['Rto-Students'],
     }),
+    getActiveStudentsList: builder.query<any, any>({
+        query: (params) => ({
+            url: `${PREFIX}/active-students/list`,
+            params,
+        }),
+        providesTags: ['Rto-Students'],
+    }),
+    getPendingStudentsList: builder.query<any, any>({
+        query: (params) => ({
+            url: `${PREFIX}/pending-students/list`,
+            params,
+        }),
+        providesTags: ['Rto-Students'],
+    }),
+    getInProgressStudentsList: builder.query<any, any>({
+        query: (params) => ({
+            url: `${PREFIX}/in-progress-students/list`,
+            params,
+        }),
+        providesTags: ['Rto-Students'],
+    }),
+    getNoWorkplaceStudentsList: builder.query<any, any>({
+        query: (params) => ({
+            url: `${PREFIX}/no-workplace-students/list`,
+            params,
+        }),
+        providesTags: ['Rto-Students'],
+    }),
+    getPlacementStartedStudentsList: builder.query<any, any>({
+        query: (params) => ({
+            url: `${PREFIX}/placement-started-students/list`,
+            params,
+        }),
+        providesTags: ['Rto-Students'],
+    }),
+    getScheduleCompletedStudentsList: builder.query<any, any>({
+        query: (params) => ({
+            url: `${PREFIX}/schedule-completed-students/list`,
+            params,
+        }),
+        providesTags: ['Rto-Students'],
+    }),
+    getExpiredStudentsList: builder.query<any, any>({
+        query: (params) => ({
+            url: `${PREFIX}/expired-students/list`,
+            params,
+        }),
+        providesTags: ['Rto-Students'],
+    }),
+    getBlockedStudentsList: builder.query<any, any>({
+        query: (params) => ({
+            url: `${PREFIX}/blocked-students/list`,
+            params,
+        }),
+        providesTags: ['Rto-Students'],
+    }),
     getRtoProblematicStudents: builder.query<any, any>({
         query: (params) => {
             return {
@@ -137,7 +192,7 @@ export const studentEndpoints = (
         PaginationValues
     >({
         query: (params) => ({
-            url: `${PREFIX}/student/completed/list`,
+            url: `${PREFIX}/completed-students/list`,
             params,
         }),
         providesTags: ['Students', 'SubAdminStudents'],

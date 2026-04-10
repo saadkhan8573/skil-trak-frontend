@@ -113,11 +113,25 @@ export const studentsEndpoints = (
         query: (studentId) => `students/${studentId}/rejected-industries/list`,
         providesTags: ['RTO'],
     }),
-    getStudentAppointmentDetail: builder.query<any, { userId?: number } | void>({
-        query: (params) => ({
-            url: `students/workplace-requests/past-appointment/get`,
-            params: params || {},
+    getStudentAppointmentDetail: builder.query<any, { userId?: number } | void>(
+        {
+            query: (params) => ({
+                url: `students/workplace-requests/past-appointment/get`,
+                params: params || {},
+            }),
+            providesTags: ['RTO'],
+        }
+    ),
+
+    addExpectedDelay: builder.mutation<
+        any,
+        { id: number; expectedDelayReason: string | null }
+    >({
+        query: ({ id, expectedDelayReason }) => ({
+            url: `students/${id}/expected-delay`,
+            method: 'PATCH',
+            body: { expectedDelayReason },
         }),
-        providesTags: ['RTO'],
+        invalidatesTags: ['RTO'],
     }),
 })

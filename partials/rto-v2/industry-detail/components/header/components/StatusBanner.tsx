@@ -1,4 +1,4 @@
-import { Ban, XCircle, Clock, Sparkles } from 'lucide-react'
+import { Ban, XCircle, Clock, Sparkles, Check } from 'lucide-react'
 import { IndustryStatus } from '../types'
 import { Typography, Badge, Permissions } from '@components'
 import { useAppSelector } from '@redux/hooks'
@@ -16,6 +16,7 @@ export function StatusBanner({
     profileCompletion,
     isProfileComplete,
 }: StatusBannerProps) {
+    console.log({ isProfileComplete })
     const [showPlacementReadyModal, setShowPlacementReadyModal] =
         useState(false)
     const industryDetail = useAppSelector(
@@ -52,19 +53,10 @@ export function StatusBanner({
                             ) : isSnoozed ? (
                                 <Clock className="w-3 h-3 text-white" />
                             ) : isPlacementReady ? (
-                                <svg
+                                <Check
                                     className="w-3 h-3 text-white"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
                                     strokeWidth={3}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M5 13l4 4L19 7"
-                                    />
-                                </svg>
+                                />
                             ) : (
                                 <Sparkles className="w-3 h-3 text-white" />
                             )}

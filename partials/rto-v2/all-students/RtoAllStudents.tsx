@@ -17,15 +17,16 @@ import {
 } from '@components'
 import {
     ApprovedStudent,
-    ArchivedStudent,
-    BlockedStudent,
     CompletedStudents,
     FilteredStudents,
-    IncompleteSubmissionStudent,
     PendingStudent,
     PlacementStarted,
-    RejectedStudent,
     ScheduleCompleted,
+    InProgressStudent,
+    RtoNoWorkplaceStudents,
+    ExpiredStudent,
+    BlockedStudent,
+    RejectedStudent,
 } from '@partials/rto/student'
 import { RtoApi, useGetRtoStudentsQuery } from '@queries'
 import { checkFilteredDataLength } from '@utils'
@@ -48,6 +49,118 @@ const filterKeys = [
     'isReported',
     'currentStatus',
 ]
+
+const RegistrationRequestsComponent = (props: any) => {
+    const { count } = props
+    const tabs: TabConfig[] = [
+        {
+            value: 'pending',
+            label: 'Pending Accounts',
+            icon: Users,
+            count: count?.data?.pending,
+            component: PendingStudent,
+        },
+        {
+            value: 'rejected',
+            label: 'Accounts Rejected',
+            icon: Users,
+            count: count?.data?.rejected,
+            component: RejectedStudent,
+        },
+    ]
+    return (
+        <ConfigTabs
+            tabs={tabs}
+            props={props}
+            defaultValue="pending"
+            tabsClasses="bg-primary/20 border-none shadow-none mt-2"
+        />
+    )
+}
+
+const ActiveStudentsComponent = (props: any) => {
+    const { count } = props
+    const tabs: TabConfig[] = [
+        {
+            value: 'active',
+            label: 'All Active Students',
+            icon: Users,
+            count: count?.data?.active,
+            component: ApprovedStudent,
+        },
+        {
+            value: 'no-workplace',
+            label: 'No Workplace Request',
+            icon: Users,
+            count: count?.data?.noWorkplace,
+            component: RtoNoWorkplaceStudents,
+        },
+        {
+            value: 'in-progress',
+            label: 'In Progress Students',
+            icon: Users,
+            count: count?.data?.inProgress,
+            component: InProgressStudent,
+        },
+        {
+            value: 'placement-started',
+            label: 'Placement Started',
+            icon: Users,
+            count: count?.data?.placementStarted,
+            component: PlacementStarted,
+        },
+        {
+            value: 'schedule-completed',
+            label: 'Schedule Completed',
+            icon: Users,
+            count: count?.data?.scheduleCompleted,
+            component: ScheduleCompleted,
+        },
+    ]
+    return (
+        <ConfigTabs
+            tabs={tabs}
+            props={props}
+            defaultValue="active"
+            // tabsClasses="bg-slate-50 border-none shadow-none mt-2"
+        />
+    )
+}
+
+const ClosedStudentsComponent = (props: any) => {
+    const { count } = props
+    const tabs: TabConfig[] = [
+        {
+            value: 'completed',
+            label: 'Completed Students',
+            icon: Users,
+            count: count?.data?.completed,
+            component: CompletedStudents,
+        },
+        {
+            value: 'expired',
+            label: 'Expired Students',
+            icon: Users,
+            count: count?.data?.expired,
+            component: ExpiredStudent,
+        },
+        {
+            value: 'blocked',
+            label: 'Blocked Students',
+            icon: Users,
+            count: count?.data?.blocked,
+            component: BlockedStudent,
+        },
+    ]
+    return (
+        <ConfigTabs
+            tabs={tabs}
+            props={props}
+            defaultValue="completed"
+            tabsClasses="bg-red-100 border-none shadow-none mt-2"
+        />
+    )
+}
 
 export const RtoAllStudents = () => {
     const router = useRouter()
@@ -93,69 +206,30 @@ export const RtoAllStudents = () => {
         }
     )
 
-    const tabs: TabConfig[] = [
+    const mainTabs: TabConfig[] = [
         {
-            value: 'pending',
-            label: 'Pending',
+            value: 'registration-requests',
+            label: 'Registration Requests',
             icon: Users,
             count: count?.data?.pending,
-            component: PendingStudent,
+            component: RegistrationRequestsComponent,
         },
         {
-            value: 'active',
-            label: 'Active',
+            value: 'active-students',
+            label: 'Active Students',
             icon: Users,
-            count: count?.data?.approved,
-            component: ApprovedStudent,
+            count: count?.data?.active,
+            component: ActiveStudentsComponent,
         },
         {
-            value: 'placement-started',
-            label: 'Placement Started',
+            value: 'closed-students',
+            label: 'Closed Students',
             icon: Users,
-            count: count?.data?.placementStarted,
-            component: PlacementStarted,
-        },
-        {
-            value: 'schedule-completed',
-            label: 'Schedule Completed',
-            icon: Users,
-            count: count?.data?.schedule,
-            component: ScheduleCompleted,
-        },
-        {
-            value: 'completed',
-            label: 'Placement Completed',
-            icon: Users,
-            count: count?.data?.completed,
-            component: CompletedStudents,
-        },
-        {
-            value: 'incomplete-submission',
-            label: 'Incomplete Submission',
-            icon: Users,
-            count: count?.data?.inCompleteSubmissions,
-            component: IncompleteSubmissionStudent,
-        },
-        {
-            value: 'rejected',
-            label: 'Rejected',
-            icon: Users,
-            count: count?.data?.rejected,
-            component: RejectedStudent,
-        },
-        {
-            value: 'blocked',
-            label: 'Blocked',
-            icon: Users,
-            count: count?.data?.blocked,
-            component: BlockedStudent,
-        },
-        {
-            value: 'archived',
-            label: 'Archived',
-            icon: Users,
-            count: count?.data?.archived,
-            component: ArchivedStudent,
+            count:
+                (count?.data?.completed || 0) +
+                (count?.data?.expired || 0) +
+                (count?.data?.blocked || 0),
+            component: ClosedStudentsComponent,
         },
     ]
 
@@ -183,7 +257,7 @@ export const RtoAllStudents = () => {
                     icon={Users}
                     title="Students Overview"
                     description="Manage all your students and placements in one place"
-                    urgentCount={count?.data?.approved || 0}
+                    urgentCount={count?.data?.active || 0}
                     UrgentIcon={Users}
                     urgentLabel="Total Students"
                     warningMessage="<strong>Quick Tip:</strong> Use filters to find specific students, or click on any status tab to view students by their current status. Select multiple students for bulk actions."
@@ -258,25 +332,11 @@ export const RtoAllStudents = () => {
                         ) : null}
 
                         {!filteredDataLength && (
-                            <>
-                                {/* <TabNavigation tabs={tabs}>
-                                        {({ header, element }: any) => {
-                                            return (
-                                                <div>
-                                                    <div>{header}</div>
-                                                    <div className="p-4">
-                                                        {element}
-                                                    </div>
-                                                </div>
-                                            )
-                                        }}
-                                    </TabNavigation> */}
-                                <ConfigTabs
-                                    defaultValue={tabs[1].value}
-                                    tabs={tabs}
-                                    props={{ filter }}
-                                />
-                            </>
+                            <ConfigTabs
+                                defaultValue={mainTabs[1].value}
+                                tabs={mainTabs}
+                                props={{ filter, count }}
+                            />
                         )}
                     </div>
                 </Card>

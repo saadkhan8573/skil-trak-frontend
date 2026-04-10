@@ -173,6 +173,12 @@ export interface RemovePartnerRequest extends BaseResponse {
     snoozedDate: Date
 }
 
+export interface SnoozeComment extends BaseResponse {
+    id: number
+    isActive: boolean
+    comment: string
+}
+
 export interface Student extends BaseResponse {
     id: number
     studentId: string
@@ -183,6 +189,7 @@ export interface Student extends BaseResponse {
     hasIssue: boolean
     isReported: boolean
     statusHistory: any
+    expectedDelay: string
     phone: string
     snoozedBy: User
     dob: Date
@@ -223,6 +230,7 @@ export interface Student extends BaseResponse {
     studentUpdateRequests: PartnerRemovalRequests[]
     nonContactableAt: Date
     hasPaid: boolean
+    snoozeComments: SnoozeComment[]
 }
 
 export interface StudentIssue extends BaseResponse {

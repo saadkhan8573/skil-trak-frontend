@@ -61,7 +61,9 @@ export const ExpertIndustryConsultation = ({
         mode: 'all',
         defaultValues: {
             description: '',
-            premiumFeature: service?.premiumFeature,
+            ...(service?.premiumFeature && {
+                premiumFeature: service?.premiumFeature,
+            }),
         },
     })
 

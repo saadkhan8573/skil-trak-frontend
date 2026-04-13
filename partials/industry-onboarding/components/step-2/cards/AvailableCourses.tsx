@@ -1,7 +1,15 @@
-import { AlertCircle, ArrowUpCircle, BookOpen, CheckCircle } from 'lucide-react'
-import { Badge } from '@components'
+import {
+    AlertCircle,
+    ArrowUpCircle,
+    BookOpen,
+    CheckCircle,
+    X,
+} from 'lucide-react'
+import { Badge, Button, GlobalModal } from '@components'
 import { Label } from '@components/ui/label'
 import { SupervisorQualification } from '@partials/common'
+import { ReactElement, useEffect, useState } from 'react'
+import { NoAvailableCourseModal } from '../modal/NoAvailableCourseModal'
 
 interface AvailableCoursesProps {
     qualificationLevel: string
@@ -12,6 +20,7 @@ interface AvailableCoursesProps {
     sectorId: string
     selectedTaskIds: Record<string, Record<number, number[]>>
     onToggleTask: (courseId: number, taskId: number) => void
+    courseLevel?: any
 }
 
 export function AvailableCourses({
@@ -23,8 +32,11 @@ export function AvailableCourses({
     sectorId,
     selectedTaskIds,
     onToggleTask,
+    courseLevel,
 }: AvailableCoursesProps) {
     if (!qualificationLevel) return null
+
+    const [modal, setModal] = useState<ReactElement | null>(null)
 
     const courses = coursesByLevel?.data ?? []
 
@@ -34,9 +46,34 @@ export function AvailableCourses({
     const currentLabel =
         SupervisorQualification[currentLevelIndex]?.label ?? qualificationLevel
     const nextLevel = SupervisorQualification[currentLevelIndex + 1]
+    const onClose = () => {
+        setModal(null)
+    }
+    useEffect(() => {
+        const hasNoCourses =
+            !coursesLoading &&
+            !coursesError &&
+            coursesByLevel &&
+            courses.length === 0
 
+        const shouldShowModal = !!courseLevel && hasNoCourses
+
+        if (shouldShowModal) {
+            setModal(
+                <NoAvailableCourseModal
+                    onClose={onClose}
+                    nextLevel={nextLevel}
+                    currentLabel={currentLabel}
+                />
+            )
+        } else {
+            // 🔥 IMPORTANT: clear modal when condition no longer valid
+            setModal(null)
+        }
+    }, [courseLevel, coursesLoading, coursesError, coursesByLevel, courses])
     return (
         <>
+            {modal && modal}
             {coursesLoading && (
                 <div className="flex items-center gap-2 text-xs text-muted-foreground py-3">
                     <div className="w-3 h-3 border-2 border-primary border-t-transparent rounded-full animate-spin" />
@@ -93,8 +130,8 @@ export function AvailableCourses({
                                         <>
                                             {' '}
                                             This is the highest qualification
-                                            level — please check that this sector
-                                            has courses configured.
+                                            level — please check that this
+                                            sector has courses configured.
                                         </>
                                     )}
                                 </p>

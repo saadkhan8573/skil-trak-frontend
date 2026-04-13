@@ -1,14 +1,19 @@
 import { InitialAvatar, Tooltip, TooltipPosition } from '@components'
+import {
+    Tooltip as ShadcnTooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@components/ui/tooltip'
 import { Student } from '@types'
-import { ellipsisText, trimText } from '@utils'
+import { ellipsisText } from '@utils'
 import moment from 'moment'
 import Link from 'next/link'
 import { BiMessageRoundedDots } from 'react-icons/bi'
 import { FiPhoneOff } from 'react-icons/fi'
 import { ImPhone, ImPhoneHangUp } from 'react-icons/im'
 import { LuFlagTriangleRight } from 'react-icons/lu'
-import { MdEmail, MdPhone, MdPhoneIphone, MdSnooze } from 'react-icons/md'
-import { RiErrorWarningFill } from 'react-icons/ri'
+import { MdEmail, MdPhone, MdSnooze } from 'react-icons/md'
+import { Timer } from 'lucide-react'
 
 export const StudentCellInfo = ({
     student,
@@ -116,6 +121,18 @@ export const StudentCellInfo = ({
                                     : ''}
                             </Tooltip>
                         </div>
+                    ) : null}
+                    {student?.expectedDelay ? (
+                        <ShadcnTooltip>
+                            <TooltipTrigger asChild>
+                                <div className="w-5 h-5 flex items-center justify-center rounded relative group cursor-help">
+                                    <Timer size={14} className="text-violet-500" />
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Expected Delay: {student.expectedDelay}</p>
+                            </TooltipContent>
+                        </ShadcnTooltip>
                     ) : null}
                 </div>
                 <div className="font-medium text-xs text-gray-500">

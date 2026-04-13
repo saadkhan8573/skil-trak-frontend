@@ -1,4 +1,9 @@
 import { InitialAvatar, Tooltip, TooltipPosition } from '@components'
+import {
+    Tooltip as ShadcnTooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@components/ui/tooltip'
 import { useScrollIntoView, useSubadminProfile } from '@hooks'
 import { CopyData } from '@partials/common/FindWorkplaces/components'
 import { Student, StudentStatusEnum } from '@types'
@@ -12,6 +17,7 @@ import { FiPhoneOff } from 'react-icons/fi'
 import { ImPhone, ImPhoneHangUp } from 'react-icons/im'
 import { LuFlagTriangleRight } from 'react-icons/lu'
 import { MdSnooze, MdTimerOff } from 'react-icons/md'
+import { Timer } from 'lucide-react'
 
 export const StudentCellInfo = ({
     student,
@@ -165,6 +171,18 @@ export const StudentCellInfo = ({
                                         : ''}
                                 </Tooltip>
                             </div>
+                        ) : null}
+                        {student?.expectedDelay ? (
+                            <ShadcnTooltip>
+                                <TooltipTrigger asChild>
+                                    <div className="w-4 h-4 flex items-center justify-center rounded relative group cursor-help">
+                                        <Timer size={17} className="text-violet-500" />
+                                    </div>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Expected Delay: {student.expectedDelay}</p>
+                                </TooltipContent>
+                            </ShadcnTooltip>
                         ) : null}
                         {student?.studentStatus === StudentStatusEnum.EXPIRED &&
                             student?.expiryDate &&

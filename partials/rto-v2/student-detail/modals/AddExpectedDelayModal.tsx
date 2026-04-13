@@ -38,11 +38,12 @@ export const AddExpectedDelayModal = ({
         mode: 'all',
     })
 
-    const onSubmit = (values: any) => {
-        addExpectedDelay({
-            id: student?.id,
-            expectedDelayReason: values.expectedDelayReason,
-        }).then((res: any) => {
+    const onSubmit = async (values: any) => {
+        try {
+            const res = await addExpectedDelay({
+                id: student?.id,
+                expectedDelayReason: values.expectedDelayReason,
+            })
             if (res?.data) {
                 notification.success({
                     title: 'Delay Added',
@@ -50,14 +51,19 @@ export const AddExpectedDelayModal = ({
                 })
                 onClose()
             }
-        })
+        } catch (error) {
+            notification.error({
+                title: 'Error',
+                description: 'Failed to add expected delay. Please try again.',
+            })
+        }
     }
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[500px] bg-white border-none shadow-2xl p-0 overflow-hidden">
                 <div className="p-6 pb-4">
-                    <DialogHeader className="mb-4">
+                    <DialogHeader className="mb-4 gap-0!">
                         <DialogTitle className="text-xl font-bold text-gray-900">
                             Add Expected Delay
                         </DialogTitle>
@@ -83,7 +89,7 @@ export const AddExpectedDelayModal = ({
                     </FormProvider>
                 </div>
 
-                <div className="flex justify-end gap-3 p-4 border-t border-gray-100 bg-gray-50/50">
+                <div className="flex justify-end gap-3 px-4 border-t border-gray-100 bg-gray-50/50">
                     <Button
                         text="Cancel"
                         variant="secondary"

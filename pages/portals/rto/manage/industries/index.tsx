@@ -1,5 +1,7 @@
+import { withPermission } from '@components'
 import { RtoLayoutV2 } from '@layouts'
 import { RtoUpdatedIndustries } from '@partials'
+import { PermissionType } from '@types'
 import { Building2 } from 'lucide-react'
 import { ReactElement } from 'react'
 
@@ -21,4 +23,6 @@ IndustriesPage.getLayout = (page: ReactElement) => {
     )
 }
 
-export default IndustriesPage
+export default withPermission(IndustriesPage, {
+    permissions: [PermissionType.INDUSTRIES],
+})

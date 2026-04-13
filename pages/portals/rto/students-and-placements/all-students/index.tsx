@@ -1,5 +1,7 @@
+import { withPermission } from '@components'
 import { RtoLayoutV2 } from '@layouts'
 import { RtoAllStudents } from '@partials'
+import { PermissionType } from '@types'
 import { Users } from 'lucide-react'
 import { ReactElement } from 'react'
 
@@ -21,4 +23,6 @@ AllStudentsPage.getLayout = (page: ReactElement) => {
     )
 }
 
-export default AllStudentsPage
+export default withPermission(AllStudentsPage, {
+    permissions: [PermissionType.ALL_STUDENTS],
+})

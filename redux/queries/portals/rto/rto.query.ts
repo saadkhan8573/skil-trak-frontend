@@ -140,6 +140,7 @@ export const {
     useGetScheduleCompletedStudentsListQuery,
     useGetExpiredStudentsListQuery,
     useGetBlockedStudentsListQuery,
+    useGetQualificationIssuedStudentsListQuery,
     useGetRtoStudentsQuery,
     useGetRtoResolveIssuesStudentsQuery,
     useRtoResolveIssueMutation,
@@ -209,6 +210,7 @@ export const RtoApi = {
         useScheduleCompletedStudentsList: useGetScheduleCompletedStudentsListQuery,
         useExpiredStudentsList: useGetExpiredStudentsListQuery,
         useBlockedStudentsList: useGetBlockedStudentsListQuery,
+        useQualificationIssuedStudentsList: useGetQualificationIssuedStudentsListQuery,
         useCount: useStudentsCountQuery,
         useRtoResolveIssuesStudents: useGetRtoResolveIssuesStudentsQuery,
         useRtoResolveIssuesStudentsCount:

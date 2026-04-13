@@ -1,8 +1,14 @@
-import { LoadingAnimation, NoData, TechnicalError } from '@components'
+import {
+    LoadingAnimation,
+    NoData,
+    TechnicalError,
+    withPermission,
+} from '@components'
 import { RtoLayoutV2 } from '@layouts'
 import { ActionRequiredHeader } from '@partials'
 import { CourseHeader } from '@partials/rto-v2/courses'
 import { RtoApi } from '@queries'
+import { PermissionType } from '@types'
 import { GraduationCap, Info } from 'lucide-react'
 import { ReactElement } from 'react'
 
@@ -47,4 +53,6 @@ Courses.getLayout = (page: ReactElement) => {
     )
 }
 
-export default Courses
+export default withPermission(Courses, {
+    permissions: [PermissionType.COURSES],
+})

@@ -1,11 +1,13 @@
-import { EmptyData, LoadingAnimation, TechnicalError } from '@components'
+import { EmptyData, TechnicalError } from '@components'
 import { useAlert, useContextBar, useNavbar } from '@hooks'
 import { AdminLayout } from '@layouts'
-import { RtoProfileDetail } from '@partials'
-import { ProfileViewContextBar } from '@partials/admin/rto/UpdatedRtoProfileDetail/ProfileViewContextBar'
+import { RtoProfileDetail, RtoProfileSkeleton } from '@partials'
+import {
+    ProfileViewContextBar,
+    ProfileViewContextBarSkeleton,
+} from '@partials/admin/rto/UpdatedRtoProfileDetail/ProfileViewContextBar'
 import { AdminApi } from '@queries'
 import { UserStatus } from '@types'
-import { getUserCredentials } from '@utils'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
 
@@ -91,7 +93,10 @@ const RtoProfile = () => {
     }, [contextBar])
 
     useEffect(() => {
-        if (rto.isSuccess) {
+        if (rto?.isLoading) {
+            contextBar.setContent(<ProfileViewContextBarSkeleton />)
+            contextBar.show(false)
+        } else if (rto?.isSuccess) {
             contextBar.setContent(<ProfileViewContextBar rto={rto?.data} />)
             contextBar.show(false)
         }
@@ -100,12 +105,12 @@ const RtoProfile = () => {
             contextBar.setContent(null)
             contextBar.hide()
         }
-    }, [rto.data, mousePosition])
+    }, [rto?.data, mousePosition, rto?.isLoading, rto?.isSuccess])
     return (
         <div>
             {rto.isError && <TechnicalError />}
             {rto?.isLoading ? (
-                <LoadingAnimation height={'h-[70vh]'} />
+                <RtoProfileSkeleton />
             ) : rto.data ? (
                 <RtoProfileDetail rto={rto?.data} />
             ) : (

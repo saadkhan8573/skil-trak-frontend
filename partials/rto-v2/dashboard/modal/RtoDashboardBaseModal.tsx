@@ -31,7 +31,7 @@ export const RtoDashboardBaseModal = ({
     const Icon = icon || GraduationCap
 
     return (
-        <GlobalModal className="!overflow-hidden !max-w-3xl">
+        <GlobalModal className="overflow-hidden! max-w-3xl!">
             <MdCancel
                 onClick={() => {
                     if (onCancel) {

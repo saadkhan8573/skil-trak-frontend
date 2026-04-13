@@ -27,6 +27,7 @@ import {
     ExpiredStudent,
     BlockedStudent,
     RejectedStudent,
+    QualificationIssuedStudents,
 } from '@partials/rto/student'
 import { RtoApi, useGetRtoStudentsQuery } from '@queries'
 import { checkFilteredDataLength } from '@utils'
@@ -138,6 +139,13 @@ const ClosedStudentsComponent = (props: any) => {
             component: CompletedStudents,
         },
         {
+            value: 'qualification-issued',
+            label: 'Qualification Issued',
+            icon: Users,
+            count: count?.data?.qualificationissued,
+            component: QualificationIssuedStudents,
+        },
+        {
             value: 'expired',
             label: 'Expired Students',
             icon: Users,
@@ -228,7 +236,8 @@ export const RtoAllStudents = () => {
             count:
                 (count?.data?.completed || 0) +
                 (count?.data?.expired || 0) +
-                (count?.data?.blocked || 0),
+                (count?.data?.blocked || 0) +
+                (count?.data?.qualificationissued || 0),
             component: ClosedStudentsComponent,
         },
     ]

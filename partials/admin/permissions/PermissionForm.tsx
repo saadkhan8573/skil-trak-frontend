@@ -130,7 +130,7 @@ export const PermissionForm = ({
                     />
 
                     <TextArea
-                        label={'Description'}
+                        label={'Description (optional)'}
                         name={'description'}
                         rows={5}
                         placeholder={'Enter Description...'}

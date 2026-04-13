@@ -1,6 +1,7 @@
+import { withPermission } from '@components'
 import { RtoLayoutV2 } from '@layouts'
 import { RtoTeam } from '@partials'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 import { User } from 'lucide-react'
 import { ReactElement } from 'react'
 
@@ -22,4 +23,6 @@ RtoTeamPage.getLayout = (page: ReactElement) => {
     )
 }
 
-export default RtoTeamPage
+export default withPermission(RtoTeamPage, {
+    permissions: [PermissionType.TEAM_MANAGEMENT],
+})

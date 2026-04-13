@@ -8,7 +8,7 @@ import {
     UnSnoozeStudentModal,
 } from '@partials/common/StudentProfileDetail/modals'
 import { IndustryRequestsActions } from '@partials/sub-admin/ManagerApprovalList/enum'
-import { Student } from '@types'
+import { PermissionType, Student } from '@types'
 import { getUserCredentials } from '@utils'
 import { useRouter } from 'next/router'
 import { ReactNode, useState } from 'react'
@@ -19,7 +19,12 @@ import { MdInfo, MdSnooze, MdAccessTime } from 'react-icons/md'
 import { RiEditFill, RiFootprintFill } from 'react-icons/ri'
 import { TbMessage2Up } from 'react-icons/tb'
 import { StudentMessageModal } from '../modals/StudentMessageModal'
-import { StudentInfoMessageModal, StudentStatusModal, AddExpectedDelayModal, RemoveExpectedDelayModal } from '../modals'
+import {
+    StudentInfoMessageModal,
+    StudentStatusModal,
+    AddExpectedDelayModal,
+    RemoveExpectedDelayModal,
+} from '../modals'
 
 export const ProfileLinks = ({ profile }: { profile: Student }) => {
     const router = useRouter()
@@ -110,11 +115,13 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
                     text: 'Edit Password',
                     Icon: IoMdEyeOff,
                     onClick: () => onUpdatePassword({ user: profile?.user }),
+                    permissions: [PermissionType.EDIT_PASSWORD],
                 },
                 {
                     text: 'View Password',
                     Icon: IoMdEyeOff,
                     onClick: () => onViewPassword(profile),
+                    permissions: [PermissionType.VIEW_PASSWORD],
                 }
             )
         }
@@ -124,6 +131,7 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
             text: 'Send Password',
             Icon: CiUnlock,
             onClick: () => onMailPasswordToStudent(profile),
+            permissions: [PermissionType.SEND_PASSWORD],
         })
 
         // Edit Profile action (conditional on subadmin status)
@@ -142,6 +150,7 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
                                 : '#'
                     router.push(editPath)
                 },
+                permissions: [PermissionType.ALLOW_UPDATE_PROFILE],
             })
         }
 
@@ -162,6 +171,7 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
                 Icon: MdSnooze,
                 onClick: () =>
                     profile?.isSnoozed ? UnSnoozeModal() : onSnooze(),
+                permissions: [PermissionType.SNOOZE_STUDENT],
             },
             {
                 text: 'Update Status',
@@ -196,6 +206,7 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
                 text: 'View Visitors',
                 Icon: RiFootprintFill,
                 onClick: () => onViewProfileVisitorsClicked(),
+                permissions: [PermissionType.VIEW_VISITORS],
             })
         }
 

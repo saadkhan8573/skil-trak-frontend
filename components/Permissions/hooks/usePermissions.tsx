@@ -2,13 +2,9 @@ import { useUserPermissions } from '@hooks/useUserPermissions'
 import { IAssignedPermission, IPermission, PermissionType } from '@types'
 import { getUserCredentials } from '@utils'
 
-export const usePermissions = (
-    permission?: PermissionType | PermissionType[]
-): boolean => {
+export const usePermissionCheck = () => {
     const { allPermissions, myPermissions } = useUserPermissions()
     const role = getUserCredentials()?.role
-
-    if (!permission) return false
 
     const checkSinglePermission = (permCode: PermissionType): boolean => {
         // allPermissions.data is PaginatedResponse<IPermission>, so we need .data.data
@@ -41,10 +37,21 @@ export const usePermissions = (
         return !!assignedPermission?.isActive
     }
 
-    if (Array.isArray(permission)) {
-        // If array, return true if ANY of the permissions satisfy the condition (OR logic)
-        return permission.some((p) => checkSinglePermission(p))
+    const checkPermission = (permission?: PermissionType | PermissionType[]): boolean => {
+        if (!permission) return false
+        if (Array.isArray(permission)) {
+            // If array, return true if ANY of the permissions satisfy the condition (OR logic)
+            return permission.some((p) => checkSinglePermission(p))
+        }
+        return checkSinglePermission(permission)
     }
 
-    return checkSinglePermission(permission)
+    return { checkPermission, checkSinglePermission }
+}
+
+export const usePermissions = (
+    permission?: PermissionType | PermissionType[]
+): boolean => {
+    const { checkPermission } = usePermissionCheck()
+    return checkPermission(permission)
 }

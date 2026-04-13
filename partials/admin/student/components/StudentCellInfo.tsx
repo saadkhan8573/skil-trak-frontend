@@ -1,16 +1,15 @@
-import {
-    AuthorizedUserComponent,
-    HideRestrictedData,
-    InitialAvatar,
-    Tooltip,
-    TooltipPosition,
-} from '@components'
+import { InitialAvatar, Tooltip, TooltipPosition } from '@components'
 import { ErrorBoundary } from '@components/ErrorBoundary/ErrorBoundary'
-import { UserRoles } from '@constants'
-import { useScrollIntoView, useSubadminProfile } from '@hooks'
+import {
+    Tooltip as ShadcnTooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@components/ui/tooltip'
+import { useScrollIntoView } from '@hooks'
 import { CopyData } from '@partials/common/FindWorkplaces/components'
 import { Student, StudentStatusEnum } from '@types'
-import { isBrowser, maskText, setLink } from '@utils'
+import { isBrowser, setLink } from '@utils'
+import { Timer } from 'lucide-react'
 import moment from 'moment'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -19,7 +18,7 @@ import { BsFillSendArrowUpFill } from 'react-icons/bs'
 import { FiPhoneOff } from 'react-icons/fi'
 import { ImPhone, ImPhoneHangUp } from 'react-icons/im'
 import { LuFlagTriangleRight, LuPhoneOutgoing } from 'react-icons/lu'
-import { MdEmail, MdPhone, MdSnooze, MdTimerOff } from 'react-icons/md'
+import { MdSnooze, MdTimerOff } from 'react-icons/md'
 
 export const StudentCellInfo = ({
     call,
@@ -86,8 +85,8 @@ export const StudentCellInfo = ({
                     sessionStorage.setItem('scrollId', student?.studentId)
                 }
             }}
-            className="flex items-center gap-x-2 cursor-pointer relative z-10">
-
+            className="flex items-center gap-x-2 cursor-pointer relative z-10"
+        >
             <div className="" id={student?.studentId}>
                 <ErrorBoundary>
                     {student?.user?.name && (
@@ -123,9 +122,7 @@ export const StudentCellInfo = ({
                             <div className="flex items-center">
                                 <div className="group relative ">
                                     <LuFlagTriangleRight className="text-red-600 text-xl" />
-                                    <Tooltip
-                                        position={TooltipPosition.left}
-                                    >
+                                    <Tooltip position={TooltipPosition.left}>
                                         Flagged Issue
                                     </Tooltip>
                                 </div>
@@ -144,12 +141,12 @@ export const StudentCellInfo = ({
                             </div>
                         )}
                         {router.pathname !== '/portals/admin/talent-pool' &&
-                            showHignPriority
+                        showHignPriority
                             ? student?.isHighPriority && (
-                                <div className="rounded-md whitespace-nowrap px-1 py-0.5 border border-red-400 text-red-400 text-xs font-medium">
-                                    High Priority
-                                </div>
-                            )
+                                  <div className="rounded-md whitespace-nowrap px-1 py-0.5 border border-red-400 text-red-400 text-xs font-medium">
+                                      High Priority
+                                  </div>
+                              )
                             : null}
                     </div>
                     {call &&
@@ -189,17 +186,22 @@ export const StudentCellInfo = ({
                                 : student?.familyName || ''}
                         </p>
                         <CopyData
-                            text={`${student?.user?.name} ${student?.familyName || ''
-                                }`}
+                            text={`${student?.user?.name} ${
+                                student?.familyName || ''
+                            }`}
                             type={'Student Name'}
                         />
                     </div>
 
-                    {student?.aiVoiceCalls && student?.aiVoiceCalls?.length > 0 ? (
+                    {student?.aiVoiceCalls &&
+                    student?.aiVoiceCalls?.length > 0 ? (
                         <div className="w-5 h-5 flex items-center justify-center rounded relative group">
                             <LuPhoneOutgoing className="text-info text-lg" />
                             <Tooltip>
-                                Scheduled: {moment(student?.aiVoiceCalls[0]?.scheduledAt).format('DD/MM/YYYY')}
+                                Scheduled:{' '}
+                                {moment(
+                                    student?.aiVoiceCalls[0]?.scheduledAt
+                                ).format('DD/MM/YYYY')}
                             </Tooltip>
                         </div>
                     ) : null}
@@ -220,11 +222,32 @@ export const StudentCellInfo = ({
                             </Tooltip>
                         </div>
                     ) : null}
+                    {student?.expectedDelay ? (
+                        <ShadcnTooltip>
+                            <TooltipTrigger asChild>
+                                <div className="w-5 h-5 flex items-center justify-center rounded relative group cursor-help">
+                                    <Timer
+                                        size={23}
+                                        className="text-violet-500"
+                                    />
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Expected Delay: {student.expectedDelay}</p>
+                            </TooltipContent>
+                        </ShadcnTooltip>
+                    ) : null}
                     {student?.studentStatus === StudentStatusEnum.EXPIRED &&
                         student?.expiryDate &&
-                        moment(student.expiryDate).isBefore(moment(), 'day') && (
+                        moment(student.expiryDate).isBefore(
+                            moment(),
+                            'day'
+                        ) && (
                             <div className="w-5 h-5 flex items-center justify-center rounded relative group">
-                                <MdTimerOff size={20} className="text-red-500" />
+                                <MdTimerOff
+                                    size={20}
+                                    className="text-red-500"
+                                />
                                 <Tooltip>Student Expired</Tooltip>
                             </div>
                         )}
@@ -259,7 +282,6 @@ export const StudentCellInfo = ({
                     </p>
                 </div> */}
             </div>
-
         </Link>
-    );
+    )
 }

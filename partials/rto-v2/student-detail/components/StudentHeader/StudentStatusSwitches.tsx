@@ -132,7 +132,7 @@ export const StudentStatusSwitches = ({ student }: { student: Student }) => {
                 {request && (
                     <div className="relative group/tooltip cursor-help mr-1">
                         <HelpCircle className="w-3.5 h-3.5 text-[#044866] opacity-70" />
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/tooltip:block w-48 p-2.5 bg-slate-900/95 backdrop-blur-sm text-white text-[10px] rounded-xl shadow-2xl z-[100] border border-white/10">
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/tooltip:block w-48 p-2.5 bg-slate-900/95 backdrop-blur-sm text-white text-[10px] rounded-xl shadow-2xl z-100 border border-white/10">
                             {tooltipText}
                         </div>
                     </div>

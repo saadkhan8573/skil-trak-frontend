@@ -21,7 +21,10 @@ export function SidebarSkeleton() {
                         <Skeleton className="h-3 w-20 ml-1" />
                         <div className="space-y-2">
                             {[1, 2, 3].map((item) => (
-                                <div key={item} className="flex items-center gap-3 p-2">
+                                <div
+                                    key={item}
+                                    className="flex items-center gap-3 p-2"
+                                >
                                     <Skeleton className="h-8 w-8 rounded-xl" />
                                     <Skeleton className="h-4 flex-1 rounded-md" />
                                 </div>
@@ -88,7 +91,10 @@ export function ListingSkeleton() {
                     ))}
                 </div>
                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                    <div key={i} className="p-4 border-b border-slate-50 last:border-0 flex items-center justify-between gap-4">
+                    <div
+                        key={i}
+                        className="p-4 border-b border-slate-50 last:border-0 flex items-center justify-between gap-4"
+                    >
                         <div className="flex items-center gap-3 flex-1">
                             <Skeleton className="h-10 w-10 rounded-full" />
                             <div className="space-y-2">
@@ -113,7 +119,10 @@ export function CardsSkeleton() {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="p-6 bg-white rounded-3xl border border-slate-100 shadow-sm space-y-4 hover:shadow-md transition-shadow">
+                <div
+                    key={i}
+                    className="p-6 bg-white rounded-3xl border border-slate-100 shadow-sm space-y-4 hover:shadow-md transition-shadow"
+                >
                     <div className="flex justify-between items-start">
                         <Skeleton className="h-12 w-12 rounded-2xl bg-slate-50" />
                         <Skeleton className="h-6 w-12 rounded-full" />
@@ -143,7 +152,7 @@ export function RtoLayoutSkeleton() {
                 <NavbarSkeleton />
 
                 {/* Content Section */}
-                <main className="flex-1 overflow-y-auto p-4 md:p-6 mx-auto w-full max-w-[1600px]">
+                <main className="flex-1 overflow-y-auto p-4 md:p-6 mx-auto w-full">
                     <div className="space-y-8">
                         {/* Page Header Area */}
                         <div className="space-y-2">

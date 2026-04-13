@@ -5,6 +5,8 @@ import {
     Clock,
     CheckCircle,
     XCircle,
+    Timer,
+    GraduationCap,
 } from 'lucide-react'
 import { Typography } from '@components'
 import { useAppSelector } from '@redux/hooks'
@@ -21,6 +23,8 @@ export function StudentStatusBanner() {
     const isSnoozed = student?.isSnoozed
     const isCompleted = student?.studentStatus === StudentStatusEnum.COMPLETED
     const isExpired = student?.studentStatus === StudentStatusEnum.EXPIRED
+    const isQualificationIssued = student?.studentStatus === StudentStatusEnum.QUALIFICATION_ISSUED
+    const hasExpectedDelay = !!student?.expectedDelay
 
     if (
         !isBlocked &&
@@ -28,7 +32,9 @@ export function StudentStatusBanner() {
         !isNonContactable &&
         !isSnoozed &&
         !isCompleted &&
-        !isExpired
+        !isExpired &&
+        !isQualificationIssued &&
+        !hasExpectedDelay
     )
         return null
 
@@ -84,6 +90,18 @@ export function StudentStatusBanner() {
         Icon = XCircle
         colorClasses =
             'bg-gradient-to-r from-[#EF4444] via-[#DC2626] to-[#EF4444]'
+    } else if (isQualificationIssued) {
+        title = '🎓 Qualification Issued'
+        description = 'This student has been issued their qualification'
+        Icon = GraduationCap
+        colorClasses =
+            'bg-gradient-to-r from-[#10B981] via-[#0D9488] to-[#10B981]'
+    } else if (hasExpectedDelay) {
+        title = '⏳ Expected Delay'
+        description = student?.expectedDelay
+        Icon = Timer
+        colorClasses =
+            'bg-gradient-to-r from-[#7C3AED] via-[#6D28D9] to-[#7C3AED]'
     }
 
     return (

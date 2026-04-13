@@ -1,7 +1,8 @@
-import { Button } from '@components'
+import { Button, Permissions } from '@components'
 import { UserRoles } from '@constants'
 import { ScheduleAppointmentModal } from '@partials/rto-v2/appointments'
 import { useGetSubAdminStudentDetailQuery } from '@queries'
+import { PermissionType } from '@types'
 import { getUserCredentials } from '@utils'
 import { Calendar, Sparkles } from 'lucide-react'
 import { useRouter } from 'next/router'
@@ -47,7 +48,7 @@ export const AppointmentHeader = () => {
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200/60 shadow-xl p-3">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-lg shadow-[#044866]/20">
+                    <div className="w-11 h-11 rounded-xl bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-lg shadow-[#044866]/20">
                         <Calendar className="w-6 h-6 text-white" />
                     </div>
                     <div>
@@ -68,13 +69,17 @@ export const AppointmentHeader = () => {
                     scheduleOpen={scheduleOpen}
                     setScheduleOpen={setScheduleOpen}
                 />
-                <Button
-                    onClick={onScheduleClicked}
-                    className="flex-shrink-0 bg-gradient-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+                <Permissions
+                    permission={PermissionType.BOOK_STUDENT_APPOINTMENTS}
                 >
-                    <Calendar className="w-4 h-4 mr-2" />
-                    Schedule New
-                </Button>
+                    <Button
+                        onClick={onScheduleClicked}
+                        className="shrink-0 bg-linear-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+                    >
+                        <Calendar className="w-4 h-4 mr-2" />
+                        Schedule New
+                    </Button>
+                </Permissions>
             </div>
         </div>
     )

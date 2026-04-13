@@ -13,7 +13,7 @@ import {
 import { useState } from 'react'
 import { Button } from '../../../components/ui/button'
 
-import { Card, Select, TextInput } from '@components'
+import { Card, Permissions, Select, TextInput } from '@components'
 import { RtoApi } from '@queries'
 import { KPIStatCard } from './KpiStatsCard'
 import { ScheduleAppointmentModal } from './modals'
@@ -26,6 +26,7 @@ import {
     UpcomingAppointments,
 } from './tabs'
 import { Skeleton } from '@components/ui/skeleton'
+import { PermissionType } from '@types'
 
 interface Appointment {
     id: string
@@ -140,48 +141,57 @@ export const Appointments = () => {
                                 scheduleOpen={scheduleOpen}
                                 setScheduleOpen={setScheduleOpen}
                             />
-                            <Button
-                                onClick={() => {
-                                    const { role } = getUserCredentials()
-                                    if (role === UserRoles.ADMIN) {
-                                        router.push(
-                                            '/portals/admin/appointment-type/create-appointment'
-                                        )
-                                    } else if (role === UserRoles.SUBADMIN) {
-                                        router.push(
-                                            '/portals/sub-admin/tasks/appointments/create-appointment'
-                                        )
-                                    } else {
-                                        setScheduleOpen(true)
-                                    }
-                                }}
-                                className="bg-linear-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-lg shadow-[#044866]/20 transition-all h-10 px-6 rounded-lg font-medium flex items-center gap-2 border-0"
+                            <Permissions
+                                permission={[
+                                    PermissionType.BOOK_STUDENT_APPOINTMENTS,
+                                ]}
                             >
-                                <Plus className="h-4 w-4" />
-                                Schedule New
-                            </Button>
+                                <Button
+                                    onClick={() => {
+                                        const { role } = getUserCredentials()
+                                        if (role === UserRoles.ADMIN) {
+                                            router.push(
+                                                '/portals/admin/appointment-type/create-appointment'
+                                            )
+                                        } else if (
+                                            role === UserRoles.SUBADMIN
+                                        ) {
+                                            router.push(
+                                                '/portals/sub-admin/tasks/appointments/create-appointment'
+                                            )
+                                        } else {
+                                            setScheduleOpen(true)
+                                        }
+                                    }}
+                                    className="bg-linear-to-r from-[#044866] to-[#0D5468] hover:from-[#0D5468] hover:to-[#044866] text-white shadow-lg shadow-[#044866]/20 transition-all h-10 px-6 rounded-lg font-medium flex items-center gap-2 border-0"
+                                >
+                                    <Plus className="h-4 w-4" />
+                                    Schedule New
+                                </Button>
+                            </Permissions>
                         </div>
                     </div>
                 </div>
 
                 {/* KPI Stats - Mapped */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {counts.isLoading ? (
-                        [1, 2, 3].map((i) => (
-                            <Skeleton key={i} className="h-24 w-full rounded-xl" />
-                        ))
-                    ) : (
-                        statsConfig.map((stat) => (
-                            <KPIStatCard
-                                key={stat.id}
-                                label={stat.label}
-                                value={stat.value}
-                                icon={stat.icon}
-                                subtitle={stat.subtitle}
-                                variant={stat.variant}
-                            />
-                        ))
-                    )}
+                    {counts.isLoading
+                        ? [1, 2, 3].map((i) => (
+                              <Skeleton
+                                  key={i}
+                                  className="h-24 w-full rounded-xl"
+                              />
+                          ))
+                        : statsConfig.map((stat) => (
+                              <KPIStatCard
+                                  key={stat.id}
+                                  label={stat.label}
+                                  value={stat.value}
+                                  icon={stat.icon}
+                                  subtitle={stat.subtitle}
+                                  variant={stat.variant}
+                              />
+                          ))}
                 </div>
 
                 {/* Main Content with ConfigTabs */}

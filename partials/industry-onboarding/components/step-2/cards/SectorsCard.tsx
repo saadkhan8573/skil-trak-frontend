@@ -331,7 +331,13 @@ export function SectorsCard({
         })
 
         // Only open the suggested sectors modal for non-cluster (API-mapped) sectors.
-        if (!isCluster) {
+        // if (!isCluster) {
+        //     setConfirmedSectorId(String(sectorId))
+        //     setEligibilityDialogOpen(true)
+        // }
+        const hasCourse = !!course?.level
+
+        if (!isCluster && !hasCourse) {
             setConfirmedSectorId(String(sectorId))
             setEligibilityDialogOpen(true)
         }

@@ -150,6 +150,9 @@ export function SectorItem({
                                         sectorId={sector.id}
                                         selectedTaskIds={selectedTaskIds}
                                         onToggleTask={onToggleTask}
+                                        {...(courseLevel
+                                            ? { courseLevel: courseLevel }
+                                            : {})}
                                     />
 
                                     {isReadyToConfirm &&

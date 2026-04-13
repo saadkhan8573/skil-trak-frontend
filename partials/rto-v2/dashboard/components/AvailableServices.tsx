@@ -127,11 +127,12 @@ export const AvailableServices = () => {
 
     const onSubmitInquiry = (service: Service) => {
         const premiumFeature = getPremiumFeaturesId(service?.type)
-        console.log({ premiumFeature })
         setModal(
             <ServicesFeaturesFormModal
                 rto={rto}
-                service={{ ...service, premiumFeature }}
+                service={
+                    premiumFeature ? { ...service, premiumFeature } : service
+                }
                 onCancel={onCancel}
             />
         )

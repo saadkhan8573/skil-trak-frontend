@@ -56,6 +56,13 @@ export const sectorClustersEndpoints = (
         }),
         invalidatesTags: ['SectorClusters'],
     }),
+    deleteSectorQuestion: builder.mutation<any, number>({
+        query: (id) => ({
+            url: `${PREFIX}/${id}/questions`,
+            method: 'DELETE',
+        }),
+        invalidatesTags: ['SectorClusters'],
+    }),
 
     // Supervisor requirements
     updateRequirements: builder.mutation<any, any>({

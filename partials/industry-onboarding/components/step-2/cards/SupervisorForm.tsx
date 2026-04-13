@@ -9,6 +9,7 @@ interface SupervisorFormProps {
     errors: Record<string, string>
     onUpdateSector: (updates: any) => void
     onQualificationLevelChange: (value: string) => void
+    courseLevel?: any
 }
 
 export function SupervisorForm({
@@ -18,21 +19,33 @@ export function SupervisorForm({
     errors,
     onUpdateSector,
     onQualificationLevelChange,
+    courseLevel,
 }: SupervisorFormProps) {
+    const resolvedLevel = sectorState?.supervisorLevel || courseLevel
+    const selectedOption = SupervisorQualification?.find(
+        (opt: any) => opt.value === resolvedLevel
+    )
+    console.log('selectedOption', selectedOption)
     return (
         <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                    <Label className="text-sm font-semibold">Supervisor Name</Label>
+                    <Label className="text-sm font-semibold">
+                        Supervisor Name
+                    </Label>
                     <TextInput
                         name="supervisorName"
                         value={sectorState?.supervisorName || ''}
-                        onChange={(e: any) => onUpdateSector({ supervisorName: e.target.value })}
+                        onChange={(e: any) =>
+                            onUpdateSector({ supervisorName: e.target.value })
+                        }
                         placeholder="Enter supervisor full name"
                         className="bg-white/90 backdrop-blur-sm border-2 hover:border-primary/50 focus:border-primary"
                     />
                     {errors[`sector_${index}_supervisor_name`] && (
-                        <p className="text-xs text-destructive">{errors[`sector_${index}_supervisor_name`]}</p>
+                        <p className="text-xs text-destructive">
+                            {errors[`sector_${index}_supervisor_name`]}
+                        </p>
                     )}
                 </div>
 
@@ -41,7 +54,9 @@ export function SupervisorForm({
                     <TextInput
                         name="position"
                         value={sectorState?.position || ''}
-                        onChange={(e: any) => onUpdateSector({ position: e.target.value })}
+                        onChange={(e: any) =>
+                            onUpdateSector({ position: e.target.value })
+                        }
                         placeholder="e.g., Site Manager, Team Leader"
                         className="bg-white/90 backdrop-blur-sm border-2 hover:border-primary/50 focus:border-primary"
                     />
@@ -55,7 +70,9 @@ export function SupervisorForm({
                         name="email"
                         type="email"
                         value={sectorState?.email || ''}
-                        onChange={(e: any) => onUpdateSector({ email: e.target.value })}
+                        onChange={(e: any) =>
+                            onUpdateSector({ email: e.target.value })
+                        }
                         placeholder="supervisor@company.com"
                         className="bg-white/90 backdrop-blur-sm border-2 hover:border-primary/50 focus:border-primary"
                     />
@@ -67,7 +84,9 @@ export function SupervisorForm({
                         name="phone"
                         type="tel"
                         value={sectorState?.phone || ''}
-                        onChange={(e: any) => onUpdateSector({ phone: e.target.value })}
+                        onChange={(e: any) =>
+                            onUpdateSector({ phone: e.target.value })
+                        }
                         placeholder="0412 345 678"
                         className="bg-white/90 backdrop-blur-sm border-2 hover:border-primary/50 focus:border-primary"
                     />
@@ -76,19 +95,28 @@ export function SupervisorForm({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                    <Label className="text-sm font-semibold">Supervisor Qualification Level</Label>
+                    <Label className="text-sm font-semibold">
+                        Supervisor Qualification Level
+                    </Label>
                     <Select
                         name="qualificationLevel"
                         onlyValue
-                        value={sectorState?.supervisorLevel || ''}
+                        value={selectedOption || null}
+                        // value={SupervisorQualification?.find(opt:any)=>option.value === level}
                         onChange={(value: any) => {
-                            onQualificationLevelChange(value)
-                            onUpdateSector({ supervisorLevel: value })
+                            onQualificationLevelChange(
+                                value || selectedOption?.value
+                            )
+                            onUpdateSector({
+                                supervisorLevel: value || selectedOption?.value,
+                            })
                         }}
                         options={SupervisorQualification}
                     />
                     {errors[`sector_${index}_supervisor_level`] && (
-                        <p className="text-xs text-destructive">{errors[`sector_${index}_supervisor_level`]}</p>
+                        <p className="text-xs text-destructive">
+                            {errors[`sector_${index}_supervisor_level`]}
+                        </p>
                     )}
                 </div>
 
@@ -103,7 +131,9 @@ export function SupervisorForm({
                         value={sectorState?.experience ?? ''}
                         onChange={(e: any) => {
                             const val = parseInt(e.target.value)
-                            onUpdateSector({ experience: isNaN(val) ? undefined : val })
+                            onUpdateSector({
+                                experience: isNaN(val) ? undefined : val,
+                            })
                         }}
                         placeholder="e.g., 5"
                         className="bg-white/90 backdrop-blur-sm border-2 hover:border-primary/50 focus:border-primary"
@@ -116,19 +146,24 @@ export function SupervisorForm({
                 <TextInput
                     name="title"
                     value={sectorState?.title || ''}
-                    onChange={(e: any) => onUpdateSector({ title: e.target.value })}
+                    onChange={(e: any) =>
+                        onUpdateSector({ title: e.target.value })
+                    }
                     placeholder="e.g., Diploma of Community Services"
                     className="bg-white/90 backdrop-blur-sm border-2 hover:border-primary/50 focus:border-primary"
                 />
                 {errors[`sector_${index}_qualification_title`] && (
-                    <p className="text-xs text-destructive">{errors[`sector_${index}_qualification_title`]}</p>
+                    <p className="text-xs text-destructive">
+                        {errors[`sector_${index}_qualification_title`]}
+                    </p>
                 )}
             </div>
 
             <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-3">
                     <Label className="text-sm font-semibold">
-                        Student Capacity <span className="text-destructive">*</span>
+                        Student Capacity{' '}
+                        <span className="text-destructive">*</span>
                     </Label>
                     <TextInput
                         name={`sector_${index}_capacity`}
@@ -137,22 +172,30 @@ export function SupervisorForm({
                         value={sectorState?.capacity ?? ''}
                         onChange={(e: any) => {
                             const val = parseInt(e.target.value)
-                            onUpdateSector({ capacity: isNaN(val) ? undefined : val })
+                            onUpdateSector({
+                                capacity: isNaN(val) ? undefined : val,
+                            })
                         }}
                         className="bg-white/90 backdrop-blur-sm border-2 hover:border-primary/50 focus:border-primary"
                     />
                     {errors[`sector_${index}_capacity`] && (
-                        <p className="text-xs text-destructive">{errors[`sector_${index}_capacity`]}</p>
+                        <p className="text-xs text-destructive">
+                            {errors[`sector_${index}_capacity`]}
+                        </p>
                     )}
                 </div>
 
                 <div className="space-y-3">
-                    <Label className="text-sm font-semibold">Capacity Period</Label>
+                    <Label className="text-sm font-semibold">
+                        Capacity Period
+                    </Label>
                     <Select
                         name="capacityPeriod"
                         value={sector.capacityPeriod}
                         onlyValue
-                        onChange={(value: any) => onUpdateSector({ capacityPeriod: value })}
+                        onChange={(value: any) =>
+                            onUpdateSector({ capacityPeriod: value })
+                        }
                         options={[
                             { value: 'weekly', label: 'Weekly' },
                             { value: 'biweekly', label: 'Biweekly' },

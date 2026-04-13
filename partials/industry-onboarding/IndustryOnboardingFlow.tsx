@@ -156,7 +156,7 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
             )
         } catch {}
     }, [step2Data, id])
-
+    console.log('data::::', data?.courses)
     useEffect(() => {
         if (!id) return
         try {
@@ -248,7 +248,9 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
             industryBio: step1Data.industryBio ?? null,
             workplaceType:
                 typeof step1Data.workplaceType === 'object'
-                    ? step1Data.workplaceType?.id ?? step1Data.workplaceType?.name ?? null
+                    ? (step1Data.workplaceType?.id ??
+                      step1Data.workplaceType?.name ??
+                      null)
                     : step1Data.workplaceType || null,
             isPartner: step1Data.isPartner,
             primaryContactName: step1Data.primaryContactName,
@@ -259,7 +261,7 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
             suburb: step1Data.suburb,
             stateId:
                 typeof step1Data.state === 'object'
-                    ? step1Data.state?.id ?? step1Data.state?.value ?? null
+                    ? (step1Data.state?.id ?? step1Data.state?.value ?? null)
                     : step1Data.state || null,
             postcode: step1Data.postcode,
             country: step1Data.country ?? null,
@@ -335,6 +337,7 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
                 onChange={setStep2Data}
                 onValidationChange={(v) => handleValidationChange(2, v)}
                 uniqueSectors={uniqueSectors}
+                {...(data?.courses ? { course: data.courses } : {})}
             />
         ),
         3: (

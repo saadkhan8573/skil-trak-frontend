@@ -34,6 +34,7 @@ interface SectorItemProps {
     onToggleTask: (courseId: number, taskId: number) => void
     onQualificationLevelChange: (value: string) => void
     onConfirmSector: () => void
+    courseLevel?: any
 }
 
 export function SectorItem({
@@ -63,6 +64,7 @@ export function SectorItem({
     onToggleTask,
     onQualificationLevelChange,
     onConfirmSector,
+    courseLevel,
 }: SectorItemProps) {
     const showSupervisorFields = sector.isClusterSector || allQuestionsChecked
 
@@ -76,7 +78,10 @@ export function SectorItem({
         >
             <div
                 className="border-2 rounded-2xl shadow-lg overflow-hidden bg-white/90 backdrop-blur-sm"
-                style={{ borderColor: `${sectorConfig.color}20`, backgroundColor: sectorConfig.bgColor }}
+                style={{
+                    borderColor: `${sectorConfig.color}20`,
+                    backgroundColor: sectorConfig.bgColor,
+                }}
             >
                 <SectorItemHeader
                     sector={sector}
@@ -110,7 +115,12 @@ export function SectorItem({
                                         index={index}
                                         errors={errors}
                                         onUpdateSector={onUpdateSector}
-                                        onQualificationLevelChange={onQualificationLevelChange}
+                                        onQualificationLevelChange={
+                                            onQualificationLevelChange
+                                        }
+                                        {...(courseLevel
+                                            ? { courseLevel: courseLevel }
+                                            : {})}
                                     />
 
                                     <IndustryChecksForm
@@ -118,13 +128,21 @@ export function SectorItem({
                                         sectorState={sectorState}
                                         sectorConfig={sectorConfig}
                                         onUpdateSector={onUpdateSector}
-                                        onUpdateIndustryCheck={onUpdateIndustryCheck}
-                                        onToggleCustomCheck={onToggleCustomCheck}
-                                        onUpdateCustomCheckField={onUpdateCustomCheckField}
+                                        onUpdateIndustryCheck={
+                                            onUpdateIndustryCheck
+                                        }
+                                        onToggleCustomCheck={
+                                            onToggleCustomCheck
+                                        }
+                                        onUpdateCustomCheckField={
+                                            onUpdateCustomCheckField
+                                        }
                                     />
 
                                     <AvailableCourses
-                                        qualificationLevel={qualificationLevel}
+                                        qualificationLevel={
+                                            qualificationLevel || courseLevel
+                                        }
                                         coursesByLevel={coursesByLevel}
                                         coursesLoading={coursesLoading}
                                         coursesError={coursesError}
@@ -134,9 +152,12 @@ export function SectorItem({
                                         onToggleTask={onToggleTask}
                                     />
 
-                                    {isReadyToConfirm && !sectorState?.confirmed && (
-                                        <ConfirmSectorBanner onConfirm={onConfirmSector} />
-                                    )}
+                                    {isReadyToConfirm &&
+                                        !sectorState?.confirmed && (
+                                            <ConfirmSectorBanner
+                                                onConfirm={onConfirmSector}
+                                            />
+                                        )}
                                 </>
                             )}
                         </div>

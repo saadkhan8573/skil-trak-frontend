@@ -1,6 +1,8 @@
+import { withPermission } from '@components'
 import { RtoLayoutV2 } from '@layouts'
 import { ActionRequiredHeader } from '@partials/rto-v2/components'
 import { IncompleteSubmissionStudent } from '@partials/rto/student'
+import { PermissionType } from '@types'
 import { FileWarning } from 'lucide-react'
 import { ReactElement } from 'react'
 
@@ -36,4 +38,6 @@ IncompleteSubmissionPage.getLayout = (page: ReactElement) => {
     )
 }
 
-export default IncompleteSubmissionPage
+export default withPermission(IncompleteSubmissionPage, {
+    permissions: [PermissionType.SUBMISSIONS],
+})

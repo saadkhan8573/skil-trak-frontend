@@ -25,11 +25,11 @@ export interface Service {
     variant: 'primaryNew' | 'primary' | 'success'
     icon: any
     featureId:
-    | 'expert-consultation'
-    | 'mou-legal'
-    | 'webinar-platform'
-    | 'simulation-tools'
-    | 'default'
+        | 'expert-consultation'
+        | 'mou-legal'
+        | 'webinar-platform'
+        | 'simulation-tools'
+        | 'default'
     duration: string
     colorScheme: {
         cardBg: string
@@ -127,6 +127,7 @@ export const AvailableServices = () => {
 
     const onSubmitInquiry = (service: Service) => {
         const premiumFeature = getPremiumFeaturesId(service?.type)
+        console.log({ premiumFeature })
         setModal(
             <ServicesFeaturesFormModal
                 rto={rto}

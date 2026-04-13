@@ -1,4 +1,4 @@
-import { AuthorizedUserComponent, Badge } from '@components'
+import { AuthorizedUserComponent, Badge, Permissions } from '@components'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import {
     getUserCredentials,
@@ -46,6 +46,7 @@ import { CommonApi } from '@queries'
 import { useAppSelector } from '@redux'
 import { checkJsxVisibility } from '@utils'
 import { useState, Activity } from 'react'
+import { PermissionType } from '@types'
 
 interface WorkplaceStatusesProps {
     workplace: IWorkplaceIndustries
@@ -200,12 +201,16 @@ export function WorkplaceStatuses({
                     </div>
                 </div>
                 <div className="relative flex items-center gap-1.5 text-xs text-slate-500 bg-white/60 backdrop-blur-sm px-2 py-1 rounded-lg border border-slate-200">
-                    <Badge
-                        variant="primaryNew"
-                        Icon={ExternalLink}
-                        text={'Visit Placement Profile'}
-                        onClick={onSelectWorkplace}
-                    />
+                    <Permissions
+                        permission={PermissionType.VIEW_PLACEMENT_PROFILE}
+                    >
+                        <Badge
+                            variant="primaryNew"
+                            Icon={ExternalLink}
+                            text={'Visit Placement Profile'}
+                            onClick={onSelectWorkplace}
+                        />
+                    </Permissions>
                     <Clock className="w-3 h-3" />
                     <span>
                         Created:{' '}
@@ -230,14 +235,18 @@ export function WorkplaceStatuses({
                         />
                     </AuthorizedUserComponent>
                     <AuthorizedUserComponent roles={[UserRoles.SUBADMIN]}>
-                        <TerminateWorkplaceButton
-                            workplaceId={Number(wpId)}
-                            isTerminated={workplace?.isTerminated}
-                            isCancelled={
-                                workplace?.currentStatus ===
-                                WorkplaceCurrentStatus.Cancelled
-                            }
-                        />
+                        <Permissions
+                            permission={PermissionType.TERMINATE_PLACEMENT}
+                        >
+                            <TerminateWorkplaceButton
+                                workplaceId={Number(wpId)}
+                                isTerminated={workplace?.isTerminated}
+                                isCancelled={
+                                    workplace?.currentStatus ===
+                                    WorkplaceCurrentStatus.Cancelled
+                                }
+                            />
+                        </Permissions>
                     </AuthorizedUserComponent>
                 </div>
             </div>

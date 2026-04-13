@@ -49,6 +49,7 @@ const filterKeys = [
     'courseId',
     'completed',
     'studentId',
+    'isReported',
     'industryId',
     'subadminId',
     'currentStatus',

@@ -1,5 +1,6 @@
 'use client'
 import { Permissions } from '@components'
+import { usePermissionCheck } from '@components/Permissions/hooks/usePermissions'
 import { ImportStudentsModal } from '@partials'
 import { RtoV2Api } from '@redux'
 import { PermissionType } from '@types'
@@ -41,6 +42,7 @@ const menuSections = (navBarCounts: {
     nonContactable: number
     snoozed: number
     inCompleteSubmissions?: number
+    placementRequests?: number
 }) => [
     {
         title: 'Dashboard',
@@ -73,6 +75,7 @@ const menuSections = (navBarCounts: {
                 badgeBg: 'bg-red-500',
                 text: 'text-slate-700',
                 path: '/portals/rto/action-required/sign-documents?tab=pending',
+                permissions: [PermissionType.SIGN_DOCUMENTS],
             },
             {
                 icon: CheckSquare,
@@ -108,6 +111,7 @@ const menuSections = (navBarCounts: {
                 iconBg: 'bg-red-200 !text-red-500',
                 badgeBg: 'bg-red-500',
                 text: 'text-slate-700',
+                permissions: [PermissionType.RESOLVE_ISSUES],
             },
             {
                 icon: UserX,
@@ -141,6 +145,7 @@ const menuSections = (navBarCounts: {
                 iconBg: 'bg-red-200 !text-red-500',
                 badgeBg: 'bg-red-500',
                 text: 'text-slate-700',
+                permissions: [PermissionType.SUBMISSIONS],
             },
         ],
     },
@@ -157,6 +162,7 @@ const menuSections = (navBarCounts: {
                 iconBg: 'bg-gray-200 !text-slate-700',
                 badgeBg: 'bg-gray-200 !text-slate-700',
                 text: 'text-slate-700',
+                permissions: [PermissionType.ALL_STUDENTS],
             },
             {
                 icon: Briefcase,
@@ -167,6 +173,8 @@ const menuSections = (navBarCounts: {
                 iconBg: 'bg-gray-200 !text-slate-700',
                 badgeBg: 'bg-gray-200 !text-slate-700',
                 text: 'text-slate-700',
+                badge: navBarCounts?.placementRequests,
+                permissions: [PermissionType.PLACEMENT_REQUESTS],
             },
             // {
             //     icon: Briefcase,
@@ -186,6 +194,7 @@ const menuSections = (navBarCounts: {
                 iconBg: 'bg-gray-200 !text-slate-700',
                 badgeBg: 'bg-gray-200 !text-slate-700',
                 text: 'text-slate-700',
+                permissions: [PermissionType.IMPORT_STUDENTS],
             },
         ],
     },
@@ -202,6 +211,7 @@ const menuSections = (navBarCounts: {
                 iconBg: 'bg-gray-200 !text-slate-700',
                 badgeBg: 'bg-gray-200 !text-slate-700',
                 text: 'text-slate-700',
+                permissions: [PermissionType.MANAGE_EMAILS],
             },
             {
                 icon: Calendar,
@@ -213,6 +223,7 @@ const menuSections = (navBarCounts: {
                 iconBg: 'bg-gray-200 !text-slate-700',
                 badgeBg: 'bg-gray-200 !text-slate-700',
                 text: 'text-slate-700',
+                permissions: [PermissionType.APPOINTMENTS],
             },
             {
                 icon: BellIcon,
@@ -224,6 +235,7 @@ const menuSections = (navBarCounts: {
                 iconBg: 'bg-gray-200 !text-slate-700',
                 badgeBg: 'bg-gray-200 !text-slate-700',
                 text: 'text-slate-700',
+                permissions: [PermissionType.NOTIFICATIONS],
             },
             {
                 icon: Tickets,
@@ -235,6 +247,7 @@ const menuSections = (navBarCounts: {
                 iconBg: 'bg-gray-200 !text-slate-700',
                 badgeBg: 'bg-gray-200 !text-slate-700',
                 text: 'text-slate-700',
+                permissions: [PermissionType.VIEW_ALL_TICKETS],
             },
         ],
     },
@@ -260,6 +273,7 @@ const menuSections = (navBarCounts: {
                 iconBg: 'bg-gray-200 !text-slate-700',
                 badgeBg: 'bg-gray-200 !text-slate-700',
                 text: 'text-slate-700',
+                permissions: [PermissionType.INDUSTRIES],
             },
             {
                 icon: User2,
@@ -270,6 +284,7 @@ const menuSections = (navBarCounts: {
                 iconBg: 'bg-gray-200 !text-slate-700',
                 badgeBg: 'bg-gray-200 !text-slate-700',
                 text: 'text-slate-700',
+                permissions: [PermissionType.TEAM_MANAGEMENT],
             },
             {
                 icon: GraduationCap,
@@ -280,6 +295,7 @@ const menuSections = (navBarCounts: {
                 iconBg: 'bg-gray-200 !text-slate-700',
                 badgeBg: 'bg-gray-200 !text-slate-700',
                 text: 'text-slate-700',
+                permissions: [PermissionType.COURSES],
             },
         ],
     },
@@ -287,6 +303,7 @@ const menuSections = (navBarCounts: {
 
 export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
     const { data: navBarCounts } = RtoV2Api.Dashboard.navBarCounts()
+    const { checkPermission } = usePermissionCheck()
     const [expandedSections, setExpandedSections] = useState<
         Record<string, boolean>
     >({})
@@ -334,95 +351,106 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
 
             {/* ============================= SCROLLABLE CONTENT ============================= */}
             <nav className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                {menuSections(navBarCounts!).map((section) => (
-                    <div
-                        key={section.title}
-                        className="hover:shadow-premium-lg"
-                    >
-                        <div className="flex items-center justify-between px-1 mb-2">
-                            <div className="text-xs uppercase font-semibold text-muted-foreground">
-                                {section.title}
-                            </div>
-                            {/* {section.showCount && section.totalCount && (
+                {menuSections(navBarCounts!).map((section) => {
+                    const visibleItems = section.items.filter((item: any) => {
+                        if (item.permissions) {
+                            return checkPermission(item.permissions)
+                        }
+                        return true
+                    })
+
+                    if (visibleItems.length === 0) return null
+
+                    return (
+                        <div
+                            key={section.title}
+                            className="hover:shadow-premium-lg"
+                        >
+                            <div className="flex items-center justify-between px-1 mb-2">
+                                <div className="text-xs uppercase font-semibold text-muted-foreground">
+                                    {section.title}
+                                </div>
+                                {/* {section.showCount && section.totalCount && (
                                 <div className="text-[11px] bg-destructive text-white px-2 rounded">
                                     {section.totalCount}
                                 </div>
                             )} */}
-                        </div>
+                            </div>
 
-                        <ul className="space-y-1">
-                            {(expandedSections[section.title]
-                                ? section.items
-                                : section.items.slice(0, 4)
-                            ).map((item: any) => {
-                                const MenuItem = (
-                                    <li key={item.key}>
-                                        <button
-                                            onClick={() =>
-                                                onNavigate?.(item.key)
-                                            }
-                                            className={`w-full flex justify-between items-center gap-3 p-2 rounded-xl transition ${item.bg} hover:opacity-90 cursor-pointer`}
-                                        >
-                                            <div className="flex items-center gap-x-2">
-                                                <div
-                                                    className={`p-2 rounded-xl shrink-0 ${item.iconBg} text-white`}
-                                                >
-                                                    <item.icon className="h-4 w-4" />
+                            <ul className="space-y-1">
+                                {(expandedSections[section.title]
+                                    ? visibleItems
+                                    : visibleItems.slice(0, 4)
+                                ).map((item: any) => {
+                                    const MenuItem = (
+                                        <li key={item.key}>
+                                            <button
+                                                onClick={() =>
+                                                    onNavigate?.(item.key)
+                                                }
+                                                className={`w-full flex justify-between items-center gap-3 p-2 rounded-xl transition ${item.bg} hover:opacity-90 cursor-pointer`}
+                                            >
+                                                <div className="flex items-center gap-x-2">
+                                                    <div
+                                                        className={`p-2 rounded-xl shrink-0 ${item.iconBg} text-white`}
+                                                    >
+                                                        <item.icon className="h-4 w-4" />
+                                                    </div>
+
+                                                    <span
+                                                        className={`flex text-sm font-medium ${item.text}`}
+                                                    >
+                                                        {item.label}
+                                                    </span>
                                                 </div>
 
-                                                <span
-                                                    className={`flex text-sm font-medium ${item.text}`}
-                                                >
-                                                    {item.label}
-                                                </span>
-                                            </div>
-
-                                            {/* {item.badge && (
+                                                {/* {item.badge && (
                                             <span
                                                 className={`text-[11px] px-2 py-0.5 rounded-full text-white ${item.badgeBg}`}
                                             >
                                                 {item.badge}
                                             </span>
                                         )} */}
+                                            </button>
+                                        </li>
+                                    )
+
+                                    if (item.permissions) {
+                                        return (
+                                            <Permissions
+                                                key={item.key}
+                                                permission={item.permissions}
+                                            >
+                                                {MenuItem}
+                                            </Permissions>
+                                        )
+                                    }
+
+                                    return MenuItem
+                                })}
+                                {visibleItems.length > 4 && (
+                                    <li>
+                                        <button
+                                            onClick={() =>
+                                                toggleSection(section.title)
+                                            }
+                                            className="w-full flex justify-center items-center py-2 text-[11px] font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100/50 rounded-xl transition cursor-pointer mt-1 border border-dashed border-slate-200"
+                                        >
+                                            {expandedSections[section.title]
+                                                ? 'Show Less'
+                                                : 'Show More'}
+                                            {expandedSections[section.title] ? (
+                                                <ChevronUp className="h-3 w-3 ml-1" />
+                                            ) : (
+                                                <ChevronDown className="h-3 w-3 ml-1" />
+                                            )}
                                         </button>
                                     </li>
-                                )
-
-                                if (item.permissions) {
-                                    return (
-                                        <Permissions
-                                            key={item.key}
-                                            permission={item.permissions}
-                                        >
-                                            {MenuItem}
-                                        </Permissions>
-                                    )
-                                }
-
-                                return MenuItem
-                            })}
-                            {section.items.length > 4 && (
-                                <li>
-                                    <button
-                                        onClick={() =>
-                                            toggleSection(section.title)
-                                        }
-                                        className="w-full flex justify-center items-center py-2 text-[11px] font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100/50 rounded-xl transition cursor-pointer mt-1 border border-dashed border-slate-200"
-                                    >
-                                        {expandedSections[section.title]
-                                            ? 'Show Less'
-                                            : 'Show More'}
-                                        {expandedSections[section.title] ? (
-                                            <ChevronUp className="h-3 w-3 ml-1" />
-                                        ) : (
-                                            <ChevronDown className="h-3 w-3 ml-1" />
-                                        )}
-                                    </button>
-                                </li>
-                            )}
-                        </ul>
-                    </div>
-                ))}
+                                )}
+                            </ul>
+                        </div>
+                    )
+                })}
             </nav>
 
             {/* ============================= FOOTER ============================= */}
@@ -478,110 +506,129 @@ export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
 
                 {/* ======================= SCROLLABLE MENU SECTION ========================= */}
                 <div className="flex-1 overflow-y-auto px-4 py-3 remove-scrollbar scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                    {menuSections(navBarCounts!).map((section, idx) => (
-                        <div key={section.title}>
-                            <div
-                                className={`${
-                                    idx > 0
-                                        ? 'pt-8 mt-3 mx-8! border-t border-sidebar-border/30'
-                                        : ''
-                                } mb-1 last:mb-0`}
-                            />
-                            <div className="flex items-center justify-between px-1 mb-2">
-                                <div className="text-[10px] uppercase tracking-wide font-medium text-slate-500">
-                                    {section.title}
-                                </div>
-                                {/* {section.showCount && section.totalCount && (
+                    {menuSections(navBarCounts!).map((section, idx) => {
+                        const visibleItems = section.items.filter(
+                            (item: any) => {
+                                if (item.permissions) {
+                                    return checkPermission(item.permissions)
+                                }
+                                return true
+                            }
+                        )
+
+                        if (visibleItems.length === 0) return null
+
+                        return (
+                            <div key={section.title}>
+                                <div
+                                    className={`${
+                                        idx > 0
+                                            ? 'pt-8 mt-3 mx-8! border-t border-sidebar-border/30'
+                                            : ''
+                                    } mb-1 last:mb-0`}
+                                />
+                                <div className="flex items-center justify-between px-1 mb-2">
+                                    <div className="text-[10px] uppercase tracking-wide font-medium text-slate-500">
+                                        {section.title}
+                                    </div>
+                                    {/* {section.showCount && section.totalCount && (
                                     <div className="text-[10px] bg-error text-white flex items-center animate-pulse justify-center text-center rounded-full size-5">
                                         {section.totalCount}
                                     </div>
                                 )} */}
-                            </div>
+                                </div>
 
-                            <ul className="space-y-2">
-                                {(expandedSections[section.title]
-                                    ? section.items
-                                    : section.items.slice(0, 4)
-                                ).map((item: any) => {
-                                    const MenuItem = (
-                                        <li
-                                            key={item.key}
-                                            className="cursor-pointer"
-                                        >
-                                            <button
-                                                onClick={() => {
-                                                    if (
-                                                        item.key ===
-                                                        'Import Students'
-                                                    ) {
-                                                        onClickImportStudents()
-                                                    } else if (item.path) {
-                                                        router.push(item.path)
-                                                    }
-                                                    onNavigate?.(item.key)
-                                                }}
-                                                className={`w-full flex justify-between items-center p-2 rounded-md transition ${item.bg} hover:opacity-90 cursor-pointer`}
+                                <ul className="space-y-2">
+                                    {(expandedSections[section.title]
+                                        ? visibleItems
+                                        : visibleItems.slice(0, 4)
+                                    ).map((item: any) => {
+                                        const MenuItem = (
+                                            <li
+                                                key={item.key}
+                                                className="cursor-pointer"
                                             >
-                                                <div className="flex items-center gap-x-2">
-                                                    <div
-                                                        className={`p-1.5 rounded-xl shrink-0 ${item.iconBg} text-white`}
-                                                    >
-                                                        <item.icon className="h-4 w-4" />
+                                                <button
+                                                    onClick={() => {
+                                                        if (
+                                                            item.key ===
+                                                            'Import Students'
+                                                        ) {
+                                                            onClickImportStudents()
+                                                        } else if (item.path) {
+                                                            router.push(
+                                                                item.path
+                                                            )
+                                                        }
+                                                        onNavigate?.(item.key)
+                                                    }}
+                                                    className={`w-full flex justify-between items-center p-2 rounded-md transition ${item.bg} hover:opacity-90 cursor-pointer`}
+                                                >
+                                                    <div className="flex items-center gap-x-2">
+                                                        <div
+                                                            className={`p-1.5 rounded-xl shrink-0 ${item.iconBg} text-white`}
+                                                        >
+                                                            <item.icon className="h-4 w-4" />
+                                                        </div>
+
+                                                        <span
+                                                            className={`flex text-xs font-medium ${item.text}`}
+                                                        >
+                                                            {item.label}
+                                                        </span>
                                                     </div>
 
-                                                    <span
-                                                        className={`flex text-xs font-medium ${item.text}`}
-                                                    >
-                                                        {item.label}
-                                                    </span>
-                                                </div>
+                                                    {item.badge && (
+                                                        <span
+                                                            className={`text-[11px] px-2 py-0.5 rounded-full text-white ${item.badgeBg}`}
+                                                        >
+                                                            {item.badge}
+                                                        </span>
+                                                    )}
+                                                </button>
+                                            </li>
+                                        )
 
-                                                {item.badge && (
-                                                    <span
-                                                        className={`text-[11px] px-2 py-0.5 rounded-full text-white ${item.badgeBg}`}
-                                                    >
-                                                        {item.badge}
-                                                    </span>
+                                        if (item.permissions) {
+                                            return (
+                                                <Permissions
+                                                    key={item.key}
+                                                    permission={
+                                                        item.permissions
+                                                    }
+                                                >
+                                                    {MenuItem}
+                                                </Permissions>
+                                            )
+                                        }
+
+                                        return MenuItem
+                                    })}
+                                    {visibleItems.length > 4 && (
+                                        <li>
+                                            <button
+                                                onClick={() =>
+                                                    toggleSection(section.title)
+                                                }
+                                                className="w-full flex justify-center items-center py-1.5 text-[11px] font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100/50 rounded-xl transition cursor-pointer mt-1 border border-dashed border-slate-200"
+                                            >
+                                                {expandedSections[section.title]
+                                                    ? 'Show Less'
+                                                    : 'Show More'}
+                                                {expandedSections[
+                                                    section.title
+                                                ] ? (
+                                                    <ChevronUp className="h-3 w-3 ml-1" />
+                                                ) : (
+                                                    <ChevronDown className="h-3 w-3 ml-1" />
                                                 )}
                                             </button>
                                         </li>
-                                    )
-
-                                    if (item.permissions) {
-                                        return (
-                                            <Permissions
-                                                key={item.key}
-                                                permission={item.permissions}
-                                            >
-                                                {MenuItem}
-                                            </Permissions>
-                                        )
-                                    }
-
-                                    return MenuItem
-                                })}
-                                {section.items.length > 4 && (
-                                    <li>
-                                        <button
-                                            onClick={() =>
-                                                toggleSection(section.title)
-                                            }
-                                            className="w-full flex justify-center items-center py-1.5 text-[11px] font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100/50 rounded-xl transition cursor-pointer mt-1 border border-dashed border-slate-200"
-                                        >
-                                            {expandedSections[section.title]
-                                                ? 'Show Less'
-                                                : 'Show More'}
-                                            {expandedSections[section.title] ? (
-                                                <ChevronUp className="h-3 w-3 ml-1" />
-                                            ) : (
-                                                <ChevronDown className="h-3 w-3 ml-1" />
-                                            )}
-                                        </button>
-                                    </li>
-                                )}
-                            </ul>
-                        </div>
-                    ))}
+                                    )}
+                                </ul>
+                            </div>
+                        )
+                    })}
                 </div>
 
                 {/* ====================== FIXED FOOTER  ================== */}

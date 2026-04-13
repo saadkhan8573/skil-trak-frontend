@@ -3,6 +3,7 @@ import {
     Select,
     TabConfig,
     TextInput,
+    withPermission,
 } from '@components'
 import { RtoLayoutV2 } from '@layouts'
 import { FilteredIssues, ResolvedIssuesHistoryTab } from '@partials'
@@ -13,6 +14,7 @@ import { Flag, Search } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
 import debounce from 'lodash/debounce'
+import { PermissionType } from '@types'
 
 const PRIORITY_OPTIONS = [
     { label: 'All Priorities', value: 'all' },
@@ -203,7 +205,10 @@ export const ResolveIssues = () => {
                 {filteredDataLength ? (
                     <FilteredIssues
                         data={filteredIssues.data}
-                        isLoading={filteredIssues.isLoading || filteredIssues?.isFetching}
+                        isLoading={
+                            filteredIssues.isLoading ||
+                            filteredIssues?.isFetching
+                        }
                         isError={filteredIssues.isError}
                         isSuccess={filteredIssues.isSuccess}
                         itemPerPage={itemPerPage}
@@ -233,4 +238,6 @@ ResolveIssues.getLayout = (page: ReactElement) => {
     )
 }
 
-export default ResolveIssues
+export default withPermission(ResolveIssues, {
+    permissions: [PermissionType.RESOLVE_ISSUES],
+})

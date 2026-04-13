@@ -1,7 +1,9 @@
 import { Badge } from '@components/Badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs'
+import { PermissionType } from '@types'
 import { LucideIcon } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
+import { usePermissionCheck } from '@components/Permissions/hooks'
 
 export interface TabConfig {
     value: string
@@ -10,6 +12,7 @@ export interface TabConfig {
     component: any
     count?: string | number
     hidden?: boolean | ((props?: any) => boolean)
+    permissions?: PermissionType[]
 }
 
 export const ConfigTabs = ({
@@ -34,7 +37,9 @@ export const ConfigTabs = ({
     const [width, setWidth] = useState<number | null>(null)
     const ref = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
+    const { checkPermission } = usePermissionCheck()
+
+    useLayoutEffect(() => {
         const element = ref.current
         if (!element) return
 
@@ -48,7 +53,7 @@ export const ConfigTabs = ({
 
         resizeObserver.observe(element)
 
-        // Set initial width
+        // Set initial width synchronously before paint
         setWidth(element.offsetWidth)
 
         return () => {
@@ -57,6 +62,10 @@ export const ConfigTabs = ({
     }, [])
 
     const visibleTabs = tabs.filter((tab) => {
+        if (tab.permissions && tab.permissions.length > 0) {
+            if (!checkPermission(tab.permissions)) return false
+        }
+        
         if (typeof tab.hidden === 'function') {
             return !tab.hidden(props)
         }

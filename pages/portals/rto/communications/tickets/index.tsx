@@ -2,11 +2,11 @@ import { ReactElement } from 'react'
 // Layouts
 import { RtoLayoutV2 } from '@layouts'
 // Components
-import { Button, ConfigTabs, TabConfig } from '@components'
+import { Button, ConfigTabs, TabConfig, withPermission } from '@components'
 import { PageHeading } from '@components/headings'
 import { ClosedTickets, OpenTickets } from '@partials/rto'
 import { CommonApi } from '@queries'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 import { useRouter } from 'next/router'
 import { BiEnvelope } from 'react-icons/bi'
 import { BsFillTicketDetailedFill } from 'react-icons/bs'
@@ -84,4 +84,6 @@ Tickets.getLayout = (page: ReactElement) => {
     )
 }
 
-export default Tickets
+export default withPermission(Tickets, {
+    permissions: [PermissionType.VIEW_ALL_TICKETS],
+})

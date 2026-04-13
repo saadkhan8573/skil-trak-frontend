@@ -1,5 +1,7 @@
+import { withPermission } from '@components'
 import { RtoLayoutV2 } from '@layouts'
 import { ViewDocumentAndSign } from '@partials'
+import { PermissionType } from '@types'
 import { FileSignature } from 'lucide-react'
 import React, { ReactElement } from 'react'
 
@@ -21,4 +23,6 @@ SignDocumentsDetailPage.getLayout = (page: ReactElement) => {
     )
 }
 
-export default SignDocumentsDetailPage
+export default withPermission(SignDocumentsDetailPage, {
+    permissions: [PermissionType.SIGN_DOCUMENTS],
+})

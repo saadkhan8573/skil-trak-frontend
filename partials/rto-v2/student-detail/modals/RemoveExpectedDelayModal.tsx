@@ -27,11 +27,12 @@ export const RemoveExpectedDelayModal = ({
 
     const { notification } = useNotification()
 
-    const onRemoveDelay = () => {
-        addExpectedDelay({
-            id: student?.id,
-            expectedDelayReason: null,
-        }).then((res: any) => {
+    const onRemoveDelay = async () => {
+        try {
+            const res = await addExpectedDelay({
+                id: student?.id,
+                expectedDelayReason: null,
+            })
             if (res?.data) {
                 notification.success({
                     title: 'Delay Removed',
@@ -40,7 +41,12 @@ export const RemoveExpectedDelayModal = ({
                 })
                 onClose()
             }
-        })
+        } catch (error) {
+            notification.error({
+                title: 'Error',
+                description: 'Failed to remove expected delay. Please try again.',
+            })
+        }
     }
 
     return (

@@ -2,6 +2,8 @@ import React, { ReactElement } from 'react'
 import { Appointments } from '@partials/rto-v2/appointments'
 import { RtoLayoutV2 } from '@layouts'
 import { BiEnvelope } from 'react-icons/bi'
+import { PermissionType } from '@types'
+import { withPermission } from '@components'
 
 const AppointmentPage = () => {
     return <Appointments />
@@ -21,4 +23,6 @@ AppointmentPage.getLayout = (page: ReactElement) => {
     )
 }
 
-export default AppointmentPage
+export default withPermission(AppointmentPage, {
+    permissions: [PermissionType.APPOINTMENTS],
+})

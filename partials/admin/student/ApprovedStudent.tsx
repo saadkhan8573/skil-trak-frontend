@@ -129,7 +129,7 @@ export const ApprovedStudent = () => {
                 onClick: (student: Student) => {
                     handleOpenModal(AdminStudentModalType.AI_CALL, student)
                 },
-                Icon: () => <Phone className='w-3 h-3' />,
+                Icon: () => <Phone className="w-3 h-3" />,
             },
             {
                 text: 'Change Status',
@@ -188,7 +188,6 @@ export const ApprovedStudent = () => {
                 Icon: MdBlock,
                 color: 'text-red-400 hover:bg-red-100 hover:border-red-200',
             },
-
         ]
     }
 
@@ -432,21 +431,21 @@ export const ApprovedStudent = () => {
                                         >
                                             {pageSize
                                                 ? pageSize(
-                                                    itemPerPage,
-                                                    (e) => {
-                                                        setItemPerPage(e)
-                                                        setIsRouting(false)
-                                                    },
-                                                    data?.data?.length
-                                                )
+                                                      itemPerPage,
+                                                      (e) => {
+                                                          setItemPerPage(e)
+                                                          setIsRouting(false)
+                                                      },
+                                                      data?.data?.length
+                                                  )
                                                 : null}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination
                                                     ? pagination(
-                                                        data?.pagination,
-                                                        setPage
-                                                    )
+                                                          data?.pagination,
+                                                          setPage
+                                                      )
                                                     : null}
                                             </div>
                                         </div>
@@ -462,23 +461,23 @@ export const ApprovedStudent = () => {
                                             <div className="p-6 mb-2 flex justify-between">
                                                 {pageSize
                                                     ? pageSize(
-                                                        itemPerPage,
-                                                        (e) => {
-                                                            setItemPerPage(e)
-                                                            setIsRouting(
-                                                                false
-                                                            )
-                                                        },
-                                                        data?.data?.length
-                                                    )
+                                                          itemPerPage,
+                                                          (e) => {
+                                                              setItemPerPage(e)
+                                                              setIsRouting(
+                                                                  false
+                                                              )
+                                                          },
+                                                          data?.data?.length
+                                                      )
                                                     : null}
                                                 <div className="flex gap-x-2">
                                                     {quickActions}
                                                     {pagination
                                                         ? pagination(
-                                                            data?.pagination,
-                                                            setPage
-                                                        )
+                                                              data?.pagination,
+                                                              setPage
+                                                          )
                                                         : null}
                                                 </div>
                                             </div>

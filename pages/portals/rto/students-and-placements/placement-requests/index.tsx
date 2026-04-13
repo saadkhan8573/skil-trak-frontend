@@ -1,4 +1,4 @@
-import { Card, ConfigTabs, TabConfig } from '@components'
+import { Card, ConfigTabs, TabConfig, withPermission } from '@components'
 import { RtoLayoutV2 } from '@layouts'
 import {
     PlacementRequestStats,
@@ -7,6 +7,7 @@ import {
 } from '@partials'
 import { ActionRequiredHeader, Title } from '@partials/rto-v2/components'
 import { RtoV2Api } from '@queries'
+import { PermissionType } from '@types'
 import { Briefcase } from 'lucide-react'
 import { ReactElement } from 'react'
 
@@ -44,7 +45,7 @@ export const PlacementRequests = () => {
                 totalRequests={count?.data?.all || 0}
                 needsWorkplaceCount={count?.data?.requested || 0}
                 providedWorkplaceCount={count?.data?.provided || 0}
-            // activePlacementsCount={10}
+                // activePlacementsCount={10}
             />
 
             <Card
@@ -55,10 +56,7 @@ export const PlacementRequests = () => {
                     <Title Icon={Briefcase} title="Placement Requests" />
                 </div>
 
-                <ConfigTabs
-                    tabs={tabs}
-                    defaultValue="student-need-wp"
-                />
+                <ConfigTabs tabs={tabs} defaultValue="student-need-wp" />
             </Card>
         </div>
     )
@@ -78,4 +76,6 @@ PlacementRequests.getLayout = (page: ReactElement) => {
     )
 }
 
-export default PlacementRequests
+export default withPermission(PlacementRequests, {
+    permissions: [PermissionType.PLACEMENT_REQUESTS],
+})

@@ -30,7 +30,7 @@ import {
     setSelectedCourse,
     setStudentDetail,
 } from '@redux'
-import { Course, Student } from '@types'
+import { Course, PermissionType, Student } from '@types'
 import {
     Book,
     Building2,
@@ -136,6 +136,7 @@ export const RtoStudentDetail = () => {
             component: () => (
                 <Appointments student={profile?.data as Student} />
             ),
+            permissions: [PermissionType.APPOINTMENTS],
         },
         {
             value: 'tickets',
@@ -146,6 +147,7 @@ export const RtoStudentDetail = () => {
                     <Tickets student={profile?.data as Student} />
                 </div>
             ),
+            permissions: [PermissionType.VIEW_ALL_TICKETS],
         },
         {
             value: 'support-tickets',
@@ -155,6 +157,7 @@ export const RtoStudentDetail = () => {
             hidden: useAuthorizedUserComponent({
                 roles: [UserRoles.RTO],
             }),
+            permissions: [PermissionType.VIEW_SUPPORT_TICKETS],
         },
         {
             value: 'history',

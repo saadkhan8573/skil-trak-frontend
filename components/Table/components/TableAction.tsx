@@ -2,6 +2,8 @@ import { useState, useRef, useEffect, ReactNode } from 'react'
 import { FaChevronDown } from 'react-icons/fa'
 import { createPopper } from '@popperjs/core'
 import { IconType } from 'react-icons'
+import { PermissionType } from '@types'
+import { usePermissionCheck } from '@components/Permissions/hooks'
 
 export interface TableActionOption<T> {
     text?: string | React.ReactElement
@@ -9,6 +11,7 @@ export interface TableActionOption<T> {
     Icon?: React.ElementType
     color?: string
     hidden?: boolean | ((rowItem: T) => boolean)
+    permissions?: PermissionType[]
 }
 
 interface TableActionProps<Type> {
@@ -34,6 +37,7 @@ export const TableAction = <Type,>({
     const buttonRef: any = useRef<HTMLButtonElement>(null)
     const popperRef = useRef<HTMLUListElement>(null)
     const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+    const { checkPermission } = usePermissionCheck()
 
     useEffect(() => {
         if (buttonRef.current && popperRef.current) {
@@ -76,12 +80,21 @@ export const TableAction = <Type,>({
         (option): option is TableActionOption<Type> => {
             if (Object.keys(option).length === 0) return false
             const opt = option as TableActionOption<Type>
+            
+            if (opt.permissions && opt.permissions.length > 0) {
+                if (!checkPermission(opt.permissions)) return false
+            }
+
             if (typeof opt.hidden === 'function') {
                 return !opt.hidden(rowItem)
             }
             return !opt.hidden
         }
     )
+
+    if (validOptions.length === 0 && !children) {
+        return null
+    }
 
     return (
         <div className="relative w-fit" onMouseLeave={handleMouseLeave}>
@@ -100,7 +113,7 @@ export const TableAction = <Type,>({
                 </button>
             )}
 
-            {showPopper && (
+            {showPopper && validOptions.length > 0 && (
                 <ul
                     ref={popperRef}
                     className="bg-white border border-gray-200 rounded shadow-lg z-10 min-w-[130px] max-w-[175px]"

@@ -132,6 +132,6 @@ export const studentsEndpoints = (
             method: 'PATCH',
             body: { expectedDelayReason },
         }),
-        invalidatesTags: ['RTO'],
+        invalidatesTags: ['RTO', 'SubAdminStudents'],
     }),
 })

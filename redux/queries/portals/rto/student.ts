@@ -19,6 +19,7 @@ export const studentEndpoints = (
             blocked: number
             expired: number
             rejected?: number
+            qualificationissued?: number
         },
         void
     >({
@@ -138,6 +139,13 @@ export const studentEndpoints = (
     getBlockedStudentsList: builder.query<any, any>({
         query: (params) => ({
             url: `${PREFIX}/blocked-students/list`,
+            params,
+        }),
+        providesTags: ['Rto-Students'],
+    }),
+    getQualificationIssuedStudentsList: builder.query<any, any>({
+        query: (params) => ({
+            url: `${PREFIX}/qualification-issued-students/list`,
             params,
         }),
         providesTags: ['Rto-Students'],

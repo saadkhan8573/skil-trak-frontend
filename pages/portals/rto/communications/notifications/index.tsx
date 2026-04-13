@@ -1,5 +1,7 @@
+import { withPermission } from '@components'
 import { RtoLayoutV2 } from '@layouts'
 import { NotificationList } from '@partials/common'
+import { PermissionType } from '@types'
 import { Bell } from 'lucide-react'
 import React, { ReactElement } from 'react'
 
@@ -21,4 +23,6 @@ NotificationsPage.getLayout = (page: ReactElement) => {
     )
 }
 
-export default NotificationsPage
+export default withPermission(NotificationsPage, {
+    permissions: [PermissionType.NOTIFICATIONS],
+})

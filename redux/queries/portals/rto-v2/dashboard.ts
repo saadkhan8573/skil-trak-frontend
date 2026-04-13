@@ -1,5 +1,6 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { EndpointBuilder } from '@reduxjs/toolkit/query'
+import { Student } from '@types'
 
 const PREFIX = 'rtos/'
 export const dashboardEndpoints = (
@@ -22,6 +23,7 @@ export const dashboardEndpoints = (
             notification: number
             nonContactable: number
             snoozed: number
+            placementRequests: number
         },
         void
     >({
@@ -37,7 +39,7 @@ export const dashboardEndpoints = (
         ],
     }),
 
-    last24HoursWp: builder.query<any, void>({
+    last24HoursWp: builder.query<Student[], void>({
         query: () => `${PREFIX}yesterday-automatic/list`,
         providesTags: ['RTO'],
     }),

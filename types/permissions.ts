@@ -36,7 +36,6 @@ export enum PermissionType {
     /* -------------------- AI / NETWORK UNLOCKABLE FEATURES -------------------- */
     AI_SEARCH = 'AI_SEARCH',
     TALENT_POOL_ACCESS = 'TALENT_POOL_ACCESS',
-    CHATBOT = 'CHATBOT',
     BULK_STUDENT_MATCHING = 'BULK_STUDENT_MATCHING',
     /* -------------------- INDUSTRY & WORKPLACE -------------------- */
     ALLOW_WORKPLACE_REQUEST_APPROVAL = 'ALLOW_WORKPLACE_REQUEST_APPROVAL',
@@ -110,6 +109,7 @@ export enum PermissionType {
     VIEW_VISITORS = 'VIEW_VISITORS',
     /* -------------------- RTO PLACEMENT PROFILE -------------------- */
     VIEW_PLACEMENT_PROFILE = 'VIEW_PLACEMENT_PROFILE',
+    CAN_USE_CHATBOT = 'CAN_USE_CHATBOT',
 }
 
 export interface IPermission {

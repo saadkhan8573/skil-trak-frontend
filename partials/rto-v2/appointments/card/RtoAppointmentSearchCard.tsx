@@ -78,7 +78,7 @@ export const RtoAppointmentSearchCard = ({
             <div className="flex flex-col gap-y-2">
                 {rtoUsers.isLoading || rtoUsers.isFetching ? (
                     <LoadingAnimation />
-                ) : rtoUsers?.data && rtoUsers?.data?.length > 0 ? (
+                ) : search && rtoUsers?.data && rtoUsers?.data?.length > 0 ? (
                     rtoUsers?.data?.map((user: any) => (
                         <>
                             <RtoSearchedUserCard

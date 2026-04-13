@@ -2,6 +2,8 @@ import { ReactElement } from 'react'
 import { RtoEmails } from '@partials'
 import { RtoLayoutV2 } from '@layouts'
 import { BiEnvelope } from 'react-icons/bi'
+import { withPermission } from '@components'
+import { PermissionType } from '@types'
 
 const MailsPage = () => {
     return <RtoEmails />
@@ -21,4 +23,6 @@ MailsPage.getLayout = (page: ReactElement) => {
     )
 }
 
-export default MailsPage
+export default withPermission(MailsPage, {
+    permissions: [PermissionType.MANAGE_EMAILS],
+})

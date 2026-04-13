@@ -1,7 +1,12 @@
-import { Card, PageTitle, ShowErrorNotifications } from '@components'
+import {
+    Card,
+    PageTitle,
+    ShowErrorNotifications,
+    withPermission,
+} from '@components'
 import { useContextBar, useNotification } from '@hooks'
 import { RtoLayoutV2 } from '@layouts'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect } from 'react'
 
@@ -74,4 +79,6 @@ AddTeamPage.getLayout = (page: ReactElement) => {
     )
 }
 
-export default AddTeamPage
+export default withPermission(AddTeamPage, {
+    permissions: [PermissionType.TEAM_MANAGEMENT],
+})

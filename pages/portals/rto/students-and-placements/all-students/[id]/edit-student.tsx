@@ -1,6 +1,6 @@
 import { useContextBar, useNavbar, useNotification } from '@hooks'
-import { RtoLayout, RtoLayoutV2 } from '@layouts'
-import { NextPageWithLayout } from '@types'
+import { RtoLayoutV2 } from '@layouts'
+import { NextPageWithLayout, PermissionType } from '@types'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect } from 'react'
 
@@ -12,6 +12,7 @@ import {
     useUpdateStudentProfileMutation,
 } from '@queries'
 import { User } from 'lucide-react'
+import { withPermission } from '@components/Permissions/hooks'
 
 const EditStudent: NextPageWithLayout = () => {
     const router = useRouter()
@@ -109,4 +110,6 @@ EditStudent.getLayout = (page: ReactElement) => {
     )
 }
 
-export default EditStudent
+export default withPermission(EditStudent, {
+    permissions: PermissionType.ALLOW_UPDATE_PROFILE,
+})

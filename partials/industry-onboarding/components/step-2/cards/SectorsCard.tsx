@@ -54,6 +54,7 @@ export function SectorsCard({
     errors,
     handleAddSector,
     uniqueSectors,
+    course,
 }: any) {
     const [expandedSector, setExpandedSector] = useState<string | null>(
         uniqueSectors?.length > 0 ? uniqueSectors[0]?.id : null
@@ -68,12 +69,33 @@ export function SectorsCard({
 
     // Restore saved qualification level when switching sectors so re-expanded
     // confirmed sectors immediately show their available courses.
+    // React.useEffect(() => {
+    //     const saved = data.sectors?.find(
+    //         (s: any) => String(s.id) === String(expandedSector)
+    //     )?.supervisorLevel
+    //     setQualificationLevel(saved || '')
+    // }, [expandedSector])
     React.useEffect(() => {
-        const saved = data.sectors?.find(
+        if (!expandedSector) return
+
+        const sector = data.sectors?.find(
             (s: any) => String(s.id) === String(expandedSector)
-        )?.supervisorLevel
-        setQualificationLevel(saved || '')
-    }, [expandedSector])
+        )
+
+        const savedLevel = sector?.supervisorLevel
+        const fallbackLevel = course?.level // 👈 ONLY SOURCE
+
+        const finalLevel = savedLevel || fallbackLevel || ''
+
+        setQualificationLevel(finalLevel)
+
+        // 🔥 Sync into actual form state
+        if (!savedLevel && fallbackLevel) {
+            updateSector(expandedSector, {
+                supervisorLevel: fallbackLevel,
+            })
+        }
+    }, [expandedSector, course])
 
     const {
         data: questions,
@@ -85,17 +107,18 @@ export function SectorsCard({
             skip: !expandedSector,
         }
     )
-
+    const resolvedLevel = qualificationLevel || course?.level
     const {
         data: coursesByLevel,
         isLoading: coursesLoading,
         isError: coursesError,
     } = IndustryApi.Supervisor.useCoursesBySupervisorLevel(
-        { id: expandedSector, params: { level: qualificationLevel } },
-        { skip: !expandedSector || !qualificationLevel }
+        {
+            id: expandedSector,
+            params: { level: resolvedLevel },
+        },
+        { skip: !expandedSector || !resolvedLevel }
     )
-
-    console.log('coursesByLevel:::::::', coursesByLevel)
 
     // -------------------------------------------------------------------------
     // Sector state helpers
@@ -278,7 +301,7 @@ export function SectorsCard({
         if (!s) return false
         return !!(
             s.supervisorName?.trim() &&
-            s.supervisorLevel &&
+            (s.supervisorLevel || course?.level) &&
             s.title?.trim() &&
             s.capacity >= 1
         )
@@ -438,6 +461,9 @@ export function SectorsCard({
                                         questionsLoading={questionsLoading}
                                         questionsError={questionsError}
                                         coursesByLevel={coursesByLevel}
+                                        {...(course
+                                            ? { courseLevel: course?.level }
+                                            : {})}
                                         coursesLoading={coursesLoading}
                                         coursesError={coursesError}
                                         qualificationLevel={qualificationLevel}

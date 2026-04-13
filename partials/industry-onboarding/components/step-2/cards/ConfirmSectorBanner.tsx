@@ -26,7 +26,7 @@ export function ConfirmSectorBanner({ onConfirm }: ConfirmSectorBannerProps) {
                 </div>
                 <Button
                     onClick={onConfirm}
-                    className="w-full bg-linear-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-4 text-base shadow-lg hover:shadow-xl transition-all"
+                    className="w-full bg-linear-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-4 shadow-lg hover:shadow-xl transition-all"
                 >
                     <CheckCircle className="w-5 h-5 mr-2" />
                     Confirm and Process This Sector

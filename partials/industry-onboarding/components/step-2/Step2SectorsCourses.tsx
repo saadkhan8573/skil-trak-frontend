@@ -8,20 +8,33 @@ interface Step2Props {
     onChange: any
     onValidationChange: (isValid: boolean) => void
     uniqueSectors: any
+    course?: any
 }
 
 function validateStep2(data: any, uniqueSectors: any): boolean {
-    const apiSectorCount = Array.isArray(uniqueSectors) ? uniqueSectors.length : 0
-    const clusterSectors = (data.sectors || []).filter((s: any) => s.isClusterSector)
+    const apiSectorCount = Array.isArray(uniqueSectors)
+        ? uniqueSectors.length
+        : 0
+    const clusterSectors = (data.sectors || []).filter(
+        (s: any) => s.isClusterSector
+    )
     const totalSectorCount = apiSectorCount + clusterSectors.length
 
     if (totalSectorCount === 0) return false
 
-    return (data.sectors || []).length > 0 &&
+    return (
+        (data.sectors || []).length > 0 &&
         data.sectors.every((s: any) => !!s.confirmed)
+    )
 }
 
-export function Step2SectorsCourses({ data, onChange, onValidationChange, uniqueSectors }: Step2Props) {
+export function Step2SectorsCourses({
+    data,
+    onChange,
+    onValidationChange,
+    uniqueSectors,
+    course,
+}: Step2Props) {
     useEffect(() => {
         onValidationChange(validateStep2(data, uniqueSectors))
     }, [data, uniqueSectors])
@@ -50,17 +63,24 @@ export function Step2SectorsCourses({ data, onChange, onValidationChange, unique
                         >
                             <Building2 className="w-8 h-8 text-primaryNew" />
                         </motion.div>
-                        <h2 className="text-3xl font-bold gradient-text">Sectors & Student Placements</h2>
+                        <h2 className="text-3xl font-bold gradient-text">
+                            Sectors & Student Placements
+                        </h2>
                         <motion.div
                             animate={{ rotate: [0, -10, 10, 0] }}
-                            transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                            transition={{
+                                duration: 2,
+                                repeat: Infinity,
+                                delay: 1,
+                            }}
                         >
                             <Sparkles className="w-8 h-8 text-primary" />
                         </motion.div>
                     </div>
                     <p className="text-muted-foreground max-w-3xl mx-auto text-lg leading-relaxed">
-                        🎯 Configure your industry sectors and qualified supervisors to provide exceptional student
-                        placement opportunities
+                        🎯 Configure your industry sectors and qualified
+                        supervisors to provide exceptional student placement
+                        opportunities
                     </p>
                 </div>
             </motion.div>
@@ -70,6 +90,7 @@ export function Step2SectorsCourses({ data, onChange, onValidationChange, unique
                 data={data}
                 handleAddSector={() => {}}
                 uniqueSectors={uniqueSectors}
+                {...(course ? { course: course } : {})}
             />
         </div>
     )

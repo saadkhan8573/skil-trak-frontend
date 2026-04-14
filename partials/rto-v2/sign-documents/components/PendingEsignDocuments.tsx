@@ -23,7 +23,7 @@ export const PendingEsignDocuments = () => {
         setItemPerPage(Number(router?.query?.pageSize || 50))
     }, [router])
 
-    const pendingDocuments = CommonApi.ESign.usePendingDocumentsList(
+    const pendingDocuments = CommonApi.ESign.useListByStatusForRto(
         {
             status: 'pending',
             skip: itemPerPage * page - itemPerPage,
@@ -40,13 +40,13 @@ export const PendingEsignDocuments = () => {
 
     return (
         <>
-            <div className="flex flex-col gap-y-4 mb-32">
+            <div className="flex flex-col gap-y-4">
                 <Card noPadding>
                     {pendingDocuments?.isError && <TechnicalError />}
                     {pendingDocuments?.isLoading ? (
                         <LoadingAnimation height="h-[60vh]" />
                     ) : pendingDocuments?.data &&
-                      pendingDocuments?.data?.data?.length ? (
+                        pendingDocuments?.data?.data?.length ? (
                         <Table
                             columns={columns}
                             data={pendingDocuments?.data.data}
@@ -80,26 +80,26 @@ export const PendingEsignDocuments = () => {
                                         <div className="px-6">{table}</div>
                                         {pendingDocuments?.data?.data?.length >
                                             10 && (
-                                            <div className="p-6 mb-2 flex justify-between">
-                                                {pageSize &&
-                                                    pageSize(
-                                                        itemPerPage,
-                                                        setItemPerPage,
-                                                        pendingDocuments?.data
-                                                            ?.data?.length
-                                                    )}
-                                                <div className="flex gap-x-2">
-                                                    {quickActions}
-                                                    {pagination &&
-                                                        pagination(
-                                                            pendingDocuments
-                                                                ?.data
-                                                                ?.pagination,
-                                                            setPage
+                                                <div className="p-6 mb-2 flex justify-between">
+                                                    {pageSize &&
+                                                        pageSize(
+                                                            itemPerPage,
+                                                            setItemPerPage,
+                                                            pendingDocuments?.data
+                                                                ?.data?.length
                                                         )}
+                                                    <div className="flex gap-x-2">
+                                                        {quickActions}
+                                                        {pagination &&
+                                                            pagination(
+                                                                pendingDocuments
+                                                                    ?.data
+                                                                    ?.pagination,
+                                                                setPage
+                                                            )}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )}
+                                            )}
                                     </div>
                                 )
                             }}

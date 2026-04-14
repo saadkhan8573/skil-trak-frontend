@@ -24,7 +24,9 @@ export const SnoozedStudents = () => {
     const [modal, setModal] = useState<ReactElement | null>(null)
     const userId = getUserCredentials()?.id
 
-    const { getTableConfig, modal: newModal } = useColumns()
+    const { getTableConfig, modal: newModal } = useColumns({
+        baseLinkPath: "/portals/rto/students-and-placements/all-students"
+    })
 
     const { columns } = getTableConfig({
         removeColumnKeys: ['assigned', 'batch', 'expiry'],
@@ -78,7 +80,7 @@ export const SnoozedStudents = () => {
                     Icon={FaEdit}
                     onClick={() => {
                         router.push(
-                            `portals/rto/students/${student?.id}/edit-student`
+                            `/portals/rto/students-and-placements/all-students/${student?.id}/edit-student`
                         )
                     }}
                 >

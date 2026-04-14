@@ -1,5 +1,6 @@
 import { EmptyData, LoadingAnimation, TechnicalError } from '@components'
 import { AdminLayout } from '@layouts'
+import { DynamicPermissionCard } from '@partials'
 import { SubadminProfileDetail } from '@partials/admin/sub-admin'
 import { AdminApi } from '@queries'
 import { NextPageWithLayout } from '@types'
@@ -22,7 +23,11 @@ const SubadminDetail: NextPageWithLayout = () => {
             {subadminDetail.isLoading ? (
                 <LoadingAnimation height="h-[70vh]" />
             ) : subadminDetail?.data ? (
-                <SubadminProfileDetail subadmin={subadminDetail?.data} />
+                <>
+                    <SubadminProfileDetail subadmin={subadminDetail?.data} />
+                    {/* Dynamic Permissions */}
+                    <DynamicPermissionCard userId={subadminDetail?.data?.user?.id} />
+                </>
             ) : subadminDetail.isSuccess ? (
                 <EmptyData description="No Subadmin Detail were found!" />
             ) : null}

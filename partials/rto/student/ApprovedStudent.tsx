@@ -29,6 +29,7 @@ export const ApprovedStudent = () => {
     const { getTableConfig, modal: newModal } = useColumns()
 
     const { columns } = getTableConfig({
+        removeColumnKeys: ['snoozed', 'sectors', 'batch'],
         actionKeys: ['assign', 'block', 'changeStatus', 'changeExpiry'],
     })
 

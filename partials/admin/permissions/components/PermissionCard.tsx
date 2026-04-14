@@ -25,11 +25,10 @@ export const PermissionCard: React.FC<PermissionCardProps> = ({
     return (
         <div
             key={permission.id}
-            className={`group relative p-4 rounded-xl border-2 transition-all duration-500 ${
-                permission.enabled
-                    ? 'bg-white border-primary/30 shadow-lg shadow-primary/5 hover:border-primary/50'
-                    : 'bg-gray-50/50 border-gray-200 opacity-80 hover:opacity-100 hover:bg-white hover:border-gray-300'
-            } hover:shadow-2xl hover:translate-y-[-4px] overflow-hidden`}
+            className={`group relative p-2.5 rounded-xl border-2 transition-all duration-500 ${permission.enabled
+                ? 'bg-white border-primary/30 shadow-lg shadow-primary/5 hover:border-primary/50'
+                : 'bg-gray-50/50 border-gray-200 opacity-80 hover:opacity-100 hover:bg-white hover:border-gray-300'
+                } hover:shadow-2xl hover:translate-y-[-4px] overflow-hidden`}
         >
             {/* Background Accent for Enabled State */}
             {permission.enabled && (
@@ -40,17 +39,16 @@ export const PermissionCard: React.FC<PermissionCardProps> = ({
                 <div className="flex items-start gap-4 flex-1">
                     {Icon && (
                         <div
-                            className={`p-2.5 rounded-lg shadow-inner transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${
-                                permission.enabled
-                                    ? 'bg-primary/10 text-primary'
-                                    : 'bg-gray-200/50 text-gray-400'
-                            }`}
+                            className={`p-2 rounded-lg shadow-inner transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${permission.enabled
+                                ? 'bg-primary/10 text-primary'
+                                : 'bg-gray-200/50 text-gray-400'
+                                }`}
                         >
-                            <Icon className="h-5 w-5" />
+                            <Icon className="h-3.5 w-3.5" />
                         </div>
                     )}
                     <div className="flex-1">
-                        <div className="flex items-center flex-wrap gap-2 mb-1.5">
+                        <div className="flex items-center flex-wrap gap-2 m">
                             <Typography
                                 variant="label"
                                 htmlFor={permission.id}
@@ -80,7 +78,7 @@ export const PermissionCard: React.FC<PermissionCardProps> = ({
                         </p>
                     </div>
                 </div>
-                <div className="flex flex-col items-center gap-2">
+                <div className="flex flex-col items-center">
                     <Switch
                         id={permission.id}
                         name={permission.id}

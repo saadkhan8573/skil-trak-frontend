@@ -9,9 +9,8 @@ import {
 } from '@components'
 import { FaEdit } from 'react-icons/fa'
 
-import { RtoApi, useGetRtoStudentsQuery } from '@queries'
+import { useGetNonContactableStudentsListQuery } from '@queries'
 import { Student } from '@types'
-import { getUserCredentials } from '@utils'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
 import { MdBlock, MdChangeCircle } from 'react-icons/md'
@@ -19,22 +18,23 @@ import { useColumns } from './hooks'
 import { AssignCoordinatorModal, BlockModal } from './modals'
 import { AssignMultipleCoordinatorModal } from './modals/AssignMultipleCoordinatorModal'
 
-export const NonContactableStudents = () => {
+export const NonContactableStudents = ({ params }: { params?: string }) => {
     const router = useRouter()
     const [modal, setModal] = useState<ReactElement | null>(null)
-    const userId = getUserCredentials()?.id
 
-    const { getTableConfig, modal: newModal } = useColumns()
+    const { getTableConfig, modal: newModal } = useColumns({
+        baseLinkPath: "/portals/rto/students-and-placements/all-students"
+    })
 
     const { columns } = getTableConfig({
-        removeColumnKeys: ['assigned', 'batch', 'expiry', 'snoozed'],
+        removeColumnKeys: ['assigned', 'sectors', 'batch', 'expiry', 'snoozed'],
         actionKeys: ['block'],
     })
 
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
-    const { isLoading, data, isError } = useGetRtoStudentsQuery({
-        search: `nonContactable:true`,
+    const { isLoading, data, isError } = useGetNonContactableStudentsListQuery({
+        search: params, // Defaulting just in case
         skip: itemPerPage * page - itemPerPage,
         limit: itemPerPage,
     })
@@ -78,7 +78,7 @@ export const NonContactableStudents = () => {
                     Icon={FaEdit}
                     onClick={() => {
                         router.push(
-                            `portals/rto/students/${student?.id}/edit-student`
+                            `/portals/rto/students-and-placements/all-students/${student?.id}/edit-student`
                         )
                     }}
                 >
@@ -161,7 +161,7 @@ export const NonContactableStudents = () => {
                                                     )}
                                             </div>
                                         </div>
-                                        <div className="px-6 overflow-auto custom-scrollbar">
+                                        <div className="px-6">
                                             {table}
                                         </div>
                                         {data?.data?.length > 10 && (

@@ -87,6 +87,13 @@ export const studentEndpoints = (
         },
         providesTags: ['Rto-Students'],
     }),
+    getNonContactableStudentsList: builder.query<any, any>({
+        query: (params) => ({
+            url: `${PREFIX}/non-contactable-students/list`,
+            params,
+        }),
+        providesTags: ['Rto-Students'],
+    }),
     getActiveStudentsList: builder.query<any, any>({
         query: (params) => ({
             url: `${PREFIX}/active-students/list`,

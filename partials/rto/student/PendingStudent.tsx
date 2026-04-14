@@ -8,9 +8,7 @@ import {
 } from '@components'
 
 import { RtoApi } from '@queries'
-import { UserStatus } from '@types'
-import { useRouter } from 'next/router'
-import { ReactElement, useState } from 'react'
+import { useState } from 'react'
 import { useColumns } from './hooks'
 
 export const PendingStudent = () => {
@@ -26,7 +24,7 @@ export const PendingStudent = () => {
 
     const { columns } = getTableConfig({
         actionKeys: ['accept', 'reject'],
-        columnKeys: ['name', 'batch', 'createdAt', 'action'],
+        columnKeys: ['name', 'createdAt', 'action'],
     })
 
     return (

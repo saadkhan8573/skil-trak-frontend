@@ -14,7 +14,7 @@ import {
     RtoReports,
     RtoSectors,
 } from './components'
-import { DynamicPermissionsTab } from '@partials/admin/permissions'
+import { DynamicPermissionCard, DynamicPermissionsTab } from '@partials/admin/permissions'
 
 export const RtoProfileDetail = ({ rto }: { rto: Rto }) => {
     const role = getUserCredentials()?.role
@@ -62,21 +62,21 @@ export const RtoProfileDetail = ({ rto }: { rto: Rto }) => {
                     link={
                         role === UserRoles.ADMIN
                             ? {
-                                  pathname:
-                                      '/portals/admin/appointment-type/create-appointment',
-                                  query: {
-                                      rto: rto?.user?.id,
-                                  },
-                              }
+                                pathname:
+                                    '/portals/admin/appointment-type/create-appointment',
+                                query: {
+                                    rto: rto?.user?.id,
+                                },
+                            }
                             : role === UserRoles.SUBADMIN
-                              ? {
+                                ? {
                                     pathname:
                                         '/portals/sub-admin/tasks/appointments/create-appointment',
                                     query: {
                                         rto: rto?.user?.id,
                                     },
                                 }
-                              : null
+                                : null
                     }
                     userId={rto?.user?.id}
                     fullWidth
@@ -111,33 +111,7 @@ export const RtoProfileDetail = ({ rto }: { rto: Rto }) => {
             </div>
 
             {/* Dynamic Permissions */}
-            <div className="mt-6 transition-all duration-500">
-                <Card
-                    className="overflow-hidden border-0 shadow-2xl rounded-xl"
-                    noPadding
-                >
-                    <div className="bg-primaryNew px-4 py-2 text-white relative overflow-hidden group">
-                        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-3">
-                            <div>
-                                <div className="flex items-center gap-2 mb-1">
-                                    <h3 className="text-xl font-bold tracking-tight">
-                                        Permissions
-                                    </h3>
-                                    <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-                                </div>
-                                <p className="text-white/80 text-[13px] max-w-md font-medium leading-relaxed">
-                                    Strategic access management and RTO-specific
-                                    permission controls. Customize functional
-                                    boundaries with precision.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="p-4 bg-gray-50/30">
-                        <DynamicPermissionsTab rtoUserId={rto?.user?.id} />
-                    </div>
-                </Card>
-            </div>
+            <DynamicPermissionCard userId={rto?.user?.id} />
         </div>
     )
 }

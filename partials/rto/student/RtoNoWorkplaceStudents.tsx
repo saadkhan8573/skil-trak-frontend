@@ -25,6 +25,7 @@ export const RtoNoWorkplaceStudents = () => {
     const { getTableConfig, modal: newModal } = useColumns()
 
     const { columns } = getTableConfig({
+        removeColumnKeys: ['snoozed', 'sectors', 'batch', 'industry'],
         actionKeys: ['assign', 'block', 'changeStatus', 'changeExpiry'],
     })
 

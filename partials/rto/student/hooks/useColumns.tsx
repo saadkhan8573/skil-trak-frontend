@@ -317,11 +317,25 @@ export const useColumns = (hookOptions?: UseColumnsProps) => {
                                 <div className="space-y-2">
                                     <p className="text-xs text-slate-600">
                                         <span className="font-semibold text-slate-800">
-                                            Date:
+                                            Snoozed Start:
                                         </span>{' '}
-                                        {moment(snooze.createdAt).format(
-                                            'MMM DD, YYYY hh:mm A'
-                                        )}
+                                        {row.original?.snoozedAt
+                                            ? moment(
+                                                row.original.snoozedAt
+                                            ).format('MMM DD, YYYY hh:mm A')
+                                            : moment(snooze.createdAt).format(
+                                                'MMM DD, YYYY hh:mm A'
+                                            )}
+                                    </p>
+                                    <p className="text-xs text-slate-600">
+                                        <span className="font-semibold text-slate-800">
+                                            Snoozed End:
+                                        </span>{' '}
+                                        {row.original?.snoozedDate
+                                            ? moment(
+                                                row.original.snoozedDate
+                                            ).format('MMM DD, YYYY')
+                                            : '---'}
                                     </p>
                                     <p className="text-xs text-slate-600">
                                         <span className="font-semibold text-slate-800">

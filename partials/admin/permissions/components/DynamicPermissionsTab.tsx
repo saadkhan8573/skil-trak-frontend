@@ -160,15 +160,15 @@ export const DynamicPermissionsTab: FC<DynamicPermissionsTabProps> = ({
                         {expandedSections.length ===
                             Object.keys(groupedPermissions).length ? (
                             <>
-                                <EyeOff className="h-5 w-5 text-primary hover:text-white transition-all" />
-                                <span className="text-sm font-semibold text-primary hover:text-white transition-all">
+                                <EyeOff className="h-4 w-4 text-primary hover:text-white transition-all" />
+                                <span className="font-semibold text-primary hover:text-white transition-all">
                                     Collapse
                                 </span>
                             </>
                         ) : (
                             <>
-                                <Eye className="h-5 w-5 text-primary hover:text-white transition-all" />
-                                <span className="text-sm font-semibold text-primary hover:text-white transition-all">
+                                <Eye className="h-4 w-4 text-primary hover:text-white transition-all" />
+                                <span className="font-semibold text-primary hover:text-white transition-all">
                                     Expand All
                                 </span>
                             </>

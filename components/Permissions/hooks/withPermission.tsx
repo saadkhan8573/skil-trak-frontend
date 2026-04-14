@@ -2,6 +2,7 @@ import { getUserCredentials } from '@utils'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { usePermissions } from './usePermissions'
+import { useUserPermissions } from '@hooks/useUserPermissions'
 import { LoadingAnimation } from '@components/LoadingAnimation'
 import { PermissionType } from '@types'
 import { UserRoles } from '@constants'
@@ -54,13 +55,25 @@ export const withPermission = <P extends object>(
                 : [options.permissions]
             : undefined
 
-        const hasAccess = usePermissions(requiredPermissions)
+        const { allPermissions, myPermissions } = useUserPermissions()
+        const isPermissionsLoading =
+            allPermissions?.isLoading ||
+            allPermissions?.isFetching ||
+            myPermissions?.isLoading ||
+            myPermissions?.isFetching
+
+        const checkResult = usePermissions(requiredPermissions)
+        const isError = allPermissions?.isError || myPermissions?.isError
+
+        // If loading or fetching, and no error, assume true to prevent redirect
+        // Once success or error, use the actual result
+        const hasAccess = isPermissionsLoading && !isError ? true : checkResult
 
         useEffect(() => {
             // Wait for user data to load
             if (user?.loading) return
 
-            // Redirect to dashboard if no access
+            // Redirect to dashboard if no access (or error)
             if (!hasAccess) {
                 const destination =
                     typeof options.redirectUrl === 'function'
@@ -71,7 +84,7 @@ export const withPermission = <P extends object>(
         }, [user, router, hasAccess, options.redirectUrl])
 
         // Show loading while checking permissions
-        if (user?.loading) {
+        if (user?.loading || isPermissionsLoading) {
             return (
                 <div className="flex h-[65vh] items-center justify-center">
                     <LoadingAnimation />

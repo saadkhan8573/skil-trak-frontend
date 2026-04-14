@@ -128,9 +128,9 @@ export const ResolveIssues = () => {
                 icon={Flag}
                 title="Resolve Issues"
                 description="Address placement issues requiring coordinator attention"
-                urgentCount={count?.data?.criticalPriority || 0}
-                urgentLabel="Critical Issue(s)"
-                pendingCount={count?.data?.highPriority || 0}
+                // urgentCount={count?.data?.criticalPriority || 0}
+                // urgentLabel="Critical Issue(s)"
+                // pendingCount={count?.data?.highPriority || 0}
                 pendingLabel="High Priority"
                 warningMessage="<strong>Urgent:</strong> These issues are blocking student placements and require immediate coordinator intervention. Delays in resolution may impact student progress and compliance timelines."
                 gradientFrom="from-red-400/10"

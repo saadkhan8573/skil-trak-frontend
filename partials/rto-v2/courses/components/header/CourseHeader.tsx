@@ -5,14 +5,14 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from '@components/ui/collapsible'
-import { CourseHeaderStats } from './CourseHeaderStats'
-import { CourseHeaderTitle } from './CourseHeaderTitle'
-import { CourseApproval } from './CourseApproval'
-import { PlacementRequirementsConfiguration } from '../collapsible-content/placement-requirements-config'
 import { Separator } from '@components/ui/separator'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
-import { AddAssessmentModal, ViewAssessmentsModal } from '../assessment-tools'
+import { ViewAssessmentsModal } from '../assessment-tools'
+import { PlacementRequirementsConfiguration } from '../collapsible-content/placement-requirements-config'
+import { CourseApproval } from './CourseApproval'
+import { CourseHeaderStats } from './CourseHeaderStats'
+import { CourseHeaderTitle } from './CourseHeaderTitle'
 
 export const CourseHeader = ({ coursesData }: any) => {
     const [expandedCourses, setExpandedCourses] = useState<string[]>([

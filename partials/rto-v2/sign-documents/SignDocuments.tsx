@@ -115,7 +115,6 @@ export const SignDocuments = () => {
                 ) : (
                     <ConfigTabs
                         tabs={tabsConfig}
-                        defaultValue="pending"
                         tabsClasses="border-b border-slate-100 p-1 gap-2 rounded-t-xl rounded-b-none"
                     />
                 )}

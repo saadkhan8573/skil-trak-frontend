@@ -31,7 +31,6 @@ export const SignedEsignDocuments = () => {
 
     const { columns } = useEsignColumns({
         isSigned: true,
-        columnKeys: ['document', 'student', 'industryPartner', 'status', 'signDate', 'action'],
         removeColumnKeys: ['status'],
     })
 

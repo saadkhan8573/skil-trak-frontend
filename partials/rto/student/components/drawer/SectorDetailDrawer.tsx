@@ -30,9 +30,30 @@ const getSectors = (courses: any) => {
     return sectors
 }
 
-export const SectorDetailDrawer = ({ student }: { student: Student }) => {
+export const SectorDetailDrawer = ({
+    student,
+    isOpen,
+    onClose,
+}: {
+    student: Student
+    isOpen?: boolean
+    onClose?: () => void
+}) => {
     const { notification } = useNotification()
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(isOpen || false)
+
+    useEffect(() => {
+        if (isOpen !== undefined) {
+            setOpen(isOpen)
+        }
+    }, [isOpen])
+
+    const handleOpenChange = (v: boolean) => {
+        setOpen(v)
+        if (!v && onClose) {
+            onClose()
+        }
+    }
 
     // Only fetch when open to save resources
     const courses = AdminApi.Students.useSectors(student.id, {
@@ -61,7 +82,7 @@ export const SectorDetailDrawer = ({ student }: { student: Student }) => {
 
     useEffect(() => {
         if (assignCoursesResult.isSuccess) {
-            setOpen(false) // Close drawer on success
+            handleOpenChange(false) // Close drawer on success
             notification.success({
                 title: 'Courses Assigned',
                 description: 'Courses have been assigned to Student',
@@ -93,12 +114,14 @@ export const SectorDetailDrawer = ({ student }: { student: Student }) => {
     }, [unassignCourseResult])
 
     return (
-        <Drawer open={open} onOpenChange={setOpen} direction="right">
-            <DrawerTrigger asChild>
-                <ActionButton variant="link" simple>
-                    View
-                </ActionButton>
-            </DrawerTrigger>
+        <Drawer open={open} onOpenChange={handleOpenChange} direction="right">
+            {isOpen === undefined && (
+                <DrawerTrigger asChild>
+                    <ActionButton variant="link" simple>
+                        View
+                    </ActionButton>
+                </DrawerTrigger>
+            )}
             <DrawerContent className="w-screen h-full mt-0 rounded-none">
                 <div className="mx-auto w-full h-full flex flex-col">
                     <DrawerHeader>

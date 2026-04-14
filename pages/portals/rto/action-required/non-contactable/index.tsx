@@ -1,10 +1,29 @@
 import { RtoLayoutV2 } from '@layouts'
 import { ActionRequiredHeader } from '@partials/rto-v2/components'
 import { NonContactableStudents } from '@partials/rto/student'
-import { UserX } from 'lucide-react'
+import { UserX, Clock, UserCheck } from 'lucide-react'
 import { ReactElement } from 'react'
+import { ConfigTabs } from '@components/ConfigTabs/ConfigTabs'
+
+const ActiveNonContactable = () => <NonContactableStudents />
+const ExpiredNonContactable = () => <NonContactableStudents params={`expired:${true}`} />
 
 export const NonContactablePage = () => {
+    const tabsConfig = [
+        {
+            value: 'active',
+            label: 'Active Non Contactable',
+            icon: UserCheck,
+            component: ActiveNonContactable,
+        },
+        {
+            value: 'expired',
+            label: 'Expired Non Contactable',
+            icon: Clock,
+            component: ExpiredNonContactable,
+        },
+    ]
+
     return (
         <div>
             <ActionRequiredHeader
@@ -16,7 +35,7 @@ export const NonContactablePage = () => {
                 iconGradient="from-red-500 to-red-700"
             />
             <div className="mt-5">
-                <NonContactableStudents />
+                <ConfigTabs tabs={tabsConfig} />
             </div>
         </div>
     )

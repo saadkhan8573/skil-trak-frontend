@@ -1,5 +1,4 @@
 import {
-    Button,
     Card,
     EmptyData,
     LoadingAnimation,
@@ -7,26 +6,25 @@ import {
     TableChildrenProps,
     TechnicalError,
 } from '@components'
-import { ColumnDef } from '@tanstack/react-table'
 
-import { UserRoles } from '@constants'
-import { DownloadEsignDocument } from '@partials/eSign'
 import { CommonApi } from '@queries'
-import { Building2, Eye, FileText, User } from 'lucide-react'
-import { useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { ReactElement, useEffect, useState } from 'react'
 import { useEsignColumns } from '../hooks/useEsignColumns'
 
-export const SignedEsignDocuments = () => {
+export const ReadyToSignEsignDocuments = () => {
+    const router = useRouter()
+
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
 
-    const router = useRouter()
+    useEffect(() => {
+        setPage(Number(router?.query?.page || 1))
+        setItemPerPage(Number(router?.query?.pageSize || 50))
+    }, [router])
 
-    const pendingDocuments = CommonApi.ESign.useListByStatusForRto(
+    const readyToSignDocuments = CommonApi.ESign.useReadyToSignDocumentsList(
         {
-            status: 'signed',
             skip: itemPerPage * page - itemPerPage,
             limit: itemPerPage,
         },
@@ -36,7 +34,6 @@ export const SignedEsignDocuments = () => {
     )
 
     const { columns } = useEsignColumns({
-        isSigned: true,
         removeColumnKeys: ['status'],
     })
 
@@ -44,14 +41,14 @@ export const SignedEsignDocuments = () => {
         <>
             <div className="flex flex-col gap-y-4">
                 <Card noPadding>
-                    {pendingDocuments?.isError && <TechnicalError />}
-                    {pendingDocuments?.isLoading ? (
+                    {readyToSignDocuments?.isError && <TechnicalError />}
+                    {readyToSignDocuments?.isLoading ? (
                         <LoadingAnimation height="h-[60vh]" />
-                    ) : pendingDocuments?.data &&
-                        pendingDocuments?.data?.data?.length ? (
+                    ) : readyToSignDocuments?.data &&
+                        readyToSignDocuments?.data?.data?.length ? (
                         <Table
                             columns={columns}
-                            data={pendingDocuments?.data.data}
+                            data={readyToSignDocuments?.data.data}
                         >
                             {({
                                 table,
@@ -66,35 +63,35 @@ export const SignedEsignDocuments = () => {
                                                 pageSize(
                                                     itemPerPage,
                                                     setItemPerPage,
-                                                    pendingDocuments?.data?.data
+                                                    readyToSignDocuments?.data?.data
                                                         ?.length
                                                 )}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination &&
                                                     pagination(
-                                                        pendingDocuments?.data
+                                                        readyToSignDocuments?.data
                                                             ?.pagination,
                                                         setPage
                                                     )}
                                             </div>
                                         </div>
                                         <div className="px-6">{table}</div>
-                                        {pendingDocuments?.data?.data?.length >
+                                        {readyToSignDocuments?.data?.data?.length >
                                             10 && (
                                                 <div className="p-6 mb-2 flex justify-between">
                                                     {pageSize &&
                                                         pageSize(
                                                             itemPerPage,
                                                             setItemPerPage,
-                                                            pendingDocuments?.data
+                                                            readyToSignDocuments?.data
                                                                 ?.data?.length
                                                         )}
                                                     <div className="flex gap-x-2">
                                                         {quickActions}
                                                         {pagination &&
                                                             pagination(
-                                                                pendingDocuments
+                                                                readyToSignDocuments
                                                                     ?.data
                                                                     ?.pagination,
                                                                 setPage
@@ -108,9 +105,9 @@ export const SignedEsignDocuments = () => {
                         </Table>
                     ) : (
                         <EmptyData
-                            title={'No Pending Student!'}
+                            title={'No Ready-To-Sign Documents!'}
                             description={
-                                'You have no pending Student request yet'
+                                'You have no e-sign documents currently ready to sign'
                             }
                             height={'50vh'}
                         />

@@ -8,6 +8,7 @@ const PREFIX = 'esign'
 interface RtoEsignCounts {
     pendingDocuments: number
     signedDocuments: number
+    readyToSign?: number
 }
 
 export const eSignEndpoints = (
@@ -304,6 +305,20 @@ export const eSignEndpoints = (
     usersPendingDocumentsList: builder.query<any, any>({
         query: (params) => ({
             url: `${PREFIX}/documents/pending/retrieve-for-user`,
+            params,
+        }),
+        providesTags: ['E-Sign'],
+    }),
+    listByStatusForRto: builder.query<any, any>({
+        query: (params) => ({
+            url: `${PREFIX}/documents/list-by-status-for-rto`,
+            params,
+        }),
+        providesTags: ['E-Sign'],
+    }),
+    usersReadyToSignDocumentsList: builder.query<any, PaginationValues>({
+        query: (params) => ({
+            url: `${PREFIX}/documents/ready-to-sign/retrieve-for-user`,
             params,
         }),
         providesTags: ['E-Sign'],

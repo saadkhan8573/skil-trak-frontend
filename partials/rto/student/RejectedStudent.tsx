@@ -26,7 +26,7 @@ export const RejectedStudent = () => {
 
     const { columns } = getTableConfig({
         actionKeys: ['accept', 'delete'],
-        removeColumnKeys: ['assigned', 'progress', 'expiry', 'industry'],
+        removeColumnKeys: ['assigned', 'progress', 'expiry', 'industry', 'batch', 'sectors', 'snoozed'],
     })
 
     return (

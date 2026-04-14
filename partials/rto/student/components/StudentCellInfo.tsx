@@ -13,7 +13,8 @@ import { FiPhoneOff } from 'react-icons/fi'
 import { ImPhone, ImPhoneHangUp } from 'react-icons/im'
 import { LuFlagTriangleRight } from 'react-icons/lu'
 import { MdEmail, MdPhone, MdSnooze } from 'react-icons/md'
-import { Timer } from 'lucide-react'
+import { Timer, Users } from 'lucide-react'
+import { SectorCourseGroup } from './SectorCourseGroup'
 
 export const StudentCellInfo = ({
     student,
@@ -54,9 +55,12 @@ export const StudentCellInfo = ({
             <div>
                 <div className="flex items-center gap-x-2">
                     <div className="flex items-center gap-x-2">
-                        <p className="flex items-center gap-x-1 text-xs">
-                            {ellipsisText(student?.studentId, 8)}
-                        </p>
+                        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-slate-600">
+                            <Users size={12} className="text-slate-500" />
+                            <span className="text-[11px] font-semibold tracking-wide uppercase">
+                                {student?.batch ? ellipsisText(student.batch, 18) : 'NO BATCH'}
+                            </span>
+                        </div>
                         {student?.nonContactable && (
                             <div className="group relative bg-red-600 p-1 rounded-full flex items-center justify-center">
                                 <FiPhoneOff className="text-white text-[10px]" />
@@ -135,21 +139,8 @@ export const StudentCellInfo = ({
                         </ShadcnTooltip>
                     ) : null}
                 </div>
-                <div className="font-medium text-xs text-gray-500">
-                    <p className="flex items-center gap-x-1">
-                        <span>
-                            <MdEmail />
-                        </span>
-                        {student?.user?.email}
-                    </p>
-                </div>
-                <div className="font-medium text-xs text-gray-500">
-                    <p className="flex items-center gap-x-1">
-                        <span>
-                            <MdPhone />
-                        </span>
-                        {student?.phone}
-                    </p>
+                <div className="mt-2">
+                    <SectorCourseGroup courses={student?.courses || []} />
                 </div>
             </div>
         </Link>

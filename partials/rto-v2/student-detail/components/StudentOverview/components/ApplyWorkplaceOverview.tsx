@@ -1,6 +1,7 @@
-import { BackButton, Button } from '@components'
+import { BackButton, Button, usePermissionCheck } from '@components'
 import { useAppSelector } from '@redux/hooks'
 import { IWorkplaceIndustries } from '@redux/queryTypes'
+import { PermissionType } from '@types'
 import {
     ArrowLeft,
     ArrowRight,
@@ -24,6 +25,7 @@ export function ApplyWorkplaceOverview({
 }) {
     const router = useRouter()
     const { selectedCourse: course } = useAppSelector((state) => state.student)
+    const { checkPermission } = usePermissionCheck()
 
     if (!course) return null
 
@@ -67,6 +69,7 @@ export function ApplyWorkplaceOverview({
             buttonText: 'Find Workplace with SkilTrak',
             buttonIcon: Search,
             action: () => handleNavigation('request'),
+            permission: PermissionType.ALLOW_STUDENT_NEED_WORKPLACE
         },
         {
             id: 2,
@@ -76,6 +79,7 @@ export function ApplyWorkplaceOverview({
             icon: Briefcase,
             badge: 'Option 2',
             variant: 'info' as const,
+            permission: PermissionType.ALLOW_STUDENT_OWN_WORKPLACE,
             colors: {
                 border: 'border-purple-200 hover:border-info',
                 shadow: 'hover:shadow-purple-500/20',
@@ -96,6 +100,12 @@ export function ApplyWorkplaceOverview({
             action: () => handleNavigation('provide'),
         },
     ]
+
+    const permittedPathwayOptions = pathwayOptions.filter((pathway) =>
+        checkPermission(pathway.permission)
+    )
+
+    if (permittedPathwayOptions.length === 0) return null
 
     return (
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200/60 shadow-xl shadow-slate-200/50 p-6 hover:shadow-2xl transition-all overflow-hidden relative">
@@ -179,8 +189,14 @@ export function ApplyWorkplaceOverview({
                 </div>
             </div>
             {/* Pathway Options - Side by Side */}
-            <div className="grid md:grid-cols-2 gap-4 mb-6">
-                {pathwayOptions.map((pathway) => {
+            <div
+                className={`grid gap-4 mb-6 ${
+                    permittedPathwayOptions.length > 1
+                        ? 'md:grid-cols-2'
+                        : 'md:grid-cols-1 max-w-xl mx-auto'
+                }`}
+            >
+                {permittedPathwayOptions.map((pathway) => {
                     const Icon = pathway?.icon
                     const ButtonIcon = pathway?.buttonIcon
 

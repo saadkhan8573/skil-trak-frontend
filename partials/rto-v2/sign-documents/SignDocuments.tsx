@@ -9,11 +9,8 @@ import debounce from 'lodash/debounce'
 import { CheckCircle, Clock, FileSignature } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { ActionRequiredHeader } from '../components'
-import {
-    FilteredEsignDocuments,
-    PendingEsignDocuments,
-    SignedEsignDocuments,
-} from './components'
+import { FilteredEsignDocuments, PendingEsignDocuments, ReadyToSignEsignDocuments, SignedEsignDocuments } from './components'
+
 export const SignDocuments = () => {
     const [studentNameValue, setStudentNameValue] = useState('')
     const [debouncedName, setDebouncedName] = useState('')
@@ -34,7 +31,7 @@ export const SignDocuments = () => {
 
     const filteredDataLength = checkFilteredDataLength(combinedFilters)
 
-    const filteredDocuments = CommonApi.ESign.usePendingDocumentsList(
+    const filteredDocuments = CommonApi.ESign.useListByStatusForRto(
         {
             search: `${JSON.stringify(combinedFilters)
                 .replaceAll('{', '')
@@ -55,8 +52,15 @@ export const SignDocuments = () => {
 
     const tabsConfig = [
         {
+            value: 'readyToSign',
+            label: 'Ready to Sign',
+            icon: FileSignature,
+            count: counts?.readyToSign,
+            component: ReadyToSignEsignDocuments,
+        },
+        {
             value: 'pending',
-            label: 'Pending',
+            label: 'Pending From Student/Industry',
             icon: Clock,
             count: counts?.pendingDocuments,
             component: PendingEsignDocuments,

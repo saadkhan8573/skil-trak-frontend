@@ -29,15 +29,16 @@ import {
     UnblockModal,
 } from '../modals'
 import { FaEdit, FaEye, FaUserPlus } from 'react-icons/fa'
-import { IconType } from 'react-icons'
 import { SectorCell, StudentCellInfo } from '../components'
 import { MdBlock } from 'react-icons/md'
+import { SectorDetailDrawer } from '../components/drawer/SectorDetailDrawer'
 
 type ActionKey =
     | 'assign'
     | 'block'
     | 'changeStatus'
     | 'changeExpiry'
+    | 'changeSector'
     | 'unblock'
     | 'delete'
     | 'accept'
@@ -74,9 +75,19 @@ interface TableConfig {
     actions: TableActionOption<Student>[]
 }
 
-export const useColumns = () => {
+export interface UseColumnsProps {
+    baseLinkPath?: string
+}
+
+export const useColumns = (hookOptions?: UseColumnsProps) => {
     const router = useRouter()
     const [modal, setModal] = useState<ReactElement | null>(null)
+
+    const basePathRaw = router?.asPath?.split('?')[0] || ''
+    const currentPath = basePathRaw.endsWith('/') ? basePathRaw.slice(0, -1) : basePathRaw
+
+    // Use the explicit baseLinkPath if provided, otherwise dynamically fallback to the current page path
+    const basePath = hookOptions?.baseLinkPath || currentPath
 
     const onModalCancelClicked = (): void => {
         setModal(null)
@@ -96,6 +107,16 @@ export const useColumns = () => {
             <ChangeStudentStatusModal
                 student={student}
                 onCancel={onModalCancelClicked}
+            />
+        )
+    }
+
+    const onChangeSectorClicked = (student: Student): void => {
+        setModal(
+            <SectorDetailDrawer
+                student={student}
+                isOpen={true}
+                onClose={() => onModalCancelClicked()}
             />
         )
     }
@@ -175,13 +196,7 @@ export const useColumns = () => {
             accessorKey: 'name',
             cell: (info) => (
                 <StudentCellInfo
-                    {...(router?.pathname?.startsWith(
-                        '/portals/rto/students-and-placements/all-students'
-                    )
-                        ? {
-                              link: `/portals/rto/students-and-placements/all-students/${info?.row?.original?.id}/detail`,
-                          }
-                        : {})}
+                    link={`${basePath}/${info?.row?.original?.id}/detail`}
                     student={info.row.original}
                     call
                 />
@@ -202,8 +217,8 @@ export const useColumns = () => {
                         industries={info.row.original?.industries}
                     />
                 ) : info.row.original?.workplace &&
-                  info.row.original?.workplace?.length > 0 &&
-                  appliedIndustry ? (
+                    info.row.original?.workplace?.length > 0 &&
+                    appliedIndustry ? (
                     <SubadminStudentIndustries
                         workplace={info.row.original?.workplace}
                         industries={info.row.original?.industries}
@@ -220,7 +235,7 @@ export const useColumns = () => {
         },
         {
             accessorKey: 'expiry',
-            header: () => <span>Day Left</span>,
+            header: () => <span>Expiry</span>,
             cell: (info) => (
                 <StudentExpiryDaysLeft
                     expiryDate={info.row.original?.expiryDate}
@@ -344,6 +359,11 @@ export const useColumns = () => {
             onClick: (student) => onChangeStatus(student),
             Icon: FaEdit,
         },
+        changeSector: {
+            text: 'Change Sector',
+            onClick: (student) => onChangeSectorClicked(student),
+            Icon: FaEdit,
+        },
         changeExpiry: {
             text: 'Change Expiry',
             onClick: (student) => onDateClick(student),
@@ -384,17 +404,7 @@ export const useColumns = () => {
         {
             text: 'View',
             onClick: (student: Student) => {
-                if (
-                    router?.pathname?.startsWith(
-                        '/portals/rto/students-and-placements/all-students'
-                    )
-                ) {
-                    router.push(
-                        `/portals/rto/students-and-placements/all-students/${student.id}/detail`
-                    )
-                } else {
-                    router.push(`/portals/rto/students/${student.id}`)
-                }
+                router.push(`${basePath}/${student.id}/detail`)
             },
             // onClick: (student) => {
             //     alert(`Viewing student: ${student.id}`)
@@ -403,10 +413,9 @@ export const useColumns = () => {
         },
         {
             text: 'Edit',
-            onClick: (student: Student) =>
-                router.push(
-                    `/portals/rto/students-and-placements/all-students/${student.id}/edit-student`
-                ),
+            onClick: (student: Student) => {
+                router.push(`${basePath}/${student.id}/edit-student`)
+            },
             Icon: FaEdit,
         },
     ]

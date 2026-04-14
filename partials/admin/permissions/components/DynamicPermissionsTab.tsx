@@ -13,11 +13,11 @@ import {
 import { PermissionCategorySection } from '@partials/admin/permissions/components'
 
 interface DynamicPermissionsTabProps {
-    rtoUserId?: number
+    userId?: number
 }
 
 export const DynamicPermissionsTab: FC<DynamicPermissionsTabProps> = ({
-    rtoUserId,
+    userId,
 }) => {
     const { notification } = useNotification()
     const { data: permissionsData } = AdminApi.Permissions.useListQuery({
@@ -25,24 +25,17 @@ export const DynamicPermissionsTab: FC<DynamicPermissionsTabProps> = ({
         limit: 1000,
     })
     const { data: myPermissions } = AdminApi.Permissions.useMyPermissions(
-        rtoUserId as number,
+        userId as number,
         {
-            skip: !rtoUserId,
+            skip: !userId,
         }
     )
 
     const [searchQuery, setSearchQuery] = useState('')
     const [showDisabledOnly, setShowDisabledOnly] = useState(false)
-    const [expandedSections, setExpandedSections] = useState<string[]>([
-        'actions',
-        'students',
-        'communications',
-        'manage',
-        'tools',
-        'student-features',
-        'billing',
-        'security',
-    ])
+    const [expandedSections, setExpandedSections] = useState<string[]>(
+        Object.keys(categoryConfig)
+    )
     const [loadingPermissions, setLoadingPermissions] = useState<Set<string>>(
         new Set()
     )
@@ -160,25 +153,12 @@ export const DynamicPermissionsTab: FC<DynamicPermissionsTabProps> = ({
 
                 <div className="flex items-center gap-2 w-full md:w-auto">
                     <Button
-                        variant={showDisabledOnly ? 'primary' : 'dark'}
-                        outline={!showDisabledOnly}
-                        onClick={() => setShowDisabledOnly(!showDisabledOnly)}
-                    >
-                        <ToggleLeft
-                            className={`h-5 w-5 ${showDisabledOnly ? 'rotate-180 text-white' : 'text-muted-foreground'}`}
-                        />
-                        <span className="text-sm font-semibold">
-                            {showDisabledOnly ? 'Showing Disabled' : 'Show All'}
-                        </span>
-                    </Button>
-
-                    <Button
                         variant="primary"
                         outline
                         onClick={() => toggleSection('all')}
                     >
                         {expandedSections.length ===
-                        Object.keys(groupedPermissions).length ? (
+                            Object.keys(groupedPermissions).length ? (
                             <>
                                 <EyeOff className="h-5 w-5 text-primary hover:text-white transition-all" />
                                 <span className="text-sm font-semibold text-primary hover:text-white transition-all">
@@ -199,11 +179,13 @@ export const DynamicPermissionsTab: FC<DynamicPermissionsTabProps> = ({
 
             {/* Dynamic Permission Sections */}
             {Object.keys(groupedPermissions).length > 0 ? (
-                Object.entries(groupedPermissions).map(
-                    ([category, categoryPermissions]) => {
+                Object.keys(categoryConfig)
+                    .filter((category) => groupedPermissions[category])
+                    .map((category) => {
+                        const categoryPermissions = groupedPermissions[category]
                         const config =
                             categoryConfig[
-                                category as keyof typeof categoryConfig
+                            category as keyof typeof categoryConfig
                             ]
                         const IconComponent = config?.icon || AlertCircle
 
@@ -221,11 +203,10 @@ export const DynamicPermissionsTab: FC<DynamicPermissionsTabProps> = ({
                                 loadingPermissions={loadingPermissions}
                                 setLoadingPermissions={setLoadingPermissions}
                                 notification={notification}
-                                rtoUserId={rtoUserId}
+                                userId={userId}
                             />
                         )
-                    }
-                )
+                    })
             ) : (
                 <Card className="border-border/40 shadow-xl bg-white/50 backdrop-blur-sm">
                     <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">

@@ -31,16 +31,9 @@ export const DynamicPermissionTab: FC<DynamicPermissionTabProps> = ({
 
     const [searchQuery, setSearchQuery] = useState('')
     const [showDisabledOnly, setShowDisabledOnly] = useState(false)
-    const [expandedSections, setExpandedSections] = useState<string[]>([
-        'actions',
-        'students',
-        'communications',
-        'manage',
-        'tools',
-        'student-features',
-        'billing',
-        'security',
-    ])
+    const [expandedSections, setExpandedSections] = useState<string[]>(
+        Object.keys(categoryConfig)
+    )
     const [loadingPermissions, setLoadingPermissions] = useState<Set<string>>(
         new Set()
     )
@@ -181,7 +174,7 @@ export const DynamicPermissionTab: FC<DynamicPermissionTabProps> = ({
                         onClick={() => toggleSection('all')}
                     >
                         {expandedSections.length ===
-                        Object.keys(groupedPermissions).length ? (
+                            Object.keys(groupedPermissions).length ? (
                             <>
                                 <EyeOff className="h-5 w-5 text-primary" />
                                 <span className="text-sm font-semibold">
@@ -202,8 +195,10 @@ export const DynamicPermissionTab: FC<DynamicPermissionTabProps> = ({
 
             {/* Dynamic Permission Sections */}
             {Object.keys(groupedPermissions).length > 0 ? (
-                Object.entries(groupedPermissions).map(
-                    ([category, categoryPermissions]) => {
+                Object.keys(categoryConfig)
+                    .filter((category) => groupedPermissions[category])
+                    .map((category) => {
+                        const categoryPermissions = groupedPermissions[category]
                         const config =
                             categoryConfig[
                                 category as keyof typeof categoryConfig
@@ -224,11 +219,10 @@ export const DynamicPermissionTab: FC<DynamicPermissionTabProps> = ({
                                 loadingPermissions={loadingPermissions}
                                 setLoadingPermissions={setLoadingPermissions}
                                 notification={notification}
-                                rtoUserId={userId}
+                                userId={userId}
                             />
                         )
-                    }
-                )
+                    })
             ) : (
                 <Card className="border-border/40 shadow-xl bg-white/50 backdrop-blur-sm">
                     <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">

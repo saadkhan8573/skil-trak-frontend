@@ -9,8 +9,8 @@ import {
 
 import { CommonApi } from '@queries'
 import { useRouter } from 'next/router'
-import { ReactElement, useEffect, useState } from 'react'
-import { useEsignColumns } from '../hooks/useEsignColumns'
+import { useEffect, useState } from 'react'
+import { useEsignColumns } from '../hooks'
 
 export const PendingEsignDocuments = () => {
     const router = useRouter()
@@ -35,6 +35,7 @@ export const PendingEsignDocuments = () => {
     )
 
     const { columns } = useEsignColumns({
+        columnKeys: ['document', 'student', 'industryPartner', 'status', 'action'],
         removeColumnKeys: ['status'],
     })
 

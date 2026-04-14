@@ -30,7 +30,7 @@ export const ApprovedStudent = () => {
 
     const { columns } = getTableConfig({
         removeColumnKeys: ['snoozed', 'sectors', 'batch'],
-        actionKeys: ['assign', 'block', 'changeStatus', 'changeExpiry'],
+        actionKeys: ['assign', 'block', 'changeStatus', 'changeExpiry', 'changeSector'],
     })
 
     const exportList = RtoApi.Students.useExportStudentList(

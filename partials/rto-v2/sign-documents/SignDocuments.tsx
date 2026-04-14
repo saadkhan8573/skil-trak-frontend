@@ -3,7 +3,6 @@ import {
 } from '@components'
 import { ConfigTabs } from '@components/ConfigTabs/ConfigTabs'
 import { CommonApi } from '@queries'
-import { RtoEsignFilterType } from '@types'
 import { checkFilteredDataLength, removeEmptyValues } from '@utils'
 import debounce from 'lodash/debounce'
 import { CheckCircle, Clock, FileSignature } from 'lucide-react'
@@ -81,14 +80,8 @@ export const SignDocuments = () => {
                 icon={FileSignature}
                 title="E-Sign Documents Required"
                 description="Sign urgent documents before Monday to proceed with student placements"
-                urgentCount={1}
-                // urgentLabel={`Urgent (Due in 2 days)`}
-                // pendingCount={22}
+                urgentCount={counts?.readyToSign}
                 pendingLabel="Pending"
-                // actionButton={{
-                //     label: 'Sign All Documents',
-                //     icon: CheckCircle2,
-                // }}
                 warningMessage="<strong>Important:</strong> All documents must be electronically signed before placements can commence. Documents use secure e-signature technology compliant with Australian regulations."
                 gradientFrom="primary"
                 gradientTo="primary-light"
@@ -123,7 +116,7 @@ export const SignDocuments = () => {
                     <ConfigTabs
                         tabs={tabsConfig}
                         defaultValue="pending"
-                        tabsClasses="bg-slate-50/50 border-b border-slate-100 p-1 gap-2 rounded-t-xl rounded-b-none"
+                        tabsClasses="border-b border-slate-100 p-1 gap-2 rounded-t-xl rounded-b-none"
                     />
                 )}
             </div>

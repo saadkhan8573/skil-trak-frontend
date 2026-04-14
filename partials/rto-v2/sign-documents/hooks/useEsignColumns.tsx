@@ -7,12 +7,14 @@ import { Building2, Eye, FileText, User } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
+import moment from 'moment'
 
 export type EsignColumnKey =
     | 'document'
     | 'student'
     | 'industryPartner'
     | 'status'
+    | 'signDate'
     | 'action'
 
 interface UseEsignColumnsOptions {
@@ -109,6 +111,20 @@ export const useEsignColumns = (options?: UseEsignColumnsOptions) => {
                         )?.status || '--'}
                     </span>
                 ),
+            },
+            {
+                accessorKey: 'signDate',
+                header: () => <span>RTO Sign Date</span>,
+                cell: (info) => {
+                    const signDate = info?.row?.original?.template?.tabs?.find(
+                        (s: any) => s?.role === UserRoles.RTO
+                    )?.responses?.[0]?.createdAt
+                    return (
+                        <span className="capitalize text-sm font-medium">
+                            {signDate && isSigned ? moment(signDate).format('DD/MM/YYYY hh:mm A') : '--'}
+                        </span>
+                    )
+                },
             },
             {
                 accessorKey: 'action',

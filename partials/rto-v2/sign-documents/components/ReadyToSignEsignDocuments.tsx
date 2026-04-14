@@ -34,6 +34,7 @@ export const ReadyToSignEsignDocuments = () => {
     )
 
     const { columns } = useEsignColumns({
+        columnKeys: ['document', 'student', 'industryPartner', 'status', 'action'],
         removeColumnKeys: ['status'],
     })
 

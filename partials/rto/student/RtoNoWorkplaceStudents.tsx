@@ -26,7 +26,7 @@ export const RtoNoWorkplaceStudents = () => {
 
     const { columns } = getTableConfig({
         removeColumnKeys: ['snoozed', 'sectors', 'batch', 'industry'],
-        actionKeys: ['assign', 'block', 'changeStatus', 'changeExpiry'],
+        actionKeys: ['assign', 'block', 'changeStatus', 'changeExpiry', 'changeSector'],
     })
 
     const [itemPerPage, setItemPerPage] = useState(50)

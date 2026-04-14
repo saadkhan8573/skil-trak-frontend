@@ -7,6 +7,8 @@ import React from 'react'
 export const WelcomeCard = () => {
     const { data: rto } = RtoApi.Rto.useProfile()
     const counts = RtoV2Api.Dashboard.rtoDashboardCounts()
+    const { data: navBarCounts } = RtoV2Api.Dashboard.navBarCounts()
+
     return (
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primaryNew via-primaryNew to-primaryNew p-5 md:p-6 shadow-premium-xl animate-fade-in">
             {/* Animated background blobs - Optimized */}
@@ -42,7 +44,7 @@ export const WelcomeCard = () => {
                             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent"></span>
                         </div>
                         <span className="text-xs text-white/90 font-semibold">
-                            {counts?.data?.students || 0} Active Students
+                            {navBarCounts?.allStudents || 0} Active Students
                         </span>
                     </div>
                     <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white/10 backdrop-blur-sm">

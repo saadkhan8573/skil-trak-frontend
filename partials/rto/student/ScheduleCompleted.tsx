@@ -10,8 +10,7 @@ import {
 import { FaEdit } from 'react-icons/fa'
 
 import { RtoApi } from '@queries'
-import { Student, UserStatus } from '@types'
-import { WorkplaceCurrentStatus } from '@utils'
+import { Student } from '@types'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
 import { MdBlock, MdChangeCircle } from 'react-icons/md'
@@ -27,7 +26,7 @@ export const ScheduleCompleted = () => {
 
     const { columns } = getTableConfig({
         removeColumnKeys: ['snoozed', 'sectors', 'batch'],
-        actionKeys: ['assign', 'block', 'changeStatus', 'changeExpiry'],
+        actionKeys: ['assign', 'block', 'changeStatus', 'changeExpiry', 'changeSector'],
     })
 
     const [itemPerPage, setItemPerPage] = useState(50)

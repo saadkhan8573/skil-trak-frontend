@@ -1,21 +1,15 @@
 import {
-    Button,
     Card,
     EmptyData,
     LoadingAnimation,
     Table,
     TableChildrenProps,
-    TechnicalError,
+    TechnicalError
 } from '@components'
-import { ColumnDef } from '@tanstack/react-table'
 
-import { UserRoles } from '@constants'
-import { DownloadEsignDocument } from '@partials/eSign'
 import { CommonApi } from '@queries'
-import { Building2, Eye, FileText, User } from 'lucide-react'
-import { useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { useEsignColumns } from '../hooks/useEsignColumns'
 
 export const SignedEsignDocuments = () => {
@@ -37,6 +31,7 @@ export const SignedEsignDocuments = () => {
 
     const { columns } = useEsignColumns({
         isSigned: true,
+        columnKeys: ['document', 'student', 'industryPartner', 'status', 'signDate', 'action'],
         removeColumnKeys: ['status'],
     })
 

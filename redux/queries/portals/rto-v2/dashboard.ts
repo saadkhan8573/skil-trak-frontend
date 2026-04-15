@@ -24,6 +24,7 @@ export const dashboardEndpoints = (
             nonContactable: number
             snoozed: number
             placementRequests: number
+            skiltrakFlagged: number
         },
         void
     >({

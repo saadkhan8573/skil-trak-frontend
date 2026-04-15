@@ -135,6 +135,7 @@ export const {
     useGetActiveStudentsListQuery,
     useGetPendingStudentsListQuery,
     useGetInProgressStudentsListQuery,
+    useGetSkiltrakFlaggedStudentsListQuery,
     useGetNoWorkplaceStudentsListQuery,
     useGetPlacementStartedStudentsListQuery,
     useGetScheduleCompletedStudentsListQuery,
@@ -206,12 +207,16 @@ export const RtoApi = {
         useActiveStudentsList: useGetActiveStudentsListQuery,
         usePendingStudentsList: useGetPendingStudentsListQuery,
         useInProgressStudentsList: useGetInProgressStudentsListQuery,
+        useSkiltrakFlaggedStudentsList: useGetSkiltrakFlaggedStudentsListQuery,
         useNoWorkplaceStudentsList: useGetNoWorkplaceStudentsListQuery,
-        usePlacementStartedStudentsList: useGetPlacementStartedStudentsListQuery,
-        useScheduleCompletedStudentsList: useGetScheduleCompletedStudentsListQuery,
+        usePlacementStartedStudentsList:
+            useGetPlacementStartedStudentsListQuery,
+        useScheduleCompletedStudentsList:
+            useGetScheduleCompletedStudentsListQuery,
         useExpiredStudentsList: useGetExpiredStudentsListQuery,
         useBlockedStudentsList: useGetBlockedStudentsListQuery,
-        useQualificationIssuedStudentsList: useGetQualificationIssuedStudentsListQuery,
+        useQualificationIssuedStudentsList:
+            useGetQualificationIssuedStudentsListQuery,
         useCount: useStudentsCountQuery,
         useRtoResolveIssuesStudents: useGetRtoResolveIssuesStudentsQuery,
         useRtoResolveIssuesStudentsCount:
@@ -219,7 +224,8 @@ export const RtoApi = {
         useRtoResolveIssue: useRtoResolveIssueMutation,
         useImportStudents: useStudentsImportMutation,
         useRtoStudentsList: useGetRtoStudentsListQuery,
-        useGetNonContactableStudentsListQuery: useGetNonContactableStudentsListQuery,
+        useGetNonContactableStudentsListQuery:
+            useGetNonContactableStudentsListQuery,
         useAddStudent: useAddStudentMutation,
         useRtoCompletedStudents: useRtoCompletedStudentsQuery,
         useCompareCode: useCompareVerificationCodeMutation,

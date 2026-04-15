@@ -24,7 +24,7 @@ export const FilteredStudents = ({
 
     const { columns } = getTableConfig({
         actionKeys: ['block'],
-        removeColumnKeys: ['assigned'],
+        removeColumnKeys: ['assigned', "batch", "sectors"],
     })
 
     return (

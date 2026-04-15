@@ -30,6 +30,7 @@ import {
     ExpiredStudent,
     BlockedStudent,
     RejectedStudent,
+    SkiltrakFlaggedStudents,
 } from '@partials/rto/student'
 import { RtoApi, useGetRtoStudentsQuery } from '@queries'
 import { checkFilteredDataLength } from '@utils'
@@ -152,6 +153,15 @@ const RtoStudents: NextPageWithLayout = (props: Props) => {
             },
             href: { pathname: 'students', query: { tab: 'no-workplace' } },
             element: <RtoNoWorkplaceStudents />,
+        },
+        {
+            label: 'Skiltrak Flagged',
+            badge: {
+                text: count?.data?.skiltrakFlagged,
+                loading: count.isLoading,
+            },
+            href: { pathname: 'students', query: { tab: 'skiltrak-flagged' } },
+            element: <SkiltrakFlaggedStudents />,
         },
         {
             label: 'Placement Started',

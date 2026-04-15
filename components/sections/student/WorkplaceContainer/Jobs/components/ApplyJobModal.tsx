@@ -45,6 +45,14 @@ export const ApplyJobModal = ({
         }
     }, [applyForJobResult])
 
+    useEffect(() => {
+        return () => {
+            if (resume && typeof resume === 'string' && resume.startsWith('blob:')) {
+                URL.revokeObjectURL(resume)
+            }
+        }
+    }, [resume])
+
     const onApplyJob = () => {
         const formData = new FormData()
 
@@ -119,6 +127,9 @@ export const ApplyJobModal = ({
                                     required
                                     onChange={(doc: File) => {
                                         setFile(doc)
+                                        if (resume && typeof resume === 'string' && resume.startsWith('blob:')) {
+                                            URL.revokeObjectURL(resume)
+                                        }
                                         setResume(URL.createObjectURL(doc))
                                         setSelectedResume(true)
                                     }}
@@ -145,6 +156,9 @@ export const ApplyJobModal = ({
                                     onChange={(e: any) => {
                                         const file = e.target.files[0]
                                         setFile(file)
+                                        if (resume && typeof resume === 'string' && resume.startsWith('blob:')) {
+                                            URL.revokeObjectURL(resume)
+                                        }
                                         setResume(URL.createObjectURL(file))
                                         setSelectedResume(true)
                                         setNewResumeUploaded(true)

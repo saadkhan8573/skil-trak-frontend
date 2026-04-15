@@ -1,4 +1,5 @@
 export * from './CourseProgress'
+export * from './AgreementInitiatedCard'
 export * from './HighlightedTasks'
 export * from './PlacementRequest'
 export * from './PlacementRequirements'

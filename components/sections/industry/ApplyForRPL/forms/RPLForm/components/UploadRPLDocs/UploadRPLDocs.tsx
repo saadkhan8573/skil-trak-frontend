@@ -39,6 +39,7 @@ export const UploadRPLDocs = ({
     }, [values])
 
     const handleRemove = () => {
+        if (mediaFile.file) URL.revokeObjectURL(mediaFile.file)
         setMediaFile({
             file: '',
             type: '',
@@ -47,12 +48,21 @@ export const UploadRPLDocs = ({
         setValues(null)
     }
 
+    useEffect(() => {
+        return () => {
+            if (mediaFile.file) {
+                URL.revokeObjectURL(mediaFile.file)
+            }
+        }
+    }, [mediaFile.file])
+
     // Uploading Media
     const handleChange = (event: any, isDragging: boolean) => {
         setIsDrag(false)
         // Gettin file Data
         setValues(event.target.files[0])
         const FileData = event[0] || event.target.files[0]
+        if (mediaFile.file) URL.revokeObjectURL(mediaFile.file)
         setMediaFile({
             file: URL.createObjectURL(FileData),
             type: FileData.type,

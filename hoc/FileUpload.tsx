@@ -88,6 +88,7 @@ export const FileUpload = ({
     const [dragging, setDragging] = useState(false)
 
     const handleRemove = () => {
+        if (fileObject) URL.revokeObjectURL(fileObject)
         setFile(null)
         setFileObject(null)
         setInvalidSelection(false)
@@ -99,6 +100,14 @@ export const FileUpload = ({
             })
         }
     }
+
+    useEffect(() => {
+        return () => {
+            if (fileObject) {
+                URL.revokeObjectURL(fileObject)
+            }
+        }
+    }, [fileObject])
 
     useEffect(() => {
         if (formContext && values) {
@@ -132,6 +141,7 @@ export const FileUpload = ({
             setFileList(multipleFiles)
         } else {
             setFile(fileData[0])
+            if (fileObject) URL.revokeObjectURL(fileObject)
             setFileObject(URL.createObjectURL(fileData[0]))
             onChange && onChange(fileData[0])
         }
@@ -165,6 +175,7 @@ export const FileUpload = ({
             ) {
                 setInvalidSelection(false)
                 setFile(fileData[0])
+                if (fileObject) URL.revokeObjectURL(fileObject)
                 setFileObject(URL.createObjectURL(fileData[0]))
             } else {
                 setInvalidSelection(true)

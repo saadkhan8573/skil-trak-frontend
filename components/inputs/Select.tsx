@@ -256,14 +256,18 @@ export const Select = forwardRef(
                     borderRadius: '4px',
                 }
             },
-            multiValueRemove: (styles: any, { data }: { data: any }) => ({
-                ...styles,
-                color: 'orange',
-                ':hover': {
-                    backgroundColor: 'orange',
-                    color: 'white',
-                },
-            }),
+            multiValueRemove: (styles: any, { data }: { data: any }) => {
+                return data.isFixed
+                    ? { ...styles, display: 'none' }
+                    : {
+                          ...styles,
+                          color: 'orange',
+                          ':hover': {
+                              backgroundColor: 'orange',
+                              color: 'white',
+                          },
+                      }
+            },
             menuPortal: (base: any) => ({
                 ...base,
                 zIndex: 9999,
@@ -298,8 +302,24 @@ export const Select = forwardRef(
                     onBlur={onBlur}
                     isMulti={multi}
                     options={options}
-                    isClearable={true}
-                    onChange={onChange}
+                    isClearable={!options?.some((opt: any) => opt.isFixed)}
+                    onChange={(newValue: any, actionMeta: any) => {
+                        if (
+                            (actionMeta.action === 'remove-value' ||
+                                actionMeta.action === 'pop-value' ||
+                                actionMeta.action === 'deselect-option') &&
+                            actionMeta.removedValue?.isFixed
+                        ) {
+                            return
+                        }
+                        if (
+                            actionMeta.action === 'clear' &&
+                            options?.some((opt: any) => opt.isFixed)
+                        ) {
+                            return
+                        }
+                        onChange(newValue, actionMeta)
+                    }}
                     isLoading={loading}
                     styles={CustomStyle}
                     isDisabled={disabled}
@@ -330,10 +350,10 @@ export const Select = forwardRef(
                     name={name}
                     render={({ field }) => {
                         return getSimpleSelect(
-                            (event: any) => {
+                            (event: any, actionMeta: any) => {
                                 const selectedData = handleChange(event)
                                 field.onChange(selectedData)
-                                onChange && onChange(selectedData)
+                                onChange && onChange(selectedData, actionMeta)
                             },
                             onBlur,
                             defaultValue,

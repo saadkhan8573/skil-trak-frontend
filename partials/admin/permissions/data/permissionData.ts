@@ -133,11 +133,11 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         icon: Zap,
         category: 'manage',
     },
-    [PermissionType.INDUSTRIES]: {
-        label: 'Industries Management',
-        description: 'Add, edit, and manage industry partners',
+    [PermissionType.LIST_ALL_INDUSTRIES]: {
+        label: 'List All Industries',
+        description: 'List All Industries',
         icon: Building2,
-        category: 'manage',
+        category: 'industry',
     },
     [PermissionType.TEAM_MANAGEMENT]: {
         label: 'Team Management',
@@ -252,7 +252,7 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         description:
             'Enable core actions for industrial partners and workplaces',
         icon: Building2,
-        category: 'manage',
+        category: 'industry',
     },
     [PermissionType.CAN_USE_CHATBOT]: {
         label: 'Can Use Chatbot',
@@ -397,7 +397,7 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'Can View Industry Detail',
         description: '',
         icon: Users,
-        category: 'students',
+        category: 'industry',
     },
     [PermissionType.VIEW_ALL_TICKETS]: {
         label: 'View All Tickets',
@@ -421,25 +421,25 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'Allow Industry Listing',
         description: '',
         icon: Settings,
-        category: 'manage',
+        category: 'industry',
     },
     [PermissionType.CAN_IMPORT_INDUSTRY]: {
         label: 'Can Import Industry',
         description: '',
         icon: Settings,
-        category: 'manage',
+        category: 'industry',
     },
     [PermissionType.CAN_IMPORT_INDUSTRY_LISTING]: {
         label: 'Can Import Industry Listing',
         description: '',
         icon: Settings,
-        category: 'manage',
+        category: 'industry',
     },
     [PermissionType.TOGGLE_DISTRIBUTE_INDUSTRIES]: {
         label: 'Toggle Distribute Industries',
         description: '',
         icon: Settings,
-        category: 'manage',
+        category: 'industry',
     },
     [PermissionType.MANAGE_USERS]: {
         label: 'Manage Users',
@@ -463,7 +463,7 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'Manage Industries',
         description: '',
         icon: Settings,
-        category: 'manage',
+        category: 'industry',
     },
     [PermissionType.MANAGE_COORDINATORS]: {
         label: 'Manage Coordinators',
@@ -583,7 +583,7 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'View Industry Profile',
         description: '',
         icon: Settings,
-        category: 'students',
+        category: 'industry',
     },
     [PermissionType.TERMINATE_PLACEMENT]: {
         label: 'Terminate Placement',
@@ -635,6 +635,15 @@ export const categoryConfig = {
         bgHover: 'hover:from-primary/10 hover:to-secondary/10',
         iconBg: 'bg-primary/10',
         iconColor: 'text-primary',
+    },
+    industry: {
+        label: 'Industry',
+        icon: Building2,
+        description: 'Industry and workplace management',
+        bg: 'bg-linear-to-r from-blue-500/5 to-primary/5',
+        bgHover: 'hover:from-blue-500/10 hover:to-primary/10',
+        iconBg: 'bg-blue-100',
+        iconColor: 'text-blue-500',
     },
     manage: {
         label: 'Manage',

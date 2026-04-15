@@ -11,6 +11,8 @@ import {
     WorkplaceWorkIndustriesType,
 } from '@redux/queryTypes'
 import { ResendApprovalEmailModal } from '../../modal/ResendApprovalEmailModal'
+import { WorkplaceCurrentStatus } from '@utils'
+import { AgreementInitiatedCard } from './AgreementInitiatedCard'
 import { AbourtWorkplace } from './AbourtWorkplace'
 import { IndustryApprovalCard } from './IndustryApprovalCard'
 import { StudentWorkplaceComplianceChecks } from './StudentWorkplaceComplianceChecks'
@@ -89,13 +91,23 @@ export function WorkplaceBio({ workplace, onAddNew }: WorkplaceBioProps) {
                                     />
 
                                     {/* Current Stage Actions Card - Flex-1 to Fill Remaining Space */}
-                                    <IndustryApprovalCard
-                                        workplace={workplace}
-                                        workIndustry={workIndustry!}
-                                        latestWorkplaceApprovaleRequest={
-                                            latestWorkplaceApprovaleRequest
-                                        }
-                                    />
+                                    {workplace?.currentStatus ===
+                                    WorkplaceCurrentStatus.AwaitingAgreementSigned ? (
+                                        <AgreementInitiatedCard
+                                            workplace={workplace}
+                                            workplaceCurrentStatus={
+                                                workplace?.currentStatus
+                                            }
+                                        />
+                                    ) : (
+                                        <IndustryApprovalCard
+                                            workplace={workplace}
+                                            workIndustry={workIndustry!}
+                                            latestWorkplaceApprovaleRequest={
+                                                latestWorkplaceApprovaleRequest
+                                            }
+                                        />
+                                    )}
                                 </div>
                             </div>
                         </div>

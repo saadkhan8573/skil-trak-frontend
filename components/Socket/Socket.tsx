@@ -70,7 +70,7 @@ export const Socket = ({ children }: any) => {
             const userId = AuthUtils.getUserCredentials()?.id
             socket.emit('join', userId)
             socket.off('joined') // cleanup before rebind
-            socket.on('joined', () => {})
+            socket.on('joined', () => { })
 
             // 🚨 FIRST: Remove all previous listeners
             Object.values(SocketNotificationsEvents).forEach((event) => {
@@ -107,16 +107,24 @@ export const Socket = ({ children }: any) => {
                 }
             )
 
-            // ✅ Optional cleanup when component unmounts
-            // return () => {
-            //     Object.values(SocketNotificationsEvents).forEach((event) => {
-            //         socket.off(event)
-            //     })
-            //     socket.off('joined')
-            //     disconnectSocket()
-            // }
+            // ✅ CORRECT cleanup - only remove listeners, don't disconnect socket
+            return () => {
+                // Remove all event listeners to prevent duplicates
+                Object.values(SocketNotificationsEvents).forEach((event) => {
+                    socket.off(event)
+                })
+                socket.off('joined')
+                // ❌ DON'T disconnect the socket - it's needed by other components!
+            }
         }
-    }, [socket])
+    }, [
+        socket,
+        notification,
+        setEventListener,
+        dispatch,
+        handleNotificationClick,
+        invalidateCacheForEvent,
+    ])
 
     return children
 }

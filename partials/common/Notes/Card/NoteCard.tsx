@@ -27,6 +27,14 @@ export const NoteCard = ({ note }: { note: NoteType | any }) => {
     const [audioUrl, setAudioUrl] = useState<string>('')
     const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
+    useEffect(() => {
+        return () => {
+            if (audioUrl) {
+                URL.revokeObjectURL(audioUrl)
+            }
+        }
+    }, [audioUrl])
+
     const [statusChange, statusChangeResult] = CommonApi.Notes.useStatusChange()
     const togglePin = async () => {
         const res: any = await statusChange(note.id)

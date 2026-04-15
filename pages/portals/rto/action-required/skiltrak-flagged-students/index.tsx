@@ -5,23 +5,20 @@ import {
     TechnicalError,
     TextInput,
 } from '@components'
-import { ConfigTabs, TabConfig } from '@components/ConfigTabs/ConfigTabs'
 import { RtoLayoutV2 } from '@layouts'
 import { ActionRequiredHeader, Title } from '@partials/rto-v2/components'
-import { FilteredStudents, NonContactableStudents } from '@partials/rto/student'
-import { RtoApi, useGetNonContactableStudentsListQuery } from '@queries'
+import {
+    FilteredStudents,
+    SkiltrakFlaggedStudents,
+} from '@partials/rto/student'
+import { RtoApi, useGetSkiltrakFlaggedStudentsListQuery } from '@queries'
 import { checkFilteredDataLength } from '@utils'
 import debounce from 'lodash/debounce'
-import { Clock, FileText, RotateCcw, UserCheck, UserX } from 'lucide-react'
+import { AlertTriangle, FileText, RotateCcw } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { ReactElement, useCallback, useEffect, useState } from 'react'
 
-const ActiveNonContactable = () => <NonContactableStudents params={`active:${true}`} />
-const ExpiredNonContactable = () => (
-    <NonContactableStudents params={`expired:${true}`} />
-)
-
-export const NonContactablePage = () => {
+export const SkiltrakFlaggedStudentsPage = () => {
     const router = useRouter()
     const [page, setPage] = useState(1)
     const [itemPerPage, setItemPerPage] = useState(50)
@@ -39,7 +36,7 @@ export const NonContactablePage = () => {
 
     const count = RtoApi.Students.useCount()
 
-    const filteredStudents = useGetNonContactableStudentsListQuery(
+    const filteredStudents = useGetSkiltrakFlaggedStudentsListQuery(
         {
             search: `${JSON.stringify({
                 ...studentId,
@@ -59,23 +56,6 @@ export const NonContactablePage = () => {
             }).length,
         }
     )
-
-    const tabsConfig: TabConfig[] = [
-        {
-            value: 'active',
-            label: 'Active Non Contactable',
-            icon: UserCheck,
-            count: count?.data?.activeNonContactable || 0,
-            component: ActiveNonContactable,
-        },
-        {
-            value: 'expired',
-            label: 'Expired Non Contactable',
-            icon: Clock,
-            count: count?.data?.expiredNonContactable || 0,
-            component: ExpiredNonContactable,
-        },
-    ]
 
     const delayedNameSearch = useCallback(
         debounce((value) => {
@@ -106,15 +86,12 @@ export const NonContactablePage = () => {
     return (
         <div className="space-y-4">
             <ActionRequiredHeader
-                icon={UserX}
-                title="Non-Contactable Students"
-                description="List of students marked as non-contactable"
-                gradientFrom="red-500"
-                gradientTo="red-700"
-                iconGradient="from-red-500 to-red-700"
-                urgentCount={count?.data?.activeNonContactable || 0}
-                UrgentIcon={UserX}
-                urgentLabel="Total Active"
+                icon={AlertTriangle}
+                title="Skiltrak Flagged Students"
+                description="List of students flagged by Skiltrak"
+                gradientFrom="amber-500"
+                gradientTo="yellow-700"
+                iconGradient="from-amber-400 to-amber-600"
             />
 
             <Card
@@ -126,7 +103,7 @@ export const NonContactablePage = () => {
                         <Title
                             Icon={FileText}
                             title="Filter Students"
-                            description="Filter and search through non-contactable student records"
+                            description="Filter and search through Skiltrak flagged student records"
                         />
                         <div className="flex items-center gap-2">
                             <div className="w-60">
@@ -184,11 +161,9 @@ export const NonContactablePage = () => {
                                 />
                             )
                         )
-                    ) : null}
-
-                    {!filteredDataLength && (
+                    ) : (
                         <div className="p-4">
-                            <ConfigTabs tabs={tabsConfig} />
+                            <SkiltrakFlaggedStudents />
                         </div>
                     )}
                 </div>
@@ -197,13 +172,13 @@ export const NonContactablePage = () => {
     )
 }
 
-NonContactablePage.getLayout = (page: ReactElement) => {
+SkiltrakFlaggedStudentsPage.getLayout = (page: ReactElement) => {
     return (
         <RtoLayoutV2
             titleProps={{
-                Icon: UserX,
-                title: 'Non-Contactable Students',
-                description: 'List of students marked as non-contactable',
+                Icon: AlertTriangle,
+                title: 'Skiltrak Flagged Students',
+                description: 'List of students flagged by Skiltrak',
             }}
         >
             {page}
@@ -211,4 +186,4 @@ NonContactablePage.getLayout = (page: ReactElement) => {
     )
 }
 
-export default NonContactablePage
+export default SkiltrakFlaggedStudentsPage

@@ -1,5 +1,5 @@
 import { Appointment } from '@types'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -17,9 +17,19 @@ export const FutureAppointments = ({
 }) => {
     const navigationPrevRef = useRef(null)
     const navigationNextRef = useRef(null)
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
     const [iconClasses] = useState(
         'absolute top-1/2 -mt-2 z-10 cursor-pointer bg-white shadow-md rounded-full hover:scale-150 transition-all hover:opacity-100 w-5 h-5 flex justify-center items-center'
     )
+
+    // ✅ Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current)
+            }
+        }
+    }, [])
 
     return (
         <HeroSliderContainer className="mt-4 relative">
@@ -47,7 +57,8 @@ export const FutureAppointments = ({
                     }}
                     onSwiper={(swiper: any) => {
                         // Delay execution for the refs to be defined
-                        setTimeout(() => {
+                        // ✅ Store timeout handle for cleanup
+                        timeoutRef.current = setTimeout(() => {
                             // Override prevEl & nextEl now that refs are defined
                             swiper.params.navigation.prevEl =
                                 navigationPrevRef.current
@@ -58,6 +69,8 @@ export const FutureAppointments = ({
                             swiper.navigation.destroy()
                             swiper.navigation.init()
                             swiper.navigation.update()
+                            // ✅ Clear ref after execution
+                            timeoutRef.current = null
                         })
                     }}
                     modules={[Navigation]}

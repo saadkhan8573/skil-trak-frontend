@@ -46,9 +46,18 @@ export const AvatarCard = ({
         }
     }, [result, removeProfileResult])
 
+    useEffect(() => {
+        return () => {
+            if (file) {
+                URL.revokeObjectURL(file)
+            }
+        }
+    }, [file])
+
     const handleChange = (event: any) => {
         // Getting file Data
         const fileData: File = event.target.files[0]
+        if (file) URL.revokeObjectURL(file)
         setfile(URL.createObjectURL(fileData))
         fileData && onChange && onChange(fileData)
     }

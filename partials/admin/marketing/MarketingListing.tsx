@@ -15,7 +15,6 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { AdminApi } from '@queries'
 import { User, UserStatus } from '@types'
-import { SubAdminCell } from '../sub-admin/components'
 import { RiLockPasswordFill } from 'react-icons/ri'
 import { useActionModal } from '@hooks'
 

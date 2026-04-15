@@ -32,14 +32,17 @@ export const ImportantDocument = ({
 
     useEffect(() => {
         if (joyride.state.tourActive) {
-            setTimeout(() => {
+            // ✅ Store timeout to ensure cleanup
+            const timeoutId = setTimeout(() => {
                 joyride.setState({ ...joyride.state, run: true, stepIndex: 0 })
             }, 1200)
+
+            // ✅ Cleanup on unmount or state change
+            return () => clearTimeout(timeoutId)
         }
-    }, [])
+    }, [joyride])
     return href ? (
         <Link href={href ? href : '#'} id="important-docs" className="w-full">
-
             <div className={detailContainerClasses}>
                 <Image
                     width={detail ? 60 : 200}
@@ -50,7 +53,6 @@ export const ImportantDocument = ({
                 />
                 <p className={titleClasses}>{title}</p>
             </div>
-
         </Link>
     ) : (
         <div id="important-docs" className="w-full" onClick={onClick}>
@@ -65,5 +67,5 @@ export const ImportantDocument = ({
                 <p className={titleClasses}>{title}</p>
             </div>
         </div>
-    );
+    )
 }

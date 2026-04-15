@@ -130,7 +130,9 @@ export const useEsignColumns = (options?: UseEsignColumnsOptions) => {
                 accessorKey: 'action',
                 header: () => <span>Action</span>,
                 cell: (info) =>
-                    isSigned ? (
+                    isSigned || info?.row?.original?.signers?.find(
+                        (s: any) => s?.user?.id === credentials?.id
+                    )?.status === "signed" ? (
                         <div className="flex items-center gap-x-2">
                             <Button
                                 variant="primaryNew"

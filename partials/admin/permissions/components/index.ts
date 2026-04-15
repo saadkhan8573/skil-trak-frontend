@@ -1,3 +1,5 @@
 export * from './DynamicPermissionsTab'
 export * from './PermissionCategorySection'
 export * from './DynamicPermissionCard'
+export * from './PermissionTableTab'
+export * from './PermissionTabRenderer'

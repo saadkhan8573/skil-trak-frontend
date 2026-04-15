@@ -22,13 +22,14 @@ import { RtoCellInfo } from '../rto/components'
 import { RiLockPasswordFill } from 'react-icons/ri'
 import { RtoObserCellInfo } from './components'
 import { DeleteModal } from './modal'
+import { MdOutlinePassword } from 'react-icons/md'
 
 export const RtoObserverList = () => {
     const router = useRouter()
     const [modal, setModal] = useState<ReactElement | null>(null)
 
     const contextBar = useContextBar()
-    const { passwordModal, onViewPassword } = useActionModal()
+    const { passwordModal, onViewPassword, onUpdatePassword } = useActionModal()
 
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
@@ -86,6 +87,13 @@ export const RtoObserverList = () => {
             onClick: (observer: any) =>
                 onViewPassword({ user: observer?.user }),
             Icon: RiLockPasswordFill,
+        },
+        {
+            text: 'Change Password',
+            onClick: (observer: any) => {
+                onUpdatePassword(observer)
+            },
+            Icon: MdOutlinePassword,
         },
         {
             text: 'Delete',

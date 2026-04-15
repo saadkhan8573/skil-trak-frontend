@@ -20,9 +20,13 @@ export const ViewUserPassword = ({
 
     useEffect(() => {
         if (copiedPassword) {
-            setTimeout(() => {
+            // ✅ Store timeout to ensure cleanup
+            const timeoutId = setTimeout(() => {
                 setCopiedPassword(null)
             }, 3000)
+
+            // ✅ Cleanup on unmount or password change
+            return () => clearTimeout(timeoutId)
         }
     }, [copiedPassword])
 

@@ -186,16 +186,18 @@ export const StudentFilters = ({ onFilterChange, filter }: ItemFilterProps) => {
                     }}
                     showError={false}
                 />
-                <TextInput
-                    name="phone"
-                    label={'Phone'}
-                    value={filter?.phone}
-                    placeholder={'Search by Student Phone ...'}
-                    onChange={(e: any) => {
-                        onFilterChange({ ...filter, phone: e.target.value })
-                    }}
-                    showError={false}
-                />
+                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+                    <TextInput
+                        name="phone"
+                        label={'Phone'}
+                        value={filter?.phone}
+                        placeholder={'Search by Student Phone ...'}
+                        onChange={(e: any) => {
+                            onFilterChange({ ...filter, phone: e.target.value })
+                        }}
+                        showError={false}
+                    />
+                </AuthorizedUserComponent>
                 <TextInput
                     name="batch"
                     label={'Batch / Provider'}
@@ -207,21 +209,26 @@ export const StudentFilters = ({ onFilterChange, filter }: ItemFilterProps) => {
                     showError={false}
                 />
 
-                <Select
-                    label={'User Status'}
-                    name={'status'}
-                    value={filter?.status}
-                    options={StatusOptions}
-                    placeholder={'Select Status...'}
-                    onChange={(e: OptionType) => {
-                        onFilterChange({
-                            ...filter,
-                            status: e?.value as UserStatus,
-                        })
-                    }}
-                    showError={false}
-                />
-                {getUserRole?.role !== UserRoles.RTO && (
+                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+
+                    <Select
+                        label={'User Status'}
+                        name={'status'}
+                        value={filter?.status}
+                        options={StatusOptions}
+                        placeholder={'Select Status...'}
+                        onChange={(e: OptionType) => {
+                            onFilterChange({
+                                ...filter,
+                                status: e?.value as UserStatus,
+                            })
+                        }}
+                        showError={false}
+                    />
+                </AuthorizedUserComponent>
+
+                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+
                     <Select
                         label={'Search By Rto'}
                         name={'rtoId'}
@@ -241,23 +248,27 @@ export const StudentFilters = ({ onFilterChange, filter }: ItemFilterProps) => {
                         loading={getRtos.isLoading}
                         disabled={getRtos.isLoading}
                     />
-                )}
-                <Select
-                    label={'Search by Industry'}
-                    name={'industryId'}
-                    options={industryOptions}
-                    placeholder={'Select Industry...'}
-                    value={industryOptions?.find(
-                        (industry: SelectOption) =>
-                            industry.value === Number(filter?.industryId)
-                    )}
-                    onChange={(e: any) => {
-                        onFilterChange({ ...filter, industryId: e?.value })
-                    }}
-                    showError={false}
-                    loading={getIndustries.isLoading}
-                    disabled={getIndustries.isLoading}
-                />
+                </AuthorizedUserComponent>
+
+                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+
+                    <Select
+                        label={'Search by Industry'}
+                        name={'industryId'}
+                        options={industryOptions}
+                        placeholder={'Select Industry...'}
+                        value={industryOptions?.find(
+                            (industry: SelectOption) =>
+                                industry.value === Number(filter?.industryId)
+                        )}
+                        onChange={(e: any) => {
+                            onFilterChange({ ...filter, industryId: e?.value })
+                        }}
+                        showError={false}
+                        loading={getIndustries.isLoading}
+                        disabled={getIndustries.isLoading}
+                    />
+                </AuthorizedUserComponent>
 
                 <Select
                     label={'Search by Sector'}
@@ -345,33 +356,40 @@ export const StudentFilters = ({ onFilterChange, filter }: ItemFilterProps) => {
                     }}
                     showError={false}
                 />
-                <Select
-                    label={'Student with no workplace'}
-                    name={'nowp'}
-                    options={noWorkplaceOption}
-                    placeholder={'Student with no workplace...'}
-                    value={noWorkplaceOption?.find(
-                        (noWp: SelectOption) => noWp.value === filter?.nowp
-                    )}
-                    onChange={(e: any) => {
-                        onFilterChange({ ...filter, nowp: e?.value })
-                    }}
-                    showError={false}
-                />
-                <div className="mt-2">
-                    <Typography variant="label">Reported</Typography>
-                    <Checkbox
+
+                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+
+                    <Select
+                        label={'Student with no workplace'}
+                        name={'nowp'}
+                        options={noWorkplaceOption}
+                        placeholder={'Student with no workplace...'}
+                        value={noWorkplaceOption?.find(
+                            (noWp: SelectOption) => noWp.value === filter?.nowp
+                        )}
                         onChange={(e: any) => {
-                            onFilterChange({
-                                ...filter,
-                                isReported: e?.target?.checked,
-                            })
+                            onFilterChange({ ...filter, nowp: e?.value })
                         }}
-                        name={'isReported'}
-                        value={filter?.isReported}
-                        defaultChecked={filter?.isReported}
+                        showError={false}
                     />
-                </div>
+                </AuthorizedUserComponent>
+
+                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+                    <div className="mt-2">
+                        <Typography variant="label">Reported</Typography>
+                        <Checkbox
+                            onChange={(e: any) => {
+                                onFilterChange({
+                                    ...filter,
+                                    isReported: e?.target?.checked,
+                                })
+                            }}
+                            name={'isReported'}
+                            value={filter?.isReported}
+                            defaultChecked={filter?.isReported}
+                        />
+                    </div>
+                </AuthorizedUserComponent>
             </div>
         </>
     )

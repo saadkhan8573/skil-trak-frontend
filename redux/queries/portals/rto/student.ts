@@ -19,7 +19,10 @@ export const studentEndpoints = (
             blocked: number
             expired: number
             rejected?: number
+            skiltrakFlagged?: number
             qualificationissued?: number
+            activeNonContactable: number
+            expiredNonContactable: number
         },
         void
     >({
@@ -111,6 +114,13 @@ export const studentEndpoints = (
     getInProgressStudentsList: builder.query<any, any>({
         query: (params) => ({
             url: `${PREFIX}/in-progress-students/list`,
+            params,
+        }),
+        providesTags: ['Rto-Students'],
+    }),
+    getSkiltrakFlaggedStudentsList: builder.query<any, any>({
+        query: (params) => ({
+            url: `${PREFIX}/flag-students/list`,
             params,
         }),
         providesTags: ['Rto-Students'],

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import throttle from 'lodash.throttle'
 
 interface RubberBandProps {
@@ -19,6 +19,32 @@ export const RubberBand = ({
     const isFixed = checkBox || radio
     const { width: w, height: h } = item.size
 
+    // ✅ Store active listeners so we can clean them up
+    const activeListenersRef = useRef<{
+        onMouseMove?: (e: MouseEvent) => void
+        onMouseUp?: () => void
+    }>({})
+
+    // ✅ Cleanup listeners when component unmounts or during navigation
+    useEffect(() => {
+        return () => {
+            // If component unmounts during drag, remove any hanging listeners
+            if (activeListenersRef.current.onMouseMove) {
+                document.removeEventListener(
+                    'mousemove',
+                    activeListenersRef.current.onMouseMove
+                )
+            }
+            if (activeListenersRef.current.onMouseUp) {
+                document.removeEventListener(
+                    'mouseup',
+                    activeListenersRef.current.onMouseUp
+                )
+            }
+            activeListenersRef.current = {}
+        }
+    }, [])
+
     const circleStyle = {
         stroke: 'blue',
         strokeWidth: '2',
@@ -29,6 +55,8 @@ export const RubberBand = ({
     const onMouseDown =
         useCallback((): React.MouseEventHandler<HTMLDivElement> => {
             let start = { x: 0, y: 0 }
+
+            // ✅ Create handlers
             const onMouseMove = (e: MouseEvent) => {
                 const newOffset = {
                     x: e.clientX - start.x,
@@ -57,17 +85,23 @@ export const RubberBand = ({
                     })
                     document.removeEventListener('mousemove', onMouseMove)
                     document.removeEventListener('mouseup', onMouseUp)
-                } catch (err) {}
+                    // ✅ Clear from ref when drag completes normally
+                    activeListenersRef.current = {}
+                } catch (err) { }
             }
 
             return (e) => {
                 e.stopPropagation()
                 start.x = e.pageX
                 start.y = e.pageY
+
+                // ✅ Store listeners in ref so cleanup can find them
+                activeListenersRef.current = { onMouseMove, onMouseUp }
+
                 document.addEventListener('mousemove', onMouseMove)
                 document.addEventListener('mouseup', onMouseUp)
             }
-        }, [])
+        }, [item, w, h, onResize, onResized])
 
     return (
         <g>

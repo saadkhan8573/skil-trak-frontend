@@ -24,5 +24,5 @@ IndustriesPage.getLayout = (page: ReactElement) => {
 }
 
 export default withPermission(IndustriesPage, {
-    permissions: [PermissionType.INDUSTRIES],
+    permissions: [PermissionType.LIST_ALL_INDUSTRIES],
 })

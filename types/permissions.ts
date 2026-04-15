@@ -18,7 +18,7 @@ export enum PermissionType {
     NOTIFICATIONS = 'NOTIFICATIONS',
     /* -------------------- MANAGE / SETUP -------------------- */
     SETUP_AUTOMATION = 'SETUP_AUTOMATION',
-    INDUSTRIES = 'INDUSTRIES',
+    LIST_ALL_INDUSTRIES = 'LIST_ALL_INDUSTRIES',
     TEAM_MANAGEMENT = 'TEAM_MANAGEMENT',
     COURSES = 'COURSES',
     /* -------------------- MORE TOOLS -------------------- */

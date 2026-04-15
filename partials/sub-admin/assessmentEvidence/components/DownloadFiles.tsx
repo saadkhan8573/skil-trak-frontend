@@ -56,6 +56,7 @@ export const DownloadFiles = ({
                     link.href = zipUrl
                     link.download = `${studentProfile?.data?.user?.name} Assessment Files`
                     link.click()
+                    URL.revokeObjectURL(zipUrl) // Revoke immediately after click
                 } catch (err) {
                 } finally {
                     setIsAssessmentDownloading(false)

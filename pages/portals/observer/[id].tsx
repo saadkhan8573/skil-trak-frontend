@@ -2,14 +2,12 @@ import { ReactElement } from 'react'
 
 //Layouts
 import { RtoContactPersonLayout } from '@layouts'
-import { StudentProfileDetail } from '@partials/common'
+import { RtoStudentDetail } from '@partials'
 import { NextPageWithLayout } from '@types'
 
 const StudentsProfileDetail: NextPageWithLayout = () => {
     return (
-        <div>
-            <StudentProfileDetail />
-        </div>
+        <RtoStudentDetail />
     )
 }
 StudentsProfileDetail.getLayout = (page: ReactElement) => {

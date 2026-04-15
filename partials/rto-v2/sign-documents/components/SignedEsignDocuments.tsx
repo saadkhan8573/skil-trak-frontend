@@ -16,7 +16,6 @@ export const SignedEsignDocuments = () => {
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
 
-    const router = useRouter()
 
     const pendingDocuments = CommonApi.ESign.useListByStatusForRto(
         {

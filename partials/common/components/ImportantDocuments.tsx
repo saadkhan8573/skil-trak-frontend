@@ -80,11 +80,13 @@ export const ImportantDocuments = ({
 
         // Create a download link
         const link = document.createElement('a')
-        link.href = URL.createObjectURL(blob)
+        const url = URL.createObjectURL(blob)
+        link.href = url
         link.download = 'important-documents.pdf'
 
         // Simulate a click on the link to trigger the download
         link.click()
+        URL.revokeObjectURL(url)
     }
 
     const onDocumentView = (docType: string) => {

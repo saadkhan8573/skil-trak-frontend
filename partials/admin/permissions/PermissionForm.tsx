@@ -96,10 +96,21 @@ export const PermissionForm = ({
             }))
     }, [allPermissions, edit, initialValues])
 
-    const rolesOptions = [
-        { label: 'Sub Admin', value: UserRoles.SUBADMIN },
-        { label: 'RTO', value: UserRoles.RTO },
-    ]
+    const rolesOptions = useMemo(() => {
+        const baseRoles = [
+            { label: 'Sub Admin', value: UserRoles.SUBADMIN },
+            { label: 'RTO', value: UserRoles.RTO },
+        ]
+
+        if (edit && initialValues?.roles) {
+            return baseRoles.map((role: any) => ({
+                ...role,
+                isFixed: initialValues.roles.includes(role.value),
+            }))
+        }
+
+        return baseRoles
+    }, [edit, initialValues])
 
     return (
         <>
@@ -125,7 +136,7 @@ export const PermissionForm = ({
                         validationIcons
                         required
                         multi
-                        disabled={edit}
+                        // disabled={edit}
                         onlyValue
                     />
 

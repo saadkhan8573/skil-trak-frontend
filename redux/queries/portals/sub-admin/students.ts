@@ -245,6 +245,17 @@ export const studentsEndpoints = (
         ],
     }),
 
+    addLastVisitProfile: builder.query<Student, number>({
+        query: (id) => `${PREFIX}/update/student/${id}/last-contacted-at`,
+        providesTags: [
+            'Notes',
+            'SubAdminStudents',
+            'AllCommunications',
+            'AssessmentEvidence',
+            'SubAdminWorkplace',
+        ],
+    }),
+
     getSubAdminStudentRtoDetail: builder.query<any, number>({
         query: (id) => `${PREFIX}/student/${id}/rto-details`,
         keepUnusedDataFor: 0,

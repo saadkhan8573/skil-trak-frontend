@@ -202,6 +202,7 @@ export interface Student extends BaseResponse {
     emergencyPersonPhone: string
     industries: Industry[]
     expiryDate: Date
+    lastContactedAt: string
     addressLine1: string
     rtoInfo: any
     addressLine2: string

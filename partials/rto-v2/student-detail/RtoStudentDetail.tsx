@@ -1,4 +1,4 @@
-    import {
+import {
     Appointments,
     Communications,
     PinnedNotesActionBanner,
@@ -25,6 +25,7 @@ import { Schedule } from '@partials/common/StudentProfileDetail/components'
 import { useGetSubAdminStudentDetailQuery } from '@queries'
 import {
     CommonApi,
+    SubAdminApi,
     setAssessmentReSubmittedCount,
     setAssessmentSubmittedCount,
     setSelectedCourse,
@@ -62,6 +63,9 @@ export const RtoStudentDetail = () => {
     })
     // Track profile visitor
     CommonApi.Industries.useAddProfileVisitor(Number(profile?.data?.user?.id), {
+        skip: !profile?.data,
+    })
+    SubAdminApi.Student.addLastVisitProfile(Number(profile?.data?.id), {
         skip: !profile?.data,
     })
 

@@ -8,6 +8,7 @@ import {
     StudentExpiryDaysLeft,
     TableAction,
     TableActionOption,
+    Typography,
     UserCreatedAt,
 } from '@components'
 import { SectorCell } from '@partials/admin/student/components'
@@ -26,6 +27,7 @@ import { EditTimer } from '@components/StudentTimer/EditTimer'
 import { InterviewModal } from '@partials/sub-admin/workplace/modals'
 import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
 import { useSubadminProfile } from '@hooks'
+import moment from 'moment'
 
 export const useColumns = () => {
     const router = useRouter()
@@ -55,7 +57,7 @@ export const useColumns = () => {
             <HighPriorityModal
                 item={studetnt}
                 onCancel={onModalCancelClicked}
-                // setRefetchStudents={setRefetchStudents}
+            // setRefetchStudents={setRefetchStudents}
             />
         )
     }
@@ -168,26 +170,26 @@ export const useColumns = () => {
         ...(isAssociatedWithRto
             ? []
             : [
-                  {
-                      header: () => 'RTO',
-                      accessorKey: 'rto',
-                      cell({ row }: any) {
-                          const { rto } = row.original
+                {
+                    header: () => 'RTO',
+                    accessorKey: 'rto',
+                    cell({ row }: any) {
+                        const { rto } = row.original
 
-                          return (
-                              <div className="flex gap-x-2 items-center">
-                                  {rto.user.name && (
-                                      <InitialAvatar
-                                          name={rto.user.name}
-                                          small
-                                      />
-                                  )}
-                                  {rto?.user?.name}
-                              </div>
-                          )
-                      },
-                  },
-              ]),
+                        return (
+                            <div className="flex gap-x-2 items-center">
+                                {rto.user.name && (
+                                    <InitialAvatar
+                                        name={rto.user.name}
+                                        small
+                                    />
+                                )}
+                                {rto?.user?.name}
+                            </div>
+                        )
+                    },
+                },
+            ]),
         {
             accessorKey: 'industry',
             header: () => <span>Industry</span>,
@@ -227,6 +229,30 @@ export const useColumns = () => {
             ),
         },
         {
+            accessorKey: 'lastContactedAt',
+            header: () => <span>Last Contacted At</span>,
+            cell: (info) => {
+                return (
+                    info?.row?.original?.lastContactedAt ? <>
+                        <Typography variant={'small'} color={'text-gray-600'}>
+                            <span className="font-semibold whitespace-pre">
+                                {moment(info?.row?.original?.lastContactedAt).format(
+                                    'Do MMM YYYY'
+                                )}
+                            </span>
+                        </Typography>
+                        <Typography variant={'small'} color={'text-gray-600'}>
+                            <span className="font-semibold whitespace-pre">
+                                {moment(info?.row?.original?.createdAt).format(
+                                    'hh:mm:ss a'
+                                )}
+                            </span>
+                        </Typography>
+                    </> : "---"
+                )
+            },
+        },
+        {
             header: () => 'Action',
             accessorKey: 'Action',
             cell: ({ row }: any) => {
@@ -244,24 +270,24 @@ export const useColumns = () => {
     const columnsWithCustomActions = (
         tableActionUpdatedOptions: TableActionOption<Student>[]
     ): ColumnDef<Student>[] => [
-        ...columns?.slice(0, -1),
-        {
-            header: () => 'Action',
-            accessorKey: 'Action',
-            cell: ({ row }) => {
-                const tableActionOption = tableActionOptions(row.original)
-                return (
-                    <TableAction
-                        options={[
-                            ...tableActionOption,
-                            ...tableActionUpdatedOptions,
-                        ]}
-                        rowItem={row.original}
-                    />
-                )
+            ...columns?.slice(0, -1),
+            {
+                header: () => 'Action',
+                accessorKey: 'Action',
+                cell: ({ row }) => {
+                    const tableActionOption = tableActionOptions(row.original)
+                    return (
+                        <TableAction
+                            options={[
+                                ...tableActionOption,
+                                ...tableActionUpdatedOptions,
+                            ]}
+                            rowItem={row.original}
+                        />
+                    )
+                },
             },
-        },
-    ]
+        ]
 
     return {
         modal,

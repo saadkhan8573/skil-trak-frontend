@@ -360,6 +360,7 @@ export const {
     useAcceptStudentCapacityByIndustryMutation,
     useGetSubAdminStudentCoursesQuery,
     useGetSubAdminStudentDetailQuery,
+    useAddLastVisitProfileQuery,
     useGetSubAdminStudentRtoDetailQuery,
     useGetAllStudentCancelledWorkplacesQuery,
     useUpdateStudentDateMutation,
@@ -711,6 +712,7 @@ export const SubAdminApi = {
         workplaceStudentDetail: useGetWorkplaceStudentDetailQuery,
         getWorkplaceForSchedule: useGetWorkplaceForScheduleQuery,
         getStudentRtoDetail: useGetSubAdminStudentRtoDetailQuery,
+        addLastVisitProfile: useAddLastVisitProfileQuery,
         getAllStudentCancelledWorkplaces:
             useGetAllStudentCancelledWorkplacesQuery,
         releaseStudentLogbook: useReleaseStudentLogbookMutation,

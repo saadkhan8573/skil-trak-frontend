@@ -56,6 +56,7 @@ type ColumnKey =
     | 'createdAt'
     | 'snoozed'
     | 'action'
+    | 'lastContactedAt'
 
 interface GetTableConfigOptions {
     columnKeys?: ColumnKey[]
@@ -284,6 +285,30 @@ export const useColumns = (hookOptions?: UseColumnsProps) => {
             cell: ({ row }) => (
                 <UserCreatedAt createdAt={row.original?.createdAt} />
             ),
+        },
+        {
+            accessorKey: 'lastContactedAt',
+            header: () => <span>Last Contacted At</span>,
+            cell: (info) => {
+                return (
+                    info?.row?.original?.lastContactedAt ? <>
+                        <Typography variant={'small'} color={'text-gray-600'}>
+                            <span className="font-semibold whitespace-pre">
+                                {moment(info?.row?.original?.lastContactedAt).format(
+                                    'Do MMM YYYY'
+                                )}
+                            </span>
+                        </Typography>
+                        <Typography variant={'small'} color={'text-gray-600'}>
+                            <span className="font-semibold whitespace-pre">
+                                {moment(info?.row?.original?.createdAt).format(
+                                    'hh:mm:ss a'
+                                )}
+                            </span>
+                        </Typography>
+                    </> : "---"
+                )
+            },
         },
         {
             accessorKey: 'snoozed',

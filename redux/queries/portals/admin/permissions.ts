@@ -14,16 +14,17 @@ export const permissionEndpoints = (
 ) => ({
     getPermissions: builder.query<
         PaginatedResponse<IPermission>,
-        Partial<PaginationWithSearch> | void
+        Partial<PaginationWithSearch & { userId?: number }> | void
     >({
         query: (args) => {
-            const { limit, skip, search } = (args as any) || {}
+            const { limit, skip, search, userId } = (args as any) || {}
             return {
                 url: `${PREFIX}`,
                 params: {
                     limit,
                     skip,
                     search,
+                    userId,
                 },
             }
         },

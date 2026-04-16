@@ -21,6 +21,7 @@ export const DynamicPermissionsTab: FC<DynamicPermissionsTabProps> = ({
 }) => {
     const { notification } = useNotification()
     const { data: permissionsData } = AdminApi.Permissions.useListQuery({
+        userId,
         skip: 0,
         limit: 1000,
     })

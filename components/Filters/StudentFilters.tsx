@@ -186,7 +186,9 @@ export const StudentFilters = ({ onFilterChange, filter }: ItemFilterProps) => {
                     }}
                     showError={false}
                 />
-                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+                <AuthorizedUserComponent
+                    roles={[UserRoles.ADMIN, UserRoles.SUBADMIN]}
+                >
                     <TextInput
                         name="phone"
                         label={'Phone'}
@@ -209,8 +211,9 @@ export const StudentFilters = ({ onFilterChange, filter }: ItemFilterProps) => {
                     showError={false}
                 />
 
-                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
-
+                <AuthorizedUserComponent
+                    roles={[UserRoles.ADMIN, UserRoles.SUBADMIN]}
+                >
                     <Select
                         label={'User Status'}
                         name={'status'}
@@ -227,8 +230,9 @@ export const StudentFilters = ({ onFilterChange, filter }: ItemFilterProps) => {
                     />
                 </AuthorizedUserComponent>
 
-                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
-
+                <AuthorizedUserComponent
+                    roles={[UserRoles.ADMIN, UserRoles.SUBADMIN]}
+                >
                     <Select
                         label={'Search By Rto'}
                         name={'rtoId'}
@@ -250,8 +254,9 @@ export const StudentFilters = ({ onFilterChange, filter }: ItemFilterProps) => {
                     />
                 </AuthorizedUserComponent>
 
-                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
-
+                <AuthorizedUserComponent
+                    roles={[UserRoles.ADMIN, UserRoles.SUBADMIN]}
+                >
                     <Select
                         label={'Search by Industry'}
                         name={'industryId'}
@@ -307,7 +312,9 @@ export const StudentFilters = ({ onFilterChange, filter }: ItemFilterProps) => {
                     formatOptionLabel={formatOptionLabel}
                 />
 
-                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+                <AuthorizedUserComponent
+                    roles={[UserRoles.ADMIN, UserRoles.SUBADMIN]}
+                >
                     <Select
                         label={'Search by Coordinator'}
                         name={'subadminId'}
@@ -357,8 +364,9 @@ export const StudentFilters = ({ onFilterChange, filter }: ItemFilterProps) => {
                     showError={false}
                 />
 
-                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
-
+                <AuthorizedUserComponent
+                    roles={[UserRoles.ADMIN, UserRoles.SUBADMIN]}
+                >
                     <Select
                         label={'Student with no workplace'}
                         name={'nowp'}
@@ -374,7 +382,9 @@ export const StudentFilters = ({ onFilterChange, filter }: ItemFilterProps) => {
                     />
                 </AuthorizedUserComponent>
 
-                <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+                <AuthorizedUserComponent
+                    roles={[UserRoles.ADMIN, UserRoles.SUBADMIN]}
+                >
                     <div className="mt-2">
                         <Typography variant="label">Reported</Typography>
                         <Checkbox

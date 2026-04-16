@@ -56,7 +56,7 @@ const Login: NextPage = () => {
             case UserRoles.RTO:
                 chkRoleAndUrl(role)
                     ? router.push(autoLogoutUrl.url as URL)
-                    : router.push('/portals/rto')
+                    : router.push('/portals/rto/dashboard')
                 break
             case UserRoles.STUDENT:
                 chkRoleAndUrl(role)

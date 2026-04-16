@@ -243,7 +243,7 @@ export function StudentsPlacementList() {
                         Placement Students
                     </h2>
                     <p className="text-xs text-[#64748B]">
-                        Track student placement workflow progress
+                        Track student placement workflow
                     </p>
                 </div>
                 <div className="flex items-center gap-2">

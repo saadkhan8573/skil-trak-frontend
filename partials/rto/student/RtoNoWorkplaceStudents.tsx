@@ -1,5 +1,6 @@
 import {
     ActionButton,
+    Button,
     Card,
     EmptyData,
     LoadingAnimation,
@@ -9,21 +10,23 @@ import {
 } from '@components'
 import { FaEdit } from 'react-icons/fa'
 
-import { RtoApi } from '@queries'
+import { RtoApi, RtoV2Api } from '@queries'
 import { Student } from '@types'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
 import { MdBlock, MdChangeCircle } from 'react-icons/md'
 import { useColumns } from './hooks'
-import { AssignCoordinatorModal, BlockModal } from './modals'
+import { AssignCoordinatorModal, BlockModal, DownloadListModal } from './modals'
 import { AssignMultipleCoordinatorModal } from './modals/AssignMultipleCoordinatorModal'
+import { Download } from 'lucide-react'
 
 export const RtoNoWorkplaceStudents = () => {
     const router = useRouter()
     const [modal, setModal] = useState<ReactElement | null>(null)
 
     const { getTableConfig, modal: newModal } = useColumns()
-
+    const [downloadReport, downloadState] =
+        RtoV2Api.Students.useDownloadNoWorkplaceStudent()
     const { columns } = getTableConfig({
         removeColumnKeys: ['snoozed', 'sectors', 'batch', 'industry'],
         actionKeys: ['assign', 'block', 'changeStatus', 'changeExpiry', 'changeSector'],
@@ -41,6 +44,14 @@ export const RtoNoWorkplaceStudents = () => {
 
     const onModalCancelClicked = () => setModal(null)
 
+    const onClickDownload = () => {
+        setModal(
+            <DownloadListModal
+                onClose={onModalCancelClicked}
+                downloadReport={downloadReport}
+            />
+        )
+    }
     const onBlockClicked = (student: Student) => {
         setModal(
             <BlockModal
@@ -126,6 +137,14 @@ export const RtoNoWorkplaceStudents = () => {
             {modal}
             {newModal}
             <div className="flex flex-col gap-y-3">
+                <div className="flex justify-end pr-4">
+                    <Button
+                        text="Download"
+                        variant="secondary"
+                        Icon={Download}
+                        onClick={onClickDownload}
+                    />
+                </div>
                 <Card noPadding>
                     {isError && <TechnicalError />}
                     {isLoading ? (

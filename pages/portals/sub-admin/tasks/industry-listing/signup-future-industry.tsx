@@ -29,7 +29,7 @@ const SignUpFutureIndustryPage: NextPageWithLayout = () => {
                     description: 'Industry Signed Up Successfully',
                 })
                 router.push(
-                    `/portals/sub-admin/tasks/industry-listing?tab=all&page=1&pageSize=50`
+                    `/portals/sub-admin/tasks/industry-listing/future-industry-onboarding/${res?.data?.id}`
                 )
             }
         })

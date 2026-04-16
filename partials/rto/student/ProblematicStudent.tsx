@@ -20,7 +20,7 @@ import {
 
 import { PriorityBadge, ResolveIssuesCompletedModal } from '@partials/rto-v2'
 import { CountCard } from '@partials/rto-v2/cards/CountCard'
-import { RtoApi } from '@queries'
+import { RtoApi, RtoV2Api } from '@queries'
 import { StudentIssue } from '@types'
 import { ellipsisText } from '@utils'
 import {
@@ -28,6 +28,7 @@ import {
     Building2,
     Calendar,
     Clock,
+    Download,
     Flag,
     GraduationCap,
     User,
@@ -37,12 +38,15 @@ import { ReactElement, useState } from 'react'
 import { FaRegCheckCircle } from 'react-icons/fa'
 import { MdBlock } from 'react-icons/md'
 import { StudentCellInfo } from './components'
+import { DownloadListModal } from './modals'
 
 export const ProblematicStudent = () => {
     const [modal, setModal] = useState<ReactElement | null>(null)
 
     const [itemPerPage, setItemPerPage] = useState(50)
     const [page, setPage] = useState(1)
+    const [downloadReport, downloadState] =
+        RtoV2Api.Students.useDownloadReportedStudent()
     const { isLoading, data, isError, refetch } =
         RtoApi.Students.useRtoResolveIssuesStudents({
             search: 'status:open',
@@ -51,7 +55,14 @@ export const ProblematicStudent = () => {
         })
     const count = RtoApi.Students.useRtoResolveIssuesStudentsCount()
     const onModalCancelClicked = () => setModal(null)
-
+    const onClickDownload = () => {
+        setModal(
+            <DownloadListModal
+                onClose={onModalCancelClicked}
+                downloadReport={downloadReport}
+            />
+        )
+    }
     const onClickCompleted = (reportedIssue: any) => {
         setModal(
             <ResolveIssuesCompletedModal
@@ -87,7 +98,9 @@ export const ProblematicStudent = () => {
                         <div className="flex items-center gap-1.5 text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-100 max-w-[150px]">
                             <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
                             <span className="text-xs font-semibold leading-tight truncate">
-                                {isLarge ? `${title.substring(0, 30)}...` : title}
+                                {isLarge
+                                    ? `${title.substring(0, 30)}...`
+                                    : title}
                             </span>
                         </div>
                         {isLarge && (
@@ -294,6 +307,14 @@ export const ProblematicStudent = () => {
                         <CountCard stat={stat} />
                     ))}
                 </div> */}
+                <div className="flex justify-end pr-4">
+                    <Button
+                        text="Download"
+                        variant="secondary"
+                        Icon={Download}
+                        onClick={onClickDownload}
+                    />
+                </div>
                 <Card noPadding>
                     {isError && <TechnicalError />}
                     {isLoading ? (

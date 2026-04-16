@@ -8,6 +8,8 @@ import {
     CancelledStudentsList,
     TerminatedStudentsList,
     WaitingForRtoStudents,
+    WaitingForStudents,
+    StudentsProvidedList,
 } from './components'
 
 import { ConfigTabs, TabConfig } from '@components'
@@ -23,6 +25,15 @@ const AllStudents = () => (
     </div>
 )
 
+const StudentProvided = () => (
+    <div className="space-y-4">
+        {/* <ListHeader /> */}
+        <CategoryFilters />
+        {/* <StatsOverview /> */}
+        <StudentsProvidedList />
+    </div>
+)
+
 export function StudentsPlacementList() {
     const [activeTab, setActiveTab] = useState<string>('all')
 
@@ -32,6 +43,12 @@ export function StudentsPlacementList() {
             label: 'All Students',
             icon: Users,
             component: AllStudents,
+        },
+        {
+            value: 'provided',
+            label: 'Student Provided',
+            icon: Users,
+            component: StudentProvided,
         },
         // RejectedStudentsList
         {
@@ -63,6 +80,12 @@ export function StudentsPlacementList() {
             label: 'Terminated Students',
             icon: Ban,
             component: TerminatedStudentsList,
+        },
+        {
+            value: 'waiting_for_student',
+            label: 'Waiting for Student',
+            icon: Clock,
+            component: WaitingForStudents,
         },
     ]
 

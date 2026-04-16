@@ -243,4 +243,20 @@ export const industryEndpoints = (
         }),
         invalidatesTags: ['Industries'],
     }),
+
+    //
+    industryWaitingStudents: builder.query<any, any>({
+        query: ({ params, industryId }) => ({
+            url: `industries/${industryId}/waiting-for-student-list`,
+            params,
+        }),
+        providesTags: ['Industries'],
+    }),
+    providedWorkplaceStudentsList: builder.query<any, any>({
+        query: ({ params, industryId, sectorId }) => ({
+            url: `industries/${industryId}/sector/${sectorId}/student-provided-workplace/students-list`,
+            params,
+        }),
+        providesTags: ['Industries'],
+    }),
 })

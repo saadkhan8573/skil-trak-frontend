@@ -1,5 +1,6 @@
 import {
     ActionButton,
+    Button,
     Card,
     EmptyData,
     LoadingAnimation,
@@ -9,7 +10,7 @@ import {
 } from '@components'
 import { FaEdit } from 'react-icons/fa'
 
-import { RtoApi } from '@queries'
+import { RtoApi, RtoV2Api } from '@queries'
 import { Student, UserStatus } from '@types'
 import { getUserCredentials } from '@utils'
 import { saveAs } from 'file-saver'
@@ -17,17 +18,20 @@ import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
 import { MdBlock, MdChangeCircle } from 'react-icons/md'
 import { useColumns } from './hooks'
-import { AssignCoordinatorModal, BlockModal } from './modals'
+import { AssignCoordinatorModal, BlockModal, DownloadListModal } from './modals'
 import { AssignMultipleCoordinatorModal } from './modals/AssignMultipleCoordinatorModal'
+import { Download } from 'lucide-react'
 
 export const ApprovedStudent = () => {
     const router = useRouter()
     const [modal, setModal] = useState<ReactElement | null>(null)
     const [isExcelDownload, setIsExcelDownload] = useState<boolean>(false)
     const userId = getUserCredentials()?.id
+    const [downloadParams, setDownloadParams] = useState<any>(undefined)
 
+    const [downloadReport, downloadState] =
+        RtoV2Api.Students.useDownloadAllActiveStudents()
     const { getTableConfig, modal: newModal } = useColumns()
-
     const { columns } = getTableConfig({
         removeColumnKeys: ['snoozed', 'sectors', 'batch'],
         actionKeys: ['assign', 'block', 'changeStatus', 'changeExpiry', 'changeSector'],
@@ -84,6 +88,14 @@ export const ApprovedStudent = () => {
                 studentUser={student?.user}
                 rtoCoordinatorId={student?.rtoCoordinator?.id}
                 onCancel={onModalCancelClicked}
+            />
+        )
+    }
+    const onClickDownload = () => {
+        setModal(
+            <DownloadListModal
+                onClose={onModalCancelClicked}
+                downloadReport={downloadReport}
             />
         )
     }
@@ -172,6 +184,14 @@ export const ApprovedStudent = () => {
                         />
                     ) : null} */}
                 {/* </PageHeading> */}
+                <div className="flex justify-end pr-4">
+                    <Button
+                        text="Download"
+                        variant="secondary"
+                        Icon={Download}
+                        onClick={onClickDownload}
+                    />
+                </div>
 
                 <Card noPadding>
                     {isError && <TechnicalError />}

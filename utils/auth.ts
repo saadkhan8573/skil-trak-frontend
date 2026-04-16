@@ -121,6 +121,26 @@ export const managerLogout = (router?: any) => {
     }
 }
 
+export const buildDownloadUrl = (
+    endpoint: string,
+    params?: Record<string, any>
+) => {
+    const base = process.env.NEXT_PUBLIC_END_POINT
+    const searchParams = new URLSearchParams()
+
+    Object.entries(params || {}).forEach(([key, value]) => {
+        if (value) searchParams.append(key, String(value))
+    })
+
+    const token = AuthUtils.token()
+
+    if (token) {
+        searchParams.append('token', token)
+    }
+
+    return `${base}/${endpoint}?${searchParams.toString()}`
+}
+
 export const AuthUtils = {
     KEYS,
     token,
@@ -136,4 +156,5 @@ export const AuthUtils = {
     logout,
     managerLogout,
     setTokenToSession,
+    buildDownloadUrl,
 }

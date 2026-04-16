@@ -134,4 +134,95 @@ export const studentsEndpoints = (
         }),
         invalidatesTags: ['RTO', 'SubAdminStudents'],
     }),
+
+    // active-students/list/download
+    downloadAllActiveStudents: builder.mutation<any, any>({
+        query: (params) => ({
+            url: `rtos/active-students/list/download`,
+            method: 'GET',
+            params: params ?? {},
+            responseHandler: (response: any) => response.blob(),
+        }),
+        invalidatesTags: ['RTO'],
+    }),
+    // in-progess-students/list/download
+    downloadInProgressStudents: builder.mutation<any, any>({
+        query: (params) => ({
+            url: `rtos/in-progess-students/list/download`,
+            method: 'GET',
+            params: params ?? {},
+            responseHandler: (response: any) => response.blob(),
+        }),
+        invalidatesTags: ['RTO'],
+    }),
+    // no-workplace-students/list/download
+    downloadNoWorkplaceStudents: builder.mutation<any, any>({
+        query: (params) => ({
+            url: `rtos/no-workplace-students/list/download`,
+            method: 'GET',
+            params: params ?? {},
+            responseHandler: (response: any) => response.blob(),
+        }),
+        invalidatesTags: ['RTO'],
+    }),
+    // placement-started-students/list/download
+    downloadPlacementStartedStudents: builder.mutation<any, any>({
+        query: (params) => ({
+            url: `rtos/placement-started-students/list/download`,
+            method: 'GET',
+            params: params ?? {},
+            responseHandler: (response: any) => response.blob(),
+        }),
+        invalidatesTags: ['RTO'],
+    }),
+    // schedule-completed-students/list/download
+    downloadScheduleCompletedStudents: builder.mutation<any, any>({
+        query: (params) => ({
+            url: `rtos/schedule-completed-students/list/download`,
+            method: 'GET',
+            params: params ?? {},
+            responseHandler: (response: any) => response.blob(),
+        }),
+        invalidatesTags: ['RTO'],
+    }),
+    // reported-students/list/download
+    downloadReportedStudents: builder.mutation<any, any>({
+        query: (params) => ({
+            url: `rtos/reported-students/list/download`,
+            method: 'GET',
+            params: params ?? {},
+            responseHandler: (response: any) => response.blob(),
+        }),
+        invalidatesTags: ['RTO'],
+    }),
+    // non-contactable-students/list/download
+    downloadNonContactableStudents: builder.mutation<any, any>({
+        query: (params) => ({
+            url: `rtos/non-contactable-students/list/download`,
+            method: 'GET',
+            params: params ?? {},
+            responseHandler: (response: any) => response.blob(),
+        }),
+        invalidatesTags: ['RTO'],
+    }),
+    // expired-students/list/download
+    downloadExpiredStudents: builder.mutation<any, any>({
+        query: (params) => ({
+            url: `rtos/expired-students/list/download`,
+            method: 'GET',
+            params: params ?? {},
+            responseHandler: (response: any) => response.blob(),
+        }),
+        invalidatesTags: ['RTO'],
+    }),
+    // snoozed-students/list/download
+    downloadSnoozedStudents: builder.mutation<any, any>({
+        query: (params) => ({
+            url: `rtos/snoozed-students/list/download`,
+            method: 'GET',
+            params: params ?? {},
+            responseHandler: (response: any) => response.blob(),
+        }),
+        invalidatesTags: ['RTO'],
+    }),
 })

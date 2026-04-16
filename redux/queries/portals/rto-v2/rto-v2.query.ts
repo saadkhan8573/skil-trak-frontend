@@ -85,6 +85,15 @@ export const {
     useRunAutomationForAvailabeleStudentsMutation,
     useBookAppointmentExternallyMutation,
     useGetStudentRejectedIndustriesQuery,
+    useDownloadAllActiveStudentsMutation,
+    useDownloadInProgressStudentsMutation,
+    useDownloadNoWorkplaceStudentsMutation,
+    useDownloadPlacementStartedStudentsMutation,
+    useDownloadScheduleCompletedStudentsMutation,
+    useDownloadReportedStudentsMutation,
+    useDownloadNonContactableStudentsMutation,
+    useDownloadExpiredStudentsMutation,
+    useDownloadSnoozedStudentsMutation,
 
     // ---- Students Workplace ---- //
     useGetStudentWorkplaceListQuery,
@@ -195,7 +204,8 @@ export const RtoV2Api = {
             useGetStudentPlacementStatusCheckNotesQuery,
         useAddManualNote: useAddManualNoteMutation,
         useConfirmHighlightedTask: useConfirmHighlightedTaskMutation,
-        useManuallyUpdateWorkplaceStatus: useManuallyUpdateWorkplaceStatusMutation,
+        useManuallyUpdateWorkplaceStatus:
+            useManuallyUpdateWorkplaceStatusMutation,
         removeRtoStudentFromBlackList: useRemoveRtoStudentFromBlackListMutation,
         removeIndustryFromBlackList: useRemoveIndustryFromBlackListMutation,
     },
@@ -233,6 +243,18 @@ export const RtoV2Api = {
         useGetStudentRejectedIndustries: useGetStudentRejectedIndustriesQuery,
         useGetStudentAppointmentDetail: useGetStudentAppointmentDetailQuery,
         addExpectedDelay: useAddExpectedDelayMutation,
+        useDownloadAllActiveStudents: useDownloadAllActiveStudentsMutation,
+        useDownloadInProgressStudent: useDownloadInProgressStudentsMutation,
+        useDownloadNoWorkplaceStudent: useDownloadNoWorkplaceStudentsMutation,
+        useDownloadPlacementStartedStudent:
+            useDownloadPlacementStartedStudentsMutation,
+        useDownloadScheduleCompletedStudent:
+            useDownloadScheduleCompletedStudentsMutation,
+        useDownloadReportedStudent: useDownloadReportedStudentsMutation,
+        useDownloadNonContactableStudent:
+            useDownloadNonContactableStudentsMutation,
+        useDownloadExpiredStudent: useDownloadExpiredStudentsMutation,
+        useDownloadSnoozedStudent: useDownloadSnoozedStudentsMutation,
     },
     StudentsWorkplace: {
         getStudentWorkplaceList: useGetStudentWorkplaceListQuery,

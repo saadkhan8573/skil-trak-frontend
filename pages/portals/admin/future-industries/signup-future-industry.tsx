@@ -28,7 +28,7 @@ const SignUpFutureIndustryPage: NextPageWithLayout = () => {
                     description: 'Industry Signed Up Successfully',
                 })
                 router.push(
-                    '/portals/admin/future-industries?tab=all&page=1&pageSize=50'
+                    `/portals/admin/future-industries/future-industry-onboarding/${res?.data?.id}`
                 )
             }
         })

@@ -1,5 +1,6 @@
 import {
     ActionButton,
+    Button,
     Card,
     EmptyData,
     LoadingAnimation,
@@ -9,14 +10,15 @@ import {
 } from '@components'
 import { FaEdit } from 'react-icons/fa'
 
-import { RtoApi, useGetRtoStudentsQuery } from '@queries'
+import { RtoV2Api, useGetRtoStudentsQuery } from '@queries'
 import { Student } from '@types'
 import { getUserCredentials } from '@utils'
+import { Download } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
 import { MdBlock, MdChangeCircle } from 'react-icons/md'
 import { useColumns } from './hooks'
-import { AssignCoordinatorModal, BlockModal } from './modals'
+import { AssignCoordinatorModal, BlockModal, DownloadListModal } from './modals'
 import { AssignMultipleCoordinatorModal } from './modals/AssignMultipleCoordinatorModal'
 
 export const SnoozedStudents = () => {
@@ -25,9 +27,11 @@ export const SnoozedStudents = () => {
     const userId = getUserCredentials()?.id
 
     const { getTableConfig, modal: newModal } = useColumns({
-        baseLinkPath: "/portals/rto/students-and-placements/all-students"
+        baseLinkPath: '/portals/rto/students-and-placements/all-students',
     })
 
+    const [downloadReport, downloadState] =
+        RtoV2Api.Students.useDownloadSnoozedStudent()
     const { columns } = getTableConfig({
         removeColumnKeys: ['assigned', 'batch', 'expiry'],
         actionKeys: ['block'],
@@ -42,7 +46,14 @@ export const SnoozedStudents = () => {
     })
 
     const onModalCancelClicked = () => setModal(null)
-
+    const onClickDownload = () => {
+        setModal(
+            <DownloadListModal
+                onClose={onModalCancelClicked}
+                downloadReport={downloadReport}
+            />
+        )
+    }
     const onBlockClicked = (student: Student) => {
         setModal(
             <BlockModal
@@ -128,6 +139,14 @@ export const SnoozedStudents = () => {
             {modal}
             {newModal}
             <div className="flex flex-col gap-y-3">
+                <div className="flex justify-end pr-4">
+                    <Button
+                        text="Download"
+                        variant="secondary"
+                        Icon={Download}
+                        onClick={onClickDownload}
+                    />
+                </div>
                 <Card noPadding>
                     {isError && <TechnicalError />}
                     {isLoading ? (

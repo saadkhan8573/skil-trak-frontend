@@ -28,7 +28,9 @@ export const FilteredEsignDocuments = ({
     itemPerPage: any
     setItemPerPage: any
 }) => {
-    const { columns } = useEsignColumns()
+    const { columns } = useEsignColumns({
+        isFiltered: true,
+    })
 
     return (
         <div className="flex flex-col gap-y-4 p-4 mt-4">

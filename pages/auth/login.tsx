@@ -1,18 +1,18 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react'
 
-import type { NextPage } from 'next';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import type { NextPage } from 'next'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
-import { AccountStatus, LoginForm, Typography } from '@components';
+import { AccountStatus, LoginForm, Typography } from '@components'
 
-import { UserRoles } from '@constants';
-import { LoginErrorAfterHoursModal } from '@modals';
-import { AuthApi } from '@queries';
-import { LoginCredentials, StatusType, UserStatus } from '@types';
-import { AuthUtils, isBrowser } from '@utils';
-import Head from 'next/head';
-import Image from 'next/image';
+import { UserRoles } from '@constants'
+import { LoginErrorAfterHoursModal } from '@modals'
+import { AuthApi } from '@queries'
+import { LoginCredentials, StatusType, UserStatus } from '@types'
+import { AuthUtils, isBrowser } from '@utils'
+import Head from 'next/head'
+import Image from 'next/image'
 
 const Login: NextPage = () => {
     const router = useRouter()
@@ -52,7 +52,7 @@ const Login: NextPage = () => {
             case UserRoles.RTO:
                 chkRoleAndUrl(role)
                     ? router.push(autoLogoutUrl.url as URL)
-                    : router.push('/portals/rto')
+                    : router.push('/portals/rto/dashboard')
                 break
             case UserRoles.STUDENT:
                 chkRoleAndUrl(role)
@@ -156,7 +156,7 @@ const Login: NextPage = () => {
             </Head>
             {!requested && !rejected && !archived && !blocked && (
                 // <div className="w-4/5 mx-auto flex items-center justify-between">
-                (<div className="flex flex-col-reverse md:flex-row gap-y-6 md:items-center gap-x-6 w-full ">
+                <div className="flex flex-col-reverse md:flex-row gap-y-6 md:items-center gap-x-6 w-full ">
                     <div className="signup-bg overflow-hidden  w-full md:w-1/2">
                         {/* QR CODE */}
                         <div className="flex flex-col items-center justify-center gap-1.5 w-full mt-8">
@@ -192,7 +192,10 @@ const Login: NextPage = () => {
                                         alt="Skiltrak App"
                                         width={106}
                                         height={34}
-                                        style={{ width: 'auto', height: 'auto' }}
+                                        style={{
+                                            width: 'auto',
+                                            height: 'auto',
+                                        }}
                                     />
                                 </div>
                             </Link>
@@ -206,7 +209,10 @@ const Login: NextPage = () => {
                                         alt="Skiltrak App"
                                         width={106}
                                         height={34}
-                                        style={{ width: 'auto', height: 'auto' }}
+                                        style={{
+                                            width: 'auto',
+                                            height: 'auto',
+                                        }}
                                     />
                                 </div>
                             </Link>
@@ -273,19 +279,20 @@ const Login: NextPage = () => {
                             <div className="mt-16">
                                 <Typography variant="small" medium>
                                     Don&apos;t have account?{' '}
-                                    <Link href="/auth/signup" className="text-link">
-
+                                    <Link
+                                        href="/auth/signup"
+                                        className="text-link"
+                                    >
                                         Create Account
-
                                     </Link>
                                 </Typography>
                             </div>
                         ) : null}
                     </div>
-                </div>)
+                </div>
             )}
         </>
-    );
+    )
 }
 
 export default Login

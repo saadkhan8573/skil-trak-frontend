@@ -1,5 +1,6 @@
 import {
     NextPageWithLayout,
+    PermissionType,
     SupportTeamTagType,
     UserStatus,
 } from '@types'
@@ -14,6 +15,7 @@ import {
     ContextBarLoading,
     Modal,
     NoData,
+    Permissions,
     StudentAISearch,
     Typography,
 } from '@components'
@@ -200,35 +202,33 @@ const SubAdminDashboard: NextPageWithLayout = () => {
         'rto team',
     ]
 
-    const hasStudentSearchAccess = subadmin?.supportTeam?.some(
-        (team) =>
-            team?.tags?.some((tag) =>
-                allowedTags.includes(tag)
-            )
+    const hasStudentSearchAccess = subadmin?.supportTeam?.some((team) =>
+        team?.tags?.some((tag) => allowedTags.includes(tag))
     )
 
     return (
         <>
             {modal}
             <div className="mb-4 flex justify-between items-center">
-                {subadmin?.globalSearchAccess && (
+                <Permissions permission={[PermissionType.ALLOW_GLOBAL_SEARCH]}>
                     <Button
                         text="Global Search"
                         onClick={onViewGlobalSearchModal}
                     />
-                )}
+                </Permissions>
             </div>
-            {!subadmin?.isAssociatedWithRto && hasStudentSearchAccess && (
+            <Permissions permission={[PermissionType.CAN_USE_CHATBOT]}>
                 <StudentAISearch />
-            )}
+            </Permissions>
             <div className="flex flex-col gap-y-6 pb-8">
                 <div className="flex flex-col gap-y-4">
                     <div className="flex items-end justify-between gap-x-2.5 w-full mt-2">
                         <div
-                            className={`grid grid-cols-2 gap-x-2.5 gap-y-8 ${subadmin?.isAssociatedWithRto
-                                ? 'w-full'
-                                : 'w-1/2'
-                                }`}
+                            className={`grid grid-cols-2 gap-x-2.5 gap-y-8 ${
+                                subadmin?.isAssociatedWithRto
+                                    ? 'w-full'
+                                    : 'w-1/2'
+                            }`}
                         >
                             {/* {checkIsHod && (
                                 <>
@@ -259,7 +259,7 @@ const SubAdminDashboard: NextPageWithLayout = () => {
                                 count={
                                     subadmin?.isAssociatedWithRto
                                         ? statistics?.data
-                                            ?.countByRtoCoordinator
+                                              ?.countByRtoCoordinator
                                         : statistics?.data?.myStudents
                                 }
                                 title={'My Students'}

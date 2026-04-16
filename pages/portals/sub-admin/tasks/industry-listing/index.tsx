@@ -3,6 +3,7 @@ import {
     Filter,
     FindWorkplaceFilters,
     LoadingAnimation,
+    Permissions,
     SetDetaultQueryFilteres,
     TabNavigation,
     TabProps,
@@ -13,17 +14,15 @@ import { FigureCard } from '@components/sections/subAdmin'
 import { useContextBar, useSubadminProfile } from '@hooks'
 import { SubAdminLayout } from '@layouts'
 import {
-    ActiveIndustries,
     ActiveIndustriesByState,
     AddIndustry,
-    DepartmentFutureIndustries,
     RunListingAutomation,
     WithoutEmailListing,
 } from '@partials/common'
 import { FilteredSearchIndustries } from '@partials/common/FindWorkplaces/FilteredSearchIndustries'
 import { ImportIndustriesListWithOTP } from '@partials/common/FindWorkplaces/contextBar'
-import { CommonApi, commonApi, SubAdminApi } from '@queries'
-import { FindWorkplaceFilter, NextPageWithLayout } from '@types'
+import { CommonApi } from '@queries'
+import { FindWorkplaceFilter, NextPageWithLayout, PermissionType } from '@types'
 import { checkFilteredDataLength, getUserCredentials } from '@utils'
 import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 import { FaIndustry } from 'react-icons/fa'
@@ -194,14 +193,20 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
                         {subadmin?.canImportIndustryListing && (
                             <RunListingAutomation />
                         )}
-                        <Button
-                            text={'Upload Industries'}
-                            variant="dark"
-                            Icon={MdAddBusiness}
-                            onClick={() => {
-                                onUploadIndustries()
-                            }}
-                        />
+                        <Permissions
+                            permission={[
+                                PermissionType.CAN_IMPORT_INDUSTRY_LISTING,
+                            ]}
+                        >
+                            <Button
+                                text={'Upload Industries'}
+                                variant="dark"
+                                Icon={MdAddBusiness}
+                                onClick={() => {
+                                    onUploadIndustries()
+                                }}
+                            />
+                        </Permissions>
                         <Button
                             text={'Add Industry'}
                             variant="dark"
@@ -223,7 +228,7 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
                     )}
                     {filteredDataLength ? (
                         filteredIndustries.isLoading ||
-                            filteredIndustries.isFetching ? (
+                        filteredIndustries.isFetching ? (
                             <LoadingAnimation />
                         ) : (
                             filteredIndustries.isSuccess && (
@@ -245,9 +250,7 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
                                 return (
                                     <div>
                                         <div className="flex items-end justify-between">
-                                            <div className="grow">
-                                                {header}
-                                            </div>
+                                            <div className="grow">{header}</div>
                                         </div>
                                         <div className="flex items-center gap-x-2 mt-3">
                                             <FigureCard

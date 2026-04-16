@@ -6,93 +6,59 @@ import {
     DisplayPrimaryActions,
     RtoContextBarData,
     SidebarCalendar,
+    usePermissionCheck,
 } from '@components'
 import { FigureCard } from '@components/sections/subAdmin'
 import { AppointmentCard } from '@components/sections/subAdmin/components/Cards/AppointmentCard'
 import { useContextBar, useJoyRide } from '@hooks'
 import { SubAdminLayout } from '@layouts'
 import { SubAdminApi } from '@queries'
-import { NextPageWithLayout, UserStatus } from '@types'
+import { NextPageWithLayout, PermissionType, UserStatus } from '@types'
 import { getUserCredentials } from '@utils'
 
-const PrimaryLinks = [
-    {
-        title: 'RTOs',
-        description: 'Manage Allocated RTOs',
-        link: 'users/rtos',
-        animation: Animations.Student.Workplace.Student,
-        id: 'rtos',
-    },
-    {
-        title: 'RTO Listing',
-        description: 'RTO Listing',
-        link: 'tasks/rto-listing?tab=all&page=1&pageSize=50',
-        animation: Animations.Student.Appointments.RtoListing,
-        id: 'rto-listing',
-    },
-    // {
-    //     title: 'Students',
-    //     description: 'Manage Allocated Students',
-    //     link: 'users/students?tab=all',
-    //     animation: Animations.Industry.Students.CurrentStudents,
-    //     id: 'students',
-    // },
-    {
-        title: 'Industries',
-        description: 'Manage Allocated Industries',
-        link: 'users/industries?tab=all',
-        animation: Animations.Student.Appointments.AssessmentTool,
-        id: 'industries',
-    },
-    {
-        title: 'Industry Listing',
-        description: 'Industry Listing',
-        link: 'tasks/industry-listing?tab=all&page=1&pageSize=50',
-        animation: Animations.Student.Appointments.IndustryListing,
-        id: 'industry-listing',
-    },
-]
-
-const RelatedQuestions = [
-    {
-        text: `I have a workplace. What next?`,
-        link: '#',
-    },
-    {
-        text: `I don't have a workplace. What should I do?`,
-        link: '#',
-    },
-    {
-        text: `I want to book an appointment`,
-        link: '#',
-    },
-    {
-        text: `I want to look for a job`,
-        link: '#',
-    },
-]
-
-const OtherQuestions = [
-    {
-        text: `I have a workplace. What next?`,
-        link: '#',
-    },
-    {
-        text: `I don't have a workplace. What should I do?`,
-        link: '#',
-    },
-    {
-        text: `I want to book an appointment`,
-        link: '#',
-    },
-    {
-        text: `I want to look for a job`,
-        link: '#',
-    },
-]
-
 const SubAdminUsers: NextPageWithLayout = () => {
+    const { checkPermission } = usePermissionCheck()
     const status = getUserCredentials()?.status
+
+    const PrimaryLinks = [
+        {
+            title: 'RTOs',
+            description: 'Manage Allocated RTOs',
+            link: 'users/rtos',
+            animation: Animations.Student.Workplace.Student,
+            id: 'rtos',
+            permissions: [PermissionType.MANAGE_RTOS],
+        },
+        {
+            title: 'RTO Listing',
+            description: 'RTO Listing',
+            link: 'tasks/rto-listing?tab=all&page=1&pageSize=50',
+            animation: Animations.Student.Appointments.RtoListing,
+            id: 'rto-listing',
+        },
+        {
+            title: 'Industries',
+            description: 'Manage Allocated Industries',
+            link: 'users/industries?tab=all',
+            animation: Animations.Student.Appointments.AssessmentTool,
+            id: 'industries',
+            permissions: [PermissionType.MANAGE_INDUSTRIES],
+        },
+        {
+            title: 'Industry Listing',
+            description: 'Industry Listing',
+            link: 'tasks/industry-listing?tab=all&page=1&pageSize=50',
+            animation: Animations.Student.Appointments.IndustryListing,
+            id: 'industry-listing',
+            permissions: [PermissionType.ALLOW_INDUSTRY_LISTING],
+        },
+    ]
+
+    const filteredActions = PrimaryLinks.filter((action) => {
+        if (!action.permissions) return true
+        return checkPermission(action.permissions)
+    })
+
     const statistics = SubAdminApi.Count.statistics(undefined, {
         skip: status !== UserStatus.Approved,
     })
@@ -129,7 +95,7 @@ const SubAdminUsers: NextPageWithLayout = () => {
             <div className="flex gap-x-6">
                 {/* Primary Actions */}
                 <div className="bg-white p-4 rounded-2xl shadow-xl shrink-0">
-                    <DisplayPrimaryActions actions={PrimaryLinks} />
+                    <DisplayPrimaryActions actions={filteredActions} />
                 </div>
 
                 {/* Figure Cards */}

@@ -5,7 +5,12 @@ import { ReactElement, useEffect, useState } from 'react'
 // image
 //Layouts
 import { SubAdminLayout } from '@layouts'
-import { NextPageWithLayout, Rto, SubAdminRtoFilterType } from '@types'
+import {
+    NextPageWithLayout,
+    PermissionType,
+    Rto,
+    SubAdminRtoFilterType,
+} from '@types'
 
 import { FaEye } from 'react-icons/fa'
 
@@ -22,14 +27,15 @@ import {
     TableActionOption,
     TechnicalError,
     Typography,
+    withPermission,
 } from '@components'
 // queries
 import { useGetSubAdminRtosQuery } from '@queries'
 // icons
 
-import { RTOCellInfo, SectorCell } from '@partials/sub-admin/rto/components'
+import { getFilterQuery, setLink } from '@utils'
 import { ColumnDef } from '@tanstack/react-table'
-import { checkFilteredDataLength, getFilterQuery, setLink } from '@utils'
+import { RTOCellInfo, SectorCell } from '@partials/sub-admin/rto/components'
 
 const RTOs: NextPageWithLayout = () => {
     const router = useRouter()
@@ -226,4 +232,6 @@ RTOs.getLayout = (page: ReactElement) => {
     return <SubAdminLayout>{page}</SubAdminLayout>
 }
 
-export default RTOs
+export default withPermission(RTOs, {
+    permissions: [PermissionType.MANAGE_RTOS],
+})

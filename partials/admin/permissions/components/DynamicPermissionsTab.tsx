@@ -154,26 +154,24 @@ export const DynamicPermissionsTab: FC<DynamicPermissionsTabProps> = ({
                 <div className="flex items-center gap-2 w-full md:w-auto">
                     <Button
                         variant="primary"
-                        outline
                         onClick={() => toggleSection('all')}
-                    >
-                        {expandedSections.length ===
-                            Object.keys(groupedPermissions).length ? (
-                            <>
-                                <EyeOff className="h-4 w-4 text-primary hover:text-white transition-all" />
-                                <span className="font-semibold text-primary hover:text-white transition-all">
-                                    Collapse
-                                </span>
-                            </>
-                        ) : (
-                            <>
-                                <Eye className="h-4 w-4 text-primary hover:text-white transition-all" />
-                                <span className="font-semibold text-primary hover:text-white transition-all">
-                                    Expand All
-                                </span>
-                            </>
-                        )}
-                    </Button>
+                        Icon={
+                            expandedSections.length ===
+                            Object.keys(groupedPermissions).length
+                                ? EyeOff
+                                : Eye
+                        }
+                        text={
+                            expandedSections.length ===
+                            Object.keys(groupedPermissions).length
+                                ? 'Collapse'
+                                : 'Expand All'
+                        }
+                        outline={
+                            expandedSections.length !==
+                            Object.keys(groupedPermissions).length
+                        }
+                    />
                 </div>
             </Card>
 
@@ -185,7 +183,7 @@ export const DynamicPermissionsTab: FC<DynamicPermissionsTabProps> = ({
                         const categoryPermissions = groupedPermissions[category]
                         const config =
                             categoryConfig[
-                            category as keyof typeof categoryConfig
+                                category as keyof typeof categoryConfig
                             ]
                         const IconComponent = config?.icon || AlertCircle
 

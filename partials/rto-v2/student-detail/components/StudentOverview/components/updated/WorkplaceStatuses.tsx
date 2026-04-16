@@ -41,7 +41,12 @@ import {
     ViewPlacementFeedbackModal,
 } from './modals'
 import { FeedbackButton } from '@partials/common/StudentProfileDetail/feedbackForm/components'
-import { StarRating, ActionButton, Typography } from '@components'
+import {
+    StarRating,
+    ActionButton,
+    Typography,
+    usePermissions,
+} from '@components'
 import { CommonApi } from '@queries'
 import { useAppSelector } from '@redux'
 import { checkJsxVisibility } from '@utils'
@@ -59,6 +64,10 @@ export function WorkplaceStatuses({
 }: WorkplaceStatusesProps) {
     const wpId = workplace?.id
     const router = useRouter()
+
+    const hasPermission = usePermissions([
+        PermissionType.CHANGE_WORKPLACE_STATUS,
+    ])
 
     const student = useAppSelector((state) => state.student.studentDetail)
 
@@ -160,19 +169,21 @@ export function WorkplaceStatuses({
 
             <div className="relative flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                    {role === UserRoles.ADMIN ? (
+                    <Activity mode={checkJsxVisibility(hasPermission)}>
                         <ManualUpdateStatusDropdown
                             workplaceId={Number(workplace.id)}
                             currentStatus={workplace.currentStatus}
                         />
-                    ) : (
+                    </Activity>
+                    <Activity mode={checkJsxVisibility(!hasPermission)}>
                         <Badge
                             Icon={Search}
                             className="bg-linear-to-r from-[#044866] to-[#0D5468] text-white px-2 py-0.5 shadow-lg shadow-[#044866]/30 hover:scale-105 transition-transform text-xs"
                         >
                             {WorkplaceStatusLabels[workplace?.currentStatus]}
                         </Badge>
-                    )}
+                    </Activity>
+
                     <Badge
                         Icon={
                             workplace?.studentProvidedWorkplace
@@ -228,12 +239,12 @@ export function WorkplaceStatuses({
                     </span>
                     <div className="ml-1 h-3 w-px bg-slate-300"></div>
 
-                    <AuthorizedUserComponent roles={[UserRoles.ADMIN]}>
+                    <Permissions permission={[PermissionType.CANCEL_WORKPLACE]}>
                         <CancelWorkplaceButton
                             workplaceId={Number(wpId)}
                             canCancel={canCancel}
                         />
-                    </AuthorizedUserComponent>
+                    </Permissions>
                     <AuthorizedUserComponent roles={[UserRoles.SUBADMIN]}>
                         <Permissions
                             permission={PermissionType.TERMINATE_PLACEMENT}

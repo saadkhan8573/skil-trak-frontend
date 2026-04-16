@@ -5,7 +5,7 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useContextBar, useNavbar } from '@hooks'
 //Layouts
 import { SubAdminLayout } from '@layouts'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 
 //components
 import {
@@ -16,6 +16,7 @@ import {
     PageTitle,
     RtoProfileSidebar,
     TechnicalError,
+    withPermission,
 } from '@components'
 
 // icons
@@ -178,4 +179,6 @@ RtoProfile.getLayout = (page: ReactElement) => {
     return <SubAdminLayout>{page}</SubAdminLayout>
 }
 
-export default RtoProfile
+export default withPermission(RtoProfile, {
+    permissions: [PermissionType.VIEW_RTO_DETAIL],
+})

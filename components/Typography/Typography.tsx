@@ -158,7 +158,7 @@ export const Typography = ({
     return createElement(
         element,
         {
-            className: `${defaultClasses} ${classes} ${className}`,
+            className: `${defaultClasses} ${classes} ${className || ''}`.trim(),
             ...(htmlFor ? { htmlFor } : {}),
         },
         children

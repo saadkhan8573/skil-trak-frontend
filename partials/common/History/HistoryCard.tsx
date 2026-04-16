@@ -19,7 +19,7 @@ export const HistoryCard = ({
     return (
         <Timeline key={history?.id} updatedAt={history?.updatedAt}>
             <div className="grid grid-cols-3 items-center bg-white rounded-md px-3 py-1 w-full">
-                <Typography>
+                <div className="text-base text-normal text-typography">
                     <span className="text-[11px] block">Task</span>
                     <div className="flex items-center gap-x-2">
                         {history?.title}
@@ -42,7 +42,7 @@ export const HistoryCard = ({
                                 </div>
                             ) : null)}
                     </div>
-                </Typography>
+                </div>
                 <Typography>
                     <span className="text-[11px] block">Description</span>
                     {history?.description}

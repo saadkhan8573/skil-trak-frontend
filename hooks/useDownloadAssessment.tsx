@@ -22,7 +22,7 @@ export const DownloadAssessmentProvider = ({
     }
     return (
         <DownloadAssessmentContext.Provider value={value}>
-            <div className="w-full">
+            <div className="w-full" suppressHydrationWarning>
                 {isAssessmentDownloading && (
                     <div className="w-96 fixed bottom-0 right-10 rounded-t-xl bg-success z-50 border border-primary">
                         <div className="px-4 py-1.5 flex justify-between items-center">

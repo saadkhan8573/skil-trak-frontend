@@ -6,7 +6,9 @@ import {
     Switch,
     AuthorizedUserComponent,
     Permissions,
+    usePermissions,
 } from '@components'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@components/ui'
 import { useNotification } from '@hooks/useNotification'
 import { RtoV2Api } from '@queries/portals/rto-v2/rto-v2.query'
 import { useAppSelector } from '@redux/hooks'
@@ -35,6 +37,10 @@ export function InterviewAvailability({
         RtoV2Api.Industries.createAvailability()
     const [updateIndustryAvailability, updateIndustryAvailabilityResult] =
         RtoV2Api.Industries.updateIndustryAvailability()
+
+    const hasPermission = usePermissions([
+        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
+    ])
 
     const industryDetail = useAppSelector(
         (state) => state.industry.industryDetail
@@ -403,18 +409,41 @@ export function InterviewAvailability({
                                         </p>
                                     </div>
 
-                                    <Button
-                                        onClick={handleSave}
-                                        variant="primary"
-                                        className="bg-[#044866] hover:bg-[#03364d] text-white px-6 py-2 rounded-lg text-xs font-semibold shadow-lg shadow-[#044866]/20 transition-all hover:scale-105 active:scale-95"
-                                        disabled={
-                                            createAvailabilityResult.isLoading
-                                        }
-                                    >
-                                        {createAvailabilityResult.isLoading
-                                            ? 'Saving...'
-                                            : 'Save Availability'}
-                                    </Button>
+                                    {!hasPermission ? (
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <div className="flex">
+                                                    <Button
+                                                        onClick={handleSave}
+                                                        variant="primary"
+                                                        disabled={
+                                                            !hasPermission ||
+                                                            createAvailabilityResult.isLoading
+                                                        }
+                                                    >
+                                                        {createAvailabilityResult.isLoading
+                                                            ? 'Saving...'
+                                                            : 'Save Availability'}
+                                                    </Button>
+                                                </div>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                Permission Not granted
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    ) : (
+                                        <Button
+                                            onClick={handleSave}
+                                            variant="primary"
+                                            disabled={
+                                                createAvailabilityResult.isLoading
+                                            }
+                                        >
+                                            {createAvailabilityResult.isLoading
+                                                ? 'Saving...'
+                                                : 'Save Availability'}
+                                        </Button>
+                                    )}
                                 </div>
                             </div>
                         </>

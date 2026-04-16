@@ -1,6 +1,14 @@
-import { Badge, Card, ShowErrorNotifications, Switch } from '@components'
+import {
+    Badge,
+    Card,
+    ShowErrorNotifications,
+    Switch,
+    usePermissions,
+} from '@components'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@components/ui'
 import { useNotification } from '@hooks'
 import { IndustryApi } from '@queries'
+import { PermissionType } from '@types'
 import { CheckCircle, AlertCircle, ShieldCheck } from 'lucide-react'
 
 interface InsuranceDocCardProps {
@@ -14,6 +22,9 @@ export function InsuranceDocCard({
 }: InsuranceDocCardProps) {
     const [required, requiredResult] =
         IndustryApi.Insurance.requiredInduranceDoc()
+    const hasPermission = usePermissions([
+        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
+    ])
 
     const { notification } = useNotification()
 
@@ -95,14 +106,36 @@ export function InsuranceDocCard({
                     </div>
 
                     {/* Toggle */}
-                    <Switch
-                        name="required"
-                        label={'Required'}
-                        isChecked={isDocRequired}
-                        customStyleClass="profileSwitch"
-                        onChange={() => onRequiredDocType()}
-                        loading={requiredResult?.isLoading}
-                    />
+                    {!hasPermission ? (
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <div className="flex items-center">
+                                    <Switch
+                                        name="required"
+                                        label={'Required'}
+                                        isChecked={isDocRequired}
+                                        customStyleClass="profileSwitch"
+                                        onChange={() => onRequiredDocType()}
+                                        disabled={!hasPermission}
+                                        loading={requiredResult?.isLoading}
+                                    />
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                Permission Not granted
+                            </TooltipContent>
+                        </Tooltip>
+                    ) : (
+                        <Switch
+                            name="required"
+                            label={'Required'}
+                            isChecked={isDocRequired}
+                            customStyleClass="profileSwitch"
+                            onChange={() => onRequiredDocType()}
+                            disabled={!hasPermission}
+                            loading={requiredResult?.isLoading}
+                        />
+                    )}
                 </div>
             </Card>
         </>

@@ -314,7 +314,7 @@ export const ViewProfileCB = ({
                         {/* TODO: New requirements for todo   */}
                         <div className="flex flex-col gap-y-2 mt-2">
                             {todoListData?.map((todo) => (
-                                <div>
+                                <div key={todo?.text}>
                                     <Typography variant="label" medium>
                                         {todo?.text}
                                     </Typography>

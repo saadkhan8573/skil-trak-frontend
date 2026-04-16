@@ -1,4 +1,10 @@
-import { Badge, Card, Typography, ViewDocumentModal } from '@components'
+import {
+    Badge,
+    Card,
+    Permissions,
+    Typography,
+    ViewDocumentModal,
+} from '@components'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import { EsignDocumentStatus, maskText } from '@utils'
 import {
@@ -22,6 +28,7 @@ import {
     SubmitDocumentModal,
 } from '@partials/common/StudentProfileDetail/modals'
 import { CancelESignModal } from '@partials/rto-v2/student-detail/components/StudentAssessmentDocuments/modal'
+import { PermissionType } from '@types'
 
 export function ESignCard({
     document,
@@ -106,10 +113,11 @@ export function ESignCard({
                 <div className="p-4 flex items-center gap-4">
                     {/* Left: Icon */}
                     <div
-                        className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm ${document.status === EsignDocumentStatus.SIGNED
+                        className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm ${
+                            document.status === EsignDocumentStatus.SIGNED
                                 ? 'bg-gradient-to-br from-[#10B981] to-[#059669]'
                                 : 'bg-gradient-to-br from-[#044866] to-[#0D5468]'
-                            }`}
+                        }`}
                     >
                         <FileSignature className="w-5 h-5 text-white" />
                     </div>
@@ -184,24 +192,33 @@ export function ESignCard({
                                 </TooltipContent>
                             </Tooltip>
                         )}
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button
-                                    onClick={() => setIsCancelModalOpen(true)}
-                                    className="p-2.5 rounded-lg hover:bg-red-50 text-[#64748B] hover:text-red-600 transition-all duration-200"
-                                >
-                                    <XCircle className="w-5 h-5" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent>Cancel E-Sign</TooltipContent>
-                        </Tooltip>
+                        <Permissions
+                            permission={[
+                                PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
+                            ]}
+                        >
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button
+                                        onClick={() =>
+                                            setIsCancelModalOpen(true)
+                                        }
+                                        className="p-2.5 rounded-lg hover:bg-red-50 text-[#64748B] hover:text-red-600 transition-all duration-200"
+                                    >
+                                        <XCircle className="w-5 h-5" />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent>Cancel E-Sign</TooltipContent>
+                            </Tooltip>
+                        </Permissions>
                         {document.signers?.length > 0 && (
                             <button
                                 onClick={() => setShowUsers(!showUsers)}
-                                className={`px-4 py-2 rounded-lg text-xs font-bold shadow-sm transition-all duration-200 ${showUsers
+                                className={`px-4 py-2 rounded-lg text-xs font-bold shadow-sm transition-all duration-200 ${
+                                    showUsers
                                         ? 'bg-[#044866] text-white'
                                         : 'bg-[#044866]/5 text-[#044866] hover:bg-[#044866]/10'
-                                    }`}
+                                }`}
                             >
                                 {showUsers ? 'Hide Signers' : 'View Signers'}
                             </button>
@@ -242,7 +259,7 @@ export function ESignCard({
                                         </span>
                                         <div className="flex items-center gap-1">
                                             {signer.status ===
-                                                EsignDocumentStatus.SIGNED ? (
+                                            EsignDocumentStatus.SIGNED ? (
                                                 <div className="flex items-center gap-1 text-[#10B981] font-bold text-[10px]">
                                                     <CheckCircle2 className="w-3.5 h-3.5" />
                                                     {EsignDocumentStatus.SIGNED}
@@ -263,10 +280,10 @@ export function ESignCard({
                                         </span>
                                         <span className="text-[10px] font-semibold text-[#1A2332]">
                                             {signer.status ===
-                                                EsignDocumentStatus.SIGNED
+                                            EsignDocumentStatus.SIGNED
                                                 ? moment(
-                                                    signer.updatedAt
-                                                ).format('DD MMM, YYYY')
+                                                      signer.updatedAt
+                                                  ).format('DD MMM, YYYY')
                                                 : '---'}
                                         </span>
                                     </div>
@@ -274,7 +291,7 @@ export function ESignCard({
                                     {/* Individual Actions */}
                                     <div className="flex items-center gap-2 border-l border-[#E2E8F0] pl-4">
                                         {signer.status ===
-                                            EsignDocumentStatus.SIGNED ? (
+                                        EsignDocumentStatus.SIGNED ? (
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <button

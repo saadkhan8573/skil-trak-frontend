@@ -17,7 +17,7 @@ export default function Document() {
                     content="GTslJTTqv87p3WbfdzlrmIId4pMc1vNepwDTHaOWpbc"
                 />
             </Head>
-            <body>
+            <body suppressHydrationWarning>
                 <Main />
                 <div id="portal" />
                 <NextScript />

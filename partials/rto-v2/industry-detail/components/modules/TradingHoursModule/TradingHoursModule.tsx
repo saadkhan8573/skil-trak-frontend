@@ -1,6 +1,8 @@
 import { Save } from 'lucide-react'
 import { useEffect } from 'react'
-import { Button } from '@components'
+import { Button, usePermissions } from '@components'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@components/ui'
+import { PermissionType } from '@types'
 import {
     TradingHoursHeader,
     QuickActions,
@@ -262,6 +264,10 @@ export function TradingHoursModule() {
     )
     const industryUserId = industryDetail?.user?.id
 
+    const hasPermission = usePermissions([
+        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
+    ])
+
     const { data: apiData, isLoading: isFetching } =
         RtoV2Api.Industries.useGetIndutryAvailableHours(industryUserId!, {
             skip: !industryUserId,
@@ -393,7 +399,7 @@ export function TradingHoursModule() {
 
     return (
         <FormProvider {...methods}>
-            <div className="space-y-3 px-4">
+            <div className="space-y-3 px-4 py-5">
                 {/* Header */}
                 <div className="flex items-start justify-between mb-1.5">
                     <TradingHoursHeader />
@@ -414,20 +420,48 @@ export function TradingHoursModule() {
                 <OperatingSummary daysOfWeek={daysOfWeek.map((d) => d.key)} />
 
                 {/* Save Button */}
-                <Button
-                    onClick={handleSubmit(onSubmit)}
-                    disabled={isSaving || isFetching}
-                    className="w-full bg-linear-to-br from-[#044866] to-[#0D5468] hover:shadow-lg text-white text-sm font-medium"
-                >
-                    {isSaving ? (
-                        'Saving...'
-                    ) : (
-                        <>
-                            <Save className="w-3.5 h-3.5 mr-2" />
-                            Save Trading Hours
-                        </>
-                    )}
-                </Button>
+                {!hasPermission ? (
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <div className="w-full">
+                                <Button
+                                    fullWidth
+                                    onClick={handleSubmit(onSubmit)}
+                                    variant="primaryNew"
+                                    disabled={
+                                        !hasPermission || isSaving || isFetching
+                                    }
+                                >
+                                    {isSaving ? (
+                                        'Saving...'
+                                    ) : (
+                                        <>
+                                            <Save className="w-3.5 h-3.5 mr-2" />
+                                            Save Trading Hours
+                                        </>
+                                    )}
+                                </Button>
+                            </div>
+                        </TooltipTrigger>
+                        <TooltipContent>Permission Not granted</TooltipContent>
+                    </Tooltip>
+                ) : (
+                    <Button
+                        onClick={handleSubmit(onSubmit)}
+                        disabled={isSaving || isFetching}
+                        variant="primaryNew"
+                        fullWidth
+                    >
+                        {isSaving ? (
+                            'Saving...'
+                        ) : (
+                            <>
+                                <Save className="w-3.5 h-3.5 mr-2" />
+                                Save Trading Hours
+                            </>
+                        )}
+                    </Button>
+                )}
             </div>
         </FormProvider>
     )

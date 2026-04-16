@@ -4,6 +4,7 @@ import {
     Card,
     ShowErrorNotifications,
     Switch,
+    usePermissions,
 } from '@components'
 import { useNotification } from '@hooks'
 import {
@@ -11,9 +12,10 @@ import {
     UpdateCustomSectorFolderModal,
 } from '@partials/common/IndustryProfileDetail/components/IndustrySectorRequiredDocs/modals'
 import { IndustryApi } from '@redux'
-import { Folder } from '@types'
+import { Folder, PermissionType } from '@types'
 import { FileText, CheckCircle, AlertCircle } from 'lucide-react'
 import { ReactElement, useState } from 'react'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@components/ui'
 
 interface Document {
     id: number
@@ -36,6 +38,9 @@ export function DocumentCard({
     industryUserId,
 }: DocumentCardProps) {
     const [modal, setModal] = useState<ReactElement | null>(null)
+    const hasPermission = usePermissions([
+        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
+    ])
 
     // Toggle Logic
     const [makeOptional, makeOptionalResult] =
@@ -165,14 +170,36 @@ export function DocumentCard({
                     </div>
 
                     {/* Toggle */}
-                    <Switch
-                        name="enabled"
-                        label={'Required'}
-                        isChecked={doc?.isRequired}
-                        customStyleClass="profileSwitch"
-                        onChange={() => handleToggleDocument()}
-                        loading={makeOptionalResult?.isLoading}
-                    />
+                    {!hasPermission ? (
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <div className="flex items-center">
+                                    <Switch
+                                        name="enabled"
+                                        label={'Required'}
+                                        isChecked={doc?.isRequired}
+                                        customStyleClass="profileSwitch"
+                                        onChange={() => handleToggleDocument()}
+                                        disabled={!hasPermission}
+                                        loading={makeOptionalResult?.isLoading}
+                                    />
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                Permission Not granted
+                            </TooltipContent>
+                        </Tooltip>
+                    ) : (
+                        <Switch
+                            name="enabled"
+                            label={'Required'}
+                            isChecked={doc?.isRequired}
+                            customStyleClass="profileSwitch"
+                            onChange={() => handleToggleDocument()}
+                            disabled={!hasPermission}
+                            loading={makeOptionalResult?.isLoading}
+                        />
+                    )}
                 </div>
                 {doc.isCustom && (
                     <div className="flex items-center justify-end mt-2 gap-2">

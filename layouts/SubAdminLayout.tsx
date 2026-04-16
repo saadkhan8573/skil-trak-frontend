@@ -120,31 +120,13 @@ export const SubAdminLayout = ({
 
     const getRoutePath = (path: string) => `${getBasePath}${path}`
 
-    const urlsData = {
-        canAccessRtoProfile: [
-            getRoutePath('/users/rtos/[id]'),
-            getRoutePath('/users/rtos/[id]/detail'),
-        ],
-        canViewRtoList: getRoutePath('/users/rtos'),
-    }
-
     const urls = () => {
         let updatedUrl: string[] = []
-        // if (subadmin?.data && subadmin?.isSuccess) {
-        //     Object.keys(urlsData as any)?.forEach((key: any) => {
-        //         if (!(subadmin?.data as any)?.[key]) {
-        //             if (Array.isArray((urlsData as any)?.[key])) {
-        //                 updatedUrl.push(...(urlsData as any)?.[key])
-        //             } else {
-        //                 updatedUrl.push((urlsData as any)?.[key])
-        //             }
-        //         }
-        //     })
-        // }
+
         return updatedUrl
     }
 
-    if (subadmin.isLoading) {
+    if (!mounted || subadmin.isLoading) {
         return <SubAdminLayoutSkeleton />
     }
 

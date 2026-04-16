@@ -130,17 +130,17 @@ export const SubAdminLayout = ({
 
     const urls = () => {
         let updatedUrl: string[] = []
-        if (subadmin?.data && subadmin?.isSuccess) {
-            Object.keys(urlsData as any)?.forEach((key: any) => {
-                if (!(subadmin?.data as any)?.[key]) {
-                    if (Array.isArray((urlsData as any)?.[key])) {
-                        updatedUrl.push(...(urlsData as any)?.[key])
-                    } else {
-                        updatedUrl.push((urlsData as any)?.[key])
-                    }
-                }
-            })
-        }
+        // if (subadmin?.data && subadmin?.isSuccess) {
+        //     Object.keys(urlsData as any)?.forEach((key: any) => {
+        //         if (!(subadmin?.data as any)?.[key]) {
+        //             if (Array.isArray((urlsData as any)?.[key])) {
+        //                 updatedUrl.push(...(urlsData as any)?.[key])
+        //             } else {
+        //                 updatedUrl.push((urlsData as any)?.[key])
+        //             }
+        //         }
+        //     })
+        // }
         return updatedUrl
     }
 

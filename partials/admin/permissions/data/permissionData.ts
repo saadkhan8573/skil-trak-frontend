@@ -91,6 +91,20 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         icon: Upload,
         category: 'students',
     },
+    [PermissionType.CHANGE_WORKPLACE_STATUS]: {
+        label: 'Change Workplace Status',
+        description:
+            'Update the employment or placement status of a student workplace',
+        icon: Activity,
+        category: 'students',
+    },
+    [PermissionType.CHANGE_WORKPLACE_ADDRESS]: {
+        label: 'Change Workplace Address',
+        description:
+            'Modify the physical address details of a student workplace',
+        icon: MapPin,
+        category: 'students',
+    },
     [PermissionType.EMAILS]: {
         label: 'Emails',
         description: 'Send and manage email communications',
@@ -451,7 +465,31 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'Manage RTOs',
         description: '',
         icon: Settings,
-        category: 'manage',
+        category: 'rto',
+    },
+    [PermissionType.UPDATE_RTO_PERMISSION]: {
+        label: 'Update RTO Permission',
+        description: 'Update RTO Permission',
+        icon: Settings,
+        category: 'rto',
+    },
+    [PermissionType.VIEW_RTO_DETAIL]: {
+        label: 'View RTO Detail',
+        description: '',
+        icon: Settings,
+        category: 'rto',
+    },
+    [PermissionType.ALLOW_RTO_LISTING]: {
+        label: 'Allow RTO Listing',
+        description: '',
+        icon: Settings,
+        category: 'rto',
+    },
+    [PermissionType.CAN_IMPORT_RTO_LISTING]: {
+        label: 'Can Import RTO Listing',
+        description: '',
+        icon: Settings,
+        category: 'rto',
     },
     [PermissionType.MANAGE_STUDENTS]: {
         label: 'Manage Students',
@@ -635,6 +673,16 @@ export const categoryConfig = {
         bgHover: 'hover:from-primary/10 hover:to-secondary/10',
         iconBg: 'bg-primary/10',
         iconColor: 'text-primary',
+    },
+    rto: {
+        label: 'RTOs',
+        icon: GraduationCap,
+        description:
+            'Registered Training Organization management and configuration',
+        bg: 'bg-linear-to-r from-teal-500/5 to-primary/5',
+        bgHover: 'hover:from-teal-500/10 hover:to-primary/10',
+        iconBg: 'bg-teal-100',
+        iconColor: 'text-teal-500',
     },
     industry: {
         label: 'Industry',

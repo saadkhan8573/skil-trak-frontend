@@ -1,16 +1,15 @@
 import {
     ActionButton,
-    AuthorizedUserComponent,
     Badge,
     Card,
-    TextInput,
-    Typography,
+    Permissions,
+    Typography
 } from '@components'
 import { UserRoles } from '@constants'
-import { RtoV2Api, StudentApi } from '@queries'
 import { workplaceQuestionsKeys } from '@partials/common/workplace/enum'
+import { RtoV2Api } from '@queries'
 import { setSelectedCourse, SubAdminApi, useAppDispatch } from '@redux'
-import { Course } from '@types'
+import { Course, PermissionType } from '@types'
 import {
     checkJsxVisibility,
     ellipsisText,
@@ -279,9 +278,11 @@ export const StudentQuickSummaryCard = ({
                                 >
                                     Workplace Preferred Address
                                 </Typography>
-                                <AuthorizedUserComponent
-                                    isHod
-                                    roles={[UserRoles.ADMIN]}
+
+                                <Permissions
+                                    permission={[
+                                        PermissionType.CHANGE_WORKPLACE_ADDRESS,
+                                    ]}
                                 >
                                     <Activity
                                         mode={checkJsxVisibility(
@@ -298,7 +299,7 @@ export const StudentQuickSummaryCard = ({
                                             Icon={Edit2}
                                         />
                                     </Activity>
-                                </AuthorizedUserComponent>
+                                </Permissions>
                             </div>
                             <div className="flex items-center mt-1 gap-2 p-0.5 bg-white rounded-lg border border-slate-200">
                                 <div className="flex py-3 px-2 bg-slate-100 border border-r-0 border-slate-200 rounded-l-lg">

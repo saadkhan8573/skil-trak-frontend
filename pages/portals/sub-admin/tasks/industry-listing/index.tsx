@@ -9,6 +9,7 @@ import {
     TabProps,
     TechnicalError,
     Typography,
+    withPermission,
 } from '@components'
 import { FigureCard } from '@components/sections/subAdmin'
 import { useContextBar, useSubadminProfile } from '@hooks'
@@ -353,4 +354,6 @@ const IndustryListing: NextPageWithLayout = (props: Props) => {
 IndustryListing.getLayout = (page: ReactElement) => {
     return <SubAdminLayout>{page}</SubAdminLayout>
 }
-export default IndustryListing
+export default withPermission(IndustryListing, {
+    permissions: [PermissionType.ALLOW_INDUSTRY_LISTING],
+})

@@ -1,12 +1,12 @@
-import { Button, Typography } from '@components'
-import { IWorkplaceIndustries } from '@redux/queryTypes'
-import { WorkplaceCurrentStatus } from '@utils'
 import { Plus, Sparkles } from 'lucide-react'
 import { useAppDispatch } from '@redux/hooks'
 import { setSelectedWorkplace } from '@redux'
+import { WorkplaceCurrentStatus } from '@utils'
+import { Button, Typography } from '@components'
 import { useMemo, useState, useEffect } from 'react'
-import { StudentOverviewSkeleton } from '../../skeletonLoader'
 import { ApplyWorkplaceOverview } from './components'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
+import { StudentOverviewSkeleton } from '../../skeletonLoader'
 import { PlacementRequest, WorkplaceOverviewCard } from './components/updated'
 
 export const StudentOverViewUpdated = ({
@@ -17,7 +17,7 @@ export const StudentOverViewUpdated = ({
     sortedWorkplaces: IWorkplaceIndustries[]
 }) => {
     const dispatch = useAppDispatch()
-    // State for toggling Quick Actions sections
+
     const [addNewWorkplace, setAddNewWorkplace] = useState(false)
 
     const terminalStatuses = [

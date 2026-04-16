@@ -35,6 +35,7 @@ const SubAdminUsers: NextPageWithLayout = () => {
             link: 'tasks/rto-listing?tab=all&page=1&pageSize=50',
             animation: Animations.Student.Appointments.RtoListing,
             id: 'rto-listing',
+            permissions: [PermissionType.ALLOW_RTO_LISTING],
         },
         {
             title: 'Industries',

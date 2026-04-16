@@ -2,6 +2,7 @@ import {
     Button,
     Filter,
     LoadingAnimation,
+    Permissions,
     RtoListingFilter,
     SetDetaultQueryFilteres,
     TabNavigation,
@@ -19,7 +20,11 @@ import {
     ImportRtosListWithOTP,
 } from '@partials/sub-admin'
 import { SubAdminApi } from '@queries'
-import { NextPageWithLayout, RtoListingFilterTypes } from '@types'
+import {
+    NextPageWithLayout,
+    PermissionType,
+    RtoListingFilterTypes,
+} from '@types'
 import { checkFilteredDataLength, getUserCredentials } from '@utils'
 import { ReactElement, useCallback, useEffect, useState } from 'react'
 import { FaSchool } from 'react-icons/fa'
@@ -110,14 +115,18 @@ export const RtoListing = () => {
                     />
                     <div className="flex justify-end gap-x-2 mt-4 mr-6">
                         {filterAction}{' '}
-                        <Button
-                            text={'Upload RTOs'}
-                            variant="dark"
-                            Icon={FaSchool}
-                            onClick={() => {
-                                onUploadIndustries()
-                            }}
-                        />
+                        <Permissions
+                            permission={[PermissionType.CAN_IMPORT_RTO_LISTING]}
+                        >
+                            <Button
+                                text={'Upload RTOs'}
+                                variant="dark"
+                                Icon={FaSchool}
+                                onClick={() => {
+                                    onUploadIndustries()
+                                }}
+                            />
+                        </Permissions>
                         <Button
                             text={'Add RTO'}
                             variant="dark"

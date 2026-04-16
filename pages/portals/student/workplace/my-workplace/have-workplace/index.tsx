@@ -35,6 +35,7 @@ import {
 } from '@queries'
 import { WorkplaceCurrentStatus } from '@utils'
 import { useMediaQuery } from 'react-responsive'
+import { useRouter } from 'next/router'
 
 type Props = {}
 
@@ -59,7 +60,7 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
 
     const [workplaceData, setWorkplaceData] = useState<any | null>({})
     const { notification } = useNotification()
-
+    const router = useRouter()
     // query
     const workplace = useGetWorkplaceIndustriesQuery()
     const [findAbn, result] = useUpdateFindAbnMutation()
@@ -74,6 +75,7 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
                 title: 'Workplace request sent',
                 description: 'Workplace Request sent to your coordinator',
             })
+
             setActive((active: number) => active + 1)
         }
     }, [addWorkplaceResult])
@@ -85,9 +87,11 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
             workplace?.data?.length > 0
         ) {
             setWorkplaceData(workplace?.data[0])
+
             setActive(3)
         }
     }, [workplace])
+    console.log('addWorkplaceResult?.data', addWorkplaceResult?.data)
 
     useEffect(() => {
         if (!result.data && result.isSuccess) {
@@ -179,6 +183,7 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
             password: 'NA',
         })
         setShowEmployerDocModal(true)
+
         // addWorkplace({
         //     ...values,
         //     courses: [values?.courses],
@@ -268,8 +273,8 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
 
                         {active === 2 &&
                             (!result?.data &&
-                                (findIndustryType === 'abn' ||
-                                    !findIndustryType) ? (
+                            (findIndustryType === 'abn' ||
+                                !findIndustryType) ? (
                                 <div className="mb-4">
                                     <AddCustomIndustryForm
                                         onSubmit={onAddIndustry}
@@ -312,8 +317,8 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
                                 {(workplaceData?.industryStatus ===
                                     UserStatus.Approved &&
                                     workplaceData?.approvalStatus ===
-                                    UserStatus.Approved) ||
-                                    workplaceData?.byExistingAbn ? (
+                                        UserStatus.Approved) ||
+                                workplaceData?.byExistingAbn ? (
                                     <AppliedIndustry
                                         appliedIndustry={
                                             workplaceData?.industries[0]
@@ -324,7 +329,7 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
                                         course={workplaceData?.courses[0]}
                                     />
                                 ) : workplaceData?.industryStatus ===
-                                    'rejected' ? (
+                                  'rejected' ? (
                                     <Card>
                                         <div className="px-5 py-16 border-2 border-dashed border-gray-600 flex justify-center">
                                             <Typography
@@ -351,7 +356,7 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
                                                 Workplace Status:{' '}
                                             </Typography>
                                             {workplaceData?.currentStatus ===
-                                                'industryEligibility' ? (
+                                            'industryEligibility' ? (
                                                 <>
                                                     <Badge
                                                         variant="info"
@@ -367,7 +372,7 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
                                         </div>
                                         <div className="px-5 py-16 border-2 border-dashed border-gray-600 flex justify-center">
                                             {workplaceData?.currentStatus ===
-                                                'industryEligibility' ? (
+                                            'industryEligibility' ? (
                                                 <Typography
                                                     variant={'label'}
                                                     center
@@ -430,11 +435,12 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
                                                 title={
                                                     'Workplace Request Successfully Added'
                                                 }
-                                                description={`We have successfully processed your workplace request. A case officer will be assigned to your case promptly to assist you further. ${answer === 'yes'
+                                                description={`We have successfully processed your workplace request. A case officer will be assigned to your case promptly to assist you further. ${
+                                                    answer === 'yes'
                                                         ? '<p class="italic mt-4 font-semibold text-sm">You have been successfully added to the Talent Pool Programme! Industries in your field can now view your profile and contact you with opportunities.</p>'
                                                         : answer === 'no' &&
-                                                        '<p class="italic mt-4 font-semibold text-sm">You can join the Talent Pool Programme later from your dashboard.</p>'
-                                                    }`}
+                                                          '<p class="italic mt-4 font-semibold text-sm">You can join the Talent Pool Programme later from your dashboard.</p>'
+                                                }`}
                                                 variant={'primary'}
                                                 redirect
                                             />

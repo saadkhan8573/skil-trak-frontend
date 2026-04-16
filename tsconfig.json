@@ -124,7 +124,7 @@
     "pages/portals/admin/e-sign/[id]",
     "./jest-setup.ts",
     "pages/portals/management/teams/members/[memberId]"
-  ],
+, "pages/portals/sub-admin/tasks/industry-listing/future-industry-onboarding"  ],
   "exclude": [
     "node_modules"
   ]

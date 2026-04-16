@@ -286,6 +286,8 @@ const {
     useIndustryUnassignCourseMutation,
     useVolunteerIsReadMutation,
     useOnBoardingSubmissionMutation,
+    useProvidedWorkplaceStudentsListQuery,
+    useIndustryWaitingStudentsQuery,
 
     // ----- RPL ----- //
     useRplRequestListQuery,
@@ -791,6 +793,8 @@ export const AdminApi = {
         useDeleteIndustryProfileCourse: useDeleteIndustryProfileCourseMutation,
         useUpdateIndustryProfileCourse: useUpdateIndustryProfileCourseMutation,
         useOnBoardingSubmission: useOnBoardingSubmissionMutation,
+        useProvidedWorkplaceStudentsList: useProvidedWorkplaceStudentsListQuery,
+        useIndustryWaitingStudents: useIndustryWaitingStudentsQuery,
     },
 
     Rpl: {

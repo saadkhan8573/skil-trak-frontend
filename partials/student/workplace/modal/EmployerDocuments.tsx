@@ -8,7 +8,7 @@ import {
 } from '@components'
 import { StudentApi } from '@queries'
 import Image from 'next/image'
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
 import { MdCancel } from 'react-icons/md'
 import { DocUpload, WorkplaceEmploymentDocument } from '../components'
 import { useNotification } from '@hooks'
@@ -34,6 +34,7 @@ export const EmployerDocuments = ({
     answer: any
 }) => {
     const router = useRouter()
+    const [modal, setModal] = useState<ReactElement | null>(null)
 
     const [files, setFiles] = useState({})
 
@@ -58,6 +59,10 @@ export const EmployerDocuments = ({
 
         if (res?.data) {
             onCancel()
+            // router.push(
+            //     `/portals/student/workplace/my-workplace/have-workplace/provided-industry-onboarding/${res?.data?.industry?.id}`
+            // )
+
             setActive(4)
         }
     }

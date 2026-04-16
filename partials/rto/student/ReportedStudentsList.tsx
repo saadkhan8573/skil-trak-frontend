@@ -17,7 +17,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { FaComment, FaEdit, FaEye } from 'react-icons/fa'
 
 import Modal from '@modals/Modal'
-import { RtoApi } from '@queries'
+import { RtoApi, RtoV2Api } from '@queries'
 import { Student } from '@types'
 import { getUserCredentials, studentsListWorkplace } from '@utils'
 import { saveAs } from 'file-saver'
@@ -29,9 +29,11 @@ import { IndustryCell } from './components/IndustryCell'
 import {
     AssignCoordinatorModal,
     BlockModal,
+    DownloadListModal,
     ReportedStudentModal,
 } from './modals'
 import { AssignMultipleCoordinatorModal } from './modals/AssignMultipleCoordinatorModal'
+import { Download } from 'lucide-react'
 export const ReportedStudentsList = () => {
     const router = useRouter()
     const [modal, setModal] = useState<ReactElement | null>(null)

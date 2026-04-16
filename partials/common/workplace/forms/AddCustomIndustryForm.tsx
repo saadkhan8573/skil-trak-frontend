@@ -436,18 +436,14 @@ export const AddCustomIndustryForm = ({
                                                     href="/terms-and-conditions"
                                                     className="text-link"
                                                 >
-                                                    
-                                                        Terms
-                                                    
+                                                    Terms
                                                 </Link>{' '}
                                                 {'&'}{' '}
                                                 <Link
                                                     href="/privacy-policy"
                                                     className="text-link"
                                                 >
-                                                    
-                                                        Privacy Policy
-                                                    
+                                                    Privacy Policy
                                                 </Link>
                                             </>
                                         }
@@ -475,5 +471,5 @@ export const AddCustomIndustryForm = ({
                 </div>
             </Card>
         </>
-    );
+    )
 }

@@ -11,6 +11,7 @@ import {
 import { Step3SitesShiftsInsurance } from '@partials/industry-onboarding/components/step-3/Step3SiteShiftsInsurance'
 import { AdminApi, IndustryApi } from '@queries'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
 
 interface Props {
@@ -59,7 +60,7 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
     })
 
     const { notification } = useNotification()
-
+    const router = useRouter()
     const {
         data,
         isError,
@@ -156,7 +157,7 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
             )
         } catch {}
     }, [step2Data, id])
-    console.log('data::::', data?.courses)
+
     useEffect(() => {
         if (!id) return
         try {
@@ -232,7 +233,7 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
                     capacityPeriod: sector.capacityPeriod ?? null,
                     confirmed: !!sector.confirmed,
                     industryChecks,
-                    // selectedQuestionIds,
+                    selectedQuestionIds,
                     courses,
                 }
 
@@ -290,7 +291,11 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
     const handleValidationChange = (step: number, isValid: boolean) => {
         setStepValidation((prev) => ({ ...prev, [step]: isValid }))
     }
-
+    console.log('const router = useRouter()', router.pathname)
+    const getPortalRole = (path: string) => {
+        const segments = path.split('/').filter(Boolean)
+        return segments[1] // because [0] = portals, [1] = sub-admin/admin
+    }
     const handleSubmit = async () => {
         setIsLoading(true)
         try {
@@ -299,7 +304,23 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
             //     '[Onboarding] submit payload::::::',
             //     JSON.stringify(body, null, 2)
             // )
+            const role = getPortalRole(router.pathname)
+
+            if (role === 'admin') {
+                router.push(
+                    '/portals/admin/future-industries?tab=all&page=1&pageSize=50'
+                )
+            } else if (role === 'sub-admin') {
+                router.push(
+                    '/portals/sub-admin/tasks/industry-listing?tab=all&page=1&pageSize=50'
+                )
+            } else if (role === 'student') {
+                router.push(
+                    '/portals/student/workplace/my-workplace/have-workplace'
+                )
+            }
             await submitOnboarding({ id, body })
+            //
         } finally {
             setIsLoading(false)
         }

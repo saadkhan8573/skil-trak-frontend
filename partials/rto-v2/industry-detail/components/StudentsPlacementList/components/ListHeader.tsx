@@ -15,7 +15,7 @@ export function ListHeader() {
                     Placement Students
                 </h2>
                 <p className="text-xs text-[#64748B]">
-                    Track student placement workflow progress
+                    Track student placement workflow progress...
                 </p>
             </div>
             {/* <div className="w-60">

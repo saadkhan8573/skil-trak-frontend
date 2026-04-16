@@ -49,6 +49,7 @@ const filterKeys = [
     'courseId',
     'isReported',
     'currentStatus',
+    'sectorId',
 ]
 
 const RegistrationRequestsComponent = (props: any) => {

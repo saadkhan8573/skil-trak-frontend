@@ -20,6 +20,8 @@ export const AccessNewPortalOnPermission = ({
 
     if (rto?.isLoading) return <RtoLayoutSkeleton />
 
+    return <>{children}</>
+
     return (
         <div>
             {rto?.isSuccess && rto?.data?.canAccessNewPortal ? (

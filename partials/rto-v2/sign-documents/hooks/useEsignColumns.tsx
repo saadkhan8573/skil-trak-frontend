@@ -21,11 +21,12 @@ interface UseEsignColumnsOptions {
     columnKeys?: EsignColumnKey[]
     removeColumnKeys?: EsignColumnKey[]
     isSigned?: boolean
+    isFiltered?: boolean
 }
 
 export const useEsignColumns = (options?: UseEsignColumnsOptions) => {
     const router = useRouter()
-    const { isSigned } = options || {}
+    const { isSigned, isFiltered } = options || {}
 
     const credentials = getUserCredentials()
 
@@ -121,7 +122,9 @@ export const useEsignColumns = (options?: UseEsignColumnsOptions) => {
                     )?.responses?.[0]?.createdAt
                     return (
                         <span className="capitalize text-sm font-medium">
-                            {signDate && isSigned ? moment(signDate).format('DD/MM/YYYY hh:mm A') : '--'}
+                            {signDate && isSigned
+                                ? moment(signDate).format('DD/MM/YYYY hh:mm A')
+                                : '--'}
                         </span>
                     )
                 },
@@ -130,9 +133,11 @@ export const useEsignColumns = (options?: UseEsignColumnsOptions) => {
                 accessorKey: 'action',
                 header: () => <span>Action</span>,
                 cell: (info) =>
-                    isSigned || info?.row?.original?.signers?.find(
+                    isSigned ||
+                    (info?.row?.original?.signers?.find(
                         (s: any) => s?.user?.id === credentials?.id
-                    )?.status === "signed" ? (
+                    )?.status === 'signed' &&
+                        isFiltered) ? (
                         <div className="flex items-center gap-x-2">
                             <Button
                                 variant="primaryNew"

@@ -224,7 +224,7 @@ export const RtoAllStudents = () => {
         },
         {
             value: 'active-students',
-            label: 'Active Students',
+            label: 'All Active Students',
             icon: Users,
             count: count?.data?.active,
             component: ActiveStudentsComponent,
@@ -268,7 +268,7 @@ export const RtoAllStudents = () => {
                     description="Manage all your students and placements in one place"
                     urgentCount={count?.data?.active || 0}
                     UrgentIcon={Users}
-                    urgentLabel="Total Students"
+                    urgentLabel="All Active Students"
                     warningMessage="<strong>Quick Tip:</strong> Use filters to find specific students, or click on any status tab to view students by their current status. Select multiple students for bulk actions."
                     gradientFrom="primaryNew"
                     gradientTo="primaryNew"

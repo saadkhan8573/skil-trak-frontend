@@ -1,7 +1,11 @@
 import { ReactElement, useEffect, useState } from 'react'
 
 import { SubAdminLayout } from '@layouts'
-import { AppointmentTypeFilterType, NextPageWithLayout } from '@types'
+import {
+    AppointmentTypeFilterType,
+    NextPageWithLayout,
+    PermissionType,
+} from '@types'
 
 // query
 import { AdminApi } from '@queries'
@@ -14,6 +18,7 @@ import {
     PageTitle,
     TabNavigation,
     TabProps,
+    withPermission,
 } from '@components'
 import { useNavbar } from '@hooks'
 import {
@@ -114,4 +119,6 @@ const VolunteerRequests: NextPageWithLayout = (props: Props) => {
 VolunteerRequests.getLayout = (page: ReactElement) => {
     return <SubAdminLayout>{page}</SubAdminLayout>
 }
-export default VolunteerRequests
+export default withPermission(VolunteerRequests, {
+    permissions: [PermissionType.MANAGE_VOLUNTEERS],
+})

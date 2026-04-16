@@ -1,4 +1,4 @@
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 import { SubAdminLayout } from '@layouts'
 import { TalentPoolStudentProfile } from '@partials/student/talentPool'
 import { ReactElement, useEffect } from 'react'
@@ -8,6 +8,7 @@ import {
     LoadingAnimation,
     TechnicalError,
     Typography,
+    withPermission,
 } from '@components'
 import { AdminApi } from '@queries'
 import Link from 'next/link'
@@ -56,4 +57,6 @@ Profile.getLayout = (page: ReactElement) => {
     return <SubAdminLayout>{page}</SubAdminLayout>
 }
 
-export default Profile
+export default withPermission(Profile, {
+    permissions: [PermissionType.TALENT_POOL_ACCESS],
+})

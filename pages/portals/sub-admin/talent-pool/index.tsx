@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react'
 
-import { Typography } from '@components'
+import { Typography, withPermission } from '@components'
 import { useNavbar } from '@hooks'
 import { SubAdminLayout } from '@layouts'
 // import {
@@ -15,7 +15,7 @@ import { SubAdminLayout } from '@layouts'
 import { TalentPoolDropdown } from '@partials'
 import { TalentPoolList } from '@partials/sub-admin'
 import { AuthApi, SubAdminApi } from '@queries'
-import { NextPageWithLayout, OptionType } from '@types'
+import { NextPageWithLayout, OptionType, PermissionType } from '@types'
 import { TalentPoolProfileStatus } from '@utils'
 import { useRouter } from 'next/router'
 
@@ -212,4 +212,6 @@ TalentPoolListSubAdmin.getLayout = (page: ReactElement) => {
     return <SubAdminLayout>{page}</SubAdminLayout>
 }
 
-export default TalentPoolListSubAdmin
+export default withPermission(TalentPoolListSubAdmin, {
+    permissions: [PermissionType.TALENT_POOL_ACCESS],
+})

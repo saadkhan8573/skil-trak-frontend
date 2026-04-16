@@ -13,7 +13,7 @@ import {
 } from '../AdminNavbar/components'
 import { NotificationDropDown } from '../AdminNavbar/components/notifications'
 
-import { AuthorizedUserComponent } from '@components/AuthorizedUserComponent'
+import { AuthorizedUserComponent, Permissions } from '@components'
 import { DisplayNotifications } from '@components/Notification'
 import { MediaQueries, UserRoles } from '@constants'
 import { CommonApi } from '@queries'
@@ -21,42 +21,28 @@ import Link from 'next/link'
 import { BsFillTicketDetailedFill } from 'react-icons/bs'
 import { FaClipboardList, FaHistory } from 'react-icons/fa'
 import { LiaCertificateSolid } from 'react-icons/lia'
-import { useMediaQuery } from 'react-responsive'
 import { NavLinkItem } from '../NavLinkItem'
 import { ProfileOptionsDropDown } from './components'
 import { ProfileOptionButton } from './components/profileOption/ProfileOptionButton'
 import { OutsideClickHandler } from '@components/OutsideClickHandler'
+import { PermissionType } from '@types'
 export const DetailNavbar = () => {
     const router = useRouter()
 
-    const isMobile = useMediaQuery(MediaQueries.Mobile)
     const data = CommonApi.Notifications.useNotifications({
         search: `isRead:${false}`,
         skip: 0,
         limit: 30,
     })
-    const placementNotifications =
-        CommonApi.Notifications.usePlacementNotifications({
-            status: 'placementStarted',
-            skip: undefined,
-            limit: undefined,
-        })
-    const ticketCount = CommonApi.Tickets.useGetTicketCountQuery()
 
-    const { data: mailCount } = CommonApi.Messages.useMailCount()
-    const allMails = CommonApi.Messages.useRecentMails()
+    const ticketCount = CommonApi.Tickets.useGetTicketCountQuery()
 
     const [isReadNotification, resultIsReadNotification] =
         CommonApi.Notifications.useIsReadNotification()
-    const [seenMessage, resultSeenMessage] = CommonApi.Messages.useIsSeen()
 
-    const [messagesExpanded, setMessagesExpanded] = useState(false)
     const [notificationsExpanded, setNotificationsExpanded] = useState(false)
-    const [placementNotificationsExpanded, setPlacementNotificationsExpanded] =
-        useState(false)
-    const [profileOptionsExpanded, setProfileOptionsExpanded] = useState(false)
 
-    // filter over data to get only unread notifications
+    const [profileOptionsExpanded, setProfileOptionsExpanded] = useState(false)
 
     const subadminLinkPrefix = '/portals/sub-admin'
 
@@ -67,6 +53,7 @@ export const DetailNavbar = () => {
             Icon: FaClipboardList,
             activeClasses: 'bg-orange-100 text-orange-700',
             inActiveClasses: 'text-slate-700',
+            permissions: [PermissionType.MANAGE_VOLUNTEERS],
         },
         {
             link: `${subadminLinkPrefix}/talent-pool`,
@@ -74,6 +61,7 @@ export const DetailNavbar = () => {
             Icon: LiaCertificateSolid,
             activeClasses: 'bg-orange-100 text-orange-700',
             inActiveClasses: 'text-slate-700',
+            permissions: [PermissionType.TALENT_POOL_ACCESS],
         },
         {
             link: `${subadminLinkPrefix}/history`,
@@ -96,6 +84,7 @@ export const DetailNavbar = () => {
             Icon: BsFillTicketDetailedFill,
             activeClasses: 'bg-green-100 text-green-700',
             inActiveClasses: 'text-slate-700',
+            permissions: [PermissionType.VIEW_SUPPORT_TICKETS],
             // count: ticketCount?.data,
         },
     ]
@@ -109,10 +98,11 @@ export const DetailNavbar = () => {
                 <AuthorizedUserComponent roles={[UserRoles.STUDENT]}>
                     <Link
                         href={'/portals/student/history'}
-                        className={` ${router.pathname === '/portals/student/history'
-                            ? 'bg-green-100 text-green-700'
-                            : 'text-slate-700'
-                            } transition-all duration-300 px-4 py-2 flex gap-x-2 items-center rounded-md hover:bg-green-100 hover:text-green-700`}
+                        className={` ${
+                            router.pathname === '/portals/student/history'
+                                ? 'bg-green-100 text-green-700'
+                                : 'text-slate-700'
+                        } transition-all duration-300 px-4 py-2 flex gap-x-2 items-center rounded-md hover:bg-green-100 hover:text-green-700`}
                     >
                         <span>
                             <BsFillTicketDetailedFill />
@@ -125,10 +115,11 @@ export const DetailNavbar = () => {
                     <div className="relative">
                         <Link
                             href={'/portals/rto/tickets?tab=all-tickets'}
-                            className={` ${router.pathname === '/portals/sub-admin/tickets'
-                                ? 'bg-green-100 text-green-700'
-                                : 'text-slate-700'
-                                } transition-all duration-300 px-4 py-2 flex gap-x-2 items-center rounded-md hover:bg-green-100 hover:text-green-700`}
+                            className={` ${
+                                router.pathname === '/portals/sub-admin/tickets'
+                                    ? 'bg-green-100 text-green-700'
+                                    : 'text-slate-700'
+                            } transition-all duration-300 px-4 py-2 flex gap-x-2 items-center rounded-md hover:bg-green-100 hover:text-green-700`}
                         >
                             <span>
                                 <BsFillTicketDetailedFill />
@@ -144,13 +135,25 @@ export const DetailNavbar = () => {
                 </AuthorizedUserComponent>
                 <AuthorizedUserComponent roles={[UserRoles.SUBADMIN]}>
                     <ul className="list-none flex gap-x-2">
-                        {subadminLinks?.map((linksData, i) => (
-                            <NavLinkItem
-                                key={i}
-                                nav={linksData}
-                                PREFIX={subadminLinkPrefix}
-                            />
-                        ))}
+                        {subadminLinks?.map((linksData, i) =>
+                            linksData?.permissions ? (
+                                <Permissions
+                                    key={i}
+                                    permission={linksData?.permissions}
+                                >
+                                    <NavLinkItem
+                                        nav={linksData}
+                                        PREFIX={subadminLinkPrefix}
+                                    />
+                                </Permissions>
+                            ) : (
+                                <NavLinkItem
+                                    key={i}
+                                    nav={linksData}
+                                    PREFIX={subadminLinkPrefix}
+                                />
+                            )
+                        )}
                     </ul>
                 </AuthorizedUserComponent>
                 {/* <AuthorizedUserComponent roles={[UserRoles.SUBADMIN]}>

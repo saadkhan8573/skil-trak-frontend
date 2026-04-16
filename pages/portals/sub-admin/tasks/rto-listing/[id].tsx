@@ -1,6 +1,7 @@
+import { withPermission } from '@components'
 import { SubAdminLayout } from '@layouts'
 import { RtoListingDetail } from '@partials/sub-admin'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 import { ReactElement } from 'react'
 
 const RtoListingDetailPage: NextPageWithLayout = () => {
@@ -17,4 +18,6 @@ RtoListingDetailPage.getLayout = (page: ReactElement) => {
         </SubAdminLayout>
     )
 }
-export default RtoListingDetailPage
+export default withPermission(RtoListingDetailPage, {
+    permissions: [PermissionType.ALLOW_RTO_LISTING],
+})

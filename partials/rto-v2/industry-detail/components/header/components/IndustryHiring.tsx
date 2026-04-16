@@ -3,7 +3,9 @@ import { CommonApi } from '@queries'
 import { useNotification } from '@hooks'
 import { Briefcase } from 'lucide-react'
 import { useAppSelector } from '@redux/hooks'
-import { ShowErrorNotifications, Switch } from '@components'
+import { ShowErrorNotifications, Switch, usePermissions } from '@components'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@components/ui'
+import { PermissionType } from '@types'
 
 export const IndustryHiring = () => {
     const [isHiring, isHiringResult] =
@@ -12,6 +14,10 @@ export const IndustryHiring = () => {
     const industryDetail = useAppSelector(
         (state) => state.industry.industryDetail
     )
+
+    const hasPermission = usePermissions([
+        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
+    ])
 
     const { notification } = useNotification()
 
@@ -39,14 +45,34 @@ export const IndustryHiring = () => {
                         Hiring
                     </span>
                 </div>
-                <Switch
-                    name="hiring"
-                    onChange={() => onJobHiring()}
-                    customStyleClass="profileSwitch"
-                    isChecked={industryDetail?.isHiring}
-                    loading={isHiringResult.isLoading}
-                    disabled={isHiringResult.isLoading}
-                />
+                {!hasPermission ? (
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <div className="flex items-center">
+                                <Switch
+                                    name="hiring"
+                                    onChange={() => onJobHiring()}
+                                    customStyleClass="profileSwitch"
+                                    isChecked={industryDetail?.isHiring}
+                                    loading={isHiringResult.isLoading}
+                                    disabled={!hasPermission || isHiringResult.isLoading}
+                                />
+                            </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            Permission Not granted
+                        </TooltipContent>
+                    </Tooltip>
+                ) : (
+                    <Switch
+                        name="hiring"
+                        onChange={() => onJobHiring()}
+                        customStyleClass="profileSwitch"
+                        isChecked={industryDetail?.isHiring}
+                        loading={isHiringResult.isLoading}
+                        disabled={isHiringResult.isLoading}
+                    />
+                )}
             </div>
         </>
     )

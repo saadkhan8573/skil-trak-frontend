@@ -3,7 +3,9 @@ import { SubAdminApi } from '@redux'
 import { useNotification } from '@hooks'
 import { UserCheck } from 'lucide-react'
 import { useAppSelector } from '@redux/hooks'
-import { ShowErrorNotifications, Switch } from '@components'
+import { ShowErrorNotifications, Switch, usePermissions } from '@components'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@components/ui'
+import { PermissionType } from '@types'
 
 export const IndustryPartner = () => {
     const [addToPartner, addToPartnerResult] =
@@ -12,6 +14,10 @@ export const IndustryPartner = () => {
     const industryDetail = useAppSelector(
         (state) => state.industry.industryDetail
     )
+
+    const hasPermission = usePermissions([
+        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
+    ])
 
     const { notification } = useNotification()
 
@@ -40,14 +46,34 @@ export const IndustryPartner = () => {
                         Partner
                     </span>
                 </div>
-                <Switch
-                    name="partner"
-                    onChange={() => onAddPartner()}
-                    customStyleClass="profileSwitch"
-                    isChecked={industryDetail?.isPartner}
-                    loading={addToPartnerResult.isLoading}
-                    disabled={addToPartnerResult.isLoading}
-                />
+                {!hasPermission ? (
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <div className="flex items-center">
+                                <Switch
+                                    name="partner"
+                                    onChange={() => onAddPartner()}
+                                    customStyleClass="profileSwitch"
+                                    isChecked={industryDetail?.isPartner}
+                                    loading={addToPartnerResult.isLoading}
+                                    disabled={!hasPermission || addToPartnerResult.isLoading}
+                                />
+                            </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            Permission Not granted
+                        </TooltipContent>
+                    </Tooltip>
+                ) : (
+                    <Switch
+                        name="partner"
+                        onChange={() => onAddPartner()}
+                        customStyleClass="profileSwitch"
+                        isChecked={industryDetail?.isPartner}
+                        loading={addToPartnerResult.isLoading}
+                        disabled={addToPartnerResult.isLoading}
+                    />
+                )}
             </div>
         </>
     )

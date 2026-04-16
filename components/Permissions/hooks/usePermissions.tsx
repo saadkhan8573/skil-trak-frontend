@@ -29,7 +29,7 @@ export const usePermissionCheck = () => {
             // If permission is not created/found in the system, return true (grant access)
             if (!systemPerm) return true
 
-            // If a roles list exists and the current user's role is NOT in it, 
+            // If a roles list exists and the current user's role is NOT in it,
             // then the permission is allowed by default (not restricted for this role)
             if (role && systemPerm.roles && systemPerm.roles.length > 0) {
                 if (!systemPerm.roles.includes(role)) {
@@ -55,7 +55,7 @@ export const usePermissionCheck = () => {
     const checkPermission = (
         permission?: PermissionType | PermissionType[]
     ): boolean => {
-        if (!permission) return false
+        if (!permission) return true
         if (Array.isArray(permission)) {
             // If array, return true if ANY of the permissions satisfy the condition (OR logic)
             return permission.some((p) => checkSinglePermission(p))

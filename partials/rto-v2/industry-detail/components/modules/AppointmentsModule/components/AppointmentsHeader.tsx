@@ -1,5 +1,6 @@
 import { Calendar, Plus } from 'lucide-react'
-import { Button } from '@components'
+import { Button, Permissions } from '@components'
+import { PermissionType } from '@types'
 
 interface AppointmentsHeaderProps {
     onNewAppointment: () => void
@@ -21,15 +22,19 @@ export function AppointmentsHeader({
                     </p>
                 </div>
             </div>
-            <Button
-                onClick={onNewAppointment}
-                variant="info"
-                outline
-                className="px-3 py-1.5 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/30 text-xs font-medium hover:scale-105 active:scale-95"
+            <Permissions
+                permission={PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS}
             >
-                <Plus className="w-3.5 h-3.5 mr-1.5" />
-                Add Appointment
-            </Button>
+                <Button
+                    onClick={onNewAppointment}
+                    variant="info"
+                    outline
+                    className="px-3 py-1.5 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/30 text-xs font-medium hover:scale-105 active:scale-95"
+                >
+                    <Plus className="w-3.5 h-3.5 mr-1.5" />
+                    Add Appointment
+                </Button>
+            </Permissions>
         </div>
     )
 }

@@ -56,7 +56,7 @@ export const ContextReducer = ({ children }: { children: ReactNode }) => {
     return (
         <>
             <GoogleAnalyticsScript />
-            <div className={`${poppins.className} `}>
+            <div className={`${poppins.className} `} suppressHydrationWarning>
                 <Provider store={store}>
                     <ModalProvider>
                         {/* <AutoLogoutProvider> */}

@@ -102,6 +102,8 @@ export enum PermissionType {
     MANAGE_SMS = 'MANAGE_SMS',
     MANAGE_EMAILS = 'MANAGE_EMAILS',
     MANAGE_CALLS = 'MANAGE_CALLS',
+    /* -------------------- SUBADMIN PORTAL -------------------- */
+
     /* -------------------- RTO STUDENT PROFILE -------------------- */
     BOOK_STUDENT_APPOINTMENTS = 'BOOK_STUDENT_APPOINTMENTS',
     APPROVE_WORKPLACE_REQUEST = 'APPROVE_WORKPLACE_REQUEST',

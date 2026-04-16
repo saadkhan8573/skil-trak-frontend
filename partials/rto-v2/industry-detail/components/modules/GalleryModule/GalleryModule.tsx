@@ -9,7 +9,7 @@ import {
 } from './components'
 import { IndustryApi } from '@queries'
 import { useAppSelector } from '@redux/hooks'
-import { useNotification, DocumentsView } from '@hooks'
+import { DocumentsView } from '@hooks'
 import { NoData } from '@components'
 import { AddGalleryModal, DeleteGalleryModal } from './modal'
 import { IndustryGalleryItem } from '@types'

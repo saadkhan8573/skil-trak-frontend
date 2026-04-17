@@ -2,9 +2,10 @@ import { ReactElement } from 'react'
 
 //Layouts
 import { SubAdminLayout } from '@layouts'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 import { StudentProfileDetail } from '@partials/common'
 import { useAdminLocalAccess } from '@hooks'
+import { withPermission } from '@components'
 
 const StudentsProfileDetail: NextPageWithLayout = () => {
     useAdminLocalAccess()
@@ -22,4 +23,6 @@ StudentsProfileDetail.getLayout = (page: ReactElement) => {
     )
 }
 
-export default StudentsProfileDetail
+export default withPermission(StudentsProfileDetail, {
+    permissions: [PermissionType.CAN_VIEW_STUDENT_DETAIL],
+})

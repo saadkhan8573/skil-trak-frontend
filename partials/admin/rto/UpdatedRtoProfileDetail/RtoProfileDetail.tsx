@@ -1,9 +1,9 @@
-import { Card } from '@components'
+import { Card, Permissions } from '@components'
 import { UserRoles } from '@constants'
 import { Notes, ProfileAppointments, UpdatedCourseList } from '@partials/common'
 import { MailsCommunication } from '@partials/common/StudentProfileDetail/components'
 import { SubAdminApi } from '@queries'
-import { Rto, SubAdmin } from '@types'
+import { PermissionType, Rto, SubAdmin } from '@types'
 import { getSectors, getUserCredentials } from '@utils'
 import {
     InsuranceDocumentsData,
@@ -14,7 +14,10 @@ import {
     RtoReports,
     RtoSectors,
 } from './components'
-import { DynamicPermissionCard, DynamicPermissionsTab } from '@partials/admin/permissions'
+import {
+    DynamicPermissionCard,
+    DynamicPermissionsTab,
+} from '@partials/admin/permissions'
 
 export const RtoProfileDetail = ({ rto }: { rto: Rto }) => {
     const role = getUserCredentials()?.role
@@ -62,21 +65,21 @@ export const RtoProfileDetail = ({ rto }: { rto: Rto }) => {
                     link={
                         role === UserRoles.ADMIN
                             ? {
-                                pathname:
-                                    '/portals/admin/appointment-type/create-appointment',
-                                query: {
-                                    rto: rto?.user?.id,
-                                },
-                            }
+                                  pathname:
+                                      '/portals/admin/appointment-type/create-appointment',
+                                  query: {
+                                      rto: rto?.user?.id,
+                                  },
+                              }
                             : role === UserRoles.SUBADMIN
-                                ? {
+                              ? {
                                     pathname:
                                         '/portals/sub-admin/tasks/appointments/create-appointment',
                                     query: {
                                         rto: rto?.user?.id,
                                     },
                                 }
-                                : null
+                              : null
                     }
                     userId={rto?.user?.id}
                     fullWidth
@@ -110,8 +113,10 @@ export const RtoProfileDetail = ({ rto }: { rto: Rto }) => {
                 <RtoNotifications rtoUser={rto?.user} />
             </div>
 
-            {/* Dynamic Permissions */}
-            <DynamicPermissionCard userId={rto?.user?.id} />
+            <Permissions permission={[PermissionType.UPDATE_RTO_PERMISSION]}>
+                {/* Dynamic Permissions */}
+                <DynamicPermissionCard userId={rto?.user?.id} />
+            </Permissions>
         </div>
     )
 }

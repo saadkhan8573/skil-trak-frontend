@@ -1,7 +1,8 @@
 import { ReactElement } from 'react'
 import { SubAdminLayout } from '@layouts'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 import { CreateAppointments } from '@partials/sub-admin'
+import { withPermission } from '@components'
 
 const CreateAppointment: NextPageWithLayout = () => {
     return <CreateAppointments />
@@ -19,4 +20,6 @@ CreateAppointment.getLayout = (page: ReactElement) => {
     )
 }
 
-export default CreateAppointment
+export default withPermission(CreateAppointment, {
+    permissions: [PermissionType.MANAGE_APPOINTMENTS],
+})

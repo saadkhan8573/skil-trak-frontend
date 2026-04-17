@@ -123,26 +123,6 @@ export const IncompleteSubmissionStudent = () => {
         <>
             {modal}
             <div className="flex flex-col gap-y-3">
-                {/* <PageHeading
-                    title={'Approved Students'}
-                    subtitle={'List of Approved Students'}
-                >
-                    {data?.data && data?.data.length ? (
-                        <Button
-                            text={'Export'}
-                            variant={'action'}
-                            Icon={FaFileExport}
-                            onClick={() => {
-                                if (isBrowser()) {
-                                    window.open(
-                                        `${process.env.NEXT_PUBLIC_END_POINT}/rtos/students-list/download/${userId}?status=active`
-                                    )
-                                }
-                            }}
-                        />
-                    ) : null}
-                </PageHeading> */}
-
                 <Card noPadding>
                     {isError && <TechnicalError />}
                     {isLoading ? (

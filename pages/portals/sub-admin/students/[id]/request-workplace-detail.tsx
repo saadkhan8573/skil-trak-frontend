@@ -5,10 +5,11 @@ import {
     PageTitle,
     StepIndicator,
     TechnicalError,
+    withPermission,
 } from '@components'
 
 import { SubAdminLayout } from '@layouts'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 
 // query
 import { CompleteProfileBeforeWpModal } from '@partials/common/StudentProfileDetail/components'
@@ -185,4 +186,6 @@ RequestWorkplaceDetail.getLayout = (page: ReactElement) => {
     return <SubAdminLayout>{page}</SubAdminLayout>
 }
 
-export default RequestWorkplaceDetail
+export default withPermission(RequestWorkplaceDetail, {
+    permissions: [PermissionType.ALLOW_STUDENT_NEED_WORKPLACE],
+})

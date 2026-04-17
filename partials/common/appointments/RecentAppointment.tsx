@@ -4,7 +4,7 @@ import React, {
     ReactElement,
     MouseEventHandler,
 } from 'react'
-import { LoadingAnimation, NoData, Typography } from '@components'
+import { LoadingAnimation, NoData, Permissions, Typography } from '@components'
 import { Button } from '@components/buttons'
 import { ellipsisText, getUserCredentials } from '@utils'
 import moment from 'moment'
@@ -17,7 +17,13 @@ import { IoLocationSharp, IoTime } from 'react-icons/io5'
 import { CommonApi } from '@queries'
 import { RiShieldUserFill } from 'react-icons/ri'
 import { AppointmentViewModal } from '@components/Appointment/AppointmentModal'
-import { Appointment, Industry, User, appointmentWithUser } from '@types'
+import {
+    Appointment,
+    Industry,
+    PermissionType,
+    User,
+    appointmentWithUser,
+} from '@types'
 import { useMediaQuery } from 'react-responsive'
 import { MediaQueries } from '@constants'
 
@@ -118,20 +124,26 @@ export const RecentAppointment = ({
                         </div>
                         {appointment && link && (
                             <div>
-                                <Button
-                                    variant={'secondary'}
-                                    rounded
-                                    onClick={(e: any) => {
-                                        if (link) {
-                                            e.stopPropagation()
-                                            router.push(link)
-                                        }
-                                    }}
+                                <Permissions
+                                    permission={[
+                                        PermissionType.MANAGE_APPOINTMENTS,
+                                    ]}
                                 >
-                                    <span className="text-[#3883F3]">
-                                        View All
-                                    </span>
-                                </Button>
+                                    <Button
+                                        variant={'secondary'}
+                                        rounded
+                                        onClick={(e: any) => {
+                                            if (link) {
+                                                e.stopPropagation()
+                                                router.push(link)
+                                            }
+                                        }}
+                                    >
+                                        <span className="text-[#3883F3]">
+                                            View All
+                                        </span>
+                                    </Button>
+                                </Permissions>
                             </div>
                         )}
                     </div>

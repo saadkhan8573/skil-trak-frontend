@@ -1,5 +1,6 @@
 import { LottieAnimation } from '@components/LottieAnimation'
 import Link from 'next/link'
+import { PermissionType } from '@types'
 
 // components
 import { Typography } from '@components'
@@ -14,6 +15,7 @@ export interface PrimaryActionButtonProps {
     shadow?: boolean
     description: string
     link: string | undefined
+    permissions?: PermissionType[]
 }
 
 export const PrimaryActionButton = ({

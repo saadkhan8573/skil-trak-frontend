@@ -8,10 +8,15 @@ import {
     TabNavigation,
     TabProps,
     TechnicalError,
+    withPermission,
     WorkplaceFilters,
 } from '@components'
 import { SubAdminLayout } from '@layouts'
-import { NextPageWithLayout, SubadminWorkplaceFiltersType } from '@types'
+import {
+    NextPageWithLayout,
+    PermissionType,
+    SubadminWorkplaceFiltersType,
+} from '@types'
 
 // query
 import {
@@ -262,4 +267,6 @@ Workplace.getLayout = (page: ReactElement) => {
     )
 }
 
-export default Workplace
+export default withPermission(Workplace, {
+    permissions: [PermissionType.PLACEMENT_REQUESTS],
+})

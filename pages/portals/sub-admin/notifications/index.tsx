@@ -2,10 +2,15 @@ import { ReactElement, useEffect } from 'react'
 // Layouts
 import { SubAdminLayout } from '@layouts'
 // Types
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 
 // Components
-import { Button, RtoContextBarData, SidebarCalendar } from '@components'
+import {
+    Button,
+    RtoContextBarData,
+    SidebarCalendar,
+    withPermission,
+} from '@components'
 // Hooks
 import { useContextBar } from '@hooks'
 import { MailsListing } from '@partials/common/MailsListing'
@@ -32,4 +37,6 @@ Notifications.getLayout = (page: ReactElement) => {
     )
 }
 
-export default Notifications
+export default withPermission(Notifications, {
+    permissions: [PermissionType.MANAGE_EMAILS],
+})

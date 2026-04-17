@@ -2,7 +2,7 @@ import { ReactElement, useEffect } from 'react'
 // Layouts
 import { SubAdminLayout } from '@layouts'
 // Types
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 // Animations
 import { Animations } from '@animations'
 // Components
@@ -41,6 +41,7 @@ const SubAdminTasks: NextPageWithLayout = () => {
                 text: statistics?.data?.workplaceRequest,
                 loading: statistics.isLoading,
             },
+            permissions: [PermissionType.PLACEMENT_REQUESTS],
         },
         {
             title: 'Appointments',
@@ -48,6 +49,7 @@ const SubAdminTasks: NextPageWithLayout = () => {
             link: 'tasks/appointments',
             animation: Animations.Student.Appointments.AppointmentsSec,
             id: 'appointments',
+            permissions: [PermissionType.MANAGE_APPOINTMENTS],
         },
         {
             title: 'Assessment Submissions',
@@ -61,6 +63,7 @@ const SubAdminTasks: NextPageWithLayout = () => {
                 text: statistics?.data?.assessmentEvidence,
                 loading: statistics.isLoading,
             },
+            permissions: [PermissionType.SUBMISSIONS],
         },
         // {
         //     title: 'My Student Report',
@@ -76,7 +79,7 @@ const SubAdminTasks: NextPageWithLayout = () => {
         <div className="flex flex-col">
             <div className="flex items-start gap-x-6">
                 {/* Primary Actions */}
-                <div className="bg-white p-4 rounded-2xl shadow-xl flex-shrink-0">
+                <div className="bg-white min-w-40 p-4 rounded-2xl shadow-xl flex-shrink-0">
                     <DisplayPrimaryActions actions={PrimaryLinks} />
                 </div>
 

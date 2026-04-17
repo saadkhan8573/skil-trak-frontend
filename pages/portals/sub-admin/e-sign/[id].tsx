@@ -1,6 +1,7 @@
+import { withPermission } from '@components'
 import { SubAdminLayout } from '@layouts'
 import { ViewDocumentAndSign } from '@partials/eSign/ViewDocumentAndSign'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 import { ReactElement } from 'react'
 
 const ESignDetail: NextPageWithLayout = () => {
@@ -19,4 +20,6 @@ ESignDetail.getLayout = (page: ReactElement) => {
     )
 }
 
-export default ESignDetail
+export default withPermission(ESignDetail, {
+    permissions: [PermissionType.SIGN_DOCUMENTS],
+})

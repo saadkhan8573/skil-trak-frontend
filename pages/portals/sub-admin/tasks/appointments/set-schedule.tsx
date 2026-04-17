@@ -1,25 +1,14 @@
 import { ReactElement } from 'react'
 
 import { SubAdminLayout } from '@layouts'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 
 // components
-import {
-    Button,
-    LoadingAnimation,
-    TechnicalError,
-    EmptyData,
-} from '@components'
+import { withPermission } from '@components'
 import { SetScheduleContainer } from '@partials/sub-admin'
 
-type Props = {}
-
-const SetSchedule: NextPageWithLayout = (props: Props) => {
-    return (
-        <>
-            <SetScheduleContainer />
-        </>
-    )
+const SetSchedule: NextPageWithLayout = () => {
+    return <SetScheduleContainer />
 }
 SetSchedule.getLayout = (page: ReactElement) => {
     return (
@@ -35,4 +24,6 @@ SetSchedule.getLayout = (page: ReactElement) => {
     )
 }
 
-export default SetSchedule
+export default withPermission(SetSchedule, {
+    permissions: [PermissionType.MANAGE_APPOINTMENTS],
+})

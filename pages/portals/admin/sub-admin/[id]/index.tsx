@@ -1,9 +1,14 @@
-import { EmptyData, LoadingAnimation, TechnicalError } from '@components'
+import {
+    EmptyData,
+    LoadingAnimation,
+    Permissions,
+    TechnicalError,
+} from '@components'
 import { AdminLayout } from '@layouts'
 import { DynamicPermissionCard } from '@partials'
 import { SubadminProfileDetail } from '@partials/admin/sub-admin'
 import { AdminApi } from '@queries'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 import { useRouter } from 'next/router'
 import { ReactElement } from 'react'
 
@@ -26,7 +31,13 @@ const SubadminDetail: NextPageWithLayout = () => {
                 <>
                     <SubadminProfileDetail subadmin={subadminDetail?.data} />
                     {/* Dynamic Permissions */}
-                    <DynamicPermissionCard userId={subadminDetail?.data?.user?.id} />
+                    <Permissions
+                        permission={[PermissionType.UPDATE_RTO_PERMISSION]}
+                    >
+                        <DynamicPermissionCard
+                            userId={subadminDetail?.data?.user?.id}
+                        />
+                    </Permissions>
                 </>
             ) : subadminDetail.isSuccess ? (
                 <EmptyData description="No Subadmin Detail were found!" />

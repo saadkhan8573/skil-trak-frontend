@@ -133,6 +133,7 @@ export const ProfileAppointmentsCard = ({
                                 normal
                                 color={barTextClasses}
                                 variant={short ? 'label' : 'body'}
+                                as="div"
                             >
                                 <TruncatedTextWithTooltip
                                     text={

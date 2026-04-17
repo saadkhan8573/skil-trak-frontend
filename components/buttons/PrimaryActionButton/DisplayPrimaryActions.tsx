@@ -3,6 +3,7 @@ import {
     PrimaryActionButton,
     PrimaryActionButtonProps,
 } from './PrimaryActionButton'
+import { Permissions } from '@components'
 
 export const DisplayPrimaryActions = ({
     actions,
@@ -11,19 +12,33 @@ export const DisplayPrimaryActions = ({
 }) => {
     const status = getUserCredentials()?.status
     return (
-        <div className="flex flex-col justify-center items-center gap-y-2">
-            {actions.map((action, i) => (
-                <PrimaryActionButton
-                    key={i}
-                    link={status === 'approved' ? action.link : `#`}
-                    title={action.title}
-                    description={action.description}
-                    image={action.image}
-                    animation={action.animation}
-                    id={action.id}
-                    badge={action?.badge}
-                />
-            ))}
+        <div className="min-w-70 flex flex-col justify-center items-center gap-y-2">
+            {actions.map((action, i) =>
+                action.permissions ? (
+                    <Permissions permission={action.permissions} key={i}>
+                        <PrimaryActionButton
+                            link={status === 'approved' ? action.link : `#`}
+                            title={action.title}
+                            description={action.description}
+                            image={action.image}
+                            animation={action.animation}
+                            id={action.id}
+                            badge={action?.badge}
+                        />
+                    </Permissions>
+                ) : (
+                    <PrimaryActionButton
+                        key={i}
+                        link={status === 'approved' ? action.link : `#`}
+                        title={action.title}
+                        description={action.description}
+                        image={action.image}
+                        animation={action.animation}
+                        id={action.id}
+                        badge={action?.badge}
+                    />
+                )
+            )}
         </div>
     )
 }

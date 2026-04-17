@@ -1,12 +1,12 @@
 import { Permissions } from '@components'
+import { PermissionType } from '@types'
 import { useIndustryProgress } from '../../hooks'
 import {
+    ActionButtons,
     CompanyInfo,
     StatusBanner,
-    ActionButtons,
     StatusControls,
 } from './components'
-import { PermissionType } from '@types'
 
 export function IndustryProfileHeader() {
     const { progressPercentage, isPlacementReady } = useIndustryProgress()
@@ -40,6 +40,8 @@ export function IndustryProfileHeader() {
 
                 {/* Industry Status Buttons - Enhanced Design */}
                 <StatusControls />
+
+                
             </div>
         </div>
     )

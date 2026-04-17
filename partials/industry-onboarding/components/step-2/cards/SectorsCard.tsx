@@ -290,8 +290,8 @@ export function SectorsCard({
             !questions || questions.length === 0
                 ? true
                 : questions.every((q: any) => checks[q.id])
-
-        return allStaticChecked && allApiChecked
+        // && allApiChecked
+        return allStaticChecked
     }
 
     const isSectorReadyToConfirm = (sectorId: any) => {

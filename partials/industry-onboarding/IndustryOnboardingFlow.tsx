@@ -66,7 +66,6 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
         isError,
         isLoading: industryDataLoading,
     } = IndustryApi.Profile.useIndustryOnboarding(id, { skip: !id })
-
     const [submitOnboarding, submitOnboardingResult] =
         AdminApi.Industries.useOnBoardingSubmission()
     // API returns { id, sector: { id, name, ... } } — flatten to the inner sector object
@@ -203,7 +202,10 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
                 const selectedQuestionIds = Object.entries(
                     sector.questionChecks || {}
                 )
-                    .filter(([, checked]) => checked)
+                    .filter(
+                        ([qId, checked]) =>
+                            checked && !qId.startsWith('static_')
+                    )
                     .map(([qId]) => Number(qId))
 
                 const industryChecks = (sector.industryChecks || [])
@@ -211,12 +213,12 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
                     .map((c: any) => ({ id: c.id }))
 
                 const courseMap = tasksBySectorId[sector.id] || {}
-                const courses = Object.entries(courseMap).map(
-                    ([courseId, taskIds]: [string, any]) => ({
+                const courses = Object.entries(courseMap)
+                    .filter(([, taskIds]: [any, any]) => taskIds?.length > 0)
+                    .map(([courseId, taskIds]: [string, any]) => ({
                         id: Number(courseId),
                         taskIds: taskIds as number[],
-                    })
-                )
+                    }))
 
                 const base: Record<string, any> = {
                     id: sector.id,
@@ -300,10 +302,10 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
         setIsLoading(true)
         try {
             const body = buildPayload()
-            // console.log(
-            //     '[Onboarding] submit payload::::::',
-            //     JSON.stringify(body, null, 2)
-            // )
+            console.log(
+                '[Onboarding] submit payload::::::',
+                JSON.stringify(body, null, 2)
+            )
             const role = getPortalRole(router.pathname)
 
             if (role === 'admin') {
@@ -315,11 +317,13 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
                     '/portals/sub-admin/tasks/industry-listing?tab=all&page=1&pageSize=50'
                 )
             } else if (role === 'student') {
+                localStorage.removeItem('industryOnboarding')
                 router.push(
                     '/portals/student/workplace/my-workplace/have-workplace'
                 )
             }
-            await submitOnboarding({ id, body })
+            // await submitOnboarding({ id, body })
+
             //
         } finally {
             setIsLoading(false)

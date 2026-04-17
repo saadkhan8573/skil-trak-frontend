@@ -187,10 +187,7 @@ export const IndustryLayout = ({
     }, [])
 
     // Show onboarding flow immediately after signup
-    console.log(
-        'industryProfile?.showOnboarding',
-        industryProfile?.showOnboarding
-    )
+
     if (industryProfile?.showOnboarding) {
         return (
             <UserLayout>

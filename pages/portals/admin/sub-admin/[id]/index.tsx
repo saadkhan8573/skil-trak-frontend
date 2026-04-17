@@ -31,13 +31,10 @@ const SubadminDetail: NextPageWithLayout = () => {
                 <>
                     <SubadminProfileDetail subadmin={subadminDetail?.data} />
                     {/* Dynamic Permissions */}
-                    <Permissions
-                        permission={[PermissionType.UPDATE_RTO_PERMISSION]}
-                    >
-                        <DynamicPermissionCard
-                            userId={subadminDetail?.data?.user?.id}
-                        />
-                    </Permissions>
+
+                    <DynamicPermissionCard
+                        userId={subadminDetail?.data?.user?.id}
+                    />
                 </>
             ) : subadminDetail.isSuccess ? (
                 <EmptyData description="No Subadmin Detail were found!" />

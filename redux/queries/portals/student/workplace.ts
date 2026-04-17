@@ -14,8 +14,11 @@ export const workplaceEndpoints = (
         }),
         invalidatesTags: ['Workplace'],
     }),
-    getWorkplaceIndustries: builder.query<any, void>({
-        query: () => `${PREFIX}/workindustry/list`,
+    getWorkplaceIndustries: builder.query<any, number | void>({
+        query: (params) => ({
+            url: `${PREFIX}/workindustry/list`,
+            params,
+        }),
         providesTags: ['Workplace', 'SubAdmin-Students'],
     }),
 

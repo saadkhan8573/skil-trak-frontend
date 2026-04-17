@@ -461,6 +461,7 @@ export interface Industry extends BaseResponse {
     isPlacementReady: boolean
     website: string
     addressLine1: string
+    onboardingCreatedBy: any
     addressLine2: string
     suburb: string
     state: string

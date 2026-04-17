@@ -12,7 +12,7 @@ import {
     Typography,
 } from '@components'
 import { ShowErrorNotifications } from '@components/ShowErrorNotifications'
-import { AdminLayout } from '@layouts'
+import { SubAdminLayout } from '@layouts'
 import {
     Industry,
     NextPageWithLayout,
@@ -33,16 +33,18 @@ import {
 } from '@partials/student'
 import { EmployerDocuments } from '@partials/student/workplace/modal'
 import { IndustrySelection } from '@partials/sub-admin/students'
+import { AlreadyWPCreatedModal } from '@partials/sub-admin/students/workplace/requestWorkplaceDetail/modal'
 import {
     SubAdminApi,
     useAddCustomIndustyForWorkplaceMutation,
     useFindByAbnWorkplaceMutation,
     useGetSubAdminStudentDetailQuery,
+    useGetSubAdminStudentWorkplaceQuery,
+    useGetWorkplaceIndustriesQuery,
     useSubAdminCancelStudentWorkplaceRequestMutation,
 } from '@queries'
 import { checkStudentProfileCompletion, WorkplaceCurrentStatus } from '@utils'
 import { IWorkplaceIndustries } from '@redux/queryTypes'
-import { ArrowLeft, CalendarCheck, CheckCircle2, User } from 'lucide-react'
 
 type Props = {}
 
@@ -74,12 +76,17 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
         useGetSubAdminStudentDetailQuery(Number(id), {
             skip: !id,
         })
-
+    const userId = data?.user?.id
+    const workplaceRequest = useGetWorkplaceIndustriesQuery(userId, {
+        skip: !userId,
+    })
     const rtoDetail = SubAdminApi.Student.getStudentRtoDetail(Number(id), {
         skip: !id,
         refetchOnMountOrArgChange: true,
     })
-
+    const workplace = useGetSubAdminStudentWorkplaceQuery(Number(id), {
+        skip: !id,
+    })
     const courses = SubAdminApi.Student.useCourses(Number(id), {
         skip: !id,
         refetchOnMountOrArgChange: true,
@@ -95,6 +102,15 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
 
     useEffect(() => {
         if (
+            workplaceRequest.data &&
+            workplaceRequest.isSuccess &&
+            workplaceRequest?.data?.filter(
+                (wp: IWorkplaceIndustries) =>
+                    wp?.currentStatus !== WorkplaceCurrentStatus.Completed
+            )?.length > 1
+        ) {
+            setModal(<AlreadyWPCreatedModal />)
+        } else if (
             profileCompletion &&
             profileCompletion > 0 &&
             profileCompletion < 100
@@ -107,7 +123,7 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
         } else if (profileCompletion === 100) {
             setModal(null)
         }
-    }, [profileCompletion])
+    }, [profileCompletion, workplace])
 
     const [findAbn, result] = useFindByAbnWorkplaceMutation()
     const [addWorkplace, addWorkplaceResult] =
@@ -115,17 +131,26 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
     const [cancelRequest, cancelRequestResult] =
         useSubAdminCancelStudentWorkplaceRequestMutation()
 
-    const workplace = {
-        data: workplaceData ? [workplaceData] : [],
-        isLoading: false,
-    }
-
     useEffect(() => {
-        if (addWorkplaceResult.isSuccess && addWorkplaceResult.data) {
-            setWorkplaceData(addWorkplaceResult.data?.workplaceRequest)
+        if (workplaceRequest.isSuccess && workplaceRequest.data) {
+            setWorkplaceData(workplaceRequest.data?.[0])
             setActive((active: number) => active + 1)
         }
     }, [addWorkplaceResult])
+
+    useEffect(() => {
+        if (!workplaceRequest) return
+        const approval = workplaceData?.studentProvidedWorkplaceRequestApproval
+
+        const industryId = approval?.industry?.id
+        const isOnboarding = approval?.industry?.showOnboarding
+
+        if (industryId && isOnboarding) {
+            router.push(
+                `/portals/sub-admin/students/${router.query.id}/provide-workplace-detail/${industryId}`
+            )
+        }
+    }, [workplaceData, workplaceRequest])
 
     useEffect(() => {
         if (!result.data && result.isSuccess) {
@@ -142,6 +167,12 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
             setActive((active: number) => active + 1)
         }
     }, [result])
+
+    // useEffect(() => {
+    //     if (workplace.isSuccess && workplace.data.length > 0) {
+    //         setActive(3)
+    //     }
+    // }, [workplace.data, workplace.isSuccess])
 
     useEffect(() => {
         if (cancelRequestResult.isSuccess) {
@@ -167,6 +198,29 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
         )
     }
 
+    const StepIndicatorOptions = [
+        {
+            label: 'Personal Info',
+            visited: false,
+            last: false,
+        },
+        {
+            label: 'Your Industry',
+            visited: false,
+            last: false,
+        },
+        {
+            label: 'Select Industry',
+            visited: false,
+            last: false,
+        },
+        {
+            label: 'Wait For Approval',
+            visited: false,
+            last: true,
+        },
+    ]
+
     const onSubmit = (values: any) => {
         if (values?.type === 'abn') {
             findAbn(values?.value)
@@ -177,6 +231,9 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
         }
         setFindIndustryType(values?.type)
         setIndustrySearchValue(values?.value)
+        // findAbn(values?.abn)
+        // setIndustryABN(values?.abn)
+        // setActive((active: number) => active + 1)
     }
 
     const onIndustryAdd = (values: ProvideIndustryDetail) => {
@@ -190,6 +247,15 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
             },
         })
         setShowEmployerDocModal(true)
+        // addWorkplace({
+        //     id: data?.user?.id,
+        //     body: {
+        //         ...values,
+        //         courses: [values?.courses],
+        //         role: UserRoles.INDUSTRY,
+        //         password: 'NA',
+        //     },
+        // })
     }
 
     return (
@@ -214,109 +280,59 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                     setActive={setActive}
                 />
             )}
+            <PageTitle
+                title="Provide Workplace Detail"
+                backTitle="Student Detail"
+            />
+            <div className="mt-3">
+                {workplace?.isLoading ? (
+                    <LoadingAnimation />
+                ) : (
+                    <div className="flex gap-x-5 w-full">
+                        <ShowErrorNotifications result={addWorkplaceResult} />
+                        {/* <GoBackButton>Workplace Choice</GoBackButton> */}
+                        {/*  */}
 
-            <div className="min-h-screen bg-slate-50/50 px-4 sm:px-6 lg:px-8">
-                <div className="mx-auto">
-                    <ShowErrorNotifications result={addWorkplaceResult} />
-
-                    {/* Header Section */}
-                    <div className="mb-8 space-y-3">
-                        <Button
-                            variant="primaryNew"
-                            outline
-                            onClick={() => router.back()}
-                        >
-                            <ArrowLeft className="w-4 h-4 mr-2" />
-                            Back to Student Detail
-                        </Button>
-
-                        <div className="flex items-start justify-between">
-                            <div>
-                                <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-3">
-                                    Provide Workplace
-                                    <span className="px-3 py-1 rounded-full bg-[#044866]/10 text-[#044866] text-xs font-medium border border-[#044866]/20">
-                                        Placement
-                                    </span>
-                                </h1>
-                                <p className="mt-2 text-slate-600">
-                                    Enter the details of your self-sourced
-                                    placement.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Main Card */}
-                    <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden relative">
-                        {/* Decorative Background */}
-                        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#044866]/5 to-[#F7A619]/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
-
-                        {/* Progress Steps (Visual Only) */}
-                        <div className="bg-slate-50/50 border-b border-slate-100 px-8 py-4">
-                            <div className="flex items-center gap-4">
-                                <div
-                                    className={`flex items-center gap-2 ${active === 1 ? 'text-[#044866] font-semibold' : 'text-slate-500'}`}
-                                >
-                                    <div
-                                        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-300 ${active === 1 ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30' : active > 1 ? 'bg-emerald-500 text-white' : 'bg-slate-200'}`}
-                                    >
-                                        {active > 1 ? (
-                                            <CheckCircle2 className="w-5 h-5" />
-                                        ) : (
-                                            '1'
-                                        )}
-                                    </div>
-                                    <span>Personal Info</span>
-                                </div>
-                                <div className="w-12 h-0.5 bg-slate-200 rounded-full"></div>
-                                <div
-                                    className={`flex items-center gap-2 ${active === 2 ? 'text-[#044866] font-semibold' : 'text-slate-500'}`}
-                                >
-                                    <div
-                                        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-300 ${active === 2 ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30' : active > 2 ? 'bg-emerald-500 text-white' : 'bg-slate-200'}`}
-                                    >
-                                        {active > 2 ? (
-                                            <CheckCircle2 className="w-5 h-5" />
-                                        ) : (
-                                            '2'
-                                        )}
-                                    </div>
-                                    <span>Industry Details</span>
-                                </div>
-                                <div className="w-12 h-0.5 bg-slate-200 rounded-full"></div>
-                                <div
-                                    className={`flex items-center gap-2 ${active >= 3 ? 'text-[#044866] font-semibold' : 'text-slate-500'}`}
-                                >
-                                    <div
-                                        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-300 ${active >= 3 ? 'bg-[#044866] text-white shadow-lg shadow-[#044866]/30' : 'bg-slate-200'}`}
-                                    >
-                                        3
-                                    </div>
-                                    <span>Confirmation</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="p-8">
+                        {/* <div className="py-4 w-[25%]">
+                            <StepIndicator
+                                steps={StepIndicatorOptions}
+                                currentStep={StepIndicatorOptions[active - 1]}
+                                vertical
+                            />
+                        </div> */}
+                        <div className="max-w-5xl w-full mx-auto">
                             {active === 1 && (
-                                <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-                                    <div className="flex items-center gap-3 mb-6">
-                                        <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
-                                            <User className="w-5 h-5" />
-                                        </div>
-                                        <div>
-                                            <h2 className="text-xl font-semibold text-slate-800">
-                                                Review Personal Details
-                                            </h2>
-                                            <p className="text-sm text-slate-500">
-                                                Confirm your contact information
+                                <div className="w-full">
+                                    {/* <FindWorkplace
+                                        result={result}
+                                        onSubmit={onSubmit}
+                                        setActive={setActive}
+                                        setWorkplaceData={setWorkplaceData}
+                                        student={data as Student}
+                                    /> */}
+                                    {/* {industryNotFound ? (
+                                        <div className="bg-red-200 rounded-lg px-2 py-1 mb-2">
+                                            <p className="text-sm font-semibold text-red-500">
+                                                Industry for provided ABN not
+                                                found
+                                            </p>
+                                            <p className="text-xs text-red-400">
+                                                You will be redirected to
+                                                Industry Form so you can add
+                                                your industry&apos;s information
                                             </p>
                                         </div>
+                                    ) : null} */}
+                                    {/* <FindWorkplaceForm
+                                     onSubmit={onSubmit}
+                                     result={result}
+                                 /> */}
+                                    <div className="">
+                                        <UpdatedPersonalInfo
+                                            onSubmit={onSubmit}
+                                            result={result}
+                                        />
                                     </div>
-                                    <UpdatedPersonalInfo
-                                        onSubmit={onSubmit}
-                                        result={result}
-                                    />
                                 </div>
                             )}
 
@@ -324,39 +340,30 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                                 (!result?.data &&
                                 (findIndustryType === 'abn' ||
                                     !findIndustryType) ? (
-                                    <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-                                        <div className="flex items-center gap-3 mb-6">
-                                            <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
-                                                <CalendarCheck className="w-5 h-5" />
-                                            </div>
-                                            <div>
-                                                <h2 className="text-xl font-semibold text-slate-800">
-                                                    Industry Details
-                                                </h2>
-                                                <p className="text-sm text-slate-500">
-                                                    Provide the details of your
-                                                    workplace
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <AddCustomIndustryForm
-                                            setWorkplaceData={setWorkplaceData}
-                                            result={addWorkplaceResult}
-                                            industryABN={industryABN}
-                                            onSubmit={onIndustryAdd}
-                                            setActive={setActive}
-                                            courses={courses?.data}
-                                        />
-                                    </div>
+                                    <AddCustomIndustryForm
+                                        setWorkplaceData={setWorkplaceData}
+                                        result={addWorkplaceResult}
+                                        industryABN={industryABN}
+                                        onSubmit={onIndustryAdd}
+                                        setActive={setActive}
+                                        courses={courses?.data}
+                                    />
                                 ) : (
-                                    <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-                                        <div className="mb-6">
-                                            <BackButton
-                                                onClick={() => {
-                                                    setActive(1)
-                                                }}
-                                            />
-                                        </div>
+                                    // <ExistinIndustryCard
+                                    //     setActive={setActive}
+                                    //     personalInfoData={personalInfoData}
+                                    //     res={result}
+                                    //     industry={result?.data}
+                                    //     setWorkplaceData={setWorkplaceData}
+                                    //     student={data?.user?.id}
+                                    //     studentId={data?.id}
+                                    // />
+                                    <div>
+                                        <BackButton
+                                            onClick={() => {
+                                                setActive(1)
+                                            }}
+                                        />
                                         {findIndustryType === 'abn' ? (
                                             <UpdatedExistingIndustry
                                                 industry={
@@ -382,7 +389,7 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                                 ))}
 
                             {active === 3 && (
-                                <div className="animate-in fade-in slide-in-from-right-4 duration-500">
+                                <>
                                     {workplaceData?.[0]?.industryStatus ===
                                     UserStatus.Approved ? (
                                         <IndustrySelection
@@ -431,11 +438,11 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                                             {workplaceCancelRequest()}
                                         </Card>
                                     )}
-                                </div>
+                                </>
                             )}
 
                             {active === 4 && (
-                                <div className="flex flex-col gap-y-7 items-center animate-in fade-in slide-in-from-right-4 duration-500">
+                                <div className="flex flex-col gap-y-7 items-center">
                                     <Card>
                                         <div className="w-full ">
                                             <div className="w-full py-7 border-b border-[#D9DBE9]">
@@ -445,6 +452,7 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                                                 />
                                             </div>
 
+                                            {/*  */}
                                             <div className="w-full px-10 pt-5 pb-9">
                                                 <ActionAlert
                                                     title={
@@ -468,7 +476,7 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                                             fullWidth
                                             onClick={() => {
                                                 router.push(
-                                                    `/portals/admin/student/${router?.query?.id}/detail`
+                                                    `/portals/sub-admin/students/${router?.query?.id}/detail`
                                                 )
                                             }}
                                         />
@@ -477,13 +485,13 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                             )}
                         </div>
                     </div>
-                </div>
+                )}
             </div>
         </>
     )
 }
 ProvideWorkplaceDetail.getLayout = (page: ReactElement) => {
-    return <AdminLayout>{page}</AdminLayout>
+    return <SubAdminLayout>{page}</SubAdminLayout>
 }
 
 export default ProvideWorkplaceDetail

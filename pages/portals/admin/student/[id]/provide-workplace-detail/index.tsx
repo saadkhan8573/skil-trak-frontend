@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
 
 import {
@@ -7,18 +8,23 @@ import {
     Badge,
     Button,
     Card,
-    GlobalModal,
     LoadingAnimation,
     Typography,
 } from '@components'
 import { ShowErrorNotifications } from '@components/ShowErrorNotifications'
-import { StudentLayout } from '@layouts'
-import { Industry, NextPageWithLayout, UserStatus } from '@types'
+import { AdminLayout } from '@layouts'
+import {
+    Industry,
+    NextPageWithLayout,
+    ProvideIndustryDetail,
+    UserStatus,
+} from '@types'
 
 // query
-import { MediaQueries, UserRoles } from '@constants'
+import { UserRoles } from '@constants'
 import { useNotification } from '@hooks'
 import { AddCustomIndustryForm } from '@partials/common'
+import { CompleteProfileBeforeWpModal } from '@partials/common/StudentProfileDetail/components'
 import {
     AppliedIndustry,
     UpdatedExistingIndustry,
@@ -28,61 +34,96 @@ import {
 } from '@partials/student'
 import { EmployerDocuments } from '@partials/student/workplace/modal'
 import {
-    useAddWorkplaceMutation,
-    useCancelWorkplaceRequestMutation,
-    useGetStudentCoursesQuery,
+    SubAdminApi,
+    useAddCustomIndustyForWorkplaceMutation,
+    useFindByAbnWorkplaceMutation,
+    useGetSubAdminStudentDetailQuery,
     useGetWorkplaceIndustriesQuery,
-    useUpdateFindAbnMutation,
+    useSubAdminCancelStudentWorkplaceRequestMutation,
 } from '@queries'
-import { WorkplaceCurrentStatus } from '@utils'
-import { useMediaQuery } from 'react-responsive'
-import { useRouter } from 'next/router'
-import { IndustryOnboardingFlow } from '@partials/industry-onboarding/IndustryOnboardingFlow'
+import { checkStudentProfileCompletion } from '@utils'
+import { ArrowLeft, CalendarCheck, CheckCircle2, User } from 'lucide-react'
 
 type Props = {}
 
-const HaveWorkplace: NextPageWithLayout = (props: Props) => {
-    const isMobile = useMediaQuery(MediaQueries.Mobile)
+const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
+    const router = useRouter()
+    const { id } = router.query
     const [active, setActive] = useState(1)
     const [answer, setAnswer] = useState('')
+    const [industryABN, setIndustryABN] = useState<string | null>(null)
     const [modal, setModal] = useState<ReactElement | null>(null)
+    const [workplaceData, setWorkplaceData] = useState<any | null>(null)
     const [industrySearchValue, setIndustrySearchValue] = useState<
         string | null
     >(null)
+    const [industryNotFound, setIndustryNotFound] = useState(false)
     const [findIndustryType, setFindIndustryType] = useState<string | null>(
         null
     )
-    const [cIndustryDetail, setCIndustryDetail] = useState<any>({})
     const [showEmployerDocModal, setShowEmployerDocModal] = useState<
         boolean | null
     >(null)
+    const [cIndustryDetail, setCIndustryDetail] = useState<any>({})
 
-    const [industryNotFound, setIndustryNotFound] = useState(false)
-
-    const [workplaceData, setWorkplaceData] = useState<any | null>({})
     const { notification } = useNotification()
-    const router = useRouter()
+
     // query
-    const workplace = useGetWorkplaceIndustriesQuery()
-    const [findAbn, result] = useUpdateFindAbnMutation()
-    const [addWorkplace, addWorkplaceResult] = useAddWorkplaceMutation()
-    const courses = useGetStudentCoursesQuery()
-    const [cancelRequest, cancelRequestResult] =
-        useCancelWorkplaceRequestMutation()
+    const { data, isLoading, isError, isSuccess } =
+        useGetSubAdminStudentDetailQuery(Number(id), {
+            skip: !id,
+        })
+    const userId = data?.user?.id
+    const workplaceRequest = useGetWorkplaceIndustriesQuery(userId, {
+        skip: !userId,
+    })
+    const rtoDetail = SubAdminApi.Student.getStudentRtoDetail(Number(id), {
+        skip: !id,
+        refetchOnMountOrArgChange: true,
+    })
+    console.log('workplaceRequest', workplaceData)
+    const courses = SubAdminApi.Student.useCourses(Number(id), {
+        skip: !id,
+        refetchOnMountOrArgChange: true,
+    })
+
+    const values = {
+        ...data,
+        ...data?.user,
+        courses: courses?.data,
+        rto: rtoDetail?.data,
+    }
+    const profileCompletion = checkStudentProfileCompletion(values)
 
     useEffect(() => {
-        if (addWorkplaceResult.isSuccess && addWorkplaceResult.data) {
-            notification.success({
-                title: 'Workplace request sent',
-                description: 'Workplace Request sent to your coordinator',
-            })
-
-            setActive((active: number) => active + 1)
+        if (
+            profileCompletion &&
+            profileCompletion > 0 &&
+            profileCompletion < 100
+        ) {
+            setModal(
+                <CompleteProfileBeforeWpModal
+                    workplaceType={'provide-workplace-detail?tab=abn'}
+                />
+            )
+        } else if (profileCompletion === 100) {
+            setModal(null)
         }
-    }, [addWorkplaceResult])
+    }, [profileCompletion])
+
+    const [findAbn, result] = useFindByAbnWorkplaceMutation()
+    const [addWorkplace, addWorkplaceResult] =
+        useAddCustomIndustyForWorkplaceMutation()
+    const [cancelRequest, cancelRequestResult] =
+        useSubAdminCancelStudentWorkplaceRequestMutation()
+
+    const workplace = {
+        data: workplaceData ? [workplaceData] : [],
+        isLoading: false,
+    }
 
     useEffect(() => {
-        if (!workplaceData) return
+        if (!workplaceRequest) return
         const approval = workplaceData?.studentProvidedWorkplaceRequestApproval
 
         const industryId = approval?.industry?.id
@@ -90,23 +131,10 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
 
         if (industryId && isOnboarding) {
             router.push(
-                `/portals/student/workplace/my-workplace/have-workplace/provided-industry-onboarding/${industryId}`
+                `/portals/admin/student/${router.query.id}/provide-workplace-detail/${industryId}`
             )
         }
-    }, [workplaceData, workplace])
-
-    useEffect(() => {
-        if (
-            workplace.isSuccess &&
-            workplace?.data &&
-            workplace?.data?.length > 0
-        ) {
-            setWorkplaceData(workplace?.data[0])
-
-            setActive(3)
-        }
-    }, [workplace])
-
+    }, [workplaceData, workplaceRequest])
     useEffect(() => {
         if (!result.data && result.isSuccess) {
             setIndustryNotFound(true)
@@ -120,58 +148,77 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
     }, [result])
 
     useEffect(() => {
+        if (
+            workplaceRequest.isSuccess &&
+            workplaceRequest.data &&
+            workplaceRequest?.data?.length > 0
+        ) {
+            setWorkplaceData(workplaceRequest.data?.[0])
+            setActive((active: number) => active + 2)
+        }
+    }, [workplaceRequest])
+
+    useEffect(() => {
+        if (!result.data && result.isSuccess) {
+            notification.error({
+                title: 'Industry Not Found',
+                description:
+                    'Your Industry Not found in our record, we are redirecting you to industry signup page, pleae provide the details',
+            })
+            setTimeout(() => {
+                setActive((active: number) => active + 1)
+            }, 2000)
+        }
+        if (result.data && result.isSuccess) {
+            setActive((active: number) => active + 1)
+        }
+    }, [result])
+
+    useEffect(() => {
         if (cancelRequestResult.isSuccess) {
             setActive(1)
         }
     }, [cancelRequestResult.isSuccess])
 
     const workplaceCancelRequest = (simple: boolean = false) => {
-        const workplaceStatus = [
-            WorkplaceCurrentStatus.NotRequested,
-            WorkplaceCurrentStatus.Applied,
-            WorkplaceCurrentStatus.CaseOfficerAssigned,
-            WorkplaceCurrentStatus.Interview,
-            WorkplaceCurrentStatus.AwaitingWorkplaceResponse,
-        ]
-
-        if (workplaceStatus.includes(workplaceData?.currentStatus)) {
-            return (
-                <div className="mt-3">
-                    <ActionButton
-                        variant={'error'}
-                        onClick={async () => {
-                            await cancelRequest()
-                        }}
-                        loading={cancelRequestResult.isLoading}
-                        disabled={cancelRequestResult.isLoading}
-                        simple={simple}
-                    >
-                        Cancel Request
-                    </ActionButton>
-                </div>
-            )
-        }
-        return null
+        return (
+            <div className="mt-3">
+                <ActionButton
+                    variant={'error'}
+                    onClick={async () => {
+                        await cancelRequest(workplace?.data[0]?.id)
+                    }}
+                    loading={cancelRequestResult.isLoading}
+                    disabled={cancelRequestResult.isLoading}
+                    simple={simple}
+                >
+                    Cancel Request
+                </ActionButton>
+            </div>
+        )
     }
 
     const onSubmit = (values: any) => {
         if (values?.type === 'abn') {
-            findAbn({ abn: values?.value })
+            findAbn(values?.value)
         }
+
         if (values?.type == 'name') {
             setActive(2)
         }
         setFindIndustryType(values?.type)
         setIndustrySearchValue(values?.value)
-        // setActive((active: number) => active + 1)
     }
 
-    const onAddIndustry = (values: any) => {
+    const onAddIndustry = (values: ProvideIndustryDetail) => {
         setCIndustryDetail({
-            ...values,
-            courses: [values?.courses],
-            role: UserRoles.INDUSTRY,
-            password: 'NA',
+            id: data?.user?.id,
+            body: {
+                ...values,
+                courses: [values?.courses],
+                role: UserRoles.INDUSTRY,
+                password: 'NA',
+            },
         })
         setShowEmployerDocModal(true)
     }
@@ -207,12 +254,12 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
 
                     {/*  */}
                     {/* <div className="py-4 w-full md:w-[25%]">
-                        <StepIndicator
-                            steps={StepIndicatorOptions}
-                            currentStep={StepIndicatorOptions[active - 1]}
-                            vertical={!isMobile}
-                        />
-                    </div> */}
+                               <StepIndicator
+                                   steps={StepIndicatorOptions}
+                                   currentStep={StepIndicatorOptions[active - 1]}
+                                   vertical={!isMobile}
+                               />
+                           </div> */}
 
                     <div className="max-w-5xl w-full mx-auto">
                         {active === 1 && (
@@ -230,9 +277,9 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
                                     </div>
                                 ) : null}
                                 {/* <FindWorkplaceForm
-                                    onSubmit={onSubmit}
-                                    result={result}
-                                /> */}
+                                           onSubmit={onSubmit}
+                                           result={result}
+                                       /> */}
                                 <UpdatedPersonalInfo
                                     onSubmit={onSubmit}
                                     result={result}
@@ -421,7 +468,7 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
                                         text="Done"
                                         fullWidth
                                         onClick={() => {
-                                            workplace?.refetch()
+                                            workplaceRequest?.refetch()
                                         }}
                                     />
                                 </div>
@@ -433,14 +480,8 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
         </>
     )
 }
-HaveWorkplace.getLayout = (page: ReactElement) => {
-    return (
-        <StudentLayout
-            pageTitle={{ title: 'Add Workplace', backTitle: 'Workplace' }}
-        >
-            {page}
-        </StudentLayout>
-    )
+ProvideWorkplaceDetail.getLayout = (page: ReactElement) => {
+    return <AdminLayout>{page}</AdminLayout>
 }
 
-export default HaveWorkplace
+export default ProvideWorkplaceDetail

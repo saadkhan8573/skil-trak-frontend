@@ -53,7 +53,7 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'Approve Placements',
         description: 'Review and approve student placement requests',
         icon: CheckCircle2,
-        category: 'students',
+        category: 'actions',
     },
     [PermissionType.SUBMISSIONS]: {
         label: 'Submissions',
@@ -71,7 +71,7 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'All Students',
         description: 'View and manage all student records',
         icon: Users,
-        category: 'students',
+        category: 'actions',
     },
     [PermissionType.TODO_LIST]: {
         label: 'Todo List',
@@ -89,13 +89,13 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'Placement Requests',
         description: 'Manage incoming placement requests',
         icon: MapPin,
-        category: 'manage',
+        category: 'actions',
     },
     [PermissionType.WORKPLACE_CANCELLATION_REQUESTS]: {
         label: 'Workplace Cancellation Requests',
         description: 'Manage incoming workplace cancellation requests',
         icon: MapPin,
-        category: 'manage',
+        category: 'actions',
     },
     [PermissionType.STUDENT_SCHEDULE]: {
         label: 'Student Schedule',
@@ -351,7 +351,7 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'Cancel Workplace',
         description: 'Ability to cancel a workplace',
         icon: Settings,
-        category: 'manage',
+        category: 'students',
     },
     [PermissionType.ALLOW_AUTO_COMPLETE]: {
         label: 'Allow Auto Complete',
@@ -483,7 +483,7 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'Manage RTOs',
         description: 'Manage Registered Training Organizations',
         icon: Settings,
-        category: 'rto',
+        category: 'actions',
     },
     [PermissionType.UPDATE_RTO_PERMISSION]: {
         label: 'Update RTO Permission',
@@ -519,7 +519,7 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'Manage Industries',
         description: 'Manage industry partners and related information',
         icon: Settings,
-        category: 'industry',
+        category: 'actions',
     },
     [PermissionType.MANAGE_COORDINATORS]: {
         label: 'Manage Coordinators',
@@ -561,19 +561,19 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'Manage Appointments',
         description: 'Manage scheduled appointments',
         icon: Settings,
-        category: 'manage',
+        category: 'actions',
     },
     [PermissionType.MANAGE_RPL]: {
         label: 'Manage RPL',
         description: 'Manage Recognition of Prior Learning applications',
         icon: Settings,
-        category: 'manage',
+        category: 'actions',
     },
     [PermissionType.MANAGE_VOLUNTEERS]: {
         label: 'Manage Volunteers',
         description: 'Manage volunteer participants and activities',
         icon: Settings,
-        category: 'manage',
+        category: 'actions',
     },
     [PermissionType.MANAGE_JOBS]: {
         label: 'Manage Jobs',
@@ -651,7 +651,7 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'View Support Tickets',
         description: 'Access to view incoming support tickets',
         icon: Settings,
-        category: 'students',
+        category: 'actions',
     },
     [PermissionType.VIEW_INTERNAL_TICKETS]: {
         label: 'View Internal Tickets',

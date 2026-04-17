@@ -36,6 +36,7 @@ const VariantOptions = [
 
 interface TypographyProps {
     variant?: (typeof VariantOptions)[number]
+    as?: any
 
     children: ReactNode
 
@@ -71,6 +72,7 @@ interface TypographyProps {
 
 export const Typography = ({
     variant = 'body',
+    as,
     children,
 
     // Alignment
@@ -156,7 +158,7 @@ export const Typography = ({
 
     const { element, defaultClasses } = TypographyOptions[variant]
     return createElement(
-        element,
+        as || element,
         {
             className: `${defaultClasses} ${classes} ${className || ''}`.trim(),
             ...(htmlFor ? { htmlFor } : {}),

@@ -106,114 +106,98 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
         )
     }
 
-    const getProfileLinks = () => {
-        const links = []
+    const onAddExpectedDelay = () => {
+        setModal(
+            <AddExpectedDelayModal
+                student={profile}
+                isOpen={true}
+                onClose={onCancelClicked}
+            />
+        )
+    }
 
-        if (role === UserRoles.ADMIN) {
-            links.push(
-                {
-                    text: 'Edit Password',
-                    Icon: IoMdEyeOff,
-                    onClick: () => onUpdatePassword({ user: profile?.user }),
-                    permissions: [PermissionType.EDIT_PASSWORD],
-                },
-                {
-                    text: 'View Password',
-                    Icon: IoMdEyeOff,
-                    onClick: () => onViewPassword(profile),
-                    permissions: [PermissionType.VIEW_PASSWORD],
-                }
-            )
-        }
+    const onRemoveExpectedDelay = () => {
+        setModal(
+            <RemoveExpectedDelayModal
+                student={profile}
+                isOpen={true}
+                onClose={onCancelClicked}
+            />
+        )
+    }
 
-        // Common action for all roles
-        links.push({
+    const profileLinks = [
+        {
+            text: 'Edit Password',
+            Icon: IoMdEyeOff,
+            onClick: () => onUpdatePassword({ user: profile?.user }),
+            permissions: [PermissionType.EDIT_PASSWORD],
+        },
+        {
+            text: 'View Password',
+            Icon: IoMdEyeOff,
+            onClick: () => onViewPassword(profile),
+            permissions: [PermissionType.VIEW_PASSWORD],
+        },
+        {
             text: 'Send Password',
             Icon: CiUnlock,
             onClick: () => onMailPasswordToStudent(profile),
             permissions: [PermissionType.SEND_PASSWORD],
-        })
-
-        // Edit Profile action (conditional on subadmin status)
-        if (!subadmin?.isAdmin) {
-            links.push({
-                text: 'Edit Profile',
-                Icon: RiEditFill,
-                onClick: () => {
-                    const editPath =
-                        role === UserRoles.ADMIN || subadmin?.isAdmin
-                            ? `/portals/admin/student/edit-student/${profile?.id}`
-                            : role === UserRoles.SUBADMIN
-                              ? `/portals/sub-admin/students/${profile?.id}/edit-student`
-                              : role === UserRoles.RTO
-                                ? `/portals/rto/students-and-placements/all-students/${profile?.id}/edit-student`
-                                : '#'
-                    router.push(editPath)
-                },
-                permissions: [PermissionType.ALLOW_UPDATE_PROFILE],
-            })
-        }
-
-        // Common action for all roles
-        links.push(
-            {
-                text: 'Send Message',
-                Icon: TbMessage2Up,
-                onClick: () => onMessageSendClicked(),
+        },
+        {
+            text: 'Edit Profile',
+            Icon: RiEditFill,
+            onClick: () => {
+                const editPath =
+                    role === UserRoles.ADMIN || subadmin?.isAdmin
+                        ? `/portals/admin/student/edit-student/${profile?.id}`
+                        : role === UserRoles.SUBADMIN
+                          ? `/portals/sub-admin/students/${profile?.id}/edit-student`
+                          : role === UserRoles.RTO
+                            ? `/portals/rto/students-and-placements/all-students/${profile?.id}/edit-student`
+                            : '#'
+                router.push(editPath)
             },
-            {
-                text: 'Send Info Message',
-                Icon: MdInfo,
-                onClick: () => onStudentInfoMessageClicked(),
-            },
-            {
-                text: profile?.isSnoozed ? 'Un-Snooze' : 'Snooze',
-                Icon: MdSnooze,
-                onClick: () =>
-                    profile?.isSnoozed ? UnSnoozeModal() : onSnooze(),
-                permissions: [PermissionType.SNOOZE_STUDENT],
-            },
-            {
-                text: 'Update Status',
-                Icon: MdInfo,
-                onClick: () => onUpdateStatus(),
-            },
-            {
-                text: profile?.expectedDelay ? 'Delay Info' : 'Expected Delay',
-                Icon: MdAccessTime,
-                onClick: () =>
-                    setModal(
-                        profile?.expectedDelay ? (
-                            <RemoveExpectedDelayModal
-                                student={profile}
-                                isOpen={true}
-                                onClose={onCancelClicked}
-                            />
-                        ) : (
-                            <AddExpectedDelayModal
-                                student={profile}
-                                isOpen={true}
-                                onClose={onCancelClicked}
-                            />
-                        )
-                    ),
-            }
-        )
+            permissions: [PermissionType.ALLOW_UPDATE_PROFILE],
+        },
+        {
+            text: 'Send Message',
+            Icon: TbMessage2Up,
+            onClick: () => onMessageSendClicked(),
+        },
+        {
+            text: 'Send Info Message',
+            Icon: MdInfo,
+            onClick: () => onStudentInfoMessageClicked(),
+        },
+        {
+            text: profile?.isSnoozed ? 'Un-Snooze' : 'Snooze',
+            Icon: MdSnooze,
+            onClick: () => (profile?.isSnoozed ? UnSnoozeModal() : onSnooze()),
+            permissions: [PermissionType.SNOOZE_STUDENT],
+        },
+        {
+            text: 'Update Status',
+            Icon: MdInfo,
+            onClick: () => onUpdateStatus(),
+        },
+        {
+            text: profile?.expectedDelay ? 'Delay Info' : 'Expected Delay',
+            Icon: MdAccessTime,
+            onClick: () =>
+                profile?.expectedDelay
+                    ? onRemoveExpectedDelay()
+                    : onAddExpectedDelay(),
+        },
+        {
+            text: 'View Visitors',
+            Icon: RiFootprintFill,
+            onClick: () => onViewProfileVisitorsClicked(),
+            permissions: [PermissionType.VIEW_VISITORS],
+        },
+    ]
 
-        // Admin and Subadmin-specific action
-        if (role === UserRoles.ADMIN || role === UserRoles.SUBADMIN) {
-            links.push({
-                text: 'View Visitors',
-                Icon: RiFootprintFill,
-                onClick: () => onViewProfileVisitorsClicked(),
-                permissions: [PermissionType.VIEW_VISITORS],
-            })
-        }
-
-        return links
-    }
-
-    const profileLinks = getProfileLinks()
     return (
         <div className="flex flex-col items-end gap-y-2.5">
             {modal}

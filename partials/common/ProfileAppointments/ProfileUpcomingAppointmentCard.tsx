@@ -174,6 +174,7 @@ export const ProfileUpcomingAppointmentCard = ({
                                     normal
                                     color={barTextClasses}
                                     variant={short ? 'label' : 'body'}
+                                    as="div"
                                 >
                                     <TruncatedTextWithTooltip
                                         text={

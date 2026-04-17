@@ -2,7 +2,8 @@ import { ReactElement } from 'react'
 
 import { SubAdminLayout } from '@layouts'
 import { SubadminESign } from '@partials/sub-admin'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
+import { withPermission } from '@components'
 
 type Props = {}
 
@@ -15,4 +16,6 @@ ESignnn.getLayout = (page: ReactElement) => {
     )
 }
 
-export default ESignnn
+export default withPermission(ESignnn, {
+    permissions: [PermissionType.SIGN_DOCUMENTS],
+})

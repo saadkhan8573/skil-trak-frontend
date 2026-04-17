@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 
 import {
     MyStudents,
@@ -11,7 +11,7 @@ import {
 import { SubAdminApi } from '@queries'
 
 import { SubAdminLayout } from '@layouts'
-import { LoadingAnimation, TechnicalError } from '@components'
+import { LoadingAnimation, TechnicalError, withPermission } from '@components'
 
 const Students: NextPageWithLayout = () => {
     const profile = SubAdminApi.SubAdmin.useProfile()
@@ -40,4 +40,6 @@ Students.getLayout = (page: ReactElement) => {
     )
 }
 
-export default Students
+export default withPermission(Students, {
+    permissions: [PermissionType.CAN_VIEW_ALL_STUDENTS],
+})

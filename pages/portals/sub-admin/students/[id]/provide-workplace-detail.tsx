@@ -10,12 +10,14 @@ import {
     LoadingAnimation,
     PageTitle,
     Typography,
+    withPermission,
 } from '@components'
 import { ShowErrorNotifications } from '@components/ShowErrorNotifications'
 import { SubAdminLayout } from '@layouts'
 import {
     Industry,
     NextPageWithLayout,
+    PermissionType,
     ProvideIndustryDetail,
     UserStatus,
 } from '@types'
@@ -499,4 +501,6 @@ ProvideWorkplaceDetail.getLayout = (page: ReactElement) => {
     return <SubAdminLayout>{page}</SubAdminLayout>
 }
 
-export default ProvideWorkplaceDetail
+export default withPermission(ProvideWorkplaceDetail, {
+    permissions: [PermissionType.ALLOW_STUDENT_OWN_WORKPLACE],
+})

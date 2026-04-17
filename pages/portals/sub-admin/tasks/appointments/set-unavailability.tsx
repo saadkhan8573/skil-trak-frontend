@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 
 import { SubAdminLayout } from '@layouts'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 
 // query
 import { useGetSubAdminWorkplacesQuery } from '@queries'
@@ -12,6 +12,7 @@ import {
     LoadingAnimation,
     TechnicalError,
     EmptyData,
+    withPermission,
 } from '@components'
 import { SetUnavailabilityContainer } from '@partials/sub-admin'
 
@@ -38,4 +39,6 @@ SetUnavailability.getLayout = (page: ReactElement) => {
     )
 }
 
-export default SetUnavailability
+export default withPermission(SetUnavailability, {
+    permissions: [PermissionType.MANAGE_APPOINTMENTS],
+})

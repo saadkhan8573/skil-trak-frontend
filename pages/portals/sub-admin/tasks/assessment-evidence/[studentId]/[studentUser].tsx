@@ -1,9 +1,9 @@
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect } from 'react'
 
 //Layouts
-import { SubAdminStudentProfile } from '@components'
+import { SubAdminStudentProfile, withPermission } from '@components'
 import { useContextBar, useNavbar } from '@hooks'
 import { SubAdminLayout } from '@layouts'
 import { Detail } from '@partials/sub-admin'
@@ -55,4 +55,6 @@ AssessmentEvidenceDetails.getLayout = (page: ReactElement) => {
     return <SubAdminLayout>{page}</SubAdminLayout>
 }
 
-export default AssessmentEvidenceDetails
+export default withPermission(AssessmentEvidenceDetails, {
+    permissions: [PermissionType.SUBMISSIONS],
+})

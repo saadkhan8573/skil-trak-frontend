@@ -34,7 +34,13 @@ export const ApprovedStudent = () => {
     const { getTableConfig, modal: newModal } = useColumns()
     const { columns } = getTableConfig({
         removeColumnKeys: ['snoozed', 'sectors', 'batch'],
-        actionKeys: ['assign', 'block', 'changeStatus', 'changeExpiry', 'changeSector'],
+        actionKeys: [
+            'assign',
+            'block',
+            'changeStatus',
+            'changeExpiry',
+            'changeSector',
+        ],
     })
 
     const exportList = RtoApi.Students.useExportStudentList(
@@ -184,14 +190,6 @@ export const ApprovedStudent = () => {
                         />
                     ) : null} */}
                 {/* </PageHeading> */}
-                <div className="flex justify-end pr-4">
-                    <Button
-                        text="Download"
-                        variant="secondary"
-                        Icon={Download}
-                        onClick={onClickDownload}
-                    />
-                </div>
 
                 <Card noPadding>
                     {isError && <TechnicalError />}
@@ -212,7 +210,7 @@ export const ApprovedStudent = () => {
                             }: TableChildrenProps) => {
                                 return (
                                     <div>
-                                        <div className="p-6 mb-2 flex justify-between">
+                                        <div className="px-6 mb-2 flex justify-between">
                                             {pageSize &&
                                                 pageSize(
                                                     itemPerPage,
@@ -220,6 +218,13 @@ export const ApprovedStudent = () => {
                                                     data?.data?.length
                                                 )}
                                             <div className="flex gap-x-2">
+                                                <Button
+                                                    text="Download Excel"
+                                                    variant="primaryNew"
+                                                    outline
+                                                    Icon={Download}
+                                                    onClick={onClickDownload}
+                                                />
                                                 {quickActions}
                                                 {pagination &&
                                                     pagination(

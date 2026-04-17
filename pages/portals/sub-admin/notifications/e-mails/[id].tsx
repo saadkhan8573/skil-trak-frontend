@@ -1,6 +1,7 @@
+import { withPermission } from '@components'
 import { SubAdminLayout } from '@layouts'
 import { MailDetail } from '@partials/common/MailsListing'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 import { ReactElement } from 'react'
 
 const EmailDetail: NextPageWithLayout = () => {
@@ -15,4 +16,6 @@ EmailDetail.getLayout = (page: ReactElement) => {
     )
 }
 
-export default EmailDetail
+export default withPermission(EmailDetail, {
+    permissions: [PermissionType.MANAGE_EMAILS],
+})

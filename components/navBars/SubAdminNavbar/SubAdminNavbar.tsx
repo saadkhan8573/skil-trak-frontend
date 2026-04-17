@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 
 import { useSubadminProfile } from '@hooks'
 import { CommonApi } from '@queries'
+import { Permissions } from '@components'
 import {
     FaClipboardList,
     FaFileSignature,
@@ -16,6 +17,7 @@ import { IoCheckmarkCircleSharp } from 'react-icons/io5'
 import { MdEmail, MdSpaceDashboard } from 'react-icons/md'
 import { NavLinkItem } from '../NavLinkItem'
 import { HiOutlineDocumentText } from 'react-icons/hi2'
+import { PermissionType } from '@types'
 
 const PREFIX = '/portals/sub-admin'
 
@@ -30,12 +32,13 @@ export const SubAdminNavbar = () => {
 
     const Routes = {
         Dashboard: `${PREFIX}`,
-        Students: `${PREFIX}/students?tab=${checkIsHod ||
+        Students: `${PREFIX}/students?tab=${
+            checkIsHod ||
             isManager ||
             (isAssociatedWithRto && hasAllowAllStudents)
-            ? 'all'
-            : 'my-students'
-            }`,
+                ? 'all'
+                : 'my-students'
+        }`,
         WpApprovalReq: `${PREFIX}/wp-approval-request?tab=pending`,
         Users: `${PREFIX}/users`,
         Tasks: `${PREFIX}/tasks`,
@@ -73,39 +76,41 @@ export const SubAdminNavbar = () => {
             Icon: FaUserGraduate,
             activeClasses: 'bg-blue-100 text-blue-700',
             inActiveClasses: 'text-slate-700',
+            permissions: [PermissionType.CAN_VIEW_ALL_STUDENTS],
         },
-        ...(hasAllowRtoApprovalRequest ? [
-            {
-                link: Routes.WpApprovalReq,
-                text: 'RTO Approval Request',
-                Icon: HiOutlineDocumentText,
-                activeClasses: 'bg-blue-100 text-blue-700',
-                inActiveClasses: 'text-slate-700',
-            },
-        ] : []
-        ),
+        ...(hasAllowRtoApprovalRequest
+            ? [
+                  {
+                      link: Routes.WpApprovalReq,
+                      text: 'RTO Approval Request',
+                      Icon: HiOutlineDocumentText,
+                      activeClasses: 'bg-blue-100 text-blue-700',
+                      inActiveClasses: 'text-slate-700',
+                  },
+              ]
+            : []),
 
         ...(!isAssociatedWithRto
             ? [
-                {
-                    link: Routes.Users,
-                    text: 'Users',
-                    Icon: HiUsers,
-                    activeClasses: 'bg-blue-100 text-blue-700',
-                    inActiveClasses: 'text-slate-700',
-                },
-            ]
+                  {
+                      link: Routes.Users,
+                      text: 'Users',
+                      Icon: HiUsers,
+                      activeClasses: 'bg-blue-100 text-blue-700',
+                      inActiveClasses: 'text-slate-700',
+                  },
+              ]
             : []),
         ...(isAssociatedWithRto
             ? [
-                {
-                    link: Routes.Industries,
-                    text: 'Industries',
-                    Icon: FaIndustry,
-                    activeClasses: 'bg-green-100 text-green-700',
-                    inActiveClasses: 'text-slate-700',
-                },
-            ]
+                  {
+                      link: Routes.Industries,
+                      text: 'Industries',
+                      Icon: FaIndustry,
+                      activeClasses: 'bg-green-100 text-green-700',
+                      inActiveClasses: 'text-slate-700',
+                  },
+              ]
             : []),
         {
             link: Routes.Tasks,
@@ -120,6 +125,7 @@ export const SubAdminNavbar = () => {
             Icon: FaClipboardList,
             activeClasses: 'bg-orange-100 text-orange-700',
             inActiveClasses: 'text-slate-700',
+            permissions: [PermissionType.WORKPLACE_CANCELLATION_REQUESTS],
         },
         {
             link: Routes.Notification,
@@ -128,6 +134,7 @@ export const SubAdminNavbar = () => {
             activeClasses: 'bg-blue-100 text-blue-700',
             inActiveClasses: 'text-slate-700',
             count: mailsCount?.data,
+            permissions: [PermissionType.MANAGE_EMAILS],
         },
 
         {
@@ -137,28 +144,29 @@ export const SubAdminNavbar = () => {
             activeClasses: 'bg-green-100 text-green-700',
             inActiveClasses: 'text-slate-700',
             count: pendingDocsCount?.data,
+            permissions: [PermissionType.SIGN_DOCUMENTS],
         },
         ...(checkIsHod
             ? [
-                {
-                    link: Routes.DeptSectionsList,
-                    text: 'Dept Section',
-                    Icon: GrUserAdmin,
-                    activeClasses: 'bg-green-100 text-green-700',
-                    inActiveClasses: 'text-slate-700',
-                },
-            ]
+                  {
+                      link: Routes.DeptSectionsList,
+                      text: 'Dept Section',
+                      Icon: GrUserAdmin,
+                      activeClasses: 'bg-green-100 text-green-700',
+                      inActiveClasses: 'text-slate-700',
+                  },
+              ]
             : []),
         ...(isManager
             ? [
-                {
-                    link: Routes.ManagerApprovalList,
-                    text: 'Approval List',
-                    Icon: IoCheckmarkCircleSharp,
-                    activeClasses: 'bg-green-100 text-green-700',
-                    inActiveClasses: 'text-slate-700',
-                },
-            ]
+                  {
+                      link: Routes.ManagerApprovalList,
+                      text: 'Approval List',
+                      Icon: IoCheckmarkCircleSharp,
+                      activeClasses: 'bg-green-100 text-green-700',
+                      inActiveClasses: 'text-slate-700',
+                  },
+              ]
             : []),
     ]
 
@@ -191,11 +199,11 @@ export const SubAdminNavbar = () => {
             (!checkIsHod &&
                 (router.pathname === '/portals/sub-admin/department' ||
                     router.pathname ===
-                    '/portals/sub-admin/department/students' ||
+                        '/portals/sub-admin/department/students' ||
                     router.pathname ===
-                    '/portals/sub-admin/department/[id]')) ||
+                        '/portals/sub-admin/department/[id]')) ||
             router.pathname ===
-            '/portals/sub-admin/tickets?tab=department-tickets'
+                '/portals/sub-admin/tickets?tab=department-tickets'
         ) {
             router.replace('/portals/sub-admin')
         }
@@ -204,13 +212,19 @@ export const SubAdminNavbar = () => {
     return (
         <div className="flex justify-between items-center">
             <ul className="flex gap-x-2 py-4 w-[950px] overflow-auto custom-scrollbar">
-                {navBarData.map((nav, i) => (
-                    <NavLinkItem key={i} nav={nav} PREFIX={PREFIX} />
-                ))}
+                {navBarData.map((nav, i) =>
+                    nav.permissions ? (
+                        <Permissions permission={nav.permissions} key={i}>
+                            <NavLinkItem nav={nav} PREFIX={PREFIX} />
+                        </Permissions>
+                    ) : (
+                        <NavLinkItem key={i} nav={nav} PREFIX={PREFIX} />
+                    )
+                )}
             </ul>
             <ul className="flex gap-x-2 items-center py-4">
                 {additionalMenuItems.map((nav, i) => (
-                    <NavLinkItem key={i} nav={nav} PREFIX={PREFIX} />
+                        <NavLinkItem key={i} nav={nav} PREFIX={PREFIX} />
                 ))}
             </ul>
         </div>

@@ -1,9 +1,10 @@
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 import { ReactElement } from 'react'
 
 // layouts
 import { SubAdminLayout } from '@layouts'
 import { TodoTabs } from '@partials/common/todoList'
+import { withPermission } from '@components'
 // import { TodoTabs } from '@partials/common'
 
 const TodoListDetails: NextPageWithLayout = () => {
@@ -28,4 +29,6 @@ TodoListDetails.getLayout = (page: ReactElement) => {
     )
 }
 
-export default TodoListDetails
+export default withPermission(TodoListDetails, {
+    permissions: [PermissionType.TODO_LIST],
+})

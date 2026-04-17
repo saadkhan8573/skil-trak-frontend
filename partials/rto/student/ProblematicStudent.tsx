@@ -307,14 +307,6 @@ export const ProblematicStudent = () => {
                         <CountCard stat={stat} />
                     ))}
                 </div> */}
-                <div className="flex justify-end pr-4">
-                    <Button
-                        text="Download"
-                        variant="secondary"
-                        Icon={Download}
-                        onClick={onClickDownload}
-                    />
-                </div>
                 <Card noPadding>
                     {isError && <TechnicalError />}
                     {isLoading ? (
@@ -334,13 +326,20 @@ export const ProblematicStudent = () => {
                             }: any) => {
                                 return (
                                     <div>
-                                        <div className="p-6 mb-2 flex justify-between">
+                                        <div className="px-6 mb-2 flex justify-between">
                                             {pageSize(
                                                 itemPerPage,
                                                 setItemPerPage,
                                                 data?.data?.length
                                             )}
                                             <div className="flex gap-x-2">
+                                                <Button
+                                                    text="Download Excel"
+                                                    variant="primaryNew"
+                                                    outline
+                                                    Icon={Download}
+                                                    onClick={onClickDownload}
+                                                />
                                                 {quickActions}
                                                 {pagination(
                                                     data?.pagination,

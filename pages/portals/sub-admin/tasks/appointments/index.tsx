@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { ReactElement, useCallback, useEffect, useState } from 'react'
 
 import { SubAdminLayout } from '@layouts'
-import { Appointment, NextPageWithLayout } from '@types'
+import { Appointment, NextPageWithLayout, PermissionType } from '@types'
 
 import {
     BigCalendar,
@@ -11,6 +11,7 @@ import {
     CalendarEvent,
     Card,
     PageTitle,
+    withPermission,
 } from '@components'
 
 import { useContextBar } from '@hooks'
@@ -176,4 +177,6 @@ Appointments.getLayout = (page: ReactElement) => {
     return <SubAdminLayout>{page}</SubAdminLayout>
 }
 
-export default Appointments
+export default withPermission(Appointments, {
+    permissions: [PermissionType.MANAGE_APPOINTMENTS],
+})

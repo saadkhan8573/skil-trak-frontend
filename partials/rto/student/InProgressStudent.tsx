@@ -29,7 +29,13 @@ export const InProgressStudent = () => {
         RtoV2Api.Students.useDownloadInProgressStudent()
     const { columns } = getTableConfig({
         removeColumnKeys: ['snoozed', 'sectors', 'batch'],
-        actionKeys: ['assign', 'block', 'changeStatus', 'changeExpiry', 'changeSector'],
+        actionKeys: [
+            'assign',
+            'block',
+            'changeStatus',
+            'changeExpiry',
+            'changeSector',
+        ],
     })
 
     const [itemPerPage, setItemPerPage] = useState(50)
@@ -134,14 +140,6 @@ export const InProgressStudent = () => {
             {modal}
             {newModal}
             <div className="flex flex-col gap-y-3">
-                <div className="flex justify-end pr-4">
-                    <Button
-                        text="Download"
-                        variant="secondary"
-                        Icon={Download}
-                        onClick={onClickDownload}
-                    />
-                </div>
                 <Card noPadding>
                     {isError && <TechnicalError />}
                     {isLoading ? (
@@ -161,7 +159,7 @@ export const InProgressStudent = () => {
                             }: TableChildrenProps) => {
                                 return (
                                     <div>
-                                        <div className="p-6 mb-2 flex justify-between">
+                                        <div className="px-6 mb-2 flex justify-between">
                                             {pageSize &&
                                                 pageSize(
                                                     itemPerPage,
@@ -169,6 +167,13 @@ export const InProgressStudent = () => {
                                                     data?.data?.length
                                                 )}
                                             <div className="flex gap-x-2">
+                                                <Button
+                                                    text="Download Excel"
+                                                    variant="primaryNew"
+                                                    outline
+                                                    Icon={Download}
+                                                    onClick={onClickDownload}
+                                                />
                                                 {quickActions}
                                                 {pagination &&
                                                     pagination(

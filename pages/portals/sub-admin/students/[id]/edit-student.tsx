@@ -7,12 +7,13 @@ import {
     LoadingAnimation,
     ShowErrorNotifications,
     TechnicalError,
+    withPermission,
 } from '@components'
 import { checkStudentProfileCompletion, getUserCredentials } from '@utils'
 
 //Layouts
 import { SubAdminLayout } from '@layouts'
-import { NextPageWithLayout } from '@types'
+import { NextPageWithLayout, PermissionType } from '@types'
 
 import { useContextBar, useNotification } from '@hooks'
 
@@ -260,4 +261,6 @@ EditStudentDetail.getLayout = (page: ReactElement) => {
     )
 }
 
-export default EditStudentDetail
+export default withPermission(EditStudentDetail, {
+    permissions: [PermissionType.ALLOW_UPDATE_PROFILE],
+})

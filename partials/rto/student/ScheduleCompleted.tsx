@@ -141,14 +141,6 @@ export const ScheduleCompleted = () => {
             {modal}
             {newModal}
             <div className="flex flex-col gap-y-3">
-                <div className="flex justify-end pr-4">
-                    <Button
-                        text="Download"
-                        variant="secondary"
-                        Icon={Download}
-                        onClick={onClickDownload}
-                    />
-                </div>
                 <Card noPadding>
                     {isError && <TechnicalError />}
                     {isLoading ? (
@@ -168,7 +160,7 @@ export const ScheduleCompleted = () => {
                             }: TableChildrenProps) => {
                                 return (
                                     <div>
-                                        <div className="p-6 mb-2 flex justify-between">
+                                        <div className="px-6 mb-2 flex justify-between">
                                             {pageSize &&
                                                 pageSize(
                                                     itemPerPage,
@@ -176,6 +168,13 @@ export const ScheduleCompleted = () => {
                                                     data?.data?.length
                                                 )}
                                             <div className="flex gap-x-2">
+                                                <Button
+                                                    text="Download Excel"
+                                                    variant="primaryNew"
+                                                    outline
+                                                    Icon={Download}
+                                                    onClick={onClickDownload}
+                                                />
                                                 {quickActions}
                                                 {pagination &&
                                                     pagination(

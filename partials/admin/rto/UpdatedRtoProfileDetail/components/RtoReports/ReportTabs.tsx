@@ -103,6 +103,7 @@ export const ReportTabs = ({
                 <div className="flex items-center justify-between px-4 pb-3.5 bg-[#F5F7FB]">
                     {reportsData?.map((report) => (
                         <div
+                            key={report?.title}
                             onClick={() => {
                                 setSelectedReport(report?.title)
                             }}

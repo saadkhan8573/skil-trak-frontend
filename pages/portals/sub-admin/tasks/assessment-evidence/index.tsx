@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router'
 import debounce from 'lodash/debounce'
+import { useRouter } from 'next/router'
 import { ReactElement, useCallback, useEffect, useState } from 'react'
 
 //Layouts
@@ -7,12 +7,12 @@ import { SubAdminLayout } from '@layouts'
 import {
     AssessmentSubmissionsCount,
     NextPageWithLayout,
+    PermissionType,
     SubAdminAssessmentsFiltersType,
 } from '@types'
 
 //components
 import {
-    Card,
     Filter,
     LoadingAnimation,
     Modal,
@@ -22,8 +22,11 @@ import {
     TabProps,
     TechnicalError,
     TextInput,
+    withPermission,
 } from '@components'
 // queries
+import { Result } from '@constants'
+import { useSubadminProfile } from '@hooks'
 import {
     AllDocumentsSubmitted,
     ArchivedAssessment,
@@ -39,8 +42,6 @@ import {
     useGetAssessmentEvidenceQuery,
 } from '@queries'
 import { checkFilteredDataLength, getCountData, getFilterQuery } from '@utils'
-import { Result } from '@constants'
-import { useSubadminProfile } from '@hooks'
 
 type Props = {}
 
@@ -318,4 +319,6 @@ AssessmentEvidence.getLayout = (page: ReactElement) => {
     return <SubAdminLayout>{page}</SubAdminLayout>
 }
 
-export default AssessmentEvidence
+export default withPermission(AssessmentEvidence, {
+    permissions: [PermissionType.SUBMISSIONS],
+})

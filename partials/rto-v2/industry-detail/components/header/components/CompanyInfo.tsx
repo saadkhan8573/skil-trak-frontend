@@ -4,7 +4,8 @@ import { CompanyBadges } from './CompanyBadges'
 import { Badge, Typography } from '@components'
 import { useAppSelector } from '@redux/hooks'
 import Link from 'next/link'
-
+import moment from 'moment'
+import { ellipsisText, maskText } from '@utils'
 export function CompanyInfo() {
     const industryDetail = useAppSelector(
         (state) => state.industry.industryDetail
@@ -44,13 +45,34 @@ export function CompanyInfo() {
                         {industryDetail?.user?.name}
                     </Typography>
                     <TrendingUp className="w-4 h-4 text-[#10B981] shrink-0" />
-                    {industryDetail?.onboardingCreatedBy && (
-                        <Badge
-                            variant="primaryNew"
-                            text={`${industryDetail?.onboardingCreatedBy?.name} - ${industryDetail?.onboardingCreatedBy?.createdAt?.slice(0, 10)}`}
-                            // Icon={BiEnvelope}
-                            // onClick={onComposeMailClicked}
-                        />
+                    {(industryDetail?.onboardingCreatedBy?.name ||
+                        industryDetail?.onBoardedAt) && (
+                        <p className="text-xs bg-info border-white text-white flex items-center gap-1 border rounded-md p-1">
+                            {industryDetail?.onboardingCreatedBy?.name && (
+                                <span
+                                    title={
+                                        industryDetail?.onboardingCreatedBy
+                                            ?.name
+                                    }
+                                >
+                                    Onboarded by:{' '}
+                                    {ellipsisText(
+                                        industryDetail?.onboardingCreatedBy
+                                            ?.name,
+                                        8
+                                    )}
+                                </span>
+                            )}
+
+                            {industryDetail?.onBoardedAt && (
+                                <span>
+                                    •{' '}
+                                    {moment(industryDetail?.onBoardedAt).format(
+                                        'DD MMM YYYY'
+                                    )}
+                                </span>
+                            )}
+                        </p>
                     )}
                 </div>
 

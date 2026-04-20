@@ -64,7 +64,15 @@ export const PendingCourseApproval = ({
                     <Permissions
                         permission={PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS}
                     >
-                        {hasFile ? (
+                        <div className="flex items-center gap-x-2">
+                            {/* {hasFile ? ( */}
+                            <Button
+                                onClick={() => setUploadFacilityChecklist(true)}
+                                className="bg-linear-to-r from-[#044866] to-[#0D5468] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#044866]/30"
+                            >
+                                <UploadCloud className="w-3.5 h-3.5" />
+                                Manual E-sign Upload
+                            </Button>
                             <Button
                                 disabled={!showActionButtons}
                                 onClick={() => setReviewFacilityChecklist(true)}
@@ -76,15 +84,9 @@ export const PendingCourseApproval = ({
                                 <FileCheck className="w-3.5 h-3.5" />
                                 Review & Approve
                             </Button>
-                        ) : (
-                            <Button
-                                onClick={() => setUploadFacilityChecklist(true)}
-                                className="bg-linear-to-r from-[#044866] to-[#0D5468] text-white text-xs h-9 px-4 gap-2 shadow-lg shadow-[#044866]/30"
-                            >
-                                <UploadCloud className="w-3.5 h-3.5" />
-                                Manual E-sign Upload
-                            </Button>
-                        )}
+                            {/* ) : ( */}
+                            {/* )} */}
+                        </div>
                     </Permissions>
                 </div>
             </motion.div>

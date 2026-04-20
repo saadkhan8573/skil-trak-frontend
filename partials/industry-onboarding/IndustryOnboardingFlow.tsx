@@ -97,6 +97,7 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
         termsAccepted: false,
         privacyAccepted: false,
         marketingConsent: false,
+        sectorsIds: [],
     })
 
     const [step2Data, setStep2Data] = useState(defaultStep2Data)
@@ -124,6 +125,7 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
             termsAccepted: true,
             privacyAccepted: true,
             marketingConsent: true,
+            sectorsIds: data?.sectors?.map((s: any) => s?.sector?.id) ?? [],
         })
     }, [data])
 

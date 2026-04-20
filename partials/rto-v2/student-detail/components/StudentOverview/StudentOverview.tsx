@@ -44,8 +44,8 @@ export const StudentOverview = () => {
     useEffect(() => {
         if (
             wpApprovalRequest?.data &&
-            role !== UserRoles.RTO &&
-            !subadmin?.isAssociatedWithRto &&
+            // role !== UserRoles.RTO &&
+            // !subadmin?.isAssociatedWithRto &&
             !modal
         ) {
             setModal(
@@ -81,9 +81,10 @@ export const StudentOverview = () => {
     useEffect(() => {
         if (
             industryAvailability &&
-            !industryAvailability?.existingAppointment &&
-            role !== UserRoles.RTO &&
-            !subadmin?.isAssociatedWithRto
+            !industryAvailability?.existingAppointment 
+            // &&
+            // role !== UserRoles.RTO &&
+            // !subadmin?.isAssociatedWithRto
         ) {
             setModal(
                 <GlobalModal>

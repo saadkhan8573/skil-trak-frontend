@@ -38,7 +38,7 @@ export const StudentOverviewTesting = () => {
     })
 
     useEffect(() => {
-        if (wpApprovalRequest?.data && role !== UserRoles.RTO && !modal) {
+        if (wpApprovalRequest?.data  && !modal) {
             setModal(
                 <WorkplaceApprovalModal
                     onCancel={onClose}

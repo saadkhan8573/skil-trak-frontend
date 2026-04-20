@@ -121,15 +121,12 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
         data: workplaceData ? [workplaceData] : [],
         isLoading: false,
     }
-console.log('',workplaceRequest);
     useEffect(() => {
-        if (!workplaceRequest) return
+        if (!workplaceData) return
         const approval = workplaceData?.studentProvidedWorkplaceRequestApproval
 
         const industryId = approval?.industry?.id
         const isOnboarding = approval?.industry?.showOnboarding
-
-
 
         if (industryId && isOnboarding) {
             router.push(
@@ -141,11 +138,11 @@ console.log('',workplaceRequest);
         if (!result.data && result.isSuccess) {
             setIndustryNotFound(true)
             setTimeout(() => {
-                setActive((active: number) => active + 1)
+                setActive(2)
             }, 3000)
         }
         if (result.data && result.isSuccess) {
-            setActive((active: number) => active + 1)
+            setActive(2)
         }
     }, [result])
 
@@ -153,10 +150,10 @@ console.log('',workplaceRequest);
         if (
             workplaceRequest.isSuccess &&
             workplaceRequest.data &&
-            workplaceRequest?.data?.length > 0
+            workplaceRequest.data.length > 0
         ) {
-            setWorkplaceData(workplaceRequest.data?.[0])
-            setActive((active: number) => active + 2)
+            setWorkplaceData(workplaceRequest.data[0])
+            setActive(3) 
         }
     }, [workplaceRequest])
 
@@ -432,7 +429,7 @@ console.log('',workplaceRequest);
                                         </div>
                                         {workplaceCancelRequest()}
                                     </Card>
-                                ) : null}
+                                ) : <Button text='Back to find industry' onClick={()=> setActive(1)}/>}
                             </>
                         )}
 

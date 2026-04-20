@@ -12,7 +12,19 @@ import {
 } from 'lucide-react'
 import { Step1Data } from '../Step1ConfirmDetails'
 import { AbnLookUpCard } from './AbnLookUpCard'
+import { IndustryApi } from '@queries'
+
 export const OrganisationDetails = ({ onChange, data, errors }: any) => {
+    const workplaceTypes =
+        IndustryApi.Profile.useSectorsWorkplaceTypeOnboarding(
+            data?.sectorsIds,
+            { skip: !data?.sectorsIds?.length }
+        )
+    const workplaceTypesOptions =
+        workplaceTypes?.data?.map((type: any) => ({
+            value: type?.id,
+            label: type?.name,
+        })) ?? []
     const handleInputChange = (
         field: keyof Step1Data,
         value: string | boolean
@@ -189,80 +201,30 @@ export const OrganisationDetails = ({ onChange, data, errors }: any) => {
                                     <Briefcase className="w-4 h-4 text-primary" />
                                     Workplace Type
                                 </Label>
-                                {/* <Select
-                                    value={data?.workplaceType}
-                                    onChange={(value: any) =>
+                                <Select
+                                    name="workplaceType"
+                                    options={workplaceTypesOptions}
+                                    value={
+                                        workplaceTypesOptions?.find(
+                                            (opt: any) =>
+                                                Number(opt.value) ===
+                                                Number(data?.workplaceType?.id)
+                                        ) || null
+                                    }
+                                    onChange={(selected: any) =>
                                         handleInputChange(
                                             'workplaceType',
-                                            value
+                                            selected?.value
                                         )
                                     }
-                                    name="workplaceType"
-                                    options={[
-                                        {
-                                            label: 'To be confirmed',
-                                            value: 'To be confirmed',
-                                        },
-                                        {
-                                            label: 'Residential Aged Care',
-                                            value: 'Residential Aged Care',
-                                        },
-                                        {
-                                            label: 'NDIS Provider',
-                                            value: 'NDIS Provider',
-                                        },
-                                        {
-                                            label: 'Residential Aged Care & NDIS Provider',
-                                            value: 'Residential Aged Care & NDIS Provider',
-                                        },
-                                        {
-                                            label: 'Home Care Provider',
-                                            value: 'Home Care Provider',
-                                        },
-                                        {
-                                            label: 'Community Health Service',
-                                            value: 'Community Health Service',
-                                        },
-                                        {
-                                            label: 'Hospital',
-                                            value: 'Hospital',
-                                        },
-                                        {
-                                            label: 'Disability Support Service',
-                                            value: 'Disability Support Service',
-                                        },
-                                        {
-                                            label: 'Early Learning Centre',
-                                            value: 'Early Learning Centre',
-                                        },
-                                        {
-                                            label: 'Primary School',
-                                            value: 'Primary School',
-                                        },
-                                        {
-                                            label: 'Secondary School',
-                                            value: 'Secondary School',
-                                        },
-                                        {
-                                            label: 'Registered Training Organisation (RTO)',
-                                            value: 'Registered Training Organisation (RTO)',
-                                        },
-                                        {
-                                            label: 'Construction Company',
-                                            value: 'Construction Company',
-                                        },
-                                        {
-                                            label: 'IT Services Provider',
-                                            value: 'IT Services Provider',
-                                        },
-                                    ]}
-                                /> */}
-                                <TextInput
+                                />
+
+                                {/* <TextInput
                                     name="workplaceType"
                                     value={
                                         typeof data?.workplaceType === 'object'
-                                            ? data?.workplaceType?.name ?? ''
-                                            : data?.workplaceType ?? ''
+                                            ? (data?.workplaceType?.name ?? '')
+                                            : (data?.workplaceType ?? '')
                                     }
                                     onChange={(e: any) => {
                                         const prev = data?.workplaceType
@@ -271,13 +233,14 @@ export const OrganisationDetails = ({ onChange, data, errors }: any) => {
                                         onChange({
                                             ...data,
                                             workplaceType:
-                                                typeof prev === 'object' && prev?.id
+                                                typeof prev === 'object' &&
+                                                prev?.id
                                                     ? { ...prev, name }
                                                     : name,
                                         })
                                     }}
                                     placeholder="e.g., Residential Aged Care"
-                                />
+                                /> */}
 
                                 {errors.workplaceType && (
                                     <motion.p

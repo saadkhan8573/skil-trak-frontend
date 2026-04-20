@@ -452,6 +452,7 @@ export interface Industry extends BaseResponse {
     PartneredBy: User
     studentCapacity: number | null
     courses: Course[]
+    onBoardedAt: any
     branches: Industry[]
     workplaceType: WorkplaceType
     supervisors: Supervisor[]

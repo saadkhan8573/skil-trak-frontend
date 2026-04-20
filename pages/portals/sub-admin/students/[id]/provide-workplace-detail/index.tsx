@@ -98,6 +98,7 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
         courses: courses?.data,
         rto: rtoDetail?.data,
     }
+    console.log('workplaceRequest', workplaceRequest);
     const profileCompletion = checkStudentProfileCompletion(values)
 
     useEffect(() => {

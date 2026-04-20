@@ -121,13 +121,15 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
         data: workplaceData ? [workplaceData] : [],
         isLoading: false,
     }
-
+console.log('',workplaceRequest);
     useEffect(() => {
         if (!workplaceRequest) return
         const approval = workplaceData?.studentProvidedWorkplaceRequestApproval
 
         const industryId = approval?.industry?.id
         const isOnboarding = approval?.industry?.showOnboarding
+
+
 
         if (industryId && isOnboarding) {
             router.push(

@@ -133,7 +133,7 @@ export const WorkplaceRequestTypeModal = ({ onClose, studentId }: any) => {
                                     <input
                                         type="radio"
                                         name="workplaceOption"
-                                        value="request"
+                                        value="requested"
                                         checked={
                                             workplaceOption === 'requested'
                                         }
@@ -162,7 +162,7 @@ export const WorkplaceRequestTypeModal = ({ onClose, studentId }: any) => {
                                     <input
                                         type="radio"
                                         name="workplaceOption"
-                                        value="requested"
+                                        value="provided"
                                         checked={workplaceOption === 'provided'}
                                         onChange={(e) =>
                                             setWorkplaceOption(

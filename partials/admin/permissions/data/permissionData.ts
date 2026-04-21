@@ -673,8 +673,9 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         category: 'students',
     },
     [PermissionType.SHOW_MODAL]: {
-        label: 'Show WP Modal',
-        description: 'Show modal to select workplace request type if student has no workplace type and user has permission',
+        label: 'Show Modal',
+        description:
+            'Show modal if user has permission to access and view the Student Approval Modal, Appointment Modal, and Select Workplace Option Modal.',
         icon: BookUp2,
         category: 'students',
     },
@@ -773,5 +774,4 @@ export const categoryConfig = {
         iconBg: 'bg-primary/10',
         iconColor: 'text-primary',
     },
-    
 }

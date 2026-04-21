@@ -8,6 +8,7 @@ import { StudentStatusSwitches } from './StudentStatusSwitches'
 import { StudentTimeline } from './StudentTimeline'
 import { StudentInvoiceStatus } from './components/StudentInvoiceStatus'
 import { StudentStatusBanner } from './components/StudentStatusBanner'
+import { Badge } from '@components'
 
 export const StudentHeader = ({ student }: { student: Student }) => {
     const studentContactInfo = [
@@ -83,7 +84,6 @@ export const StudentHeader = ({ student }: { student: Student }) => {
             <div className="relative bg-linear-to-r from-[#044866] via-[#0D5468] to-[#044866] p-0.5 rounded-xl shadow-2xl">
                 <div className="bg-white rounded-xl overflow-hidden space-y-2.5">
                     <StudentStatusBanner />
-
                     {/* Top Section - Profile & Contact */}
                     <div className="relative bg-linear-to-br from-slate-50 via-white to-blue-50/30 px-3 py-2">
                         <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6 xl:gap-2">
@@ -120,10 +120,21 @@ export const StudentHeader = ({ student }: { student: Student }) => {
 
                                 {/* Name & Badges */}
                                 <div className="space-y-1">
-                                    <h2 className="text-slate-900 text-lg font-bold">
-                                        {student?.user?.name}{' '}
-                                        {student?.familyName}
-                                    </h2>
+                                    <div className="flex items-center gap-2">
+                                        <h2 className="text-slate-900 text-lg font-bold">
+                                            {student?.user?.name}{' '}
+                                            {student?.familyName}
+                                        </h2>
+                                        {student?.workplaceType && (
+                                            <Badge
+                                                variant="info"
+                                                text={
+                                                    student?.workplaceType ??
+                                                    '____'
+                                                }
+                                            />
+                                        )}
+                                    </div>
                                     <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
                                         {studentBadges.map((badge) => (
                                             <div

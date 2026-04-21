@@ -183,9 +183,17 @@ export const RtoStudentDetail = () => {
         },
     ]
     useEffect(() => {
-        if (!profile?.data?.workplaceType && hasPermission && isRto) {
+        if (
+            !profile?.data?.workplaceType &&
+            profile?.data?.workplace?.length === 0 &&
+            hasPermission &&
+            isRto
+        ) {
             setModal(
-                <WorkplaceRequestTypeModal onClose={() => setModal(null)} studentId={studentId} />
+                <WorkplaceRequestTypeModal
+                    onClose={() => setModal(null)}
+                    studentId={studentId}
+                />
             )
         }
     }, [profile?.data, hasPermission, isRto])

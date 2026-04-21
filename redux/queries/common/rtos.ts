@@ -56,6 +56,12 @@ export const rtosEndpoints = (
             method: 'PATCH',
             params,
         }),
-        invalidatesTags: ['Profile', 'StudentDetail', 'RTO'],
+        invalidatesTags: [
+            'Notes',
+            'SubAdminStudents',
+            'AllCommunications',
+            'AssessmentEvidence',
+            'SubAdminWorkplace',
+        ],
     }),
 })

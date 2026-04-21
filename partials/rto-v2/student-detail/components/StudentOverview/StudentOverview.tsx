@@ -1,4 +1,9 @@
-import { GlobalModal, LoadingAnimation, TechnicalError } from '@components'
+import {
+    GlobalModal,
+    LoadingAnimation,
+    TechnicalError,
+    usePermissions,
+} from '@components'
 import { UserRoles } from '@constants'
 import { AppointmentBookingModalV2 } from '@partials/rto-v2/placement-request-detail/modal'
 import { WorkplaceApprovalModal } from '@partials/student/workplace/modal'
@@ -12,17 +17,20 @@ import { sortedWorkplaceRequests } from '../../utils'
 import { CourseOverview } from './components'
 import { StudentOverViewUpdated } from './StudentOverViewUpdated'
 import { useSubadminProfile } from '@hooks'
+import { PermissionType } from '@types'
 
 export const StudentOverview = () => {
     const [modal, setModal] = useState<ReactNode | null>(null)
     const { selectedCourse, studentDetail, selectedWorkplace } = useAppSelector(
         (state) => state?.student
     )
+    const hasPermission = usePermissions([PermissionType.SHOW_MODAL])
     const dispatch = useAppDispatch()
     const onClose = () => {
         setModal(null)
     }
     const role = getUserCredentials()?.role
+    const isRto = role === UserRoles.RTO
 
     const wpApprovalRequest =
         RtoV2Api.StudentsWorkplace.useStudentProfileWorkplaceApprovalRequest(
@@ -42,12 +50,7 @@ export const StudentOverview = () => {
     })
 
     useEffect(() => {
-        if (
-            wpApprovalRequest?.data &&
-            role !== UserRoles.RTO &&
-            !subadmin?.isAssociatedWithRto &&
-            !modal
-        ) {
+        if (wpApprovalRequest?.data && !modal && (!isRto || hasPermission)) {
             setModal(
                 <WorkplaceApprovalModal
                     onCancel={onClose}
@@ -82,8 +85,8 @@ export const StudentOverview = () => {
         if (
             industryAvailability &&
             !industryAvailability?.existingAppointment &&
-            role !== UserRoles.RTO &&
-            !subadmin?.isAssociatedWithRto
+            !subadmin?.isAssociatedWithRto &&
+            (!isRto || hasPermission)
         ) {
             setModal(
                 <GlobalModal>

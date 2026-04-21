@@ -1,5 +1,12 @@
 import { motion } from 'framer-motion'
-import { Building, FileText, Handshake, MapPin, Shield, Star } from 'lucide-react'
+import {
+    Building,
+    FileText,
+    Handshake,
+    MapPin,
+    Shield,
+    Star,
+} from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { AddressInformationCard } from './cards/AddressInformationCard'
 import { ConsentCard } from './cards/ConsentCard'
@@ -24,6 +31,7 @@ export interface Step1Data {
     state: any
     postcode: string
     country: string
+    sectorsIds: number[]
     // Consent
     termsAccepted: boolean
     privacyAccepted: boolean
@@ -42,7 +50,8 @@ export const Step1ConfirmDetails = ({
     onValidationChange,
 }: Step1Props) => {
     const [errors, setErrors] = useState<Record<string, string>>({})
-
+    console.log('Current form data:', data)
+    
     const helpTips = [
         {
             icon: <Building className="w-4 h-4" />,
@@ -122,7 +131,7 @@ export const Step1ConfirmDetails = ({
         // }
         const stateValue =
             typeof data.state === 'object'
-                ? data.state?.value ?? data.state?.id
+                ? (data.state?.value ?? data.state?.id)
                 : data.state
 
         if (!stateValue || !stateValue.toString().trim()) {

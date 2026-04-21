@@ -689,6 +689,7 @@ const {
 
     // ---- Students ---- //
     useSearchAllPortalStudentsQuery,
+    useUpdateStudentWorkplaceTypeMutation,
 
     // ---- AI ASSISTANT ---- //
     useSearchStudentQuery,
@@ -779,6 +780,7 @@ export const CommonApi = {
         getRtoWpTypes: useGetRtoWpTypesQuery,
         addRtoWpType: useAddRtoWpTypeMutation,
         removeRtoWpType: useRemoveRtoWpTypeMutation,
+        useUpdateStudentWorkplaceType:useUpdateStudentWorkplaceTypeMutation,
     },
     Industries: {
         getFolders: useGetCoursesFoldersQuery,

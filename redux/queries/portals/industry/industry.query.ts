@@ -65,6 +65,15 @@ export const industryApi = apiSlice.injectEndpoints({
             query: (id) => `industries/onboarding/industry/${id}`,
             providesTags: ['Industries'],
         }),
+        // shared/sector/:id/workplace-types-list
+        getSectorsWorkplaceTypeOnboarding: build.query<any, string[]>({
+            query: (ids) => ({
+                url: 'shared/sector/workplace-types-list',
+                method: 'POST',
+                body: { ids: ids },
+            }),
+            providesTags: ['Industries'],
+        }),
         updateIndustryProfile: build.mutation<any, any>({
             query: ({ id, body }) => ({
                 url: 'industries/profile/update',
@@ -115,6 +124,7 @@ export const {
     useUpdateIndustryProfileMutation,
     useUpdateIndustryDataMutation,
     useGetIndustryOnboardingQuery,
+    useGetSectorsWorkplaceTypeOnboardingQuery,
 
     // ------ AVAILABLE SHIFTS ------ //
     useGetShiftsQuery,
@@ -281,6 +291,8 @@ export const IndustryApi = {
         useUpdateIndustryDataMutation,
         useIndustryFavByCoordinator: useGetIndustryFavByCoordinatorQuery,
         useIndustryOnboarding: useGetIndustryOnboardingQuery,
+        useSectorsWorkplaceTypeOnboarding:
+            useGetSectorsWorkplaceTypeOnboardingQuery,
     },
     AvailableShifts: {
         useGetShiftsQuery,

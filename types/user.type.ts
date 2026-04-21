@@ -191,6 +191,7 @@ export interface Student extends BaseResponse {
     isReported: boolean
     statusHistory: any
     expectedDelay: string
+    workplaceType: any
     phone: string
     snoozedBy: User
     dob: Date
@@ -453,6 +454,7 @@ export interface Industry extends BaseResponse {
     PartneredBy: User
     studentCapacity: number | null
     courses: Course[]
+    onBoardedAt: any
     branches: Industry[]
     workplaceType: WorkplaceType
     supervisors: Supervisor[]
@@ -492,6 +494,7 @@ export interface Industry extends BaseResponse {
     placementReadyBy: User
     placementReadyAt: string
     placementUrl?: string
+    showOnboarding?: boolean
 }
 
 export interface PendingIndustry extends Industry {

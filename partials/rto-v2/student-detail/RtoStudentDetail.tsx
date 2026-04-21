@@ -17,6 +17,7 @@ import {
     TabConfig,
     TechnicalError,
     useAuthorizedUserComponent,
+    usePermissions,
 } from '@components'
 import { Skeleton } from '@components/ui/skeleton'
 import { UserRoles } from '@constants'
@@ -42,7 +43,7 @@ import {
     Ticket,
 } from 'lucide-react'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { AllWorkplaces } from './components/AllWorkplaces/AllWorkplaces'
 import {
@@ -50,9 +51,13 @@ import {
     StudentProfileHeaderSkeleton,
     StudentTopBarSkeleton,
 } from './skeletonLoader'
+import { WorkplaceRequestTypeModal } from '.'
+import { getUserCredentials } from '@utils'
 
 export const RtoStudentDetail = () => {
+    const [modal, setModal] = useState<ReactNode | null>(null)
     const router = useRouter()
+    const hasPermission = usePermissions([PermissionType.SHOW_MODAL])
 
     const dispatch = useDispatch()
 
@@ -84,6 +89,8 @@ export const RtoStudentDetail = () => {
         () => () => <ProfileSupportTickets userId={profile?.data?.user?.id!} />,
         [profile?.data?.user?.id]
     )
+    const role = getUserCredentials()?.role
+    const isRto = role === UserRoles.RTO
 
     const tabs: TabConfig[] = [
         {
@@ -175,9 +182,25 @@ export const RtoStudentDetail = () => {
             ),
         },
     ]
+    useEffect(() => {
+        if (
+            !profile?.data?.workplaceType &&
+            profile?.data?.workplace?.length === 0 &&
+            hasPermission &&
+            isRto
+        ) {
+            setModal(
+                <WorkplaceRequestTypeModal
+                    onClose={() => setModal(null)}
+                    studentId={studentId}
+                />
+            )
+        }
+    }, [profile?.data, hasPermission, isRto])
 
     return (
         <>
+            {modal && modal}
             {profile?.isError ? <TechnicalError /> : null}
             {profile?.isLoading ? (
                 <div className="bg-linear-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 min-h-screen">

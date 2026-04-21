@@ -97,6 +97,7 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
         termsAccepted: false,
         privacyAccepted: false,
         marketingConsent: false,
+        sectorsIds: [],
     })
 
     const [step2Data, setStep2Data] = useState(defaultStep2Data)
@@ -124,6 +125,7 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
             termsAccepted: true,
             privacyAccepted: true,
             marketingConsent: true,
+            sectorsIds: data?.sectors?.map((s: any) => s?.sector?.id) ?? [],
         })
     }, [data])
 
@@ -302,10 +304,10 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
         setIsLoading(true)
         try {
             const body = buildPayload()
-            console.log(
-                '[Onboarding] submit payload::::::',
-                JSON.stringify(body, null, 2)
-            )
+            // console.log(
+            //     '[Onboarding] submit payload::::::',
+            //     JSON.stringify(body, null, 2)
+            // )
             const role = getPortalRole(router.pathname)
 
             if (role === 'admin') {
@@ -322,7 +324,7 @@ export function IndustryOnboardingFlow({ id, onSuccess }: Props) {
                     '/portals/student/workplace/my-workplace/have-workplace'
                 )
             }
-            // await submitOnboarding({ id, body })
+            await submitOnboarding({ id, body })
 
             //
         } finally {

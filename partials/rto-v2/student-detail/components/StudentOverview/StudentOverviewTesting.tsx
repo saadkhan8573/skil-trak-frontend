@@ -1,4 +1,4 @@
-import { GlobalModal, LoadingAnimation } from '@components'
+import { GlobalModal, LoadingAnimation, usePermissions } from '@components'
 import { UserRoles } from '@constants'
 import { AppointmentBookingModalV2 } from '@partials/rto-v2/placement-request-detail/modal'
 import { WorkplaceApprovalModal } from '@partials/student/workplace/modal'
@@ -11,6 +11,7 @@ import { useLogbookModals } from '../../hooks/useLogbookModals'
 import { sortedWorkplaceRequests } from '../../utils'
 import { CourseOverview } from './components'
 import { StudentOverViewUpdated } from './StudentOverViewUpdated'
+import { PermissionType } from '@types'
 
 export const StudentOverviewTesting = () => {
     const [modal, setModal] = useState<ReactNode | null>(null)
@@ -18,10 +19,12 @@ export const StudentOverviewTesting = () => {
         (state) => state?.student
     )
     const dispatch = useAppDispatch()
+    const hasPermission = usePermissions([PermissionType.SHOW_MODAL])
     const onClose = () => {
         setModal(null)
     }
     const role = getUserCredentials()?.role
+    const isRto = role === UserRoles.RTO
 
     const wpApprovalRequest =
         RtoV2Api.StudentsWorkplace.useStudentProfileWorkplaceApprovalRequest(
@@ -38,7 +41,7 @@ export const StudentOverviewTesting = () => {
     })
 
     useEffect(() => {
-        if (wpApprovalRequest?.data && role !== UserRoles.RTO && !modal) {
+        if (wpApprovalRequest?.data && !modal && (!isRto || hasPermission)) {
             setModal(
                 <WorkplaceApprovalModal
                     onCancel={onClose}
@@ -50,7 +53,7 @@ export const StudentOverviewTesting = () => {
         return () => {
             dispatch(setSelectedWorkplace(null))
         }
-    }, [wpApprovalRequest])
+    }, [wpApprovalRequest, hasPermission, isRto])
 
     const studentWorkplaces =
         RtoV2Api.StudentsWorkplace.getStudentWorkplacesByCourse(

@@ -22,9 +22,9 @@ export function InsuranceDocCard({
 }: InsuranceDocCardProps) {
     const [required, requiredResult] =
         IndustryApi.Insurance.requiredInduranceDoc()
-    const hasPermission = usePermissions([
-        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
-    ])
+    const hasPermission = usePermissions({
+        permission: PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
+    })
 
     const { notification } = useNotification()
 

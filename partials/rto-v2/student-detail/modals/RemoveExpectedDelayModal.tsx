@@ -10,6 +10,8 @@ import { useNotification } from '@hooks'
 import { RtoV2Api } from '@queries'
 import { Student } from '@types'
 import { AlertCircle } from 'lucide-react'
+import { WorldwideStudentDataRestriction } from '@components/WorldwideStudentDataRestriction'
+import { useAppSelector } from '@redux'
 
 interface RemoveExpectedDelayModalProps {
     isOpen: boolean
@@ -24,6 +26,8 @@ export const RemoveExpectedDelayModal = ({
 }: RemoveExpectedDelayModalProps) => {
     const [addExpectedDelay, { isLoading }] =
         RtoV2Api.Students.addExpectedDelay()
+
+    const rtoDetail = useAppSelector((state) => state.rto.rtoDetail)
 
     const { notification } = useNotification()
 
@@ -44,7 +48,8 @@ export const RemoveExpectedDelayModal = ({
         } catch (error) {
             notification.error({
                 title: 'Error',
-                description: 'Failed to remove expected delay. Please try again.',
+                description:
+                    'Failed to remove expected delay. Please try again.',
             })
         }
     }
@@ -64,7 +69,16 @@ export const RemoveExpectedDelayModal = ({
                         </div>
                         <DialogDescription className="text-gray-500 text-sm mt-2">
                             Current expected delay status for{' '}
-                            {student?.user?.name}.
+                            <WorldwideStudentDataRestriction
+                                anotherUserId={Number(rtoDetail?.user?.id)}
+                                fallbackOptions={{
+                                    width: '100px',
+                                    height: '15px',
+                                }}
+                            >
+                                {student?.user?.name}
+                            </WorldwideStudentDataRestriction>
+                            .
                         </DialogDescription>
                     </DialogHeader>
 

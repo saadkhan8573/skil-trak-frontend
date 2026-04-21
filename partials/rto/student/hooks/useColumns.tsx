@@ -2,6 +2,7 @@ import {
     Badge,
     CaseOfficerAssignedStudent,
     StudentExpiryDaysLeft,
+    StudentJobId,
     TableAction,
     TableActionOption,
     Typography,
@@ -57,6 +58,7 @@ type ColumnKey =
     | 'snoozed'
     | 'action'
     | 'lastContactedAt'
+    | 'studentMaskedId'
 
 interface GetTableConfigOptions {
     columnKeys?: ColumnKey[]
@@ -85,7 +87,9 @@ export const useColumns = (hookOptions?: UseColumnsProps) => {
     const [modal, setModal] = useState<ReactElement | null>(null)
 
     const basePathRaw = router?.asPath?.split('?')[0] || ''
-    const currentPath = basePathRaw.endsWith('/') ? basePathRaw.slice(0, -1) : basePathRaw
+    const currentPath = basePathRaw.endsWith('/')
+        ? basePathRaw.slice(0, -1)
+        : basePathRaw
 
     // Use the explicit baseLinkPath if provided, otherwise dynamically fallback to the current page path
     const basePath = hookOptions?.baseLinkPath || currentPath
@@ -194,6 +198,13 @@ export const useColumns = (hookOptions?: UseColumnsProps) => {
     // All available columns definition
     const allColumns: ColumnDef<Student>[] = [
         {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }: any) => (
+                <StudentJobId studentJobId={row.original?.studentMaskedId} />
+            ),
+        },
+        {
             accessorKey: 'name',
             cell: (info) => (
                 <StudentCellInfo
@@ -218,8 +229,8 @@ export const useColumns = (hookOptions?: UseColumnsProps) => {
                         industries={info.row.original?.industries}
                     />
                 ) : info.row.original?.workplace &&
-                    info.row.original?.workplace?.length > 0 &&
-                    appliedIndustry ? (
+                  info.row.original?.workplace?.length > 0 &&
+                  appliedIndustry ? (
                     <SubadminStudentIndustries
                         workplace={info.row.original?.workplace}
                         industries={info.row.original?.industries}
@@ -290,13 +301,13 @@ export const useColumns = (hookOptions?: UseColumnsProps) => {
             accessorKey: 'lastContactedAt',
             header: () => <span>Last Contacted At</span>,
             cell: (info) => {
-                return (
-                    info?.row?.original?.lastContactedAt ? <>
+                return info?.row?.original?.lastContactedAt ? (
+                    <>
                         <Typography variant={'small'} color={'text-gray-600'}>
                             <span className="font-semibold whitespace-pre">
-                                {moment(info?.row?.original?.lastContactedAt).format(
-                                    'Do MMM YYYY'
-                                )}
+                                {moment(
+                                    info?.row?.original?.lastContactedAt
+                                ).format('Do MMM YYYY')}
                             </span>
                         </Typography>
                         <Typography variant={'small'} color={'text-gray-600'}>
@@ -306,7 +317,9 @@ export const useColumns = (hookOptions?: UseColumnsProps) => {
                                 )}
                             </span>
                         </Typography>
-                    </> : "---"
+                    </>
+                ) : (
+                    '---'
                 )
             },
         },
@@ -346,11 +359,11 @@ export const useColumns = (hookOptions?: UseColumnsProps) => {
                                         </span>{' '}
                                         {row.original?.snoozedAt
                                             ? moment(
-                                                row.original.snoozedAt
-                                            ).format('MMM DD, YYYY hh:mm A')
+                                                  row.original.snoozedAt
+                                              ).format('MMM DD, YYYY hh:mm A')
                                             : moment(snooze.createdAt).format(
-                                                'MMM DD, YYYY hh:mm A'
-                                            )}
+                                                  'MMM DD, YYYY hh:mm A'
+                                              )}
                                     </p>
                                     <p className="text-xs text-slate-600">
                                         <span className="font-semibold text-slate-800">
@@ -358,8 +371,8 @@ export const useColumns = (hookOptions?: UseColumnsProps) => {
                                         </span>{' '}
                                         {row.original?.snoozedDate
                                             ? moment(
-                                                row.original.snoozedDate
-                                            ).format('MMM DD, YYYY')
+                                                  row.original.snoozedDate
+                                              ).format('MMM DD, YYYY')
                                             : '---'}
                                     </p>
                                     <p className="text-xs text-slate-600">

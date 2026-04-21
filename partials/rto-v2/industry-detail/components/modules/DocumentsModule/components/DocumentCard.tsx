@@ -38,9 +38,9 @@ export function DocumentCard({
     industryUserId,
 }: DocumentCardProps) {
     const [modal, setModal] = useState<ReactElement | null>(null)
-    const hasPermission = usePermissions([
-        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
-    ])
+    const hasPermission = usePermissions({
+        permission: [PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS],
+    })
 
     // Toggle Logic
     const [makeOptional, makeOptionalResult] =

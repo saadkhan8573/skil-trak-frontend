@@ -150,8 +150,8 @@ const menuSections = (navBarCounts: {
             },
             {
                 icon: FileWarning,
-                label: 'Skiltrak Flagged Students',
-                key: 'Skiltrak Flagged Students',
+                label: 'Skiltrak Flagged',
+                key: 'Skiltrak Flagged',
                 path: '/portals/rto/action-required/skiltrak-flagged-students',
                 badge: navBarCounts?.skiltrakFlagged,
                 bg: 'bg-red-50 hover:bg-red-100 border border-red-200',
@@ -315,7 +315,7 @@ const menuSections = (navBarCounts: {
 
 export const RtoSidebar = ({ isOpen, onClose, onNavigate, activeKey }: any) => {
     const { data: navBarCounts } = RtoV2Api.Dashboard.navBarCounts()
-    const { checkPermission } = usePermissionCheck()
+    const { checkPermission } = usePermissionCheck({})
     const [expandedSections, setExpandedSections] = useState<
         Record<string, boolean>
     >({})

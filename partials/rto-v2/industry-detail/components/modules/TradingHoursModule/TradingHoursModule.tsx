@@ -264,9 +264,9 @@ export function TradingHoursModule() {
     )
     const industryUserId = industryDetail?.user?.id
 
-    const hasPermission = usePermissions([
-        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
-    ])
+    const hasPermission = usePermissions({
+        permission: PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
+    })
 
     const { data: apiData, isLoading: isFetching } =
         RtoV2Api.Industries.useGetIndutryAvailableHours(industryUserId!, {

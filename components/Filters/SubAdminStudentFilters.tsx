@@ -118,6 +118,20 @@ export const SubAdminStudentFilters = ({
                     showError={false}
                 />
 
+                <TextInput
+                    name="studentMaskedId"
+                    label={'Job Id'}
+                    placeholder={'Search by Job Id ...'}
+                    value={filter?.studentMaskedId}
+                    onChange={(e: any) => {
+                        onFilterChange({
+                            ...filter,
+                            studentMaskedId: e.target.value,
+                        })
+                    }}
+                    showError={false}
+                />
+
                 <Select
                     label={'Status'}
                     name={'status'}

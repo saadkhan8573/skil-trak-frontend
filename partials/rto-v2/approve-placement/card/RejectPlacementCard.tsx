@@ -1,4 +1,4 @@
-import { Badge, Card } from '@components'
+import { Badge, Card, StudentJobId } from '@components'
 import { RtoApprovalWorkplaceRequest } from '@types'
 import { Building2, GraduationCap, User, XCircle } from 'lucide-react'
 import React from 'react'
@@ -20,6 +20,11 @@ export const RejectPlacementCard = ({
                             <h4 className="font-semibold">
                                 {approval?.student?.user?.name}
                             </h4>
+                            <StudentJobId
+                                studentJobId={
+                                    approval?.student?.studentMaskedId
+                                }
+                            />
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                 <Building2 className="h-3.5 w-3.5" />
                                 <span className="truncate">

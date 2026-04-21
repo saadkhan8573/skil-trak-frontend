@@ -65,9 +65,9 @@ export function WorkplaceStatuses({
     const wpId = workplace?.id
     const router = useRouter()
 
-    const hasPermission = usePermissions([
-        PermissionType.CHANGE_WORKPLACE_STATUS,
-    ])
+    const hasPermission = usePermissions({
+        permission: PermissionType.CHANGE_WORKPLACE_STATUS,
+    })
 
     const student = useAppSelector((state) => state.student.studentDetail)
 

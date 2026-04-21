@@ -3,11 +3,12 @@ import {
     EmptyData,
     LoadingAnimation,
     StudentExpiryDaysLeft,
+    StudentJobId,
     Table,
     TableAction,
     TableChildrenProps,
     TechnicalError,
-    Typography
+    Typography,
 } from '@components'
 import { PageHeading } from '@components/headings'
 import { ColumnDef } from '@tanstack/react-table'
@@ -16,14 +17,16 @@ import { FaEdit, FaEye } from 'react-icons/fa'
 import { RtoCellInfo } from '@partials/admin/rto/components'
 import { AdminApi } from '@queries'
 import { Student, UserStatus } from '@types'
-import {
-    checkListLength,
-    setLink
-} from '@utils'
+import { checkListLength, setLink } from '@utils'
 import { Phone } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { ProgressCell, SectorCell, StudentCellInfo, StudentIndustries } from './components'
+import {
+    ProgressCell,
+    SectorCell,
+    StudentCellInfo,
+    StudentIndustries,
+} from './components'
 import { AdminStudentModalType, getAdminStudentsModal } from './modals'
 
 // hooks
@@ -91,11 +94,18 @@ export const NoWorkplaceStudents = () => {
             onClick: (student: Student) => {
                 handleOpenModal(AdminStudentModalType.AI_CALL, student)
             },
-            Icon: () => <Phone className='w-3 h-3' />,
+            Icon: () => <Phone className="w-3 h-3" />,
         },
     ]
 
     const columns: ColumnDef<Student>[] = [
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId studentJobId={row.original?.studentMaskedId} />
+            ),
+        },
         {
             accessorKey: 'user.name',
             cell: (info) => (
@@ -146,11 +156,7 @@ export const NoWorkplaceStudents = () => {
         {
             accessorKey: 'progress',
             header: () => <span>Progress</span>,
-            cell: ({ row }) => (
-                <ProgressCell
-                    step={1}
-                />
-            ),
+            cell: ({ row }) => <ProgressCell step={1} />,
         },
         {
             accessorKey: 'createdAt',
@@ -195,7 +201,6 @@ export const NoWorkplaceStudents = () => {
         },
     ]
 
-
     return (
         <>
             {modal && modal}
@@ -205,7 +210,6 @@ export const NoWorkplaceStudents = () => {
                         title={'No Workplace Students'}
                         subtitle={'List of No Workplace Students'}
                     />
-
                 </div>
                 <Card noPadding>
                     {isError && <TechnicalError />}
@@ -225,33 +229,29 @@ export const NoWorkplaceStudents = () => {
                             }: TableChildrenProps) => {
                                 return (
                                     <div>
-                                        <div
-                                            className="p-6 mb-2 flex justify-between"
-                                        >
+                                        <div className="p-6 mb-2 flex justify-between">
                                             {pageSize
                                                 ? pageSize(
-                                                    itemPerPage,
-                                                    (e) => {
-                                                        setItemPerPage(e)
-                                                        setIsRouting(false)
-                                                    },
-                                                    data?.data?.length
-                                                )
+                                                      itemPerPage,
+                                                      (e) => {
+                                                          setItemPerPage(e)
+                                                          setIsRouting(false)
+                                                      },
+                                                      data?.data?.length
+                                                  )
                                                 : null}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination
                                                     ? pagination(
-                                                        data?.pagination,
-                                                        setPage
-                                                    )
+                                                          data?.pagination,
+                                                          setPage
+                                                      )
                                                     : null}
                                             </div>
                                         </div>
                                         <div className="overflow-x-auto remove-scrollbar">
-                                            <div
-                                                className="px-6 w-full"
-                                            >
+                                            <div className="px-6 w-full">
                                                 {table}
                                             </div>
                                         </div>
@@ -259,23 +259,23 @@ export const NoWorkplaceStudents = () => {
                                             <div className="p-6 mb-2 flex justify-between">
                                                 {pageSize
                                                     ? pageSize(
-                                                        itemPerPage,
-                                                        (e) => {
-                                                            setItemPerPage(e)
-                                                            setIsRouting(
-                                                                false
-                                                            )
-                                                        },
-                                                        data?.data?.length
-                                                    )
+                                                          itemPerPage,
+                                                          (e) => {
+                                                              setItemPerPage(e)
+                                                              setIsRouting(
+                                                                  false
+                                                              )
+                                                          },
+                                                          data?.data?.length
+                                                      )
                                                     : null}
                                                 <div className="flex gap-x-2">
                                                     {quickActions}
                                                     {pagination
                                                         ? pagination(
-                                                            data?.pagination,
-                                                            setPage
-                                                        )
+                                                              data?.pagination,
+                                                              setPage
+                                                          )
                                                         : null}
                                                 </div>
                                             </div>

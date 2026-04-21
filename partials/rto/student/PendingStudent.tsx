@@ -24,7 +24,7 @@ export const PendingStudent = () => {
 
     const { columns } = getTableConfig({
         actionKeys: ['accept', 'reject'],
-        columnKeys: ['name', 'createdAt', 'action'],
+        columnKeys: ['studentMaskedId', 'name', 'createdAt', 'action'],
     })
 
     return (

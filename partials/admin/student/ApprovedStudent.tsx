@@ -6,8 +6,10 @@ import {
     EmptyData,
     LoadingAnimation,
     StudentExpiryDaysLeft,
+    StudentJobId,
     Table,
     TableAction,
+    TableActionOption,
     TableChildrenProps,
     TechnicalError,
     Typography,
@@ -96,11 +98,13 @@ export const ApprovedStudent = () => {
             { refetchOnMountOrArgChange: 30 }
         )
 
-    const tableActionOptions = (student: any) => {
+    const tableActionOptions = (
+        student: Student
+    ): TableActionOption<Student>[] => {
         return [
             {
                 text: 'View',
-                onClick: (student: any) => {
+                onClick: (student) => {
                     router.push(`/portals/admin/student/${student?.id}/detail`)
                     setLink('student', router)
                 },
@@ -117,7 +121,7 @@ export const ApprovedStudent = () => {
             // },
             {
                 text: 'Edit',
-                onClick: (student: Student) => {
+                onClick: (student) => {
                     router.push(
                         `/portals/admin/student/edit-student/${student?.id}`
                     )
@@ -126,14 +130,14 @@ export const ApprovedStudent = () => {
             },
             {
                 text: 'AI Voice Call',
-                onClick: (student: Student) => {
+                onClick: (student) => {
                     handleOpenModal(AdminStudentModalType.AI_CALL, student)
                 },
                 Icon: () => <Phone className="w-3 h-3" />,
             },
             {
                 text: 'Change Status',
-                onClick: (student: Student) => {
+                onClick: (student) => {
                     // onChangeStatus(student)
                     handleOpenModal(
                         AdminStudentModalType.CHANGE_STATUS,
@@ -152,13 +156,12 @@ export const ApprovedStudent = () => {
             },
             {
                 text: 'View Password',
-                onClick: (student: Student) =>
-                    onViewPassword({ user: student?.user }),
+                onClick: (student) => onViewPassword({ user: student?.user }),
                 Icon: RiLockPasswordFill,
             },
             {
                 text: 'Block',
-                onClick: (student: Student) => {
+                onClick: (student) => {
                     // onBlockClicked(student)
                     handleOpenModal(AdminStudentModalType.BLOCK, student)
                 },
@@ -181,7 +184,7 @@ export const ApprovedStudent = () => {
             },
             {
                 text: 'Archive',
-                onClick: (student: Student) => {
+                onClick: (student) => {
                     // onArchiveClicked(student)
                     handleOpenModal(AdminStudentModalType.ARCHIVE, student)
                 },
@@ -192,6 +195,13 @@ export const ApprovedStudent = () => {
     }
 
     const columns: ColumnDef<Student>[] = [
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId studentJobId={row.original?.studentMaskedId} />
+            ),
+        },
         {
             accessorKey: 'user.name',
             cell: (info) => (
@@ -284,13 +294,13 @@ export const ApprovedStudent = () => {
             accessorKey: 'lastContactedAt',
             header: () => <span>Last Contacted At</span>,
             cell: (info) => {
-                return (
-                    info?.row?.original?.lastContactedAt ? <>
+                return info?.row?.original?.lastContactedAt ? (
+                    <>
                         <Typography variant={'small'} color={'text-gray-600'}>
                             <span className="font-semibold whitespace-pre">
-                                {moment(info?.row?.original?.lastContactedAt).format(
-                                    'Do MMM YYYY'
-                                )}
+                                {moment(
+                                    info?.row?.original?.lastContactedAt
+                                ).format('Do MMM YYYY')}
                             </span>
                         </Typography>
                         <Typography variant={'small'} color={'text-gray-600'}>
@@ -300,7 +310,9 @@ export const ApprovedStudent = () => {
                                 )}
                             </span>
                         </Typography>
-                    </> : "---"
+                    </>
+                ) : (
+                    '---'
                 )
             },
         },
@@ -455,21 +467,21 @@ export const ApprovedStudent = () => {
                                         >
                                             {pageSize
                                                 ? pageSize(
-                                                    itemPerPage,
-                                                    (e) => {
-                                                        setItemPerPage(e)
-                                                        setIsRouting(false)
-                                                    },
-                                                    data?.data?.length
-                                                )
+                                                      itemPerPage,
+                                                      (e) => {
+                                                          setItemPerPage(e)
+                                                          setIsRouting(false)
+                                                      },
+                                                      data?.data?.length
+                                                  )
                                                 : null}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination
                                                     ? pagination(
-                                                        data?.pagination,
-                                                        setPage
-                                                    )
+                                                          data?.pagination,
+                                                          setPage
+                                                      )
                                                     : null}
                                             </div>
                                         </div>
@@ -485,23 +497,23 @@ export const ApprovedStudent = () => {
                                             <div className="p-6 mb-2 flex justify-between">
                                                 {pageSize
                                                     ? pageSize(
-                                                        itemPerPage,
-                                                        (e) => {
-                                                            setItemPerPage(e)
-                                                            setIsRouting(
-                                                                false
-                                                            )
-                                                        },
-                                                        data?.data?.length
-                                                    )
+                                                          itemPerPage,
+                                                          (e) => {
+                                                              setItemPerPage(e)
+                                                              setIsRouting(
+                                                                  false
+                                                              )
+                                                          },
+                                                          data?.data?.length
+                                                      )
                                                     : null}
                                                 <div className="flex gap-x-2">
                                                     {quickActions}
                                                     {pagination
                                                         ? pagination(
-                                                            data?.pagination,
-                                                            setPage
-                                                        )
+                                                              data?.pagination,
+                                                              setPage
+                                                          )
                                                         : null}
                                                 </div>
                                             </div>

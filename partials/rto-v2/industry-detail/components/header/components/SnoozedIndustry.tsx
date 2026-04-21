@@ -16,9 +16,9 @@ export const SnoozedIndustry = () => {
         (state) => state.industry.industryDetail
     )
 
-    const hasPermission = usePermissions([
-        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
-    ])
+    const hasPermission = usePermissions({
+        permission: PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
+    })
 
     const [snooze, snoozeResult] = CommonApi.Industries.useUnSnoozeIndustry()
 

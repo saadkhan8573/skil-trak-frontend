@@ -1,6 +1,11 @@
+import {
+    useWorldwideStudentDataRestriction,
+    WorldwideStudentDataRestriction,
+} from '@components/WorldwideStudentDataRestriction'
+import { useAppSelector } from '@redux'
 import { Student } from '@types'
 import { checkJsxVisibility, maskText } from '@utils'
-import { MapPin, Phone, Smartphone } from 'lucide-react'
+import { Mail, MapPin, Phone, Smartphone } from 'lucide-react'
 import { Activity } from 'react'
 import { HeaderQuickActions } from './HeaderQuickActions'
 import { StudentQuickInfo } from './StudentQuickInfo'
@@ -10,6 +15,10 @@ import { StudentInvoiceStatus } from './components/StudentInvoiceStatus'
 import { StudentStatusBanner } from './components/StudentStatusBanner'
 
 export const StudentHeader = ({ student }: { student: Student }) => {
+    const rtoDetail = useAppSelector((state) => state.rto.rtoDetail)
+    const { hasPermission } = useWorldwideStudentDataRestriction({
+        userId: rtoDetail?.user?.id,
+    })
     const studentContactInfo = [
         {
             id: 'address',
@@ -22,9 +31,9 @@ export const StudentHeader = ({ student }: { student: Student }) => {
     ]
     const studentEmail = [
         {
-            id: 'address',
-            icon: MapPin,
-            value: student?.user?.email,
+            id: 'email',
+            icon: Mail,
+            value: !hasPermission ? student?.user?.email : '***********',
             bgGradient: 'from-[#F7A619]/10 to-[#F7A619]/20',
             iconColor: 'text-[#F7A619]',
             hasHover: false,
@@ -42,8 +51,17 @@ export const StudentHeader = ({ student }: { student: Student }) => {
             uppercase: true,
         },
         {
+            id: 'studentMaskedId',
+            label: student?.studentMaskedId || '---',
+            variant: 'gradient' as const,
+            className:
+                'bg-white border border-[#044866]/20 text-[#044866] shadow-sm',
+            hasIndicator: true,
+            uppercase: true,
+        },
+        {
             id: 'phone',
-            label: maskText(student?.phone),
+            label: !hasPermission ? maskText(student?.phone) : '********',
             variant: 'outlined' as const,
             className:
                 'bg-white border border-[#044866]/20 text-[#044866] shadow-sm',
@@ -77,6 +95,8 @@ export const StudentHeader = ({ student }: { student: Student }) => {
         },
     ]
 
+    console.log('rtoDetail?.user?.id', rtoDetail)
+
     return (
         <div className="relative">
             {/* Main Card with Gradient Border Effect */}
@@ -92,6 +112,7 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                 {/* Avatar */}
                                 <div className="relative">
                                     <div className="absolute -inset-2 bg-linear-to-br from-[#F7A619] via-[#F7A619]/50 to-transparent rounded-full blur-2xl opacity-60"></div>
+
                                     <div className="relative w-14 h-14 rounded-full bg-linear-to-br from-[#F7A619] to-[#F7A619]/80 flex items-center justify-center text-white text-xl uppercase shadow-2xl ring-4 ring-white">
                                         {student?.user?.name?.substring(0, 2)}
                                     </div>
@@ -120,22 +141,28 @@ export const StudentHeader = ({ student }: { student: Student }) => {
 
                                 {/* Name & Badges */}
                                 <div className="space-y-1">
-                                    <h2 className="text-slate-900 text-lg font-bold">
-                                        {student?.user?.name}{' '}
-                                        {student?.familyName}
-                                    </h2>
+                                    <WorldwideStudentDataRestriction
+                                        anotherUserId={Number(
+                                            rtoDetail?.user?.id
+                                        )}
+                                        fallbackOptions={{
+                                            width: '200px',
+                                            height: '25px',
+                                        }}
+                                    >
+                                        <h2 className="text-slate-900 text-lg font-bold">
+                                            {student?.user?.name}{' '}
+                                            {student?.familyName}
+                                        </h2>{' '}
+                                    </WorldwideStudentDataRestriction>
                                     <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
                                         {studentBadges.map((badge) => (
                                             <div
                                                 key={badge.id}
                                                 className={`inline-flex items-center gap-${
-                                                    badge.icon || badge.emoji
-                                                        ? '1.5'
-                                                        : '2'
+                                                    badge.icon ? '1.5' : '2'
                                                 } px-${
-                                                    badge.icon || badge.emoji
-                                                        ? '2'
-                                                        : '2.5'
+                                                    badge.icon ? '2' : '2.5'
                                                 } py-1 rounded-full ${
                                                     badge.className
                                                 }`}
@@ -145,11 +172,6 @@ export const StudentHeader = ({ student }: { student: Student }) => {
                                                 )}
                                                 {badge.icon && (
                                                     <badge.icon className="w-3 h-3" />
-                                                )}
-                                                {badge.emoji && (
-                                                    <span className="text-sm">
-                                                        {badge.emoji}
-                                                    </span>
                                                 )}
                                                 <span
                                                     className={`text-sm ${

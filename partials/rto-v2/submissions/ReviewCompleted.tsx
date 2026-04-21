@@ -1,5 +1,4 @@
 import {
-    Button,
     Card,
     EmptyData,
     InitialAvatar,
@@ -8,16 +7,14 @@ import {
     Table,
     TechnicalError,
     Typography,
-    UserCreatedAt,
+    UserCreatedAt
 } from '@components'
+import { Result } from '@constants'
 import { RtoApi } from '@queries'
 import { ColumnDef } from '@tanstack/react-table'
-import { CheckCircle2 } from 'lucide-react'
+import { ellipsisText } from '@utils'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
-import { CompleteSubmissionModal } from './modals'
-import { Result } from '@constants'
-import { ellipsisText } from '@utils'
 
 export const ReviewCompleted = () => {
     const router = useRouter()
@@ -46,6 +43,17 @@ export const ReviewCompleted = () => {
     }, [router])
 
     const columns: ColumnDef<any>[] = [
+        // {
+        //     header: () => 'Job Id',
+        //     accessorKey: 'studentMaskedId',
+        //     cell: ({ row }) => (
+        //         <StudentJobId
+        //             studentJobId={
+        //                 row.original?.student?.studentMaskedId || '---'
+        //             }
+        //         />
+        //     ),
+        // },
         {
             header: () => 'Name',
             accessorKey: 'user',

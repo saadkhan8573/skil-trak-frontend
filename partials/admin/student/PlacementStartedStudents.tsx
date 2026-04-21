@@ -6,6 +6,7 @@ import {
     EmptyData,
     LoadingAnimation,
     StudentExpiryDaysLeft,
+    StudentJobId,
     Table,
     TableAction,
     TableActionOption,
@@ -171,6 +172,13 @@ export const PlacementStartedStudents = () => {
     ]
 
     const columns: ColumnDef<Student>[] = [
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId studentJobId={row.original?.studentMaskedId} />
+            ),
+        },
         {
             accessorKey: 'user.name',
             cell: (info) => (

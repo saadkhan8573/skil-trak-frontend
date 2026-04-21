@@ -1,4 +1,4 @@
-import { Badge } from '@components'
+import { Badge, StudentJobId } from '@components'
 import { Course } from '@types'
 import { Clock, GraduationCap, Sparkles, User } from 'lucide-react'
 import { PlacementActions } from './PlacementActions'
@@ -51,6 +51,11 @@ export const PlacementTopSection = ({ approval }: { approval: any }) => {
                                         className="bg-primaryNew/20 !text-primaryNew"
                                     />
                                 )}
+                                <StudentJobId
+                                    studentJobId={
+                                        approval?.student?.studentMaskedId
+                                    }
+                                />
                             </div>
                             <div className="flex items-center gap-2 text-sm">
                                 <GraduationCap className="h-3.5 w-3.5 text-muted-foreground" />

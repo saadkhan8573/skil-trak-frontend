@@ -2,22 +2,17 @@ import { getUserCredentials } from '@utils'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { usePermissions } from './usePermissions'
-import { useUserPermissions } from '@hooks/useUserPermissions'
 import { LoadingAnimation } from '@components/LoadingAnimation'
 import { PermissionType } from '@types'
 import { UserRoles } from '@constants'
+import { useUserPermissions } from '@hooks'
 
 interface WithPermissionOptions {
     permissions?: PermissionType | PermissionType[]
     redirectUrl?: string | ((query: any) => string)
+    mode?: 'AND' | 'OR' | 'allSame'
 }
 
-/**
- * HOC to protect components based on permissions and/or roles
- * Redirects to dashboard if user doesn't have required permissions or roles
- * @param Component - The component to wrap
- * @param options - Configuration with permissions and/or roles (string or array of strings)
- */
 export const withPermission = <P extends object>(
     Component: React.ComponentType<P> & {
         getLayout?: (page: React.ReactElement) => React.ReactNode
@@ -55,15 +50,18 @@ export const withPermission = <P extends object>(
                 : [options.permissions]
             : undefined
 
-        const { allPermissions, myPermissions } = useUserPermissions()
+        const { allPermissions, userPermissions } = useUserPermissions({})
         const isPermissionsLoading =
             allPermissions?.isLoading ||
             allPermissions?.isFetching ||
-            myPermissions?.isLoading ||
-            myPermissions?.isFetching
+            userPermissions?.isLoading ||
+            userPermissions?.isFetching
 
-        const checkResult = usePermissions(requiredPermissions)
-        const isError = allPermissions?.isError || myPermissions?.isError
+        const checkResult = usePermissions({
+            permission: requiredPermissions,
+            mode: options.mode,
+        })
+        const isError = allPermissions?.isError || userPermissions?.isError
 
         // If loading or fetching, and no error, assume true to prevent redirect
         // Once success or error, use the actual result

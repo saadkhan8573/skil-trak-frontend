@@ -2,6 +2,7 @@ import {
     ActionButton,
     Card,
     EmptyData,
+    StudentJobId,
     Table,
     TableAction,
     TableSkeleton,
@@ -49,6 +50,17 @@ export const StudentsNeedWorkplaceTab = () => {
     ]
 
     const columns: ColumnDef<any>[] = [
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId
+                    studentJobId={
+                        row.original?.student?.studentMaskedId || '---'
+                    }
+                />
+            ),
+        },
         {
             accessorKey: 'user.name',
             cell: (info) => (

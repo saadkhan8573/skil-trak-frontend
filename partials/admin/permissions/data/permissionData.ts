@@ -12,6 +12,7 @@ import {
     Database,
     FileSignature,
     Flag,
+    Globe,
     GraduationCap,
     Headphones,
     Key,
@@ -353,6 +354,20 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         icon: Settings,
         category: 'students',
     },
+    [PermissionType.ACCESS_WORLDWIDE_STUDENT_INFORMATION]: {
+        label: 'Access Worldwide Student Information',
+        description:
+            'Ability to access student information globally across all regions',
+        icon: Globe,
+        category: 'students',
+    },
+    [PermissionType.RESTRICT_WORLDWIDE_STUDENT_INFORMATION]: {
+        label: 'Restrict Worldwide Student Information',
+        description:
+            'Restrict access to student information outside of assigned regions',
+        icon: Lock,
+        category: 'students',
+    },
     [PermissionType.ALLOW_AUTO_COMPLETE]: {
         label: 'Allow Auto Complete',
         description: 'Enable auto-complete features',
@@ -507,6 +522,12 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'Can Import RTO Listing',
         description: 'Ability to import RTO listing data',
         icon: Settings,
+        category: 'rto',
+    },
+    [PermissionType.RTO_CAN_RECEIVE_TICKETS]: {
+        label: 'RTO Can Receive Tickets',
+        description: 'Allow RTOs to receive support tickets',
+        icon: Headphones,
         category: 'rto',
     },
     [PermissionType.MANAGE_STUDENTS]: {

@@ -5,10 +5,12 @@ import {
     CaseOfficerAssignedStudent,
     EmptyData,
     LoadingAnimation,
+    StudentJobId,
     Table,
     TableAction,
     TableChildrenProps,
     TechnicalError,
+    Typography,
 } from '@components'
 import { PageHeading } from '@components/headings'
 import { ColumnDef } from '@tanstack/react-table'
@@ -22,10 +24,7 @@ import { useRouter } from 'next/router'
 import { ReactElement, useCallback, useEffect, useRef, useState } from 'react'
 import { MdBlock } from 'react-icons/md'
 import { SectorCell, StudentCellInfo, StudentIndustries } from './components'
-import {
-    BlockModal,
-    BlockMultiStudentsModal
-} from './modals'
+import { BlockModal, BlockMultiStudentsModal } from './modals'
 
 // hooks
 
@@ -198,6 +197,13 @@ export const StudentScheduleEndedList = () => {
     ]
 
     const columns: ColumnDef<Student>[] = [
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId studentJobId={row.original?.studentMaskedId} />
+            ),
+        },
         {
             accessorKey: 'user.name',
             cell: (info) => (
@@ -401,18 +407,18 @@ export const StudentScheduleEndedList = () => {
                                         >
                                             {pageSize
                                                 ? pageSize(
-                                                    itemPerPage,
-                                                    setItemPerPage,
-                                                    data?.data?.length
-                                                )
+                                                      itemPerPage,
+                                                      setItemPerPage,
+                                                      data?.data?.length
+                                                  )
                                                 : null}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination
                                                     ? pagination(
-                                                        data?.pagination,
-                                                        setPage
-                                                    )
+                                                          data?.pagination,
+                                                          setPage
+                                                      )
                                                     : null}
                                             </div>
                                         </div>
@@ -428,18 +434,18 @@ export const StudentScheduleEndedList = () => {
                                             <div className="p-6 mb-2 flex justify-between">
                                                 {pageSize
                                                     ? pageSize(
-                                                        itemPerPage,
-                                                        setItemPerPage,
-                                                        data?.data?.length
-                                                    )
+                                                          itemPerPage,
+                                                          setItemPerPage,
+                                                          data?.data?.length
+                                                      )
                                                     : null}
                                                 <div className="flex gap-x-2">
                                                     {quickActions}
                                                     {pagination
                                                         ? pagination(
-                                                            data?.pagination,
-                                                            setPage
-                                                        )
+                                                              data?.pagination,
+                                                              setPage
+                                                          )
                                                         : null}
                                                 </div>
                                             </div>

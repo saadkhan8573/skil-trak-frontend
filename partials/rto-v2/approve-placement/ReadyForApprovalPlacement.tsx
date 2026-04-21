@@ -9,7 +9,7 @@ import {
 } from '@components'
 import { PlacementsFilters } from '@components/Filters'
 import { RtoApi } from '@queries'
-import { RTOWorkplaceFormFilter } from '@types'
+import { RtoApprovalWorkplaceRequest, RTOWorkplaceFormFilter } from '@types'
 import { CheckCircle2 } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
@@ -117,12 +117,14 @@ export const ReadyForApprovalPlacement = () => {
                             setPage={setPage}
                         />
                     </div>
-                    {wpApprovalRequests?.data?.data?.map((approval: any) => (
-                        <PendingPlacementCard
-                            key={approval.id}
-                            approval={approval}
-                        />
-                    ))}
+                    {wpApprovalRequests?.data?.data?.map(
+                        (approval: RtoApprovalWorkplaceRequest) => (
+                            <PendingPlacementCard
+                                key={approval.id}
+                                approval={approval}
+                            />
+                        )
+                    )}
                     <div className="flex justify-between items-center px-2 border-t pt-4">
                         <PageSize
                             itemPerPage={itemPerPage}

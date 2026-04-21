@@ -6,6 +6,7 @@ import {
     LoadingAnimation,
     ShowErrorNotifications,
     StudentExpiryDaysLeft,
+    StudentJobId,
     Table,
     TableAction,
     TechnicalError,
@@ -143,6 +144,13 @@ export const BlockedStudent = () => {
     }
 
     const columns: ColumnDef<Student>[] = [
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId studentJobId={row.original?.studentMaskedId} />
+            ),
+        },
         {
             accessorKey: 'user.name',
             cell: (info) => {

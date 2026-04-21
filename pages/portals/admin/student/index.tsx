@@ -53,6 +53,7 @@ const filterKeys = [
     'industryId',
     'subadminId',
     'currentStatus',
+    'studentMaskedId'
 ]
 
 const StudentList: NextPageWithLayout = () => {

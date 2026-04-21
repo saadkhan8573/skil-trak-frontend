@@ -1,24 +1,21 @@
 import {
+    Button,
     Card,
     EmptyData,
     InitialAvatar,
     LoadingAnimation,
+    ShowErrorNotifications,
     Table,
     TechnicalError,
     Typography,
-    UserCreatedAt,
-    ActionModal,
-    ShowErrorNotifications,
-    Button,
+    UserCreatedAt
 } from '@components'
-import { RTOCellInfo } from '@partials/sub-admin/rto/components'
 import { RtoApi } from '@queries'
 import { ColumnDef } from '@tanstack/react-table'
+import { CheckCircle2 } from 'lucide-react'
 import { useRouter } from 'next/router'
-import { ReactElement, useEffect, useMemo, useState } from 'react'
-import { Result } from '@constants/course-result'
+import { ReactElement, useEffect, useState } from 'react'
 import { CompleteSubmissionModal } from './modals'
-import { Check, CheckCircle2 } from 'lucide-react'
 export const SubmissionsRequiringReview = () => {
     const router = useRouter()
 
@@ -48,6 +45,17 @@ export const SubmissionsRequiringReview = () => {
     }, [router])
 
     const columns: ColumnDef<any>[] = [
+        // {
+        //     header: () => 'Job Id',
+        //     accessorKey: 'studentMaskedId',
+        //     cell: ({ row }) => (
+        //         <StudentJobId
+        //             studentJobId={
+        //                 row.original?.student?.studentMaskedId || '---'
+        //             }
+        //         />
+        //     ),
+        // },
         {
             header: () => 'Name',
             accessorKey: 'user',

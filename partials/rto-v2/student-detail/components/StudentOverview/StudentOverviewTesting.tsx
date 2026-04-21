@@ -19,7 +19,9 @@ export const StudentOverviewTesting = () => {
         (state) => state?.student
     )
     const dispatch = useAppDispatch()
-    const hasPermission = usePermissions([PermissionType.SHOW_MODAL])
+    const hasPermission = usePermissions({
+        permission: [PermissionType.SHOW_MODAL],
+    })
     const onClose = () => {
         setModal(null)
     }

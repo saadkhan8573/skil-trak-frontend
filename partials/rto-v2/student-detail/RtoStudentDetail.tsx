@@ -57,7 +57,9 @@ import { getUserCredentials } from '@utils'
 export const RtoStudentDetail = () => {
     const [modal, setModal] = useState<ReactNode | null>(null)
     const router = useRouter()
-    const hasPermission = usePermissions([PermissionType.SHOW_MODAL])
+    const hasPermission = usePermissions({
+        permission: [PermissionType.SHOW_MODAL],
+    })
 
     const dispatch = useDispatch()
 

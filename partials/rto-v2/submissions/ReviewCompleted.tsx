@@ -4,10 +4,11 @@ import {
     InitialAvatar,
     LoadingAnimation,
     ShowErrorNotifications,
+    StudentJobId,
     Table,
     TechnicalError,
     Typography,
-    UserCreatedAt
+    UserCreatedAt,
 } from '@components'
 import { Result } from '@constants'
 import { RtoApi } from '@queries'
@@ -43,17 +44,17 @@ export const ReviewCompleted = () => {
     }, [router])
 
     const columns: ColumnDef<any>[] = [
-        // {
-        //     header: () => 'Job Id',
-        //     accessorKey: 'studentMaskedId',
-        //     cell: ({ row }) => (
-        //         <StudentJobId
-        //             studentJobId={
-        //                 row.original?.student?.studentMaskedId || '---'
-        //             }
-        //         />
-        //     ),
-        // },
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId
+                    studentJobId={
+                        row.original?.student?.studentMaskedId || '---'
+                    }
+                />
+            ),
+        },
         {
             header: () => 'Name',
             accessorKey: 'user',

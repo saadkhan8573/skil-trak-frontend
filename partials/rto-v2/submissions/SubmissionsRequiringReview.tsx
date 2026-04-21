@@ -4,11 +4,11 @@ import {
     EmptyData,
     InitialAvatar,
     LoadingAnimation,
-    ShowErrorNotifications,
+    StudentJobId,
     Table,
     TechnicalError,
     Typography,
-    UserCreatedAt
+    UserCreatedAt,
 } from '@components'
 import { RtoApi } from '@queries'
 import { ColumnDef } from '@tanstack/react-table'
@@ -35,27 +35,23 @@ export const SubmissionsRequiringReview = () => {
             }
         )
 
-    const [changeStatus, changeStatusResult] =
-        RtoApi.Submissions.changeSubmissionStatus()
-    const [selectedRow, setSelectedRow] = useState<any>(null)
-
     useEffect(() => {
         setPage(Number(router.query.page || 1))
         setItemPerPage(Number(router.query.pageSize || 50))
     }, [router])
 
     const columns: ColumnDef<any>[] = [
-        // {
-        //     header: () => 'Job Id',
-        //     accessorKey: 'studentMaskedId',
-        //     cell: ({ row }) => (
-        //         <StudentJobId
-        //             studentJobId={
-        //                 row.original?.student?.studentMaskedId || '---'
-        //             }
-        //         />
-        //     ),
-        // },
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId
+                    studentJobId={
+                        row.original?.student?.studentMaskedId || '---'
+                    }
+                />
+            ),
+        },
         {
             header: () => 'Name',
             accessorKey: 'user',
@@ -140,7 +136,6 @@ export const SubmissionsRequiringReview = () => {
         <>
             {modal}
             <Card noPadding>
-                <ShowErrorNotifications result={changeStatusResult} />
                 {isError && <TechnicalError />}
                 {isLoading ? (
                     <LoadingAnimation height="h-[60vh]" />

@@ -1,6 +1,7 @@
 import { Badge } from '@components/Badge'
 
-export const StudentJobId = ({ studentJobId }: { studentJobId: string }) => {
+export const StudentJobId = ({ studentJobId }: { studentJobId?: string }) => {
+    if (!studentJobId) return '---'
     return (
         <div>
             <Badge

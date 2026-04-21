@@ -2,6 +2,7 @@ import {
     useWorldwideStudentDataRestriction,
     WorldwideStudentDataRestriction,
 } from '@components/WorldwideStudentDataRestriction'
+import { useAddressInfo } from '@hooks'
 import { useAppSelector } from '@redux'
 import { Student } from '@types'
 import { checkJsxVisibility, maskText } from '@utils'
@@ -13,18 +14,21 @@ import { StudentStatusSwitches } from './StudentStatusSwitches'
 import { StudentTimeline } from './StudentTimeline'
 import { StudentInvoiceStatus } from './components/StudentInvoiceStatus'
 import { StudentStatusBanner } from './components/StudentStatusBanner'
-import { Badge } from '@components'
 
 export const StudentHeader = ({ student }: { student: Student }) => {
     const rtoDetail = useAppSelector((state) => state.rto.rtoDetail)
     const { hasPermission } = useWorldwideStudentDataRestriction({
         userId: rtoDetail?.user?.id,
     })
+    const { addressInfo } = useAddressInfo(student?.addressLine1 || '')
+
     const studentContactInfo = [
         {
             id: 'address',
             icon: MapPin,
-            value: student?.addressLine1,
+            value: hasPermission
+                ? student?.addressLine1
+                : `${addressInfo?.suburb}, ${addressInfo?.state}, ${addressInfo?.postcode}, ${addressInfo?.country}`,
             bgGradient: 'from-[#F7A619]/10 to-[#F7A619]/20',
             iconColor: 'text-[#F7A619]',
             hasHover: false,
@@ -34,7 +38,7 @@ export const StudentHeader = ({ student }: { student: Student }) => {
         {
             id: 'email',
             icon: Mail,
-            value: !hasPermission ? student?.user?.email : '***********',
+            value: hasPermission ? student?.user?.email : '***********',
             bgGradient: 'from-[#F7A619]/10 to-[#F7A619]/20',
             iconColor: 'text-[#F7A619]',
             hasHover: false,
@@ -62,7 +66,7 @@ export const StudentHeader = ({ student }: { student: Student }) => {
         },
         {
             id: 'phone',
-            label: !hasPermission ? maskText(student?.phone) : '********',
+            label: hasPermission ? maskText(student?.phone) : '********',
             variant: 'outlined' as const,
             className:
                 'bg-white border border-[#044866]/20 text-[#044866] shadow-sm',

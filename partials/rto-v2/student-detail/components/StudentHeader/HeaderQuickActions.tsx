@@ -1,7 +1,7 @@
 import {
     AuthorizedUserComponent,
     Button,
-    WorldwideStudentDataRestriction
+    WorldwideStudentDataRestriction,
 } from '@components'
 import { UserRoles } from '@constants'
 import { useAppSelector } from '@redux'
@@ -100,7 +100,7 @@ export const HeaderQuickActions = ({ student }: { student: Student }) => {
             <WorldwideStudentDataRestriction
                 anotherUserId={Number(rtoDetail?.user?.id)}
                 fallbackOptions={{
-                    height: '25px',
+                    height: '30px',
                     width: '100px',
                 }}
             >
@@ -116,7 +116,7 @@ export const HeaderQuickActions = ({ student }: { student: Student }) => {
             <WorldwideStudentDataRestriction
                 anotherUserId={Number(rtoDetail?.user?.id)}
                 fallbackOptions={{
-                    height: '25px',
+                    height: '30px',
                     width: '100px',
                 }}
             >

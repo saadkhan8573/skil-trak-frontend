@@ -101,30 +101,22 @@ export const PreferredContactTime = () => {
                 )}
             </WorldwideStudentDataRestriction>
 
-            <WorldwideStudentDataRestriction
-                anotherUserId={Number(rtoDetail?.user?.id)}
-                fallbackOptions={{
-                    height: '50px',
-                    width: '100%',
-                }}
-            >
-                {/* Contact Time Card */}
-                {preferredContactTime && (
-                    <div className="flex items-center gap-2.5 bg-linear-to-br from-[#044866]/5 to-[#0D5468]/5 border border-[#044866]/30 px-3.5 py-2.5 rounded-xl shadow-sm flex-1">
-                        <div className="w-8 h-8 rounded-lg bg-linear-to-br from-[#044866]/10 to-[#0D5468]/10 flex items-center justify-center shrink-0">
-                            <Clock className="w-4 h-4 text-[#044866]" />
-                        </div>
-                        <div className="flex-1">
-                            <p className="text-[10px] font-semibold text-[#044866] uppercase tracking-wide mb-0.5">
-                                Contact Time
-                            </p>
-                            <p className="text-sm text-[#044866] font-medium">
-                                {preferredContactTime?.badge}
-                            </p>
-                        </div>
+            {/* Contact Time Card */}
+            {preferredContactTime && (
+                <div className="flex items-center gap-2.5 bg-linear-to-br from-[#044866]/5 to-[#0D5468]/5 border border-[#044866]/30 px-3.5 py-2.5 rounded-xl shadow-sm flex-1">
+                    <div className="w-8 h-8 rounded-lg bg-linear-to-br from-[#044866]/10 to-[#0D5468]/10 flex items-center justify-center shrink-0">
+                        <Clock className="w-4 h-4 text-[#044866]" />
                     </div>
-                )}
-            </WorldwideStudentDataRestriction>
+                    <div className="flex-1">
+                        <p className="text-[10px] font-semibold text-[#044866] uppercase tracking-wide mb-0.5">
+                            Contact Time
+                        </p>
+                        <p className="text-sm text-[#044866] font-medium">
+                            {preferredContactTime?.badge}
+                        </p>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

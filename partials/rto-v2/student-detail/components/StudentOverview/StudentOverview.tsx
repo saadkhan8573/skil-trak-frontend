@@ -24,7 +24,9 @@ export const StudentOverview = () => {
     const { selectedCourse, studentDetail, selectedWorkplace } = useAppSelector(
         (state) => state?.student
     )
-    const hasPermission = usePermissions([PermissionType.SHOW_MODAL])
+    const hasPermission = usePermissions({
+        permission: [PermissionType.SHOW_MODAL],
+    })
     const dispatch = useAppDispatch()
     const onClose = () => {
         setModal(null)

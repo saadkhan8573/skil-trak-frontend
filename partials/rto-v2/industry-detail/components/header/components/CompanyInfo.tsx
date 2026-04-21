@@ -47,32 +47,33 @@ export function CompanyInfo() {
                     <TrendingUp className="w-4 h-4 text-[#10B981] shrink-0" />
                     {(industryDetail?.onboardingCreatedBy?.name ||
                         industryDetail?.onBoardedAt) && (
-                        <p className="text-xs bg-info border-white text-white flex items-center gap-1 border rounded-md p-1">
+                        <div className="text-[9px] bg-info border-white text-white flex flex-col gap-1 border rounded-md p-1.5">
                             {industryDetail?.onboardingCreatedBy?.name && (
-                                <span
-                                    title={
-                                        industryDetail?.onboardingCreatedBy
-                                            ?.name
-                                    }
-                                >
-                                    Onboarded by:{' '}
-                                    {ellipsisText(
-                                        industryDetail?.onboardingCreatedBy
-                                            ?.name,
-                                        8
-                                    )}
-                                </span>
+                                <>
+                                    <span
+                                        title={
+                                            industryDetail?.onboardingCreatedBy
+                                                ?.name
+                                        }
+                                    >
+                                        Onboarded by:{' '}
+                                        {ellipsisText(
+                                            industryDetail?.onboardingCreatedBy
+                                                ?.name,
+                                            8
+                                        )}
+                                    </span>
+                                </>
                             )}
 
                             {industryDetail?.onBoardedAt && (
                                 <span>
-                                    •{' '}
                                     {moment(industryDetail?.onBoardedAt).format(
-                                        'DD MMM YYYY'
+                                        'DD MMM YYYY, HH:mm'
                                     )}
                                 </span>
                             )}
-                        </p>
+                        </div>
                     )}
                 </div>
 

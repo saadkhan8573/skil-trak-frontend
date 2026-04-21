@@ -4,6 +4,7 @@ import {
     BarChart3,
     Bell,
     BookOpen,
+    BookUp2,
     Building2,
     Calendar,
     CalendarDays,
@@ -671,6 +672,12 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         icon: Settings,
         category: 'students',
     },
+    [PermissionType.SHOW_MODAL]: {
+        label: 'Show WP Modal',
+        description: 'Show modal to select workplace request type if student has no workplace type and user has permission',
+        icon: BookUp2,
+        category: 'students',
+    },
 }
 
 export const categoryConfig = {
@@ -766,4 +773,5 @@ export const categoryConfig = {
         iconBg: 'bg-primary/10',
         iconColor: 'text-primary',
     },
+    
 }

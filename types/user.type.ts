@@ -190,6 +190,7 @@ export interface Student extends BaseResponse {
     isReported: boolean
     statusHistory: any
     expectedDelay: string
+    workplaceType: any
     phone: string
     snoozedBy: User
     dob: Date

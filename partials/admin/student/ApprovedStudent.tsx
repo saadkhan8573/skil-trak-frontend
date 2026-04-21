@@ -241,13 +241,51 @@ export const ApprovedStudent = () => {
             },
         },
         {
-            accessorKey: 'expiry',
-            header: () => <span>Expiry Countdown</span>,
-            cell: (info) => (
-                <StudentExpiryDaysLeft
-                    expiryDate={info.row.original?.expiryDate}
-                />
-            ),
+            accessorKey: 'lastContactedAt',
+            header: () => <span>Last Contacted At</span>,
+            cell: (info) => {
+                const lastContactedAt = info?.row?.original?.lastContactedAt
+
+                if (!lastContactedAt)
+                    return (
+                        <Typography variant="small" color={'text-red-500'}>
+                            <span className="font-semibold whitespace-pre">
+                                Never
+                            </span>
+                        </Typography>
+                    )
+
+                const now = moment()
+                const last = moment(lastContactedAt)
+
+                const diffHours = now.diff(last, 'hours')
+                const diffDays = now.diff(last, 'days')
+
+                const isOld = diffHours > 24
+
+                return (
+                    <>
+                        <Typography
+                            variant="small"
+                            color={isOld ? 'text-red-500' : 'text-gray-600'}
+                        >
+                            <span className="font-semibold whitespace-pre">
+                                {isOld
+                                    ? `${diffDays} day${diffDays > 1 ? 's' : ''} ago`
+                                    : last.format('Do MMM YYYY')}
+                            </span>
+                        </Typography>
+
+                        {!isOld && (
+                            <Typography variant="small" color="text-gray-600">
+                                <span className="font-semibold whitespace-pre">
+                                    {last.format('hh:mm:ss a')}
+                                </span>
+                            </Typography>
+                        )}
+                    </>
+                )
+            },
         },
         {
             accessorKey: 'progress',
@@ -281,28 +319,13 @@ export const ApprovedStudent = () => {
             },
         },
         {
-            accessorKey: 'lastContactedAt',
-            header: () => <span>Last Contacted At</span>,
-            cell: (info) => {
-                return (
-                    info?.row?.original?.lastContactedAt ? <>
-                        <Typography variant={'small'} color={'text-gray-600'}>
-                            <span className="font-semibold whitespace-pre">
-                                {moment(info?.row?.original?.lastContactedAt).format(
-                                    'Do MMM YYYY'
-                                )}
-                            </span>
-                        </Typography>
-                        <Typography variant={'small'} color={'text-gray-600'}>
-                            <span className="font-semibold whitespace-pre">
-                                {moment(info?.row?.original?.createdAt).format(
-                                    'hh:mm:ss a'
-                                )}
-                            </span>
-                        </Typography>
-                    </> : "---"
-                )
-            },
+            accessorKey: 'expiry',
+            header: () => <span>Expiry Countdown</span>,
+            cell: (info) => (
+                <StudentExpiryDaysLeft
+                    expiryDate={info.row.original?.expiryDate}
+                />
+            ),
         },
         {
             accessorKey: 'action',
@@ -455,21 +478,21 @@ export const ApprovedStudent = () => {
                                         >
                                             {pageSize
                                                 ? pageSize(
-                                                    itemPerPage,
-                                                    (e) => {
-                                                        setItemPerPage(e)
-                                                        setIsRouting(false)
-                                                    },
-                                                    data?.data?.length
-                                                )
+                                                      itemPerPage,
+                                                      (e) => {
+                                                          setItemPerPage(e)
+                                                          setIsRouting(false)
+                                                      },
+                                                      data?.data?.length
+                                                  )
                                                 : null}
                                             <div className="flex gap-x-2">
                                                 {quickActions}
                                                 {pagination
                                                     ? pagination(
-                                                        data?.pagination,
-                                                        setPage
-                                                    )
+                                                          data?.pagination,
+                                                          setPage
+                                                      )
                                                     : null}
                                             </div>
                                         </div>
@@ -485,23 +508,23 @@ export const ApprovedStudent = () => {
                                             <div className="p-6 mb-2 flex justify-between">
                                                 {pageSize
                                                     ? pageSize(
-                                                        itemPerPage,
-                                                        (e) => {
-                                                            setItemPerPage(e)
-                                                            setIsRouting(
-                                                                false
-                                                            )
-                                                        },
-                                                        data?.data?.length
-                                                    )
+                                                          itemPerPage,
+                                                          (e) => {
+                                                              setItemPerPage(e)
+                                                              setIsRouting(
+                                                                  false
+                                                              )
+                                                          },
+                                                          data?.data?.length
+                                                      )
                                                     : null}
                                                 <div className="flex gap-x-2">
                                                     {quickActions}
                                                     {pagination
                                                         ? pagination(
-                                                            data?.pagination,
-                                                            setPage
-                                                        )
+                                                              data?.pagination,
+                                                              setPage
+                                                          )
                                                         : null}
                                                 </div>
                                             </div>

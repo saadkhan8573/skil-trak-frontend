@@ -64,7 +64,6 @@ export function WorkplaceStatuses({
 }: WorkplaceStatusesProps) {
     const wpId = workplace?.id
     const router = useRouter()
-
     const hasPermission = usePermissions([
         PermissionType.CHANGE_WORKPLACE_STATUS,
     ])
@@ -162,6 +161,34 @@ export function WorkplaceStatuses({
         }
     }
 
+    const resolvedIndustry = useMemo(() => {
+        if (Array.isArray(workplace?.industries) && workplace?.industries?.length > 0) {
+        return workplace?.industries?.[0]?.industry
+    }
+
+        const approvalIndustry =
+            workplace?.studentProvidedWorkplaceRequestApproval?.industry
+
+        if (approvalIndustry?.id && approvalIndustry?.showOnboarding) {
+            return approvalIndustry
+        }
+
+        return null
+    }, [workplace])
+    const onboardingUrl = useMemo(() => {
+        if (!resolvedIndustry?.id) return null
+
+        if (role === UserRoles.SUBADMIN) {
+            return `/portals/sub-admin/students/${router.query.id}/provide-workplace-detail/${resolvedIndustry.id}`
+        }
+
+        if (role === UserRoles.ADMIN) {
+            return `/portals/admin/student/${router.query.id}/provide-workplace-detail/${resolvedIndustry.id}`
+        }
+
+        return null
+    }, [resolvedIndustry, role, router.query.id])
+
     return (
         <div className="px-4 py-3 bg-linear-to-br from-slate-50 via-white to-blue-50/30 border-b border-slate-200/60 relative overflow-hidden">
             {/* Decorative elements */}
@@ -210,6 +237,15 @@ export function WorkplaceStatuses({
                             of {totalStages}
                         </span>
                     </div>
+                    {resolvedIndustry?.showOnboarding && onboardingUrl && (
+                        <Badge
+                            Icon={ExternalLink}
+                            className="bg-linear-to-r from-indigo-500 to-blue-600 text-white px-2 py-0.5 shadow-lg hover:scale-105 transition-transform text-[10px] cursor-pointer"
+                            onClick={() => router.push(onboardingUrl)}
+                        >
+                            Onboarding
+                        </Badge>
+                    )}
                 </div>
                 <div className="relative flex items-center gap-1.5 text-xs text-slate-500 bg-white/60 backdrop-blur-sm px-2 py-1 rounded-lg border border-slate-200">
                     <Permissions

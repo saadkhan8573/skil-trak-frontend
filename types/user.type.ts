@@ -493,6 +493,7 @@ export interface Industry extends BaseResponse {
     placementReadyBy: User
     placementReadyAt: string
     placementUrl?: string
+    showOnboarding?: boolean
 }
 
 export interface PendingIndustry extends Industry {

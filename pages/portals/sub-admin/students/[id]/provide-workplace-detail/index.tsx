@@ -143,7 +143,7 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                 `/portals/sub-admin/students/${router.query.id}/provide-workplace-detail/${industryId}`
             )
         }
-    }, [workplaceData, workplaceRequest])
+    }, [workplaceRequest])
 
     useEffect(() => {
         if (!result.data && result.isSuccess) {

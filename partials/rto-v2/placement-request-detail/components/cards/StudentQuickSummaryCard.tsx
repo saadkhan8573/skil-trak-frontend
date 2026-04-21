@@ -3,7 +3,10 @@ import {
     Badge,
     Card,
     Permissions,
-    Typography
+    StudentJobId,
+    Typography,
+    useWorldwideStudentDataRestriction,
+    WorldwideStudentDataRestriction,
 } from '@components'
 import { UserRoles } from '@constants'
 import { workplaceQuestionsKeys } from '@partials/common/workplace/enum'
@@ -33,6 +36,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Activity, useEffect, useMemo, useState } from 'react'
 import { EditPreferredAddressModal } from '../../modal'
+import { useAddressInfo } from '@hooks'
 
 const getStudentProfileLink = (role: string, studentId: number) => {
     switch (role) {
@@ -76,6 +80,11 @@ export const StudentQuickSummaryCard = ({
             skip: !wpId,
             refetchOnMountOrArgChange: true,
         })
+
+    const { hasPermission } = useWorldwideStudentDataRestriction({
+        userId: studentDetails?.rto?.id,
+    })
+    const { addressInfo } = useAddressInfo(studentDetails?.addressLine1 || '')
 
     const preferredAddressObj = questionnaireData?.find(
         (q: any) => q.type === workplaceQuestionsKeys.suburb
@@ -177,18 +186,29 @@ export const StudentQuickSummaryCard = ({
                                         )}
                                         className="flex gap-1 text-[#044866] text-xl font-bold hover:underline"
                                     >
-                                        <span>
-                                            {studentDetails?.user?.name ??
-                                                '___'}{' '}
-                                            {studentDetails?.familyName ??
-                                                '___'}{' '}
-                                            (
-                                            {ellipsisText(
-                                                studentDetails?.rto?.user?.name,
-                                                30
-                                            ) ?? '___'}
-                                            )
-                                        </span>
+                                        <WorldwideStudentDataRestriction
+                                            anotherUserId={
+                                                studentDetails?.rto?.user?.id
+                                            }
+                                            fallbackOptions={{
+                                                height: '30px',
+                                                width: '250px',
+                                            }}
+                                        >
+                                            <span>
+                                                {studentDetails?.user?.name ??
+                                                    '___'}{' '}
+                                                {studentDetails?.familyName ??
+                                                    '___'}{' '}
+                                                (
+                                                {ellipsisText(
+                                                    studentDetails?.rto?.user
+                                                        ?.name,
+                                                    30
+                                                ) ?? '___'}
+                                                )
+                                            </span>
+                                        </WorldwideStudentDataRestriction>
 
                                         {/* Hover icon */}
                                         <ExternalLink
@@ -200,6 +220,11 @@ export const StudentQuickSummaryCard = ({
                                         "
                                         />
                                     </Link>
+                                    <StudentJobId
+                                        studentJobId={
+                                            studentDetails?.studentMaskedId
+                                        }
+                                    />
                                 </div>
 
                                 <p className="text-slate-500 text-sm mt-0.5 flex items-center gap-1.5">
@@ -235,41 +260,58 @@ export const StudentQuickSummaryCard = ({
                                 </p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-3 p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm hover:shadow-md hover:border-[#044866]/20 transition-all duration-300">
-                            <div className="p-2 bg-linear-to-br from-[#044866]/10 to-[#0D5468]/10 rounded-lg">
-                                <Phone className="h-4 w-4 text-[#044866]" />
-                            </div>
-                            <div>
-                                <p className="text-xs text-slate-500 font-medium">
-                                    Phone
-                                </p>
-                                <p className="text-sm text-slate-900 font-semibold">
-                                    {maskText(
-                                        studentDetails?.phone ?? '____',
-                                        4
-                                    )}
-                                </p>
-                            </div>
-                        </div>
-                        <div>
-                            <Typography
-                                variant="label"
-                                className="text-xs text-slate-600"
-                            >
-                                Email
-                            </Typography>
-                            <div className="flex items-center mt-1 gap-2 p-0.5 bg-white rounded-lg border border-slate-200">
-                                <div className="flex py-3 px-2 bg-slate-100 border border-r-0 border-slate-200 rounded-l-lg">
-                                    <AtSign className="h-3.5 w-3.5 text-slate-500" />
+                        <WorldwideStudentDataRestriction
+                            anotherUserId={studentDetails?.rto?.user?.id}
+                            fallbackOptions={{
+                                height: '60px',
+                                width: '100%',
+                            }}
+                        >
+                            {' '}
+                            <div className="flex items-center gap-3 p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm hover:shadow-md hover:border-[#044866]/20 transition-all duration-300">
+                                <div className="p-2 bg-linear-to-br from-[#044866]/10 to-[#0D5468]/10 rounded-lg">
+                                    <Phone className="h-4 w-4 text-[#044866]" />
                                 </div>
+                                <div>
+                                    <p className="text-xs text-slate-500 font-medium">
+                                        Phone
+                                    </p>
+                                    <p className="text-sm text-slate-900 font-semibold">
+                                        {maskText(
+                                            studentDetails?.phone ?? '____',
+                                            4
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
+                        </WorldwideStudentDataRestriction>
+                        <WorldwideStudentDataRestriction
+                            anotherUserId={studentDetails?.rto?.user?.id}
+                            fallbackOptions={{
+                                height: '60px',
+                                width: '100%',
+                            }}
+                        >
+                            <div>
                                 <Typography
                                     variant="label"
                                     className="text-xs text-slate-600"
                                 >
-                                    {studentDetails?.user?.email ?? '____'}
+                                    Email
                                 </Typography>
+                                <div className="flex items-center mt-1 gap-2 p-0.5 bg-white rounded-lg border border-slate-200">
+                                    <div className="flex py-3 px-2 bg-slate-100 border border-r-0 border-slate-200 rounded-l-lg">
+                                        <AtSign className="h-3.5 w-3.5 text-slate-500" />
+                                    </div>
+                                    <Typography
+                                        variant="label"
+                                        className="text-xs text-slate-600"
+                                    >
+                                        {studentDetails?.user?.email ?? '____'}
+                                    </Typography>
+                                </div>
                             </div>
-                        </div>
+                        </WorldwideStudentDataRestriction>
                         <div>
                             <div className="flex items-center justify-between">
                                 <Typography
@@ -309,7 +351,9 @@ export const StudentQuickSummaryCard = ({
                                     variant="label"
                                     className="text-[9px] text-slate-600"
                                 >
-                                    {formattedPreferredAddress}
+                                    {hasPermission
+                                        ? formattedPreferredAddress
+                                        : `${addressInfo?.suburb}, ${addressInfo?.state}, ${addressInfo?.postcode}, ${addressInfo?.country}`}
                                 </Typography>
                             </div>
                         </div>

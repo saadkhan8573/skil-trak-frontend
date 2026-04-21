@@ -26,8 +26,9 @@ import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 import { useNotification } from '@hooks'
-import { CommonApi } from '@queries'
+import { AdminApi, CommonApi } from '@queries'
 import { TEAM_TAGS } from '../teams-tabs'
+import { UserStatus } from '@types'
 
 type Option = {
     label: string
@@ -41,6 +42,8 @@ type FormValues = {
     state: Option | null
     members: Option[]
     tags: string[]
+    isRto: boolean
+    selectedRto: Option | null
 }
 
 // ----------------------------
@@ -55,6 +58,14 @@ const schema = yup.object().shape({
         .nullable()
         .required('Select at least one member'),
     tags: yup.array().optional(),
+    isRto: yup.boolean().optional(),
+    selectedRto: yup
+        .object()
+        .nullable()
+        .when('isRto', {
+            is: true,
+            then: (schema) => schema.required('Please select an RTO'),
+        }),
 })
 
 export const CreateTeamModal = ({
@@ -66,18 +77,38 @@ export const CreateTeamModal = ({
     const [selectedCountry, setSelectedCountry] = useState<any | undefined>(
         undefined
     )
+    const [isRtoSelected, setIsRtoSelected] = useState(false)
+    const [selectedRtoId, setSelectedRtoId] = useState<number>(0)
     const { notification } = useNotification()
 
     const coordinators = CommonApi.Coordinators.useCoordinatorByRole()
+    const rtosData = CommonApi.Filter.useRtos()
 
     const [createTeam, createTeamResult] =
         CommonApi.Teams.useCreateSupportTeam()
 
     const [updateTeam, updateTeamResult] = CommonApi.Teams.useEditSupportTeam() // 👈 UPDATE API
 
-    const memberOptions = coordinators?.data?.map((coordinator: any) => ({
-        label: coordinator?.user?.name,
-        value: coordinator?.id,
+    // Fetch subadmins for the selected RTO
+    const rtoSubAdmins = AdminApi.Rtos.useSubAdmins(selectedRtoId, {
+        skip: !selectedRtoId,
+    })
+
+    // Use RTO-specific subadmins when RTO is selected, otherwise use all coordinators
+    const memberOptions =
+        isRtoSelected && selectedRtoId
+            ? rtoSubAdmins?.data?.subadmin?.map((subadmin: any) => ({
+                  label: subadmin?.user?.name,
+                  value: subadmin?.id,
+              }))
+            : coordinators?.data?.map((coordinator: any) => ({
+                  label: coordinator?.user?.name,
+                  value: coordinator?.id,
+              }))
+
+    const rtoOptions = rtosData?.data?.map((rto: any) => ({
+        label: rto?.name,
+        value: rto?.id,
     }))
 
     const { data, isLoading } = CommonApi.Countries.useCountriesList()
@@ -102,10 +133,14 @@ export const CreateTeamModal = ({
             state: null,
             members: [],
             tags: [],
+            isRto: false,
+            selectedRto: null,
         },
     })
     useEffect(() => {
         if (!editData) return
+        const hasRto = editData?.rto?.id
+        setIsRtoSelected(!!hasRto)
         methods.reset({
             name: editData?.name,
             description: editData?.description,
@@ -123,10 +158,32 @@ export const CreateTeamModal = ({
                 value: m?.subadmin?.id,
             })),
             tags: editData?.tags || [],
+            isRto: !!hasRto,
+            selectedRto: hasRto
+                ? { label: editData?.rto?.name, value: editData?.rto?.id }
+                : null,
         })
 
         setSelectedCountry(editData?.state?.country?.id)
     }, [editData])
+
+    // Handle RTO checkbox change - clear members when unchecking
+    useEffect(() => {
+        if (!isRtoSelected) {
+            methods.setValue('members', [])
+            setSelectedRtoId(null)
+        }
+    }, [isRtoSelected])
+
+    // Update selectedRtoId when selectedRto form value changes
+    useEffect(() => {
+        const subscription = methods.watch((value) => {
+            if (isRtoSelected && value.selectedRto?.value) {
+                setSelectedRtoId(value.selectedRto.value)
+            }
+        })
+        return () => subscription.unsubscribe()
+    }, [isRtoSelected])
 
     // ----------------------------------
     // SUCCESS HANDLING
@@ -155,7 +212,7 @@ export const CreateTeamModal = ({
     // SUBMIT HANDLER (CREATE + EDIT)
     // ----------------------------------
     const onSubmit = (data: any) => {
-        const { members, country, state, ...rest } = data
+        const { members, country, state, selectedRto, ...rest } = data
 
         const subAdmin = members?.map((member: any) => ({
             subadmin: member?.value,
@@ -166,6 +223,7 @@ export const CreateTeamModal = ({
             country: country?.value,
             state: typeof state === 'object' ? state?.value : state,
             members: subAdmin,
+            rto: selectedRto?.value || null,
         }
 
         if (isEditMode) {
@@ -288,11 +346,59 @@ export const CreateTeamModal = ({
 
                                 <Separator />
 
-                                {/* Members */}
+                                {/* RTO Section */}
                                 <div className="space-y-4">
                                     <h3 className="font-semibold flex items-center gap-2 text-lg">
                                         <span className="h-6 w-6 rounded-full bg-primaryNew text-white flex items-center justify-center text-sm">
                                             2
+                                        </span>
+                                        RTO Association (Optional)
+                                    </h3>
+
+                                    <div className="space-y-3">
+                                        <div className="flex items-center space-x-3 p-3 rounded-lg border border-border hover:bg-muted/50 transition-colors">
+                                            <Checkbox
+                                                checked={methods.watch('isRto')}
+                                                onCheckedChange={(checked) => {
+                                                    methods.setValue(
+                                                        'isRto',
+                                                        checked as boolean
+                                                    )
+                                                    setIsRtoSelected(
+                                                        checked as boolean
+                                                    )
+                                                    if (!checked) {
+                                                        methods.setValue(
+                                                            'selectedRto',
+                                                            null
+                                                        )
+                                                    }
+                                                }}
+                                            />
+                                            <Label className="cursor-pointer">
+                                                Associate this team with an RTO
+                                            </Label>
+                                        </div>
+
+                                        {methods.watch('isRto') && (
+                                            <Select
+                                                name="selectedRto"
+                                                label="Select RTO"
+                                                placeholder="Select an RTO"
+                                                options={rtoOptions}
+                                                loading={rtosData?.isLoading}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+
+                                <Separator />
+
+                                {/* Members */}
+                                <div className="space-y-4">
+                                    <h3 className="font-semibold flex items-center gap-2 text-lg">
+                                        <span className="h-6 w-6 rounded-full bg-primaryNew text-white flex items-center justify-center text-sm">
+                                            3
                                         </span>
                                         Assign Members
                                     </h3>
@@ -313,7 +419,11 @@ export const CreateTeamModal = ({
                                             placeholder="Select team members"
                                             multi
                                             options={memberOptions}
-                                            loading={coordinators.isLoading}
+                                            loading={
+                                                isRtoSelected
+                                                    ? rtoSubAdmins.isLoading
+                                                    : coordinators.isLoading
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -324,7 +434,7 @@ export const CreateTeamModal = ({
                                 <div className="space-y-4">
                                     <h3 className="font-semibold flex items-center gap-2 text-lg">
                                         <span className="h-6 w-6 rounded-full bg-primaryNew text-white flex items-center justify-center text-sm">
-                                            3
+                                            4
                                         </span>
                                         Support Tags (Optional)
                                     </h3>

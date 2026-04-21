@@ -98,7 +98,6 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
         courses: courses?.data,
         rto: rtoDetail?.data,
     }
-    console.log('workplaceRequest', workplaceRequest);
     const profileCompletion = checkStudentProfileCompletion(values)
 
     useEffect(() => {
@@ -133,13 +132,6 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
         useSubAdminCancelStudentWorkplaceRequestMutation()
 
     useEffect(() => {
-        if (workplaceRequest.isSuccess && workplaceRequest.data) {
-            setWorkplaceData(workplaceRequest.data?.[0])
-            setActive((active: number) => active + 1)
-        }
-    }, [addWorkplaceResult])
-
-    useEffect(() => {
         if (!workplaceRequest) return
         const approval = workplaceData?.studentProvidedWorkplaceRequestApproval
 
@@ -151,23 +143,31 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
                 `/portals/sub-admin/students/${router.query.id}/provide-workplace-detail/${industryId}`
             )
         }
-    }, [workplaceData, workplaceRequest])
+    }, [workplaceRequest])
 
     useEffect(() => {
         if (!result.data && result.isSuccess) {
             notification.error({
                 title: 'Industry Not Found',
                 description:
-                    'Your Industry Not found in our record, we are redirecting you to industry signup page, pleae provide the details',
+                    'Your Industry Not found in our record, we are redirecting you to industry signup page, please provide the details',
             })
             setTimeout(() => {
-                setActive((active: number) => active + 1)
-            }, 2000)
+                setActive(2)
+            }, 3000)
         }
         if (result.data && result.isSuccess) {
-            setActive((active: number) => active + 1)
+            setActive(2)
         }
     }, [result])
+
+    useEffect(() => {
+        if (workplaceRequest.isSuccess && workplaceRequest.data &&
+            workplaceRequest.data.length > 0) {
+            setWorkplaceData(workplaceRequest.data?.[0])
+            setActive(3)
+        }
+    }, [workplaceRequest])
 
     // useEffect(() => {
     //     if (workplace.isSuccess && workplace.data.length > 0) {

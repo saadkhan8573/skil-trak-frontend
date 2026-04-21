@@ -4,6 +4,7 @@ import {
     BarChart3,
     Bell,
     BookOpen,
+    BookUp2,
     Building2,
     Calendar,
     CalendarDays,
@@ -669,6 +670,13 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         label: 'View Visitors',
         description: 'Access to view visitor logs and analytics',
         icon: Settings,
+        category: 'students',
+    },
+    [PermissionType.SHOW_MODAL]: {
+        label: 'Show Modal',
+        description:
+            'Show modal if user has permission to access and view the Student Approval Modal, Appointment Modal, and Select Workplace Option Modal.',
+        icon: BookUp2,
         category: 'students',
     },
 }

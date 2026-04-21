@@ -46,4 +46,22 @@ export const rtosEndpoints = (
         }),
         invalidatesTags: ['RTO', 'RTOCourses', 'Profile', 'RTOS'],
     }),
+    // student/:id/workplace-type/update
+    updateStudentWorkplaceType: builder.mutation<
+        any,
+        { studentId: number; params: any }
+    >({
+        query: ({ studentId, params }) => ({
+            url: `shared/student/${studentId}/workplace-type/update`,
+            method: 'PATCH',
+            params,
+        }),
+        invalidatesTags: [
+            'Notes',
+            'SubAdminStudents',
+            'AllCommunications',
+            'AssessmentEvidence',
+            'SubAdminWorkplace',
+        ],
+    }),
 })

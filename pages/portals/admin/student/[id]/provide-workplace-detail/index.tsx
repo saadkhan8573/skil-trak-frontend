@@ -136,6 +136,11 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
     }, [workplaceData, workplaceRequest])
     useEffect(() => {
         if (!result.data && result.isSuccess) {
+            notification.error({
+                title: 'Industry Not Found',
+                description:
+                    'Your Industry Not found in our record, we are redirecting you to industry signup page, please provide the details',
+            })
             setIndustryNotFound(true)
             setTimeout(() => {
                 setActive(2)

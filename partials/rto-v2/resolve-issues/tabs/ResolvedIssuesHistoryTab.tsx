@@ -4,8 +4,9 @@ import {
     Card,
     EmptyData,
     LoadingAnimation,
+    StudentJobId,
     Table,
-    TechnicalError
+    TechnicalError,
 } from '@components'
 import { ColumnDef } from '@tanstack/react-table'
 import { FaEdit } from 'react-icons/fa'
@@ -66,6 +67,17 @@ export const ResolvedIssuesHistoryTab = () => {
 
     const columns: ColumnDef<StudentIssue>[] = [
         {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId
+                    studentJobId={
+                        row.original?.student?.studentMaskedId || '---'
+                    }
+                />
+            ),
+        },
+        {
             accessorKey: 'student.title',
             cell: (info) => {
                 const title = info.row?.original?.title || ''
@@ -76,7 +88,9 @@ export const ResolvedIssuesHistoryTab = () => {
                         <div className="flex items-center gap-1.5 text-slate-700 bg-slate-50 px-2 py-0.5 rounded border border-slate-200 max-w-[150px]">
                             <LuFileCheck className="w-3.5 h-3.5 shrink-0 text-emerald-600" />
                             <span className="text-xs font-semibold leading-tight truncate">
-                                {isLarge ? `${title.substring(0, 30)}...` : title}
+                                {isLarge
+                                    ? `${title.substring(0, 30)}...`
+                                    : title}
                             </span>
                         </div>
                         {isLarge && (

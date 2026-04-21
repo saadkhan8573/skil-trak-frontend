@@ -1,7 +1,7 @@
 import { Button, Select, TextArea, TextInput, Typography } from '@components'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { AdminApi } from '@queries'
-import { Course, Sector, SubAdmin } from '@types'
+import { Course, Sector, SubAdmin, UserStatus } from '@types'
 import React, { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -19,7 +19,11 @@ export const AssignSubAdminForm = ({
     onSubmit,
     initialValues,
 }: FormProps) => {
-    const subAdmins = AdminApi.SubAdmins.useListQuery(undefined)
+    const subAdmins = AdminApi.SubAdmins.useListQuery({
+        search: `status:${UserStatus.Approved},isAssociatedWithRto:${false}`,
+        skip: 0,
+        limit: 10000,
+    })
 
     const validationSchema = yup.object({})
 

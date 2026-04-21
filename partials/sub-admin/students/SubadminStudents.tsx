@@ -63,6 +63,7 @@ const filterKeys = [
     'nonContactable',
     'coordinator',
     'subadminId',
+    'studentMaskedId',
 ]
 
 export const SubadminStudents = () => {
@@ -148,55 +149,55 @@ export const SubadminStudents = () => {
 
     const tabs: SubadminTabProps[] = [
         ...(isHod ||
-            isManager ||
-            (subadmin?.isAssociatedWithRto && subadmin?.hasAllStudentAccess)
+        isManager ||
+        (subadmin?.isAssociatedWithRto && subadmin?.hasAllStudentAccess)
             ? [
-                {
-                    label: 'Pending',
-                    href: {
-                        pathname: 'students',
-                        query: { tab: UserStatus.Pending },
-                    },
-                    badge: {
-                        text: studentCount?.pending,
-                        loading: count.isLoading,
-                    },
-                    element: <PendingStudents />,
-                    isAssociatedWithRto: true,
-                },
-            ]
+                  {
+                      label: 'Pending',
+                      href: {
+                          pathname: 'students',
+                          query: { tab: UserStatus.Pending },
+                      },
+                      badge: {
+                          text: studentCount?.pending,
+                          loading: count.isLoading,
+                      },
+                      element: <PendingStudents />,
+                      isAssociatedWithRto: true,
+                  },
+              ]
             : []),
 
         // isHod
         ...(isHod || isManager || subadmin?.canViewAllStudents
             ? [
-                {
-                    label: 'Active',
-                    href: { pathname: 'students', query: { tab: 'all' } },
-                    badge: {
-                        text: studentCount?.approved,
-                        loading: count.isLoading,
-                    },
-                    element: <AllStudents />,
-                    isAssociatedWithRto: true,
-                },
-            ]
+                  {
+                      label: 'Active',
+                      href: { pathname: 'students', query: { tab: 'all' } },
+                      badge: {
+                          text: studentCount?.approved,
+                          loading: count.isLoading,
+                      },
+                      element: <AllStudents />,
+                      isAssociatedWithRto: true,
+                  },
+              ]
             : []),
         ...(isHod
             ? [
-                {
-                    label: 'UnAssigned',
-                    href: {
-                        pathname: 'students',
-                        query: { tab: 'un-assigned' },
-                    },
-                    badge: {
-                        text: studentCount?.unAssignedStudent,
-                        loading: count.isLoading,
-                    },
-                    element: <UnAssignedStudents />,
-                },
-            ]
+                  {
+                      label: 'UnAssigned',
+                      href: {
+                          pathname: 'students',
+                          query: { tab: 'un-assigned' },
+                      },
+                      badge: {
+                          text: studentCount?.unAssignedStudent,
+                          loading: count.isLoading,
+                      },
+                      element: <UnAssignedStudents />,
+                  },
+              ]
             : []),
 
         {

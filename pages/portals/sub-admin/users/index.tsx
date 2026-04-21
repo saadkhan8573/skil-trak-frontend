@@ -17,7 +17,7 @@ import { NextPageWithLayout, PermissionType, UserStatus } from '@types'
 import { getUserCredentials } from '@utils'
 
 const SubAdminUsers: NextPageWithLayout = () => {
-    const { checkPermission } = usePermissionCheck()
+    const { checkPermission } = usePermissionCheck({})
     const status = getUserCredentials()?.status
 
     const PrimaryLinks = [

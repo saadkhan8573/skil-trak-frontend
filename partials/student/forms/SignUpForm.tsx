@@ -28,11 +28,11 @@ import {
     TextInput,
     Typography,
 } from '@components'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Course, OptionType, StudentFormType } from '@types'
-import { fromAddress, geocode, GeocodeOptions, setKey } from 'react-geocode'
+import { setKey } from 'react-geocode'
 import { FormProvider, useForm } from 'react-hook-form'
 import { CustomRtoSearch } from './components/CustomRtoSearch'
-import { yupResolver } from '@hookform/resolvers/yup'
 
 interface RtoOption {
     label: string
@@ -66,9 +66,9 @@ type FormAction =
     | { type: 'SET_STORED_DATA'; payload: any }
     | { type: 'SET_LAST_ENTERED_EMAIL'; payload: string }
     | {
-        type: 'INITIALIZE_STORED_DATA'
-        payload: { storedData: any; courseOptions: SelectOption[] }
-    }
+          type: 'INITIALIZE_STORED_DATA'
+          payload: { storedData: any; courseOptions: SelectOption[] }
+      }
 
 // Initial State
 const initialState: FormState = {
@@ -123,7 +123,6 @@ export const StudentSignUpForm = ({
     const router = useRouter()
     const { notification } = useNotification()
     const [onSuburbClicked, setOnSuburbClicked] = useState<boolean>(true)
-
 
     // Centralized state management
     const [formState, dispatch] = useReducer(formReducer, initialState)
@@ -263,16 +262,16 @@ export const StudentSignUpForm = ({
     const sectorsDetails = getSectorsDetail(sectorResponse?.data)
     const sectorOptions = sectorsDetails?.length
         ? sectorsDetails.map((sector: any) => ({
-            label: sector.name,
-            value: sector.id,
-        }))
+              label: sector.name,
+              value: sector.id,
+          }))
         : []
 
     const rtoOptions = rtoResponse.data?.length
         ? rtoResponse.data.map((rto: any) => ({
-            label: rto.user.name,
-            value: rto.id,
-        }))
+              label: rto.user.name,
+              value: rto.id,
+          }))
         : []
 
     // Handle email validation with debounce
@@ -344,7 +343,11 @@ export const StudentSignUpForm = ({
         //     })
         // } else if (onSuburbClicked) {
         // }
-        onSubmit({ ...values, suburb: values?.suburb || 'NA', state: values?.state || 'NA' })
+        onSubmit({
+            ...values,
+            suburb: values?.suburb || 'NA',
+            state: values?.state || 'NA',
+        })
     }
 
     // Navigation handler
@@ -429,14 +432,14 @@ export const StudentSignUpForm = ({
                                 value={
                                     rtoName && formState.selectedRto
                                         ? {
-                                            value: formState.selectedRto,
-                                            label:
-                                                rtoOptions.find(
-                                                    (opt: any) =>
-                                                        opt?.value ===
-                                                        formState.selectedRto
-                                                )?.label || '',
-                                        }
+                                              value: formState.selectedRto,
+                                              label:
+                                                  rtoOptions.find(
+                                                      (opt: any) =>
+                                                          opt?.value ===
+                                                          formState.selectedRto
+                                                  )?.label || '',
+                                          }
                                         : undefined
                                 }
                                 selectedRto={formState.selectedRto}
@@ -476,16 +479,16 @@ export const StudentSignUpForm = ({
                     <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
                         <div>
                             {formState.selectedRto !== null &&
-                                formState.selectedRto !== undefined ? (
+                            formState.selectedRto !== undefined ? (
                                 <>
                                     <Select
                                         label={'Sector'}
                                         {...(formState.storedData
                                             ? {
-                                                defaultValue:
-                                                    formState.storedData
-                                                        .sectors,
-                                            }
+                                                  defaultValue:
+                                                      formState.storedData
+                                                          .sectors,
+                                              }
                                             : {})}
                                         name={'sectors'}
                                         options={sectorOptions}
@@ -506,9 +509,9 @@ export const StudentSignUpForm = ({
                                         disabled={
                                             formState.storedData
                                                 ? formState.storedData?.courses
-                                                    ?.length === 0
+                                                      ?.length === 0
                                                 : formState.courseOptions
-                                                    ?.length === 0
+                                                      ?.length === 0
                                         }
                                         onChange={onCourseChange}
                                         multi
@@ -640,10 +643,11 @@ export const StudentSignUpForm = ({
                                         Terms
                                     </Link>{' '}
                                     {'&'}{' '}
-                                    <Link href="/privacy-policy" className="text-link">
-                                        
-                                            Privacy Policy
-                                        
+                                    <Link
+                                        href="/privacy-policy"
+                                        className="text-link"
+                                    >
+                                        Privacy Policy
                                     </Link>
                                 </>
                             }
@@ -663,5 +667,5 @@ export const StudentSignUpForm = ({
                 </div>
             </form>
         </FormProvider>
-    );
+    )
 }

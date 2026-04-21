@@ -11,6 +11,7 @@ import {
     EmptyData,
     InitialAvatar,
     LoadingAnimation,
+    StudentJobId,
     Table,
     TableAction,
     TableActionOption,
@@ -103,6 +104,13 @@ export const PendingStudents = ({ subadmin }: { subadmin?: SubAdmin }) => {
     ]
 
     const Columns: ColumnDef<Student>[] = [
+        {
+            header: () => 'Student Job ID',
+            accessorKey: 'studentJobId',
+            cell: ({ row }) => (
+                <StudentJobId studentJobId={row.original?.studentMaskedId} />
+            ),
+        },
         {
             header: () => 'Name',
             accessorKey: 'user',

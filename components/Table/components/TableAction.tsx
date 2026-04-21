@@ -37,7 +37,7 @@ export const TableAction = <Type,>({
     const buttonRef: any = useRef<HTMLButtonElement>(null)
     const popperRef = useRef<HTMLUListElement>(null)
     const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-    const { checkPermission } = usePermissionCheck()
+    const { checkPermission } = usePermissionCheck({})
 
     useEffect(() => {
         if (buttonRef.current && popperRef.current) {
@@ -80,7 +80,7 @@ export const TableAction = <Type,>({
         (option): option is TableActionOption<Type> => {
             if (Object.keys(option).length === 0) return false
             const opt = option as TableActionOption<Type>
-            
+
             if (opt.permissions && opt.permissions.length > 0) {
                 if (!checkPermission(opt.permissions)) return false
             }
@@ -122,14 +122,17 @@ export const TableAction = <Type,>({
                     {validOptions.map((option, idx) => (
                         <li
                             key={idx}
-                            className={`${option?.color
-                                ? option?.color
-                                : 'text-gray-700 hover:bg-gray-100'
-                                } text-xs cursor-pointer px-4 py-2 font-medium border-b whitespace-nowrap ${idx === 0 ? 'rounded-t-xl' : ''
-                                } ${idx === validOptions.length - 1
+                            className={`${
+                                option?.color
+                                    ? option?.color
+                                    : 'text-gray-700 hover:bg-gray-100'
+                            } text-xs cursor-pointer px-4 py-2 font-medium border-b whitespace-nowrap ${
+                                idx === 0 ? 'rounded-t-xl' : ''
+                            } ${
+                                idx === validOptions.length - 1
                                     ? 'rounded-b-xl border-none'
                                     : ''
-                                } flex items-center gap-x-1`}
+                            } flex items-center gap-x-1`}
                             onClick={() => {
                                 setShowPopper(false)
                                 if (option?.onClick) {
@@ -139,10 +142,11 @@ export const TableAction = <Type,>({
                         >
                             {option?.Icon && (
                                 <span
-                                    className={`${option?.color
-                                        ? option?.color
-                                        : 'text-gray-400'
-                                        }`}
+                                    className={`${
+                                        option?.color
+                                            ? option?.color
+                                            : 'text-gray-400'
+                                    }`}
                                 >
                                     <option.Icon />
                                 </span>

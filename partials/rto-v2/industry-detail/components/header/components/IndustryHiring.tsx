@@ -15,9 +15,9 @@ export const IndustryHiring = () => {
         (state) => state.industry.industryDetail
     )
 
-    const hasPermission = usePermissions([
-        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
-    ])
+    const hasPermission = usePermissions({
+        permission: PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
+    })
 
     const { notification } = useNotification()
 
@@ -55,13 +55,14 @@ export const IndustryHiring = () => {
                                     customStyleClass="profileSwitch"
                                     isChecked={industryDetail?.isHiring}
                                     loading={isHiringResult.isLoading}
-                                    disabled={!hasPermission || isHiringResult.isLoading}
+                                    disabled={
+                                        !hasPermission ||
+                                        isHiringResult.isLoading
+                                    }
                                 />
                             </div>
                         </TooltipTrigger>
-                        <TooltipContent>
-                            Permission Not granted
-                        </TooltipContent>
+                        <TooltipContent>Permission Not granted</TooltipContent>
                     </Tooltip>
                 ) : (
                     <Switch

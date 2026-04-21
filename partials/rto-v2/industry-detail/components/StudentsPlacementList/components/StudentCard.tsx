@@ -1,4 +1,10 @@
-import { AuthorizedUserComponent, Badge, Button, Portal } from '@components'
+import {
+    AuthorizedUserComponent,
+    Badge,
+    Button,
+    Portal,
+    WorldwideStudentDataRestriction,
+} from '@components'
 import {
     Collapsible,
     CollapsibleContent,
@@ -131,17 +137,36 @@ export function StudentCard({ student }: StudentCardProps) {
                     <div className="flex items-start gap-2 flex-1">
                         {/* Avatar */}
                         <div className="w-7 h-7 `bg-gradient-to-br` from-[#044866] to-[#0D5468] rounded-lg flex items-center justify-center text-white text-[10px] font-bold shadow-sm">
-                            {student?.user?.name
-                                .split(' ')
-                                .map((n) => n[0])
-                                .join('')}
+                            <WorldwideStudentDataRestriction
+                                anotherUserId={Number(student?.rto?.user?.id)}
+                                fallbackOptions={{
+                                    width: '100%',
+                                    height: '100%',
+                                }}
+                            >
+                                {student?.user?.name
+                                    .split(' ')
+                                    .map((n) => n[0])
+                                    .join('')}
+                            </WorldwideStudentDataRestriction>
                         </div>
 
                         {/* Info */}
                         <div className="flex-1">
                             <div className="flex items-center gap-1.5 mb-0.5">
                                 <h3 className="text-xs font-bold text-[#1A2332]">
-                                    {student?.user?.name} {student?.familyName}
+                                    <WorldwideStudentDataRestriction
+                                        anotherUserId={Number(
+                                            student?.rto?.user?.id
+                                        )}
+                                        fallbackOptions={{
+                                            width: '100px',
+                                            height: '15px',
+                                        }}
+                                    >
+                                        {student?.user?.name}{' '}
+                                        {student?.familyName}
+                                    </WorldwideStudentDataRestriction>
                                 </h3>
                                 <Link
                                     href={getStudentProfileLink(

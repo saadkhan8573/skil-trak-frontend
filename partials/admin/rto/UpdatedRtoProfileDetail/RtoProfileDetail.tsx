@@ -113,10 +113,10 @@ export const RtoProfileDetail = ({ rto }: { rto: Rto }) => {
                 <RtoNotifications rtoUser={rto?.user} />
             </div>
 
-            <Permissions permission={[PermissionType.UPDATE_RTO_PERMISSION]}>
-                {/* Dynamic Permissions */}
-                <DynamicPermissionCard userId={rto?.user?.id} />
-            </Permissions>
+            {/* <Permissions permission={[PermissionType.UPDATE_RTO_PERMISSION]}> */}
+            {/* Dynamic Permissions */}
+            <DynamicPermissionCard userId={rto?.user?.id} />
+            {/* </Permissions> */}
         </div>
     )
 }

@@ -2,6 +2,7 @@ import {
     Card,
     EmptyData,
     LoadingAnimation,
+    StudentJobId,
     Table,
     TableAction,
     TableActionOption,
@@ -94,6 +95,13 @@ export const SnoozedStudents = () => {
 
     const columns: ColumnDef<Student>[] = [
         {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId studentJobId={row.original?.studentMaskedId} />
+            ),
+        },
+        {
             accessorKey: 'user.name',
             cell: (info) => <StudentCellInfo student={info.row.original} />,
             header: () => <span>Student</span>,
@@ -155,11 +163,11 @@ export const SnoozedStudents = () => {
                 <Card noPadding>
                     {snoozedStudents?.isError && <TechnicalError />}
                     {snoozedStudents?.isLoading ||
-                        snoozedStudents?.isFetching ? (
+                    snoozedStudents?.isFetching ? (
                         <LoadingAnimation height="h-[60vh]" />
                     ) : snoozedStudents?.data?.data &&
-                        snoozedStudents?.data?.data?.length &&
-                        snoozedStudents?.isSuccess ? (
+                      snoozedStudents?.data?.data?.length &&
+                      snoozedStudents?.isSuccess ? (
                         <Table
                             columns={columns}
                             data={snoozedStudents?.data?.data}
@@ -195,24 +203,24 @@ export const SnoozedStudents = () => {
                                     </div>
                                     {snoozedStudents?.data?.data?.length >
                                         10 && (
-                                            <div className="p-6 mb-2 flex justify-between">
-                                                {pageSize &&
-                                                    pageSize(
-                                                        itemPerPage,
-                                                        setItemPerPage,
-                                                        snoozedStudents?.data?.data
-                                                            ?.length
+                                        <div className="p-6 mb-2 flex justify-between">
+                                            {pageSize &&
+                                                pageSize(
+                                                    itemPerPage,
+                                                    setItemPerPage,
+                                                    snoozedStudents?.data?.data
+                                                        ?.length
+                                                )}
+                                            <div className="flex gap-x-2">
+                                                {pagination &&
+                                                    pagination(
+                                                        snoozedStudents?.data
+                                                            ?.pagination,
+                                                        setPage
                                                     )}
-                                                <div className="flex gap-x-2">
-                                                    {pagination &&
-                                                        pagination(
-                                                            snoozedStudents?.data
-                                                                ?.pagination,
-                                                            setPage
-                                                        )}
-                                                </div>
                                             </div>
-                                        )}
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </Table>

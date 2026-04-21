@@ -1,4 +1,10 @@
-import { InitialAvatar, Tooltip, TooltipPosition } from '@components'
+import {
+    BlurOverlay,
+    InitialAvatar,
+    Permissions,
+    Tooltip,
+    TooltipPosition,
+} from '@components'
 import {
     Tooltip as ShadcnTooltip,
     TooltipContent,
@@ -6,7 +12,7 @@ import {
 } from '@components/ui/tooltip'
 import { useScrollIntoView, useSubadminProfile } from '@hooks'
 import { CopyData } from '@partials/common/FindWorkplaces/components'
-import { Student, StudentStatusEnum } from '@types'
+import { PermissionType, Student, StudentStatusEnum } from '@types'
 import { ellipsisText, isBrowser, setLink } from '@utils'
 import moment from 'moment'
 import Link from 'next/link'
@@ -18,6 +24,7 @@ import { ImPhone, ImPhoneHangUp } from 'react-icons/im'
 import { LuFlagTriangleRight } from 'react-icons/lu'
 import { MdSnooze, MdTimerOff } from 'react-icons/md'
 import { Timer } from 'lucide-react'
+import { WorldwideStudentDataRestriction } from '@components/WorldwideStudentDataRestriction'
 
 export const StudentCellInfo = ({
     student,
@@ -53,15 +60,19 @@ export const StudentCellInfo = ({
             id={student?.studentId}
         >
             <div className="flex items-center gap-x-2">
-                <div>
-                    {student?.user?.name && (
-                        <InitialAvatar
-                            name={student?.user?.name}
-                            imageUrl={student?.user?.avatar}
-                            socketId={student?.user?.socketId}
-                        />
-                    )}
-                </div>
+                <WorldwideStudentDataRestriction
+                    anotherUserId={student?.rto?.user?.id}
+                >
+                    <div>
+                        {student?.user?.name && (
+                            <InitialAvatar
+                                name={student?.user?.name}
+                                imageUrl={student?.user?.avatar}
+                                socketId={student?.user?.socketId}
+                            />
+                        )}
+                    </div>
+                </WorldwideStudentDataRestriction>
 
                 <Link
                     href={`${
@@ -145,15 +156,28 @@ export const StudentCellInfo = ({
                     </div>
                     <div className="flex items-center gap-x-1.5">
                         <div className="group flex items-center gap-x-1">
-                            <p className="text-gray-800 font-medium">
-                                {student?.user?.name} {student?.familyName}{' '}
-                            </p>
-                            <CopyData
-                                text={`${student?.user?.name} ${
-                                    student?.familyName ?? ''
-                                }`}
-                                type={'Student Name'}
-                            />
+                            <WorldwideStudentDataRestriction
+                                anotherUserId={student?.rto?.user?.id}
+                                fallbackOptions={{
+                                    width: '110px',
+                                    height: '20px',
+                                }}
+                            >
+                                <p className="text-gray-800 font-medium">
+                                    {student?.user?.name}{' '}
+                                    {student?.familyName}{' '}
+                                </p>
+                            </WorldwideStudentDataRestriction>
+                            <WorldwideStudentDataRestriction
+                                anotherUserId={student?.rto?.user?.id}
+                            >
+                                <CopyData
+                                    text={`${student?.user?.name} ${
+                                        student?.familyName ?? ''
+                                    }`}
+                                    type={'Student Name'}
+                                />
+                            </WorldwideStudentDataRestriction>
                         </div>
                         {student?.tickets && student?.tickets?.length > 0 ? (
                             <div className="w-4 h-4 rounded  relative group">
@@ -176,11 +200,16 @@ export const StudentCellInfo = ({
                             <ShadcnTooltip>
                                 <TooltipTrigger asChild>
                                     <div className="w-4 h-4 flex items-center justify-center rounded relative group cursor-help">
-                                        <Timer size={17} className="text-violet-500" />
+                                        <Timer
+                                            size={17}
+                                            className="text-violet-500"
+                                        />
                                     </div>
                                 </TooltipTrigger>
                                 <TooltipContent>
-                                    <p>Expected Delay: {student.expectedDelay}</p>
+                                    <p>
+                                        Expected Delay: {student.expectedDelay}
+                                    </p>
                                 </TooltipContent>
                             </ShadcnTooltip>
                         ) : null}
@@ -207,7 +236,12 @@ export const StudentCellInfo = ({
                                         <FaEnvelope />
                                     </span>
                                     <p className="text-gray-500">
-                                        {ellipsisText(student?.user?.email, 20)}
+                                        <WorldwideStudentDataRestriction
+                                            anotherUserId={student?.rto?.user?.id}
+                                            fallbackOptions={{ width: '130px', height: '15px' }}
+                                        >
+                                            {ellipsisText(student?.user?.email, 20)}
+                                        </WorldwideStudentDataRestriction>
                                     </p>
                                 </div>
                             )}
@@ -217,7 +251,12 @@ export const StudentCellInfo = ({
                                         <FaPhone />
                                     </span>
                                     <p className="text-gray-500">
-                                        {student?.phone}
+                                        <WorldwideStudentDataRestriction
+                                            anotherUserId={student?.rto?.user?.id}
+                                            fallbackOptions={{ width: '100px', height: '15px' }}
+                                        >
+                                            {student?.phone}
+                                        </WorldwideStudentDataRestriction>
                                     </p>
                                 </div>
                             )}

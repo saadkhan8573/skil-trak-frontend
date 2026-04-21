@@ -4,6 +4,7 @@ import {
     Card,
     EmptyData,
     LoadingAnimation,
+    StudentJobId,
     Table,
     TechnicalError,
 } from '@components'
@@ -73,6 +74,17 @@ export const ProblematicStudent = () => {
     }
 
     const columns: ColumnDef<StudentIssue>[] = [
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId
+                    studentJobId={
+                        row.original?.student?.studentMaskedId || '---'
+                    }
+                />
+            ),
+        },
         {
             accessorKey: 'student.user.name',
             cell: (info) => (

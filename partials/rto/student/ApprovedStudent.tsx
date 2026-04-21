@@ -27,7 +27,6 @@ export const ApprovedStudent = () => {
     const [modal, setModal] = useState<ReactElement | null>(null)
     const [isExcelDownload, setIsExcelDownload] = useState<boolean>(false)
     const userId = getUserCredentials()?.id
-    const [downloadParams, setDownloadParams] = useState<any>(undefined)
 
     const [downloadReport, downloadState] =
         RtoV2Api.Students.useDownloadAllActiveStudents()

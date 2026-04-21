@@ -4,6 +4,7 @@ import {
     EmptyData,
     LoadingAnimation,
     ShowErrorNotifications,
+    StudentJobId,
     Table,
     TableAction,
     TableActionOption,
@@ -111,6 +112,13 @@ export const PendingStudent = () => {
     ]
 
     const columns: ColumnDef<Student>[] = [
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId studentJobId={row.original?.studentMaskedId} />
+            ),
+        },
         {
             accessorKey: 'user.name',
             cell: (info) => <StudentCellInfo student={info.row.original} />,

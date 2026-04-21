@@ -162,9 +162,12 @@ export function WorkplaceStatuses({
     }
 
     const resolvedIndustry = useMemo(() => {
-        if (Array.isArray(workplace?.industries) && workplace?.industries?.length > 0) {
-        return workplace?.industries?.[0]?.industry
-    }
+        if (
+            Array.isArray(workplace?.industries) &&
+            workplace?.industries?.length > 0
+        ) {
+            return workplace?.industries?.[0]?.industry
+        }
 
         const approvalIndustry =
             workplace?.studentProvidedWorkplaceRequestApproval?.industry

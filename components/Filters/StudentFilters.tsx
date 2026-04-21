@@ -103,7 +103,6 @@ export const StudentFilters = ({ onFilterChange, filter }: ItemFilterProps) => {
     const getRtos = CommonApi.Filter.useRtos()
     const sectorResponse = AuthApi.useSectors({})
     const getCourses = CommonApi.Filter.useCourses()
-    const getUserRole = AuthUtils.getUserCredentials()
     const getIndustries = CommonApi.Filter.useIndustries()
     const coordinators = AdminApi.SubAdmins.useSubAdminsFilterList()
     const departments = AdminApi.Department.getDepartmentFilterList()
@@ -200,6 +199,19 @@ export const StudentFilters = ({ onFilterChange, filter }: ItemFilterProps) => {
                         showError={false}
                     />
                 </AuthorizedUserComponent>
+                <TextInput
+                    name="studentMaskedId"
+                    label={'Job Id'}
+                    placeholder={'Search by Job Id ...'}
+                    value={filter?.studentMaskedId}
+                    onChange={(e: any) => {
+                        onFilterChange({
+                            ...filter,
+                            studentMaskedId: e.target.value,
+                        })
+                    }}
+                    showError={false}
+                />
                 <TextInput
                     name="batch"
                     label={'Batch / Provider'}

@@ -25,7 +25,7 @@ export function ApplyWorkplaceOverview({
 }) {
     const router = useRouter()
     const { selectedCourse: course } = useAppSelector((state) => state.student)
-    const { checkPermission } = usePermissionCheck()
+    const { checkPermission } = usePermissionCheck({})
 
     if (!course) return null
 
@@ -69,7 +69,7 @@ export function ApplyWorkplaceOverview({
             buttonText: 'Find Workplace with SkilTrak',
             buttonIcon: Search,
             action: () => handleNavigation('request'),
-            permission: PermissionType.ALLOW_STUDENT_NEED_WORKPLACE
+            permission: PermissionType.ALLOW_STUDENT_NEED_WORKPLACE,
         },
         {
             id: 2,

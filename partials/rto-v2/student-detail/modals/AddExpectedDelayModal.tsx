@@ -11,7 +11,9 @@ import { useNotification } from '@hooks'
 import { RtoV2Api } from '@queries'
 import { Student } from '@types'
 import { FormProvider, useForm } from 'react-hook-form'
+import { WorldwideStudentDataRestriction } from '@components/WorldwideStudentDataRestriction'
 import * as Yup from 'yup'
+import { useAppSelector } from '@redux'
 
 interface AddExpectedDelayModalProps {
     isOpen: boolean
@@ -28,6 +30,7 @@ export const AddExpectedDelayModal = ({
         RtoV2Api.Students.addExpectedDelay()
 
     const { notification } = useNotification()
+    const rtoDetail = useAppSelector((state) => state.rto.rtoDetail)
 
     const validationSchema = Yup.object({
         expectedDelayReason: Yup.string().required('Please provide a reason'),
@@ -69,7 +72,16 @@ export const AddExpectedDelayModal = ({
                         </DialogTitle>
                         <DialogDescription className="text-gray-500 text-sm">
                             Please provide the reason for the expected delay for{' '}
-                            {student?.user?.name}.
+                            <WorldwideStudentDataRestriction
+                                anotherUserId={Number(rtoDetail?.user?.id)}
+                                fallbackOptions={{
+                                    width: '100px',
+                                    height: '15px',
+                                }}
+                            >
+                                {student?.user?.name}
+                            </WorldwideStudentDataRestriction>
+                            .
                         </DialogDescription>
                     </DialogHeader>
 

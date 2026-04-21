@@ -2,6 +2,7 @@ import { WorkplaceCurrentStatus } from '@utils'
 import { UserStatus } from 'types/user.type'
 
 export interface StudentsFilterType {
+    studentMaskedId: string
     name: string
     email: string
     phone: string
@@ -22,6 +23,7 @@ export interface StudentsFilterType {
 }
 
 export interface SubAdminStudentsFilterType {
+    studentMaskedId: string
     name: string
     email: string
     phone: string

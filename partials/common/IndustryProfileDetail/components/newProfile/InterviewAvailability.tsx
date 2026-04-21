@@ -12,9 +12,9 @@ export function InterviewAvailability({ data }: any) {
     const [createAvailability, { isLoading }] =
         RtoV2Api.Industries.createAvailability()
 
-    const hasPermission = usePermissions([
-        PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS,
-    ])
+    const hasPermission = usePermissions({
+        permission: [PermissionType.CAN_PERFORM_INDUSTRY_ACTIONS],
+    })
 
     // const industryDetail = useAppSelector(
     //     (state) => state.industry.industryDetail

@@ -37,7 +37,7 @@ export const ConfigTabs = ({
     const [width, setWidth] = useState<number | null>(null)
     const ref = useRef<HTMLDivElement>(null)
 
-    const { checkPermission } = usePermissionCheck()
+    const { checkPermission } = usePermissionCheck({})
 
     useLayoutEffect(() => {
         const element = ref.current
@@ -65,7 +65,7 @@ export const ConfigTabs = ({
         if (tab.permissions && tab.permissions.length > 0) {
             if (!checkPermission(tab.permissions)) return false
         }
-        
+
         if (typeof tab.hidden === 'function') {
             return !tab.hidden(props)
         }

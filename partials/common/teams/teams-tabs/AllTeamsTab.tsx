@@ -11,11 +11,16 @@ import {
 import { CommonApi } from '@queries'
 import { Briefcase, Plus } from 'lucide-react'
 import { useSupportTeamColumns } from '../hooks'
-import { CreateTeamModal, DeleteSupportTeamModal } from '../modals'
+import {
+    CreateRtoTeamModal,
+    CreateTeamModal,
+    DeleteSupportTeamModal,
+} from '../modals'
 import { SupportTeamFilter } from '../components'
 
 export const AllTeamsTab = () => {
     const [createTeamOpen, setCreateTeamOpen] = useState(false)
+    const [createRtoTeamOpen, setCreateRtoTeamOpen] = useState(false)
     const [modal, setModal] = useState<ReactElement | null>(null)
     const [filter, setFilter] = useState({
         name: '',
@@ -58,6 +63,10 @@ export const AllTeamsTab = () => {
         setEditData(team)
     }
 
+    const onClickAddRtoTeam = () => {
+        setCreateRtoTeamOpen(true)
+    }
+
     const { columns } = useSupportTeamColumns({
         onDeleteClicked: onDeleteClicked,
         onClickEdit: onClickEdit,
@@ -83,13 +92,23 @@ export const AllTeamsTab = () => {
                             </p>
                         </div>
                     </div>
-                    <Button
-                        onClick={() => setCreateTeamOpen(true)}
-                        className="gap-2 bg-linear-to-r from-accent to-warning hover:shadow-premium transition-all"
-                    >
-                        <Plus className="h-5 w-5" />
-                        Add New Team
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <Button
+                            onClick={() => setCreateRtoTeamOpen(true)}
+                            className="gap-2 bg-linear-to-r from-accent to-warning hover:shadow-premium transition-all"
+                            variant='primaryNew'
+                        >
+                            <Plus className="h-5 w-5" />
+                            Add RTO Team
+                        </Button>
+                        <Button
+                            onClick={() => setCreateTeamOpen(true)}
+                            className="gap-2 bg-linear-to-r from-accent to-warning hover:shadow-premium transition-all"
+                        >
+                            <Plus className="h-5 w-5" />
+                            Add New Team
+                        </Button>
+                    </div>
                 </div>
 
                 <div className="">
@@ -149,6 +168,15 @@ export const AllTeamsTab = () => {
                     }}
                     editData={editData}
                 />
+                <CreateRtoTeamModal
+                    createTeamOpen={createRtoTeamOpen}
+                    setCreateTeamOpen={() => {
+                        setCreateRtoTeamOpen(false)
+                        setEditData(null)
+                    }}
+                    editData={editData}
+                />
+                {/* createRtoTeamOpen */}
             </Card>
         </>
     )

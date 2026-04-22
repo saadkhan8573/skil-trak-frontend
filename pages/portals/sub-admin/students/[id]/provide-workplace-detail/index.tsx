@@ -169,12 +169,6 @@ const ProvideWorkplaceDetail: NextPageWithLayout = (props: Props) => {
         }
     }, [workplaceRequest])
 
-    // useEffect(() => {
-    //     if (workplace.isSuccess && workplace.data.length > 0) {
-    //         setActive(3)
-    //     }
-    // }, [workplace.data, workplace.isSuccess])
-
     useEffect(() => {
         if (cancelRequestResult.isSuccess) {
             setActive(1)

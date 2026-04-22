@@ -699,6 +699,7 @@ const {
 
     // --------- TEAMS -------------//
     useCreateSupportTeamMutation,
+    useCreateRtoSupportTeamMutation,
     useEditSupportTeamMutation,
     useGetAllSupportTeamsQuery,
     useDeleteSupportTeamMutation,
@@ -1107,6 +1108,7 @@ export const CommonApi = {
     },
     Teams: {
         useCreateSupportTeam: useCreateSupportTeamMutation,
+        useCreateRtoSupportTeam:useCreateRtoSupportTeamMutation,
         useEditSupportTeam: useEditSupportTeamMutation,
         useAllSupportTeams: useGetAllSupportTeamsQuery,
         useDeleteSupportTeam: useDeleteSupportTeamMutation,

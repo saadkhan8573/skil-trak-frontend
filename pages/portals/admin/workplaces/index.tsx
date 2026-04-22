@@ -43,7 +43,8 @@ const filterKeys = [
     'rtoId',
     'industryId',
     'courseId',
-    "nowp"
+    'nowp',
+    'studentMaskedId',
 ]
 
 const Workplace: NextPageWithLayout = () => {
@@ -206,7 +207,7 @@ const Workplace: NextPageWithLayout = () => {
                     <TechnicalError />
                 )}
                 {filteredWorkplaces.isLoading ||
-                    filteredWorkplaces.isFetching ? (
+                filteredWorkplaces.isFetching ? (
                     <div className="mt-5">
                         <Card>
                             <LoadingAnimation />

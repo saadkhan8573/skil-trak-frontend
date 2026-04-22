@@ -16,8 +16,8 @@ export const useAddressInfo = (address: string) => {
 
     const getPostCodeFromAddress = async () => {
         const latlng = await getLatLng(address)
-        const postCode = await getPostalCode(latlng)
-        setAddressInfo((prev) => ({ ...prev, postCode }))
+        const postcode = await getPostalCode(latlng)
+        setAddressInfo((prev) => ({ ...prev, postcode }))
     }
 
     const getStateFromAddress = async () => {

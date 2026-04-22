@@ -87,7 +87,7 @@ const nextConfig = {
         imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
         minimumCacheTTL: 60,
     },
-    allowedDevOrigins: ['192.168.1.15'],
+    allowedDevOrigins: ['192.168.1.16'],
     output: 'standalone',
     compiler: {
         styledComponents: true,

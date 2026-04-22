@@ -113,7 +113,7 @@ export const QuestionManager = ({
         setIsEditDialogOpen(true)
     }
 
-    const allQuestions = [...DEFAULT_QUESTIONS, ...(questions || [])]
+    const allQuestions = questions || []
 
     return (
         <>

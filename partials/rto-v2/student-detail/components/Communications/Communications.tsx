@@ -14,6 +14,19 @@ const MailsTab = ({ user }: any) => (
 const CallsTab = ({ studentId }: any) => <CallLogTab studentId={studentId} />
 
 export function Communications({ student }: { student: Student }) {
+    const tabs = [
+        {
+            value: 'messages',
+            label: 'Messages & Emails',
+            component: MailsTab,
+        },
+        {
+            value: 'calls',
+            label: 'Call History',
+            component: CallsTab,
+        },
+    ]
+
     if (!student) return <CommunicationsSkeleton />
     return (
         <div className="space-y-6 ">
@@ -31,22 +44,11 @@ export function Communications({ student }: { student: Student }) {
                         </p>
                     </div>
                 </div>
-                
+
                 <ConfigTabs
                     defaultValue="messages"
                     props={{ user: student, studentId: student?.id }}
-                    tabs={[
-                        {
-                            value: 'messages',
-                            label: 'Messages & Emails',
-                            component: MailsTab,
-                        },
-                        {
-                            value: 'calls',
-                            label: 'Call History',
-                            component: CallsTab,
-                        },
-                    ]}
+                    tabs={tabs}
                 />
             </div>
         </div>

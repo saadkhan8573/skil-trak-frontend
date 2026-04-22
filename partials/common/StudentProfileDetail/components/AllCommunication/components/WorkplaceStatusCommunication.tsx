@@ -56,7 +56,9 @@
 //     )
 // }
 
-import { Badge } from '@components'
+import { Badge, useWorldwideStudentDataRestriction } from '@components'
+import { UserRoles } from '@constants'
+import { useAppSelector } from '@redux'
 import {
     Building2,
     Calendar,
@@ -149,11 +151,22 @@ export function WorkplaceStatusCommunication({
     item,
 }: PlacementStatusProps) {
     const [showComments, setShowComments] = useState(true)
+
+    const rtoUserId = useAppSelector((state) => state.rto.rtoDetail?.user?.id)
+    const { hasPermission } = useWorldwideStudentDataRestriction({
+        userId: rtoUserId,
+    })
+
     const isRejection =
         item?.title?.toLowerCase()?.includes('rejected') ||
         item?.title?.toLowerCase()?.includes('cancelled')
     const config = getStatusConfig(status, isRejection)
     const IconComponent = config.icon
+
+    const authorName =
+        item?.author?.role === UserRoles.STUDENT && !hasPermission
+            ? 'Student'
+            : item?.author?.name
 
     return (
         <div
@@ -244,10 +257,7 @@ export function WorkplaceStatusCommunication({
                             <div className="flex items-center gap-2">
                                 <FaUser className="h-4 w-4" />
                                 <span>Actioned By:</span>
-                                <Badge
-                                    text={item?.author?.name}
-                                    variant="success"
-                                />
+                                <Badge text={authorName} variant="success" />
                             </div>
                         )}
                     </div>

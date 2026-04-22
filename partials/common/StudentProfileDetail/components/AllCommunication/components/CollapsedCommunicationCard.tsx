@@ -1,4 +1,8 @@
-import { Typography } from '@components'
+import {
+    Typography,
+    useWorldwideStudentDataRestriction,
+    WorldwideStudentDataRestriction,
+} from '@components'
 import { IoIosArrowDown } from 'react-icons/io'
 import {
     getCommunicationDate,
@@ -9,17 +13,22 @@ import {
 import { CommunicationCardProps } from '../types'
 import { CommunicationDetails } from './CommunicationDetails'
 import { useState } from 'react'
+import { useAppSelector } from '@redux'
 
 export const CollapsedCommunicationCard: React.FC<CommunicationCardProps> = ({
     item,
 }) => {
     const [isOpened, setIsOpened] = useState(item?.title ? true : false)
+    const rtoUserId = useAppSelector((state) => state.rto.rtoDetail?.user?.id)
+    const { hasPermission } = useWorldwideStudentDataRestriction({
+        userId: rtoUserId,
+    })
     return (
         <div className="bg-white rounded-lg border border-gray-200 mb-2 overflow-hidden">
             {item?.type !== 'workplaceHistory' && (
                 <div
                     className="px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer"
-                    onClick={() => setIsOpened(!isOpened)}
+                    onClick={() => hasPermission && setIsOpened(!isOpened)}
                 >
                     <div className="flex items-start justify-between">
                         <div className="flex items-start space-x-3 flex-1">
@@ -46,25 +55,37 @@ export const CollapsedCommunicationCard: React.FC<CommunicationCardProps> = ({
                                         >
                                             {getCommunicationDate(item)}
                                         </Typography>
-                                        <div
-                                            className={`transform transition-transform text-gray-400 ${
-                                                isOpened ? 'rotate-180' : ''
-                                            }`}
+                                        <WorldwideStudentDataRestriction
+                                            anotherUserId={rtoUserId!}
+                                            fallbackOptions={{
+                                                width: '0px',
+                                                height: '0px',
+                                            }}
                                         >
-                                            <IoIosArrowDown />
-                                        </div>
+                                            <div
+                                                className={`transform transition-transform text-gray-400 ${
+                                                    isOpened ? 'rotate-180' : ''
+                                                }`}
+                                            >
+                                                <IoIosArrowDown />
+                                            </div>
+                                        </WorldwideStudentDataRestriction>
                                     </div>
                                 </div>
-                                <Typography
-                                    variant="label"
-                                    color="text-gray-600 mt-1"
+                                <WorldwideStudentDataRestriction
+                                    anotherUserId={rtoUserId!}
+                                    fallbackOptions={{
+                                        width: '0px',
+                                        height: '0px',
+                                    }}
                                 >
-                                    From:{' '}
-                                    {
-                                        getCommunicationSenderName(item)
-                                        // getCommunicationSender(item)
-                                    }
-                                </Typography>
+                                    <Typography
+                                        variant="label"
+                                        color="text-gray-600 mt-1"
+                                    >
+                                        From: {getCommunicationSenderName(item)}
+                                    </Typography>
+                                </WorldwideStudentDataRestriction>
                             </div>
                         </div>
                     </div>

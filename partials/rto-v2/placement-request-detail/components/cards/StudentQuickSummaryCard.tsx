@@ -82,9 +82,8 @@ export const StudentQuickSummaryCard = ({
         })
 
     const { hasPermission } = useWorldwideStudentDataRestriction({
-        userId: studentDetails?.rto?.id,
+        userId: studentDetails?.rto?.user?.id,
     })
-    const { addressInfo } = useAddressInfo(studentDetails?.addressLine1 || '')
 
     const preferredAddressObj = questionnaireData?.find(
         (q: any) => q.type === workplaceQuestionsKeys.suburb
@@ -121,6 +120,7 @@ export const StudentQuickSummaryCard = ({
         }
     }
 
+    const { addressInfo } = useAddressInfo(formattedPreferredAddress || '')
     useEffect(() => {
         if (data) {
             dispatch(setSelectedCourse(data))

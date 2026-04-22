@@ -700,6 +700,12 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         icon: BookUp2,
         category: 'students',
     },
+    [PermissionType.ALLOW_OLD_DASHBOARD]: {
+        label: 'Allow Old Dashboard',
+        description: 'Allow user to access and view the old dashboard.',
+        icon: BookUp2,
+        category: 'students',
+    },
 }
 
 export const categoryConfig = {

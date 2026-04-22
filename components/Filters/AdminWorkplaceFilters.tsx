@@ -57,9 +57,9 @@ export const AdminWorkplaceFilters = ({
     const rtoOptions =
         getRtos?.data && getRtos?.data?.length > 0
             ? getRtos?.data?.map((rto: Rto) => ({
-                value: rto?.id,
-                label: rto?.user?.name,
-            }))
+                  value: rto?.id,
+                  label: rto?.user?.name,
+              }))
             : []
 
     const noWorkplaceOption = [
@@ -101,6 +101,20 @@ export const AdminWorkplaceFilters = ({
                     value={filter?.email}
                     onChange={(e: any) => {
                         onFilterChange({ ...filter, email: e.target.value })
+                    }}
+                    showError={false}
+                />
+
+                <TextInput
+                    name="studentMaskedId"
+                    label={'Job Id'}
+                    placeholder={'Search by Job Id ...'}
+                    value={filter?.studentMaskedId}
+                    onChange={(e: any) => {
+                        onFilterChange({
+                            ...filter,
+                            studentMaskedId: e.target.value,
+                        })
                     }}
                     showError={false}
                 />

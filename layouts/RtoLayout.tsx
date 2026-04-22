@@ -4,6 +4,7 @@ import {
     PageTitleProps,
     RedirectUnApprovedUsers,
     RtoNavbar,
+    usePermissions,
 } from '@components'
 import { useAlert, useContextBar, useJoyRide } from '@hooks'
 import { UsersPendingEsignModal } from '@partials/eSign/modal/UsersPendingEsignModal'
@@ -13,6 +14,7 @@ import { useRouter } from 'next/router'
 import { ReactElement, ReactNode, useEffect, useState } from 'react'
 import Joyride from 'react-joyride'
 import { UserLayout } from './UserLayout'
+import { PermissionType } from '@types'
 
 interface RtoLayoutProps {
     pageTitle?: PageTitleProps
@@ -43,10 +45,12 @@ export const RtoLayout = ({ pageTitle, children }: RtoLayoutProps) => {
     const [mounted, setMounted] = useState(false)
     const joyride = useJoyRide()
     const router = useRouter()
-    const { alert, setAlerts } = useAlert()
     const [modal, setModal] = useState<ReactElement | null>(null)
 
     const { viewAgreementModal, setViewAgreementModal } = useContextBar()
+    const hasPermission = usePermissions({
+        permission: PermissionType.ALLOW_OLD_DASHBOARD,
+    })
 
     const pendingDocuments = CommonApi.ESign.usePendingDocumentsList(
         {
@@ -70,6 +74,12 @@ export const RtoLayout = ({ pageTitle, children }: RtoLayoutProps) => {
     useEffect(() => {
         setMounted(true)
     }, [])
+
+    useEffect(() => {
+        if (!hasPermission) {
+            router.replace('/portals/rto/dashboard')
+        }
+    }, [hasPermission])
 
     useEffect(() => {
         if (
@@ -150,14 +160,14 @@ export const RtoLayout = ({ pageTitle, children }: RtoLayoutProps) => {
                                 skip: 'Close Tour',
                             }}
 
-                        // styles={{
-                        //     options: {
-                        //         arrowColor: theme.black,
-                        //         backgroundColor: theme.black,
-                        //         primaryColor: theme.colors.purple,
-                        //         textColor: theme.white,
-                        //     },
-                        // }}
+                            // styles={{
+                            //     options: {
+                            //         arrowColor: theme.black,
+                            //         backgroundColor: theme.black,
+                            //         primaryColor: theme.colors.purple,
+                            //         textColor: theme.white,
+                            //     },
+                            // }}
                         />
                     )}
                 </>

@@ -280,18 +280,10 @@ export function SectorsCard({
         )
         const checks = sectorState?.questionChecks || {}
 
-        // Static questions must all be checked
-        const staticIds = ['static_1', 'static_2', 'static_3']
-        const allStaticChecked = staticIds.every((id) => checks[id])
+        if (!questions || questions.length === 0) return true
 
-        // API questions must all be checked (if loaded)
-        if (questionsLoading || questionsError) return false
-        const allApiChecked =
-            !questions || questions.length === 0
-                ? true
-                : questions.every((q: any) => checks[q.id])
-        // && allApiChecked
-        return allStaticChecked
+        // Return true if at least one question is checked
+        return Object.values(checks).some((checked) => !!checked)
     }
 
     const isSectorReadyToConfirm = (sectorId: any) => {

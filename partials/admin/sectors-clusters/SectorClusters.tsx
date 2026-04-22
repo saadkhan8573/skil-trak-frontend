@@ -38,7 +38,6 @@ export const SectorClusters = () => {
     const { data, isLoading, isError } = AdminApi.Sectors.useDetailQuery(id, {
         skip: !id,
     })
-    console.log('data::::::', data)
     return (
         <div className="min-h-screen bg-gray-50 p-6 space-y-4">
             <div className="mx-auto space-y-6">

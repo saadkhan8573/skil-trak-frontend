@@ -22,6 +22,7 @@ import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
 import { MdBlock } from 'react-icons/md'
 import { statusConfig } from '../components/placementHelpers'
+import { WorkplaceCurrentStatus } from '@utils'
 
 export const StudentProvidedWorkplaceTab = () => {
     const router = useRouter()
@@ -122,7 +123,20 @@ export const StudentProvidedWorkplaceTab = () => {
             accessorKey: 'progress',
             header: () => <span>Status</span>,
             cell: ({ row }) => {
-                const status = row?.original?.currentStatus
+                const getStatus = () => {
+                    if (
+                        [
+                            WorkplaceCurrentStatus.CaseOfficerAssigned,
+                            WorkplaceCurrentStatus.Applied,
+                            WorkplaceCurrentStatus.Interview,
+                        ].includes(row?.original?.currentStatus)
+                    ) {
+                        return WorkplaceCurrentStatus.IndustryEligibility
+                    }
+                    return row?.original?.currentStatus
+                }
+
+                const status = getStatus()
                 const config = statusConfig[status]
 
                 if (!config) {

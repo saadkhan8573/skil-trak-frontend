@@ -1,4 +1,4 @@
-import { UserCreatedAt } from '@components'
+import { StudentJobId, UserCreatedAt } from '@components'
 import { ColumnDef } from '@tanstack/react-table'
 import {
     CourseWorkplaceCell,
@@ -9,16 +9,26 @@ import {
     UpdatedWorkplaceRequest,
     AdminCancelCell,
 } from '../components'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 export const useColumns = () => {
-    const Columns: ColumnDef<any>[] = [
+    const Columns: ColumnDef<IWorkplaceIndustries>[] = [
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId
+                    studentJobId={row.original?.student?.studentMaskedId}
+                />
+            ),
+        },
         {
             header: () => 'Student',
             accessorKey: 'student',
             cell: (info) => {
                 return (
                     <StudentWorkplaceCellInfo
-                        student={info?.row?.original?.student}
+                        student={info?.row?.original?.student!}
                         wpId={info?.row?.original?.id}
                     />
                 )
@@ -57,7 +67,7 @@ export const useColumns = () => {
             cell: (info) => {
                 return (
                     <StudentTicketsCell
-                        wpId={info?.row?.original?.id}
+                        wpId={info?.row?.original?.id!}
                         ticketsCount={
                             info?.row?.original?.student?.tickets?.length || 0
                         }
@@ -83,7 +93,7 @@ export const useColumns = () => {
             header: () => 'Admin Cancel',
             accessorKey: 'cancel',
             cell: (info) => {
-                return <AdminCancelCell wpId={info?.row?.original?.id} />
+                return <AdminCancelCell wpId={info?.row?.original?.id!} />
             },
         },
     ]

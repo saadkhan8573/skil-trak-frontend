@@ -1,12 +1,9 @@
-import {
-    BlurOverlay,
-    Permissions,
-    WorldwideStudentDataRestriction,
-} from '@components'
-import { workplaceQuestionsKeys } from '@partials/common'
-import { SubAdminApi, useAppSelector } from '@redux'
-import { PermissionType } from '@types'
 import { Clock } from 'lucide-react'
+import { SubAdminApi, useAppSelector } from '@redux'
+import { workplaceQuestionsKeys } from '@partials/common'
+import { WorldwideStudentDataRestriction } from '@components'
+import { Activity } from 'react'
+import { checkJsxVisibility } from '@utils'
 
 export const PreferredContactTime = () => {
     const studentId = useAppSelector(
@@ -76,15 +73,15 @@ export const PreferredContactTime = () => {
 
     return (
         <div className="flex items-center gap-3">
-            <WorldwideStudentDataRestriction
-                anotherUserId={Number(rtoDetail?.user?.id)}
-                fallbackOptions={{
-                    height: '50px',
-                    width: '100%',
-                }}
-            >
-                {/* Medical Conditions Card */}
-                {medicalCondition && (
+            <Activity mode={checkJsxVisibility(!!medicalCondition)}>
+                <WorldwideStudentDataRestriction
+                    anotherUserId={Number(rtoDetail?.user?.id)}
+                    fallbackOptions={{
+                        height: '50px',
+                        width: preferredContactTime ? '50%' : '100%',
+                    }}
+                >
+                    {/* Medical Conditions Card */}
                     <div className="flex items-center gap-2.5 bg-linear-to-br from-rose-50 to-rose-100/50 border border-rose-200/70 px-3.5 py-2.5 rounded-xl shadow-sm flex-1">
                         <div className="w-8 h-8 rounded-lg bg-linear-to-br from-rose-100 to-rose-200/50 flex items-center justify-center shrink-0">
                             <span className="text-lg">🩺</span>
@@ -98,25 +95,34 @@ export const PreferredContactTime = () => {
                             </p>
                         </div>
                     </div>
-                )}
-            </WorldwideStudentDataRestriction>
+                </WorldwideStudentDataRestriction>
+            </Activity>
 
             {/* Contact Time Card */}
-            {preferredContactTime && (
-                <div className="flex items-center gap-2.5 bg-linear-to-br from-[#044866]/5 to-[#0D5468]/5 border border-[#044866]/30 px-3.5 py-2.5 rounded-xl shadow-sm flex-1">
-                    <div className="w-8 h-8 rounded-lg bg-linear-to-br from-[#044866]/10 to-[#0D5468]/10 flex items-center justify-center shrink-0">
-                        <Clock className="w-4 h-4 text-[#044866]" />
+            <Activity mode={checkJsxVisibility(!!preferredContactTime)}>
+                <WorldwideStudentDataRestriction
+                    anotherUserId={Number(rtoDetail?.user?.id)}
+                    fallbackOptions={{
+                        height: '50px',
+                        width: medicalCondition ? '50%' : '100%',
+                    }}
+                >
+                    {' '}
+                    <div className="flex items-center gap-2.5 bg-linear-to-br from-[#044866]/5 to-[#0D5468]/5 border border-[#044866]/30 px-3.5 py-2.5 rounded-xl shadow-sm flex-1">
+                        <div className="w-8 h-8 rounded-lg bg-linear-to-br from-[#044866]/10 to-[#0D5468]/10 flex items-center justify-center shrink-0">
+                            <Clock className="w-4 h-4 text-[#044866]" />
+                        </div>
+                        <div className="flex-1">
+                            <p className="text-[10px] font-semibold text-[#044866] uppercase tracking-wide mb-0.5">
+                                Contact Time
+                            </p>
+                            <p className="text-sm text-[#044866] font-medium">
+                                {preferredContactTime?.badge}
+                            </p>
+                        </div>
                     </div>
-                    <div className="flex-1">
-                        <p className="text-[10px] font-semibold text-[#044866] uppercase tracking-wide mb-0.5">
-                            Contact Time
-                        </p>
-                        <p className="text-sm text-[#044866] font-medium">
-                            {preferredContactTime?.badge}
-                        </p>
-                    </div>
-                </div>
-            )}
+                </WorldwideStudentDataRestriction>
+            </Activity>
         </div>
     )
 }

@@ -2,6 +2,7 @@ import { UserStatus } from 'types/user.type'
 
 export interface AdminWorkplaceFiltersType {
     studentId: string
+    studentMaskedId: string
     name: string
     email: string
     location: string

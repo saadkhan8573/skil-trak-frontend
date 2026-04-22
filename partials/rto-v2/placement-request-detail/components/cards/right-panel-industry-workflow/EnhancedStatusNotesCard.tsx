@@ -1,17 +1,36 @@
-import { Badge, Card, NoData } from '@components'
+import {
+    Badge,
+    Card,
+    NoData,
+    useWorldwideStudentDataRestriction,
+} from '@components'
 import { ScrollArea } from '@components/ui/scroll-area'
+import { UserRoles } from '@constants'
 import { RtoV2Api } from '@queries'
+import { useAppSelector } from '@redux'
 import { motion } from 'framer-motion'
-import { ClipboardCheck, Clock, Flag, MessageSquare, User } from 'lucide-react'
+import { ClipboardCheck, Clock } from 'lucide-react'
 import { useRouter } from 'next/router'
 
-export const EnhancedStatusNotesCard = () => {
+export const EnhancedStatusNotesCard = ({
+    rtoUserId,
+}: {
+    rtoUserId?: number
+}) => {
     const router = useRouter()
     const wpId = router.query.id
     const { data, isLoading, isError } =
         RtoV2Api.PlacementRequests.useStudentPlacementStatusCheckNotes(wpId, {
             skip: !wpId,
         })
+
+    const rtoUserDataId = useAppSelector(
+        (state) => state.rto.rtoDetail?.user?.id
+    )
+    const { hasPermission } = useWorldwideStudentDataRestriction({
+        userId: rtoUserDataId || rtoUserId,
+    })
+
     return (
         <Card noPadding className="border-0 shadow-xl overflow-hidden">
             <div className="bg-linear-to-r from-[#044866] to-[#0D5468] px-5 py-4">
@@ -39,6 +58,12 @@ export const EnhancedStatusNotesCard = () => {
                                   ].includes(note.status)
                                   const isAppointmentMissed =
                                       note.status === 'Appointment Missed'
+
+                                  const authorName =
+                                      note?.author?.role ===
+                                          UserRoles.STUDENT && !hasPermission
+                                          ? 'Student'
+                                          : note?.author?.name
 
                                   return (
                                       <motion.div
@@ -106,7 +131,7 @@ export const EnhancedStatusNotesCard = () => {
                                           {note?.author && (
                                               <div className="flex justify-end">
                                                   <Badge
-                                                      text={note?.author?.name}
+                                                      text={authorName}
                                                       variant="info"
                                                   />
                                               </div>

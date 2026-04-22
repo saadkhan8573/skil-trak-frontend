@@ -101,6 +101,14 @@ export const teamsEndpoints = (
         }),
         invalidatesTags: ['Team'],
     }),
+    createRtoSupportTeam: builder.mutation<any, any>({
+        query: (body) => ({
+            url: `$rtos/list/with-permission/receive-tickets`,
+            method: 'POST',
+            body,
+        }),
+        invalidatesTags: ['Team'],
+    }),
     // support-task/id/coordinator/id/update
     changeSupportTicketAssignee: builder.mutation<any, any>({
         query: ({ coordId, taskId }) => ({

@@ -24,7 +24,6 @@ export function SubAdminNavbarSkeleton() {
     return (
         <div
             suppressHydrationWarning
-            suppressHydrationWarning
             className="flex justify-between items-center mb-2 px-2 lg:px-8 pt-4"
         >
             <div
@@ -55,7 +54,6 @@ export function SubAdminNavbarSkeleton() {
 export function RightSidebarSkeleton() {
     return (
         <div
-            suppressHydrationWarning
             suppressHydrationWarning
             className="h-full border-l border-gray-300 bg-white p-4 w-[320px] shrink-0 flex flex-col gap-y-6 overflow-hidden"
         >
@@ -149,7 +147,6 @@ export function RightSidebarSkeleton() {
 export function DashboardSkeleton() {
     return (
         <div
-            suppressHydrationWarning
             suppressHydrationWarning
             className="px-2 lg:px-8 pb-8 flex flex-col gap-y-6"
         >
@@ -276,7 +273,6 @@ export function DashboardSkeleton() {
 export function SubAdminLayoutSkeleton() {
     return (
         <div
-            suppressHydrationWarning
             suppressHydrationWarning
             className="flex flex-col h-screen w-full bg-slate-50 overflow-hidden"
         >

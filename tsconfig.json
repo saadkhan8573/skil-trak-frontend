@@ -1,132 +1,66 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+    "compilerOptions": {
+        "target": "esnext",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "react-jsx",
+        "incremental": true,
+        "baseUrl": ".",
+        "paths": {
+            // "@/*": [
+            //    "./*"
+            // ],
+            "nodemodules": ["./node_modules"],
+            "@components": ["./components"],
+            "@components/*": ["./components/*"],
+            "@icons": ["./icons"],
+            "@icons/*": ["./icons/*"],
+            "@pages": ["./pages"],
+            "@pages/*": ["./pages/*"],
+            "@animations": ["./animations"],
+            "@animations/*": ["./animations/*"],
+            "@layouts": ["./layouts"],
+            "@layouts/*": ["./layouts/*"],
+            "@hooks": ["./hooks"],
+            "@hooks/*": ["./hooks/*"],
+            "@types": ["./types"],
+            "@theme": ["./themes"],
+            "@utils": ["./utils"],
+            "@queries": ["./redux/queries"],
+            "@queries/*": ["./redux/queries/*"],
+            "@redux": ["./redux"],
+            "@redux/*": ["./redux/*"],
+            "@constants": ["./constants"],
+            "@constants/*": ["./constants/*"],
+            "@hoc": ["./hoc"],
+            "@hoc/*": ["./hoc/*"],
+            "@partials": ["./partials"],
+            "@partials/*": ["./partials/*"],
+            "@modals": ["./modals"],
+            "@modals/*": ["./modals/*"],
+            "@scripts": ["./scripts"],
+            "@scripts/*": ["./scripts/*"]
+        }
+    },
+    "include": [
+        "next-env.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        "pages/portals/admin/subscribers",
+        "pages/portals/admin/rto/[id]/student-list.tss",
+        "pages/portals/admin/e-sign/[id]",
+        "./jest-setup.ts",
+        "pages/portals/management/teams/members/[memberId]",
+        "pages/portals/sub-admin/tasks/industry-listing/future-industry-onboarding"
     ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "react-jsx",
-    "incremental": true,
-    "baseUrl": ".",
-    "paths": {
-      // "@/*": [
-      //    "./*"
-      // ],
-      "nodemodules": [
-        "./node_modules"
-      ],
-      "@components": [
-        "./components"
-      ],
-      "@components/*": [
-        "./components/*"
-      ],
-      "@icons": [
-        "./icons"
-      ],
-      "@icons/*": [
-        "./icons/*"
-      ],
-      "@pages": [
-        "./pages"
-      ],
-      "@pages/*": [
-        "./pages/*"
-      ],
-      "@animations": [
-        "./animations"
-      ],
-      "@animations/*": [
-        "./animations/*"
-      ],
-      "@layouts": [
-        "./layouts"
-      ],
-      "@layouts/*": [
-        "./layouts/*"
-      ],
-      "@hooks": [
-        "./hooks"
-      ],
-      "@hooks/*": [
-        "./hooks/*"
-      ],
-      "@types": [
-        "./types"
-      ],
-      "@theme": [
-        "./themes"
-      ],
-      "@utils": [
-        "./utils"
-      ],
-      "@queries": [
-        "./redux/queries"
-      ],
-      "@queries/*": [
-        "./redux/queries/*"
-      ],
-      "@redux": [
-        "./redux"
-      ],
-      "@redux/*": [
-        "./redux/*"
-      ],
-      "@constants": [
-        "./constants"
-      ],
-      "@constants/*": [
-        "./constants/*"
-      ],
-      "@hoc": [
-        "./hoc"
-      ],
-      "@hoc/*": [
-        "./hoc/*"
-      ],
-      "@partials": [
-        "./partials"
-      ],
-      "@partials/*": [
-        "./partials/*"
-      ],
-      "@modals": [
-        "./modals"
-      ],
-      "@modals/*": [
-        "./modals/*"
-      ],
-      "@scripts": [
-        "./scripts"
-      ],
-      "@scripts/*": [
-        "./scripts/*"
-      ]
-    }
-  },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "pages/portals/admin/subscribers",
-    "pages/portals/admin/rto/[id]/student-list.tss",
-    "pages/portals/admin/e-sign/[id]",
-    "./jest-setup.ts",
-    "pages/portals/management/teams/members/[memberId]",
-    "pages/portals/sub-admin/tasks/industry-listing/future-industry-onboarding"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "exclude": ["node_modules"]
 }

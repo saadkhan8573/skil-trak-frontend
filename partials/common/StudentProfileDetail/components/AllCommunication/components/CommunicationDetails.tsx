@@ -1,11 +1,11 @@
-import { Mail, Timeline } from '@components'
+import { Mail } from '@components'
 import { HistoryCard } from '@partials/common/History'
 import { NoteCard } from '@partials/common/Notes'
 import { StudentMessageCard } from '../../StudentMessageCard'
 import { CommunicationDetailsProps } from '../types'
+import { StatusChangeHistoryCommunication } from './StatusChangeHistoryCommunication'
 import { TicketAllCommunication } from './TicketAllCommunication'
 import { WorkplaceStatusCommunication } from './WorkplaceStatusCommunication'
-import { StatusChangeHistoryCommunication } from './StatusChangeHistoryCommunication'
 
 export const CommunicationDetails: React.FC<CommunicationDetailsProps> = ({
     item,

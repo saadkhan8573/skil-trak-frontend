@@ -13,7 +13,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
@@ -123,8 +123,9 @@
     "pages/portals/admin/rto/[id]/student-list.tss",
     "pages/portals/admin/e-sign/[id]",
     "./jest-setup.ts",
-    "pages/portals/management/teams/members/[memberId]"
-, "pages/portals/sub-admin/tasks/industry-listing/future-industry-onboarding"  ],
+    "pages/portals/management/teams/members/[memberId]",
+    "pages/portals/sub-admin/tasks/industry-listing/future-industry-onboarding"
+  ],
   "exclude": [
     "node_modules"
   ]

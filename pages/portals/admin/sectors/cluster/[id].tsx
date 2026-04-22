@@ -4,11 +4,7 @@ import { NextPageWithLayout } from '@types'
 import { ReactElement } from 'react'
 
 const AddCluster: NextPageWithLayout = () => {
-    return (
-        <>
-            <SectorClusters />
-        </>
-    )
+    return <SectorClusters />
 }
 AddCluster.getLayout = (page: ReactElement) => {
     return <AdminLayout>{page}</AdminLayout>

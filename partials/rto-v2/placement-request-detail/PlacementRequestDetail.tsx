@@ -521,7 +521,11 @@ export const PlacementRequestDetail = () => {
                                     />
 
                                     {/* Enhanced Status Notes */}
-                                    <EnhancedStatusNotesCard />
+                                    <EnhancedStatusNotesCard
+                                        rtoUserId={
+                                            studentDetails?.data?.rto?.user?.id
+                                        }
+                                    />
                                 </motion.div>
                             </div>
                         </div>

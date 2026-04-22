@@ -1,5 +1,6 @@
-import { Typography } from '@components'
+import { Typography, useWorldwideStudentDataRestriction } from '@components'
 import { CommunicationFiltersProps } from '../types'
+import { useAppSelector } from '@redux'
 
 export const CommunicationFilters: React.FC<CommunicationFiltersProps> = ({
     searchTerm,
@@ -17,6 +18,7 @@ export const CommunicationFilters: React.FC<CommunicationFiltersProps> = ({
         { type: 'workplaceHistory', name: 'Workplace Status' },
         { type: 'statusHistory', name: 'Status History' },
     ]
+
     return (
         <div className="flex items-center space-x-4 mb-2 px-4 py-1.5 bg-gray-50">
             <div className="flex-1">

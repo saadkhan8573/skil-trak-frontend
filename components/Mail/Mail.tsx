@@ -16,11 +16,6 @@ import { Attachments } from './Attachments'
 
 export const Mail = ({ message, sender, index }: any) => {
     const [showOptions, setShowOptions] = useState(false)
-    // const { setReplyMessage } = useMessage()
-    const replyIconClasses =
-        'hidden transition-all group-hover:block cursor-pointer'
-
-    // const sender = AuthUtils.getUserCredentials()?.id === message?.sender?.id;
 
     const checkMessageStatus = () => {
         switch (message.status) {
@@ -195,9 +190,7 @@ export const Mail = ({ message, sender, index }: any) => {
                                         message?.message
                                     ),
                                 }}
-                            >
-                                {/* {message?.message} */}
-                            </span>
+                            ></span>
 
                             {message?.attachments &&
                             message?.attachments?.length > 0 ? (

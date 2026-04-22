@@ -62,15 +62,15 @@ export function SectorPrerequisites({
                     <AlertCircle className="w-4 h-4 text-yellow-600 mt-0.5 shrink-0" />
                     <p className="text-xs text-yellow-800">
                         <strong>Important:</strong> Answer these questions based
-                        on your organization's capabilities. All must be YES to
-                        unlock course selection and supervisor fields for this
-                        sector.
+                        on your organization's capabilities. At least one must
+                        be YES to unlock course selection and supervisor fields
+                        for this sector.
                     </p>
                 </div>
 
                 <div className="flex items-center gap-2 text-sm font-semibold text-purple-700">
                     <CheckCircle className="w-4 h-4" />
-                    ALL MUST BE YES
+                    At least Select one
                 </div>
 
                 {questionsLoading && (
@@ -87,7 +87,7 @@ export function SectorPrerequisites({
                     </div>
                 )}
 
-                {STATIC_QUESTIONS.map((q, qi) => {
+                {/* {STATIC_QUESTIONS.map((q, qi) => {
                     const checked = !!sectorState?.questionChecks?.[q.id]
                     return (
                         <div
@@ -124,7 +124,7 @@ export function SectorPrerequisites({
                             </div>
                         </div>
                     )
-                })}
+                })} */}
 
                 {!questionsLoading &&
                     !questionsError &&
@@ -163,7 +163,8 @@ export function SectorPrerequisites({
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <div className="font-semibold text-sm mb-1 break-words">
-                                            {qi + 1 + STATIC_QUESTIONS.length}. {q.title}
+                                            {qi + 1 + STATIC_QUESTIONS.length}.{' '}
+                                            {q.title}
                                         </div>
                                         <p className="text-xs text-muted-foreground break-words whitespace-pre-wrap">
                                             {q.question}
@@ -187,8 +188,9 @@ export function SectorPrerequisites({
                                 Not Eligible
                             </div>
                             <p className="text-xs text-red-600">
-                                All questions must be YES to unlock supervisor
-                                fields and course selection for this sector
+                                At least one selection is required to unlock
+                                supervisor fields and course selection for this
+                                sector
                             </p>
                         </div>
                     </div>

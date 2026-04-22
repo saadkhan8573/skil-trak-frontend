@@ -4,6 +4,7 @@ import {
     Button,
     Typography,
     useAuthorizedUserComponent,
+    WorldwideStudentDataRestriction,
 } from '@components'
 import { UserRoles } from '@constants'
 import { CreateStudentNoteModal } from '@partials/rto-v2/student-detail/components/StudentHeader/modals'
@@ -12,6 +13,7 @@ import { ReactElement, useState } from 'react'
 import { WorkplaceHistory } from '../../Workplace'
 import { useWorkplaceQueries } from '../../Workplace/hooks/useWorkplaceQueries.hook'
 import { ShowAllCommunicationModal } from '../modal'
+import { useAppSelector } from '@redux'
 
 interface CommunicationHeaderProps {
     user?: any
@@ -20,6 +22,9 @@ interface CommunicationHeaderProps {
 export const CommunicationHeader = ({ user }: CommunicationHeaderProps) => {
     const [modal, setModal] = useState<ReactElement | null>(null)
     const { selectedWorkplace } = useWorkplaceQueries({ student: user })
+
+    const rtoDetail = useAppSelector((state) => state.rto.rtoDetail)
+
     const onCancelClicked = () => setModal(null)
 
     const onComposeMail = () => {
@@ -37,7 +42,6 @@ export const CommunicationHeader = ({ user }: CommunicationHeaderProps) => {
             <ShowAllCommunicationModal user={user} onCancel={onCancelClicked} />
         )
     }
-
 
     const onAddNote = () => {
         setModal(
@@ -90,14 +94,22 @@ export const CommunicationHeader = ({ user }: CommunicationHeaderProps) => {
                             </AuthorizedUserComponent>
                         </>
                     )}
-                    <Button
-                        variant="info"
-                        onClick={() => {
-                            onComposeMail()
+                    <WorldwideStudentDataRestriction
+                        anotherUserId={rtoDetail?.user?.id!}
+                        fallbackOptions={{
+                            height: '32px',
+                            width: '120px',
                         }}
                     >
-                        + Compose Mail
-                    </Button>
+                        <Button
+                            variant="info"
+                            onClick={() => {
+                                onComposeMail()
+                            }}
+                        >
+                            + Compose Mail
+                        </Button>
+                    </WorldwideStudentDataRestriction>
                 </div>
             </div>
         </>

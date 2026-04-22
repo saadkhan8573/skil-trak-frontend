@@ -65,6 +65,7 @@ export function CleanHeader({
             <ViewQuestionsModal
                 onCancel={() => setModal(null)}
                 wpId={Number(wpId)}
+                rtoUserId={student?.rto?.user?.id!}
             />
         )
     }

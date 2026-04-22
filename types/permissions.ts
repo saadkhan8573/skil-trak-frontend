@@ -128,8 +128,10 @@ export enum PermissionType {
     VIEW_PLACEMENT_PROFILE = 'VIEW_PLACEMENT_PROFILE',
     CAN_USE_CHATBOT = 'CAN_USE_CHATBOT',
     /* -------------------- RTO PLACEMENT PROFILE -------------------- */
-    SHOW_MODAL= 'SHOW_MODAL',
+    SHOW_MODAL = 'SHOW_MODAL',
 
+    // -------------------- RTO ---------------------//
+    ALLOW_OLD_DASHBOARD = 'ALLOW_OLD_DASHBOARD',
 }
 
 export interface IPermission {

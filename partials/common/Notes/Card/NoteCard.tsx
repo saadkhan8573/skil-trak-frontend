@@ -3,6 +3,7 @@ import {
     AuthorizedUserComponent,
     ShowErrorNotifications,
     Typography,
+    useWorldwideStudentDataRestriction,
 } from '@components'
 import { UserRoles } from '@constants'
 import { useNotification } from '@hooks'
@@ -19,6 +20,7 @@ import { PuffLoader } from 'react-spinners'
 import { HtmlToPlainText, playAudioSound, stopAudioSound } from '@utils'
 import { TextToSpeech } from '@pages/api/openai/textToSpeech'
 import { HiMiniSpeakerWave, HiMiniSpeakerXMark } from 'react-icons/hi2'
+import { useAppSelector } from '@redux'
 
 export const NoteCard = ({ note }: { note: NoteType | any }) => {
     const { notification } = useNotification()
@@ -26,6 +28,12 @@ export const NoteCard = ({ note }: { note: NoteType | any }) => {
     const [audioLoading, setAudioLoading] = useState<boolean>(false)
     const [audioUrl, setAudioUrl] = useState<string>('')
     const [isPlaying, setIsPlaying] = useState<boolean>(false)
+
+    const rtoUserId = useAppSelector((state) => state.rto?.rtoDetail?.user?.id)
+
+    const { hasPermission } = useWorldwideStudentDataRestriction({
+        userId: rtoUserId,
+    })
 
     useEffect(() => {
         return () => {
@@ -119,6 +127,12 @@ export const NoteCard = ({ note }: { note: NoteType | any }) => {
         }
     }
 
+    const author = note?.author ?? note?.assignedTo
+
+    const authorName =
+        author?.role === UserRoles.STUDENT && !hasPermission
+            ? 'Student'
+            : author?.name
     return (
         <>
             <ShowErrorNotifications result={removeResult} />
@@ -241,8 +255,7 @@ export const NoteCard = ({ note }: { note: NoteType | any }) => {
                                             : 'text-gray-500'
                                     } capitalize`}
                                 >
-                                    {note?.author?.name ??
-                                        note?.assignedTo?.name}{' '}
+                                    {authorName}
                                     <span className="text-[11px] font-medium capitalize">
                                         (
                                         {note?.author?.role ??

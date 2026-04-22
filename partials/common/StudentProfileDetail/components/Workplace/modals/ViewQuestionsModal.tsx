@@ -1,17 +1,27 @@
-import { Badge, LoadingAnimation, Modal, NoData, Typography } from '@components'
+import {
+    Badge,
+    LoadingAnimation,
+    Modal,
+    NoData,
+    Typography,
+    useWorldwideStudentDataRestriction,
+} from '@components'
 import {
     WorkplaceQuestionCard,
     workplaceQuestions,
     workplaceQuestionsKeys,
 } from '@partials/common/workplace'
 import { SubAdminApi } from '@queries'
+import { useAppSelector } from '@redux'
 import { WorkplaceQuestionType } from '@redux/queryTypes'
 import { ReactNode } from 'react'
 
 export const ViewQuestionsModal = ({
     wpId,
     onCancel,
+    rtoUserId,
 }: {
+    rtoUserId?: number
     wpId: number
     onCancel: () => void
 }) => {
@@ -21,6 +31,13 @@ export const ViewQuestionsModal = ({
             skip: !wpId,
         }
     )
+
+    const rtoUserDataId = useAppSelector(
+        (state) => state.rto.rtoDetail?.user?.id
+    )
+    const { hasPermission } = useWorldwideStudentDataRestriction({
+        userId: rtoUserDataId || rtoUserId,
+    })
 
     const WorkplaceQuestionUpdatedCard = ({
         data,
@@ -86,27 +103,33 @@ export const ViewQuestionsModal = ({
                                                     (
                                                         [key, value]: any,
                                                         ind: number
-                                                    ) => (
-                                                        <div
-                                                            key={ind}
-                                                            className="flex items-center gap-x-1"
-                                                        >
-                                                            <Typography
-                                                                variant={
-                                                                    'small'
-                                                                }
-                                                                capitalize
+                                                    ) => {
+                                                        return (
+                                                            <div
+                                                                key={ind}
+                                                                className="flex items-center gap-x-1"
                                                             >
-                                                                {key}:
-                                                            </Typography>
-                                                            <Badge
-                                                                text={value}
-                                                                variant={
-                                                                    'success'
-                                                                }
-                                                            />
-                                                        </div>
-                                                    )
+                                                                <Typography
+                                                                    variant={
+                                                                        'small'
+                                                                    }
+                                                                    capitalize
+                                                                >
+                                                                    {key}:
+                                                                </Typography>
+                                                                <Badge
+                                                                    text={
+                                                                        hasPermission
+                                                                            ? value
+                                                                            : '---'
+                                                                    }
+                                                                    variant={
+                                                                        'success'
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        )
+                                                    }
                                                 )}
                                             </div>
                                         </WorkplaceQuestionUpdatedCard>

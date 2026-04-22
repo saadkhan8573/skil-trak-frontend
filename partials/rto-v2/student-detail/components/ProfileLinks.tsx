@@ -1,4 +1,8 @@
-import { Button, TableAction } from '@components'
+import {
+    Button,
+    TableAction,
+    useWorldwideStudentDataRestriction,
+} from '@components'
 import { UserRoles } from '@constants'
 import { useActionModal, useNotification, useSubadminProfile } from '@hooks'
 import { ViewProfileVisitorsModal } from '@partials/common/modal'
@@ -25,6 +29,7 @@ import {
     AddExpectedDelayModal,
     RemoveExpectedDelayModal,
 } from '../modals'
+import { useAppSelector } from '@redux'
 
 export const ProfileLinks = ({ profile }: { profile: Student }) => {
     const router = useRouter()
@@ -36,6 +41,12 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
     const { notification } = useNotification()
 
     const subadmin = useSubadminProfile()
+
+    const rtoDetail = useAppSelector((state) => state.rto.rtoDetail)
+
+    const { hasPermission } = useWorldwideStudentDataRestriction({
+        userId: rtoDetail?.user?.id,
+    })
 
     const studentUpdateRequest = profile?.studentUpdateRequests?.find(
         (r) => r?.action === IndustryRequestsActions.Snoozed
@@ -126,24 +137,27 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
         )
     }
 
-    const profileLinks = [
+    const profileLinksData = [
         {
             text: 'Edit Password',
             Icon: IoMdEyeOff,
             onClick: () => onUpdatePassword({ user: profile?.user }),
             permissions: [PermissionType.EDIT_PASSWORD],
+            hasPermission: true,
         },
         {
             text: 'View Password',
             Icon: IoMdEyeOff,
             onClick: () => onViewPassword(profile),
             permissions: [PermissionType.VIEW_PASSWORD],
+            hasPermission: true,
         },
         {
             text: 'Send Password',
             Icon: CiUnlock,
             onClick: () => onMailPasswordToStudent(profile),
             permissions: [PermissionType.SEND_PASSWORD],
+            hasPermission: true,
         },
         {
             text: 'Edit Profile',
@@ -160,16 +174,19 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
                 router.push(editPath)
             },
             permissions: [PermissionType.ALLOW_UPDATE_PROFILE],
+            hasPermission: true,
         },
         {
             text: 'Send Message',
             Icon: TbMessage2Up,
             onClick: () => onMessageSendClicked(),
+            hasPermission: true,
         },
         {
             text: 'Send Info Message',
             Icon: MdInfo,
             onClick: () => onStudentInfoMessageClicked(),
+            hasPermission: true,
         },
         {
             text: profile?.isSnoozed ? 'Un-Snooze' : 'Snooze',
@@ -197,6 +214,13 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
             permissions: [PermissionType.VIEW_VISITORS],
         },
     ]
+
+    const profileLinks = profileLinksData.filter((option) => {
+        if (option.hasPermission) {
+            return hasPermission
+        }
+        return true
+    })
 
     return (
         <div className="flex flex-col items-end gap-y-2.5">

@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { CommunicationItem } from './types'
+import { UserRoles } from '@constants'
 
 export const isWorkplaceStatusUpdate = (item: CommunicationItem): boolean => {
     return (
@@ -67,6 +68,17 @@ export const getCommunicationSender = (item: CommunicationItem) => {
     return 'System'
 }
 export const getCommunicationSenderName = (item: CommunicationItem): string => {
+    const author =
+        item?.author ||
+        item?.addedBy ||
+        item?.calledBy ||
+        item?.createdBy ||
+        item?.sender
+
+    if (author?.role === UserRoles.STUDENT) {
+        return '---'
+    }
+
     return (
         item?.author?.name ||
         item?.addedBy?.name ||

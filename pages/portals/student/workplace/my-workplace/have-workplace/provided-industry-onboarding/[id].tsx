@@ -10,11 +10,7 @@ import { IndustryOnboardingFlow } from '@partials/industry-onboarding/IndustryOn
 const ProvidedIndustryOnboardingPage: NextPageWithLayout = () => {
     const router = useRouter()
     const industryId = router.query?.id
-    return (
-        <>
-            <IndustryOnboardingFlow id={industryId} />
-        </>
-    )
+    return <IndustryOnboardingFlow id={industryId} />
 }
 ProvidedIndustryOnboardingPage.getLayout = (page: ReactElement) => {
     return (

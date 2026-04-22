@@ -7,7 +7,6 @@ import {
     Badge,
     Button,
     Card,
-    GlobalModal,
     LoadingAnimation,
     Typography,
 } from '@components'
@@ -35,13 +34,10 @@ import {
     useUpdateFindAbnMutation,
 } from '@queries'
 import { WorkplaceCurrentStatus } from '@utils'
-import { useMediaQuery } from 'react-responsive'
 import { useRouter } from 'next/router'
-import { IndustryOnboardingFlow } from '@partials/industry-onboarding/IndustryOnboardingFlow'
+import { useMediaQuery } from 'react-responsive'
 
-type Props = {}
-
-const HaveWorkplace: NextPageWithLayout = (props: Props) => {
+const HaveWorkplace: NextPageWithLayout = () => {
     const isMobile = useMediaQuery(MediaQueries.Mobile)
     const [active, setActive] = useState(1)
     const [answer, setAnswer] = useState('')
@@ -88,11 +84,11 @@ const HaveWorkplace: NextPageWithLayout = (props: Props) => {
         const industryId = approval?.industry?.id
         const isOnboarding = approval?.industry?.showOnboarding
 
-        if (industryId && isOnboarding) {
-            router.push(
-                `/portals/student/workplace/my-workplace/have-workplace/provided-industry-onboarding/${industryId}`
-            )
-        }
+        // if (industryId && isOnboarding) {
+        //     router.push(
+        //         `/portals/student/workplace/my-workplace/have-workplace/provided-industry-onboarding/${industryId}`
+        //     )
+        // }
     }, [workplaceData, workplace])
 
     useEffect(() => {

@@ -100,8 +100,6 @@ export const StudentHeader = ({ student }: { student: Student }) => {
         },
     ]
 
-    console.log('rtoDetail?.user?.id', rtoDetail)
-
     return (
         <div className="relative">
             {/* Main Card with Gradient Border Effect */}

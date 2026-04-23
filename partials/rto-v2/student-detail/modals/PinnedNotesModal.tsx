@@ -9,10 +9,16 @@ import { motion } from 'framer-motion'
 import { cn } from '@utils'
 import { CommonApi } from '@queries'
 import moment from 'moment'
-import { LoadingAnimation, Typography } from '@components'
+import {
+    LoadingAnimation,
+    Typography,
+    useWorldwideStudentDataRestriction,
+} from '@components'
 import { Skeleton } from '@components/ui/skeleton'
 import { useNotification } from '@hooks'
 import { PuffLoader } from 'react-spinners'
+import { UserRoles } from '@constants'
+import { useAppSelector } from '@redux'
 
 interface PinnedNotesModalProps {
     isOpen: boolean
@@ -31,6 +37,12 @@ export const PinnedNotesModal = ({
     })
 
     const [statusChange, statusChangeResult] = CommonApi.Notes.useStatusChange()
+
+    const rtoUserId = useAppSelector((state) => state.rto.rtoDetail?.user?.id)
+
+    const { hasPermission } = useWorldwideStudentDataRestriction({
+        userId: rtoUserId,
+    })
 
     const handleTogglePin = async (noteId: number) => {
         const res: any = await statusChange(noteId)
@@ -101,86 +113,97 @@ export const PinnedNotesModal = ({
                             </Typography>
                         </div>
                     ) : notes.data && notes.data.length > 0 ? (
-                        notes.data.map((note: any, index: number) => (
-                            <motion.div
-                                key={note.id}
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: index * 0.05 }}
-                                className={cn(
-                                    'relative overflow-hidden rounded-xl border-l-4 p-4 shadow-sm hover:shadow-md transition-all',
-                                    'border-[#F7A619] bg-linear-to-r from-[#F7A619]/5 to-transparent'
-                                )}
-                            >
-                                {/* Note Header */}
-                                <div className="flex items-start justify-between mb-2">
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-2 mb-1.5">
-                                            <h4 className="text-slate-900 font-semibold text-sm">
-                                                {note.title ?? note.subject}
-                                            </h4>
-                                            <div className="flex items-center gap-1 bg-[#F7A619]/20 text-[#F7A619] px-1.5 py-0.5 rounded-full">
-                                                <AlertCircle className="w-2.5 h-2.5" />
-                                                <span className="text-[10px] font-medium">
-                                                    Pinned
-                                                </span>
+                        notes.data.map((note: any, index: number) => {
+                            const authorName =
+                                [
+                                    note.author?.role,
+                                    note.assignedTo?.role,
+                                ].includes(UserRoles.STUDENT) && !hasPermission
+                                    ? 'Student'
+                                    : (note.author?.name ??
+                                      note.assignedTo?.name)
+                            return (
+                                <motion.div
+                                    key={note.id}
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: index * 0.05 }}
+                                    className={cn(
+                                        'relative overflow-hidden rounded-xl border-l-4 p-4 shadow-sm hover:shadow-md transition-all',
+                                        'border-[#F7A619] bg-linear-to-r from-[#F7A619]/5 to-transparent'
+                                    )}
+                                >
+                                    {/* Note Header */}
+                                    <div className="flex items-start justify-between mb-2">
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2 mb-1.5">
+                                                <h4 className="text-slate-900 font-semibold text-sm">
+                                                    {note.title ?? note.subject}
+                                                </h4>
+                                                <div className="flex items-center gap-1 bg-[#F7A619]/20 text-[#F7A619] px-1.5 py-0.5 rounded-full">
+                                                    <AlertCircle className="w-2.5 h-2.5" />
+                                                    <span className="text-[10px] font-medium">
+                                                        Pinned
+                                                    </span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="flex items-center gap-2.5 text-xs text-slate-600">
-                                            <div className="flex items-center gap-1">
-                                                <Calendar className="w-3 h-3" />
-                                                <span>
-                                                    {moment(
-                                                        note.isEnabled ||
-                                                            note.createdAt
-                                                    )
-                                                        .tz(
-                                                            'Australia/Melbourne'
+                                            <div className="flex items-center gap-2.5 text-xs text-slate-600">
+                                                <div className="flex items-center gap-1">
+                                                    <Calendar className="w-3 h-3" />
+                                                    <span>
+                                                        {moment(
+                                                            note.isEnabled ||
+                                                                note.createdAt
                                                         )
-                                                        .format(
-                                                            'ddd DD, MMM, yyyy [at] hh:mm A'
-                                                        )}
-                                                </span>
-                                            </div>
-                                            <div className="flex items-center gap-1">
-                                                <User className="w-3 h-3" />
-                                                <span>
-                                                    {note.author?.name ??
-                                                        note.assignedTo?.name}
-                                                </span>
+                                                            .tz(
+                                                                'Australia/Melbourne'
+                                                            )
+                                                            .format(
+                                                                'ddd DD, MMM, yyyy [at] hh:mm A'
+                                                            )}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center gap-1">
+                                                    <User className="w-3 h-3" />
+                                                    <span>{authorName}</span>
+                                                </div>
                                             </div>
                                         </div>
+                                        <button
+                                            disabled={
+                                                statusChangeResult.isLoading
+                                            }
+                                            onClick={() =>
+                                                handleTogglePin(note.id)
+                                            }
+                                            className="w-7 cursor-pointer h-7 rounded-lg bg-[#044866] hover:bg-[#044866]/90 flex items-center justify-center shrink-0 transition-all active:scale-95 disabled:opacity-50"
+                                        >
+                                            {statusChangeResult.isLoading &&
+                                            statusChangeResult?.originalArgs ===
+                                                note.id ? (
+                                                <PuffLoader
+                                                    size={16}
+                                                    color="white"
+                                                />
+                                            ) : (
+                                                <Pin className="w-3.5 h-3.5 text-white" />
+                                            )}
+                                        </button>
                                     </div>
-                                    <button
-                                        disabled={statusChangeResult.isLoading}
-                                        onClick={() => handleTogglePin(note.id)}
-                                        className="w-7 cursor-pointer h-7 rounded-lg bg-[#044866] hover:bg-[#044866]/90 flex items-center justify-center shrink-0 transition-all active:scale-95 disabled:opacity-50"
-                                    >
-                                        {statusChangeResult.isLoading &&
-                                        statusChangeResult?.originalArgs ===
-                                            note.id ? (
-                                            <PuffLoader
-                                                size={16}
-                                                color="white"
-                                            />
-                                        ) : (
-                                            <Pin className="w-3.5 h-3.5 text-white" />
-                                        )}
-                                    </button>
-                                </div>
 
-                                {/* Note Content */}
-                                <div
-                                    className="text-slate-700 text-sm leading-relaxed remove-text-bg customTailwingStyles"
-                                    dangerouslySetInnerHTML={{
-                                        __html: note.body ?? note.message,
-                                    }}
-                                />
+                                    {/* Note Content */}
+                                    <div
+                                        className="text-slate-700 text-sm leading-relaxed remove-text-bg customTailwingStyles"
+                                        dangerouslySetInnerHTML={{
+                                            __html: note.body ?? note.message,
+                                        }}
+                                    />
 
-                                {/* Background Decoration */}
-                                <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-br from-white/50 to-transparent rounded-full blur-2xl -z-10"></div>
-                            </motion.div>
-                        ))
+                                    {/* Background Decoration */}
+                                    <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-br from-white/50 to-transparent rounded-full blur-2xl -z-10"></div>
+                                </motion.div>
+                            )
+                        })
                     ) : (
                         <div className="flex flex-col items-center justify-center py-12 text-center text-slate-500">
                             <Pin className="w-12 h-12 mb-2 opacity-20" />

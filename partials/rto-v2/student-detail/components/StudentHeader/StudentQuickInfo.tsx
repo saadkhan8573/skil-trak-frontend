@@ -105,7 +105,7 @@ export const StudentQuickInfo = () => {
                         <AuthorizedUserComponent
                             isHod
                             isManager
-                            customUserIds={[20365, 24631]} // Shaheer
+                            customUserIds={[20365, 24631]} // Testers
                             roles={[UserRoles.ADMIN]}
                         >
                             <ActionButton

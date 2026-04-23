@@ -10,7 +10,6 @@ export const getMinExpiryDate = () => {
 
 export const importStudentValidationSchema = yup.object({
     batch: yup.string().required('Batch required'),
-    gender: yup.string().required('Gender required'),
     // Placement Type
     placementType: yup
         .string()

@@ -1,5 +1,6 @@
 import {
     Appointments,
+    ChatResponses,
     Communications,
     PinnedNotesActionBanner,
     RtoInfo,
@@ -235,6 +236,7 @@ export const RtoStudentDetail = () => {
                         <PinnedNotesActionBanner
                             userId={profile?.data?.user?.id}
                         />
+                        <ChatResponses />
 
                         <ConfigTabs
                             tabs={tabs}

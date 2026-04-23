@@ -131,7 +131,7 @@ export function AIQuestionPanel({ student }: AIQuestionPanelProps) {
                 <div
                     // ref={chatContainerRef}
                     id={'parent-div'}
-                    className="max-h-96 overflow-y-auto p-4 space-y-4 custom-scrollbar"
+                    className="max-h-150 overflow-y-auto p-4 space-y-4 custom-scrollbar"
                 >
                     {messages.length === 0 ? (
                         <div className="space-y-3">

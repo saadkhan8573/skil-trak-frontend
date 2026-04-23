@@ -45,7 +45,7 @@ export const ViewProgressByCourseChart = ({
                 {isLoading ? (
                     <LoadingAnimation size={60} />
                 ) : initialData?.length > 0 ? (
-                    <ResponsiveContainer width="102%" height="100%">
+                    <ResponsiveContainer width="102%" height="100%" minWidth={0} minHeight={0}>
                         <BarChart
                             data={initialData}
                             margin={{

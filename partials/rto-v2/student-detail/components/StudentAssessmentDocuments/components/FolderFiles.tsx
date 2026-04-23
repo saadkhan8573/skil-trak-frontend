@@ -1,4 +1,9 @@
-import { LoadingAnimation, NoData, Typography } from '@components'
+import {
+    LoadingAnimation,
+    NoData,
+    Typography,
+    useWorldwideStudentDataRestriction,
+} from '@components'
 import { AssessmentEvidenceFolder, FolderStatusConfig } from '@types'
 import { RtoV2Api, SubAdminApi } from '@queries'
 import { useAppSelector } from '@redux/hooks'
@@ -30,6 +35,12 @@ export const FolderFiles = ({
     const studentId = useAppSelector(
         (state) => state?.student?.studentDetail?.id ?? 0
     )
+
+    const rtoUserId = useAppSelector((state) => state?.rto?.rtoDetail?.user?.id)
+
+    const { filterData } = useWorldwideStudentDataRestriction({
+        userId: rtoUserId,
+    })
 
     const otherDocsData = SubAdminApi.AssessmentEvidence.getOtherDocAssessment(
         { selectedFolder: folder?.id, student: studentId },
@@ -78,6 +89,47 @@ export const FolderFiles = ({
         return <NoData text="No files uploaded" />
     }
 
+    type FolderTabItem = {
+        id: string
+        label: string
+        icon: React.ElementType
+        count: number
+        activeClasses: {
+            button: string
+            icon: string
+            badge: string
+        }
+        hasPermission?: boolean
+    }
+
+    const folderTab: FolderTabItem[] = [
+        {
+            id: 'active',
+            label: 'Active Files',
+            icon: FileCheck,
+            count: allFiles?.filter((d: any) => !d.isArchived).length || 0,
+            activeClasses: {
+                button: 'bg-linear-to-r from-white to-blue-50/80 text-[#044866] shadow-sm ring-1 ring-[#044866]/10',
+                icon: 'text-[#044866]',
+                badge: 'bg-[#044866]/10 text-[#044866]',
+            },
+        },
+        {
+            id: 'archived',
+            label: 'Archived',
+            icon: Archive,
+            count: allFiles?.filter((d: any) => d.isArchived).length || 0,
+            activeClasses: {
+                button: 'bg-linear-to-r from-white to-red-50/80 text-red-600 shadow-sm ring-1 ring-red-100',
+                icon: 'text-red-600',
+                badge: 'bg-red-50 text-red-600',
+            },
+            hasPermission: true,
+        },
+    ]
+
+    const folderFilesTab = filterData(folderTab)
+
     return (
         <div className="border-t border-slate-200 bg-white">
             {eSignDocument?.isLoading ? (
@@ -115,56 +167,44 @@ export const FolderFiles = ({
                 <div className="flex flex-col">
                     {/* View Switcher */}
                     <div className="flex items-center gap-1 p-2 bg-slate-50/50 border-b border-slate-100">
-                        <button
-                            onClick={() => setViewType('active')}
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${viewType === 'active'
-                                ? 'bg-linear-to-r from-white to-blue-50/80 text-[#044866] shadow-sm ring-1 ring-[#044866]/10'
-                                : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                                }`}
-                        >
-                            <FileCheck
-                                className={`w-3.5 h-3.5 ${viewType === 'active'
-                                    ? 'text-[#044866]'
-                                    : 'text-slate-400'
+                        {folderFilesTab.map((tab) => {
+                            const isActive = viewType === tab.id
+                            const Icon = tab.icon
+
+                            return (
+                                <button
+                                    key={tab.id}
+                                    onClick={() =>
+                                        setViewType(
+                                            tab.id as 'active' | 'archived'
+                                        )
+                                    }
+                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                                        isActive
+                                            ? tab.activeClasses.button
+                                            : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
                                     }`}
-                            />
-                            Active Files
-                            <span
-                                className={`ml-1 px-1.5 py-0.5 rounded-full text-[10px] ${viewType === 'active'
-                                    ? 'bg-[#044866]/10 text-[#044866]'
-                                    : 'bg-slate-200 text-slate-500'
-                                    }`}
-                            >
-                                {allFiles?.filter(
-                                    (d: any) => !d.isArchived
-                                ).length || 0}
-                            </span>
-                        </button>
-                        <button
-                            onClick={() => setViewType('archived')}
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${viewType === 'archived'
-                                ? 'bg-linear-to-r from-white to-red-50/80 text-red-600 shadow-sm ring-1 ring-red-100'
-                                : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                                }`}
-                        >
-                            <Archive
-                                className={`w-3.5 h-3.5 ${viewType === 'archived'
-                                    ? 'text-red-600'
-                                    : 'text-slate-400'
-                                    }`}
-                            />
-                            Archived
-                            <span
-                                className={`ml-1 px-1.5 py-0.5 rounded-full text-[10px] ${viewType === 'archived'
-                                    ? 'bg-red-50 text-red-600'
-                                    : 'bg-slate-200 text-slate-500'
-                                    }`}
-                            >
-                                {allFiles?.filter(
-                                    (d: any) => d.isArchived
-                                ).length || 0}
-                            </span>
-                        </button>
+                                >
+                                    <Icon
+                                        className={`w-3.5 h-3.5 ${
+                                            isActive
+                                                ? tab.activeClasses.icon
+                                                : 'text-slate-400'
+                                        }`}
+                                    />
+                                    {tab.label}
+                                    <span
+                                        className={`ml-1 px-1.5 py-0.5 rounded-full text-[10px] ${
+                                            isActive
+                                                ? tab.activeClasses.badge
+                                                : 'bg-slate-200 text-slate-500'
+                                        }`}
+                                    >
+                                        {tab.count}
+                                    </span>
+                                </button>
+                            )
+                        })}
                     </div>
 
                     {filteredFiles.length > 0 ? (

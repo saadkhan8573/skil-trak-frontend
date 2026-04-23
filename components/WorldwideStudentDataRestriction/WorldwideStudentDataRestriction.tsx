@@ -1,6 +1,5 @@
+// WorldwideStudentDataRestriction.tsx
 import { BlurOverlay } from '@components/BlurOverlay'
-import { Permissions, usePermissions } from '@components/Permissions'
-import { PermissionType } from '@types'
 import { useWorldwideStudentDataRestriction } from './useWorldwideStudentDataRestriction'
 
 export const WorldwideStudentDataRestriction = ({
@@ -18,20 +17,15 @@ export const WorldwideStudentDataRestriction = ({
         width?: string
     }
 }) => {
-    const { checkPermission } = useWorldwideStudentDataRestriction({
+    const { shouldBlur } = useWorldwideStudentDataRestriction({
         userId: anotherUserId,
     })
 
-    if (!checkPermission) {
-        return children
+    // ✅ One condition, one boolean, zero mount cycles
+    //    shouldBlur covers: loading, error, restricted without access
+    if (shouldBlur) {
+        return <BlurOverlay {...fallbackOptions} />
     }
 
-    return (
-        <Permissions
-            permission={PermissionType.ACCESS_WORLDWIDE_STUDENT_INFORMATION}
-            fallback={<BlurOverlay {...fallbackOptions} />}
-        >
-            {children}
-        </Permissions>
-    )
+    return children
 }

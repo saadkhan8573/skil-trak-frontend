@@ -1,4 +1,10 @@
-import { Badge, Button, ViewDocumentModal, ViewImageModal } from '@components'
+import {
+    Badge,
+    Button,
+    ViewDocumentModal,
+    ViewImageModal,
+    WorldwideStudentDataRestriction,
+} from '@components'
 import { FileType, FolderStatusConfig } from '@types'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import { getFileExtensionByUrl } from '@utils'
@@ -16,6 +22,7 @@ import { useState } from 'react'
 import { ApproveFile, RejectFile } from '../components'
 import { Edit3, RotateCcw, Trash2 } from 'lucide-react'
 import { ArchiveDocumentModal, EditDocumentModal } from '../modal'
+import { useAppSelector } from '@redux'
 
 export const FolderDocumentCard = ({
     doc,
@@ -33,6 +40,8 @@ export const FolderDocumentCard = ({
     const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false)
     const [isViewModalOpen, setIsViewModalOpen] = useState(false)
     const [isImageViewModalOpen, setIsImageViewModalOpen] = useState(false)
+
+    const rtoUserId = useAppSelector((state) => state.rto.rtoDetail?.user?.id)
 
     const extension = getFileExtensionByUrl(doc?.file)
     const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(
@@ -128,68 +137,103 @@ export const FolderDocumentCard = ({
                             Icon={DocStatusIcon}
                         />
                     )}
-
-                    <Tooltip>
-                        <TooltipTrigger>
-                            <Button
-                                mini
-                                Icon={Eye}
-                                variant="action"
-                                onClick={handleView}
-                            />
-                        </TooltipTrigger>
-                        <TooltipContent>View Document</TooltipContent>
-                    </Tooltip>
-
-                    {!isOtherDoc && (
+                    <WorldwideStudentDataRestriction
+                        fallbackOptions={{
+                            width: '0px',
+                            height: '0px',
+                        }}
+                        anotherUserId={rtoUserId!}
+                    >
                         <Tooltip>
-                            <TooltipTrigger>
+                            <TooltipTrigger asChild>
                                 <Button
                                     mini
-                                    Icon={Edit3}
+                                    Icon={Eye}
                                     variant="action"
-                                    onClick={() => setIsEditModalOpen(true)}
+                                    onClick={handleView}
                                 />
                             </TooltipTrigger>
-                            <TooltipContent>Edit Document</TooltipContent>
+                            <TooltipContent>View Document</TooltipContent>
                         </Tooltip>
-                    )}
+                    </WorldwideStudentDataRestriction>
 
-                    <Tooltip>
-                        <TooltipTrigger>
-                            <Button
-                                mini
-                                Icon={Download}
-                                onClick={() => {
-                                    window.open(doc?.file, '_blank')
-                                }}
-                                variant="action"
-                            />
-                        </TooltipTrigger>
-                        <TooltipContent>Download Document</TooltipContent>
-                    </Tooltip>
+                    <WorldwideStudentDataRestriction
+                        fallbackOptions={{
+                            width: '0px',
+                            height: '0px',
+                        }}
+                        anotherUserId={rtoUserId!}
+                    >
+                        {!isOtherDoc && (
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        mini
+                                        Icon={Edit3}
+                                        variant="action"
+                                        onClick={() => setIsEditModalOpen(true)}
+                                    />
+                                </TooltipTrigger>
+                                <TooltipContent>Edit Document</TooltipContent>
+                            </Tooltip>
+                        )}
+                    </WorldwideStudentDataRestriction>
 
-                    {!isOtherDoc && (
+                    <WorldwideStudentDataRestriction
+                        fallbackOptions={{
+                            width: '0px',
+                            height: '0px',
+                        }}
+                        anotherUserId={rtoUserId!}
+                    >
                         <Tooltip>
-                            <TooltipTrigger>
+                            <TooltipTrigger asChild>
                                 <Button
                                     mini
-                                    Icon={doc?.isArchived ? RotateCcw : Trash2}
+                                    Icon={Download}
+                                    onClick={() => {
+                                        window.open(doc?.file, '_blank')
+                                    }}
                                     variant="action"
-                                    className={
-                                        doc?.isArchived
-                                            ? 'text-blue-600 hover:text-blue-700 hover:bg-blue-50'
-                                            : 'text-red-600 hover:text-red-700 hover:bg-red-50'
-                                    }
-                                    onClick={() => setIsArchiveModalOpen(true)}
                                 />
                             </TooltipTrigger>
-                            <TooltipContent>
-                                {doc?.isArchived ? 'Restore' : 'Delete'}{' '}
-                                Document
-                            </TooltipContent>
+                            <TooltipContent>Download Document</TooltipContent>
                         </Tooltip>
-                    )}
+                    </WorldwideStudentDataRestriction>
+
+                    <WorldwideStudentDataRestriction
+                        fallbackOptions={{
+                            width: '0px',
+                            height: '0px',
+                        }}
+                        anotherUserId={rtoUserId!}
+                    >
+                        {!isOtherDoc && (
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        mini
+                                        Icon={
+                                            doc?.isArchived ? RotateCcw : Trash2
+                                        }
+                                        variant="action"
+                                        className={
+                                            doc?.isArchived
+                                                ? 'text-blue-600 hover:text-blue-700 hover:bg-blue-50'
+                                                : 'text-red-600 hover:text-red-700 hover:bg-red-50'
+                                        }
+                                        onClick={() =>
+                                            setIsArchiveModalOpen(true)
+                                        }
+                                    />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    {doc?.isArchived ? 'Restore' : 'Delete'}{' '}
+                                    Document
+                                </TooltipContent>
+                            </Tooltip>
+                        )}
+                    </WorldwideStudentDataRestriction>
 
                     {(doc.status === 'uploaded' ||
                         doc.status === 'pending') && (

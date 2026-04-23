@@ -37,4 +37,11 @@ export const aiAssistantEndpoints = (
         query: (id) => `rtos/student/${id}/get/workplace-request`,
         providesTags: ['RTO'],
     }),
+    getStudentJourney: builder.query<any, { studentId: number }>({
+        query: (params) => ({
+            url: `ai/assistant/student/journey`,
+            params,
+        }),
+        providesTags: ['AI-Assistant'],
+    }),
 })

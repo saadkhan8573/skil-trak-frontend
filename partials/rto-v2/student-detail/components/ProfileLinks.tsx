@@ -44,7 +44,7 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
 
     const rtoDetail = useAppSelector((state) => state.rto.rtoDetail)
 
-    const { hasPermission } = useWorldwideStudentDataRestriction({
+    const { filterData, hasPermission } = useWorldwideStudentDataRestriction({
         userId: rtoDetail?.user?.id,
     })
 
@@ -215,12 +215,7 @@ export const ProfileLinks = ({ profile }: { profile: Student }) => {
         },
     ]
 
-    const profileLinks = profileLinksData.filter((option) => {
-        if (option.hasPermission) {
-            return hasPermission
-        }
-        return true
-    })
+    const profileLinks = filterData(profileLinksData)
 
     return (
         <div className="flex flex-col items-end gap-y-2.5">

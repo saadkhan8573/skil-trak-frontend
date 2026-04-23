@@ -6,6 +6,7 @@ import {
     ShowErrorNotifications,
     TextInput,
     Typography,
+    WorldwideStudentDataRestriction,
 } from '@components'
 import { UserRoles } from '@constants'
 import { useNotification, useWorkplace } from '@hooks'
@@ -14,7 +15,7 @@ import { Industry, OptionType, SubAdmin } from '@types'
 import { AuthUtils, ellipsisText, getUserCredentials } from '@utils'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { ReactElement, useEffect, useMemo, useState } from 'react'
+import { ReactElement, useEffect, useMemo, useState, useCallback } from 'react'
 import { MdEmail } from 'react-icons/md'
 import { useDispatch } from 'react-redux'
 import { apiSlice } from '@queries/portals/empty.query'
@@ -227,11 +228,15 @@ export const InitiateSignStudent = ({
         [subadmins]
     )
 
-    const userIds = () => {
+    const userIds = useCallback(() => {
         const ids = {
-            [UserRoles.INDUSTRY]: Number(selectedIndustry?.user?.id),
+            [UserRoles.INDUSTRY]: selectedIndustry?.user?.id
+                ? Number(selectedIndustry.user.id)
+                : undefined,
             [UserRoles.STUDENT]: student?.data?.user?.id,
-            coordinator: Number(selectedCoordinator?.user?.id),
+            coordinator: selectedCoordinator?.user?.id
+                ? Number(selectedCoordinator.user.id)
+                : undefined,
             [UserRoles.RTO]: workplaceRto?.user?.id,
         }
         const updatedIds = {}
@@ -239,12 +244,18 @@ export const InitiateSignStudent = ({
         const idsKeys = Object.keys(ids)
         idsKeys?.forEach((key: any) => {
             const updatedKey = key === 'coordinator' ? UserRoles.SUBADMIN : key
-            template?.recipients?.includes(updatedKey)
-                ? ((updatedIds as any)[updatedKey] = (ids as any)[key])
-                : null
+            if (template?.recipients?.includes(updatedKey)) {
+                ;(updatedIds as any)[updatedKey] = (ids as any)[key]
+            }
         })
         return updatedIds
-    }
+    }, [
+        selectedIndustry?.user?.id,
+        student?.data?.user?.id,
+        selectedCoordinator?.user?.id,
+        workplaceRto?.user?.id,
+        template?.recipients,
+    ])
 
     const isAllRolesExist = Object.entries(userIds())
         ?.filter(([key, value]: any) => {
@@ -332,22 +343,6 @@ export const InitiateSignStudent = ({
         }
     }
 
-    // useEffect(() => {
-    //     if (
-    //         userIds() &&
-    //         secondaryMails?.filter((s: any) => s?.user)?.length <
-    //             template?.recipients?.length
-    //     ) {
-    //         setSecondaryMails(
-    //             Object.entries(userIds())?.map(([role, id]: any) => ({
-    //                 user: id,
-    //                 email: null,
-    //                 role,
-    //             }))
-    //         )
-    //     }
-    // }, [userIds(), template?.recipients, secondaryMails])
-
     useEffect(() => {
         // Only proceed if userIds is a function and returns a truthy value
         const userIdsValue = userIds()
@@ -380,12 +375,7 @@ export const InitiateSignStudent = ({
                 return areSame ? prevMails : newSecondaryMails
             })
         }
-    }, [
-        // Use a stable reference to the userIds object/function
-        userIds,
-        template?.recipients?.length,
-        secondaryMails?.length,
-    ])
+    }, [userIds, template?.recipients?.length, secondaryMails?.length])
 
     return (
         <>
@@ -452,14 +442,25 @@ export const InitiateSignStudent = ({
                                     <Typography variant="label" semibold>
                                         Student
                                     </Typography>
-                                    <UserCellInfo
-                                        profile={{
-                                            id: student?.data?.id,
-                                            studentId: student?.data?.studentId,
-                                            user: student?.data?.user,
+                                    <WorldwideStudentDataRestriction
+                                        anotherUserId={workplaceRto?.user?.id!}
+                                        fallbackOptions={{
+                                            height: '80px',
+                                            width: '100%',
                                         }}
-                                        setSecondaryMails={setSecondaryMails}
-                                    />
+                                    >
+                                        <UserCellInfo
+                                            profile={{
+                                                id: student?.data?.id,
+                                                studentId:
+                                                    student?.data?.studentId,
+                                                user: student?.data?.user,
+                                            }}
+                                            setSecondaryMails={
+                                                setSecondaryMails
+                                            }
+                                        />
+                                    </WorldwideStudentDataRestriction>
                                 </div>
                                 {selectedIndustry && (
                                     <div>

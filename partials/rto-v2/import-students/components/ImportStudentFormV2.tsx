@@ -36,10 +36,10 @@ export const ImportStudentFormV2 = ({
     const rtoCoursesOptions =
         rto.isSuccess && rto?.data?.courses && rto?.data?.courses?.length > 0
             ? rto?.data?.courses?.map((course: Course) => ({
-                label: course?.title,
-                value: course?.id,
-                item: course,
-            }))
+                  label: course?.title,
+                  value: course?.id,
+                  item: course,
+              }))
             : []
 
     const methods = useForm<any>({
@@ -87,19 +87,11 @@ export const ImportStudentFormV2 = ({
                     <PlacementType />
 
                     {/* Form Inputs */}
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 gap-2">
                         <TextInput
                             name="batch"
                             label="Batch/Class"
                             placeholder="Batch/Class"
-                        />
-                        <Select
-                            label={'Gender'}
-                            name={'gender'}
-                            options={genderOptions}
-                            placeholder={'Select Gender...'}
-                            validationIcons
-                            onlyValue
                         />
                     </div>
                     <div>

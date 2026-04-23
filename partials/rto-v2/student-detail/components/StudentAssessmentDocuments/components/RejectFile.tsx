@@ -52,7 +52,7 @@ export const RejectFile = ({
         <div>
             <ShowErrorNotifications result={fileStatusChangeResult} />
             <Tooltip>
-                <TooltipTrigger>
+                <TooltipTrigger asChild>
                     <Button
                         mini
                         outline

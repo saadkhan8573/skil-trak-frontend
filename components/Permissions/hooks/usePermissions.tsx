@@ -1,6 +1,6 @@
+import { getUserCredentials } from '@utils'
 import { useUserPermissions } from '@hooks/useUserPermissions'
 import { IAssignedPermission, IPermission, PermissionType } from '@types'
-import { getUserCredentials } from '@utils'
 
 export const usePermissionCheck = ({
     userId,
@@ -15,26 +15,42 @@ export const usePermissionCheck = ({
         useUserPermissions({ anotherUserId, userId })
     const role = getUserCredentials()?.role
 
-    const checkSinglePermission = (permCode: PermissionType): boolean => {
-        // Check if anotherUserId is provided - include its loading/error states
-        const hasAnotherUser = !!anotherUserId
+    const hasAnotherUser = !!anotherUserId
 
-        if (
-            allPermissions?.isLoading ||
-            allPermissions?.isFetching ||
-            userPermissions?.isLoading ||
-            userPermissions?.isFetching ||
-            userPermissions?.isError ||
-            allPermissions?.isError ||
-            (hasAnotherUser &&
-                (anotherUserPermissions?.isLoading ||
-                    anotherUserPermissions?.isFetching ||
-                    anotherUserPermissions?.isError))
-        ) {
+    // ✅ THE FIX: use !isSuccess instead of isLoading/isFetching flags.
+    // RTK Query has an "uninitialized" phase on first render where:
+    //   isLoading: false, isFetching: false, isSuccess: false
+    // The old check (isLoading || isFetching) reads false during this phase,
+    // so the component skips the blur and briefly shows unprotected content.
+    // Using !isSuccess treats uninitialized, pending, and error all as "not ready".
+    const isLoading = !!(
+        !allPermissions?.isSuccess ||
+        allPermissions?.isFetching ||
+        !userPermissions?.isSuccess ||
+        userPermissions?.isFetching ||
+        (hasAnotherUser &&
+            (!anotherUserPermissions?.isSuccess ||
+                anotherUserPermissions?.isFetching))
+    )
+
+    const isError = !!(
+        allPermissions?.isError ||
+        userPermissions?.isError ||
+        (hasAnotherUser && anotherUserPermissions?.isError)
+    )
+
+    const checkSinglePermission = (permCode: PermissionType): boolean => {
+        // isLoading now also covers uninitialized — fail-secure in all non-ready states
+        if (isLoading || isError) {
             return false
         }
 
-        if (allPermissions?.isSuccess && userPermissions?.isSuccess) {
+        if (
+            allPermissions?.isSuccess &&
+            userPermissions?.isSuccess &&
+            !allPermissions?.isFetching &&
+            !userPermissions?.isFetching
+        ) {
             // If anotherUserId is provided, we also need anotherUserPermissions to be successful
             if (hasAnotherUser && !anotherUserPermissions?.isSuccess) {
                 return false
@@ -71,24 +87,20 @@ export const usePermissionCheck = ({
                     anotherUserPermissions?.data || []
                 const mergedPerms = [...userPerms, ...anotherUserPerms]
 
-                // Check if permission exists in merged data
                 const assignedPermission = mergedPerms.find(
                     (up) => up.permission.code === permCode
                 )
 
-                // If permission exists in merged data, check isActive; otherwise false
                 return !!assignedPermission?.isActive || false
             } else {
                 // Original logic: check only user permissions
                 const userPerms: IAssignedPermission[] =
                     userPermissions?.data || []
 
-                // If permission exists in system and role matches (if restricted), find it in user's permissions
                 const assignedPermission = userPerms.find(
                     (up) => up.permission.code === permCode
                 )
 
-                // Return isActive status if found, otherwise false
                 return !!assignedPermission?.isActive || false
             }
         }
@@ -98,30 +110,28 @@ export const usePermissionCheck = ({
 
     const checkPermission = (
         permission?: PermissionType | PermissionType[],
-        mode: 'AND' | 'OR' | 'allSame' = 'OR' // 👈 add mode param, default keeps existing behavior
+        mode: 'AND' | 'OR' | 'allSame' = 'OR'
     ): boolean => {
         if (!permission) return true
 
         if (Array.isArray(permission)) {
             if (mode === 'allSame') {
-                // ✅ Return true if ALL permissions resolve to the same value (all true OR all false)
                 const results = permission.map((p) => checkSinglePermission(p))
                 return results.every((r) => r === results[0])
             }
 
             if (mode === 'OR') {
-                // OR logic — true if at least one is true
                 return permission.some((p) => checkSinglePermission(p))
             }
 
-            // Default: 'every' — AND logic (original behavior)
+            // AND logic
             return permission.every((p) => checkSinglePermission(p))
         }
 
         return checkSinglePermission(permission)
     }
 
-    return { checkPermission, checkSinglePermission }
+    return { checkPermission, checkSinglePermission, isLoading, isError }
 }
 
 export const usePermissions = ({

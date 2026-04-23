@@ -695,6 +695,8 @@ const {
     useSearchStudentQuery,
     useAskAiAboutStudentMutation,
     useAiStudentSearchDetailQuery,
+    useGetStudentJourneyQuery,
+    useLazyGetStudentJourneyQuery,
     useStudentWorkplaceRequestQuery,
 
     // --------- TEAMS -------------//
@@ -781,7 +783,7 @@ export const CommonApi = {
         getRtoWpTypes: useGetRtoWpTypesQuery,
         addRtoWpType: useAddRtoWpTypeMutation,
         removeRtoWpType: useRemoveRtoWpTypeMutation,
-        useUpdateStudentWorkplaceType:useUpdateStudentWorkplaceTypeMutation,
+        useUpdateStudentWorkplaceType: useUpdateStudentWorkplaceTypeMutation,
     },
     Industries: {
         getFolders: useGetCoursesFoldersQuery,
@@ -1102,13 +1104,15 @@ export const CommonApi = {
     },
     AiAssistant: {
         searchStudent: useSearchStudentQuery,
+        getStudentJourney: useGetStudentJourneyQuery,
+        getStudentJourneyLazy: useLazyGetStudentJourneyQuery,
         askAiAboutStudent: useAskAiAboutStudentMutation,
         aiStudentSearchDetail: useAiStudentSearchDetailQuery,
         studentWorkplaceRequest: useStudentWorkplaceRequestQuery,
     },
     Teams: {
         useCreateSupportTeam: useCreateSupportTeamMutation,
-        useCreateRtoSupportTeam:useCreateRtoSupportTeamMutation,
+        useCreateRtoSupportTeam: useCreateRtoSupportTeamMutation,
         useEditSupportTeam: useEditSupportTeamMutation,
         useAllSupportTeams: useGetAllSupportTeamsQuery,
         useDeleteSupportTeam: useDeleteSupportTeamMutation,

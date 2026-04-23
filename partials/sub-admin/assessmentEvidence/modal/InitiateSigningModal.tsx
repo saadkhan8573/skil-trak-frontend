@@ -7,7 +7,12 @@ import {
     Typography,
 } from '@components'
 import { CommonApi } from '@queries'
-import { AssessmentEvidenceDetailType, Folder, Rto, AssessmentEvidenceFolder } from '@types'
+import {
+    AssessmentEvidenceDetailType,
+    Folder,
+    Rto,
+    AssessmentEvidenceFolder,
+} from '@types'
 import { useEffect, useMemo, useState } from 'react'
 import {
     DocumentView,
@@ -107,16 +112,18 @@ export const InitiateSigningModal = ({
                                                 {getTemplate?.data?.map(
                                                     (template: any) => (
                                                         <div
+                                                            key={template?.id}
                                                             onClick={() => {
                                                                 setSelectedDocument(
                                                                     template
                                                                 )
                                                             }}
-                                                            className={`border cursor-pointer rounded-md ${template?.id ===
+                                                            className={`border cursor-pointer rounded-md ${
+                                                                template?.id ===
                                                                 selectedDocument?.id
-                                                                ? 'bg-gray-200'
-                                                                : 'bg-gray-50'
-                                                                } px-4 py-2.5`}
+                                                                    ? 'bg-gray-200'
+                                                                    : 'bg-gray-50'
+                                                            } px-4 py-2.5`}
                                                         >
                                                             <Typography
                                                                 variant="small"

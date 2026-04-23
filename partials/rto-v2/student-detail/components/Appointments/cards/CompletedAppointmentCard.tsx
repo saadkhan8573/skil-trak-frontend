@@ -1,6 +1,12 @@
-import { Badge, ShowErrorNotifications } from '@components'
+import {
+    Badge,
+    ShowErrorNotifications,
+    useWorldwideStudentDataRestriction,
+} from '@components'
+import { UserRoles } from '@constants'
 import { useNotification } from '@hooks'
 import { CommonApi } from '@queries'
+import { useAppSelector } from '@redux'
 import { Appointment } from '@types'
 import {
     Calendar,
@@ -17,34 +23,12 @@ export const CompletedAppointmentCard = ({
 }: {
     appointment: Appointment
 }) => {
-    const { notification } = useNotification()
-    const [updateStatus, updateStatusResult] =
-        CommonApi.Appointments.updateSuccessFullStatus()
-
-    const onSubmit = async (values: { note: string; status: boolean }) => {
-        if (!values?.note) {
-            notification.warning({
-                title: 'Note Required!',
-                description: 'Please add a note,',
-            })
-            return
-        }
-        const res: any = await updateStatus({
-            id: appointment?.id,
-            ...values,
-        })
-
-        if (res?.data) {
-            notification.success({
-                title: 'Appointment Status Changed',
-                description: 'Appointment Status Changed Successfully',
-            })
-        }
-    }
-
+    const rtoUserId = useAppSelector((state) => state.rto.rtoDetail?.user?.id)
+    const { hasPermission } = useWorldwideStudentDataRestriction({
+        userId: rtoUserId,
+    })
     return (
         <>
-            <ShowErrorNotifications result={updateStatusResult} />
             <div className="`bg-linear-to-br` from-slate-50 to-slate-100/50 rounded-xl border border-slate-200/60 p-3">
                 <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
@@ -76,7 +60,11 @@ export const CompletedAppointmentCard = ({
                                     By:
                                 </span>
                                 <span className="text-[12px]">
-                                    {appointment?.appointmentBy?.name}{' '}
+                                    {!hasPermission &&
+                                    appointment?.appointmentBy?.role ===
+                                        UserRoles.STUDENT
+                                        ? ''
+                                        : appointment?.appointmentBy?.name}{' '}
                                     {appointment?.appointmentBy?.role && (
                                         <span className="text-slate-400">
                                             ({appointment?.appointmentBy?.role})
@@ -90,7 +78,12 @@ export const CompletedAppointmentCard = ({
                                     For:
                                 </span>
                                 <span className="text-[12px]">
-                                    {appointment?.appointmentFor?.name}{' '}
+                                    {!hasPermission &&
+                                    appointment?.appointmentFor?.role ===
+                                        UserRoles.STUDENT
+                                        ? ''
+                                        : appointment?.appointmentFor
+                                              ?.name}{' '}
                                     {appointment?.appointmentFor?.role && (
                                         <span className="text-slate-400">
                                             ({appointment?.appointmentFor?.role}

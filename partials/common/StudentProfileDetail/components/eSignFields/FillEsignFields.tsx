@@ -536,13 +536,14 @@ export const FillEsignFields = ({
                                 ),
                             ]?.map((_, i: number) => (
                                 <div
+                                    key={i}
                                     ref={(el: any) =>
                                         (scrollTargetRef.current[i] = el)
                                     }
                                     onClick={() => {}}
                                     className="relative"
                                 >
-                                    <Card key={i} noPadding>
+                                    <Card noPadding>
                                         <div className="absolute top-1 left-1/2 flex justify-center">
                                             <Typography
                                                 variant="label"

@@ -52,7 +52,7 @@ export const ApproveFile = ({
         <div>
             <ShowErrorNotifications result={fileStatusChangeResult} />
             <Tooltip>
-                <TooltipTrigger>
+                <TooltipTrigger asChild>
                     <Button
                         mini
                         Icon={ThumbsUp}

@@ -11,6 +11,7 @@ import {
     InitialAvatar,
     LoadingAnimation,
     StudentExpiryDaysLeft,
+    StudentJobId,
     Table,
     TableAction,
     TableActionOption,
@@ -124,6 +125,13 @@ export const NonContactableStudents = () => {
     ]
 
     const Columns: ColumnDef<Student>[] = [
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId studentJobId={row.original?.studentMaskedId} />
+            ),
+        },
         {
             header: () => 'Name',
             accessorKey: 'user',

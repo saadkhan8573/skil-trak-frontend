@@ -1,4 +1,4 @@
-import { useNavbar, useNotification } from '@hooks'
+import { useNotification } from '@hooks'
 import { useState } from 'react'
 
 import { ShowErrorNotifications } from '@components'
@@ -7,8 +7,6 @@ import { RtoV2Api } from '@queries'
 import { ImportStudentsListFormWithOTP } from '../components'
 
 export const ImportStudentsTab = ({ onCancel }: { onCancel?: () => void }) => {
-    const navBar = useNavbar()
-
     const { notification } = useNotification()
 
     const [importedStudentsResult, setImportedStudentsResult] =
@@ -47,7 +45,10 @@ export const ImportStudentsTab = ({ onCancel }: { onCancel?: () => void }) => {
     return (
         <>
             <ShowErrorNotifications result={importStudentsResult} />
-            <ImportStudentsListFormWithOTP onSubmit={onSubmit} onCancel={onCancel} />
+            <ImportStudentsListFormWithOTP
+                onSubmit={onSubmit}
+                onCancel={onCancel}
+            />
         </>
     )
 }

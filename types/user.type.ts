@@ -60,6 +60,7 @@ export interface User extends BaseResponse {
     signers: any
     schedules: any
     isEmailVerified: boolean
+    student: Student
 }
 
 export interface UserCount {

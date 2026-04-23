@@ -70,7 +70,7 @@ export const Socket = ({ children }: any) => {
             const userId = AuthUtils.getUserCredentials()?.id
             socket.emit('join', userId)
             socket.off('joined') // cleanup before rebind
-            socket.on('joined', () => { })
+            socket.on('joined', () => {})
 
             // 🚨 FIRST: Remove all previous listeners
             Object.values(SocketNotificationsEvents).forEach((event) => {

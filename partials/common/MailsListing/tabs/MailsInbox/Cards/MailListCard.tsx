@@ -1,19 +1,13 @@
-import { Checkbox, Typography } from '@components'
-import React, { ReactElement, useState } from 'react'
+import moment from 'moment'
+import { User } from '@types'
+import { UserRoles } from '@constants'
+import { useRouter } from 'next/router'
 import { MdDelete } from 'react-icons/md'
 import { DeleteMailModal } from '../modals'
-import {
-    HtmlToPlainText,
-    ellipsisText,
-    getUserCredentials,
-    htmltotext,
-    plainTextWithSpaces,
-} from '@utils'
-import { useMediaQuery } from 'react-responsive'
-import { MediaQueries, UserRoles } from '@constants'
-import { User } from '@types'
-import { useRouter } from 'next/router'
-import moment from 'moment'
+import { ReactElement, useState } from 'react'
+import { Checkbox, Typography } from '@components'
+import { ellipsisText, getUserCredentials, plainTextWithSpaces } from '@utils'
+import { useSubadminProfile } from '@hooks'
 
 export const MailListCard = ({
     user,
@@ -31,7 +25,9 @@ export const MailListCard = ({
     const [modal, setModal] = useState<ReactElement | null>(null)
     const [mouseEntered, setMouseEntered] = useState<boolean>(false)
 
-    const isTablet = useMediaQuery(MediaQueries.Tablet)
+    const subadmin = useSubadminProfile()
+
+    const isSkiltrakCoordinator = !subadmin?.isAssociatedWithRto
 
     const onCancelClicked = () => setModal(null)
 
@@ -44,6 +40,16 @@ export const MailListCard = ({
     const role = getUserCredentials()?.role
 
     const roleUrl = () => {
+        if (
+            isSkiltrakCoordinator &&
+            user?.role === UserRoles.STUDENT &&
+            user?.student?.studentMaskedId
+        ) {
+            router.push(
+                `/portals/sub-admin/students/${user?.student?.id}/detail`
+            )
+            return
+        }
         switch (role) {
             case UserRoles.ADMIN:
                 router.push(`/portals/admin/e-mails/${mailDetail?.id}`)
@@ -95,8 +101,9 @@ export const MailListCard = ({
                         roleUrl()
                     }
                 }}
-                className={`flex flex-col lg:flex-row lg:items-center gap-1 py-2 px-3 ${mailDetail?.isSeen ? 'bg-gray-200' : 'bg-white'
-                    }  border-b border-secondary-dark hover:bg-[#FCDEC5] rounded-lg cursor-pointer mt-1`}
+                className={`flex flex-col lg:flex-row lg:items-center gap-1 py-2 px-3 ${
+                    mailDetail?.isSeen ? 'bg-gray-200' : 'bg-white'
+                }  border-b border-secondary-dark hover:bg-[#FCDEC5] rounded-lg cursor-pointer mt-1`}
             >
                 <div className="flex gap-x- items-center">
                     <Checkbox
@@ -115,7 +122,12 @@ export const MailListCard = ({
                         variant={mailDetail?.isSeen ? 'small' : 'muted'}
                         bold={mailDetail?.isSeen ? false : true}
                     >
-                        {user?.role === 'admin' ? 'Super Admin' : user?.name}
+                        {user?.role === UserRoles.ADMIN
+                            ? 'Super Admin'
+                            : user?.role === UserRoles.STUDENT &&
+                                user?.student?.studentMaskedId
+                              ? user?.student?.studentMaskedId
+                              : user?.name}
                     </Typography>
                 </div>
                 <div className="ml-2 w-full flex items-center gap-x-1 relative">
@@ -175,8 +187,9 @@ export const MailListCard = ({
 
                     {/*  */}
                     <div
-                        className={` overflow-hidden transition-all duration-500 absolute top-1/2 -translate-y-1/2 right-0 h-full pl-3 ${mouseEntered ? 'max-w-20 bg-gray-200' : 'max-w-0'
-                            }`}
+                        className={` overflow-hidden transition-all duration-500 absolute top-1/2 -translate-y-1/2 right-0 h-full pl-3 ${
+                            mouseEntered ? 'max-w-20 bg-gray-200' : 'max-w-0'
+                        }`}
                     >
                         <MdDelete
                             className="text-[#0000008A] text-lg"

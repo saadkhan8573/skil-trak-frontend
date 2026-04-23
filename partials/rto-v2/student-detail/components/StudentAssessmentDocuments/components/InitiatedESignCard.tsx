@@ -1,29 +1,34 @@
-import { Badge, Button, Switch, Tooltip, Typography } from '@components'
-import { AssessmentEvidenceDetailType, Rto, AssessmentEvidenceFolder } from '@types'
-import { EsignDocumentStatus, maskText } from '@utils'
 import {
-    Calendar,
-    FileSignature,
-    Mail,
-    PenTool,
-    RefreshCw,
-    Send,
-    User,
-    XCircle,
-} from 'lucide-react'
-import { useState, useEffect, useMemo } from 'react'
-import {
-    InitiateSigningModal,
-    RequestResign,
-    ResendMailModal,
-} from '../../../../../sub-admin/assessmentEvidence/modal'
-import { CancelESignModal } from '../modal'
+    Badge,
+    Button,
+    StudentJobId,
+    Switch,
+    Tooltip,
+    Typography,
+    useWorldwideStudentDataRestriction,
+    WorldwideStudentDataRestriction,
+} from '@components'
 import {
     FillEsignFieldsModal,
     SubmitDocumentModal,
 } from '@partials/common/StudentProfileDetail/modals'
 import { CommonApi } from '@queries'
+import {
+    AssessmentEvidenceDetailType,
+    AssessmentEvidenceFolder,
+    Rto,
+} from '@types'
+import { EsignDocumentStatus, maskText } from '@utils'
+import { FileSignature, PenTool, Send, XCircle } from 'lucide-react'
 import moment from 'moment'
+import { useEffect, useMemo, useState } from 'react'
+import {
+    RequestResign,
+    ResendMailModal,
+} from '../../../../../sub-admin/assessmentEvidence/modal'
+import { CancelESignModal } from '../modal'
+import { UserRoles } from '@constants'
+import { useAppSelector } from '@redux'
 
 export const InitiatedESignCard = ({
     document,
@@ -38,10 +43,16 @@ export const InitiatedESignCard = ({
     rto: Rto
     folder: AssessmentEvidenceDetailType | AssessmentEvidenceFolder | null
 }) => {
+    console.log({ rto })
     const [modal, setModal] = useState<any>(null)
     const [isCancelModalOpen, setIsCancelModalOpen] = useState(false)
     const [currentDocIndex, setCurrentDocIndex] = useState(0)
     const [toggleReminderEmail] = CommonApi.ESign.useToggleReminderEmail()
+
+    const rtoUserId = useAppSelector((state) => state.rto.rtoDetail?.user?.id)
+    const { hasPermission } = useWorldwideStudentDataRestriction({
+        userId: rtoUserId,
+    })
 
     const selectedDocument = useMemo(() => {
         if (document && document.length > 0) {
@@ -130,7 +141,6 @@ export const InitiatedESignCard = ({
     return (
         <>
             {modal}
-
             <div className="bg-gray-100 border rounded-xl p-5 border-slate-200 shadow-sm space-y-4">
                 {/* Document Header Controls (Pagination) */}
                 {document && document.length > 1 && (
@@ -150,7 +160,9 @@ export const InitiatedESignCard = ({
                                 text="Next"
                                 variant="primaryNew"
                                 onClick={handleNext}
-                                disabled={currentDocIndex === document.length - 1}
+                                disabled={
+                                    currentDocIndex === document.length - 1
+                                }
                                 mini
                             />
                             <div className="relative group">
@@ -195,7 +207,7 @@ export const InitiatedESignCard = ({
                             const signResponse = AllResponse?.reduce(
                                 (latest: any, current: any) =>
                                     new Date(current?.createdAt) >
-                                        new Date(latest?.createdAt)
+                                    new Date(latest?.createdAt)
                                         ? current
                                         : latest,
                                 AllResponse?.[0]
@@ -228,7 +240,20 @@ export const InitiatedESignCard = ({
                                                     variant="small"
                                                     semibold
                                                 >
-                                                    {signer?.user?.name || 'NA'}
+                                                    {!hasPermission &&
+                                                    signer?.user?.role ===
+                                                        UserRoles.STUDENT ? (
+                                                        <StudentJobId
+                                                            studentJobId={
+                                                                signer?.user
+                                                                    ?.student
+                                                                    ?.studentMaskedId
+                                                            }
+                                                        />
+                                                    ) : (
+                                                        signer?.user?.name ||
+                                                        'NA'
+                                                    )}
                                                 </Typography>
                                             </div>
                                             <div>
@@ -259,7 +284,7 @@ export const InitiatedESignCard = ({
                                                         variant="muted"
                                                         className={
                                                             signer?.status ===
-                                                                EsignDocumentStatus.SIGNED
+                                                            EsignDocumentStatus.SIGNED
                                                                 ? 'text-green-600 font-semibold uppercase'
                                                                 : 'text-orange-600 font-semibold uppercase'
                                                         }
@@ -281,12 +306,12 @@ export const InitiatedESignCard = ({
                                                         semibold
                                                     >
                                                         {signer?.status ===
-                                                            EsignDocumentStatus.SIGNED
+                                                        EsignDocumentStatus.SIGNED
                                                             ? moment(
-                                                                signer?.updatedAt
-                                                            ).format(
-                                                                'DD MMM, YYYY'
-                                                            )
+                                                                  signer?.updatedAt
+                                                              ).format(
+                                                                  'DD MMM, YYYY'
+                                                              )
                                                             : 'Not Submitted'}
                                                     </Typography>
                                                 </div>
@@ -314,17 +339,18 @@ export const InitiatedESignCard = ({
                                                             signer?.status !==
                                                             EsignDocumentStatus.SIGNED
                                                         }
-                                                        className={`transition-colors ${signer?.status ===
+                                                        className={`transition-colors ${
+                                                            signer?.status ===
                                                             EsignDocumentStatus.SIGNED
-                                                            ? 'text-blue-600 hover:text-blue-700 cursor-pointer'
-                                                            : 'text-gray-300 cursor-not-allowed'
-                                                            }`}
+                                                                ? 'text-blue-600 hover:text-blue-700 cursor-pointer'
+                                                                : 'text-gray-300 cursor-not-allowed'
+                                                        }`}
                                                     >
                                                         <FileSignature className="w-5 h-5" />
                                                     </button>
                                                     <Tooltip>
                                                         {signer?.status ===
-                                                            EsignDocumentStatus.SIGNED
+                                                        EsignDocumentStatus.SIGNED
                                                             ? 'Request Resign'
                                                             : 'Document not signed yet'}
                                                     </Tooltip>
@@ -354,17 +380,18 @@ export const InitiatedESignCard = ({
                                                             signer?.status ===
                                                             EsignDocumentStatus.SIGNED
                                                         }
-                                                        className={`transition-colors ${signer?.status !==
+                                                        className={`transition-colors ${
+                                                            signer?.status !==
                                                             EsignDocumentStatus.SIGNED
-                                                            ? 'text-blue-600 hover:text-blue-700 cursor-pointer'
-                                                            : 'text-gray-300 cursor-not-allowed'
-                                                            }`}
+                                                                ? 'text-blue-600 hover:text-blue-700 cursor-pointer'
+                                                                : 'text-gray-300 cursor-not-allowed'
+                                                        }`}
                                                     >
                                                         <Send className="w-5 h-5" />
                                                     </button>
                                                     <Tooltip>
                                                         {signer?.status !==
-                                                            EsignDocumentStatus.SIGNED
+                                                        EsignDocumentStatus.SIGNED
                                                             ? 'Resend Email'
                                                             : 'Document Signed'}
                                                     </Tooltip>
@@ -437,42 +464,51 @@ export const InitiatedESignCard = ({
                                                     >
                                                         {signResponse?.id
                                                             ? moment(
-                                                                signResponse?.data ||
-                                                                signer?.updatedAt
-                                                            ).format(
-                                                                'DD MMM, YYYY'
-                                                            )
+                                                                  signResponse?.data ||
+                                                                      signer?.updatedAt
+                                                              ).format(
+                                                                  'DD MMM, YYYY'
+                                                              )
                                                             : 'Not Signed'}
                                                     </Typography>
                                                 </div>
 
                                                 {/* 8. Edit/Submit Document */}
-                                                <div className="relative group">
-                                                    <Typography
-                                                        variant="label"
-                                                        className="text-gray-400 mb-1"
-                                                    >
-                                                        Edit/Submit Document
-                                                    </Typography>
-                                                    <button
-                                                        onClick={() =>
-                                                            onSubmitDocClicked(
-                                                                signer?.user?.id
-                                                            )
-                                                        }
-                                                        // Condition matching logic of original component for enabling/disabling or styling
-                                                        className={`transition-colors text-blue-600 hover:text-blue-700 cursor-pointer`}
-                                                    >
-                                                        <PenTool className="w-5 h-5" />
-                                                    </button>
-                                                    <Tooltip>
-                                                        {signResponse?.id &&
+                                                <WorldwideStudentDataRestriction
+                                                    anotherUserId={rtoUserId!}
+                                                    fallbackOptions={{
+                                                        height: '20px',
+                                                        width: '140px',
+                                                    }}
+                                                >
+                                                    <div className="relative group">
+                                                        <Typography
+                                                            variant="label"
+                                                            className="text-gray-400 mb-1"
+                                                        >
+                                                            Edit/Submit Document
+                                                        </Typography>
+                                                        <button
+                                                            onClick={() =>
+                                                                onSubmitDocClicked(
+                                                                    signer?.user
+                                                                        ?.id
+                                                                )
+                                                            }
+                                                            // Condition matching logic of original component for enabling/disabling or styling
+                                                            className={`transition-colors text-blue-600 hover:text-blue-700 cursor-pointer`}
+                                                        >
+                                                            <PenTool className="w-5 h-5" />
+                                                        </button>
+                                                        <Tooltip>
+                                                            {signResponse?.id &&
                                                             signer?.status !==
-                                                            EsignDocumentStatus.SIGNED
-                                                            ? 'Submit Document'
-                                                            : 'Unavailable'}
-                                                    </Tooltip>
-                                                </div>
+                                                                EsignDocumentStatus.SIGNED
+                                                                ? 'Submit Document'
+                                                                : 'Unavailable'}
+                                                        </Tooltip>
+                                                    </div>
+                                                </WorldwideStudentDataRestriction>
                                             </div>
                                         </div>
                                     </div>

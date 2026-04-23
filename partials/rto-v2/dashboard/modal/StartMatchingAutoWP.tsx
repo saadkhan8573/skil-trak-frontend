@@ -170,6 +170,7 @@ export const StartMatchingAutoWP = ({
             <DialogContent
                 className="max-w-3xl! p-0 overflow-hidden border-none rounded-2xl shadow-2xl **:data-[slot=dialog-close]:opacity-90 **:data-[slot=dialog-close]:hover:opacity-100"
                 showCloseButton={!isProcessing}
+                aria-describedby={undefined}
             >
                 <div
                     className={

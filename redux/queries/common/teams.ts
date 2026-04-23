@@ -103,7 +103,7 @@ export const teamsEndpoints = (
     }),
     createRtoSupportTeam: builder.mutation<any, any>({
         query: (body) => ({
-            url: `$rtos/list/with-permission/receive-tickets`,
+            url: `rtos/list/with-permission/receive-tickets`,
             method: 'POST',
             body,
         }),

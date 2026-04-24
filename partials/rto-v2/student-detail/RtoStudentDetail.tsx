@@ -238,7 +238,9 @@ export const RtoStudentDetail = () => {
                             userId={profile?.data?.user?.id}
                         /> */}
                         <Permissions
-                            permission={[PermissionType.CAN_USE_CHATBOT]}
+                            permission={[
+                                PermissionType.STUDENT_PLACEMENT_SUMMARY,
+                            ]}
                         >
                             <ChatResponses />
                         </Permissions>

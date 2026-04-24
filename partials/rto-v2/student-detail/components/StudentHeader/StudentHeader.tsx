@@ -6,7 +6,17 @@ import { useAddressInfo } from '@hooks'
 import { useAppSelector } from '@redux'
 import { Student } from '@types'
 import { checkJsxVisibility, maskText } from '@utils'
-import { Mail, MapPin, Phone, Smartphone } from 'lucide-react'
+import {
+    Bell,
+    BellOff,
+    Calendar,
+    Heart,
+    Mail,
+    MapPin,
+    Phone,
+    Smartphone,
+    Star,
+} from 'lucide-react'
 import { Activity } from 'react'
 import { HeaderQuickActions } from './HeaderQuickActions'
 import { StudentQuickInfo } from './StudentQuickInfo'
@@ -14,6 +24,8 @@ import { StudentStatusSwitches } from './StudentStatusSwitches'
 import { StudentTimeline } from './StudentTimeline'
 import { StudentInvoiceStatus } from './components/StudentInvoiceStatus'
 import { StudentStatusBanner } from './components/StudentStatusBanner'
+import { Badge } from '@components'
+import { StudentOnTrackDetails } from './components'
 
 export const StudentHeader = ({ student }: { student: Student }) => {
     const rtoDetail = useAppSelector((state) => state.rto.rtoDetail)
@@ -274,6 +286,9 @@ export const StudentHeader = ({ student }: { student: Student }) => {
 
                         {/* Timeline Banner */}
                         <StudentTimeline />
+
+                        {/*  */}
+                        <StudentOnTrackDetails />
                     </div>
                 </div>
             </div>

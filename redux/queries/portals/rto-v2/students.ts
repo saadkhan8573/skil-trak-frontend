@@ -225,4 +225,19 @@ export const studentsEndpoints = (
         }),
         invalidatesTags: ['RTO'],
     }),
+
+    studentOnTrackCounts: builder.query<
+        {
+            snoozeComments: number
+            callLogs: number
+            notes: number
+            emails: number
+            lastFailedCallDate: string
+            lastSnoozeDate: string
+        },
+        number
+    >({
+        query: (id) => `students/${id}/stats/count`,
+        providesTags: ['RTO'],
+    }),
 })

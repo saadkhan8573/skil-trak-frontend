@@ -1,4 +1,9 @@
-import { Typography, UserCreatedAt } from '@components'
+import {
+    StudentJobId,
+    Typography,
+    UserCreatedAt,
+    WorldwideStudentDataRestriction,
+} from '@components'
 import {
     ApprovedBy,
     CompleteTask,
@@ -22,9 +27,26 @@ export const TodoStudents = () => {
 
     const columns: TableColumn<any>[] = [
         {
+            key: 'student.studentMaskedId',
+            header: 'Job ID',
+            width: '120px',
+            render: (value) => <StudentJobId studentJobId={value} />,
+        },
+        {
             key: 'student.user.name',
             header: 'Name',
             width: '200px',
+            render: (value, row) => (
+                <WorldwideStudentDataRestriction
+                    fallbackOptions={{
+                        width: '80px',
+                        height: '20px',
+                    }}
+                    anotherUserId={row?.student?.rto?.user?.id}
+                >
+                    {value}
+                </WorldwideStudentDataRestriction>
+            ),
         },
         {
             key: 'date',

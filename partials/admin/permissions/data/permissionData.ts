@@ -294,6 +294,12 @@ export const permissionMetadata: Partial<Record<PermissionType, any>> = {
         icon: Sparkles,
         category: 'ai-matching',
     },
+    [PermissionType.STUDENT_PLACEMENT_SUMMARY]: {
+        label: 'Student Placement Summary',
+        description: 'rto student placement summary view on student profile',
+        icon: Sparkles,
+        category: 'ai-matching',
+    },
     // ---- ADDED MISSING PERMISSIONS TO AVOID OTHER TAB ---- //
     [PermissionType.PACKAGE_MANAGEMENT]: {
         label: 'Package Management',

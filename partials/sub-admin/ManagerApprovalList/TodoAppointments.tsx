@@ -1,4 +1,12 @@
-import { Button, OutsideClickHandler, SidebarCalendar, Typography, UserCreatedAt } from '@components'
+import {
+    Button,
+    OutsideClickHandler,
+    SidebarCalendar,
+    StudentJobId,
+    Typography,
+    UserCreatedAt,
+    WorldwideStudentDataRestriction,
+} from '@components'
 import {
     ApprovedBy,
     CompleteTask,
@@ -10,7 +18,6 @@ import { User } from '@types'
 import moment from 'moment'
 import Link from 'next/link'
 import React, { useState } from 'react'
-
 
 export const TodoAppointments = () => {
     const [currentPage, setCurrentPage] = useState(1)
@@ -32,6 +39,12 @@ export const TodoAppointments = () => {
 
     const columns: TableColumn<any>[] = [
         {
+            key: 'studentMaskedId',
+            header: 'Job ID',
+            width: '120px',
+            render: (value) => <StudentJobId studentJobId={value} />,
+        },
+        {
             key: 'studentId',
             header: 'Student ID',
             width: '140px',
@@ -48,6 +61,17 @@ export const TodoAppointments = () => {
             key: 'appointmentfor',
             header: 'Name',
             width: '200px',
+            render: (value, row) => (
+                <WorldwideStudentDataRestriction
+                    fallbackOptions={{
+                        width: '80px',
+                        height: '20px',
+                    }}
+                    anotherUserId={row?.rto?.user?.id}
+                >
+                    <Typography variant="label">{value}</Typography>
+                </WorldwideStudentDataRestriction>
+            ),
         },
         {
             key: 'date',

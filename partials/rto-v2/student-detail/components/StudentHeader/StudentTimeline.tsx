@@ -217,24 +217,21 @@ export const StudentTimeline = () => {
                         </p>
                         <p className="text-xs font-semibold text-emerald-900">
                             {expiryDate
-                                ? moment(expiryDate).format(
-                                      'MMM D, YYYY'
-                                  )
+                                ? moment(expiryDate).format('MMM D, YYYY')
                                 : 'N/A'}
                         </p>
                     </div>
                 </div>
             )}
 
-            {/*  */}
-            <PreferredContactTime />
-
             {/* Extend Expiry Modal */}
             <ExtendStudentExpiryDialog
                 open={isExtendModalOpen}
                 onOpenChange={setIsExtendModalOpen}
                 studentId={studentDetail?.user?.id}
-                currentExpiryDate={expiryDate ? new Date(expiryDate).toISOString() : ''}
+                currentExpiryDate={
+                    expiryDate ? new Date(expiryDate).toISOString() : ''
+                }
             />
         </div>
     )

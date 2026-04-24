@@ -1,7 +1,3 @@
-import { ColumnDef } from '@tanstack/react-table'
-import { Student } from '@types'
-import React, { ReactElement, useState } from 'react'
-import { StudentCallLogDetail, SubadminStudentIndustries } from '../components'
 import {
     CaseOfficerAssignedStudent,
     InitialAvatar,
@@ -12,23 +8,26 @@ import {
     Typography,
     UserCreatedAt,
 } from '@components'
+import { EditTimer } from '@components/StudentTimer/EditTimer'
+import { useSubadminProfile } from '@hooks'
 import { SectorCell } from '@partials/admin/student/components'
+import { InterviewModal } from '@partials/sub-admin/workplace/modals'
+import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
+import { ColumnDef } from '@tanstack/react-table'
+import { Student } from '@types'
+import { getStudentWorkplaceAppliedIndustry, setLink } from '@utils'
+import moment from 'moment'
 import { useRouter } from 'next/router'
+import { ReactElement, useState } from 'react'
+import { FaEdit, FaEye } from 'react-icons/fa'
+import { MdBlock, MdPriorityHigh } from 'react-icons/md'
+import { StudentCallLogDetail, SubadminStudentIndustries } from '../components'
 import {
     AddToNonContactableStudents,
     BlockModal,
     ChangeStudentStatusModal,
     HighPriorityModal,
-    UnAssignStudentModal,
 } from '../modals'
-import { FaEdit, FaEye } from 'react-icons/fa'
-import { MdBlock, MdPriorityHigh } from 'react-icons/md'
-import { getStudentWorkplaceAppliedIndustry, setLink } from '@utils'
-import { EditTimer } from '@components/StudentTimer/EditTimer'
-import { InterviewModal } from '@partials/sub-admin/workplace/modals'
-import { WorkplaceWorkIndustriesType } from '@redux/queryTypes'
-import { useSubadminProfile } from '@hooks'
-import moment from 'moment'
 
 export const useColumns = () => {
     const router = useRouter()

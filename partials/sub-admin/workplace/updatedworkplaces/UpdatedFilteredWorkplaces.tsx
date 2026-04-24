@@ -1,7 +1,14 @@
-import { Card, EmptyData, Table, Typography, UserCreatedAt } from '@components'
+import {
+    Card,
+    EmptyData,
+    StudentJobId,
+    Table,
+    Typography,
+    UserCreatedAt,
+} from '@components'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 import { ColumnDef } from '@tanstack/react-table'
 import { ellipsisText } from '@utils'
-import Link from 'next/link'
 import {
     IndustryDetail,
     RtoCellInfo,
@@ -20,14 +27,25 @@ export const UpdatedFilteredWorkplaces = ({
     itemPerPage: number
     setItemPerPage: any
 }) => {
-    const Columns: ColumnDef<any>[] = [
+    const Columns: ColumnDef<IWorkplaceIndustries>[] = [
+        {
+            header: () => 'Job ID',
+            accessorKey: 'studentMaskedId',
+            cell: (info) => (
+                <StudentJobId
+                    studentJobId={
+                        info?.row?.original?.student?.studentMaskedId!
+                    }
+                />
+            ),
+        },
         {
             header: () => 'Student',
             accessorKey: 'student',
             cell: (info) => (
                 <StudentWPCellInfo
-                    student={info?.row?.original?.student}
-                    wpId={info?.row?.original?.id}
+                    student={info?.row?.original?.student!}
+                    wpId={info?.row?.original?.id!}
                 />
             ),
         },
@@ -45,7 +63,7 @@ export const UpdatedFilteredWorkplaces = ({
                 return (
                     <IndustryDetail
                         workplace={info?.row?.original}
-                        createdAt={info?.row?.original?.createdAt}
+                        createdAt={info?.row?.original?.createdAt + ''}
                     />
                 )
             },

@@ -61,11 +61,7 @@ export const SignerCard = ({ signer }: any) => {
                                 {signer?.user?.name ?? 'NA'}
                             </Typography>
                         </div>
-                        <div>
-                            <Typography variant="small" color="text-gray-400">
-                                {maskText(signer?.user?.email)}
-                            </Typography>
-                        </div>
+
                         <div>
                             {' '}
                             {/* <Typography variant="small" color="text-gray-400">
@@ -78,14 +74,6 @@ export const SignerCard = ({ signer }: any) => {
                                     ? signer?.user?.rto?.phone ?? 'NA'
                                     : null}
                             </Typography> */}
-                            {phoneNumber && phoneNumber !== 'NA' && (
-                                <Typography
-                                    variant="small"
-                                    color="text-gray-400"
-                                >
-                                    {maskText(phoneNumber)}
-                                </Typography>
-                            )}
                         </div>
                     </div>
 

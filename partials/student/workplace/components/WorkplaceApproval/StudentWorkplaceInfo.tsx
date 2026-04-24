@@ -35,8 +35,8 @@ export const StudentWorkplaceInfo = ({
             </Typography>
 
             <div className="flex flex-col gap-y-2.5">
-                {industryData?.map((industry: any) => (
-                    <WorkplaceInfoCard {...industry} />
+                {industryData?.map((industry: any, idx: number) => (
+                    <WorkplaceInfoCard key={idx} {...industry} />
                 ))}
             </div>
         </div>

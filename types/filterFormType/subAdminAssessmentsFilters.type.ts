@@ -8,4 +8,5 @@ export interface SubAdminAssessmentsFiltersType {
     result: Result
     rtoId: number
     courseId: number
+    studentMaskedId: string
 }

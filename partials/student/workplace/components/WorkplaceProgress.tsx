@@ -1,5 +1,5 @@
 import { Typography } from '@components'
-import React from 'react'
+import React, { Fragment } from 'react'
 
 export const WorkplaceProgress = ({
     activeNumber,
@@ -11,7 +11,7 @@ export const WorkplaceProgress = ({
     return (
         <div className="flex items-center justify-center gap-x-[18px]">
             {[...Array(progressNumber)].map((_, i) => (
-                <>
+                <Fragment key={i}>
                     <div
                         className={`${
                             activeNumber >= i + 1
@@ -37,13 +37,13 @@ export const WorkplaceProgress = ({
                                     activeNumber >= i + 2
                                         ? 'w-full'
                                         : activeNumber >= i + 1
-                                        ? 'w-1/2'
-                                        : 'w-0'
+                                          ? 'w-1/2'
+                                          : 'w-0'
                                 } h-full bg-[#F7910F] rounded-full`}
                             ></div>
                         </div>
                     ) : null}
-                </>
+                </Fragment>
             ))}
         </div>
     )

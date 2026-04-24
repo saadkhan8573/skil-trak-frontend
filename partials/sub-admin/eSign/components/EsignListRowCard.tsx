@@ -1,17 +1,22 @@
-import { Button, Typography } from '@components'
+import {
+    Button,
+    Typography,
+    WorldwideStudentDataRestriction,
+} from '@components'
 import React, { ReactElement, useMemo, useState } from 'react'
 import { SignerCard } from './SignerCard'
 import { UserRoles } from '@constants'
 import Link from 'next/link'
 import { EsignDocumentStatus, getUserCredentials } from '@utils'
 import { CancelInitiateSign } from '@partials/sub-admin/assessmentEvidence/modal'
+import { Student } from '@types'
 interface Signer {
     user: {
         role: UserRoles
         name?: string
         email?: string
         industry?: { phoneNumber?: string }
-        student?: { phone?: string }
+        student?: Student
         rto?: { phone?: string }
     }
     status?: string
@@ -47,12 +52,28 @@ export const EsignListRowCard = ({ document }: any) => {
     const filteredSigners = useMemo(() => {
         return document?.signers?.map((signer: Signer) => {
             switch (signer?.user?.role) {
-                case UserRoles.STUDENT:
                 case UserRoles.RTO:
                 case UserRoles.INDUSTRY:
                 case UserRoles.SUBADMIN:
                     return (
                         <SignerCard key={signer?.user?.email} signer={signer} />
+                    )
+                case UserRoles.STUDENT:
+                    return (
+                        <WorldwideStudentDataRestriction
+                            fallbackOptions={{
+                                width: '260px',
+                                height: '80px',
+                            }}
+                            anotherUserId={
+                                signer?.user?.student?.rto?.user?.id!
+                            }
+                        >
+                            <SignerCard
+                                key={signer?.user?.email}
+                                signer={signer}
+                            />
+                        </WorldwideStudentDataRestriction>
                     )
                 default:
                     return null

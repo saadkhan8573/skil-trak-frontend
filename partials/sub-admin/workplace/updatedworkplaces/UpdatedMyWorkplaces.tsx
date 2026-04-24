@@ -5,6 +5,7 @@ import {
     Card,
     EmptyData,
     LoadingAnimation,
+    StudentJobId,
     Table,
     TechnicalError,
     Typography,
@@ -23,6 +24,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { ellipsisText } from '@utils'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 export const UpdatedMyWorkplaces = () => {
     const [page, setPage] = useState(1)
@@ -43,14 +45,23 @@ export const UpdatedMyWorkplaces = () => {
         setItemPerPage(Number(router.query.pageSize || 30))
     }, [router])
 
-    const Columns: ColumnDef<any>[] = [
+    const Columns: ColumnDef<IWorkplaceIndustries>[] = [
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId
+                    studentJobId={row.original?.student?.studentMaskedId}
+                />
+            ),
+        },
         {
             header: () => 'Student',
             accessorKey: 'student',
             cell: (info) => (
                 <StudentWPCellInfo
-                    wpId={info.row.original?.id}
-                    student={info.row.original?.student}
+                    wpId={info.row.original?.id!}
+                    student={info.row.original?.student!}
                 />
             ),
         },
@@ -68,7 +79,7 @@ export const UpdatedMyWorkplaces = () => {
                 return (
                     <IndustryDetail
                         workplace={info?.row?.original}
-                        createdAt={info?.row?.original?.createdAt}
+                        createdAt={info?.row?.original?.createdAt + ''}
                     />
                 )
             },

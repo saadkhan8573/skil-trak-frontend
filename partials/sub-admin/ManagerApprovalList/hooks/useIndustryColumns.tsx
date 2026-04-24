@@ -9,13 +9,13 @@ import { IndustryCellInfo } from '@partials/sub-admin/Industries'
 import { ColumnDef } from '@tanstack/react-table'
 import { RemovePartnerRequest } from '@types'
 import { ReactElement, useState } from 'react'
+import { RequestedByCellInfo } from '../components'
 import { IndustryRequestRemovalStatus } from '../enum'
 import {
     ApprovePartnerIndustryApprovalList,
     NoteViewModal,
     RejectPartnerIndustryApprovalList,
 } from '../modal'
-import { RequestedByCellInfo } from '../components'
 
 export const useIndustryColumns = () => {
     const [modal, setModal] = useState<ReactElement | null>(null)

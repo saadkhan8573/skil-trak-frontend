@@ -1,4 +1,4 @@
-import { InitialAvatar } from '@components'
+import { InitialAvatar, WorldwideStudentDataRestriction } from '@components'
 import { useSubadminProfile } from '@hooks'
 import { getUserCredentials, setLink } from '@utils'
 import Link from 'next/link'
@@ -13,14 +13,23 @@ export const AssessmentCellInfo = ({ item }: { item: any }) => {
     return (
         <div className="flex items-center relative">
             <div className="flex items-center gap-x-2">
-                {item?.student?.user?.name && (
-                    <div>
-                        <InitialAvatar
-                            name={item?.student?.user?.name}
-                            imageUrl={item?.student?.user?.avatar}
-                        />
-                    </div>
-                )}
+                <WorldwideStudentDataRestriction
+                    fallbackOptions={{
+                        width: '20px',
+                        height: '20px',
+                    }}
+                    anotherUserId={item?.student?.rto?.user?.id}
+                >
+                    {' '}
+                    {item?.student?.user?.name && (
+                        <div>
+                            <InitialAvatar
+                                name={item?.student?.user?.name}
+                                imageUrl={item?.student?.user?.avatar}
+                            />
+                        </div>
+                    )}
+                </WorldwideStudentDataRestriction>
 
                 <Link
                     href={
@@ -37,13 +46,19 @@ export const AssessmentCellInfo = ({ item }: { item: any }) => {
                         setLink('subadmin-student', router)
                     }}
                 >
-
-                    <p className="text-gray-800 font-medium">
-                        {item?.student?.user?.name}
-                    </p>
-
+                    <WorldwideStudentDataRestriction
+                        fallbackOptions={{
+                            width: '100px',
+                            height: '20px',
+                        }}
+                        anotherUserId={item?.student?.rto?.user?.id}
+                    >
+                        <p className="text-gray-800 font-medium">
+                            {item?.student?.user?.name}
+                        </p>
+                    </WorldwideStudentDataRestriction>
                 </Link>
             </div>
         </div>
-    );
+    )
 }

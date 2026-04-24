@@ -2,6 +2,7 @@ import {
     ActionButton,
     Badge,
     Button,
+    StudentJobId,
     Typography,
     UserCreatedAt,
 } from '@components'
@@ -43,6 +44,15 @@ export const useStudentColumns = () => {
     }
 
     const columns: ColumnDef<StudentActionsRequest>[] = [
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId
+                    studentJobId={row.original?.student?.studentMaskedId}
+                />
+            ),
+        },
         {
             accessorKey: 'user.name',
             cell: (info) => (

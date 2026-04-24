@@ -34,24 +34,38 @@ export const ChatResponses = () => {
             <div className="absolute top-0 right-0 w-36 h-36 bg-gradient-to-br from-[#044866]/10 to-transparent rounded-full blur-3xl"></div>
             <div className="relative">
                 {/* Header */}
-                <div className="flex items-center gap-2.5 mb-3">
-                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-lg shadow-[#044866]/30">
-                        <Sparkles className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                        <div className="flex items-center gap-2">
-                            <h3 className="text-slate-900">
-                                AI Progress Summary
-                            </h3>
-                            <span className="text-xs bg-gradient-to-r from-[#044866] to-[#0D5468] text-white px-2 py-0.5 rounded-full">
-                                Auto-Generated
-                            </span>
+                <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2.5 mb-3">
+                        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-lg shadow-[#044866]/30">
+                            <Sparkles className="w-4 h-4 text-white" />
                         </div>
-                        <p className="text-xs text-slate-600 mt-0.5">
-                            Intelligent analysis of placement journey and
-                            engagement metrics
-                        </p>
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <h3 className="text-slate-900">
+                                    AI Progress Summary
+                                </h3>
+                                <span className="text-xs bg-gradient-to-r from-[#044866] to-[#0D5468] text-white px-2 py-0.5 rounded-full">
+                                    Auto-Generated
+                                </span>
+                            </div>
+                            <p className="text-xs text-slate-600 mt-0.5">
+                                Intelligent analysis of placement journey and
+                                engagement metrics
+                            </p>
+                        </div>
                     </div>
+
+                    {/*  */}
+                    <Button
+                        variant="primaryNew"
+                        outline
+                        disabled={isLoading}
+                        loading={isLoading}
+                        onClick={handleRegenerate}
+                        className={isLoading ? 'bg-gray-400' : ''}
+                    >
+                        Regenerate Summary
+                    </Button>
                 </div>
 
                 {/* AI Summary Sections */}
@@ -102,32 +116,6 @@ export const ChatResponses = () => {
                             </div>
                         </div>
                     </div>
-                </div>
-
-                {/* Footer Actions */}
-                <div className="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <span className="text-xs text-slate-600">
-                            Last updated:
-                        </span>
-                        <span className="text-xs text-slate-900 font-medium">
-                            {getStudentJourney?.data?.updatedAt ?? 'N/A'}
-                        </span>
-                    </div>
-                    <Button
-                        variant="primaryNew"
-                        outline
-                        disabled={isLoading}
-                        onClick={handleRegenerate}
-                        className="text-xs border-[#044866]/20 text-[#044866] hover:bg-[#044866] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        {isLoading ? (
-                            <Loader2 className="w-3 h-3 mr-1.5 animate-spin" />
-                        ) : (
-                            <Sparkles className="w-3 h-3 mr-1.5" />
-                        )}
-                        {isLoading ? 'Generating...' : 'Regenerate Summary'}
-                    </Button>
                 </div>
             </div>
         </div>

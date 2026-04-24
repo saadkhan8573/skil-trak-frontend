@@ -5,9 +5,10 @@ import { FaEye } from 'react-icons/fa'
 
 // components
 import {
+    StudentJobId,
     TableAction,
     Typography,
-    UserCreatedAt
+    UserCreatedAt,
 } from '@components'
 
 // types
@@ -81,6 +82,15 @@ export const useColumns = () => {
     }
 
     const columns = [
+        {
+            header: () => 'Job ID',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }: any) => (
+                <StudentJobId
+                    studentJobId={row?.original?.student?.studentMaskedId!}
+                />
+            ),
+        },
         {
             header: () => 'Name',
             accessorKey: 'user',

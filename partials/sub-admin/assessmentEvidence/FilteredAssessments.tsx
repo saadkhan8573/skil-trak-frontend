@@ -6,9 +6,7 @@ import {
     TechnicalError,
 } from '@components'
 import { PageHeading } from '@components/headings'
-import { useGetAssessmentEvidenceQuery } from '@queries'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import { useColumns } from './hooks'
 
 export const FilteredAssessments = ({

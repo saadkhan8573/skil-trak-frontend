@@ -7,19 +7,28 @@ import {
     StudentWPCellInfo,
     UpdatedWorkplaceRequest,
 } from '../updatedworkplaces'
-import { Typography, UserCreatedAt } from '@components'
-import Link from 'next/link'
+import { StudentJobId, Typography, UserCreatedAt } from '@components'
 import { ellipsisText } from '@utils'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 export const useColumns = () => {
-    const Columns: ColumnDef<any>[] = [
+    const Columns: ColumnDef<IWorkplaceIndustries>[] = [
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId
+                    studentJobId={row.original?.student?.studentMaskedId}
+                />
+            ),
+        },
         {
             header: () => 'Student',
             accessorKey: 'student',
             cell: (info) => (
                 <StudentWPCellInfo
-                    wpId={info.row.original?.id}
-                    student={info.row.original?.student}
+                    wpId={info.row.original?.id!}
+                    student={info.row.original?.student!}
                 />
             ),
         },
@@ -36,7 +45,7 @@ export const useColumns = () => {
             cell: (info) => {
                 return (
                     <IndustryDetail
-                        createdAt={info?.row?.original?.createdAt}
+                        createdAt={info?.row?.original?.createdAt + ''}
                         workplace={info?.row?.original}
                     />
                 )

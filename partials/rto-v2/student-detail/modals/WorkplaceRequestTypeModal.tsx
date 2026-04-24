@@ -1,16 +1,22 @@
-import { Button, GlobalModal, ShowErrorNotifications } from '@components'
-import { Label } from '@components/ui'
+import {
+    Button,
+    GlobalModal,
+    Permissions,
+    ShowErrorNotifications,
+} from '@components'
 import { useNotification } from '@hooks'
 import { CommonApi } from '@redux'
-import { Briefcase, Building2, CheckCircle, X } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
-
+import { PermissionType } from '@types'
+import { Briefcase, CheckCircle, X } from 'lucide-react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 type WorkplaceOption = 'preferred' | 'provided' | 'requested'
 
 export const WorkplaceRequestTypeModal = ({ onClose, studentId }: any) => {
+    const router = useRouter()
     const [workplaceOption, setWorkplaceOption] =
         useState<WorkplaceOption>('requested')
-    console.log('Selected Workplace Option:', workplaceOption)
+
     const [updateWorkplaceType, updateWorkplaceTypeResult] =
         CommonApi.Rtos.useUpdateStudentWorkplaceType()
     const { notification } = useNotification()
@@ -21,6 +27,15 @@ export const WorkplaceRequestTypeModal = ({ onClose, studentId }: any) => {
                 description: 'Workplace Type Updated Successfully',
             })
             onClose()
+            if (workplaceOption === 'provided') {
+                router.push(
+                    `/portals/rto/students-and-placements/all-students/${studentId}/provide-workplace-detail`
+                )
+            } else if (workplaceOption === 'requested') {
+                router.push(
+                    `/portals/rto/students-and-placements/all-students/${studentId}/request-workplace-detail`
+                )
+            }
         }
     }, [updateWorkplaceTypeResult.isSuccess])
 
@@ -100,90 +115,106 @@ export const WorkplaceRequestTypeModal = ({ onClose, studentId }: any) => {
 
                             {/* Options */}
                             <div className="space-y-2">
-                                <label className="flex items-center space-x-2 p-3 rounded-lg border-2 border-border hover:border-primary/30 transition-all cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        name="workplaceOption"
-                                        value="preferred"
-                                        checked={
-                                            workplaceOption === 'preferred'
-                                        }
-                                        onChange={(e) =>
-                                            setWorkplaceOption(
-                                                e.target
-                                                    .value as WorkplaceOption
-                                            )
-                                        }
-                                    />
-                                    <div className="flex items-center gap-2 flex-1">
-                                        <Building2 className="h-4 w-4 text-primary" />
-                                        <div>
-                                            <p className="font-semibold text-sm">
-                                                Preferred Workplace
-                                            </p>
-                                            <p className="text-[10px] text-muted-foreground">
-                                                I have a confirmed workplace and
-                                                will provide the details
-                                            </p>
+                                {/* <Permissions>
+                                    <label className="flex items-center space-x-2 p-3 rounded-lg border-2 border-border hover:border-primary/30 transition-all cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="workplaceOption"
+                                            value="preferred"
+                                            checked={
+                                                workplaceOption === 'preferred'
+                                            }
+                                            onChange={(e) =>
+                                                setWorkplaceOption(
+                                                    e.target
+                                                        .value as WorkplaceOption
+                                                )
+                                            }
+                                        />
+                                        <div className="flex items-center gap-2 flex-1">
+                                            <Building2 className="h-4 w-4 text-primary" />
+                                            <div>
+                                                <p className="font-semibold text-sm">
+                                                    Preferred Workplace
+                                                </p>
+                                                <p className="text-[10px] text-muted-foreground">
+                                                    I have a confirmed workplace
+                                                    and will provide the details
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </label>
+                                    </label>
+                                </Permissions> */}
+                                <Permissions
+                                    permission={[
+                                        PermissionType.ALLOW_STUDENT_NEED_WORKPLACE,
+                                    ]}
+                                >
+                                    <label className="flex items-center space-x-2 p-3 rounded-lg border-2 border-border hover:border-accent/30 transition-all cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="workplaceOption"
+                                            value="requested"
+                                            checked={
+                                                workplaceOption === 'requested'
+                                            }
+                                            onChange={(e) =>
+                                                setWorkplaceOption(
+                                                    e.target
+                                                        .value as WorkplaceOption
+                                                )
+                                            }
+                                        />
+                                        <div className="flex items-center gap-2 flex-1">
+                                            <Briefcase className="h-4 w-4 text-accent" />
+                                            <div>
+                                                <p className="font-semibold text-sm">
+                                                    Need a workplace
+                                                </p>
+                                                <p className="text-[10px] text-muted-foreground">
+                                                    I need assistance finding a
+                                                    workplace
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </Permissions>
 
-                                <label className="flex items-center space-x-2 p-3 rounded-lg border-2 border-border hover:border-accent/30 transition-all cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        name="workplaceOption"
-                                        value="requested"
-                                        checked={
-                                            workplaceOption === 'requested'
-                                        }
-                                        onChange={(e) =>
-                                            setWorkplaceOption(
-                                                e.target
-                                                    .value as WorkplaceOption
-                                            )
-                                        }
-                                    />
-                                    <div className="flex items-center gap-2 flex-1">
-                                        <Briefcase className="h-4 w-4 text-accent" />
-                                        <div>
-                                            <p className="font-semibold text-sm">
-                                                Need a workplace
-                                            </p>
-                                            <p className="text-[10px] text-muted-foreground">
-                                                I need assistance finding a
-                                                workplace
-                                            </p>
+                                <Permissions
+                                    permission={[
+                                        PermissionType.ALLOW_STUDENT_OWN_WORKPLACE,
+                                    ]}
+                                >
+                                    {' '}
+                                    <label className="flex items-center space-x-2 p-3 rounded-lg border-2 border-border hover:border-secondary/30 transition-all cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="workplaceOption"
+                                            value="provided"
+                                            checked={
+                                                workplaceOption === 'provided'
+                                            }
+                                            onChange={(e) =>
+                                                setWorkplaceOption(
+                                                    e.target
+                                                        .value as WorkplaceOption
+                                                )
+                                            }
+                                        />
+                                        <div className="flex items-center gap-2 flex-1">
+                                            <CheckCircle className="h-4 w-4 text-secondary" />
+                                            <div>
+                                                <p className="font-semibold text-sm">
+                                                    Already Employed
+                                                </p>
+                                                <p className="text-[10px] text-muted-foreground">
+                                                    I'm already employed or have
+                                                    my own arrangement
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </label>
-
-                                <label className="flex items-center space-x-2 p-3 rounded-lg border-2 border-border hover:border-secondary/30 transition-all cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        name="workplaceOption"
-                                        value="provided"
-                                        checked={workplaceOption === 'provided'}
-                                        onChange={(e) =>
-                                            setWorkplaceOption(
-                                                e.target
-                                                    .value as WorkplaceOption
-                                            )
-                                        }
-                                    />
-                                    <div className="flex items-center gap-2 flex-1">
-                                        <CheckCircle className="h-4 w-4 text-secondary" />
-                                        <div>
-                                            <p className="font-semibold text-sm">
-                                                Already Employed
-                                            </p>
-                                            <p className="text-[10px] text-muted-foreground">
-                                                I'm already employed or have my
-                                                own arrangement
-                                            </p>
-                                        </div>
-                                    </div>
-                                </label>
+                                    </label>
+                                </Permissions>
                             </div>
 
                             {/* Debug */}

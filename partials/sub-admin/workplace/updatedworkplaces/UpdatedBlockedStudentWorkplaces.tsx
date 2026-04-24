@@ -2,6 +2,7 @@ import {
     Card,
     EmptyData,
     LoadingAnimation,
+    StudentJobId,
     Table,
     TechnicalError,
     Typography,
@@ -21,6 +22,7 @@ import {
     StudentWPCellInfo,
     UpdatedWorkplaceRequest,
 } from './components'
+import { IWorkplaceIndustries } from '@redux/queryTypes'
 
 export const UpdatedBlockedStudentWorkplaces = () => {
     const [page, setPage] = useState(1)
@@ -40,14 +42,23 @@ export const UpdatedBlockedStudentWorkplaces = () => {
         setItemPerPage(Number(router.query.pageSize || 30))
     }, [router])
 
-    const Columns: ColumnDef<any>[] = [
+    const Columns: ColumnDef<IWorkplaceIndustries>[] = [
+        {
+            header: () => 'Job Id',
+            accessorKey: 'studentMaskedId',
+            cell: ({ row }) => (
+                <StudentJobId
+                    studentJobId={row.original?.student?.studentMaskedId}
+                />
+            ),
+        },
         {
             header: () => 'Student',
             accessorKey: 'student',
             cell: (info) => (
                 <StudentWPCellInfo
-                    wpId={info.row.original?.id}
-                    student={info.row.original?.student}
+                    wpId={info.row.original?.id!}
+                    student={info.row.original?.student!}
                 />
             ),
         },
@@ -65,7 +76,7 @@ export const UpdatedBlockedStudentWorkplaces = () => {
                 return (
                     <IndustryDetail
                         workplace={info?.row?.original}
-                        createdAt={info?.row?.original?.createdAt}
+                        createdAt={info?.row?.original?.createdAt + ''}
                     />
                 )
             },

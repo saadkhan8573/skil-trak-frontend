@@ -53,6 +53,7 @@ const filterKeys = [
     'result',
     'rtoId',
     'courseId',
+    'studentMaskedId',
 ]
 
 const AssessmentEvidence: NextPageWithLayout = (props: Props) => {

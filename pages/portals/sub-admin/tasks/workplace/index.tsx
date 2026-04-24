@@ -19,11 +19,7 @@ import {
 } from '@types'
 
 // query
-import {
-    AdminApi,
-    SubAdminApi,
-    useGetSubAdminFilteredWorkplacesQuery,
-} from '@queries'
+import { SubAdminApi, useGetSubAdminFilteredWorkplacesQuery } from '@queries'
 
 // components
 import {
@@ -50,6 +46,7 @@ const filterKeys = [
     'subAdminId',
     'currentStatus',
     'nowp',
+    'studentMaskedId',
 ]
 
 type Props = {}

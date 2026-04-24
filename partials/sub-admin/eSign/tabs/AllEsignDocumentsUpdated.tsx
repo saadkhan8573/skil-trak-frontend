@@ -4,12 +4,11 @@ import {
     LoadingAnimation,
     PageSize,
     Pagination,
-    TechnicalError,
-    Typography,
+    TechnicalError
 } from '@components'
-import { useRouter } from 'next/router'
-import React, { ReactElement, useState } from 'react'
 import { CommonApi } from '@queries'
+import { useRouter } from 'next/router'
+import { ReactElement, useState } from 'react'
 import { EsignListRowCard } from '../components'
 export const AllEsignDocumentsUpdated = () => {
     const router = useRouter()

@@ -1,4 +1,9 @@
-import { Tooltip, TooltipPosition, Typography } from '@components'
+import {
+    Tooltip,
+    TooltipPosition,
+    Typography,
+    WorldwideStudentDataRestriction,
+} from '@components'
 import { useSubadminProfile } from '@hooks'
 import { Student } from '@types'
 import { maskText } from '@utils'
@@ -22,9 +27,17 @@ export const StudentWPCellInfo = ({
                 {maskText(student?.studentId, 2) ?? 'N/A'}
             </Typography>
             <div className="flex items-center gap-x-2">
-                <Typography variant="small" semibold>
-                    {student?.user?.name ?? 'N/A'}
-                </Typography>
+                <WorldwideStudentDataRestriction
+                    fallbackOptions={{
+                        width: '120px',
+                        height: '20px',
+                    }}
+                    anotherUserId={student?.rto?.user?.id}
+                >
+                    <Typography variant="small" semibold>
+                        {student?.user?.name ?? 'N/A'}
+                    </Typography>
+                </WorldwideStudentDataRestriction>
                 <div className="flex items-center gap-x-2">
                     {student?.isSnoozed && (
                         <div className="w-5 h-5 flex items-center justify-center rounded relative group">

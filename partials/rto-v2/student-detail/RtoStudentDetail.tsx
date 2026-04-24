@@ -14,6 +14,7 @@ import {
 import {
     ConfigTabs,
     EmptyData,
+    Permissions,
     StatusHistoryTimeline,
     TabConfig,
     TechnicalError,
@@ -233,10 +234,14 @@ export const RtoStudentDetail = () => {
                         <StudentInfoMessage
                             studentUserId={profile?.data?.user?.id}
                         />
-                        <PinnedNotesActionBanner
+                        {/* <PinnedNotesActionBanner
                             userId={profile?.data?.user?.id}
-                        />
-                        <ChatResponses />
+                        /> */}
+                        <Permissions
+                            permission={[PermissionType.CAN_USE_CHATBOT]}
+                        >
+                            <ChatResponses />
+                        </Permissions>
 
                         <ConfigTabs
                             tabs={tabs}

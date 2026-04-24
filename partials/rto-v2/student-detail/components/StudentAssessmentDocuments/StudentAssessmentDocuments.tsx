@@ -1,8 +1,8 @@
-import { NoData } from '@components'
+import { Button, NoData, ShowErrorNotifications } from '@components'
 import { RtoV2Api, SubAdminApi } from '@queries'
 import { useAppSelector } from '@redux/hooks'
 import { AssessmentEvidenceFolder, Course, Student } from '@types'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { CourseOverview } from '../StudentOverview'
 import { DocumentFilter, DocumentHeader } from './components'
 import { FolderSection } from './components/FolderSection'
@@ -12,7 +12,7 @@ interface DocumentsProps {
 }
 
 import { Result } from '@constants'
-import { useSubadminProfile } from '@hooks'
+import { useNotification, useSubadminProfile } from '@hooks'
 import { getCourseResult, removeEmptyValues } from '@utils'
 import { StudentDocumentsTabSkeleton } from '../../skeletonLoader'
 import { CourseResultModule, SubmitAssessmentSubmission } from './components'
@@ -24,7 +24,7 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
     const [selectedView, setSelectedView] = useState<
         'all' | 'industry' | 'course'
     >('all')
-
+    const { notification } = useNotification()
     const selectedCourse = useAppSelector(
         (state) => state.student.selectedCourse
     )
@@ -64,6 +64,17 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
             skip: !student.id || !selectedCourse?.id,
         }
     )
+    const [sendEmailOnIndustryChecks, sendEmailOnIndustryChecksResult] =
+        RtoV2Api.StudentDocuments.useSendEmailOnIndustryChecks()
+
+    useEffect(() => {
+        if (sendEmailOnIndustryChecksResult.isSuccess) {
+            notification.success({
+                title: 'Email sent successfully!',
+                description: 'The email has been sent to the student.',
+            })
+        }
+    }, [sendEmailOnIndustryChecksResult.isSuccess])
 
     const industryStats = {
         pending: count?.data?.pendingIndustryCheck,
@@ -250,82 +261,124 @@ export function StudentAssessmentDocuments({ student }: DocumentsProps) {
             stats: courseStats,
         },
     ]
+    const currentStatus = studentWorkplace?.data?.[0]?.currentStatus
 
+    const hasValidDocs = [industryDocuments, industryCustomRequiredDocuments]
+        ?.flat()
+        ?.some(
+            (doc) => doc?.studentResponse && doc?.studentResponse?.length > 0
+        )
+    const blockedStatuses = [
+        'awaitingAgreementSigned',
+        'AgreementSigned',
+        'placementStarted',
+        'cancelled',
+        'completed',
+        'noResponse',
+        'rejected',
+        'terminated',
+    ]
+    const isBlocked = currentStatus && blockedStatuses.includes(currentStatus)
+
+    const isAnyDocument = hasValidDocs && !isBlocked
+
+    const onSendEmail = () => {
+        sendEmailOnIndustryChecks({
+            stdId: student.id,
+            cId: selectedCourse?.id ?? 0,
+        })
+    }
+    console.log('studentWorkplace', studentWorkplace?.data?.[0]?.currentStatus)
+    // WorkplaceCurrentStatus
     return (
-        <div className="space-y-4">
-            {/* Hero Section with Quick Stats */}
-            <CourseOverview />
+        <>
+            <ShowErrorNotifications result={sendEmailOnIndustryChecksResult} />
+            <div className="space-y-4">
+                {/* Hero Section with Quick Stats */}
+                <CourseOverview />
 
-            <DocumentHeader count={count} result={result} />
+                <DocumentHeader count={count} result={result} />
 
-            {/* Search and Filter Bar */}
-            <DocumentFilter
-                selectedView={selectedView}
-                setSearchQuery={setSearchQuery}
-                setSelectedView={setSelectedView}
-                setStatusFilter={setStatusFilter}
-            />
+                {/* Search and Filter Bar */}
+                <DocumentFilter
+                    selectedView={selectedView}
+                    setSearchQuery={setSearchQuery}
+                    setSelectedView={setSelectedView}
+                    setStatusFilter={setStatusFilter}
+                    onSendEmail={onSendEmail}
+                    sendEmailOnIndustryChecksResult={
+                        sendEmailOnIndustryChecksResult
+                    }
+                    isAnyDocument={isAnyDocument}
+                />
 
-            {documents.isError && (
-                <NoData text={'There is some technical issue!'} isError />
-            )}
-            {documents.isLoading ? (
-                <StudentDocumentsTabSkeleton />
-            ) : (
-                documents?.isSuccess &&
-                sections.map((section) => {
-                    const shouldRender =
-                        selectedView === 'all' || selectedView === section.type
-                    return (
-                        shouldRender &&
-                        section?.documents &&
-                        section?.documents?.length > 0 && (
-                            <FolderSection
-                                key={section.type}
-                                course={selectedCourse ?? ({ id: 0 } as Course)}
-                                title={section.title}
-                                description={section.description}
-                                stats={section.stats}
-                                sectionType={section.type}
-                                filterKey={section.filterKey}
-                                documents={section?.documents}
-                                student={student}
-                            />
-                        )
-                    )
-                })
-            )}
+                {documents.isError && (
+                    <NoData text={'There is some technical issue!'} isError />
+                )}
+                {documents.isLoading ? (
+                    <StudentDocumentsTabSkeleton />
+                ) : (
+                    <>
+                        {documents?.isSuccess &&
+                            sections.map((section) => {
+                                const shouldRender =
+                                    selectedView === 'all' ||
+                                    selectedView === section.type
+                                return (
+                                    shouldRender &&
+                                    section?.documents &&
+                                    section?.documents?.length > 0 && (
+                                        <FolderSection
+                                            key={section.type}
+                                            course={
+                                                selectedCourse ??
+                                                ({ id: 0 } as Course)
+                                            }
+                                            title={section.title}
+                                            description={section.description}
+                                            stats={section.stats}
+                                            sectionType={section.type}
+                                            filterKey={section.filterKey}
+                                            documents={section?.documents}
+                                            student={student}
+                                        />
+                                    )
+                                )
+                            })}
+                    </>
+                )}
 
-            {/* <ManualAssessmentSubmission
+                {/* <ManualAssessmentSubmission
                 result={result}
                 totalResultsCount={selectedCourse?.results?.length}
             /> */}
 
-            <div className="pt-8 space-y-4">
-                {shouldShowSubmitButton && (
-                    <div className="flex justify-center items-center">
-                        <SubmitAssessmentSubmission
-                            results={selectedCourse?.results}
-                            selectedCourseId={Number(selectedCourse?.id)}
-                            student={student}
-                            isFilesUploaded={isFilesUploaded}
-                            isResubmittedFiles={isResubmittedFiles}
-                            isAllApproved={isAllApproved}
-                        />
-                    </div>
-                )}
-                {selectedCourse?.results &&
-                    selectedCourse?.results?.length > 0 && (
-                        <CourseResultModule
-                            student={student}
-                            selectedCourse={selectedCourse}
-                            result={result}
-                            allCommentsAdded={!!allCommentsAdded}
-                            subadmin={subadmin}
-                            getFolders={documents}
-                        />
+                <div className="pt-8 space-y-4">
+                    {shouldShowSubmitButton && (
+                        <div className="flex justify-center items-center">
+                            <SubmitAssessmentSubmission
+                                results={selectedCourse?.results}
+                                selectedCourseId={Number(selectedCourse?.id)}
+                                student={student}
+                                isFilesUploaded={isFilesUploaded}
+                                isResubmittedFiles={isResubmittedFiles}
+                                isAllApproved={isAllApproved}
+                            />
+                        </div>
                     )}
+                    {selectedCourse?.results &&
+                        selectedCourse?.results?.length > 0 && (
+                            <CourseResultModule
+                                student={student}
+                                selectedCourse={selectedCourse}
+                                result={result}
+                                allCommentsAdded={!!allCommentsAdded}
+                                subadmin={subadmin}
+                                getFolders={documents}
+                            />
+                        )}
+                </div>
             </div>
-        </div>
+        </>
     )
 }

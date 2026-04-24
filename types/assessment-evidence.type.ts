@@ -23,6 +23,7 @@ export interface AssessmentEvidenceFolder extends BaseResponse {
     isCustom: boolean
     assessmentResult: any
     comments: any
+    industryCheck:any
 }
 
 export interface CourseWithAssessmentEvidence extends Course {

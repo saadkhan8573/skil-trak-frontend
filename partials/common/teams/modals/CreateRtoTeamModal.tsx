@@ -1,4 +1,3 @@
-
 import {
     Button,
     Select,
@@ -79,25 +78,31 @@ export const CreateRtoTeamModal = ({
         undefined
     )
     const [isRtoSelected, setIsRtoSelected] = useState(false)
-    const [selectedRtoId, setSelectedRtoId] = useState<number | undefined>(undefined)
+    const [selectedRtoId, setSelectedRtoId] = useState<number | undefined>(
+        undefined
+    )
     const { notification } = useNotification()
+    // list/with-permission/receive-tickets
 
     const coordinators = CommonApi.Coordinators.useCoordinatorByRole()
-    const rtosData = CommonApi.Filter.useRtos()
+    const rtosData = CommonApi.Teams.useRtosAllowedForTeam()
 
     const [createTeam, createTeamResult] =
-        CommonApi.Teams.useCreateRtoSupportTeam()
+        CommonApi.Teams.useCreateSupportTeam()
 
     const [updateTeam, updateTeamResult] = CommonApi.Teams.useEditSupportTeam() // 👈 UPDATE API
 
     // Fetch subadmins for the selected RTO
-    const rtoSubAdmins = AdminApi.Rtos.useSubAdmins(Number(selectedRtoId), {
-        skip: !selectedRtoId,
-    })
+    const rtoSubAdmins = CommonApi.Teams.useRtosCoordinatorAllowedForTeam(
+        Number(selectedRtoId),
+        {
+            skip: !selectedRtoId,
+        }
+    )
     // Use RTO-specific subadmins when RTO is selected, otherwise use all coordinators
     const memberOptions =
         isRtoSelected && selectedRtoId
-            ? rtoSubAdmins?.data?.subadmin?.map((subadmin: any) => ({
+            ? rtoSubAdmins?.data?.map((subadmin: any) => ({
                   label: subadmin?.user?.name,
                   value: subadmin?.id,
               }))
@@ -225,7 +230,6 @@ export const CreateRtoTeamModal = ({
             members: subAdmin,
             rto: selectedRto?.value || null,
         }
-        console.log("payload", payload)
 
         if (isEditMode) {
             updateTeam({

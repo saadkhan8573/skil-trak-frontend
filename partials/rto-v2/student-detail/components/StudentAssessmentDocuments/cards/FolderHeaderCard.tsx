@@ -12,7 +12,7 @@ export const FolderHeaderCard = ({
     description: string
 }) => {
     return (
-        <div className="bg-gradient-to-r from-[#0D5468] to-[#044866] p-3">
+        <div className="bg-linear-to-r from-[#0D5468] to-[#044866] p-3">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">

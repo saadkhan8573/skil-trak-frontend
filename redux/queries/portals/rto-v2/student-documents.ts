@@ -83,4 +83,15 @@ export const studentDocumentsEndpoints = (
         }),
         invalidatesTags: ['RTO-Documents'],
     }),
+    // :stdId/course/:cId/mail-send
+    sendEmailOnIndustryChecks: builder.mutation<
+        any,
+        { stdId: number; cId: number }
+    >({
+        query: ({ stdId, cId }) => ({
+            url: `${PREFIX}${stdId}/course/${cId}/mail-send`,
+            method: 'POST',
+        }),
+        invalidatesTags: ['RTO-Documents'],
+    }),
 })

@@ -72,7 +72,7 @@ export function SnoozedDatePickerDialog({
                 <DialogContent className="max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden p-0 [&>button]:text-white">
                     <FormProvider {...methods}>
                         <form onSubmit={methods.handleSubmit(onSubmit)}>
-                            <DialogHeader className="bg-gradient-to-r from-[#044866] to-[#0D5468] p-4">
+                            <DialogHeader className="bg-linear-to-r from-[#044866] to-[#0D5468] p-4">
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center">
                                         <Calendar className="w-5 h-5 text-white" />
@@ -94,14 +94,14 @@ export function SnoozedDatePickerDialog({
                                     name="startDate"
                                     label={'Start Date'}
                                     type="date"
-                                    className="w-full px-4 py-3 bg-gradient-to-br from-[#F8FAFB] to-[#E8F4F8] border border-[#E2E8F0] rounded-xl text-sm text-[#1A2332] placeholder-[#94A3B8] hover:border-[#044866]/30 focus:outline-none focus:ring-2 focus:ring-[#044866]/20 focus:border-[#044866] transition-all"
+                                    className="w-full px-4 py-3 bg-linear-to-br from-[#F8FAFB] to-[#E8F4F8] border border-[#E2E8F0] rounded-xl text-sm text-[#1A2332] placeholder-[#94A3B8] hover:border-[#044866]/30 focus:outline-none focus:ring-2 focus:ring-[#044866]/20 focus:border-[#044866] transition-all"
                                 />
 
                                 <TextInput
                                     name="endDate"
                                     label="End Date"
                                     type="date"
-                                    className="w-full px-4 py-3 bg-gradient-to-br from-[#F8FAFB] to-[#E8F4F8] border border-[#E2E8F0] rounded-xl text-sm text-[#1A2332] placeholder-[#94A3B8] hover:border-[#044866]/30 focus:outline-none focus:ring-2 focus:ring-[#044866]/20 focus:border-[#044866] transition-all"
+                                    className="w-full px-4 py-3 bg-linear-to-br from-[#F8FAFB] to-[#E8F4F8] border border-[#E2E8F0] rounded-xl text-sm text-[#1A2332] placeholder-[#94A3B8] hover:border-[#044866]/30 focus:outline-none focus:ring-2 focus:ring-[#044866]/20 focus:border-[#044866] transition-all"
                                 />
 
                                 <div className="flex gap-3">
@@ -109,7 +109,7 @@ export function SnoozedDatePickerDialog({
                                         submit
                                         loading={snoozeResult.isLoading}
                                         disabled={snoozeResult.isLoading}
-                                        className="flex-1 px-4 py-3 bg-gradient-to-br from-[#10B981] to-[#059669] hover:shadow-lg text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 h-auto"
+                                        className="flex-1 px-4 py-3 bg-linear-to-br from-[#10B981] to-[#059669] hover:shadow-lg text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 h-auto"
                                     >
                                         <Calendar className="w-4 h-4" />
                                         Set Dates

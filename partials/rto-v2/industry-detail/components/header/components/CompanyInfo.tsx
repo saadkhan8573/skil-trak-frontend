@@ -29,7 +29,6 @@ export function CompanyInfo() {
             isLink: true,
         },
     ]
-    console.log('industryDetail', industryDetail)
     return (
         <div className="flex items-start gap-4 flex-1 min-w-0">
             <CompanyAvatar />

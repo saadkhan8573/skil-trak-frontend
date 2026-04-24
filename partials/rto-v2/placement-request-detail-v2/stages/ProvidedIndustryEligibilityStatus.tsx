@@ -133,53 +133,55 @@ export const ProvidedIndustryEligibilityStatus = ({
                         </Typography>
                     </div>
 
-                    <div className="p-5">
-                        {/* Industry Profile Basic Info */}
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-xl bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-md">
-                                    <Building2 className="h-6 w-6 text-white" />
-                                </div>
-                                <div>
-                                    <div className="flex items-center gap-2">
+                    {workplaceEligibilityIndustry && (
+                        <div className="p-5">
+                            {/* Industry Profile Basic Info */}
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-xl bg-linear-to-br from-[#044866] to-[#0D5468] flex items-center justify-center shadow-md">
+                                        <Building2 className="h-6 w-6 text-white" />
+                                    </div>
+                                    <div>
+                                        <div className="flex items-center gap-2">
+                                            <Typography
+                                                variant="title"
+                                                className="text-[#044866]"
+                                            >
+                                                {industry?.user?.name ??
+                                                    'Loading...'}{' '}
+                                                {approvalReq?.location
+                                                    ? '(Branch)'
+                                                    : ''}
+                                            </Typography>
+                                        </div>
                                         <Typography
-                                            variant="title"
-                                            className="text-[#044866]"
+                                            variant="small"
+                                            className="text-slate-500"
                                         >
-                                            {industry?.user?.name ??
-                                                'Loading...'}{' '}
-                                            {approvalReq?.location
-                                                ? '(Branch)'
-                                                : ''}
+                                            Provided Industry
                                         </Typography>
                                     </div>
-                                    <Typography
-                                        variant="small"
-                                        className="text-slate-500"
-                                    >
-                                        Provided Industry
-                                    </Typography>
                                 </div>
                             </div>
-                        </div>
 
-                        {/* Action Buttons */}
-                        <div className="flex justify-center items-center gap-2">
-                            <Button
-                                variant="error"
-                                outline
-                                onClick={handleReject}
-                            >
-                                Reject And Cancel
-                            </Button>
-                            <Button
-                                variant="success"
-                                onClick={() => setShowApproveModal(true)}
-                            >
-                                Approve and Validate
-                            </Button>
+                            {/* Action Buttons */}
+                            <div className="flex justify-center items-center gap-2">
+                                <Button
+                                    variant="error"
+                                    outline
+                                    onClick={handleReject}
+                                >
+                                    Reject And Cancel
+                                </Button>
+                                <Button
+                                    variant="success"
+                                    onClick={() => setShowApproveModal(true)}
+                                >
+                                    Approve and Validate
+                                </Button>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </motion.div>
 

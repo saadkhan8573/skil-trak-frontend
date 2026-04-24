@@ -89,6 +89,18 @@ export const teamsEndpoints = (
         query: () => `${PREFIX}-team/list-by-user/current`,
         providesTags: ['Team'],
     }),
+    getRtosAllowedForTeam: builder.query<any, void>({
+        query: () => ({
+            url: `rtos/list/with-permission/receive-tickets`,
+        }),
+        providesTags: ['Team'],
+    }),
+    getRtosCoordinatorAllowedForTeam: builder.query<any, any>({
+        query: (id) => ({
+            url: `rtos/${id}/coordinator/list`,
+        }),
+        providesTags: ['Team'],
+    }),
     // ==============================================================
     //   ---------------------- MUTATIONS -------------------------
     // ==============================================================

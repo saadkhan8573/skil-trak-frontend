@@ -119,6 +119,7 @@ export const {
     useGetStudentDocumentFilesQuery,
     useGetStudentDocumentsCountQuery,
     useUploadStudentDocumentFileMutation,
+    useSendEmailOnIndustryChecksMutation,
 
     // ---- Industries ---- //
     useGetRtoIndustriesQuery,
@@ -282,6 +283,7 @@ export const RtoV2Api = {
         getStudentDocumentFiles: useGetStudentDocumentFilesQuery,
         getStudentDocumentsCount: useGetStudentDocumentsCountQuery,
         uploadStudentDocumentFile: useUploadStudentDocumentFileMutation,
+        useSendEmailOnIndustryChecks: useSendEmailOnIndustryChecksMutation,
     },
     Industries: {
         createAvailability: useCreateAvailabilityMutation,

@@ -6,15 +6,21 @@ export const DocumentFilter = ({
     setStatusFilter,
     setSelectedView,
     selectedView,
+    onSendEmail,
+    sendEmailOnIndustryChecksResult,
+    isAnyDocument,
 }: {
     selectedView: 'industry' | 'all' | 'course'
     setSearchQuery: (e: string) => void
     setSelectedView: (e: 'industry' | 'all' | 'course') => void
     setStatusFilter: (e: string) => void
+    onSendEmail?: any
+    sendEmailOnIndustryChecksResult?: any
+    isAnyDocument?: boolean
 }) => {
     return (
         <div className="bg-white rounded-xl border border-slate-200 shadow-lg p-4">
-            <div className="flex flex-col md:flex-row gap-3">
+            <div className="flex items-center justify-between">
                 {/* <div className="flex-1">
                     <TextInput
                         name="searchDocs"
@@ -87,6 +93,16 @@ export const DocumentFilter = ({
                         Course
                     </Button>
                 </div>
+                {isAnyDocument && selectedView === 'all' && (
+                    <div className="flex justify-end">
+                        <Button
+                            text="Send Email"
+                            onClick={onSendEmail}
+                            loading={sendEmailOnIndustryChecksResult.isLoading}
+                            disabled={sendEmailOnIndustryChecksResult.isLoading}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     )

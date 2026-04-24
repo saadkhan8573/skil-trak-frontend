@@ -243,10 +243,10 @@ export function WorkplaceStatuses({
                     {resolvedIndustry?.showOnboarding && onboardingUrl && (
                         <Badge
                             Icon={ExternalLink}
-                            className="bg-linear-to-r from-indigo-500 to-blue-600 text-white px-2 py-0.5 shadow-lg hover:scale-105 transition-transform text-[10px] cursor-pointer"
+                            className="bg-linear-to-r from-indigo-500 to-blue-600 text-white px-2 py-0.5 shadow-lg hover:scale-105 transition-transform text-xs cursor-pointer"
                             onClick={() => router.push(onboardingUrl)}
                         >
-                            Onboarding
+                            Complete Onboarding
                         </Badge>
                     )}
                 </div>
